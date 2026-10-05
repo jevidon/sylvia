@@ -2,8 +2,8 @@
 ## V1 iOS implementation plan
 ### Your library of thought.
 
-**Status:** Team-review draft 0.2 - not yet approved for execution  
-**Prepared:** 5 October 2026 · **Revised:** 6 October 2026 (design language folded in; see Appendix D)  
+**Status:** Draft 0.3 - product-owner decisions recorded; Stage 0 (M0) in progress. Not yet the versioned 1.0 execution specification (Section 23.3).  
+**Prepared:** 5 October 2026 · **Revised:** 6 October 2026 (design language folded in; product-owner decisions and Section 4.4 consistency fixes recorded; see Appendix D)  
 **Product owner:** Justin Evidon  
 **Delivery boundary:** Native iPhone/iPad application, iOS share extension, lightweight macOS transfer companion, portable data and transfer contracts. No mandatory service.  
 **Source of truth:** Agreed product discussion, *Sylvia - Product Brief*, and the *Sylvia Concept Designs* boards in `Docs/Design/` for visual language. Technical recommendations below are proposals unless explicitly identified as confirmed. [P1, P2]
@@ -26,9 +26,9 @@ The important decisions requiring explicit team approval are collected in Sectio
 
 ## 1.1 What is confirmed versus proposed
 
-**Confirmed:** Sylvia; native iOS first; eventual broader platform support; standalone use without an account/server; a lightweight Mac companion; direct, LAN and wired import; one-time pairing; 5,000+ titles; Work -> Edition -> Asset; English and DRM-free content first; passage-focused annotation; EPUB/audiobook association; retention of learning records after media removal; optional configurable AI and optional Hermes; Docker deferred. [P1] **Also confirmed (6 October 2026):** the *Marginalia* design language direction described in Section 4.4, chosen by the product owner after reviewing four alternatives; its exact token values remain proposals until checked on devices in Stage 0. [P2]
+**Confirmed:** Sylvia; native iOS first; eventual broader platform support; standalone use without an account/server; a lightweight Mac companion; direct, LAN and wired import; one-time pairing; 5,000+ titles; Work -> Edition -> Asset; English and DRM-free content first; passage-focused annotation; EPUB/audiobook association; retention of learning records after media removal; optional configurable AI and optional Hermes; Docker deferred. [P1] **Also confirmed (6 October 2026):** the *Marginalia* design language direction described in Section 4.4, chosen by the product owner after reviewing four alternatives; its exact token values remain proposals until checked on devices in Stage 0. [P2] **Also confirmed (6 October 2026, before Stage 0):** the product owner approved the Section 23.1 decision defaults D02-D15 as proposed and amended D01 to iOS/iPadOS 26+ and macOS 26+; chose Inbox row layout B (Section 4.1); and chose Sylvia's own opaque navigation chrome over the system's translucent bars (Sections 4.4.2, 4.4.7). Decisions that also name a technical, security, QA or design owner still need that confirmation through the Stage 0 evidence and ADRs.
 
-**Proposed for this review:** iOS/iPadOS 18+ and macOS 14+; iPhone-led design with a functional adaptive iPad layout; GRDB and Readium; the precise import/transfer protocol; a five-star rating with half-star steps; no automatic media eviction; short-clip transcription through an optional speech endpoint; explicit knowledge export and restore in v1; no cloud/state sync; minimal status-based organization rather than a fixed taxonomy; the Marginalia token values, type roles and component inventory in Section 4.4.
+**Proposed in draft 0.2, approved as defaults by the product owner on 6 October 2026, and still subject to Stage 0 evidence:** iOS/iPadOS 26+ and macOS 26+ (amended from 18+ and 14+); iPhone-led design with a functional adaptive iPad layout; GRDB and Readium; the precise import/transfer protocol; a five-star rating with half-star steps; no automatic media eviction; short-clip transcription through an optional speech endpoint; explicit knowledge export and restore in v1; no cloud/state sync; minimal status-based organization rather than a fixed taxonomy; the Marginalia token values, type roles and component inventory in Section 4.4.
 
 **Still open by design:** user-facing categorization, commercial model, production distribution and pricing. The engineering plan must not silently resolve these as subscriptions, a complex tagging system, or a hosted account service.
 
@@ -109,6 +109,8 @@ Use three primary areas: **Library**, **Thoughts**, and **Inbox**. Global search
 
 **Inbox:** pending local imports, items available from a paired Mac, duplicates needing review and failed jobs. Transfer states use the fixed vocabulary of Section 4.4.6: queued, receiving, verifying, preparing, ready, needs attention. Do not make users inspect a developer log to finish an import.
 
+Inbox rows use the compact layout chosen on 6 October 2026 (board *Inbox rows, option B* in `Docs/Design/`): title and kind; a status pill with a one-line detail; one trailing action (Pause, Open or Resolve) or a disclosure chevron; transfer progress drawn as a rule along the row's bottom edge. A Needs attention row's trailing action is Resolve, which opens a detail view with the full reason and every next step, so the row itself never has to hold two actions. At accessibility text sizes the detail line wraps instead of truncating and the trailing action moves below it (T51).
+
 **Reader/player:** one consistent capture sheet with source preview, quote or audio range, comment, lookup, Ask AI and save status. The interaction must be usable one-handed on iPhone and adapt to a side pane on iPad without requiring a separate iPad product.
 
 ## 4.2 Onboarding
@@ -186,7 +188,7 @@ Dark tints marked "derived" are the marker text color at approximately 14% over 
 - One Pine primary action per screen. Destructive actions use `attention` as a hairline button and never sit beside a primary.
 - Color is never the only carrier of meaning. Every marker and status also has a glyph and a label (4.4.5, 4.4.6). This is verified by T53.
 - Covers without artwork use five muted fields assigned by a stable hash of the work title: #2F5D50, #5A6B4A, #7A4B3A, #3F5A78, #4A4A58, with `ground` as the title color. Real cover art from the file replaces them when present.
-- No gradients, no glassmorphism, no colored shadows. Shadow is a single value (4.4.4) and only on the two floating objects.
+- No gradients, no glassmorphism, no colored shadows. Shadow is a single value (4.4.4) and only on the two floating objects. This includes navigation chrome: the tab bar, navigation bars and mini-player are Sylvia's own opaque components (4.4.7), not the system's translucent Liquid Glass bars.
 
 ### 4.4.3 Typography
 
@@ -216,20 +218,20 @@ Three faces, each with one job.
 ### 4.4.4 Shape, space, elevation and motion
 
 - **Grid:** 4pt. Spacing steps 4, 8, 12, 16, 20, 24, 32. Screen gutter 20pt on iPhone, 32pt on iPad. Reading margins belong to the user.
-- **Radii:** 10 for controls, 14 for cards and covers, 22 for sheets, full for pills and chips. Nothing else.
+- **Radii:** 8 for blocks inset in a card (quote and audio blocks) and for cover thumbnails 56pt or smaller; 10 for small controls (icon buttons, fields, segmented controls); 12 for buttons; 14 for cards and covers; 22 for sheets; full for pills and chips. Nothing else.
 - **Hairline:** 1px at the `hairline` token. Rules separate; cards do not nest in cards.
 - **Elevation:** one shadow, 0 8 24 at 10% ink, used only on sheets and the mini-player. Nothing else casts a shadow.
 - **Motion:** 200ms ease-out for sheets; 120ms for a highlight appearing; progress rules animate; nothing else animates while reading. No bounces, no parallax. All motion is removed under Reduce Motion except opacity changes.
 - **Sheets:** 22pt top radius, grabber, title in the Heading role, primary action at the bottom. A sheet never dismisses while it holds unsaved text (Section 11.1).
 
-### 4.4.5 Marker set: the four capture kinds and two statuses
+### 4.4.5 Marker set: five capture kinds and two statuses
 
-The marker is a small row at the top of any capture: glyph, then an uppercase Micro label, then the source label, in the marker's color. Icons are SF Symbols on device; the boards show 1.75pt stroke equivalents. [P2]
+The marker is a small row at the top of any capture: glyph, then an uppercase Micro label, then the source label, in the marker's color. Icons are SF Symbols on device; the boards show 1.75pt stroke equivalents. [P2] Two glyphs have no SF Symbol and ship as custom symbols in the design package so they scale and weight like system symbols: the Generated prompt glyph (chevron and underscore) and the bracket capture glyph of the mini-player and player (4.4.7). The set has seven markers: Quote, Note, Audio, Generated and Word are capture kinds; Attention and Pending are statuses. Word uses the `quote` color family with its own glyph and label.
 
 | Kind | Glyph | Label | Body treatment | Frame | Notes |
 | --- | --- | --- | --- | --- | --- |
 | Quote | Opening quotation mark, in Literata | QUOTE · source label | Exact text in Literata, Reading or Body size, on `quote` tint, radius 8 | none | Immutable captured wording (Section 11.1). A user's own note under it is in the system face, prefixed "Your note". |
-| Note | Pen nib | NOTE · source label | User's words in the system face | none | No tint, ever: the user's own words need no box. |
+| Note | Pen nib (`pencil.tip`) | NOTE · source label | User's words in the system face | none | No tint, ever: the user's own words need no box. |
 | Audio | Waveform | AUDIO · source · duration | A tinted block containing a round play control and a waveform; "No transcript" caption until one exists | none | Never rendered as text. Preview playback does not move the main position (Section 10.3). |
 | Generated | Prompt glyph (chevron and underscore) | GENERATED · provider · model | Question in Body 600, answer in Body; citation chips inline | 1px dashed in the `generated` color | No sparkle iconography. Unresolved citations render as struck-through grey chips with an explanation (Section 13.4). |
 | Word | Open book | WORD · source | Headword in Literata 600, then the source sentence and the user's note | none | Shares the `quote` color family. |
@@ -245,14 +247,17 @@ Status language is a component. Each moment has a fixed set of phrases tied to a
 | Moment | State machine | We say | We never say |
 | --- | --- | --- | --- |
 | Saving a thought | Section 11.1 capture transaction | "Saving…" → "Saved" (with time, after the durable commit) · on failure "Not saved · your text is still here" | Done · Success · a dismissed sheet with nothing written |
-| Import and transfer | Section 8.2; Section 15.5 | "Queued" · "Receiving" (with verified-of-total bytes) · "Verifying" · "Preparing" · "Ready" · "Ready · indexing continues" · "Needs attention" (with reason) | Complete before Ready · Error · Downloading for a Mac transfer that is verified by parts |
+| Import and transfer | Section 8.2; Section 15.5 | "Queued" · "Waiting for {source}" · "Receiving" (with verified-of-total bytes) · "Verifying" · "Preparing" · "Needs review" · "Ready" · "Ready · indexing continues" · "Needs attention" (with reason) | Complete before Ready · Error · Downloading for a Mac transfer that is verified by parts |
+| Delivery receipts (Mac companion) | Section 16.2 | "Queued on Mac" · "Downloaded to phone" · "Imported into Sylvia" | Sent · Delivered (as a claim that the item was imported) |
 | Capturing audio | Section 10.2 | "Moment saved · preserving audio" → "Audio excerpt saved" · on failure "Excerpt not preserved · Retry" | Clip saved before export · any transcript text that was not transcribed |
 | Asking a model | Section 14.4 | "Draft · not sent" · "Sending to {host}" · "Generated" · "Complete" · "Interrupted · partial answer" | Thinking… · The AI read your book · Free with your subscription |
-| Context scope | Section 13.1 | "Selected passage" · "Passage and nearby text" · "Relevant passages from this work" · "Selected thoughts" | Whole book (unless it truly fits and was chosen) · Understands your library |
+| Context scope | Section 13.1 | Chips: "Selected passage" · "Passage and nearby text" · "Relevant passages from this work" · "Selected thoughts"; after a work search: "Relevant passages retrieved" | Whole book (unless it truly fits and was chosen) · Understands your library · The AI read the entire book |
 | Where a file is | Sections 7.1, 12 | "On this device" · "Not on this device · from {source}" · "Record only" | Deleted · Missing · Broken |
 | Search coverage | Section 11.3 | "Saved thoughts only" · "Book text indexed" · "Indexing {n} of {m} chapters" · "Text unavailable" | Semantic search · Searched everything |
 | Removing things | Section 17.2 | "Remove download" · "Manage retained text" · "Remove excerpt audio" · "Delete record and thoughts" (four separate actions) | Delete alone · a trash icon on a download |
 | Endpoint disclosure | Section 14.2 | "{host} · hosted" / "{host} · local" / "{host} · user-managed" with the model identifier | Secure · Private (as unqualified claims) |
+
+**Import state mapping (Section 8.2).** `created` shows "Queued"; `acquiring` shows "Receiving"; `staged` and `validating` show "Verifying"; `identifying` and `committing` show "Preparing"; `needs_review` shows "Needs review" (a duplicate or association choice, listed in the Inbox section of the same name); `ready` shows "Ready", or "Ready · indexing continues" while text indexing runs; `waiting_for_source` shows "Waiting for {source}" with the pending dot, since no user action is required; `waiting_for_space`, `unsupported`, `failed_retryable` and `failed_final` show "Needs attention" with their reason and next step; `cancelled` items leave the Inbox. "Waiting for {source}" and "Needs review" use the pending and attention glyphs respectively.
 
 Microcopy conventions: sentence case; no exclamation marks; durations as "20h 58m left"; positions as chapter and percent, never a page number unless the publication supplies a real page mapping (Section 7.5); times in the Monospace face.
 
@@ -268,8 +273,8 @@ The small set every screen is assembled from. Each is a SwiftUI view in the desi
 | Capture cards | Surface, hairline border, radius 14, 12-14pt padding; marker row, body per 4.4.5, optional "Your note" line, timestamp in Monospace. Generated cards use the dashed frame. |
 | Rating | Five stars in `ochre`, half-star steps, stored as integer 1-10 (Section 12). Clearing is a separate action, not zero. Filled versus outline must read in grayscale. |
 | Progress rule | 2-3pt track at `hairline`, Pine fill; caption shows chapter or part and percent, with time remaining in Monospace. |
-| Tab bar | Three items: Library, Thoughts, Inbox. Active in Pine, inactive in `muted`. Search and Settings live in the navigation bar. Inbox shows an `attention` dot when an item needs the user. |
-| Mini-player | Floats 12pt above the tab bar; surface, radius 14, the one shadow; cover, title, caption, a capture control (bracket glyph, "Capture the last 30 seconds") and play/pause. |
+| Tab bar | A Sylvia component, not the system tab bar: opaque `surface` with a hairline top rule. Three items: Library, Thoughts, Inbox. Active in Pine, inactive in `muted`. Search and Settings live in the navigation bar, which follows the same rule (opaque `ground`, plain icon buttons, no system glass). Inbox shows an `attention` dot when an item needs the user. On iPad in regular width the same three areas move to a sidebar built from the same tokens. Each item exposes the accessibility traits, labels, large-content viewer and hardware-keyboard behavior of the system control it replaces. |
+| Mini-player | Floats 12pt above the tab bar; surface, radius 14, the one shadow; cover, title, caption, a capture control (custom bracket glyph, "Capture the last 30 seconds") and play/pause. |
 | Capture sheet | Section 4.1 reader/player sheet: marker row, quote block or audio range, "Your note" field, Look up and Ask actions, primary button whose label is the save state. |
 | Selection menu | Ink pill over the selection: Highlight (with Ochre quotation glyph), Note, Look Up, Ask. |
 | Typographic cover | Literata title on one of the five cover fields (4.4.2), author in small caption; 2:3 ratio in lists, square in the player. |
@@ -287,7 +292,7 @@ Marginalia must hold on devices that show no color: an iPhone with Color Filters
 - Rating stars lose Ochre, but filled versus outline still reads.
 - Generated keeps its dashed frame and label; citation chips remain legible as chips.
 
-Further accessibility rules, extending Section 18.3: all roles scale through Dynamic Type up to the largest accessibility size without clipped labels in the capture sheet, player, Inbox and Thoughts; `hairline` rises to 24% and tints darken one step under Increase Contrast; Reduce Transparency removes the tab bar's translucency; Bold Text is honored by all roles; every icon-only control has a label; highlight colors are never the only way to distinguish capture types.
+Further accessibility rules, extending Section 18.3: all roles scale through Dynamic Type up to the largest accessibility size without clipped labels in the capture sheet, player, Inbox and Thoughts; `hairline` rises to 24% and tints darken one step under Increase Contrast; Sylvia's tab bar, navigation bars and mini-player are already opaque, so Reduce Transparency changes nothing there, and any system-provided surface follows the system setting; Bold Text is honored by all roles; every icon-only control has a label; highlight colors are never the only way to distinguish capture types.
 
 ### 4.4.9 Implementation mapping
 
@@ -609,7 +614,7 @@ Removing a book's last local file changes its action from "Read/Listen" to "Add 
 
 ## 13.1 Context is a product surface
 
-The user chooses among **selected passage**, **selected passage plus nearby text**, **search this work**, or **selected saved thoughts**, presented as scope chips with the labels fixed in Section 4.4.6. Default to the narrowest relevant context. For work search, retrieve bounded excerpts and say "Relevant passages retrieved", not "The AI read the entire book".
+The user chooses among **selected passage**, **selected passage plus nearby text**, **search this work**, or **selected saved thoughts**, presented as scope chips with the labels fixed in Section 4.4.6. Default to the narrowest relevant context. For work search, retrieve bounded excerpts and say "Relevant passages retrieved", not "The AI read the entire book". The chip that chooses work search reads "Relevant passages from this work" (Section 4.4.6).
 
 Whole-book inclusion is allowed only when the entire extracted text fits the configured input budget and the user explicitly chooses it. Comprehensive whole-book summarization with exhaustive chapter coverage is not a v1 guarantee. The interface must not claim completeness based on a handful of retrieved chunks.
 
@@ -787,7 +792,7 @@ Distinguish durable saved evidence from a full extracted book corpus. Full text 
 
 ## 17.2 Deletion UX
 
-Use separate actions: **Remove download**, **Manage retained text**, **Remove excerpt audio**, and **Delete library record and associated knowledge**. Never place the destructive last action behind an ambiguous trash icon on an audiobook download. The destructive action is styled per Section 4.4.7 and never sits beside a primary button.
+Use separate actions: **Remove download**, **Manage retained text**, **Remove excerpt audio**, and **Delete record and thoughts** (the library record and its associated knowledge; labels per Section 4.4.6). Never place the destructive last action behind an ambiguous trash icon on an audiobook download. The destructive action is styled per Section 4.4.7 and never sits beside a primary button.
 
 Before removing a full audiobook, show the impact report (Section 4.4.7): retained knowledge counts, excerpt export failures/pending work, expected space freed and recovery sources. When an excerpt is still being preserved, the safe choice ("Wait, then remove") is the primary button. Pins and active playback prevent automatic removal. Proposed v1 default is manual removal; scheduled rules such as "remove finished audio after 30 days" are deferred until safety is demonstrated.
 
@@ -1061,7 +1066,10 @@ Contracts/                     # versioned JSON Schema and OpenAPI
 Contracts/design/              # exported design tokens and vocabulary (portable)
 Fixtures/                      # licensed/generated books, audio and failures
 Tests/                         # unit, integration, contract, UI, performance, snapshots
+Spikes/                        # Stage 0 feasibility harnesses; evidence code, never shipped
+Scripts/                       # CI, fixture, lint and contract tooling
 Docs/ADRs/                     # approved architecture decisions
+Docs/Stage0/                   # gate evidence reports and physical-device checklists
 Docs/Design/                   # design boards: rendered images, board source, render script, review notes
 Docs/Runbooks/                 # import, restore, source and release procedures
 ```
@@ -1094,7 +1102,7 @@ These are focused review decisions, not requests to repeat the completed discove
 
 | Decision | Proposed default | Decision owner / consequence |
 | --- | --- | --- |
-| D01 - Platform floor | iOS/iPadOS 18+, macOS 14+; iPhone-led, functional adaptive iPad | Product + technical lead; affects APIs/test matrix |
+| D01 - Platform floor | iOS/iPadOS 26+, macOS 26+ (amended by the product owner on 6 October 2026 from the proposed 18+ and 14+); iPhone-led, functional adaptive iPad | Product + technical lead; affects APIs/test matrix |
 | D02 - Core stack | SwiftUI, Readium EPUB, PDFKit, AVFoundation, GRDB/SQLite | Technical lead; confirm versions after M0 |
 | D03 - Lock-screen capture | Standard playback required; dedicated capture gated, not assumed | Product + audio lead; explicitly approve ideal-story narrowing |
 | D04 - Audio words | Durable excerpts plus optional short-clip endpoint transcription; no full transcription | Product + AI/audio; test speech configuration complexity |
@@ -1108,7 +1116,7 @@ These are focused review decisions, not requests to repeat the completed discove
 | D12 - Ratings/history | Half-star rating, explicit completion, rereads, local recommendation events | Product; export schema and UI semantics |
 | D13 - Distribution | Internal/TestFlight first; notarized Mac testing build; no monetization implementation yet | Product + release; public release approval later |
 | D14 - Scope sequence | RSS/newsletters, Docker, OCR, Calibre adapter and external-player capture later | Product; preserve roadmap without adding P0 scope |
-| D15 - Design language | Marginalia (Section 4.4): Paper/Night grounds, Pine and Ochre accents, six-marker set, Literata plus system faces, three-tab navigation, fixed status vocabulary. Direction chosen by the product owner on 6 October 2026 after reviewing four alternatives | Design + iOS lead confirm token values on devices in G0.6; any change to the marker set or vocabulary is a plan change, not a styling tweak |
+| D15 - Design language | Marginalia (Section 4.4): Paper/Night grounds, Pine and Ochre accents, seven-marker set (five capture kinds, two statuses), Literata plus system faces, three-tab navigation in Sylvia's own opaque chrome, fixed status vocabulary. Direction chosen by the product owner on 6 October 2026 after reviewing four alternatives | Design + iOS lead confirm token values on devices in G0.6; any change to the marker set or vocabulary is a plan change, not a styling tweak |
 
 ## 23.2 Risk register
 
@@ -1258,9 +1266,10 @@ Mutating calls return typed errors and durable state, not booleans that hide par
   },
   "marker": {
     "quote":     {"text": {"light": "#8A5410", "dark": "#D9A24A"}, "glyph": "quote.opening", "label": "QUOTE"},
-    "note":      {"text": {"light": "#2F5D50", "dark": "#7FB5A3"}, "glyph": "pencil", "label": "NOTE"},
+    "note":      {"text": {"light": "#2F5D50", "dark": "#7FB5A3"}, "glyph": "pencil.tip", "label": "NOTE"},
     "audio":     {"text": {"light": "#3F5A78", "dark": "#8FB0D4"}, "glyph": "waveform", "label": "AUDIO"},
-    "generated": {"text": {"light": "#6B4E8E", "dark": "#B49BD6"}, "glyph": "chevron.right.underscore", "label": "GENERATED", "frame": "dashed"},
+    "generated": {"text": {"light": "#6B4E8E", "dark": "#B49BD6"}, "glyph": "sylvia.prompt", "label": "GENERATED", "frame": "dashed"},
+    "word":      {"text": {"light": "#8A5410", "dark": "#D9A24A"}, "glyph": "book", "label": "WORD"},
     "attention": {"text": {"light": "#A63D2F", "dark": "#E0837A"}, "glyph": "exclamationmark.triangle", "label": "NEEDS ATTENTION"},
     "pending":   {"text": {"light": "#6B6760", "dark": "#A8A298"}, "glyph": "circle.fill", "label": "QUEUED"}
   },
@@ -1278,7 +1287,7 @@ Mutating calls return typed errors and durable state, not booleans that hide par
 }
 ```
 
-The export is generated from the Swift package, not hand-maintained; glyph names are SF Symbols identifiers with documented equivalents for other platforms. Tints marked "derived" in Section 4.4.2 appear here only once set in the asset catalog.
+The export is generated from the Swift package, not hand-maintained; glyph names are SF Symbols identifiers, or `sylvia.*` custom symbols shipped in the design package, with documented equivalents for other platforms. Tints marked "derived" in Section 4.4.2 appear here only once set in the asset catalog.
 
 # Appendix B. Source notes and technical references
 
@@ -1345,6 +1354,21 @@ Verify source/capture fidelity, no false ready/saved states, no unexpected provi
 Complete privacy/distribution review, licensed sample content, support documentation and pilot feedback review. The final go/no-go question is not whether every component exists: **can a user reliably turn a reading or listening moment into knowledge they can find and trust later, even after the media is gone?**
 
 # Appendix D. Change log
+
+**Draft 0.3 - 6 October 2026.** Product-owner decisions taken before Stage 0, and consistency fixes inside Section 4.4. The fixes are flagged for design review at the M0 gate; none changes a token value.
+
+- Front matter and Section 1.1: status moved to draft 0.3; the product owner's approval of D02-D15 as proposed, the D01 amendment, Inbox layout B and opaque chrome recorded as confirmed. Approvals that also name a technical, security, QA or design owner remain subject to Stage 0 evidence.
+- D01: platform floor amended from iOS/iPadOS 18+ and macOS 14+ to iOS/iPadOS 26+ and macOS 26+. The pinned toolchain cannot test iOS 18 and has iOS 26.5 and 27.0 simulator runtimes; iPhone 12-class hardware remains the proposed baseline device (Section 19.1).
+- Section 4.1: Inbox rows use layout B (compact), with the Resolve detail view and the accessibility-size wrapping rule. Board *Inbox rows, option A* is retained as a reference only.
+- Sections 4.4.2, 4.4.7 and 4.4.8: the tab bar, navigation bars and mini-player are Sylvia's own opaque components, not the system's Liquid Glass bars. This resolves a conflict between the "no glassmorphism" rule and a Reduce Transparency rule that assumed a translucent tab bar. The tab bar row now also requires system-equivalent accessibility and a regular-width iPad sidebar.
+- Section 4.4.4: the radius scale listed 10, 14, 22 and full with "nothing else", while the component specifications use 12 for buttons and 8 for quote blocks and the boards draw both. The scale now names 8 (inset blocks, small cover thumbnails), 10 (small controls), 12 (buttons), 14, 22 and full.
+- Section 4.4.5 and D15: the heading said four capture kinds and D15 said six markers, while the table defines Word as a fifth capture kind. The set is now stated as seven markers; Word uses the `quote` colors. The Note glyph is `pencil.tip`. The Generated prompt glyph and the bracket capture glyph have no SF Symbol and ship as custom `sylvia.*` symbols (the A.5 sketch named a nonexistent `chevron.right.underscore`).
+- Section 4.4.6: added "Waiting for {source}" and "Needs review" (both used by the Section 8.2 state machine or the Inbox board but missing from the vocabulary), a full mapping from Section 8.2 states to phrases, a Delivery receipts row for the Mac companion's three receipts (Section 16.2), and "Relevant passages retrieved" as the post-retrieval disclosure next to the "Relevant passages from this work" chip (reconciling Section 13.1).
+- Section 17.2: the fourth removal action uses its vocabulary label, "Delete record and thoughts".
+- Section 22.1: `Spikes/`, `Scripts/` and `Docs/Stage0/` added to the repository layout.
+- Appendix A.5: Note glyph `pencil.tip`, Generated glyph `sylvia.prompt`, Word marker added.
+
+No scope, security, data-model or transfer-protocol decision from draft 0.2 was changed other than D01.
 
 **Draft 0.2 - 6 October 2026.** Folded the Marginalia design language into the plan. Changes from draft 0.1:
 

@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Xcode and SwiftPM build products
+.build/
+DerivedData/
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+*.xcresult/
+.swiftpm/
+
+# Generated Xcode projects come from each project.yml (XcodeGen); never commit them.
+
+# Local tooling
+.venv*/
+__pycache__/
+*.pyc
+
+# Large and generated fixtures live in $SYLVIA_FIXTURE_CACHE, never in the repository
+Fixtures/.cache/
+
+# Secrets must never be written to the working tree
+*.p12
+*.mobileprovision
+.env
+.env.*

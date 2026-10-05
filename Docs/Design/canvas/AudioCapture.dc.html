@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sylvia audio capture detail</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;display=swap">
+<style>
+body{margin:0;background:#F4F2ED}
+a{color:#2F5D50}a:hover{color:#1F4238}
+.ph{width:390px;height:844px;box-sizing:border-box;background:#F4F2ED;color:#1C1B18;font-family:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",sans-serif;font-size:17px;line-height:1.35;position:relative;overflow:hidden;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+.serif{font-family:Literata,Georgia,"Times New Roman",serif}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+.micro{font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;color:#6B6760}
+.cap{font-size:13px;color:#6B6760;line-height:1.4}
+.card{background:#FBFAF7;border:1px solid rgba(28,27,24,.12);border-radius:14px}
+.icon{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.marker{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:700}
+.nav{height:52px;margin-top:54px;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 10px;flex:none}
+.back{display:inline-flex;align-items:center;color:#2F5D50;font-size:17px;background:none;border:0;padding:0 8px 0 0;font-family:inherit;min-height:44px;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 16px;border-radius:12px;font-size:16px;font-weight:600;border:1px solid transparent;font-family:inherit;cursor:pointer}
+.btn-secondary{background:transparent;color:#1C1B18;border-color:rgba(28,27,24,.24)}
+.q{display:inline-flex;align-items:center;color:#2F5D50;font-size:14px;font-weight:600;background:none;border:0;padding:0;font-family:inherit;min-height:36px;cursor:pointer}
+.stp{width:44px;height:44px;border-radius:10px;border:1px solid rgba(28,27,24,.18);background:transparent;color:#1C1B18;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;cursor:pointer}
+.val{flex:1;height:44px;border-radius:10px;border:1px solid rgba(28,27,24,.18);background:#FBFAF7;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:16px;font-variant-numeric:tabular-nums}
+label{font-size:12px;font-weight:600;color:#6B6760;display:block;margin-bottom:6px}
+textarea{width:100%;box-sizing:border-box;min-height:74px;border:1px solid rgba(28,27,24,.18);border-radius:12px;background:#FBFAF7;padding:10px 12px;font-family:inherit;font-size:15px;line-height:1.45;color:#1C1B18;resize:none}
+</style>
+</helmet>
+<div class="ph">
+  <header class="nav">
+    <button class="back" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Player</button>
+    <div class="micro">Audio capture</div>
+    <span style="width:44px"></span>
+  </header>
+
+  <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:14px;padding:0 20px 30px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span class="marker" style="color:#3F5A78"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><path d="M4 11v2M7 8v8M10 5v14M13 9v6M16 7v10M19 10v4"/></svg>Audio · Middlemarch · Part 14</span>
+      <span class="cap">Today, <span class="mono">11:40</span></span>
+    </div>
+
+    <div class="card" style="padding:14px 14px 10px;display:flex;flex-direction:column;gap:8px">
+      <div style="position:relative;height:84px">
+        <div style="position:absolute;left:26%;right:14%;top:0;bottom:0;background:#DCE4EE;border-radius:6px"></div>
+        <svg viewBox="0 0 320 84" style="position:absolute;inset:0;width:100%;height:100%;stroke:#3F5A78;stroke-width:2.2;stroke-linecap:round" aria-hidden="true"><path d="M6 42v4M14 36v16M22 30v28M30 38v12M38 24v40M46 34v20M54 40v8M62 28v32M70 20v48M78 36v16M86 42v2M94 32v24M102 26v36M110 38v12M118 30v28M126 36v16M134 40v6M142 28v32M150 22v44M158 34v20M166 42v2M174 30v28M182 26v36M190 36v16M198 32v24M206 40v8M214 28v32M222 24v40M230 36v16M238 42v4M246 32v24M254 26v36M262 38v12M270 30v28M278 36v16M286 40v6M294 32v24M302 28v32M310 38v12"/></svg>
+        <div aria-hidden="true" style="position:absolute;left:26%;top:-6px;bottom:-6px;width:3px;background:#1C1B18;border-radius:2px;transform:translateX(-50%)"></div>
+        <div aria-hidden="true" style="position:absolute;right:14%;top:-6px;bottom:-6px;width:3px;background:#1C1B18;border-radius:2px;transform:translateX(50%)"></div>
+      </div>
+      <div class="cap mono" style="display:flex;justify-content:space-between;font-size:12px"><span>11:00</span><span>11:30</span><span>12:00</span></div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <div style="flex:1">
+        <label for="start">Start</label>
+        <div style="display:flex;gap:6px"><button class="stp" type="button" aria-label="Start earlier by one second"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><div class="val" id="start">11:12.0</div><button class="stp" type="button" aria-label="Start later by one second"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      </div>
+      <div style="flex:1">
+        <label for="end">End</label>
+        <div style="display:flex;gap:6px"><button class="stp" type="button" aria-label="End earlier by one second"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><div class="val" id="end">11:42.0</div><button class="stp" type="button" aria-label="End later by one second"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      </div>
+    </div>
+    <div class="cap" style="margin-top:-6px">Length <span class="mono">0:30</span> · can extend to 2:00 · exact exported range is recorded with the excerpt</div>
+
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button class="btn btn-secondary" type="button"><svg class="icon" style="width:18px;height:18px;fill:currentColor;stroke:none" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Play excerpt</button>
+      <div class="cap" style="text-align:center">Plays only this excerpt. Your place in the book does not move.</div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#DCE8E2;border-radius:12px">
+      <svg class="icon" style="color:#2F5D50;width:20px;height:20px;stroke-width:2.2" viewBox="0 0 24 24"><path d="M5 12l4.5 4.5L19 7"/></svg>
+      <div style="font-size:14px;line-height:1.35;color:#1C1B18"><strong style="font-weight:600">Audio excerpt saved.</strong> Kept even if the audiobook is removed.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="micro">Transcript</div>
+      <div class="card" style="padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:14px;line-height:1.45">No speech service is set up. Transcribing would send only this 30-second excerpt to a service you choose, never the audiobook.</div>
+        <div style="display:flex;gap:14px"><button class="q" type="button">Set up transcription</button><button class="q" type="button">Type what you heard</button></div>
+      </div>
+    </div>
+
+    <div>
+      <label for="note">Your note</label>
+      <textarea id="note">Lydgate's "spots of commonness". Worth finding the exact wording in the EPUB.</textarea>
+      <div class="cap" style="margin-top:6px;display:flex;align-items:center;gap:6px"><svg class="icon" style="color:#2F5D50;width:14px;height:14px;stroke-width:2.4" viewBox="0 0 24 24"><path d="M5 12l4.5 4.5L19 7"/></svg>Note saved · <span class="mono">11:41</span></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

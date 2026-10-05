@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sylvia ask about this passage (grayscale display)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;display=swap">
+<style>
+body{margin:0;background:#F4F2ED}
+a{color:#2F5D50}a:hover{color:#1F4238}
+.ph{filter:grayscale(1);width:390px;height:844px;box-sizing:border-box;background:#F4F2ED;color:#1C1B18;font-family:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",sans-serif;font-size:17px;line-height:1.35;position:relative;overflow:hidden;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+.serif{font-family:Literata,Georgia,"Times New Roman",serif}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+.micro{font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;color:#6B6760}
+.cap{font-size:13px;color:#6B6760;line-height:1.4}
+.card{background:#FBFAF7;border:1px solid rgba(28,27,24,.12);border-radius:14px}
+.icon{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.pill{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap;vertical-align:middle}
+.marker{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:700}
+.nav{height:52px;margin-top:54px;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 10px;flex:none}
+.back{display:inline-flex;align-items:center;color:#2F5D50;font-size:17px;background:none;border:0;padding:0 8px 0 0;font-family:inherit;min-height:44px;cursor:pointer}
+.scope{display:flex;gap:6px;overflow:hidden}
+.chip{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;border:1px solid rgba(28,27,24,.18);font-size:13px;font-weight:500;color:#1C1B18;background:transparent;white-space:nowrap;font-family:inherit}
+.chip.on{background:#1C1B18;color:#F4F2ED;border-color:#1C1B18}
+.q{display:inline-flex;align-items:center;color:#2F5D50;font-size:14px;font-weight:600;background:none;border:0;padding:0;font-family:inherit;min-height:32px;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:12px;font-size:15px;font-weight:600;border:1px solid transparent;font-family:inherit;cursor:pointer}
+.btn-primary{background:#2F5D50;color:#F4F2ED}
+.btn-secondary{background:transparent;color:#1C1B18;border-color:rgba(28,27,24,.24)}
+</style>
+</helmet>
+<div class="ph">
+  <header class="nav">
+    <button class="back" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Reader</button>
+    <div class="micro">Ask about this passage</div>
+    <span style="width:44px"></span>
+  </header>
+
+  <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:12px;padding:0 20px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="scope" role="group" aria-label="What to send">
+        <button class="chip on" type="button">Selected passage</button>
+        <button class="chip" type="button">+ nearby text</button>
+        <button class="chip" type="button">Search this work</button>
+        <button class="chip" type="button">Saved thoughts</button>
+      </div>
+      <div class="cap">Only the passage below is sent. Nothing else from the book, your notes or your library.</div>
+    </div>
+
+    <div class="card" style="padding:10px 12px;display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="marker" style="color:#8A5410"><span class="pill" style="background:#F1E4C8;color:#8A5410">c1</span>Middlemarch · Bk II, Ch. 20</span>
+        <span class="cap">Evidence · 58 words</span>
+      </div>
+      <p class="serif" style="margin:0;font-size:14.5px;line-height:1.45;color:#1C1B18">If we had a keen vision and feeling of all ordinary human life, it would be like hearing the grass grow and the squirrel's heart beat, and we should die of that roar which lies on the other side of silence.</p>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(28,27,24,.12);border-radius:12px;background:transparent">
+      <svg class="icon" style="width:18px;height:18px;color:#6B6760" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+      <div class="cap" style="flex:1;min-width:0;color:#1C1B18"><span style="font-weight:600">api.anthropic.com</span> · hosted · <span class="mono">claude-sonnet-5-5</span></div>
+      <button class="q" type="button">Change</button>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end">
+      <p style="margin:0;max-width:85%;font-size:16px;line-height:1.4;padding:10px 14px;background:#ECE9E2;border-radius:14px 14px 4px 14px">What does "the roar which lies on the other side of silence" mean here?</p>
+    </div>
+
+    <article style="border:1px dashed rgba(107,78,142,.5);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:#FBFAF7">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="marker" style="color:#6B4E8E"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><path d="M5 7l5 5-5 5"/><path d="M12 17h7"/></svg>Generated</span>
+        <span class="cap">Complete</span>
+      </div>
+      <p style="margin:0;font-size:15px;line-height:1.5">Eliot is describing a limit on perception. If we could feel "all ordinary human life" at full strength, it would be as overwhelming as "hearing the grass grow and the squirrel's heart beat" <span class="pill" style="background:#E7DFF0;color:#6B4E8E">c1</span>. The "roar" is the total weight of other people's inner lives; "silence" is the ordinary numbness that protects us from it <span class="pill" style="background:#E7DFF0;color:#6B4E8E">c1</span>.</p>
+      <p style="margin:0;font-size:15px;line-height:1.5;color:#4A4741">More broadly, readers often treat this as Eliot's statement about sympathy as the novel's project <span class="pill" style="background:#ECE9E2;color:#6B6760;text-decoration:line-through">c4</span>.</p>
+      <div style="display:flex;flex-direction:column;gap:3px;padding-top:6px;border-top:1px solid rgba(28,27,24,.08)">
+        <div class="cap"><span style="color:#2F5D50;font-weight:600">c1</span> opens the passage above</div>
+        <div class="cap"><span style="color:#A63D2F;font-weight:600">c4</span> is not in the evidence sent. Shown as general explanation, not a citation.</div>
+      </div>
+    </article>
+
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" type="button" style="flex:1"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M9 7H5v5h4v2c0 1.5-1 2.5-2.5 3"/><path d="M19 7h-4v5h4v2c0 1.5-1 2.5-2.5 3"/></svg>Save to Thoughts</button>
+      <button class="btn btn-secondary" type="button">Copy</button>
+    </div>
+  </div>
+
+  <div style="flex:none;padding:10px 20px 36px;display:flex;flex-direction:column;gap:6px">
+    <label for="follow" style="position:absolute;left:-9999px">Follow-up question</label>
+    <div style="display:flex;align-items:center;gap:8px;height:48px;border-radius:14px;border:1px solid rgba(28,27,24,.18);background:#FBFAF7;padding:0 6px 0 14px">
+      <input id="follow" type="text" placeholder="Ask a follow-up" style="border:0;background:transparent;font:inherit;flex:1;min-width:0;color:#1C1B18;outline:none">
+      <button type="button" aria-label="Send" style="width:38px;height:38px;border-radius:10px;background:#2F5D50;border:0;color:#F4F2ED;display:inline-flex;align-items:center;justify-content:center"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+    </div>
+    <div class="cap" style="text-align:center">The same passage stays the only evidence until you change the scope.</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

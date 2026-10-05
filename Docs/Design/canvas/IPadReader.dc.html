@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sylvia on iPad: reader with thoughts pane</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;display=swap">
+<style>
+body{margin:0;background:#F4F2ED}
+a{color:#2F5D50}a:hover{color:#1F4238}
+.pad{width:1024px;height:768px;box-sizing:border-box;background:#F4F2ED;color:#1C1B18;font-family:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",sans-serif;font-size:16px;line-height:1.35;position:relative;overflow:hidden;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+.serif{font-family:Literata,Georgia,"Times New Roman",serif}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+.micro{font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;color:#6B6760}
+.cap{font-size:13px;color:#6B6760;line-height:1.35}
+.card{background:#FBFAF7;border:1px solid rgba(28,27,24,.12);border-radius:14px}
+.icon{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.iconbtn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;border:0;background:transparent;color:#1C1B18;font-family:inherit;cursor:pointer}
+.pill{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
+.marker{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:700}
+.chip{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;border:1px solid rgba(28,27,24,.18);font-size:13px;font-weight:500;color:#1C1B18;background:transparent;white-space:nowrap;font-family:inherit}
+.chip.on{background:#1C1B18;color:#F4F2ED;border-color:#1C1B18}
+p.rd{font-family:Literata,Georgia,serif;font-size:20px;line-height:1.65;margin:0 0 20px;text-indent:1.4em}
+.hl{background:#F1E4C8;box-shadow:0 1.5px 0 #8A5410}
+.sel{background:rgba(47,93,80,.2);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.menu{position:absolute;left:150px;top:258px;background:#1C1B18;color:#F4F2ED;border-radius:12px;display:flex;box-shadow:0 8px 24px rgba(28,27,24,.22)}
+.menu button{background:none;border:0;color:#F4F2ED;font-family:inherit;font-size:14px;font-weight:600;padding:0 14px;min-height:44px;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.menu button + button{border-left:1px solid rgba(244,242,237,.16)}
+.th{padding:12px 14px;display:flex;flex-direction:column;gap:7px}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 16px;border-radius:12px;font-size:15px;font-weight:600;border:1px solid transparent;font-family:inherit;cursor:pointer}
+.btn-primary{background:#2F5D50;color:#F4F2ED}
+</style>
+</helmet>
+<div class="pad">
+  <header style="height:56px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex:none">
+    <div style="display:flex;align-items:center;gap:4px">
+      <button class="iconbtn" type="button" aria-label="Back to library"><svg class="icon" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button class="iconbtn" type="button" aria-label="Table of contents"><svg class="icon" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></button>
+    </div>
+    <div class="micro">Middlemarch · Book II · Chapter 20</div>
+    <div style="display:flex;align-items:center;gap:4px">
+      <button class="iconbtn" type="button" aria-label="Reading settings"><span class="serif" style="font-size:18px;font-weight:500">Aa</span></button>
+      <button class="iconbtn" type="button" aria-label="Bookmark"><svg class="icon" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button>
+      <button class="iconbtn" type="button" aria-label="Search this book"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
+      <button class="iconbtn" type="button" aria-label="Hide thoughts pane" style="background:rgba(28,27,24,.06)"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M14 4v16"/></svg></button>
+    </div>
+  </header>
+
+  <div style="flex:1;display:flex;min-height:0">
+    <section style="flex:1;min-width:0;display:flex;flex-direction:column;position:relative">
+      <div style="flex:1;overflow:hidden;padding:24px 72px 0;max-width:560px;box-sizing:border-box;margin:0 auto;width:100%">
+        <div style="position:relative">
+          <p class="rd">Not that this inward amazement of Dorothea's was anything very exceptional: <span class="hl">many souls in their young nudity are tumbled out among incongruities and left to "find their feet" among them,</span> while their elders go about their business.</p>
+          <span aria-hidden="true" style="position:absolute;right:-22px;top:40px;width:8px;height:8px;border-radius:50%;background:#8A5410"></span>
+        </div>
+        <p class="rd">Nor can I suppose that when Mrs. Casaubon is discovered in a fit of weeping six weeks after her wedding, the situation will be regarded as tragic. Some discouragement, some faintness of heart at the new real future which replaces the imaginary, is not unusual, and we do not expect people to be deeply moved by what is not unusual.</p>
+        <p class="rd">That element of tragedy which lies in the very fact of frequency, has not yet wrought itself into the coarse emotion of mankind; and perhaps our frames could hardly bear much of it. <span class="sel">If we had a keen vision and feeling of all ordinary human life, it would be like hearing the grass grow and the squirrel's heart beat, and we should die of that roar which lies on the other side of silence.</span> As it is, the quickest of us walk about well wadded with stupidity.</p>
+        <p class="rd">Dorothea had now been five weeks in Rome, and in the kindly mornings when autumn and winter seemed to go hand in hand like a happy aged couple one of whom would presently survive in chiller loneliness, she had driven about at first with Mr. Casaubon, but of late chiefly with Tantripp and their experienced courier.</p>
+      </div>
+      <div class="menu" role="toolbar" aria-label="Selection actions">
+        <button type="button"><span class="serif" style="font-size:18px;line-height:.8;color:#D9A24A">&ldquo;</span>Highlight</button>
+        <button type="button">Note</button>
+        <button type="button">Look up</button>
+        <button type="button">Ask</button>
+      </div>
+      <footer style="flex:none;padding:0 72px 22px;max-width:560px;box-sizing:border-box;margin:0 auto;width:100%">
+        <div style="height:2px;border-radius:1px;background:rgba(28,27,24,.12);position:relative;margin-bottom:8px"><div style="position:absolute;left:0;top:0;height:2px;width:38%;border-radius:1px;background:#2F5D50"></div></div>
+        <div class="cap" style="display:flex;justify-content:space-between"><span>Chapter 20 of 86</span><span class="mono">38% · 12 min left in chapter</span></div>
+      </footer>
+    </section>
+
+    <aside style="width:372px;flex:none;border-left:1px solid rgba(28,27,24,.12);display:flex;flex-direction:column;background:#F4F2ED">
+      <div style="padding:18px 20px 10px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <h2 class="serif" style="font-size:22px;font-weight:600;margin:0;letter-spacing:-.01em">In this book</h2>
+          <span class="cap">23 thoughts</span>
+        </div>
+        <div style="display:flex;gap:6px;overflow:hidden">
+          <button class="chip on" type="button">All</button>
+          <button class="chip" type="button">Quotes</button>
+          <button class="chip" type="button">Notes</button>
+          <button class="chip" type="button">Audio</button>
+          <button class="chip" type="button">Generated</button>
+        </div>
+      </div>
+      <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:10px;padding:4px 20px 0">
+        <div class="micro">This chapter</div>
+        <article class="card th">
+          <div class="hd"><span class="marker" style="color:#8A5410"><span class="serif" style="font-size:19px;line-height:.8">&ldquo;</span>Quote</span><span class="cap mono">14:02</span></div>
+          <p class="serif" style="margin:0;font-size:15px;line-height:1.45;padding:9px 11px;background:#F1E4C8;border-radius:8px">…many souls in their young nudity are tumbled out among incongruities…</p>
+          <p style="margin:0;font-size:14px;line-height:1.4"><span style="color:#6B6760">Your note · </span>"Young nudity" is startling. She means unarmored.</p>
+        </article>
+        <article class="card th">
+          <div class="hd"><span class="marker" style="color:#3F5A78"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><path d="M4 11v2M7 8v8M10 5v14M13 9v6M16 7v10M19 10v4"/></svg>Audio · Part 14 · 0:30</span><span class="cap mono">11:40</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#DCE4EE;border-radius:8px">
+            <button type="button" aria-label="Play excerpt" style="width:32px;height:32px;border-radius:50%;background:#3F5A78;border:0;display:inline-flex;align-items:center;justify-content:center;color:#F4F2ED;flex:none"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+            <svg viewBox="0 0 160 24" style="width:100%;height:24px;stroke:#3F5A78;stroke-width:2;stroke-linecap:round" aria-hidden="true"><path d="M2 12v1M8 9v6M14 6v12M20 10v4M26 4v16M32 8v8M38 11v2M44 7v10M50 5v14M56 9v6M62 12v1M68 8v8M74 6v12M80 10v4M86 7v10M92 9v6M98 11v2M104 6v12M110 9v6M116 12v1M122 8v8M128 5v14M134 9v6M140 11v2M146 7v10M152 10v4M158 12v1"/></svg>
+          </div>
+          <div class="cap">Same work, audio edition. Not aligned to this page.</div>
+        </article>
+        <div class="micro" style="margin-top:4px">Earlier</div>
+        <article class="card th">
+          <div class="hd"><span class="marker" style="color:#2F5D50"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><path d="M4 20l3.5-1 10-10-2.5-2.5-10 10z"/><path d="M13.5 8L16 10.5"/></svg>Note · Book I, Ch. 10</span><span class="cap mono">Sat</span></div>
+          <p style="margin:0;font-size:14.5px;line-height:1.45">Casaubon's "Key to all Mythologies" as a portrait of a project that cannot end.</p>
+        </article>
+      </div>
+      <div style="padding:14px 20px 22px;border-top:1px solid rgba(28,27,24,.12)">
+        <button class="btn btn-primary" type="button" style="width:100%"><svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M5 7l5 5-5 5"/><path d="M12 17h7"/></svg>Ask about the selection</button>
+        <div class="cap" style="text-align:center;margin-top:6px">Sends the selected passage only.</div>
+      </div>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1024,"height":768}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

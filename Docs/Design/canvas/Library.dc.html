@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sylvia library</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;display=swap">
+<style>
+body{margin:0;background:#F4F2ED}
+a{color:#2F5D50}a:hover{color:#1F4238}
+.ph{width:390px;height:844px;box-sizing:border-box;background:#F4F2ED;color:#1C1B18;font-family:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",sans-serif;font-size:17px;line-height:1.35;position:relative;overflow:hidden;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+.serif{font-family:Literata,Georgia,"Times New Roman",serif}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+.micro{font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.cap{font-size:13px;color:#6B6760;line-height:1.35}
+.card{background:#FBFAF7;border:1px solid rgba(28,27,24,.12);border-radius:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:12px;font-size:15px;font-weight:600;border:1px solid transparent;font-family:inherit;cursor:pointer}
+.btn-primary{background:#2F5D50;color:#F4F2ED}
+.btn-secondary{background:transparent;color:#1C1B18;border-color:rgba(28,27,24,.24)}
+.btn-quiet{background:transparent;color:#2F5D50;padding:0 8px}
+.icon{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.pill{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.nav{height:52px;margin-top:54px;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 20px;flex:none}
+.iconbtn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;border:0;background:transparent;color:#1C1B18;font-family:inherit;cursor:pointer}
+.chip{display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:999px;border:1px solid rgba(28,27,24,.18);font-size:14px;font-weight:500;color:#1C1B18;background:transparent;white-space:nowrap;font-family:inherit}
+.chip.on{background:#1C1B18;color:#F4F2ED;border-color:#1C1B18}
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:84px;padding:8px 0 30px;background:rgba(251,250,247,.97);border-top:1px solid rgba(28,27,24,.12);display:flex;justify-content:space-around;align-items:flex-start;box-sizing:border-box}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;width:100px;font-size:11px;font-weight:500;color:#6B6760;background:none;border:0;padding:4px 0;font-family:inherit}
+.tab.on{color:#2F5D50}
+.mini{position:absolute;left:12px;right:12px;bottom:92px;height:60px;border-radius:14px;background:#FBFAF7;border:1px solid rgba(28,27,24,.12);display:flex;align-items:center;gap:10px;padding:0 4px 0 10px;box-shadow:0 8px 24px rgba(28,27,24,.10);box-sizing:border-box}
+.cover{font-family:Literata,Georgia,serif;border-radius:6px;color:#F4F2ED;padding:7px 6px;box-sizing:border-box;font-weight:600;display:flex;flex-direction:column;justify-content:space-between;flex:none;line-height:1.15}
+.row{display:flex;align-items:center;gap:12px;padding:12px 20px;text-align:left;width:100%;background:transparent;border:0;font-family:inherit;color:inherit;box-sizing:border-box;cursor:pointer}
+.row + .row{border-top:1px solid rgba(28,27,24,.08)}
+.t{font-family:Literata,Georgia,serif;font-size:17px;font-weight:600;line-height:1.2}
+.a{font-size:13px;color:#6B6760;margin-top:1px}
+.m{font-size:12.5px;color:#6B6760;margin-top:5px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.prog{height:3px;border-radius:2px;background:rgba(28,27,24,.12);position:relative;margin-top:7px}
+.prog > span{position:absolute;left:0;top:0;height:3px;border-radius:2px;background:#2F5D50}
+</style>
+</helmet>
+<div class="ph">
+  <header class="nav">
+    <h1 class="serif" style="font-size:34px;font-weight:600;letter-spacing:-.015em;margin:0;line-height:1">Library</h1>
+    <div style="display:flex">
+      <button class="iconbtn" type="button" aria-label="Search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
+      <button class="iconbtn" type="button" aria-label="Add"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button class="iconbtn" type="button" aria-label="Settings"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
+    </div>
+  </header>
+
+  <div style="display:flex;gap:8px;padding:6px 20px 14px;overflow:hidden">
+    <button class="chip on" type="button">All</button>
+    <button class="chip" type="button">Reading</button>
+    <button class="chip" type="button">Listening</button>
+    <button class="chip" type="button">On this device</button>
+    <button class="chip" type="button">Finished</button>
+  </div>
+
+  <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+    <div style="padding:0 20px 8px" class="micro"><span style="color:#6B6760">Continue</span></div>
+    <article class="card" style="margin:0 20px;padding:14px 14px 14px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:14px">
+        <div class="cover" style="width:64px;height:96px;background:#2F5D50;font-size:11px"><span>Middle&shy;march</span><span style="font-weight:400;font-size:8.5px;opacity:.85">Eliot</span></div>
+        <div style="flex:1;min-width:0">
+          <div class="t" style="font-size:20px">Middlemarch</div>
+          <div class="a">George Eliot · 2nd read</div>
+          <div class="m"><span class="pill" style="background:transparent;border:1px solid rgba(28,27,24,.18);color:#1C1B18">EPUB</span><span class="pill" style="background:transparent;border:1px solid rgba(28,27,24,.18);color:#1C1B18">Audiobook</span><span>On this device</span></div>
+          <div class="prog"><span style="width:38%"></span></div>
+          <div class="cap" style="display:flex;justify-content:space-between;margin-top:5px;font-size:12px"><span>Book II, Ch. 20</span><span class="mono">Part 14 · 20h 58m left</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" type="button" style="flex:1"><svg class="icon" style="width:18px;height:18px;fill:currentColor;stroke:none" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="btn btn-secondary" type="button" style="flex:1">Read</button>
+      </div>
+    </article>
+
+    <div style="padding:18px 20px 4px" class="micro"><span style="color:#6B6760">Recent</span></div>
+    <div style="display:flex;flex-direction:column">
+      <button class="row" type="button">
+        <div class="cover" style="width:44px;height:66px;background:#5A6B4A;font-size:9px"><span>Walden</span></div>
+        <div style="flex:1;min-width:0">
+          <div class="t">Walden</div>
+          <div class="a">Henry David Thoreau</div>
+          <div class="m"><span>EPUB · On this device</span><span>·</span><span>Reading · 62%</span></div>
+        </div>
+        <svg class="icon" style="color:#6B6760;width:20px;height:20px" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <button class="row" type="button">
+        <div class="cover" style="width:44px;height:66px;background:#7A4B3A;font-size:9px;border:1px dashed rgba(244,242,237,.5)"><span>Medita&shy;tions</span></div>
+        <div style="flex:1;min-width:0">
+          <div class="t">Meditations</div>
+          <div class="a">Marcus Aurelius</div>
+          <div class="m"><span style="color:#8A5410">★★★★½</span><span>·</span><span>Finished 2024</span><span>·</span><span class="pill" style="background:transparent;border:1px dashed rgba(28,27,24,.3);color:#6B6760;height:20px">Record only</span></div>
+        </div>
+        <span class="btn btn-quiet" style="min-height:36px;font-size:14px">Add file</span>
+      </button>
+      <button class="row" type="button">
+        <div class="cover" style="width:44px;height:66px;background:#3F5A78;font-size:9px;opacity:.6"><span>Moby-Dick</span></div>
+        <div style="flex:1;min-width:0">
+          <div class="t">Moby-Dick</div>
+          <div class="a">Herman Melville</div>
+          <div class="m"><span>Audiobook · Not on this device · from Studio</span></div>
+          <div class="m" style="margin-top:3px"><span style="color:#8A5410">★★★★★</span><span>·</span><span>14 thoughts</span></div>
+        </div>
+        <svg class="icon" style="color:#6B6760;width:20px;height:20px" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <button class="row" type="button">
+        <div class="cover" style="width:44px;height:66px;background:#4A4A58;font-size:9px"><span>The Odyssey</span></div>
+        <div style="flex:1;min-width:0">
+          <div class="t">The Odyssey</div>
+          <div class="a">Homer · translated by Emily Wilson</div>
+          <div class="m"><span>EPUB · On this device</span><span>·</span><span>Planned</span></div>
+        </div>
+        <svg class="icon" style="color:#6B6760;width:20px;height:20px" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mini">
+    <div class="serif" style="width:40px;height:40px;border-radius:6px;background:#2F5D50;color:#F4F2ED;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none">M</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Middlemarch</div>
+      <div class="cap" style="font-size:12px">Part 14 · 1.25× · 20h 58m left</div>
+    </div>
+    <button class="iconbtn" type="button" aria-label="Capture"><svg class="icon" viewBox="0 0 24 24"><path d="M7 4H4v16h3M17 4h3v16h-3"/><path d="M9 10v4M12 8v8M15 11v2"/></svg></button>
+    <button class="iconbtn" type="button" aria-label="Pause"><svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+  </div>
+
+  <nav class="tabbar" aria-label="Primary">
+    <button class="tab on" type="button"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="9.5" y="4" width="5" height="16" rx="1"/><path d="M16 5l4.5 1-3 14-4.5-1z"/></svg>Library</button>
+    <button class="tab" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="M9 7H5v5h4v2c0 1.5-1 2.5-2.5 3"/><path d="M19 7h-4v5h4v2c0 1.5-1 2.5-2.5 3"/></svg>Thoughts</button>
+    <button class="tab" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="M3 13l2.5-8h13L21 13v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 13h5l1.5 3h5L16 13h5"/></svg>Inbox</button>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

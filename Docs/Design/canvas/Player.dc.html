@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sylvia audiobook player</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;display=swap">
+<style>
+body{margin:0;background:#F4F2ED}
+a{color:#2F5D50}a:hover{color:#1F4238}
+.ph{width:390px;height:844px;box-sizing:border-box;background:#F4F2ED;color:#1C1B18;font-family:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",sans-serif;font-size:17px;line-height:1.35;position:relative;overflow:hidden;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+.serif{font-family:Literata,Georgia,"Times New Roman",serif}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+.micro{font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;color:#6B6760}
+.cap{font-size:13px;color:#6B6760;line-height:1.35}
+.icon{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.iconbtn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;border:0;background:transparent;color:#1C1B18;font-family:inherit;cursor:pointer}
+.nav{height:44px;margin-top:54px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;flex:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 18px;border-radius:12px;font-size:17px;font-weight:600;border:1px solid transparent;font-family:inherit;cursor:pointer}
+.btn-secondary{background:transparent;color:#1C1B18;border-color:rgba(28,27,24,.24)}
+.sm{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 14px;border-radius:10px;border:1px solid rgba(28,27,24,.18);background:transparent;font-size:14px;font-weight:600;font-family:inherit;color:#1C1B18;cursor:pointer}
+.skip{width:64px;height:64px;border:0;background:transparent;color:#1C1B18;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer}
+.q{display:inline-flex;align-items:center;color:#2F5D50;font-size:14px;font-weight:600;background:none;border:0;padding:0;font-family:inherit;min-height:32px;cursor:pointer}
+</style>
+</helmet>
+<div class="ph">
+  <header class="nav">
+    <button class="iconbtn" type="button" aria-label="Minimize player"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div class="micro">Now playing</div>
+    <button class="iconbtn" type="button" aria-label="More"><svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
+  </header>
+
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:14px 24px 0;gap:0">
+    <div class="serif" style="width:228px;height:228px;border-radius:14px;background:#2F5D50;color:#F4F2ED;padding:22px 20px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 24px rgba(28,27,24,.12)">
+      <span style="font-size:30px;font-weight:600;line-height:1.05;letter-spacing:-.01em">Middle&shy;march</span>
+      <span style="font-size:13px;opacity:.85">George Eliot<br>LibriVox recording</span>
+    </div>
+
+    <div style="width:100%;margin-top:22px;display:flex;flex-direction:column;gap:4px">
+      <h1 class="serif" style="font-size:24px;font-weight:600;margin:0;line-height:1.15;letter-spacing:-.01em">Middlemarch</h1>
+      <div class="cap" style="font-size:14px">George Eliot · LibriVox recording · 35 files</div>
+      <button class="q" type="button" style="font-size:15px;gap:4px;margin-top:2px">Part 14 of 35<svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+
+    <div style="width:100%;margin-top:14px">
+      <div style="height:4px;border-radius:2px;background:rgba(28,27,24,.12);position:relative"><div style="position:absolute;left:0;top:0;height:4px;width:22%;border-radius:2px;background:#2F5D50"></div><div style="position:absolute;left:22%;top:-7px;width:18px;height:18px;border-radius:50%;background:#1C1B18;transform:translateX(-50%)"></div></div>
+      <div class="cap mono" style="display:flex;justify-content:space-between;margin-top:8px;font-size:12.5px"><span>11:42</span><span>−42:18 in this part · 20h 58m left</span></div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:22px;margin-top:10px">
+      <button class="skip" type="button" aria-label="Back 30 seconds"><svg viewBox="0 0 24 24" style="width:40px;height:40px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 3.5v4.2h4.2"/><text x="12" y="15" text-anchor="middle" font-size="7.5" font-weight="700" fill="currentColor" stroke="none" font-family="system-ui,sans-serif">30</text></svg></button>
+      <button type="button" aria-label="Pause" style="width:76px;height:76px;border-radius:50%;background:#2F5D50;border:0;color:#F4F2ED;display:inline-flex;align-items:center;justify-content:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:30px;height:30px;fill:currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+      <button class="skip" type="button" aria-label="Forward 30 seconds"><svg viewBox="0 0 24 24" style="width:40px;height:40px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 3.5v4.2h-4.2"/><text x="12" y="15" text-anchor="middle" font-size="7.5" font-weight="700" fill="currentColor" stroke="none" font-family="system-ui,sans-serif">30</text></svg></button>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="sm" type="button">1.25×</button>
+      <button class="sm" type="button"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Sleep · Off</button>
+      <button class="sm" type="button">Chapters</button>
+    </div>
+
+    <div style="width:100%;margin-top:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:36px">
+      <button class="btn btn-secondary" type="button" style="width:100%"><svg class="icon" viewBox="0 0 24 24"><path d="M7 4H4v16h3M17 4h3v16h-3"/><path d="M9 10v4M12 8v8M15 11v2"/></svg>Capture</button>
+      <div role="status" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#FBFAF7;border:1px solid rgba(28,27,24,.12);border-radius:14px;box-shadow:0 8px 24px rgba(28,27,24,.10)">
+        <svg class="icon" style="color:#2F5D50;width:22px;height:22px;stroke-width:2.2" viewBox="0 0 24 24"><path d="M5 12l4.5 4.5L19 7"/></svg>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:600">Audio excerpt saved · <span class="mono">11:12 to 11:42</span></div>
+          <div class="cap">Kept even if you remove the audiobook.</div>
+        </div>
+        <button class="q" type="button">Add note</button>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

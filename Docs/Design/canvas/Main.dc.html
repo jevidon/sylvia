@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sylvia design language</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;display=swap">
+<style>
+body{margin:0;background:#F4F2ED}
+a{color:#2F5D50}a:hover{color:#1F4238}
+.root{width:1440px;min-height:2720px;box-sizing:border-box;padding:72px 72px 72px;background:#F4F2ED;color:#1C1B18;font-family:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;gap:48px}
+.serif{font-family:Literata,Georgia,"Times New Roman",serif}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+.micro{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.cap{font-size:13px;color:#6B6760;line-height:1.4}
+.hair{border-top:1px solid rgba(28,27,24,.12)}
+.card{background:#FBFAF7;border:1px solid rgba(28,27,24,.12);border-radius:14px}
+.sec{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:32px;padding-top:28px;border-top:1px solid rgba(28,27,24,.12)}
+.sec-head{grid-column:span 3}
+.sec-body{grid-column:span 9;display:flex;flex-direction:column;gap:24px}
+.h2{font-family:Literata,Georgia,serif;font-size:32px;font-weight:600;margin:6px 0 0;letter-spacing:-.01em;line-height:1.1}
+.lede{margin:10px 0 0;color:#6B6760;font-size:14px;line-height:1.5}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:12px;font-size:17px;font-weight:600;border:1px solid transparent;font-family:inherit;cursor:pointer}
+.btn-primary{background:#2F5D50;color:#F4F2ED}
+.btn-secondary{background:transparent;color:#1C1B18;border-color:rgba(28,27,24,.24)}
+.btn-quiet{background:transparent;color:#2F5D50;padding:0 10px;min-height:44px}
+.btn-danger{background:transparent;color:#A63D2F;border-color:rgba(166,61,47,.45)}
+.icon{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.pill{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.marker{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:700}
+.sw{display:flex;flex-direction:column;gap:6px;min-width:0}
+.sw-chip{height:60px;border-radius:10px;border:1px solid rgba(28,27,24,.1)}
+.sw-name{font-size:13px;font-weight:600}
+.sw-hex{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11.5px;color:#6B6760}
+.dark .sw-chip{border-color:rgba(236,231,221,.14)}
+.dark .sw-name{color:#ECE7DD}
+.dark .sw-hex{color:#A8A298}
+table{border-collapse:collapse;width:100%}
+th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#6B6760;padding:0 12px 10px 0;border-bottom:1px solid rgba(28,27,24,.12)}
+td{padding:12px 12px 12px 0;border-bottom:1px solid rgba(28,27,24,.08);vertical-align:top;font-size:14px;line-height:1.4}
+.tabbar{height:84px;padding:8px 0 30px;background:#FBFAF7;border-top:1px solid rgba(28,27,24,.12);display:flex;justify-content:space-around;align-items:flex-start;box-sizing:border-box}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;width:100px;font-size:11px;font-weight:500;color:#6B6760;background:none;border:0;padding:4px 0;font-family:inherit}
+.tab.on{color:#2F5D50}
+</style>
+</helmet>
+<div class="root">
+
+  <header style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:32px;align-items:end">
+    <div style="grid-column:span 7">
+      <div class="micro" style="color:#2F5D50">Sylvia · Your library of thought · Design language draft 0.1 · 5 October 2026</div>
+      <h1 class="serif" style="font-size:96px;font-weight:600;letter-spacing:-.025em;margin:18px 0 0;line-height:.95">Marginalia</h1>
+      <p class="serif" style="font-size:24px;margin:18px 0 0;color:#6B6760;font-style:italic;line-height:1.3">A quiet page, a disciplined set of marks, and the reader's own words set brightest.</p>
+    </div>
+    <div style="grid-column:span 5;display:flex;flex-direction:column;gap:14px">
+      <p style="margin:0;font-size:15px;line-height:1.55">A book carries its meaning in the text and its reader's meaning in the margin. Sylvia borrows that arrangement. The ground is paper, not panels. Type does the work that gradients and cards usually do. Four kinds of mark stay visibly distinct: a quotation, a note, an audio moment and a generated answer. Status words are a fixed vocabulary, so the interface says only what is true.</p>
+      <p class="cap" style="margin:0">Proposed for team review alongside the V1 implementation plan. Every token, component and phrase here maps to a requirement or invariant in that plan; nothing is decorative.</p>
+    </div>
+  </header>
+
+  <!-- 01 Principles -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="micro" style="color:#6B6760">01</div>
+      <h2 class="h2">Principles</h2>
+      <p class="lede">Five rules that decide every screen. When a design question comes up, one of these should settle it.</p>
+    </div>
+    <div class="sec-body">
+      <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="serif" style="font-size:40px;line-height:1;color:#2F5D50;font-weight:300">1</div>
+          <div class="serif" style="font-size:19px;font-weight:600;line-height:1.2">Paper, not panels</div>
+          <p style="margin:0;font-size:13.5px;color:#4A4741;line-height:1.5">One warm ground, hairline rules, flat surfaces. Depth appears only on sheets and the mini-player, the two things that float above the page.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="serif" style="font-size:40px;line-height:1;color:#2F5D50;font-weight:300">2</div>
+          <div class="serif" style="font-size:19px;font-weight:600;line-height:1.2">Ink first</div>
+          <p style="margin:0;font-size:13.5px;color:#4A4741;line-height:1.5">Hierarchy comes from type, weight and spacing. Color is reserved for meaning: one action accent, one highlight accent, and the marker set. Never decoration.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="serif" style="font-size:40px;line-height:1;color:#2F5D50;font-weight:300">3</div>
+          <div class="serif" style="font-size:19px;font-weight:600;line-height:1.2">A quote is not a note is not an answer</div>
+          <p style="margin:0;font-size:13.5px;color:#4A4741;line-height:1.5">Each capture kind has its own glyph, label, typeface treatment and tint. Color never works alone, so the distinction survives colorblindness, grayscale and VoiceOver.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="serif" style="font-size:40px;line-height:1;color:#2F5D50;font-weight:300">4</div>
+          <div class="serif" style="font-size:19px;font-weight:600;line-height:1.2">Say what is true</div>
+          <p style="margin:0;font-size:13.5px;color:#4A4741;line-height:1.5">"Saved" only after a durable write. "Ready" is not "indexed". "Generated" is always labelled. The status vocabulary in section 06 is part of the design system, not copywriting.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="serif" style="font-size:40px;line-height:1;color:#2F5D50;font-weight:300">5</div>
+          <div class="serif" style="font-size:19px;font-weight:600;line-height:1.2">Reachable with one thumb</div>
+          <p style="margin:0;font-size:13.5px;color:#4A4741;line-height:1.5">Primary actions live in the lower half. Targets are 44pt or larger. Anything draggable also has a numeric control. Dynamic Type everywhere, including the reader.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Color -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="micro" style="color:#6B6760">02</div>
+      <h2 class="h2">Color</h2>
+      <p class="lede">Two accents of similar lightness carry the brand: Pine for actions and the user's own notes, Ochre for highlights and exact quotations. A separate, muted marker set names the other capture kinds and statuses.</p>
+      <p class="lede">All text colors meet 4.5:1 on their ground in both modes.</p>
+    </div>
+    <div class="sec-body">
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px">
+        <div class="card" style="padding:20px;display:flex;flex-direction:column;gap:16px">
+          <div class="micro" style="color:#6B6760">Light</div>
+          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+            <div class="sw"><div class="sw-chip" style="background:#F4F2ED"></div><div class="sw-name">Paper</div><div class="sw-hex">#F4F2ED · ground</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#FBFAF7"></div><div class="sw-name">Surface</div><div class="sw-hex">#FBFAF7 · cards, bars</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#1C1B18"></div><div class="sw-name">Ink</div><div class="sw-hex">#1C1B18 · text</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#6B6760"></div><div class="sw-name">Muted</div><div class="sw-hex">#6B6760 · captions</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#2F5D50"></div><div class="sw-name">Pine</div><div class="sw-hex">#2F5D50 · action</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#8A5410"></div><div class="sw-name">Ochre</div><div class="sw-hex">#8A5410 · quote text</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#F1E4C8"></div><div class="sw-name">Ochre tint</div><div class="sw-hex">#F1E4C8 · highlight</div></div>
+            <div class="sw"><div class="sw-chip" style="background:repeating-linear-gradient(0deg,#F4F2ED 0 11px,rgba(28,27,24,.12) 11px 12px)"></div><div class="sw-name">Hairline</div><div class="sw-hex">ink 12% · 1px</div></div>
+          </div>
+        </div>
+        <div class="card dark" style="padding:20px;display:flex;flex-direction:column;gap:16px;background:#161512;border-color:#161512">
+          <div class="micro" style="color:#A8A298">Dark</div>
+          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+            <div class="sw"><div class="sw-chip" style="background:#161512"></div><div class="sw-name">Night</div><div class="sw-hex">#161512 · ground</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#1E1C19"></div><div class="sw-name">Surface</div><div class="sw-hex">#1E1C19 · cards, bars</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#ECE7DD"></div><div class="sw-name">Ink</div><div class="sw-hex">#ECE7DD · text</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#A8A298"></div><div class="sw-name">Muted</div><div class="sw-hex">#A8A298 · captions</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#7FB5A3"></div><div class="sw-name">Pine</div><div class="sw-hex">#7FB5A3 · action</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#D9A24A"></div><div class="sw-name">Ochre</div><div class="sw-hex">#D9A24A · quote text</div></div>
+            <div class="sw"><div class="sw-chip" style="background:#3A2E17"></div><div class="sw-name">Ochre tint</div><div class="sw-hex">#3A2E17 · highlight</div></div>
+            <div class="sw"><div class="sw-chip" style="background:repeating-linear-gradient(0deg,#161512 0 11px,rgba(236,231,221,.14) 11px 12px)"></div><div class="sw-name">Hairline</div><div class="sw-hex">paper 14% · 1px</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;gap:12px"><span class="micro" style="color:#6B6760">Marker set</span><span class="cap">Glyph + label + color, always together. Light / dark text values shown; tints are the text color at 14% over the ground.</span></div>
+        <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px">
+          <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+            <span class="marker" style="color:#8A5410"><span class="serif" style="font-size:20px;line-height:.8;font-weight:700">&ldquo;</span>Quote</span>
+            <div class="cap">Exact text from a source, in Literata on Ochre tint.</div>
+            <div class="sw-hex">#8A5410 / #D9A24A</div>
+          </div>
+          <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+            <span class="marker" style="color:#2F5D50"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M4 20l3.5-1 10-10-2.5-2.5-10 10z"/><path d="M13.5 8L16 10.5"/></svg>Note</span>
+            <div class="cap">The user's own words, in the UI face. No tint box.</div>
+            <div class="sw-hex">#2F5D50 / #7FB5A3</div>
+          </div>
+          <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+            <span class="marker" style="color:#3F5A78"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M4 11v2M7 8v8M10 5v14M13 9v6M16 7v10M19 10v4"/></svg>Audio</span>
+            <div class="cap">A preserved excerpt with its own play control. Never shown as text.</div>
+            <div class="sw-hex">#3F5A78 / #8FB0D4</div>
+          </div>
+          <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px;border-style:dashed;border-color:rgba(107,78,142,.5)">
+            <span class="marker" style="color:#6B4E8E"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M5 7l5 5-5 5"/><path d="M12 17h7"/></svg>Generated</span>
+            <div class="cap">Model output. Dashed frame, always labelled, citations as chips.</div>
+            <div class="sw-hex">#6B4E8E / #B49BD6</div>
+          </div>
+          <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+            <span class="marker" style="color:#A63D2F"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>Attention</span>
+            <div class="cap">Something needs the user. Paired with a reason and a next step.</div>
+            <div class="sw-hex">#A63D2F / #E0837A</div>
+          </div>
+          <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:10px">
+            <span class="marker" style="color:#6B6760"><span class="dot" style="width:8px;height:8px"></span>Pending</span>
+            <div class="cap">Queued, waiting, or not on this device. Quiet by design.</div>
+            <div class="sw-hex">#6B6760 / #A8A298</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Type -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="micro" style="color:#6B6760">03</div>
+      <h2 class="h2">Type</h2>
+      <p class="lede">Literata for everything that belongs to a book: titles, quotations and the default reading face. The system face for everything that belongs to the interface. Monospace for values a person might compare character by character.</p>
+      <p class="lede">Literata is open-licensed and built for long reading on screens. The system face gives Dynamic Type for free.</p>
+    </div>
+    <div class="sec-body">
+      <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px">
+        <div class="card" style="grid-column:span 7;padding:28px;display:flex;flex-direction:column;gap:18px;justify-content:space-between">
+          <div>
+            <div class="micro" style="color:#6B6760">Literata · display and reading</div>
+            <div class="serif" style="font-size:64px;font-weight:600;letter-spacing:-.02em;line-height:1;margin-top:14px">Middlemarch</div>
+            <div class="serif" style="font-size:22px;font-style:italic;color:#6B6760;margin-top:8px">A Study of Provincial Life</div>
+          </div>
+          <p class="serif" style="margin:0;font-size:19px;line-height:1.55;max-width:34em">If we had a keen vision and feeling of all ordinary human life, it would be like hearing the grass grow and the squirrel's heart beat, and we should die of that roar which lies on the other side of silence.</p>
+          <div class="serif" style="font-size:15px;color:#6B6760;letter-spacing:.02em">Aa Bb Cc Dd Ee Ff Gg 0123456789 &amp; ? ! &ldquo; &rdquo; &lsquo; &rsquo;</div>
+        </div>
+        <div style="grid-column:span 5;display:flex;flex-direction:column;gap:12px">
+          <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+            <div class="micro" style="color:#6B6760">System face · UI</div>
+            <div style="font-size:28px;font-weight:600;letter-spacing:-.01em;line-height:1.1">Save to thoughts</div>
+            <div class="cap">SF Pro on Apple platforms. Labels, buttons, the user's notes, settings. Scales with Dynamic Type without custom metrics.</div>
+          </div>
+          <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+            <div class="micro" style="color:#6B6760">Monospace · values</div>
+            <div class="mono" style="font-size:20px;line-height:1.2">7A3F 19C2 B8E0 44D1<br>3.1 of 5.2 GB · 11:12.0</div>
+            <div class="cap">SF Mono. Fingerprints, digests, timecodes, byte counts, part numbers. Tabular figures so columns hold still.</div>
+          </div>
+          <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+            <div class="micro" style="color:#6B6760">Micro labels</div>
+            <div class="micro" style="color:#8A5410;font-size:11px">Quote · Middlemarch · Book II, Ch. 20</div>
+            <div class="cap">11pt, uppercase, +8% tracking, semibold. Used only for markers and section eyebrows, never for body copy.</div>
+          </div>
+        </div>
+      </div>
+
+      <table>
+        <thead><tr><th style="width:18%">Role</th><th style="width:22%">Face · size / line</th><th>Sample</th><th style="width:30%">Where</th></tr></thead>
+        <tbody>
+          <tr><td>Display</td><td class="mono">Literata 600 · 34 / 40</td><td class="serif" style="font-size:34px;font-weight:600;line-height:1.15;letter-spacing:-.015em">Library</td><td class="cap">Top of each primary area</td></tr>
+          <tr><td>Title</td><td class="mono">Literata 600 · 28 / 34</td><td class="serif" style="font-size:28px;font-weight:600;line-height:1.2;letter-spacing:-.01em">Walden</td><td class="cap">Work titles, sheet titles</td></tr>
+          <tr><td>Heading</td><td class="mono">Literata 500 · 22 / 28</td><td class="serif" style="font-size:22px;font-weight:500;line-height:1.25">Remove the audiobook download?</td><td class="cap">Section and dialog heads</td></tr>
+          <tr><td>Reading</td><td class="mono">Literata 400 · 19 / 30</td><td class="serif" style="font-size:19px;line-height:1.55">Default book text. User range 14 to 28, four line-spacing steps.</td><td class="cap">Reader body, quotations</td></tr>
+          <tr><td>Body</td><td class="mono">System 400 · 17 / 23</td><td style="font-size:17px;line-height:1.35">Your note, controls, descriptions, settings.</td><td class="cap">All interface text</td></tr>
+          <tr><td>Callout</td><td class="mono">System 500 · 15 / 20</td><td style="font-size:15px;font-weight:500;line-height:1.35">Only the passage below is sent. Nothing else from the book.</td><td class="cap">Explanations beside an action</td></tr>
+          <tr><td>Caption</td><td class="mono">System 400 · 13 / 18</td><td class="cap" style="font-size:13px">Part 14 of 35 · 20h 58m left</td><td class="cap">Metadata lines, timestamps</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04 Shape, space, motion -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="micro" style="color:#6B6760">04</div>
+      <h2 class="h2">Shape, space and motion</h2>
+      <p class="lede">A 4pt grid, three radii and one hairline. Shadows only on the two floating objects. Motion is short, eased out and honors Reduce Motion.</p>
+    </div>
+    <div class="sec-body">
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px">
+        <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:12px">
+          <div class="micro" style="color:#6B6760">Radii</div>
+          <div style="display:flex;gap:10px;align-items:flex-end">
+            <div style="width:48px;height:48px;border-radius:10px;background:#1C1B18"></div>
+            <div style="width:60px;height:60px;border-radius:14px;background:#2F5D50"></div>
+            <div style="width:76px;height:76px;border-radius:22px;background:#FBFAF7;border:1px solid rgba(28,27,24,.12)"></div>
+          </div>
+          <div class="cap">10 controls · 14 cards and covers · 22 sheets · full for pills and chips</div>
+        </div>
+        <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:12px">
+          <div class="micro" style="color:#6B6760">Spacing</div>
+          <div style="display:flex;gap:6px;align-items:flex-end;height:76px">
+            <div style="width:4px;height:4px;background:#2F5D50"></div>
+            <div style="width:8px;height:8px;background:#2F5D50"></div>
+            <div style="width:12px;height:12px;background:#2F5D50"></div>
+            <div style="width:16px;height:16px;background:#2F5D50"></div>
+            <div style="width:20px;height:20px;background:#2F5D50"></div>
+            <div style="width:24px;height:24px;background:#2F5D50"></div>
+            <div style="width:32px;height:32px;background:#2F5D50"></div>
+          </div>
+          <div class="cap">4 · 8 · 12 · 16 · 20 · 24 · 32. Screen gutter 20 on iPhone, 32 on iPad. Reading margins are the user's.</div>
+        </div>
+        <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:12px">
+          <div class="micro" style="color:#6B6760">Hairline and elevation</div>
+          <div style="height:76px;position:relative">
+            <div class="hair" style="position:absolute;left:0;right:0;top:12px"></div>
+            <div style="position:absolute;left:0;bottom:0;width:150px;height:44px;border-radius:14px;background:#FBFAF7;border:1px solid rgba(28,27,24,.12);box-shadow:0 8px 24px rgba(28,27,24,.10)"></div>
+          </div>
+          <div class="cap">Rules separate; cards do not nest. Shadow 0 8 24 at 10% ink, only on sheets and the mini-player.</div>
+        </div>
+        <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:12px">
+          <div class="micro" style="color:#6B6760">Motion</div>
+          <div style="height:76px;display:flex;flex-direction:column;justify-content:center;gap:8px">
+            <div style="height:3px;border-radius:2px;background:rgba(28,27,24,.12);position:relative"><div style="position:absolute;left:0;top:0;height:3px;width:60%;border-radius:2px;background:#2F5D50"></div></div>
+            <div class="mono cap" style="font-size:12px">200 ms ease-out · sheets<br>120 ms · highlight appears</div>
+          </div>
+          <div class="cap">No bounces, no parallax. Progress rules move; nothing else animates while reading.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Components -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="micro" style="color:#6B6760">05</div>
+      <h2 class="h2">Components</h2>
+      <p class="lede">The small set every screen is assembled from. Buttons, status pills, availability badges, the four capture cards, rating, progress, tab bar and mini-player.</p>
+      <p class="lede">Covers are typographic by default: title on a muted field, so a work without artwork never looks broken.</p>
+    </div>
+    <div class="sec-body">
+
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px">
+        <div class="card" style="padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div class="micro" style="color:#6B6760">Buttons</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn btn-primary" type="button">Continue listening</button>
+            <button class="btn btn-secondary" type="button">Read</button>
+            <button class="btn btn-quiet" type="button">Add file</button>
+            <button class="btn btn-danger" type="button">Delete record and thoughts</button>
+          </div>
+          <div class="cap">Primary is Pine, one per screen. Secondary is a hairline. Quiet is Pine text. Destructive is Rust and never sits beside a primary.</div>
+        </div>
+        <div class="card" style="padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div class="micro" style="color:#6B6760">Status pills · import and transfer</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span class="pill" style="background:#ECE9E2;color:#6B6760"><span class="dot"></span>Queued</span>
+            <span class="pill" style="background:#DCE4EE;color:#3F5A78"><span class="dot"></span>Receiving</span>
+            <span class="pill" style="background:#DCE4EE;color:#3F5A78"><span class="dot"></span>Verifying</span>
+            <span class="pill" style="background:#DCE4EE;color:#3F5A78"><span class="dot"></span>Preparing</span>
+            <span class="pill" style="background:#DCE8E2;color:#2F5D50"><svg class="icon" style="width:14px;height:14px;stroke-width:2.2" viewBox="0 0 24 24"><path d="M5 12l4.5 4.5L19 7"/></svg>Ready</span>
+            <span class="pill" style="background:#DCE8E2;color:#2F5D50"><svg class="icon" style="width:14px;height:14px;stroke-width:2.2" viewBox="0 0 24 24"><path d="M5 12l4.5 4.5L19 7"/></svg>Ready · indexing continues</span>
+            <span class="pill" style="background:#F3DCD7;color:#A63D2F"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>Needs attention</span>
+          </div>
+          <div class="micro" style="color:#6B6760;margin-top:4px">Availability</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span class="pill" style="background:transparent;border:1px solid rgba(28,27,24,.18);color:#1C1B18">On this device</span>
+            <span class="pill" style="background:transparent;border:1px dashed rgba(28,27,24,.3);color:#6B6760">Not on this device · from Studio</span>
+            <span class="pill" style="background:transparent;border:1px dashed rgba(28,27,24,.3);color:#6B6760">Record only</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px">
+        <article class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="marker" style="color:#8A5410"><span class="serif" style="font-size:20px;line-height:.8;font-weight:700">&ldquo;</span>Quote</span>
+            <span class="cap">Book II, Ch. 20</span>
+          </div>
+          <p class="serif" style="margin:0;font-size:15.5px;line-height:1.45;padding:10px 12px;background:#F1E4C8;border-radius:8px">…we should die of that roar which lies on the other side of silence.</p>
+          <p style="margin:0;font-size:13.5px;line-height:1.4"><span style="color:#6B6760">Your note · </span>Eliot's case for why we need not to feel everything.</p>
+        </article>
+        <article class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="marker" style="color:#2F5D50"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><path d="M4 20l3.5-1 10-10-2.5-2.5-10 10z"/><path d="M13.5 8L16 10.5"/></svg>Note</span>
+            <span class="cap">Walden</span>
+          </div>
+          <p style="margin:0;font-size:15px;line-height:1.45">Thoreau keeps insisting on "deliberately". Compare with Marcus on attention.</p>
+          <p class="cap" style="margin:0">Work-level note · edited yesterday</p>
+        </article>
+        <article class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="marker" style="color:#3F5A78"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><path d="M4 11v2M7 8v8M10 5v14M13 9v6M16 7v10M19 10v4"/></svg>Audio</span>
+            <span class="cap">Part 14 · 0:30</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#DCE4EE;border-radius:8px">
+            <button type="button" aria-label="Play excerpt" style="width:32px;height:32px;border-radius:50%;background:#3F5A78;border:0;display:inline-flex;align-items:center;justify-content:center;color:#F4F2ED;flex:none"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+            <svg viewBox="0 0 120 24" style="width:100%;height:24px;stroke:#3F5A78;stroke-width:2;stroke-linecap:round"><path d="M2 12v1M8 9v6M14 6v12M20 10v4M26 4v16M32 8v8M38 11v2M44 7v10M50 5v14M56 9v6M62 12v1M68 8v8M74 6v12M80 10v4M86 7v10M92 9v6M98 11v2M104 6v12M110 9v6M116 12v1"/></svg>
+          </div>
+          <p class="cap" style="margin:0">No transcript · Transcribe</p>
+        </article>
+        <article class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;border-style:dashed;border-color:rgba(107,78,142,.5)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="marker" style="color:#6B4E8E"><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24"><path d="M5 7l5 5-5 5"/><path d="M12 17h7"/></svg>Generated</span>
+            <span class="cap">1 citation</span>
+          </div>
+          <p style="margin:0;font-size:14px;font-weight:600;line-height:1.4">Why "the other side of silence"?</p>
+          <p style="margin:0;font-size:14px;line-height:1.45">Eliot frames full sympathy as physically unbearable <span class="pill" style="height:20px;padding:0 7px;background:#E7DFF0;color:#6B4E8E;font-size:11px">c1</span>…</p>
+          <p class="cap" style="margin:0">Anthropic · claude-sonnet-5-5</p>
+        </article>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;align-items:start">
+        <div class="card" style="grid-column:span 4;padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div class="micro" style="color:#6B6760">Rating · half stars</div>
+          <div style="display:flex;gap:4px;align-items:center;color:#8A5410">
+            <svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:currentColor"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:currentColor"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:currentColor"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:currentColor"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>
+            <svg viewBox="0 0 24 24" style="width:28px;height:28px"><defs><clipPath id="halfA"><rect x="0" y="0" width="12" height="24"/></clipPath></defs><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor" clip-path="url(#halfA)"/></svg>
+            <span style="margin-left:8px;font-size:15px;font-weight:600;color:#1C1B18">4.5</span>
+          </div>
+          <div class="cap">Stored as 1 to 10. Clearing a rating is a separate action, not zero. Ochre, because a rating is the reader's mark on the book.</div>
+          <div class="micro" style="color:#6B6760;margin-top:4px">Progress rule</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="height:3px;border-radius:2px;background:rgba(28,27,24,.12);position:relative"><div style="position:absolute;left:0;top:0;height:3px;width:38%;border-radius:2px;background:#2F5D50"></div></div>
+            <div class="cap" style="display:flex;justify-content:space-between"><span>Book II, Ch. 20</span><span class="mono">38%</span></div>
+          </div>
+          <div class="cap">Position is chapter and percent. Never "page 183" unless the publication supplies real page mapping.</div>
+        </div>
+        <div class="card" style="grid-column:span 4;padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div class="micro" style="color:#6B6760">Typographic covers</div>
+          <div style="display:flex;gap:12px">
+            <div class="serif" style="width:72px;height:108px;border-radius:8px;background:#2F5D50;color:#F4F2ED;padding:10px 8px;box-sizing:border-box;font-size:12px;line-height:1.2;font-weight:600;display:flex;flex-direction:column;justify-content:space-between"><span>Middle&shy;march</span><span style="font-weight:400;font-size:9px;opacity:.85">Eliot</span></div>
+            <div class="serif" style="width:72px;height:108px;border-radius:8px;background:#5A6B4A;color:#F4F2ED;padding:10px 8px;box-sizing:border-box;font-size:12px;line-height:1.2;font-weight:600;display:flex;flex-direction:column;justify-content:space-between"><span>Walden</span><span style="font-weight:400;font-size:9px;opacity:.85">Thoreau</span></div>
+            <div class="serif" style="width:72px;height:108px;border-radius:8px;background:#7A4B3A;color:#F4F2ED;padding:10px 8px;box-sizing:border-box;font-size:12px;line-height:1.2;font-weight:600;display:flex;flex-direction:column;justify-content:space-between"><span>Medita&shy;tions</span><span style="font-weight:400;font-size:9px;opacity:.85">Marcus Aurelius</span></div>
+            <div class="serif" style="width:72px;height:108px;border-radius:8px;background:#3F5A78;color:#F4F2ED;padding:10px 8px;box-sizing:border-box;font-size:12px;line-height:1.2;font-weight:600;display:flex;flex-direction:column;justify-content:space-between"><span>Moby-Dick</span><span style="font-weight:400;font-size:9px;opacity:.85">Melville</span></div>
+          </div>
+          <div class="cap">Five muted fields assigned by title hash. Real cover art from the file replaces them when present. A work with no file keeps its cover.</div>
+        </div>
+        <div style="grid-column:span 4;display:flex;flex-direction:column;gap:10px">
+          <div class="micro" style="color:#6B6760">Mini-player and tab bar · 390 wide</div>
+          <div style="width:390px;background:#F4F2ED;border:1px solid rgba(28,27,24,.12);border-radius:14px;overflow:hidden">
+            <div style="padding:12px 12px 10px">
+              <div style="height:60px;border-radius:14px;background:#FBFAF7;border:1px solid rgba(28,27,24,.12);display:flex;align-items:center;gap:12px;padding:0 6px 0 10px;box-shadow:0 8px 24px rgba(28,27,24,.10);box-sizing:border-box">
+                <div class="serif" style="width:40px;height:40px;border-radius:6px;background:#2F5D50;color:#F4F2ED;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none">M</div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Middlemarch</div>
+                  <div class="cap" style="font-size:12px">Part 14 · 1.25× · 20h 58m left</div>
+                </div>
+                <button type="button" aria-label="Capture the last 30 seconds" style="width:44px;height:44px;border:0;background:transparent;color:#1C1B18;display:inline-flex;align-items:center;justify-content:center;border-radius:12px"><svg class="icon" viewBox="0 0 24 24"><path d="M7 4H4v16h3M17 4h3v16h-3"/><path d="M9 10v4M12 8v8M15 11v2"/></svg></button>
+                <button type="button" aria-label="Pause" style="width:44px;height:44px;border:0;background:transparent;color:#1C1B18;display:inline-flex;align-items:center;justify-content:center;border-radius:12px"><svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+              </div>
+            </div>
+            <nav class="tabbar" aria-label="Primary">
+              <button class="tab on" type="button"><svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="9.5" y="4" width="5" height="16" rx="1"/><path d="M16 5l4.5 1-3 14-4.5-1z"/></svg>Library</button>
+              <button class="tab" type="button"><svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24"><path d="M9 7H5v5h4v2c0 1.5-1 2.5-2.5 3"/><path d="M19 7h-4v5h4v2c0 1.5-1 2.5-2.5 3"/></svg>Thoughts</button>
+              <button class="tab" type="button"><svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24"><path d="M3 13l2.5-8h13L21 13v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 13h5l1.5 3h5L16 13h5"/></svg>Inbox</button>
+            </nav>
+          </div>
+          <div class="cap">Three areas, no more. Search and Settings live in the navigation bar. The mini-player carries a capture control so a moment can be kept from any screen.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 Words -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="micro" style="color:#6B6760">06</div>
+      <h2 class="h2">Words</h2>
+      <p class="lede">Status language is a component. Each moment has a fixed set of phrases tied to the state machines in the implementation plan, and a list of words the interface never uses.</p>
+      <p class="lede">A phrase changes only when the underlying state changes.</p>
+    </div>
+    <div class="sec-body">
+      <table>
+        <thead><tr><th style="width:16%">Moment</th><th style="width:48%">We say</th><th>We never say</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600">Saving a thought</td><td><span class="mono">Saving…</span> → <span class="mono" style="color:#2F5D50">Saved</span> · on failure <span class="mono" style="color:#A63D2F">Not saved · your text is still here</span></td><td class="cap">Done · Success · a dismissed sheet with nothing written</td></tr>
+          <tr><td style="font-weight:600">Import and transfer</td><td><span class="mono">Queued · Receiving · Verifying · Preparing · Ready · Ready, indexing continues · Needs attention</span></td><td class="cap">Complete (before Ready) · Error · Downloading (for a Mac transfer that is verified by parts)</td></tr>
+          <tr><td style="font-weight:600">Capturing audio</td><td><span class="mono">Moment saved · preserving audio</span> → <span class="mono" style="color:#2F5D50">Audio excerpt saved</span> · on failure <span class="mono" style="color:#A63D2F">Excerpt not preserved · Retry</span></td><td class="cap">Clip saved (before export) · any transcript text that was not transcribed</td></tr>
+          <tr><td style="font-weight:600">Asking a model</td><td><span class="mono">Draft · not sent</span> · <span class="mono">Sending to api.example.com</span> · <span class="mono">Generated</span> · <span class="mono" style="color:#A63D2F">Interrupted · partial answer</span></td><td class="cap">Thinking… · The AI read your book · Free with your subscription</td></tr>
+          <tr><td style="font-weight:600">Context scope</td><td><span class="mono">Selected passage · Passage and nearby text · Relevant passages from this work · Selected thoughts</span></td><td class="cap">Whole book (unless it truly fits and was chosen) · Understands your library</td></tr>
+          <tr><td style="font-weight:600">Where a file is</td><td><span class="mono">On this device · Not on this device, from Studio · Record only</span></td><td class="cap">Deleted · Missing · Broken</td></tr>
+          <tr><td style="font-weight:600">Search coverage</td><td><span class="mono">Saved thoughts only · Book text indexed · Indexing 12 of 40 chapters · Text unavailable</span></td><td class="cap">Semantic search · Searched everything</td></tr>
+          <tr><td style="font-weight:600">Removing things</td><td><span class="mono">Remove download · Manage retained text · Remove excerpt audio · Delete record and thoughts</span> (four separate actions)</td><td class="cap">Delete (alone) · a trash icon on a download</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2720}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

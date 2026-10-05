@@ -6,7 +6,7 @@
 **Prepared:** 5 October 2026 · **Revised:** 6 October 2026 (design language folded in; see Appendix D)  
 **Product owner:** Justin Evidon  
 **Delivery boundary:** Native iPhone/iPad application, iOS share extension, lightweight macOS transfer companion, portable data and transfer contracts. No mandatory service.  
-**Source of truth:** Agreed product discussion, *Sylvia - Product Brief*, and the *Sylvia Concept Designs* canvas for visual language. Technical recommendations below are proposals unless explicitly identified as confirmed. [P1, P2]
+**Source of truth:** Agreed product discussion, *Sylvia - Product Brief*, and the *Sylvia Concept Designs* boards in `Docs/Design/` for visual language. Technical recommendations below are proposals unless explicitly identified as confirmed. [P1, P2]
 
 > **The release must prove one complete loop:** get a book onto the device reliably; read or listen offline; capture a passage and your thinking; ask a source-aware question when a model is reachable; then find that knowledge after the original media has been removed.
 
@@ -133,7 +133,7 @@ AI onboarding chooses a provider type, endpoint if relevant, model, credential a
 
 ## 4.4 Design language: Marginalia
 
-Marginalia is the visual and verbal system for every Sylvia surface: iPhone, iPad, the share extension's handoff screens and the Mac companion. It was developed on the *Sylvia Concept Designs* canvas, which remains the visual reference for the screens described in this plan; this section is the normative specification. [P2] Where the canvas and this section disagree, this section wins and the canvas is corrected.
+Marginalia is the visual and verbal system for every Sylvia surface: iPhone, iPad, the share extension's handoff screens and the Mac companion. It was developed as the *Sylvia Concept Designs* boards, checked in under `Docs/Design/` as rendered images and board source; they remain the visual reference for the screens described in this plan, and this section is the normative specification. [P2] Where the boards and this section disagree, this section wins and the boards are corrected.
 
 The name describes the arrangement: a book carries its meaning in the text, and its reader's meaning in the margin. The interface is a quiet page on which the reader's own marks are the brightest thing.
 
@@ -224,7 +224,7 @@ Three faces, each with one job.
 
 ### 4.4.5 Marker set: the four capture kinds and two statuses
 
-The marker is a small row at the top of any capture: glyph, then an uppercase Micro label, then the source label, in the marker's color. Icons are SF Symbols on device; the canvas shows 1.75pt stroke equivalents. [P2]
+The marker is a small row at the top of any capture: glyph, then an uppercase Micro label, then the source label, in the marker's color. Icons are SF Symbols on device; the boards show 1.75pt stroke equivalents. [P2]
 
 | Kind | Glyph | Label | Body treatment | Frame | Notes |
 | --- | --- | --- | --- | --- | --- |
@@ -278,7 +278,7 @@ The small set every screen is assembled from. Each is a SwiftUI view in the desi
 
 ### 4.4.8 Grayscale and accessibility conformance
 
-Marginalia must hold on devices that show no color: an iPhone with Color Filters set to grayscale, and reflective grayscale tablets. The canvas includes the six core iPhone screens and the iPad reader rendered through a luminance grayscale filter as the reference for this check. [P2] The intended results, verified by T53:
+Marginalia must hold on devices that show no color: an iPhone with Color Filters set to grayscale, and reflective grayscale tablets. `Docs/Design/` includes the six core iPhone screens and the iPad reader rendered through a luminance grayscale filter as the reference for this check. [P2] The intended results, verified by T53:
 
 - Quote and Audio tints collapse to nearly the same light grey; the glyph, the label and the content form (serif text versus a waveform with a play control) carry the difference.
 - Receiving, Ready and Needs attention pills become similar greys; the dot, check and triangle do the work.
@@ -294,7 +294,7 @@ Further accessibility rules, extending Section 18.3: all roles scale through Dyn
 - **Package.** A `SylviaDesign` Swift package (Section 6.2) owns color tokens (asset catalog with light and dark variants, exposed as a typed enum), type roles (Literata registration, `UIFontMetrics` scaling, role enum), the marker enum and its presentation mapping from the domain's capture kinds, the status vocabulary strings under stable localization keys, and the SwiftUI component library in 4.4.7. The Mac companion consumes the same package; AppKit-hosted SwiftUI uses the same tokens with macOS control sizing.
 - **Single source.** No view declares a literal color, font size or state string. Lint rejects hex literals, `Font.system(size:)` calls and status phrases outside the package in UI targets.
 - **Portable tokens.** Tokens, type roles, marker definitions and the status vocabulary are also exported as versioned JSON under `Contracts/design/` alongside the schemas, so a later Android client implements the same system from the same file rather than from screenshots (Section 24).
-- **Reference artifact.** The *Sylvia Concept Designs* canvas is checked into `Docs/Design/` as an export at each revision, with the canvas URL recorded. [P2] It is a reference, not a specification; this section is.
+- **Reference artifact.** The *Sylvia Concept Designs* boards are checked into `Docs/Design/` at each revision as rendered PNGs (`images/`) and board source (`canvas/`), with a README that maps each board to its plan section and a script that re-renders them. [P2] They are a reference, not a specification; this section is. The authoring canvas they come from is the product owner's private working copy; nothing in this plan requires access to it.
 - **Change control.** Token, role, marker or vocabulary changes require design review, a fixture update and a snapshot re-baseline. A screen may not introduce a new status phrase; it requests one through the vocabulary.
 - **Tests.** Snapshot tests for every component in light, dark, grayscale and Dynamic Type at the default and largest accessibility sizes (T51, T53); a vocabulary conformance test that walks every state machine's user-visible string (T54); a contrast check over every text/ground pair in the token file in CI.
 
@@ -1009,7 +1009,7 @@ M3 and M4 can proceed in parallel after domain/anchor contracts stabilize. M6 ca
 
 ## 21.3 Recommended ownership
 
-Assign one accountable technical lead for domain boundaries, schema and integration. Use an iOS reading/knowledge owner, an iOS audio/AI owner, and a Mac/transfer owner; one person may hold multiple roles, but the estimates must reflect that. Add QA ownership for real-device/fault testing, part-time product design and an independent security review for pairing/content isolation. The product designer owns `SylviaDesign` tokens, the vocabulary and the canvas; the iOS reading/knowledge owner owns the package's code.
+Assign one accountable technical lead for domain boundaries, schema and integration. Use an iOS reading/knowledge owner, an iOS audio/AI owner, and a Mac/transfer owner; one person may hold multiple roles, but the estimates must reflect that. Add QA ownership for real-device/fault testing, part-time product design and an independent security review for pairing/content isolation. The product designer owns `SylviaDesign` tokens, the vocabulary and the design boards; the iOS reading/knowledge owner owns the package's code.
 
 No workstream owns a private copy of the schema or of the design tokens. Schema, locator, retention, transfer-contract and design-token changes require shared review and fixture updates. Library, player and AI teams must agree what "saved", "ready", "context available" and "removed" mean, and use the vocabulary's strings for them.
 
@@ -1062,7 +1062,7 @@ Contracts/design/              # exported design tokens and vocabulary (portable
 Fixtures/                      # licensed/generated books, audio and failures
 Tests/                         # unit, integration, contract, UI, performance, snapshots
 Docs/ADRs/                     # approved architecture decisions
-Docs/Design/                   # concept canvas exports per revision, design review notes
+Docs/Design/                   # design boards: rendered images, board source, render script, review notes
 Docs/Runbooks/                 # import, restore, source and release procedures
 ```
 
@@ -1284,7 +1284,7 @@ The export is generated from the Swift package, not hand-maintained; glyph names
 
 [P1] **Product basis:** *Sylvia - Product Brief*, October 2026, and the product decisions in the accompanying discussion. The brief establishes standalone native iOS plus a Mac companion, permanent knowledge, reliable import, Work -> Edition -> Asset, 5,000+ scale and optional providers. RSS/newsletters were subsequently raised as a compatible roadmap direction, not an approved v1 requirement. The transcript supersedes the brief where a later user decision is explicit.
 
-[P2] **Design basis:** *Sylvia Concept Designs* canvas, 5-6 October 2026. https://claude.ai/artifact/6gkxB1iCyGhjMZvhFMePWC . Contains the Marginalia design-language sheet, thirteen iPhone screens, an iPad reader with Thoughts pane, the Mac companion window, two Inbox row-layout options, and the six iPhone screens plus the tablet reader rendered in grayscale. Four palette alternatives were reviewed on 6 October 2026 and removed after the product owner confirmed Marginalia. The canvas is a visual reference; Section 4.4 is the specification.
+[P2] **Design basis:** *Sylvia Concept Designs*, 5-6 October 2026, checked in under `Docs/Design/` in this repository: rendered boards in `images/`, board source in `canvas/`, and a README that maps each board to its plan section. Contains the Marginalia design-language sheet, thirteen iPhone screens, an iPad reader with Thoughts pane, the Mac companion window, two Inbox row-layout options, and the six iPhone screens plus the tablet reader rendered in grayscale. Four palette alternatives were reviewed on 6 October 2026 and removed after the product owner confirmed Marginalia. The boards were authored on a design canvas private to the product owner; the checked-in export is the citable reference, and Section 4.4 is the specification.
 
 External references below were reviewed or retrieved on 5 October 2026 unless noted. These are implementation references, not a substitute for running Stage 0. Some Apple reference pages expose their full content only through JavaScript/Markdown; the exact API configuration and minimum-OS behavior must be checked in Xcode/documentation at kickoff. Avoid beta/develop branch assumptions. All security/API/store guidance must be rechecked before public release.
 
@@ -1362,5 +1362,6 @@ Complete privacy/distribution review, licensed sample content, support documenta
 - Section 23: decision D15; two risks added; design sign-off scope extended.
 - Section 24: marker rule for new work kinds; token export for broader platforms.
 - Appendix A.5 (new): design token export sketch. Appendix B: [P2], [S23], [S24]. Appendix C: grayscale and vocabulary passes.
+- Later the same day: [P2] and the Section 4.4 references now point at the checked-in boards in `Docs/Design/` (rendered images plus source) rather than at the private authoring canvas, so the plan can be read from the repository alone.
 
 No scope, security, data-model or transfer-protocol decision from draft 0.1 was changed.

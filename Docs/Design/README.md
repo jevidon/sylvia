@@ -1,6 +1,6 @@
 # Sylvia design reference
 
-Concept designs for Sylvia and the **Marginalia** design language. Section 4.4 of the [implementation plan](../../Sylvia_v1_iOS_Implementation_Plan.md) is the specification; these boards are the visual reference it cites as [P2].
+Concept designs for Sylvia and the **Marginalia** design language. Section 4.4 of the [implementation plan](../Sylvia_v1_iOS_Implementation_Plan.md) is the specification; these boards are the visual reference it cites as [P2].
 
 **Status:** Marginalia confirmed as the v1 direction on 6 October 2026. Token values remain proposals until Stage 0 gate G0.6 checks them on devices.  
 **Exported:** 6 October 2026. Rendered at 2x from the board source in `canvas/` with `render.py`.

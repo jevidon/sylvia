@@ -1,5 +1,3 @@
-<!-- Converted from Sylvia_Product_Brief.docx (original kept alongside). Edit either, but keep them in step. -->
-
 # Sylvia
 
 **SYLVIA / PRODUCT CONCEPT · OCTOBER 2026**

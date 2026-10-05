@@ -1,0 +1,56 @@
+# Runs the same local CI script on a GitHub-hosted macOS runner (ADR-0002).
+# Manual dispatch only: macOS minutes are billed on this private repository, and the
+# local Scripts/ci.sh run is the primary gate during Stage 0.
+name: CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      steps:
+        description: "Space-separated drop-in filters for Scripts/ci.sh (empty runs everything)"
+        required: false
+        default: "contracts design"
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: macos-26
+    timeout-minutes: 120
+    env:
+      SYLVIA_FIXTURE_CACHE: ${{ github.workspace }}/.fixture-cache
+      SYLVIA_TOOLS_VENV: ${{ github.workspace }}/.venv-tools
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select pinned Xcode (ADR-0001)
+        run: |
+          set -euo pipefail
+          for candidate in /Applications/Xcode_27.0.app /Applications/Xcode.app; do
+            if [[ -d "$candidate" ]] && DEVELOPER_DIR="$candidate/Contents/Developer" xcodebuild -version | grep -q "27A266a"; then
+              echo "DEVELOPER_DIR=$candidate/Contents/Developer" >> "$GITHUB_ENV"
+              exit 0
+            fi
+          done
+          echo "::error::Xcode 27.0 (27A266a) is not installed on this runner image; update the runner or ADR-0001."
+          ls -d /Applications/Xcode* || true
+          exit 1
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Tools and fixtures
+        run: |
+          Scripts/tools/bootstrap.sh
+          Scripts/fixtures/fetch.sh
+
+      - name: Run CI
+        run: Scripts/ci.sh ${{ inputs.steps }}
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-logs
+          path: .build/ci-logs/

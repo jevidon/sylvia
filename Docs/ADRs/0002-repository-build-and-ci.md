@@ -28,7 +28,7 @@ Readium 3.11.0 brings its own transitive dependencies (among them `readium/ZIPFo
 
 **Simulators.** Every job creates and uses its own named simulator (`Scripts/lib/sim.sh`), so parallel jobs never share one. The default is an iPhone 17 on the iOS 26.5 runtime. The paired physical iPhone is used only in serialized device runs.
 
-**CI.** `Scripts/ci.sh` runs each executable drop-in in `Scripts/ci.d/` in name order and writes logs to `.build/ci-logs/`. Workstreams add their own numbered drop-in rather than editing shared files. GitHub Actions runs the same script on a macOS runner. Because macOS runner minutes are billed on a private repository, the workflow runs on pull requests and manual dispatch, and the local script is the primary gate during Stage 0.
+**CI.** `Scripts/ci.sh` runs each executable drop-in in `Scripts/ci.d/` in name order and writes logs to `.build/ci-logs/`. Workstreams add their own numbered drop-in rather than editing shared files. GitHub Actions (`.github/workflows/ci.yml`) runs the same script on a macOS runner. Because macOS runner minutes are billed on a private repository, the workflow runs only on manual dispatch (with an optional list of drop-in filters), and the local script is the primary gate during Stage 0. The workflow refuses to run on a runner without the pinned Xcode build rather than silently using another one.
 
 **Tooling.** Python contract and lint tooling runs from a shared virtualenv (`$SYLVIA_TOOLS_VENV`, default `~/Library/Caches/SylviaTools/venv`), installed from the pinned `Scripts/tools/requirements.txt` by `Scripts/tools/bootstrap.sh`.
 

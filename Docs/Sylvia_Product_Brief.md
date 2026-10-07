@@ -51,6 +51,8 @@ Start with engaged readers and audiobook listeners who use books for learning, r
 - No mandatory account or backend. English and DRM-free/user-controlled files first.
 - AI connects to a user-chosen hosted provider or OpenAI-compatible/local endpoint; Hermes integration remains optional.
 
+**Later - one home for everything you read and hear.** Save a link or subscribe to feeds, including public Substack publications, and have articles land in the Inbox to read later, with any listen link kept alongside. The same notes, questions and permanent record apply, so no separate bookmark folder or newsletter app is needed. Phased after V1: saved articles first, then RSS/Atom subscriptions; paid and authenticated sources only if a sanctioned route exists. See the implementation plan, Section 24.
+
 **V1.5 -** Optional self-hosted Docker hub.
 
 - Always-on catalog and media store for large collections, with Calibre as a possible e-book source rather than a required canonical database.

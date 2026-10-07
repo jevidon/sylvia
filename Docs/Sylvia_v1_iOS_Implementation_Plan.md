@@ -2,8 +2,8 @@
 ## V1 iOS implementation plan
 ### Your library of thought.
 
-**Status:** Team-review draft 0.2 - not yet approved for execution  
-**Prepared:** 5 October 2026 · **Revised:** 6 October 2026 (design language folded in; see Appendix D)  
+**Status:** Team-review draft 0.3 - not yet approved for execution  
+**Prepared:** 5 October 2026 · **Revised:** 7 October 2026 (unified content hub added to the roadmap; see Appendix D)  
 **Product owner:** Justin Evidon  
 **Delivery boundary:** Native iPhone/iPad application, iOS share extension, lightweight macOS transfer companion, portable data and transfer contracts. No mandatory service.  
 **Source of truth:** Agreed product discussion, *Sylvia - Product Brief*, and the *Sylvia Concept Designs* boards in `Docs/Design/` for visual language. Technical recommendations below are proposals unless explicitly identified as confirmed. [P1, P2]
@@ -95,7 +95,7 @@ The earlier ideal story included clipping from the lock screen. V1 must ship sta
 
 The earlier browser-uploader concept is not required alongside the native Mac companion. Choose Mac-hosted pull as the supported v1 network path, avoiding two independent transfer implementations. A browser uploader can be added later if demand justifies it.
 
-RSS/newsletter support is retained in the roadmap and model extension points, not silently added to this release. An arbitrary webpage URL is not the same as a downloadable EPUB/PDF/audio URL.
+RSS/newsletter support - and the wider goal of one home for articles, feeds and Substack content, including their listen links - is retained in the phased roadmap (Section 24) and model extension points, not silently added to this release. An arbitrary webpage URL is not the same as a downloadable EPUB/PDF/audio URL.
 
 # 4. User experience and end-to-end flows
 
@@ -1107,7 +1107,7 @@ These are focused review decisions, not requests to repeat the completed discove
 | D11 - Organization | Status, work association and search only; no fixed taxonomy | Product; categorization remains open |
 | D12 - Ratings/history | Half-star rating, explicit completion, rereads, local recommendation events | Product; export schema and UI semantics |
 | D13 - Distribution | Internal/TestFlight first; notarized Mac testing build; no monetization implementation yet | Product + release; public release approval later |
-| D14 - Scope sequence | RSS/newsletters, Docker, OCR, Calibre adapter and external-player capture later | Product; preserve roadmap without adding P0 scope |
+| D14 - Scope sequence | Articles/feeds/newsletters (phases A-C in Section 24), Docker, OCR, Calibre adapter and external-player capture later | Product; preserve roadmap without adding P0 scope. Decide Phase A versus Docker hub ordering and the Phase C feasibility bar |
 | D15 - Design language | Marginalia (Section 4.4): Paper/Night grounds, Pine and Ochre accents, six-marker set, Literata plus system faces, three-tab navigation, fixed status vocabulary. Direction chosen by the product owner on 6 October 2026 after reviewing four alternatives | Design + iOS lead confirm token values on devices in G0.6; any change to the marker set or vocabulary is a plan change, not a styling tweak |
 
 ## 23.2 Risk register
@@ -1141,7 +1141,17 @@ Approval should result in a versioned 1.0 execution specification and prioritize
 
 **Docker hub (v1.5 candidate):** implement the same source/manifest contracts as the Mac, add an always-on ingestion inbox and authorized agent-delivered assets, then design actual state synchronization separately. Server authority, managed versus referenced storage, metadata conflict rules and household profiles are not settled by this v1 document.
 
-**RSS/Atom and newsletters:** add recurring Source adapters and article/newsletter work kinds with HTML snapshots and provenance. Keep arrival, read status, deliberate retention and saved knowledge separate; do not turn every feed arrival into a permanent consumed work. Email/IMAP/forwarding is a different integration from RSS and needs its own authentication/security scope. A new work kind receives a marker only through the process in Section 4.4.9; it does not borrow Quote or Note.
+**Articles, feeds and newsletters - the unified content hub (post-v1, phased).** Product intent from the product owner (7 October 2026): content from many disparate systems - bookmarks, a standalone Substack app, RSS readers - should have one home in Sylvia, with the same permanent record of notes and questions that books get, and without relying on another service to synchronize that content or its context across devices. This is a stated goal for later releases; none of it is in v1 scope (Section 3.3).
+
+*Phase A - Saved articles (first post-v1 release).* The share extension and URL entry accept a webpage link and create an **Article** work kind: sanitized readable text and an HTML snapshot with provenance (source URL, publisher, author, published and saved dates, fetch time). The article opens in the existing reader and uses the same capture, note, Ask AI and search flows. When the page or its feed entry exposes an audio version (for example a Substack post's "listen" link or an enclosure), record it as an `AssetLocation` of kind remote-audio, with the URL and provenance. The player offers it as an explicit stream-or-download choice and never presents it as a local file until downloaded. Pasting one Substack article link therefore ends in the Inbox, readable and listenable later, with no bookmark folder or separate app.
+
+*Phase B - Subscriptions.* Add recurring Source adapters for RSS/Atom, including public Substack publications (their `/feed` addresses and per-post audio enclosures). New entries arrive in the Inbox as **Unread** items. Refresh runs on app open and on iOS background refresh, which the system schedules opportunistically; the interface must say when a feed was last checked and must not promise always-current delivery. An always-current Inbox is a property of the Docker hub or Mac companion (v1.5 candidate, above), not of the phone alone.
+
+*Phase C - Paid and authenticated sources.* Paid Substack posts, other paywalled newsletters and email forwarding/IMAP each need their own authentication, security and terms-of-service review before any commitment. Substack offers no public API for a reader's paid subscriptions, so this phase is a feasibility question, not a scheduled feature. Never ask the user to hand over a password, and never scrape behind a login without a documented, authorized route. Email/IMAP/forwarding is a different integration from RSS.
+
+*Rules that apply to every phase.* Keep arrival, read status, deliberate retention and saved knowledge separate: a feed arrival is Unread, not a consumed work; only a user action ("Keep") makes it a retained Work, and unread items may expire under a user-visible policy. Notes, questions and quotes on an article persist after the snapshot is removed, per invariants I-03 and I-08. Respect publishers: fetch only what the user subscribes to or saves, honor robots/terms for fetching, and keep snapshots private to the user. Duplicate detection uses canonical URL plus content hash. A new work kind receives a marker only through the process in Section 4.4.9; Article does not borrow Quote or Note. The Inbox grows beyond transfer states (Section 4.1) to include Unread, Saved and "Listen available", and Section 4.4.6 gains those words only through the same process.
+
+*Requirement stubs for later backlog (not scheduled):* ART-01 save a link as an Article with snapshot and provenance; ART-02 capture and play a source-provided listen link; FEED-01 subscribe to RSS/Atom and populate the Inbox; FEED-02 public Substack subscription; FEED-03 retention and expiry of unread items; FEED-04 duplicate handling across feed and one-off saves; SRC-01 authenticated-source feasibility study.
 
 **Physical reading:** add camera/photo capture and OCR as another producer of captures/anchors. Preserve image/text confidence and manual page correction. An image-only PDF in v1 must not be misrepresented as already supporting this flow.
 
@@ -1365,3 +1375,8 @@ Complete privacy/distribution review, licensed sample content, support documenta
 - Later the same day: [P2] and the Section 4.4 references now point at the checked-in boards in `Docs/Design/` (rendered images plus source) rather than at the private authoring canvas, so the plan can be read from the repository alone.
 
 No scope, security, data-model or transfer-protocol decision from draft 0.1 was changed.
+
+**Draft 0.3 - 7 October 2026.** Roadmap-only change at the product owner's request. No v1 scope, security, data-model or transfer-protocol decision was changed.
+
+- Section 24: the RSS/newsletter paragraph is replaced by the unified content hub roadmap (Phases A-C: saved articles with listen links, subscriptions including public Substack, authenticated sources), shared rules and requirement stubs ART-01/02 and FEED-01 to FEED-04, SRC-01.
+- Section 3.3 and decision D14: wording updated to point at that roadmap.

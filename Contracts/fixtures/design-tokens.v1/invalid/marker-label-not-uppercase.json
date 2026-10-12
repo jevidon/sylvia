@@ -1,0 +1,2189 @@
+{
+  "schema_version": 1,
+  "language": "marginalia",
+  "token_version": "0.3.0",
+  "generator": "Packages/Design: swift run sylvia-design-export write (do not edit by hand)",
+  "plan_reference": "Sylvia V1 iOS implementation plan, draft 0.3, Section 4.4 and Appendix A.5",
+  "appearances": ["light", "dark", "light_increased_contrast", "dark_increased_contrast"],
+  "color": {
+    "ground": {
+      "light": "#F4F2ED",
+      "dark": "#161512",
+      "light_increased_contrast": "#F4F2ED",
+      "dark_increased_contrast": "#161512",
+      "use": "Screen background (Paper, Night)"
+    },
+    "surface": {
+      "light": "#FBFAF7",
+      "dark": "#1E1C19",
+      "light_increased_contrast": "#FBFAF7",
+      "dark_increased_contrast": "#1E1C19",
+      "use": "Cards, bars, sheets"
+    },
+    "ink": {
+      "light": "#1C1B18",
+      "dark": "#ECE7DD",
+      "light_increased_contrast": "#1C1B18",
+      "dark_increased_contrast": "#ECE7DD",
+      "use": "Primary text, icons"
+    },
+    "muted": {
+      "light": "#6B6760",
+      "dark": "#A8A298",
+      "light_increased_contrast": "#646059",
+      "dark_increased_contrast": "#A8A298",
+      "use": "Captions, metadata, inactive tabs"
+    },
+    "hairline": {
+      "light": "#1C1B181F",
+      "dark": "#ECE7DD24",
+      "light_increased_contrast": "#1C1B183D",
+      "dark_increased_contrast": "#ECE7DD3D",
+      "alpha": {
+        "light": 0.12,
+        "dark": 0.14,
+        "light_increased_contrast": 0.24,
+        "dark_increased_contrast": 0.24
+      },
+      "use": "1pt rules and borders",
+      "derivation": "ink at 12% (light) and 14% (dark); 24% under Increase Contrast"
+    },
+    "pine": {
+      "light": "#2F5D50",
+      "dark": "#7FB5A3",
+      "light_increased_contrast": "#2F5D50",
+      "dark_increased_contrast": "#7FB5A3",
+      "use": "Primary action, links, progress, active tab, Note marker"
+    },
+    "pine_on": {
+      "light": "#F4F2ED",
+      "dark": "#161512",
+      "light_increased_contrast": "#F4F2ED",
+      "dark_increased_contrast": "#161512",
+      "use": "Text on a Pine fill"
+    },
+    "pine_tint": {
+      "light": "#DCE8E2",
+      "dark": "#252B26",
+      "light_increased_contrast": "#CBDAD3",
+      "dark_increased_contrast": "#2E3933",
+      "use": "Ready pill, Note-related fills",
+      "derivation": "dark: marker text at 14% over Night; Increase Contrast: 10% of the way toward the marker text",
+      "plan_listed_dark": "#233A33"
+    },
+    "ochre": {
+      "light": "#8A5410",
+      "dark": "#D9A24A",
+      "light_increased_contrast": "#875210",
+      "dark_increased_contrast": "#D9A24A",
+      "use": "Quote marker, highlight underline, rating stars"
+    },
+    "ochre_tint": {
+      "light": "#F1E4C8",
+      "dark": "#31291A",
+      "light_increased_contrast": "#E7D6B6",
+      "dark_increased_contrast": "#42351F",
+      "use": "Highlight fill, Quote block fill",
+      "derivation": "dark: marker text at 14% over Night; Increase Contrast: 10% of the way toward the marker text",
+      "plan_listed_dark": "#3A2E17"
+    },
+    "cover_field_1": {
+      "light": "#2F5D50",
+      "dark": "#2F5D50",
+      "light_increased_contrast": "#2F5D50",
+      "dark_increased_contrast": "#2F5D50",
+      "use": "Typographic cover field (assigned by a stable hash of the work title)"
+    },
+    "cover_field_2": {
+      "light": "#5A6B4A",
+      "dark": "#5A6B4A",
+      "light_increased_contrast": "#5A6B4A",
+      "dark_increased_contrast": "#5A6B4A",
+      "use": "Typographic cover field (assigned by a stable hash of the work title)"
+    },
+    "cover_field_3": {
+      "light": "#7A4B3A",
+      "dark": "#7A4B3A",
+      "light_increased_contrast": "#7A4B3A",
+      "dark_increased_contrast": "#7A4B3A",
+      "use": "Typographic cover field (assigned by a stable hash of the work title)"
+    },
+    "cover_field_4": {
+      "light": "#3F5A78",
+      "dark": "#3F5A78",
+      "light_increased_contrast": "#3F5A78",
+      "dark_increased_contrast": "#3F5A78",
+      "use": "Typographic cover field (assigned by a stable hash of the work title)"
+    },
+    "cover_field_5": {
+      "light": "#4A4A58",
+      "dark": "#4A4A58",
+      "light_increased_contrast": "#4A4A58",
+      "dark_increased_contrast": "#4A4A58",
+      "use": "Typographic cover field (assigned by a stable hash of the work title)"
+    },
+    "cover_title": {
+      "light": "#F4F2ED",
+      "dark": "#F4F2ED",
+      "light_increased_contrast": "#F4F2ED",
+      "dark_increased_contrast": "#F4F2ED",
+      "use": "Title on a typographic cover field",
+      "derivation": "Paper (light ground) in every appearance"
+    },
+    "shadow": {
+      "light": "#1C1B181A",
+      "dark": "#1C1B181A",
+      "light_increased_contrast": "#1C1B181A",
+      "dark_increased_contrast": "#1C1B181A",
+      "alpha": {
+        "light": 0.1,
+        "dark": 0.1,
+        "light_increased_contrast": 0.1,
+        "dark_increased_contrast": 0.1
+      },
+      "use": "The single shadow, on sheets and the mini-player only",
+      "derivation": "Paper ink at 10% in every appearance"
+    }
+  },
+  "contrast": {
+    "minimum_ratio": 4.5,
+    "minimum_ratio_large_text": 3,
+    "large_text_minimum_points": 24,
+    "method": "WCAG 2.x relative luminance contrast on opaque sRGB values, in every appearance",
+    "pairs": [
+      {
+        "text": "color.ink",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Primary text, icons on the screen ground"
+      },
+      {
+        "text": "color.muted",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Captions, metadata, inactive tabs on the screen ground"
+      },
+      {
+        "text": "color.pine",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Primary action, links, progress, active tab, Note marker on the screen ground"
+      },
+      {
+        "text": "color.ochre",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Quote marker, highlight underline, rating stars on the screen ground"
+      },
+      {
+        "text": "marker.quote.text",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Quote marker glyph and label on the screen ground"
+      },
+      {
+        "text": "marker.note.text",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Note marker glyph and label on the screen ground"
+      },
+      {
+        "text": "marker.audio.text",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Audio marker glyph, label and waveform on the screen ground"
+      },
+      {
+        "text": "marker.generated.text",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Generated marker glyph, label and dashed frame on the screen ground"
+      },
+      {
+        "text": "marker.word.text",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Word marker glyph and label (quote color family) on the screen ground"
+      },
+      {
+        "text": "marker.attention.text",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Attention marker, destructive actions on the screen ground"
+      },
+      {
+        "text": "marker.pending.text",
+        "fill": "color.ground",
+        "text_size": "any",
+        "use": "Pending marker, queued and waiting states on the screen ground"
+      },
+      {
+        "text": "color.ink",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Primary text, icons on a surface"
+      },
+      {
+        "text": "color.muted",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Captions, metadata, inactive tabs on a surface"
+      },
+      {
+        "text": "color.pine",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Primary action, links, progress, active tab, Note marker on a surface"
+      },
+      {
+        "text": "color.ochre",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Quote marker, highlight underline, rating stars on a surface"
+      },
+      {
+        "text": "marker.quote.text",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Quote marker glyph and label on a surface"
+      },
+      {
+        "text": "marker.note.text",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Note marker glyph and label on a surface"
+      },
+      {
+        "text": "marker.audio.text",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Audio marker glyph, label and waveform on a surface"
+      },
+      {
+        "text": "marker.generated.text",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Generated marker glyph, label and dashed frame on a surface"
+      },
+      {
+        "text": "marker.word.text",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Word marker glyph and label (quote color family) on a surface"
+      },
+      {
+        "text": "marker.attention.text",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Attention marker, destructive actions on a surface"
+      },
+      {
+        "text": "marker.pending.text",
+        "fill": "color.surface",
+        "text_size": "any",
+        "use": "Pending marker, queued and waiting states on a surface"
+      },
+      {
+        "text": "color.pine_on",
+        "fill": "color.pine",
+        "text_size": "any",
+        "use": "Primary button label on the Pine fill"
+      },
+      {
+        "text": "color.ink",
+        "fill": "color.pine_tint",
+        "text_size": "any",
+        "use": "Body text on: Ready pill, Note-related fills"
+      },
+      {
+        "text": "color.pine",
+        "fill": "color.pine_tint",
+        "text_size": "any",
+        "use": "Marker text on: Ready pill, Note-related fills"
+      },
+      {
+        "text": "color.ink",
+        "fill": "color.ochre_tint",
+        "text_size": "any",
+        "use": "Body text on: Highlight fill"
+      },
+      {
+        "text": "color.ochre",
+        "fill": "color.ochre_tint",
+        "text_size": "any",
+        "use": "Marker text on: Highlight fill"
+      },
+      {
+        "text": "color.ink",
+        "fill": "marker.quote.tint",
+        "text_size": "any",
+        "use": "Body text on: Quote block"
+      },
+      {
+        "text": "marker.quote.text",
+        "fill": "marker.quote.tint",
+        "text_size": "any",
+        "use": "Marker text on: Quote block"
+      },
+      {
+        "text": "color.ink",
+        "fill": "marker.word.tint",
+        "text_size": "any",
+        "use": "Body text on: Word fills"
+      },
+      {
+        "text": "marker.word.text",
+        "fill": "marker.word.tint",
+        "text_size": "any",
+        "use": "Marker text on: Word fills"
+      },
+      {
+        "text": "color.ink",
+        "fill": "marker.audio.tint",
+        "text_size": "any",
+        "use": "Body text on: Audio block"
+      },
+      {
+        "text": "marker.audio.text",
+        "fill": "marker.audio.tint",
+        "text_size": "any",
+        "use": "Marker text on: Audio block"
+      },
+      {
+        "text": "color.ink",
+        "fill": "marker.generated.tint",
+        "text_size": "any",
+        "use": "Body text on: Generated fills"
+      },
+      {
+        "text": "marker.generated.text",
+        "fill": "marker.generated.tint",
+        "text_size": "any",
+        "use": "Marker text on: Generated fills"
+      },
+      {
+        "text": "color.ink",
+        "fill": "marker.attention.tint",
+        "text_size": "any",
+        "use": "Body text on: Needs attention row and pill"
+      },
+      {
+        "text": "marker.attention.text",
+        "fill": "marker.attention.tint",
+        "text_size": "any",
+        "use": "Marker text on: Needs attention row and pill"
+      },
+      {
+        "text": "color.ink",
+        "fill": "marker.pending.tint",
+        "text_size": "any",
+        "use": "Body text on: Queued, receiving, verifying, preparing pills"
+      },
+      {
+        "text": "marker.pending.text",
+        "fill": "marker.pending.tint",
+        "text_size": "any",
+        "use": "Marker text on: Queued, receiving, verifying, preparing pills"
+      },
+      {
+        "text": "color.cover_title",
+        "fill": "color.cover_field_1",
+        "text_size": "any",
+        "use": "Title on a typographic cover"
+      },
+      {
+        "text": "color.cover_title",
+        "fill": "color.cover_field_2",
+        "text_size": "any",
+        "use": "Title on a typographic cover"
+      },
+      {
+        "text": "color.cover_title",
+        "fill": "color.cover_field_3",
+        "text_size": "any",
+        "use": "Title on a typographic cover"
+      },
+      {
+        "text": "color.cover_title",
+        "fill": "color.cover_field_4",
+        "text_size": "any",
+        "use": "Title on a typographic cover"
+      },
+      {
+        "text": "color.cover_title",
+        "fill": "color.cover_field_5",
+        "text_size": "any",
+        "use": "Title on a typographic cover"
+      }
+    ],
+    "minimum_ratio_non_text": 3,
+    "component_pairs": [
+      {
+        "component": "selection_menu",
+        "state": "action",
+        "text": "color.ink",
+        "text_appearance": "opposite",
+        "fill": "color.ink",
+        "opacity_over_ground": 1,
+        "content": "text",
+        "requirement": "required",
+        "use": "Selection menu action label (the other appearance's ink) on the ink fill"
+      },
+      {
+        "component": "selection_menu",
+        "state": "highlight_glyph",
+        "text": "marker.quote.text",
+        "text_appearance": "opposite",
+        "fill": "color.ink",
+        "opacity_over_ground": 1,
+        "content": "glyph",
+        "requirement": "required",
+        "use": "Selection menu Highlight glyph (the other appearance's Ochre) on the ink fill"
+      },
+      {
+        "component": "filter_chip",
+        "state": "selected",
+        "text": "color.ground",
+        "text_appearance": "same",
+        "fill": "color.ink",
+        "opacity_over_ground": 1,
+        "content": "text",
+        "requirement": "required",
+        "use": "Selected filter chip label (ground) on the ink fill"
+      },
+      {
+        "component": "audio_block",
+        "state": "play_control",
+        "text": "color.surface",
+        "text_appearance": "same",
+        "fill": "marker.audio.text",
+        "opacity_over_ground": 1,
+        "content": "glyph",
+        "requirement": "required",
+        "use": "Play and pause glyph (surface) on the audio-colored round control"
+      },
+      {
+        "component": "play_pause_button",
+        "state": "default",
+        "text": "color.pine_on",
+        "text_appearance": "same",
+        "fill": "color.pine",
+        "opacity_over_ground": 1,
+        "content": "glyph",
+        "requirement": "required",
+        "use": "Player play and pause glyph (pine.on) on the Pine round control"
+      },
+      {
+        "component": "capture_save_button",
+        "state": "busy",
+        "text": "color.pine_on",
+        "text_appearance": "same",
+        "fill": "color.pine",
+        "opacity_over_ground": 1,
+        "content": "text",
+        "requirement": "required",
+        "use": "\"Saving…\" on the primary button: disabled but drawn at full contrast (busy)"
+      },
+      {
+        "component": "button_primary",
+        "state": "pressed",
+        "text": "color.pine_on",
+        "text_appearance": "same",
+        "fill": "color.pine",
+        "opacity_over_ground": 0.9,
+        "content": "text",
+        "requirement": "required",
+        "use": "Primary button label while pressed (the control at the pressed opacity over the ground)"
+      },
+      {
+        "component": "button_secondary",
+        "state": "pressed",
+        "text": "color.ink",
+        "text_appearance": "same",
+        "fill": "color.ground",
+        "opacity_over_ground": 0.9,
+        "content": "text",
+        "requirement": "required",
+        "use": "Secondary button label while pressed (the control at the pressed opacity over the ground)"
+      },
+      {
+        "component": "button_quiet",
+        "state": "pressed",
+        "text": "color.pine",
+        "text_appearance": "same",
+        "fill": "color.ground",
+        "opacity_over_ground": 0.9,
+        "content": "text",
+        "requirement": "required",
+        "use": "Quiet button label while pressed (the control at the pressed opacity over the ground)"
+      },
+      {
+        "component": "button_destructive",
+        "state": "pressed",
+        "text": "marker.attention.text",
+        "text_appearance": "same",
+        "fill": "color.ground",
+        "opacity_over_ground": 0.9,
+        "content": "text",
+        "requirement": "required",
+        "use": "Destructive button label while pressed (the control at the pressed opacity over the ground)"
+      },
+      {
+        "component": "button_primary",
+        "state": "disabled",
+        "text": "color.pine_on",
+        "text_appearance": "same",
+        "fill": "color.pine",
+        "opacity_over_ground": 0.45,
+        "content": "text",
+        "requirement": "exempt_disabled",
+        "use": "Primary button label while disabled (inactive; exempt, reported only)"
+      },
+      {
+        "component": "button_secondary",
+        "state": "disabled",
+        "text": "color.ink",
+        "text_appearance": "same",
+        "fill": "color.ground",
+        "opacity_over_ground": 0.45,
+        "content": "text",
+        "requirement": "exempt_disabled",
+        "use": "Secondary button label while disabled (inactive; exempt, reported only)"
+      },
+      {
+        "component": "button_quiet",
+        "state": "disabled",
+        "text": "color.pine",
+        "text_appearance": "same",
+        "fill": "color.ground",
+        "opacity_over_ground": 0.45,
+        "content": "text",
+        "requirement": "exempt_disabled",
+        "use": "Quiet button label while disabled (inactive; exempt, reported only)"
+      },
+      {
+        "component": "button_destructive",
+        "state": "disabled",
+        "text": "marker.attention.text",
+        "text_appearance": "same",
+        "fill": "color.ground",
+        "opacity_over_ground": 0.45,
+        "content": "text",
+        "requirement": "exempt_disabled",
+        "use": "Destructive button label while disabled (inactive; exempt, reported only)"
+      }
+    ],
+    "overrides": [
+      {
+        "token": "color.ochre",
+        "appearance": "light_increased_contrast",
+        "before": "#8A5410",
+        "after": "#875210",
+        "darkening_step": 2,
+        "reason": "Quote and Word text on the Increase Contrast quote tint measured 4.38:1"
+      },
+      {
+        "token": "marker.attention.text",
+        "appearance": "light_increased_contrast",
+        "before": "#A63D2F",
+        "after": "#9E3A2D",
+        "darkening_step": 5,
+        "reason": "Attention text on the Increase Contrast attention tint measured 4.20:1"
+      },
+      {
+        "token": "color.muted",
+        "appearance": "light_increased_contrast",
+        "before": "#6B6760",
+        "after": "#646059",
+        "darkening_step": 7,
+        "reason": "Pending text (muted) on the Increase Contrast pending tint measured 4.11:1"
+      }
+    ],
+    "rules": {
+      "derived_dark_tint_opacity": 0.14,
+      "increased_contrast_tint_step": 0.1,
+      "minimal_darkening": "multiply each sRGB channel by 1 - k/100 for k = 1, 2, ...; first k at which every pair using the token passes"
+    }
+  },
+  "marker": {
+    "quote": {
+      "category": "capture_kind",
+      "capture_kinds": ["text_quote"],
+      "text": {
+        "light": "#8A5410",
+        "dark": "#D9A24A",
+        "light_increased_contrast": "#875210",
+        "dark_increased_contrast": "#D9A24A"
+      },
+      "tint": {
+        "light": "#F1E4C8",
+        "dark": "#31291A",
+        "light_increased_contrast": "#E7D6B6",
+        "dark_increased_contrast": "#42351F"
+      },
+      "glyph": "quote.opening",
+      "glyph_rendering": {
+        "kind": "typeset",
+        "text": "“",
+        "face": "literata",
+        "equivalent_symbol": "quote.opening"
+      },
+      "label": "Quote",
+      "label_key": "marker.quote",
+      "alternate_labels": [],
+      "frame": "none",
+      "body": {
+        "face": "literata",
+        "roles": ["reading", "body"],
+        "weight": null,
+        "treatment": "Exact text in Literata, Reading or Body size, on the quote tint, radius 8"
+      },
+      "filter_label": "Quotes"
+    },
+    "note": {
+      "category": "capture_kind",
+      "capture_kinds": ["note"],
+      "text": {
+        "light": "#2F5D50",
+        "dark": "#7FB5A3",
+        "light_increased_contrast": "#2F5D50",
+        "dark_increased_contrast": "#7FB5A3"
+      },
+      "tint": null,
+      "glyph": "pencil.tip",
+      "glyph_rendering": {
+        "kind": "system_symbol",
+        "name": "pencil.tip"
+      },
+      "label": "NOTE",
+      "label_key": "marker.note",
+      "alternate_labels": [],
+      "frame": "none",
+      "body": {
+        "face": "system",
+        "roles": ["body"],
+        "weight": null,
+        "treatment": "The user's words in the system face; no tint"
+      },
+      "filter_label": "Notes"
+    },
+    "audio": {
+      "category": "capture_kind",
+      "capture_kinds": ["audio_capture"],
+      "text": {
+        "light": "#3F5A78",
+        "dark": "#8FB0D4",
+        "light_increased_contrast": "#3F5A78",
+        "dark_increased_contrast": "#8FB0D4"
+      },
+      "tint": {
+        "light": "#DCE4EE",
+        "dark": "#272B2D",
+        "light_increased_contrast": "#CCD6E2",
+        "dark_increased_contrast": "#31383E"
+      },
+      "glyph": "waveform",
+      "glyph_rendering": {
+        "kind": "system_symbol",
+        "name": "waveform"
+      },
+      "label": "AUDIO",
+      "label_key": "marker.audio",
+      "alternate_labels": [],
+      "frame": "none",
+      "body": {
+        "face": null,
+        "roles": [],
+        "weight": null,
+        "treatment": "A tinted block with a round play control and a waveform; never rendered as text"
+      },
+      "filter_label": "Audio"
+    },
+    "generated": {
+      "category": "capture_kind",
+      "capture_kinds": ["generated_answer"],
+      "text": {
+        "light": "#6B4E8E",
+        "dark": "#B49BD6",
+        "light_increased_contrast": "#6B4E8E",
+        "dark_increased_contrast": "#B49BD6"
+      },
+      "tint": {
+        "light": "#E7DFF0",
+        "dark": "#2C282D",
+        "light_increased_contrast": "#DBD1E6",
+        "dark_increased_contrast": "#3A343E"
+      },
+      "glyph": "sylvia.prompt",
+      "glyph_rendering": {
+        "kind": "custom_symbol",
+        "name": "sylvia.prompt"
+      },
+      "label": "GENERATED",
+      "label_key": "marker.generated",
+      "alternate_labels": [],
+      "frame": "dashed",
+      "body": {
+        "face": "system",
+        "roles": ["body"],
+        "weight": 600,
+        "treatment": "Question in Body 600, answer in Body; citation chips inline"
+      },
+      "filter_label": "Generated"
+    },
+    "word": {
+      "category": "capture_kind",
+      "capture_kinds": ["word"],
+      "text": {
+        "light": "#8A5410",
+        "dark": "#D9A24A",
+        "light_increased_contrast": "#875210",
+        "dark_increased_contrast": "#D9A24A"
+      },
+      "tint": {
+        "light": "#F1E4C8",
+        "dark": "#31291A",
+        "light_increased_contrast": "#E7D6B6",
+        "dark_increased_contrast": "#42351F"
+      },
+      "glyph": "book",
+      "glyph_rendering": {
+        "kind": "system_symbol",
+        "name": "book"
+      },
+      "label": "WORD",
+      "label_key": "marker.word",
+      "alternate_labels": [],
+      "frame": "none",
+      "body": {
+        "face": "literata",
+        "roles": ["body"],
+        "weight": 600,
+        "treatment": "Headword in Literata 600, then the source sentence and the user's note"
+      },
+      "filter_label": "Words"
+    },
+    "attention": {
+      "category": "status",
+      "capture_kinds": [],
+      "text": {
+        "light": "#A63D2F",
+        "dark": "#E0837A",
+        "light_increased_contrast": "#9E3A2D",
+        "dark_increased_contrast": "#E0837A"
+      },
+      "tint": {
+        "light": "#F3DCD7",
+        "dark": "#322421",
+        "light_increased_contrast": "#EBCCC6",
+        "dark_increased_contrast": "#432E2A"
+      },
+      "glyph": "exclamationmark.triangle",
+      "glyph_rendering": {
+        "kind": "system_symbol",
+        "name": "exclamationmark.triangle"
+      },
+      "label": "NEEDS ATTENTION",
+      "label_key": "marker.attention",
+      "alternate_labels": [],
+      "frame": "tinted_row",
+      "body": {
+        "face": "system",
+        "roles": ["body"],
+        "weight": null,
+        "treatment": "Reason in Body; one or two actions"
+      },
+      "filter_label": null
+    },
+    "pending": {
+      "category": "status",
+      "capture_kinds": [],
+      "text": {
+        "light": "#6B6760",
+        "dark": "#A8A298",
+        "light_increased_contrast": "#646059",
+        "dark_increased_contrast": "#A8A298"
+      },
+      "tint": {
+        "light": "#ECE9E2",
+        "dark": "#2A2925",
+        "light_increased_contrast": "#DFDCD5",
+        "dark_increased_contrast": "#373531"
+      },
+      "glyph": "circle.fill",
+      "glyph_rendering": {
+        "kind": "system_symbol",
+        "name": "circle.fill"
+      },
+      "label": "QUEUED",
+      "label_key": "marker.pending.queued",
+      "alternate_labels": ["WAITING"],
+      "frame": "none",
+      "body": {
+        "face": "system",
+        "roles": ["caption"],
+        "weight": null,
+        "treatment": "Caption; quiet by design"
+      },
+      "filter_label": null
+    }
+  },
+  "capture_kind_mapping": {
+    "kinds": {
+      "text_quote": "quote",
+      "note": "note",
+      "audio_capture": "audio",
+      "generated_answer": "generated",
+      "word": "word"
+    },
+    "matching": "exact, case-sensitive",
+    "unrecognized": {
+      "marker": "pending",
+      "label": "the raw kind string, or the label empty_label_key when the kind is empty or only white space",
+      "empty_label_key": "marker.unknown_kind",
+      "never": "quote"
+    },
+    "status": "text_quote is from plan Appendix A.1; the other kind strings are proposed for the capture-envelope schema"
+  },
+  "symbols": {
+    "sylvia.prompt": {
+      "view_box": [0, 0, 24, 24],
+      "stroke_width": 1.75,
+      "line_cap": "round",
+      "line_join": "round",
+      "polylines": [
+        [
+          [5, 7],
+          [10, 12],
+          [5, 17]
+        ],
+        [
+          [12, 17],
+          [19, 17]
+        ]
+      ],
+      "accessibility_label_key": "symbol.prompt",
+      "board_source": "Docs/Design/canvas/Thoughts.dc.html (Generated marker)"
+    },
+    "sylvia.capture": {
+      "view_box": [0, 0, 24, 24],
+      "stroke_width": 1.75,
+      "line_cap": "round",
+      "line_join": "round",
+      "polylines": [
+        [
+          [7, 4],
+          [4, 4],
+          [4, 20],
+          [7, 20]
+        ],
+        [
+          [17, 4],
+          [20, 4],
+          [20, 20],
+          [17, 20]
+        ],
+        [
+          [9, 10],
+          [9, 14]
+        ],
+        [
+          [12, 8],
+          [12, 16]
+        ],
+        [
+          [15, 11],
+          [15, 13]
+        ]
+      ],
+      "accessibility_label_key": "symbol.capture",
+      "board_source": "Docs/Design/canvas/Player.dc.html (Capture button)"
+    }
+  },
+  "status_glyphs": {
+    "dot": "circle.fill",
+    "check": "checkmark",
+    "triangle": "exclamationmark.triangle"
+  },
+  "typefaces": {
+    "literata": {
+      "family": "Literata",
+      "files": ["Literata-Variable.ttf", "Literata-Italic-Variable.ttf"],
+      "version": "3.103",
+      "license": "OFL-1.1",
+      "axes": {
+        "wght": [200, 900],
+        "opsz": [7, 72]
+      },
+      "optical_size": "equal to the rendered point size, clamped to the axis",
+      "role": "Everything that belongs to a book"
+    },
+    "system": {
+      "apple": "SF Pro",
+      "role": "Everything that belongs to the interface"
+    },
+    "monospace": {
+      "apple": "SF Mono",
+      "role": "Values compared character by character; tabular figures"
+    }
+  },
+  "type": {
+    "display": {
+      "face": "Literata",
+      "weight": 600,
+      "size": 34,
+      "line": 40,
+      "tracking": -0.015,
+      "maps_to": "largeTitle",
+      "uppercase": false,
+      "usage": "Top of each primary area"
+    },
+    "title": {
+      "face": "Literata",
+      "weight": 600,
+      "size": 28,
+      "line": 34,
+      "tracking": -0.01,
+      "maps_to": "title1",
+      "uppercase": false,
+      "usage": "Work titles, sheet titles"
+    },
+    "heading": {
+      "face": "Literata",
+      "weight": 500,
+      "size": 22,
+      "line": 28,
+      "tracking": 0,
+      "maps_to": "title2",
+      "uppercase": false,
+      "usage": "Section and dialog heads"
+    },
+    "reading": {
+      "face": "Literata",
+      "weight": 400,
+      "size": 19,
+      "line": 30,
+      "tracking": 0,
+      "maps_to": "body",
+      "uppercase": false,
+      "usage": "Reader body, quotations",
+      "user_range": [14, 28]
+    },
+    "body": {
+      "face": "system",
+      "weight": 400,
+      "size": 17,
+      "line": 23,
+      "tracking": 0,
+      "maps_to": "body",
+      "uppercase": false,
+      "usage": "All interface text, notes"
+    },
+    "callout": {
+      "face": "system",
+      "weight": 500,
+      "size": 15,
+      "line": 20,
+      "tracking": 0,
+      "maps_to": "subheadline",
+      "uppercase": false,
+      "usage": "Explanations beside an action"
+    },
+    "caption": {
+      "face": "system",
+      "weight": 400,
+      "size": 13,
+      "line": 18,
+      "tracking": 0,
+      "maps_to": "footnote",
+      "uppercase": false,
+      "usage": "Metadata, timestamps"
+    },
+    "micro": {
+      "face": "system",
+      "weight": 600,
+      "size": 11,
+      "line": 14,
+      "tracking": 0.08,
+      "maps_to": "caption2",
+      "uppercase": true,
+      "usage": "Marker labels and section eyebrows only; never body copy"
+    }
+  },
+  "type_scaling": {
+    "units": "size and line in points at the default Dynamic Type size; tracking as a fraction of the size",
+    "dynamic_type": "each role scales in proportion to its maps_to text style's system size at the current text size (iOS: UIFont.preferredFont); line height and tracking scale in proportion",
+    "reading": "the user's size (within user_range at the default text size) scales with the body style",
+    "bold_text_weight_increase": 200,
+    "maximum_weight": 900,
+    "macos": "sizes scale by the ratio of the macOS text style's size to the iOS default size"
+  },
+  "space": {
+    "grid": 4,
+    "steps": [4, 8, 12, 16, 20, 24, 32],
+    "gutter_phone": 20,
+    "gutter_pad": 32
+  },
+  "radius": {
+    "block": 8,
+    "control": 10,
+    "button": 12,
+    "card": 14,
+    "sheet": 22,
+    "pill": "full"
+  },
+  "hairline": {
+    "width": 1,
+    "unit": "pt",
+    "color": "color.hairline"
+  },
+  "elevation": {
+    "shadow": {
+      "x": 0,
+      "y": 8,
+      "blur": 24,
+      "color": "color.shadow",
+      "components": ["sheet", "mini_player"]
+    }
+  },
+  "motion": {
+    "sheet": {
+      "duration_ms": 200,
+      "curve": "ease_out",
+      "stated_in_plan": true
+    },
+    "highlight": {
+      "duration_ms": 120,
+      "curve": "ease_out",
+      "stated_in_plan": false
+    },
+    "progress_rule": {
+      "duration_ms": 200,
+      "curve": "ease_out",
+      "stated_in_plan": false
+    },
+    "reduce_motion": "Remove all motion except opacity changes",
+    "while_reading": "Only highlight appearance and progress rules animate while reading; no bounces, no parallax"
+  },
+  "cover": {
+    "fields": ["color.cover_field_1", "color.cover_field_2", "color.cover_field_3", "color.cover_field_4", "color.cover_field_5"],
+    "title": "color.cover_title",
+    "assignment": "fnv1a32(utf8(nfc(title))) mod 5; fields in listed order; title color cover_title"
+  },
+  "components": {
+    "metrics": {
+      "button_height": {
+        "points": 50,
+        "stated_in_plan": true,
+        "use": "Primary, secondary and destructive buttons"
+      },
+      "minimum_target": {
+        "points": 44,
+        "stated_in_plan": true,
+        "use": "Smallest touch target; quiet and icon buttons"
+      },
+      "button_horizontal_padding": {
+        "points": 16,
+        "stated_in_plan": false,
+        "use": "Button label inset"
+      },
+      "pill_minimum_height": {
+        "points": 22,
+        "stated_in_plan": true,
+        "use": "Status pills and availability badges"
+      },
+      "pill_vertical_padding": {
+        "points": 4,
+        "stated_in_plan": false,
+        "use": "Pill label inset (Caption line 18 + 2 x 4 = 26 pt)"
+      },
+      "pill_horizontal_padding": {
+        "points": 8,
+        "stated_in_plan": false,
+        "use": "Pill label inset"
+      },
+      "glyph_gap": {
+        "points": 4,
+        "stated_in_plan": false,
+        "use": "Gap between a glyph and its label"
+      },
+      "progress_rule_thickness": {
+        "points": 3,
+        "stated_in_plan": true,
+        "use": "Progress rule track (plan: 2-3 pt)"
+      },
+      "card_padding": {
+        "points": 12,
+        "stated_in_plan": true,
+        "use": "Capture card padding (plan: 12-14 pt)"
+      },
+      "mini_player_gap": {
+        "points": 12,
+        "stated_in_plan": true,
+        "use": "Mini-player gap above the tab bar"
+      },
+      "mini_player_cover": {
+        "points": 40,
+        "stated_in_plan": false,
+        "use": "Mini-player cover thumbnail"
+      },
+      "attention_dot": {
+        "points": 8,
+        "stated_in_plan": false,
+        "use": "Inbox attention dot"
+      },
+      "bar_vertical_padding": {
+        "points": 4,
+        "stated_in_plan": false,
+        "use": "Tab bar and navigation bar vertical padding"
+      },
+      "play_control": {
+        "points": 44,
+        "stated_in_plan": false,
+        "use": "Round play control in the audio block"
+      },
+      "waveform_bar_width": {
+        "points": 2,
+        "stated_in_plan": false,
+        "use": "Audio block waveform bars"
+      },
+      "waveform_bar_gap": {
+        "points": 4,
+        "stated_in_plan": false,
+        "use": "Audio block waveform bars"
+      },
+      "waveform_height": {
+        "points": 32,
+        "stated_in_plan": false,
+        "use": "Audio block waveform"
+      },
+      "dash_length": {
+        "points": 4,
+        "stated_in_plan": false,
+        "use": "Dashed 1 pt frames (Generated, dashed availability badges)"
+      },
+      "dash_gap": {
+        "points": 3,
+        "stated_in_plan": false,
+        "use": "Dashed 1 pt frames"
+      },
+      "grabber_width": {
+        "points": 36,
+        "stated_in_plan": false,
+        "use": "Sheet grabber"
+      },
+      "grabber_height": {
+        "points": 5,
+        "stated_in_plan": false,
+        "use": "Sheet grabber"
+      },
+      "chip_horizontal_inset": {
+        "points": 4,
+        "stated_in_plan": false,
+        "use": "Citation chip inset in running text"
+      },
+      "chip_vertical_inset": {
+        "points": 1,
+        "stated_in_plan": false,
+        "use": "Citation chip inset in running text"
+      },
+      "sidebar_width": {
+        "points": 320,
+        "stated_in_plan": false,
+        "use": "iPad sidebar in regular width"
+      },
+      "strikethrough_width": {
+        "points": 1,
+        "stated_in_plan": false,
+        "use": "Strike on unresolved citation chips"
+      },
+      "chip_height": {
+        "points": 36,
+        "stated_in_plan": false,
+        "use": "Filter chip capsule inside a 44 pt target"
+      },
+      "action_tile": {
+        "points": 44,
+        "stated_in_plan": false,
+        "use": "Icon tile of an action card"
+      },
+      "player_cover": {
+        "points": 228,
+        "stated_in_plan": false,
+        "use": "Square cover in the full player"
+      },
+      "player_play_control": {
+        "points": 76,
+        "stated_in_plan": false,
+        "use": "Round play/pause control in the full player"
+      },
+      "list_cover": {
+        "points": 64,
+        "stated_in_plan": false,
+        "use": "2:3 cover in list rows"
+      },
+      "detail_cover": {
+        "points": 112,
+        "stated_in_plan": false,
+        "use": "2:3 cover on the work detail screen"
+      },
+      "reader_pane_width": {
+        "points": 360,
+        "stated_in_plan": false,
+        "use": "Reader Thoughts pane on iPad in regular width"
+      }
+    },
+    "label_weight": 600,
+    "waveform_minimum_level": 0.2,
+    "quiet_label_weight": 500,
+    "pressed_opacity": 0.9,
+    "disabled_opacity": 0.45,
+    "bar_maximum_text_size": "xxxLarge",
+    "separator": " · ",
+    "cover_layout": {
+      "list_aspect_ratio": 0.6666666666666666,
+      "player_aspect_ratio": 1,
+      "thumbnail_maximum_width": 56,
+      "title_scale": 0.15,
+      "author_scale": 0.075,
+      "initial_scale": 0.5,
+      "inset_scale": 0.1,
+      "minimum_title_scale_factor": 0.6,
+      "title_weight": 600,
+      "author_weight": 400
+    },
+    "rating": {
+      "stored_range": [1, 10],
+      "stars": 5,
+      "cleared": "null; never zero",
+      "glyphs": {
+        "full": "star.fill",
+        "half": "star.leadinghalf.filled",
+        "empty": "star"
+      }
+    },
+    "audio_range": {
+      "default_length_ms": 30000,
+      "maximum_length_ms": 120000,
+      "minimum_length_ms": 1000,
+      "step_ms": 1000
+    },
+    "control_symbols": {
+      "area_library": {
+        "glyph": "books.vertical",
+        "use": "Library area in the tab bar and sidebar"
+      },
+      "area_thoughts": {
+        "glyph": "quote.opening",
+        "use": "Thoughts area in the tab bar and sidebar"
+      },
+      "area_inbox": {
+        "glyph": "tray",
+        "use": "Inbox area in the tab bar and sidebar"
+      },
+      "back": {
+        "glyph": "chevron.left",
+        "use": "Back button (navigation bar, reader chrome)"
+      },
+      "search": {
+        "glyph": "magnifyingglass",
+        "use": "Search (navigation bar, reader chrome)"
+      },
+      "settings": {
+        "glyph": "gearshape",
+        "use": "Settings (navigation bar)"
+      },
+      "reader_settings": {
+        "glyph": "textformat.size",
+        "use": "Large content viewer image of the reader's \"Aa\" button"
+      },
+      "bookmark": {
+        "glyph": "bookmark",
+        "use": "Reader bookmark, not set"
+      },
+      "bookmark_set": {
+        "glyph": "bookmark.fill",
+        "use": "Reader bookmark, set"
+      },
+      "play": {
+        "glyph": "play.fill",
+        "use": "Play (mini-player, audio block)"
+      },
+      "pause": {
+        "glyph": "pause.fill",
+        "use": "Pause (mini-player, audio block)"
+      },
+      "step_earlier": {
+        "glyph": "minus",
+        "use": "Move an audio range edge earlier"
+      },
+      "step_later": {
+        "glyph": "plus",
+        "use": "Move an audio range edge later"
+      },
+      "look_up": {
+        "glyph": "book",
+        "use": "Look up action"
+      },
+      "star_full": {
+        "glyph": "star.fill",
+        "use": "Rating star, full"
+      },
+      "star_half": {
+        "glyph": "star.leadinghalf.filled",
+        "use": "Rating star, half"
+      },
+      "star_empty": {
+        "glyph": "star",
+        "use": "Rating star, empty"
+      },
+      "disclosure": {
+        "glyph": "chevron.right",
+        "use": "Disclosure chevron on a row that opens a detail view (Inbox rows, action cards)"
+      },
+      "dismiss": {
+        "glyph": "chevron.down",
+        "use": "Close a full-screen player"
+      },
+      "more": {
+        "glyph": "ellipsis",
+        "use": "More actions (navigation bar)"
+      },
+      "edit": {
+        "glyph": "pencil",
+        "use": "Edit a record; Add a record in onboarding"
+      },
+      "import_file": {
+        "glyph": "arrow.down.to.line",
+        "use": "Import a book (onboarding; navigation bar in Library and Inbox)"
+      },
+      "connect_mac": {
+        "glyph": "laptopcomputer",
+        "use": "Connect a Mac; a paired Mac in the Inbox"
+      },
+      "skip_back": {
+        "glyph": "gobackward.30",
+        "use": "Player: back 30 seconds"
+      },
+      "skip_forward": {
+        "glyph": "goforward.30",
+        "use": "Player: forward 30 seconds"
+      },
+      "send": {
+        "glyph": "arrow.up",
+        "use": "Send a question (Ask)"
+      },
+      "sleep_timer": {
+        "glyph": "moon",
+        "use": "Player sleep timer"
+      },
+      "chapters": {
+        "glyph": "list.bullet",
+        "use": "Player chapters"
+      },
+      "thoughts_pane": {
+        "glyph": "sidebar.right",
+        "use": "Show or hide the reader's Thoughts pane (iPad, regular width)"
+      }
+    },
+    "glyph_text": {
+      "reader_settings": "Aa"
+    },
+    "button_roles": {
+      "primary": {
+        "text": "color.pine_on",
+        "fill": "color.pine",
+        "border": null,
+        "minimum_height": 50
+      },
+      "secondary": {
+        "text": "color.ink",
+        "fill": null,
+        "border": "color.hairline",
+        "minimum_height": 50
+      },
+      "quiet": {
+        "text": "color.pine",
+        "fill": null,
+        "border": null,
+        "minimum_height": 44
+      },
+      "destructive": {
+        "text": "marker.attention.text",
+        "fill": null,
+        "border": "marker.attention.text",
+        "minimum_height": 50
+      }
+    }
+  },
+  "vocabulary": {
+    "save.in_progress": "Saving…",
+    "save.done": "Saved",
+    "save.done_at": "Saved {time}",
+    "save.failed": "Not saved · your text is still here",
+    "import.queued": "Queued",
+    "import.waiting_for_source": "Waiting for {source}",
+    "import.receiving": "Receiving",
+    "import.bytes_verified": "{verified} of {total} verified",
+    "import.verifying": "Verifying",
+    "import.preparing": "Preparing",
+    "import.needs_review": "Needs review",
+    "import.ready": "Ready",
+    "import.ready_indexing": "Ready · indexing continues",
+    "import.needs_attention": "Needs attention",
+    "delivery.queued_on_mac": "Queued on Mac",
+    "delivery.downloaded_to_phone": "Downloaded to phone",
+    "delivery.imported_into_sylvia": "Imported into Sylvia",
+    "audio.moment_saved": "Moment saved · preserving audio",
+    "audio.excerpt_saved": "Audio excerpt saved",
+    "audio.excerpt_not_preserved": "Excerpt not preserved · Retry",
+    "ask.draft_not_sent": "Draft · not sent",
+    "ask.sending": "Sending to {host}",
+    "ask.generated": "Generated",
+    "ask.complete": "Complete",
+    "ask.interrupted": "Interrupted · partial answer",
+    "scope.selected_passage": "Selected passage",
+    "scope.passage_and_nearby": "Passage and nearby text",
+    "scope.work_search": "Relevant passages from this work",
+    "scope.selected_thoughts": "Selected thoughts",
+    "scope.passages_retrieved": "Relevant passages retrieved",
+    "file.on_device": "On this device",
+    "file.not_on_device": "Not on this device · from {source}",
+    "file.record_only": "Record only",
+    "search.saved_thoughts_only": "Saved thoughts only",
+    "search.book_text_indexed": "Book text indexed",
+    "search.indexing": "Indexing {n} of {m} chapters",
+    "search.text_unavailable": "Text unavailable",
+    "remove.download": "Remove download",
+    "remove.manage_retained_text": "Manage retained text",
+    "remove.excerpt_audio": "Remove excerpt audio",
+    "remove.delete_record_and_thoughts": "Delete record and thoughts",
+    "endpoint.hosted": "{host} · hosted",
+    "endpoint.local": "{host} · local",
+    "endpoint.user_managed": "{host} · user-managed",
+    "endpoint.hosted_model": "{host} · hosted · {model}",
+    "endpoint.local_model": "{host} · local · {model}",
+    "endpoint.user_managed_model": "{host} · user-managed · {model}"
+  },
+  "vocabulary_entries": {
+    "save.in_progress": {
+      "moment": "saving",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "save.done": {
+      "moment": "saving",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "save.done_at": {
+      "moment": "saving",
+      "placeholders": [
+        {
+          "name": "time",
+          "kind": "string",
+          "meaning": "Time of the durable commit, short time style, Monospace face"
+        }
+      ],
+      "source": "Section 4.4.6 (\"Saved\" with time); format from the capture-sheet board"
+    },
+    "save.failed": {
+      "moment": "saving",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "import.queued": {
+      "moment": "import_transfer",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "import.waiting_for_source": {
+      "moment": "import_transfer",
+      "placeholders": [
+        {
+          "name": "source",
+          "kind": "string",
+          "meaning": "Display name of the source (for example a paired Mac)"
+        }
+      ],
+      "source": "Section 4.4.6 (draft 0.3 addition); Section 8.2"
+    },
+    "import.receiving": {
+      "moment": "import_transfer",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "import.bytes_verified": {
+      "moment": "import_transfer",
+      "placeholders": [
+        {
+          "name": "verified",
+          "kind": "string",
+          "meaning": "Verified bytes in the total's unit, rounded down, without the unit"
+        },
+        {
+          "name": "total",
+          "kind": "string",
+          "meaning": "Total bytes with unit, for example 5.2 GB"
+        }
+      ],
+      "source": "Section 4.4.6 (verified-of-total bytes); Section 15.5 (\"3.1 of 5.2 GB verified\")"
+    },
+    "import.verifying": {
+      "moment": "import_transfer",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "import.preparing": {
+      "moment": "import_transfer",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "import.needs_review": {
+      "moment": "import_transfer",
+      "placeholders": [],
+      "source": "Section 4.4.6 (draft 0.3 addition); Section 8.2"
+    },
+    "import.ready": {
+      "moment": "import_transfer",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "import.ready_indexing": {
+      "moment": "import_transfer",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "import.needs_attention": {
+      "moment": "import_transfer",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "delivery.queued_on_mac": {
+      "moment": "delivery_receipts",
+      "placeholders": [],
+      "source": "Section 4.4.6 (draft 0.3 addition); Section 16.2"
+    },
+    "delivery.downloaded_to_phone": {
+      "moment": "delivery_receipts",
+      "placeholders": [],
+      "source": "Section 4.4.6 (draft 0.3 addition); Section 16.2"
+    },
+    "delivery.imported_into_sylvia": {
+      "moment": "delivery_receipts",
+      "placeholders": [],
+      "source": "Section 4.4.6 (draft 0.3 addition); Section 16.2"
+    },
+    "audio.moment_saved": {
+      "moment": "capturing_audio",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "audio.excerpt_saved": {
+      "moment": "capturing_audio",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "audio.excerpt_not_preserved": {
+      "moment": "capturing_audio",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "ask.draft_not_sent": {
+      "moment": "asking_model",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "ask.sending": {
+      "moment": "asking_model",
+      "placeholders": [
+        {
+          "name": "host",
+          "kind": "string",
+          "meaning": "Endpoint host name"
+        }
+      ],
+      "source": "Section 4.4.6"
+    },
+    "ask.generated": {
+      "moment": "asking_model",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "ask.complete": {
+      "moment": "asking_model",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "ask.interrupted": {
+      "moment": "asking_model",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "scope.selected_passage": {
+      "moment": "context_scope",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "scope.passage_and_nearby": {
+      "moment": "context_scope",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "scope.work_search": {
+      "moment": "context_scope",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "scope.selected_thoughts": {
+      "moment": "context_scope",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "scope.passages_retrieved": {
+      "moment": "context_scope",
+      "placeholders": [],
+      "source": "Section 4.4.6 (draft 0.3 addition); Section 13.1"
+    },
+    "file.on_device": {
+      "moment": "file_location",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "file.not_on_device": {
+      "moment": "file_location",
+      "placeholders": [
+        {
+          "name": "source",
+          "kind": "string",
+          "meaning": "Display name of the source (for example a paired Mac)"
+        }
+      ],
+      "source": "Section 4.4.6"
+    },
+    "file.record_only": {
+      "moment": "file_location",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "search.saved_thoughts_only": {
+      "moment": "search_coverage",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "search.book_text_indexed": {
+      "moment": "search_coverage",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "search.indexing": {
+      "moment": "search_coverage",
+      "placeholders": [
+        {
+          "name": "n",
+          "kind": "integer",
+          "meaning": "Chapters indexed so far"
+        },
+        {
+          "name": "m",
+          "kind": "integer",
+          "meaning": "Chapters in the work"
+        }
+      ],
+      "plural": {
+        "placeholder": "m",
+        "one": "{m} chapter",
+        "other": "{m} chapters"
+      },
+      "source": "Section 4.4.6"
+    },
+    "search.text_unavailable": {
+      "moment": "search_coverage",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "remove.download": {
+      "moment": "removing",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "remove.manage_retained_text": {
+      "moment": "removing",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "remove.excerpt_audio": {
+      "moment": "removing",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "remove.delete_record_and_thoughts": {
+      "moment": "removing",
+      "placeholders": [],
+      "source": "Section 4.4.6"
+    },
+    "endpoint.hosted": {
+      "moment": "endpoint_disclosure",
+      "placeholders": [
+        {
+          "name": "host",
+          "kind": "string",
+          "meaning": "Endpoint host name"
+        }
+      ],
+      "source": "Section 4.4.6"
+    },
+    "endpoint.local": {
+      "moment": "endpoint_disclosure",
+      "placeholders": [
+        {
+          "name": "host",
+          "kind": "string",
+          "meaning": "Endpoint host name"
+        }
+      ],
+      "source": "Section 4.4.6"
+    },
+    "endpoint.user_managed": {
+      "moment": "endpoint_disclosure",
+      "placeholders": [
+        {
+          "name": "host",
+          "kind": "string",
+          "meaning": "Endpoint host name"
+        }
+      ],
+      "source": "Section 4.4.6"
+    },
+    "endpoint.hosted_model": {
+      "moment": "endpoint_disclosure",
+      "placeholders": [
+        {
+          "name": "host",
+          "kind": "string",
+          "meaning": "Endpoint host name"
+        },
+        {
+          "name": "model",
+          "kind": "string",
+          "meaning": "Model identifier as configured"
+        }
+      ],
+      "source": "Section 4.4.6 (\"with the model identifier\"); Section 14.2"
+    },
+    "endpoint.local_model": {
+      "moment": "endpoint_disclosure",
+      "placeholders": [
+        {
+          "name": "host",
+          "kind": "string",
+          "meaning": "Endpoint host name"
+        },
+        {
+          "name": "model",
+          "kind": "string",
+          "meaning": "Model identifier as configured"
+        }
+      ],
+      "source": "Section 4.4.6 (\"with the model identifier\"); Section 14.2"
+    },
+    "endpoint.user_managed_model": {
+      "moment": "endpoint_disclosure",
+      "placeholders": [
+        {
+          "name": "host",
+          "kind": "string",
+          "meaning": "Endpoint host name"
+        },
+        {
+          "name": "model",
+          "kind": "string",
+          "meaning": "Model identifier as configured"
+        }
+      ],
+      "source": "Section 4.4.6 (\"with the model identifier\"); Section 14.2"
+    }
+  },
+  "status_moments": {
+    "saving": {
+      "title": "Saving a thought",
+      "state_machine": "Section 11.1 capture transaction",
+      "phrases": ["save.in_progress", "save.done", "save.done_at", "save.failed"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Done",
+          "qualifier": null
+        },
+        {
+          "kind": "phrase",
+          "text": "Success",
+          "qualifier": null
+        },
+        {
+          "kind": "behavior",
+          "text": "a dismissed sheet with nothing written",
+          "qualifier": null
+        }
+      ]
+    },
+    "import_transfer": {
+      "title": "Import and transfer",
+      "state_machine": "Section 8.2; Section 15.5",
+      "phrases": ["import.queued", "import.waiting_for_source", "import.receiving", "import.bytes_verified", "import.verifying", "import.preparing", "import.needs_review", "import.ready", "import.ready_indexing", "import.needs_attention"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Complete",
+          "qualifier": "before Ready"
+        },
+        {
+          "kind": "phrase",
+          "text": "Error",
+          "qualifier": null
+        },
+        {
+          "kind": "phrase",
+          "text": "Downloading",
+          "qualifier": "for a Mac transfer that is verified by parts"
+        }
+      ]
+    },
+    "delivery_receipts": {
+      "title": "Delivery receipts (Mac companion)",
+      "state_machine": "Section 16.2",
+      "phrases": ["delivery.queued_on_mac", "delivery.downloaded_to_phone", "delivery.imported_into_sylvia"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Sent",
+          "qualifier": null
+        },
+        {
+          "kind": "phrase",
+          "text": "Delivered",
+          "qualifier": "as a claim that the item was imported"
+        }
+      ]
+    },
+    "capturing_audio": {
+      "title": "Capturing audio",
+      "state_machine": "Section 10.2",
+      "phrases": ["audio.moment_saved", "audio.excerpt_saved", "audio.excerpt_not_preserved"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Clip saved",
+          "qualifier": "before export"
+        },
+        {
+          "kind": "behavior",
+          "text": "any transcript text that was not transcribed",
+          "qualifier": null
+        }
+      ]
+    },
+    "asking_model": {
+      "title": "Asking a model",
+      "state_machine": "Section 14.4",
+      "phrases": ["ask.draft_not_sent", "ask.sending", "ask.generated", "ask.complete", "ask.interrupted"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Thinking…",
+          "qualifier": null
+        },
+        {
+          "kind": "phrase",
+          "text": "The AI read your book",
+          "qualifier": null
+        },
+        {
+          "kind": "phrase",
+          "text": "Free with your subscription",
+          "qualifier": null
+        }
+      ]
+    },
+    "context_scope": {
+      "title": "Context scope",
+      "state_machine": "Section 13.1",
+      "phrases": ["scope.selected_passage", "scope.passage_and_nearby", "scope.work_search", "scope.selected_thoughts", "scope.passages_retrieved"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Whole book",
+          "qualifier": "unless it truly fits and was chosen"
+        },
+        {
+          "kind": "phrase",
+          "text": "Understands your library",
+          "qualifier": null
+        },
+        {
+          "kind": "phrase",
+          "text": "The AI read the entire book",
+          "qualifier": null
+        }
+      ]
+    },
+    "file_location": {
+      "title": "Where a file is",
+      "state_machine": "Sections 7.1, 12",
+      "phrases": ["file.on_device", "file.not_on_device", "file.record_only"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Deleted",
+          "qualifier": null
+        },
+        {
+          "kind": "phrase",
+          "text": "Missing",
+          "qualifier": null
+        },
+        {
+          "kind": "phrase",
+          "text": "Broken",
+          "qualifier": null
+        }
+      ]
+    },
+    "search_coverage": {
+      "title": "Search coverage",
+      "state_machine": "Section 11.3",
+      "phrases": ["search.saved_thoughts_only", "search.book_text_indexed", "search.indexing", "search.text_unavailable"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Semantic search",
+          "qualifier": null
+        },
+        {
+          "kind": "phrase",
+          "text": "Searched everything",
+          "qualifier": null
+        }
+      ]
+    },
+    "removing": {
+      "title": "Removing things",
+      "state_machine": "Section 17.2",
+      "phrases": ["remove.download", "remove.manage_retained_text", "remove.excerpt_audio", "remove.delete_record_and_thoughts"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Delete",
+          "qualifier": "alone"
+        },
+        {
+          "kind": "behavior",
+          "text": "a trash icon on a download",
+          "qualifier": null
+        }
+      ]
+    },
+    "endpoint_disclosure": {
+      "title": "Endpoint disclosure",
+      "state_machine": "Section 14.2",
+      "phrases": ["endpoint.hosted", "endpoint.local", "endpoint.user_managed", "endpoint.hosted_model", "endpoint.local_model", "endpoint.user_managed_model"],
+      "forbidden": [
+        {
+          "kind": "phrase",
+          "text": "Secure",
+          "qualifier": "as an unqualified claim"
+        },
+        {
+          "kind": "phrase",
+          "text": "Private",
+          "qualifier": "as an unqualified claim"
+        }
+      ]
+    }
+  },
+  "import_state_mapping": {
+    "created": {
+      "shown": true,
+      "phrase": "import.queued",
+      "glyph": "dot",
+      "text": "marker.pending.text",
+      "fill": "marker.pending.tint",
+      "requires_reason_and_next_step": false
+    },
+    "acquiring": {
+      "shown": true,
+      "phrase": "import.receiving",
+      "glyph": "dot",
+      "text": "marker.pending.text",
+      "fill": "marker.pending.tint",
+      "requires_reason_and_next_step": false
+    },
+    "staged": {
+      "shown": true,
+      "phrase": "import.verifying",
+      "glyph": "dot",
+      "text": "marker.pending.text",
+      "fill": "marker.pending.tint",
+      "requires_reason_and_next_step": false
+    },
+    "validating": {
+      "shown": true,
+      "phrase": "import.verifying",
+      "glyph": "dot",
+      "text": "marker.pending.text",
+      "fill": "marker.pending.tint",
+      "requires_reason_and_next_step": false
+    },
+    "identifying": {
+      "shown": true,
+      "phrase": "import.preparing",
+      "glyph": "dot",
+      "text": "marker.pending.text",
+      "fill": "marker.pending.tint",
+      "requires_reason_and_next_step": false
+    },
+    "needs_review": {
+      "shown": true,
+      "phrase": "import.needs_review",
+      "glyph": "triangle",
+      "text": "marker.attention.text",
+      "fill": "marker.attention.tint",
+      "requires_reason_and_next_step": false
+    },
+    "committing": {
+      "shown": true,
+      "phrase": "import.preparing",
+      "glyph": "dot",
+      "text": "marker.pending.text",
+      "fill": "marker.pending.tint",
+      "requires_reason_and_next_step": false
+    },
+    "ready": {
+      "shown": true,
+      "phrase": "import.ready",
+      "phrase_while_indexing": "import.ready_indexing",
+      "glyph": "check",
+      "text": "color.pine",
+      "fill": "color.pine_tint",
+      "requires_reason_and_next_step": false
+    },
+    "waiting_for_source": {
+      "shown": true,
+      "phrase": "import.waiting_for_source",
+      "glyph": "dot",
+      "text": "marker.pending.text",
+      "fill": "marker.pending.tint",
+      "requires_reason_and_next_step": false
+    },
+    "waiting_for_space": {
+      "shown": true,
+      "phrase": "import.needs_attention",
+      "glyph": "triangle",
+      "text": "marker.attention.text",
+      "fill": "marker.attention.tint",
+      "requires_reason_and_next_step": true
+    },
+    "unsupported": {
+      "shown": true,
+      "phrase": "import.needs_attention",
+      "glyph": "triangle",
+      "text": "marker.attention.text",
+      "fill": "marker.attention.tint",
+      "requires_reason_and_next_step": true
+    },
+    "failed_retryable": {
+      "shown": true,
+      "phrase": "import.needs_attention",
+      "glyph": "triangle",
+      "text": "marker.attention.text",
+      "fill": "marker.attention.tint",
+      "requires_reason_and_next_step": true
+    },
+    "failed_final": {
+      "shown": true,
+      "phrase": "import.needs_attention",
+      "glyph": "triangle",
+      "text": "marker.attention.text",
+      "fill": "marker.attention.tint",
+      "requires_reason_and_next_step": true
+    },
+    "cancelled": {
+      "shown": false,
+      "note": "leaves the Inbox"
+    }
+  },
+  "labels": {
+    "marker.quote": "Quote",
+    "marker.note": "Note",
+    "marker.audio": "Audio",
+    "marker.generated": "Generated",
+    "marker.word": "Word",
+    "marker.attention": "Needs attention",
+    "marker.pending.queued": "Queued",
+    "marker.pending.waiting": "Waiting",
+    "marker.unknown_kind": "Unknown kind",
+    "filter.all": "All",
+    "filter.quotes": "Quotes",
+    "filter.notes": "Notes",
+    "filter.audio": "Audio",
+    "filter.generated": "Generated",
+    "filter.words": "Words",
+    "symbol.prompt": "Generated",
+    "symbol.capture": "Capture",
+    "control.capture_recent": "Capture the last 30 seconds",
+    "capture.your_note": "Your note",
+    "audio.no_transcript": "No transcript",
+    "audio.transcript": "Transcript",
+    "area.library": "Library",
+    "area.thoughts": "Thoughts",
+    "area.inbox": "Inbox",
+    "nav.search": "Search",
+    "nav.settings": "Settings",
+    "nav.back": "Back",
+    "control.play": "Play",
+    "control.pause": "Pause",
+    "control.open_player_hint": "Opens the player",
+    "control.play_excerpt": "Play excerpt",
+    "control.pause_excerpt": "Pause excerpt",
+    "capture.sheet_title": "Save to thoughts",
+    "action.save": "Save",
+    "action.save_again_hint": "Tries to save again",
+    "action.close_hint": "Closes the sheet",
+    "action.look_up": "Look up",
+    "action.ask": "Ask",
+    "action.highlight": "Highlight",
+    "action.note": "Note",
+    "capture.start": "Start",
+    "capture.end": "End",
+    "capture.length": "Length",
+    "control.start_earlier": "Start earlier",
+    "control.start_later": "Start later",
+    "control.end_earlier": "End earlier",
+    "control.end_later": "End later",
+    "rating.label": "Rating",
+    "rating.clear": "Clear rating",
+    "rating.none": "No rating",
+    "reader.settings": "Reader settings",
+    "reader.bookmark": "Bookmark",
+    "reader.search": "Search in book",
+    "citation.unresolved_explanation": "Struck-through citations do not match any passage that was sent.",
+    "reader.highlighted": "Highlighted",
+    "reader.saved_thought": "Saved thought here"
+  },
+  "formats": {
+    "duration.hours_minutes": "{hours}h {minutes}m",
+    "duration.minutes": "{minutes}m",
+    "duration.seconds": "{seconds}s",
+    "duration.left": "{duration} left",
+    "position.chapter": "Chapter {n} of {m}",
+    "position.part": "Part {n} of {m}",
+    "rating.value": "{stars} of 5 stars",
+    "citation.resolved": "Citation {id}",
+    "citation.unresolved": "Unresolved citation {id}"
+  },
+  "lint": {
+    "permitted_phrases": ["Saving…", "Saved", "Saved {time}", "Not saved · your text is still here", "Queued", "Waiting for {source}", "Receiving", "{verified} of {total} verified", "Verifying", "Preparing", "Needs review", "Ready", "Ready · indexing continues", "Needs attention", "Queued on Mac", "Downloaded to phone", "Imported into Sylvia", "Moment saved · preserving audio", "Audio excerpt saved", "Excerpt not preserved · Retry", "Draft · not sent", "Sending to {host}", "Generated", "Complete", "Interrupted · partial answer", "Selected passage", "Passage and nearby text", "Relevant passages from this work", "Selected thoughts", "Relevant passages retrieved", "On this device", "Not on this device · from {source}", "Record only", "Saved thoughts only", "Book text indexed", "Indexing {n} of {m} chapters", "Indexing {n} of {m} chapter", "Text unavailable", "Remove download", "Manage retained text", "Remove excerpt audio", "Delete record and thoughts", "{host} · hosted", "{host} · local", "{host} · user-managed", "{host} · hosted · {model}", "{host} · local · {model}", "{host} · user-managed · {model}"],
+    "forbidden_phrases": ["Done", "Success", "Complete", "Error", "Downloading", "Sent", "Delivered", "Clip saved", "Thinking…", "The AI read your book", "Free with your subscription", "Whole book", "Understands your library", "The AI read the entire book", "Deleted", "Missing", "Broken", "Semantic search", "Searched everything", "Delete", "Secure", "Private"],
+    "placeholder_syntax": "{name} matches any text"
+  }
+}

@@ -1,0 +1,227 @@
+# Clean CI run for G0.6 (parts 1-3, review round 1 and round 2 fixes)
+# Command: SYLVIA_G06_EVIDENCE_DIR=Docs/Stage0/evidence/G06-Design Scripts/ci.sh contracts design
+# After: rm -rf Packages/Design/.build Apps/DesignCatalog/.build Apps/DesignCatalog/DesignCatalog.xcodeproj .build/ci-logs .build/DerivedData
+#   (no build products, no DerivedData, no resolved package checkouts, no generated project); the drop-ins remove the part 3 screenshots and reports they regenerate
+# Simulators: Sylvia-M0-g06-design (iPhone 17), Sylvia-M0-g06-design-SE, Sylvia-M0-g06-design-iPad (iOS 26.5)
+# Started: 2026-10-12T05:11:34Z on macOS 26.6.2 (25G83), Apple M5 Max
+# Commit: 7c7ef31ef8a74a18961e67eecbb759005627e27f
+
+==> 10-contracts
+    pass (0s)
+==> 20-design
+    pass (154s)
+==> 21-design-catalog
+    pass (2580s)
+all 3 steps passed
+# ci.sh exit status: 0
+# Finished: 2026-10-12T05:57:08Z
+
+=== .build/ci-logs/10-contracts.log ===
+schemas: 1  fixtures: 14  openapi: 0  instances: 1
+
+=== .build/ci-logs/20-design.log ===
+
+--- toolchain (2026-10-12T05:11:34Z)
+Xcode 27.0
+Build version 27A266a
+swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+
+--- design lint self-test (Scripts/lint-design.py self-test) (2026-10-12T05:11:35Z)
+self-test ok: Packages/Design/LintFixtures/violating/Bypasses.swift: 39 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Colors.swift: 15 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Fonts.swift: 13 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Literal.colorset: 1 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Multiline.swift: 44 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Phrases.swift: 22 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Strings.xcstrings: 1 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/clean/Clean.swift: clean
+self-test ok: target discovery (Apps and UI packages in; Domain, Design, Spikes and Tests out)
+self-test ok: lint Spikes/G06 exits 2
+self-test ok: lint Apps/Sylvia/Tests exits 2
+self-test ok: lint Packages/Design/Sources exits 2
+self-test ok: lint Apps/Missing exits 2
+self-test ok: lint Apps/Sylvia/Sources exits 1
+lint self-test: 14 sample file(s), 0 failure(s)
+
+--- design lint over product UI targets (Scripts/lint-design.py lint) (2026-10-12T05:11:35Z)
+design lint: UI targets scanned: Apps
+design lint: 16 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+design lint: 0 finding(s)
+
+--- token export drift check (sylvia-design-export check) (2026-10-12T05:11:35Z)
+Build complete! (5.20 sec)
+design export check: 52 generated files match the token definitions
+
+--- design-token fixtures: one reason per invalid fixture (Scripts/lint-design.py fixtures) (2026-10-12T05:11:44Z)
+ok   busy-state-exempted.json: one change at contrast/component_pairs; 1 error(s) all there: 'disabled' was expected
+ok   color-hex-without-hash.json: one change at color/ground/light; 1 error(s) all there: 'F4F2ED' does not match '^#[0-9A-F]{6}([0-9A-F]{2})?$'
+ok   large-text-boundary-lowered.json: one change at contrast/large_text_minimum_points; 1 error(s) all there: 10 is less than the minimum of 24
+ok   marker-label-not-uppercase.json: one change at marker/quote/label; 1 error(s) all there: 'Quote' does not match '^[A-Z][A-Z ]*$'
+ok   missing-marker-pending.json: one change at marker/pending; 1 error(s) all there: 'pending' is a required property
+ok   missing-type-role-micro.json: one change at type/micro; 1 error(s) all there: 'micro' is a required property
+ok   reading-without-user-range.json: one change at type/reading/user_range; 1 error(s) all there: 'user_range' is a required property
+ok   schema-version-2.json: one change at schema_version; 1 error(s) all there: 1 was expected
+ok   unknown-appearance-key.json: one change at color/ground/sepia; 1 error(s) all there: Additional properties are not allowed ('sepia' was unexpected)
+ok   unknown-kind-renders-as-quote.json: one change at capture_kind_mapping/unrecognized/marker; 1 error(s) all there: 'pending' was expected
+ok   vocabulary-exclamation-mark.json: one change at vocabulary/save.done; 1 error(s) all there: 'Saved!' does not match '^[^!]+$'
+ok   weakened-contrast-threshold.json: one change at contrast/minimum_ratio; 1 error(s) all there: 4 is less than the minimum of 4.5
+ok   marginalia-v1-export.json: valid
+ok   unknown-optional-top-level-field.json: valid
+design-token fixtures: 0 failure(s)
+
+--- contrast over the exported JSON (Python, Scripts/lint-design.py contrast) (2026-10-12T05:11:45Z)
+contrast: 176 measurements, 0 failing, lowest 4.52; 56 component measurements, 0 failing, 16 exempt (disabled) below the minimum
+
+--- contrast over the token definitions (Swift, sylvia-design-export contrast-table) (2026-10-12T05:11:45Z)
+wrote /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a4c596ac-ffb-1/Docs/Stage0/evidence/G06-Design/contrast-tokens.md: 176 measurements, 0 failing; 56 component measurements, 0 failing
+
+--- snapshot references present (2026-10-12T05:11:45Z)
+527 reference images, 37900 KiB
+
+--- SylviaDesign tests on host (platform=macOS) (2026-10-12T05:11:45Z)
+✔ Test run with 59 tests in 6 suites passed after 0.070 seconds.
+✔ Test run with 49 tests in 6 suites passed after 0.165 seconds.
+** TEST SUCCEEDED **
+simulator Sylvia-M0-g06-design: 5F2BC885-C36B-435E-B038-F1F140433E6A (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+
+--- SylviaDesign tests on simulator (id=5F2BC885-C36B-435E-B038-F1F140433E6A) (2026-10-12T05:12:01Z)
+✔ Test run with 59 tests in 6 suites passed after 0.084 seconds.
+✔ Test run with 58 tests in 6 suites passed after 0.156 seconds.
+✔ Test run with 28 tests in 4 suites passed after 62.972 seconds.
+** TEST SUCCEEDED **
+simulator reports written: t51-layout-audit-simulator.md t53-marker-pairs-simulator.md t53-pill-pairs-simulator.md t53-availability-badges-simulator.md t53-generated-frame-simulator.md t53-buttons-grayscale-simulator.md t53-rating-grayscale-simulator.md accessibility-tree-simulator.md
+
+--- negative check: changed references fail the snapshot suite (2026-10-12T05:13:17Z)
+xcodebuild exit 65; issues on the changed sample: 2; on other samples: 0
+  289425 of 289440 grey pixels differ (largest difference 221 levels)
+  Newly-taken snapshot does not match reference.
+↳ Snapshot "light-default" does not match reference.
+↳ Snapshot "light-default-gray" does not match reference.
+
+--- snapshot reference inventory (2026-10-12T05:14:06Z)
+# Snapshot references
+
+Directory: `Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests`.
+Recorded on the reference device of `RecordingDevice` (model iPhone18,3, iOS 26.5; the suite refuses to compare on any other). Compared in this run on the simulator Sylvia-M0-g06-design (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5). 527 PNG files, 37900 KiB on disk.
+
+| Sample | Files | KiB |
+| --- | --- | --- |
+| actionCards | 17 | 891 |
+| areaTitle | 17 | 312 |
+| availabilityBadges | 17 | 361 |
+| buttons | 17 | 569 |
+| captureCard-audio | 17 | 1802 |
+| captureCard-generated | 17 | 1982 |
+| captureCard-note | 17 | 1155 |
+| captureCard-quote | 17 | 2466 |
+| captureCard-word | 17 | 2460 |
+| captureSheet-audio | 17 | 1064 |
+| captureSheet-quote | 17 | 2754 |
+| captureSheet-saveStates | 17 | 590 |
+| card | 17 | 638 |
+| filterChips | 17 | 718 |
+| impactReport | 17 | 2795 |
+| inboxRows | 17 | 2786 |
+| markerRows | 17 | 2112 |
+| miniPlayer | 17 | 455 |
+| navigationBar | 17 | 185 |
+| playPauseButton | 17 | 99 |
+| progressRule | 17 | 357 |
+| rating | 17 | 250 |
+| readerChrome | 17 | 2135 |
+| readingParagraph | 17 | 3807 |
+| selectionMenu | 17 | 244 |
+| sidebar | 17 | 293 |
+| statusBanners | 17 | 1323 |
+| statusPills | 17 | 928 |
+| tabBar | 17 | 258 |
+| textField | 17 | 639 |
+| typographicCover | 17 | 375 |
+
+--- generated files unchanged by the builds (2026-10-12T05:14:08Z)
+design export check: 52 generated files match the token definitions
+
+20-design: all checks passed; outputs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a4c596ac-ffb-1/Docs/Stage0/evidence/G06-Design
+
+=== .build/ci-logs/21-design-catalog.log ===
+
+--- toolchain (2026-10-12T05:14:08Z)
+Xcode 27.0
+Build version 27A266a
+
+--- design lint over the catalog, no exemptions (Scripts/lint-design.py lint Apps/DesignCatalog) (2026-10-12T05:14:08Z)
+design lint: UI targets scanned: Apps/DesignCatalog
+design lint: 16 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+design lint: 0 finding(s)
+
+--- project generation and package lock (2026-10-12T05:14:08Z)
+lock matches Packages/Design/Package.resolved
+iPhone simulator Sylvia-M0-g06-design: 5F2BC885-C36B-435E-B038-F1F140433E6A (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+iPhone SE simulator Sylvia-M0-g06-design-SE: 56E6DDDD-965F-4C62-ADD5-DB28196F9D55 (com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+iPad simulator Sylvia-M0-g06-design-iPad: 8B93E993-C500-462C-96C5-F802907F32DB (com.apple.CoreSimulator.SimDeviceType.iPad-A16, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+
+--- build for testing (iOS simulator) (2026-10-12T05:14:09Z)
+** TEST BUILD SUCCEEDED **
+no warnings in Apps/DesignCatalog
+
+--- tests on unit-iphone-simulator (5F2BC885-C36B-435E-B038-F1F140433E6A): DesignCatalogTests (2026-10-12T05:14:24Z)
+Test Case '-[DesignCatalogTests.SaveOrderingTests testAudioCaptureScreenSavesThroughTheWrite]' passed (0.024 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testCommitWritesTheRecordBeforeReturning]' passed (0.002 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testExcerptSavedOnlyAfterTheExcerptRecordIsWritten]' passed (0.518 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedCommitWritesNothing]' passed (0.004 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedDiskWriteLeavesNothingForTheNextCommit]' passed (0.002 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedExcerptIsNotSaved]' passed (0.067 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedMomentWriteSavesNothing]' passed (0.403 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedSaveKeepsTheTextAndWritesNothing]' passed (0.131 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testInterruptedAnswerIsNeverComplete]' passed (2.327 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite]' passed (0.527 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testStoppedAnswerKeepsWhatArrived]' passed (1.522 seconds).
+	 Executed 11 tests, with 0 failures (0 unexpected) in 5.527 (5.530) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 5.527 (5.531) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 5.527 (5.532) seconds
+
+--- tests on ui-iphone-simulator (5F2BC885-C36B-435E-B038-F1F140433E6A): DesignCatalogUITests/PhonePrototypeTests DesignCatalogUITests/CatalogGalleryTests DesignCatalogUITests/AreaNavigationTests (2026-10-12T05:14:33Z)
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testHardwareKeyboardSwitchesAreas]' passed (8.580 seconds).
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testLargeContentViewerActivatesControlsOnce]' passed (48.213 seconds).
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testLargeContentViewerOnTabBarItem]' passed (17.318 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 74.111 (74.112) seconds
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testColorPageContrastInEveryAppearance]' passed (18.115 seconds).
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testEverySamplePage]' passed (5.037 seconds).
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testIndexAndDisplaySwitches]' passed (20.710 seconds).
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testTextFieldSampleLabels]' passed (6.321 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 50.183 (50.185) seconds
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testCaptureSavesOnlyAfterTheWrite]' passed (10.225 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenAtAX5]' passed (601.642 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenInDark]' passed (319.875 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenInLight]' passed (318.954 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testFailedSaveKeepsTheText]' passed (9.237 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testInboxAttentionDotFollowsTheInbox]' passed (8.467 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testSavedSheetDismissesWithTheSameDrag]' passed (7.097 seconds).
+	 Executed 7 tests, with 0 failures (0 unexpected) in 1275.496 (1275.499) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 1399.791 (1399.797) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 1399.791 (1399.797) seconds
+
+--- tests on ui-iphone-se-simulator (56E6DDDD-965F-4C62-ADD5-DB28196F9D55): DesignCatalogUITests/PhonePrototypeTests/testEveryScreenInLight DesignCatalogUITests/PhonePrototypeTests/testEveryScreenAtAX5 DesignCatalogUITests/CatalogGalleryTests/testEverySamplePage (2026-10-12T05:37:57Z)
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testEverySamplePage]' passed (5.281 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 5.281 (5.281) seconds
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenAtAX5]' passed (656.313 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenInLight]' passed (355.503 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 1011.816 (1011.817) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1017.097 (1017.100) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1017.097 (1017.101) seconds
+
+--- tests on ui-ipad-simulator (8B93E993-C500-462C-96C5-F802907F32DB): DesignCatalogUITests/PadLayoutTests DesignCatalogUITests/AreaNavigationTests/testHardwareKeyboardSwitchesAreas (2026-10-12T05:55:02Z)
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testHardwareKeyboardSwitchesAreas]' passed (9.213 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 9.213 (9.213) seconds
+Test Case '-[DesignCatalogUITests.PadLayoutTests testRegularWidthLayout]' passed (104.808 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 104.808 (104.809) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 114.021 (114.023) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 114.021 (114.024) seconds
+
+--- evidence written by the UI tests (2026-10-12T05:57:08Z)
+196 screenshots, 21636 KiB
+every report row: 0 truncated, 0 outside
+
+21-design-catalog: all checks passed; outputs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a4c596ac-ffb-1/Docs/Stage0/evidence/G06-Design

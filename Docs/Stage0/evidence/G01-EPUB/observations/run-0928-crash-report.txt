@@ -1,0 +1,39 @@
+EPUBHarness crash reports for crashes during this run: 1
+
+Older reports modified during this run (no new report written for a repeated crash): EPUBHarness-2026-10-07-045932.ips
+
+== EPUBHarness-2026-10-07-092859.ips
+app: EPUBHarness com.jevidon.sylvia.spike.epub  os: macOS 26.6.2 (25G83)  pid: 21550  captured: 2026-10-07 09:28:56.0654 +1300
+exception: EXC_BAD_ACCESS SIGBUS - Thread stack size exceeded due to excessive recursion
+termination: Bus error: 10
+crashing thread: 36 frames (repeats collapsed)
+  libswiftCore.dylib  swift::MetadataCacheKey::operator==(swift::MetadataCacheKey const&) const
+  libswiftCore.dylib  std::__1::pair<swift::GenericCacheEntry*, bool> swift::StableAddressConcurrentReadableHashMap<swift::GenericCacheEntry, swift::TaggedMetadataAllocator<(unsigned short)14>, swift::Mutex>::getOrInsert<swift::MetadataCacheKey, swift::MetadataWaitQueue::Worker&, swift::MetadataRequest&, swift::TargetTypeContextDescriptor<swift::InProcess> const*&, void const* const*&>(swift::MetadataCacheKey, swift::MetadataWaitQueue::Worker&, swift::MetadataRequest&, swift::TargetTypeContextDescriptor<swift::InProcess> const*&, void const* const*&)
+  libswiftCore.dylib  std::__1::pair<swift::GenericCacheEntry*, swift::MetadataResponse> swift::LockingConcurrentMap<swift::GenericCacheEntry, swift::LockingConcurrentMapStorage<swift::GenericCacheEntry, (unsigned short)14>>::getOrInsert<swift::MetadataCacheKey, swift::MetadataRequest&, swift::TargetTypeContextDescriptor<swift::InProcess> const*&, void const* const*&>(swift::MetadataCacheKey, swift::MetadataRequest&, swift::TargetTypeContextDescriptor<swift::InProcess> const*&, void const* const*&)
+  libswiftCore.dylib  _swift_getGenericMetadata(swift::MetadataRequest, void const* const*, swift::TargetTypeContextDescriptor<swift::InProcess> const*)
+  libswiftCore.dylib  __swift_instantiateCanonicalPrespecializedGenericMetadata
+  libswiftCore.dylib  _ContiguousArrayBuffer.init(_uninitializedCount:minimumCapacity:)
+  libswiftCore.dylib  static Array._allocateUninitialized(_:)
+  libswiftCore.dylib  specialized Array.init(repeating:count:)
+  libswiftCore.dylib  Array.init(repeating:count:)
+  SwiftSoup_-5E59CDCC5017C843_PackageProduct  closure #1 in String.utf8Array.getter
+  SwiftSoup_-5E59CDCC5017C843_PackageProduct  partial apply for closure #1 in String.utf8Array.getter
+  libswiftCore.dylib  String.UTF8View.withContiguousStorageIfAvailable<A>(_:)
+  SwiftSoup_-5E59CDCC5017C843_PackageProduct  String.utf8Array.getter
+  SwiftSoup_-5E59CDCC5017C843_PackageProduct  Element.attr(_:)
+  EPUBHarness.debug.dylib  Node.language()   x7
+  EPUBHarness.debug.dylib  HTMLResourceContentIterator.ContentParser.tail(_:_:)
+  EPUBHarness.debug.dylib  protocol witness for NodeVisitor.tail(_:_:) in conformance HTMLResourceContentIterator.ContentParser
+  SwiftSoup_-5E59CDCC5017C843_PackageProduct  NodeTraversor.traverse(_:)
+  SwiftSoup_-5E59CDCC5017C843_PackageProduct  Node.traverse(_:)
+  EPUBHarness.debug.dylib  HTMLResourceContentIterator.parse(document:locator:beforeMaxLength:)
+  EPUBHarness.debug.dylib  closure #2 in closure #1 in HTMLResourceContentIterator.elementsTask.getter
+  EPUBHarness.debug.dylib  partial apply for closure #2 in closure #1 in HTMLResourceContentIterator.elementsTask.getter
+  EPUBHarness.debug.dylib  closure #1 in Result<>.tryMap<A>(_:)
+  EPUBHarness.debug.dylib  Result.flatMap<A>(_:)
+  EPUBHarness.debug.dylib  Result<>.tryMap<A>(_:)
+  EPUBHarness.debug.dylib  closure #1 in HTMLResourceContentIterator.elementsTask.getter
+  EPUBHarness.debug.dylib  partial apply for closure #1 in HTMLResourceContentIterator.elementsTask.getter
+  EPUBHarness.debug.dylib  thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)
+  EPUBHarness.debug.dylib  partial apply for thunk for @escaping @isolated(any) @callee_guaranteed @async () -> (@out A)
+  libswift_Concurrency.dylib  completeTaskWithClosure(swift::AsyncContext*, swift::SwiftError*)

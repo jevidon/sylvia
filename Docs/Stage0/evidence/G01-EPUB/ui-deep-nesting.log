@@ -1,0 +1,6 @@
+search through the adapter: finished("phase=parse-done mode=search safety=adapter count=0 ms=51 unavailable=OEBPS/c2.xhtml signal_record=none")
+search through the adapter, g01-nesting-bypass.epub: finished("phase=parse-done mode=search safety=adapter count=0 ms=59 unavailable=OEBPS/c3.xhtml signal_record=none")
+iterator through the adapter: finished("phase=parse-done mode=iterator safety=adapter count=2 ms=53 unavailable=OEBPS/c2.xhtml signal_record=none")
+iterator through the adapter, g01-nesting-bypass.epub: finished("phase=parse-done mode=iterator safety=adapter count=4 ms=58 unavailable=OEBPS/c3.xhtml signal_record=none")
+iterator raw (Readium 3.11.0 alone): crashed("phase=parse-started mode=iterator safety=raw pid=19293 signal_record=[signal=SIGBUS code=1 fault_address=0x16be2bfc0 sp=0x16be2c020 stack_limit=0x16be2c000 stack_top=0x16beaf000 thread=unnamed kind=stack-overflow] exited=1")
+search raw (Readium 3.11.0 alone): crashed("phase=parse-started mode=search safety=raw pid=19609 signal_record=[signal=SIGBUS code=1 fault_address=0x16b953fc0 sp=0x16b954020 stack_limit=0x16b954000 stack_top=0x16b9d7000 thread=unnamed kind=stack-overflow] exited=1")

@@ -1,0 +1,84 @@
+{
+  "budget": {
+    "context_limit_source": "default_unknown_model",
+    "context_limit_tokens": 8192,
+    "estimated": true,
+    "estimator": {
+      "kind": "heuristic",
+      "name": "utf8-bytes-div-3"
+    },
+    "evidence_budget_tokens": 5964,
+    "evidence_tokens": 53,
+    "history_tokens": 0,
+    "output_reserve_tokens": 1024,
+    "question_tokens": 36,
+    "safety_margin_tokens": 819,
+    "system_tokens": 349
+  },
+  "conversation_id": "DBB0711C-05EE-40C9-A854-E1F847E481E2",
+  "coverage": "saved_thoughts",
+  "coverage_label": "Selected thoughts only",
+  "created_at": "2026-10-10T00:00:00.123Z",
+  "endpoint": {
+    "base_path": "/v1",
+    "classification": "local",
+    "host": "127.0.0.1",
+    "model": "local-model",
+    "origin": "http://127.0.0.1:1234",
+    "provider_kind": "openai_compatible_chat"
+  },
+  "evidence": [
+    {
+      "capture_id": "43578C29-12B7-4C40-8EC1-1F63FA53D6D1",
+      "citation_id": "c1",
+      "estimated_tokens": 53,
+      "evidence_id": "66DDA5A4-F118-43E4-8A67-53598FE8B146",
+      "location_label": "Note",
+      "origin": "user_note",
+      "role": "thought",
+      "source_quality": "user_entered",
+      "text": "At 2:30 in Book One the reader said something about his grandfather.",
+      "text_sha256": "9336caed7284fa43493c6a38e4a0e44576073a732f1aa190e82637c022e91746"
+    }
+  ],
+  "history": {
+    "excluded_turn_count": 0,
+    "included_turns": []
+  },
+  "limitations": [
+    {
+      "code": "audio_passage_unavailable",
+      "disclosure": "The audio at Meditations, Book One, 2:30 is unavailable to the model: it has no transcript and no confirmed matching passage in an ebook, so no words from it were sent."
+    }
+  ],
+  "mode": "source_grounded",
+  "pack_id": "763209EC-C7D6-4214-82AF-C10BADD8F38A",
+  "pack_sha256": "dd901bfdc5e2d7f17834190c0a333bebe865e9716bb0f54f35099940dc116e5a",
+  "prompt_template_version": "sylvia-grounded-3",
+  "question": "What did the narrator say about his grandfather?",
+  "request_id": "07D31139-FBB6-49FB-934B-2D04FA0274D1",
+  "schema_version": 1,
+  "scope": "selected_thoughts",
+  "scope_label": "Selected thoughts",
+  "spoiler_boundary": {
+    "basis": "none",
+    "enabled": false,
+    "excluded_evidence_count": 0
+  },
+  "text_coverage": {
+    "resources_indexed": 18,
+    "resources_total": 18,
+    "state": "book_text_indexed"
+  },
+  "truncation": {
+    "omitted_evidence_count": 0,
+    "truncated": false
+  },
+  "work": {
+    "author_display": "Henry David Thoreau",
+    "edition_id": "A68C5243-C329-4920-ACE7-22CEB8B4B27E",
+    "source_kind": "local_epub",
+    "title": "Walden",
+    "work_id": "FC811775-58FE-4607-AC16-B180727ADD78"
+  }
+}

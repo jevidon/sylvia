@@ -1,0 +1,318 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:context-pack:v1",
+  "title": "ContextPack v1",
+  "description": "The exact evidence, scope, budget and endpoint identity for one AI request, built and persisted before the request is sent (plan 13.1, 11.2, Appendix A.2). Holds no credential. Citation IDs are local to the pack; only IDs listed in `evidence` can resolve. Four rules cannot be expressed in JSON Schema and are checked in code (Swift: ContextPack.digestIsValid, ContextPack.spoilerBoundaryViolations and ContextPack.historyViolations; Python: Spikes/G05-AI/Scripts/validate-exports.py, applied to every exported instance and committed fixture): (1) citation IDs are unique within a pack; (2) `pack_sha256` is the lowercase hex SHA-256 of the pack serialized with `pack_sha256` set to the empty string, as UTF-8 JSON with object keys sorted by Unicode code point, no whitespace between tokens, non-ASCII characters and '/' written literally (not escaped), integers in plain decimal, non-integers (retrieval scores) in the shortest decimal form that reads back to the same double, as Python's repr writes them, and dates as the RFC 3339 strings stored in the pack; this equals Python json.dumps(pack, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode('utf-8'), and for the pack's ASCII keys it is the same ordering as RFC 8785; (3) when `spoiler_boundary.enabled` is true, every evidence `position.last_ordinal` and every included turn's `max_evidence_ordinal` is at or before `spoiler_boundary.max_ordinal`, every evidence item from the pack's work (its `source_text`, and a saved thought or companion passage whose `work_id` is the pack's `work.work_id`) carries a `position`, every included turn has a known `max_evidence_ordinal`, and every evidence `position` and every included turn with a `max_evidence_ordinal` of 0 or more names the pack's edition (`edition_id` equal to `work.edition_id`), because ordinals count one edition's extracted paragraphs (plan 13.3, 20.3: no later text enters a restricted pack; no precise boundary across editions without an alignment); (4) every included turn's `destination` names the same destination as `endpoint` (equal `origin`, `classification` and `model`), so an earlier answer, which can repeat what its turn shared, is resent only to the destination that already received it (plan 14.2, I-07).",
+  "type": "object",
+  "required": [
+    "schema_version", "pack_id", "request_id", "conversation_id", "created_at", "scope", "scope_label", "mode", "coverage",
+    "coverage_label", "question", "evidence", "spoiler_boundary", "history", "budget", "truncation", "limitations", "text_coverage", "endpoint",
+    "prompt_template_version", "pack_sha256"
+  ],
+  "propertyNames": { "$ref": "#/$defs/notSecretName" },
+  "properties": {
+    "schema_version": { "const": 1 },
+    "pack_id": { "$ref": "#/$defs/uuid" },
+    "request_id": { "$ref": "#/$defs/uuid" },
+    "conversation_id": { "$ref": "#/$defs/uuid" },
+    "created_at": { "type": "string", "format": "date-time", "pattern": "Z$" },
+    "scope": { "enum": ["selected_passage", "passage_and_nearby", "work_search", "selected_thoughts", "whole_work"] },
+    "scope_label": {
+      "description": "The scope chip text fixed in plan 4.4.6.",
+      "enum": ["Selected passage", "Passage and nearby text", "Relevant passages from this work", "Selected thoughts", "Whole book"]
+    },
+    "mode": { "enum": ["source_grounded"] },
+    "coverage": {
+      "description": "no_passages: nothing from the work or the user's thoughts was sent; `limitations` or `truncation` says why.",
+      "enum": ["excerpt_only", "retrieved_passages", "saved_thoughts", "whole_work", "no_passages"]
+    },
+    "coverage_label": { "enum": ["Excerpt only", "Relevant passages retrieved", "Selected thoughts only", "Whole book included", "No passages sent"] },
+    "question": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "work": {
+      "description": "Source snapshot at request time (plan 11.2). Absent for packs not tied to one work.",
+      "type": "object",
+      "required": ["work_id", "edition_id", "title", "author_display", "source_kind"],
+      "properties": {
+        "work_id": { "$ref": "#/$defs/uuid" },
+        "edition_id": { "$ref": "#/$defs/uuid" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "author_display": { "type": "string", "maxLength": 1000 },
+        "source_kind": { "type": "string", "minLength": 1, "maxLength": 64 }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": { "$ref": "#/$defs/evidence" }
+    },
+    "spoiler_boundary": {
+      "type": "object",
+      "required": ["enabled", "basis", "excluded_evidence_count"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "max_ordinal": {
+          "description": "Highest extracted-paragraph ordinal any evidence may have. -1 when the user asked for a boundary but no position is enforceable, in which case no work text is retrieved.",
+          "type": "integer", "minimum": -1
+        },
+        "basis": { "enum": ["none", "selection_position", "user_confirmed_position"] },
+        "excluded_evidence_count": { "type": "integer", "minimum": 0 }
+      },
+      "allOf": [
+        { "if": { "properties": { "enabled": { "const": true } } }, "then": { "required": ["max_ordinal"] } },
+        { "if": { "properties": { "enabled": { "const": false } } }, "then": { "properties": { "basis": { "const": "none" } } } }
+      ]
+    },
+    "history": {
+      "type": "object",
+      "required": ["included_turns", "excluded_turn_count"],
+      "properties": {
+        "included_turns": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "description": "An earlier question and answer of the same conversation, resent with this request.",
+            "type": "object",
+            "required": ["turn_id", "question", "answer", "shared_scopes", "destination"],
+            "properties": {
+              "turn_id": { "$ref": "#/$defs/uuid" },
+              "question": { "type": "string", "minLength": 1 },
+              "answer": {
+                "description": "The answer as resent. Its citation markers pointed into that turn's own pack, whose evidence is not resent, so they are replaced with [earlier source]; a marker here would resolve against this pack's evidence (plan 13.4, A.2).",
+                "type": "string",
+                "not": { "pattern": "\\[\\s*[cC][0-9]{1,4}(\\s*[,;]\\s*[cC][0-9]{1,4})*\\s*\\]" }
+              },
+              "max_evidence_ordinal": {
+                "description": "Highest extracted-paragraph ordinal that turn's evidence used, counted in `edition_id`; -1 when it sent no evidence; absent when unknown.",
+                "type": "integer",
+                "minimum": -1
+              },
+              "edition_id": {
+                "description": "The edition whose extracted paragraphs `max_evidence_ordinal` counts; present when it is 0 or more. A restricted pack includes such a turn only when this is its own `work.edition_id` (code-checked rule 3).",
+                "$ref": "#/$defs/uuid"
+              },
+              "shared_scopes": {
+                "description": "What that turn shared with its destination (its evidence and, transitively, the turns it resent). Resending the turn shares it again, so consent for this request covers these scopes (plan 14.2).",
+                "type": "array",
+                "uniqueItems": true,
+                "maxItems": 3,
+                "items": { "enum": ["source_text", "saved_thoughts", "audio"] }
+              },
+              "destination": {
+                "description": "Where that turn was sent; equal to `endpoint` in origin, classification and model (code-checked rule 4).",
+                "$ref": "#/properties/endpoint"
+              }
+            },
+            "if": { "required": ["max_evidence_ordinal"], "properties": { "max_evidence_ordinal": { "minimum": 0 } } },
+            "then": { "required": ["edition_id"] }
+          }
+        },
+        "excluded_turn_count": { "type": "integer", "minimum": 0 },
+        "exclusion_reason": { "type": "string", "minLength": 1 }
+      },
+      "if": { "properties": { "excluded_turn_count": { "minimum": 1 } } },
+      "then": { "required": ["exclusion_reason"] }
+    },
+    "budget": {
+      "description": "Token budget accounting (plan 13.2). evidence_budget_tokens = context_limit_tokens - system_tokens - question_tokens - history_tokens - output_reserve_tokens - safety_margin_tokens. All values are estimates unless estimator.kind is tokenizer.",
+      "type": "object",
+      "required": [
+        "context_limit_tokens", "context_limit_source", "system_tokens", "question_tokens", "history_tokens", "output_reserve_tokens",
+        "safety_margin_tokens", "evidence_budget_tokens", "evidence_tokens", "estimator", "estimated"
+      ],
+      "properties": {
+        "context_limit_tokens": { "type": "integer", "minimum": 1 },
+        "context_limit_source": { "enum": ["configured", "default_unknown_model"] },
+        "system_tokens": { "type": "integer", "minimum": 0 },
+        "question_tokens": { "type": "integer", "minimum": 0 },
+        "history_tokens": { "type": "integer", "minimum": 0 },
+        "output_reserve_tokens": { "type": "integer", "minimum": 1 },
+        "safety_margin_tokens": { "type": "integer", "minimum": 0 },
+        "evidence_budget_tokens": { "type": "integer", "minimum": 1 },
+        "evidence_tokens": { "type": "integer", "minimum": 0 },
+        "estimator": {
+          "type": "object",
+          "required": ["kind", "name"],
+          "properties": {
+            "kind": { "enum": ["heuristic", "tokenizer"] },
+            "name": { "type": "string", "minLength": 1, "maxLength": 100 }
+          }
+        },
+        "estimated": { "type": "boolean" }
+      },
+      "if": { "properties": { "estimator": { "properties": { "kind": { "const": "heuristic" } } } } },
+      "then": { "properties": { "estimated": { "const": true } } }
+    },
+    "truncation": {
+      "type": "object",
+      "required": ["truncated", "omitted_evidence_count"],
+      "properties": {
+        "truncated": { "type": "boolean" },
+        "omitted_evidence_count": { "type": "integer", "minimum": 0 },
+        "reason": { "type": "string", "minLength": 1 },
+        "disclosure": { "type": "string", "minLength": 1, "description": "User-facing statement of what was left out." }
+      },
+      "if": { "properties": { "truncated": { "const": true } } },
+      "then": { "required": ["reason", "disclosure"], "properties": { "omitted_evidence_count": { "minimum": 1 } } }
+    },
+    "limitations": {
+      "description": "Limitations the app states itself, shown with the request and the answer and passed to the model, rather than left to the model (plan 13.3 'state the limitation', 10.4 'the current audio passage is unavailable'). Empty when there are none.",
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["code", "disclosure"],
+        "additionalProperties": false,
+        "properties": {
+          "code": { "enum": ["no_enforceable_position", "no_searchable_terms", "no_matching_passages", "all_excluded_by_boundary", "audio_passage_unavailable"] },
+          "disclosure": { "type": "string", "minLength": 1, "maxLength": 1000 }
+        }
+      }
+    },
+    "retrieval": {
+      "description": "Retrieval settings; required for work_search.",
+      "type": "object",
+      "required": ["strategy", "query_terms", "top_k", "adjacent_chunks", "chunk_words_min", "chunk_words_max", "candidates_considered"],
+      "properties": {
+        "strategy": { "enum": ["fts5_bm25"] },
+        "query_terms": { "type": "array", "maxItems": 16, "items": { "type": "string", "minLength": 1 } },
+        "top_k": { "type": "integer", "minimum": 1 },
+        "adjacent_chunks": { "type": "integer", "minimum": 0 },
+        "chunk_words_min": { "type": "integer", "minimum": 1 },
+        "chunk_words_max": { "type": "integer", "minimum": 1 },
+        "candidates_considered": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "text_coverage": {
+      "type": "object",
+      "required": ["state", "resources_indexed", "resources_total"],
+      "properties": {
+        "state": { "enum": ["book_text_indexed", "indexing", "text_unavailable", "not_applicable"] },
+        "resources_indexed": { "type": "integer", "minimum": 0 },
+        "resources_total": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "endpoint": {
+      "description": "Destination and model identity without credentials (plan 11.2).",
+      "type": "object",
+      "required": ["provider_kind", "host", "origin", "base_path", "classification", "model"],
+      "propertyNames": { "$ref": "#/$defs/notSecretName" },
+      "properties": {
+        "provider_kind": { "enum": ["openai_responses", "anthropic_messages", "openai_compatible_chat"] },
+        "host": { "type": "string", "minLength": 1, "maxLength": 255 },
+        "origin": { "type": "string", "pattern": "^https?://[^/?#@\\s]+$" },
+        "base_path": { "type": "string", "maxLength": 1000 },
+        "classification": { "enum": ["local", "user_managed", "hosted"] },
+        "model": { "type": "string", "minLength": 1, "maxLength": 200 }
+      }
+    },
+    "prompt_template_version": { "type": "string", "pattern": "^sylvia-grounded-[0-9]+$" },
+    "pack_sha256": { "$ref": "#/$defs/sha256" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "scope": { "enum": ["selected_passage", "passage_and_nearby"] } } },
+      "then": { "properties": { "coverage": { "const": "excerpt_only" } } }
+    },
+    {
+      "if": { "properties": { "scope": { "const": "work_search" } } },
+      "then": { "required": ["retrieval"], "properties": { "coverage": { "enum": ["retrieved_passages", "no_passages"] } } }
+    },
+    {
+      "if": { "properties": { "scope": { "const": "selected_thoughts" } } },
+      "then": { "properties": { "coverage": { "enum": ["saved_thoughts", "no_passages"] } } }
+    },
+    {
+      "description": "A pack that sends no evidence says so: coverage no_passages, and a stated limitation or a truncation disclosure says why (plan 13.3).",
+      "if": { "properties": { "evidence": { "maxItems": 0 } } },
+      "then": {
+        "properties": { "coverage": { "const": "no_passages" } },
+        "anyOf": [
+          { "properties": { "limitations": { "minItems": 1 } } },
+          { "properties": { "truncation": { "properties": { "truncated": { "const": true } } } } }
+        ]
+      }
+    },
+    {
+      "if": { "properties": { "coverage": { "const": "no_passages" } } },
+      "then": { "properties": { "evidence": { "maxItems": 0 } } }
+    },
+    { "if": { "properties": { "coverage": { "const": "excerpt_only" } } }, "then": { "properties": { "coverage_label": { "const": "Excerpt only" } } } },
+    { "if": { "properties": { "coverage": { "const": "retrieved_passages" } } }, "then": { "properties": { "coverage_label": { "const": "Relevant passages retrieved" } } } },
+    { "if": { "properties": { "coverage": { "const": "saved_thoughts" } } }, "then": { "properties": { "coverage_label": { "const": "Selected thoughts only" } } } },
+    { "if": { "properties": { "coverage": { "const": "whole_work" } } }, "then": { "properties": { "coverage_label": { "const": "Whole book included" } } } },
+    { "if": { "properties": { "coverage": { "const": "no_passages" } } }, "then": { "properties": { "coverage_label": { "const": "No passages sent" } } } },
+    {
+      "description": "Whole-book inclusion never carries a spoiler boundary: text up to a position is not the whole book (plan 13.1, 13.3).",
+      "if": { "properties": { "scope": { "const": "whole_work" } } },
+      "then": { "properties": { "coverage": { "const": "whole_work" }, "spoiler_boundary": { "properties": { "enabled": { "const": false } } } } }
+    },
+    { "if": { "properties": { "scope": { "const": "selected_passage" } } }, "then": { "properties": { "scope_label": { "const": "Selected passage" } } } },
+    { "if": { "properties": { "scope": { "const": "passage_and_nearby" } } }, "then": { "properties": { "scope_label": { "const": "Passage and nearby text" } } } },
+    { "if": { "properties": { "scope": { "const": "work_search" } } }, "then": { "properties": { "scope_label": { "const": "Relevant passages from this work" } } } },
+    { "if": { "properties": { "scope": { "const": "selected_thoughts" } } }, "then": { "properties": { "scope_label": { "const": "Selected thoughts" } } } },
+    { "if": { "properties": { "scope": { "const": "whole_work" } } }, "then": { "properties": { "scope_label": { "const": "Whole book" } } } }
+  ],
+  "$defs": {
+    "uuid": { "type": "string", "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "notSecretName": {
+      "description": "No field may carry a credential (Contracts README, Secrets).",
+      "not": { "pattern": "(?i)^(api[_-]?key|apikey|key|secret|client[_-]?secret|password|passwd|token|access[_-]?token|auth[_-]?token|bearer|authorization|x[_-]api[_-]key|credential|credentials)$" }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["citation_id", "evidence_id", "role", "origin", "source_quality", "text", "text_sha256", "location_label", "estimated_tokens"],
+      "propertyNames": { "$ref": "#/$defs/notSecretName" },
+      "properties": {
+        "citation_id": { "type": "string", "pattern": "^c[1-9][0-9]{0,3}$" },
+        "evidence_id": { "$ref": "#/$defs/uuid" },
+        "role": { "enum": ["selection", "nearby", "retrieved", "adjacent", "thought", "whole_work"] },
+        "origin": { "enum": ["source_text", "saved_quote", "user_note", "transcript", "companion_passage"] },
+        "source_quality": { "enum": ["extracted_text", "exact_capture", "user_entered", "machine_transcript"] },
+        "text": { "type": "string", "minLength": 1, "maxLength": 200000, "description": "Exactly the text sent." },
+        "text_sha256": { "$ref": "#/$defs/sha256" },
+        "location_label": { "type": "string", "maxLength": 1000 },
+        "capture_id": { "$ref": "#/$defs/uuid" },
+        "work_id": { "$ref": "#/$defs/uuid", "description": "The work the item comes from: the pack's work for source text; for a saved thought, the work it was captured in, if any." },
+        "edition_id": { "$ref": "#/$defs/uuid", "description": "The edition whose extracted paragraphs `position` counts in; present with every position, and equal to the pack's `work.edition_id` in a restricted pack (code-checked rule 3)." },
+        "position": {
+          "description": "Where the item lies in the pack's edition, in extracted paragraphs. Source text always has one; a saved thought on the pack's work has one only when it was captured in this edition and its place is in this edition's text (an ordinal from another edition counts different paragraphs); a restricted pack leaves out a thought on the work without one.",
+          "type": "object",
+          "required": ["ordinal_unit", "resource_href", "first_ordinal", "last_ordinal"],
+          "properties": {
+            "ordinal_unit": { "const": "extracted_paragraph" },
+            "resource_href": { "type": "string", "minLength": 1, "maxLength": 2000 },
+            "first_ordinal": { "type": "integer", "minimum": 0 },
+            "last_ordinal": { "type": "integer", "minimum": 0 },
+            "piece_index": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "retrieval": {
+          "type": "object",
+          "required": ["rank", "score"],
+          "properties": { "rank": { "type": "integer", "minimum": 1 }, "score": { "type": "number" } }
+        },
+        "estimated_tokens": { "type": "integer", "minimum": 1 }
+      },
+      "dependentRequired": { "position": ["edition_id"] },
+      "allOf": [
+        {
+          "if": { "properties": { "origin": { "enum": ["saved_quote", "user_note", "transcript"] } } },
+          "then": { "required": ["capture_id"] }
+        },
+        {
+          "if": { "properties": { "origin": { "const": "source_text" } } },
+          "then": { "properties": { "source_quality": { "const": "extracted_text" } } }
+        },
+        {
+          "if": { "properties": { "origin": { "const": "transcript" } } },
+          "then": { "properties": { "source_quality": { "const": "machine_transcript" } } }
+        },
+        {
+          "if": { "properties": { "role": { "enum": ["retrieved"] } } },
+          "then": { "required": ["retrieval"] }
+        }
+      ]
+    }
+  }
+}

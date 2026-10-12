@@ -1,0 +1,144 @@
+# G0.5 AI spike: App Transport Security, Keychain and suspension probe (simulator; device checklist steps 1-4).
+# Three host apps that differ only in their ATS configuration, each with the same hosted unit tests
+# (Tests/), and a UI test (UITests/) for suspension during streaming in the default-ATS app.
+# Generated with `sylvia_generate Spikes/G05-AI/ATSProbe`; the .xcodeproj is not committed.
+name: G05ATSProbe
+options:
+  bundleIdPrefix: com.jevidon.sylvia.spike
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+packages:
+  G05AI:
+    path: ..
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY: YES
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    DEVELOPMENT_TEAM: ""
+    TARGETED_DEVICE_FAMILY: "1,2"
+    GENERATE_INFOPLIST_FILE: NO
+targetTemplates:
+  ProbeApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+        excludes: ["*.plist"]
+    dependencies:
+      - package: G05AI
+        product: SylviaAI
+      - package: G05AI
+        product: G05TestSupport
+  ProbeTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests]
+    dependencies:
+      - package: G05AI
+        product: SylviaAI
+      - package: G05AI
+        product: G05TestSupport
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+targets:
+  ProbeDefaultATS:
+    templates: [ProbeApp]
+    info:
+      path: App/Info-DefaultATS.plist
+      properties:
+        CFBundleDisplayName: ATS default
+        UILaunchScreen: {}
+        G05ATSVariant: default
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.atsprobe.default
+  ProbeLocalNetworking:
+    templates: [ProbeApp]
+    info:
+      path: App/Info-LocalNetworking.plist
+      properties:
+        CFBundleDisplayName: ATS local
+        UILaunchScreen: {}
+        G05ATSVariant: local_networking
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.atsprobe.local
+  ProbeCIDRException:
+    templates: [ProbeApp]
+    info:
+      path: App/Info-CIDRException.plist
+      properties:
+        CFBundleDisplayName: ATS CIDR
+        UILaunchScreen: {}
+        G05ATSVariant: cidr_exception
+        NSAppTransportSecurity:
+          NSExceptionDomains:
+            10.0.0.0/8:
+              NSExceptionAllowsInsecureHTTPLoads: true
+            172.16.0.0/12:
+              NSExceptionAllowsInsecureHTTPLoads: true
+            192.168.0.0/16:
+              NSExceptionAllowsInsecureHTTPLoads: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.atsprobe.cidr
+  ProbeDefaultATSTests:
+    templates: [ProbeTests]
+    dependencies:
+      - target: ProbeDefaultATS
+    settings:
+      base:
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/ProbeDefaultATS.app/ProbeDefaultATS"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.atsprobe.default.tests
+  ProbeLocalNetworkingTests:
+    templates: [ProbeTests]
+    dependencies:
+      - target: ProbeLocalNetworking
+    settings:
+      base:
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/ProbeLocalNetworking.app/ProbeLocalNetworking"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.atsprobe.local.tests
+  ProbeCIDRExceptionTests:
+    templates: [ProbeTests]
+    dependencies:
+      - target: ProbeCIDRException
+    settings:
+      base:
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/ProbeCIDRException.app/ProbeCIDRException"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.atsprobe.cidr.tests
+  # Suspension during streaming (D4): a UI test backgrounds the default-ATS app with the Home button while it streams
+  # from its in-app fake server, then brings it back and reads the stored record.
+  ProbeDefaultATSUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: ProbeDefaultATS
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: ProbeDefaultATS
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.atsprobe.default.uitests
+schemes:
+  G05ATSProbe:
+    build:
+      targets:
+        ProbeDefaultATS: all
+        ProbeLocalNetworking: all
+        ProbeCIDRException: all
+    test:
+      targets:
+        - ProbeDefaultATSTests
+        - ProbeLocalNetworkingTests
+        - ProbeCIDRExceptionTests
+        - ProbeDefaultATSUITests

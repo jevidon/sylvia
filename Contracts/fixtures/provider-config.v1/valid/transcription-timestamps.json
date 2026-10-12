@@ -1,0 +1,21 @@
+{
+  "allow_insecure_local_http": false,
+  "base_url": "https://speech.example.com/v1",
+  "capabilities": {
+    "model_listing": false,
+    "stream_usage": false,
+    "streaming": true,
+    "timestamps": true,
+    "token_counting": false
+  },
+  "credential_ref": {
+    "account": "29808ED2-D39D-4997-AD60-747466B2EDEC",
+    "origin": "https://speech.example.com",
+    "store": "keychain"
+  },
+  "display_name": "Speech",
+  "model": "speech-model",
+  "provider_id": "89110DD2-10A2-4BF6-8210-26687AE2D456",
+  "provider_kind": "openai_compatible_transcription",
+  "schema_version": 1
+}

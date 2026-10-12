@@ -1,0 +1,60 @@
+# environment: host: macOS 26.6.2 (25G83), arm64
+# toolchain: Xcode 27.0 Build version 27A266a 
+# command: Spikes/G05-AI/Scripts/validate-exports.py on instances exported by ContractExportTests
+# commit: cf64744 (log copied 2026-10-12T15:32Z)
+
+ok   context-pack.passage-and-nearby.json
+ok   context-pack.selected-passage.json
+ok   context-pack.selected-thoughts-audio-unavailable.json
+ok   context-pack.selected-thoughts-restricted.json
+ok   context-pack.selected-thoughts.json
+ok   context-pack.work-search-no-position.json
+ok   context-pack.work-search-restricted.json
+ok   context-pack.work-search-truncated.json
+ok   provider-config.anthropic-hosted.json
+ok   provider-config.gateway-declared-hosted.json
+ok   provider-config.local-generic-http.json
+ok   provider-config.openai-hosted.json
+ok   provider-config.transcription-timestamps.json
+validated 13 exported instances against the schemas, 0 failed
+self-test ok: accepts a thought on this work within the boundary
+self-test ok: rejects evidence after the boundary
+self-test ok: rejects turn with unknown position
+self-test ok: rejects duplicate citation ID
+self-test ok: rejects stale digest
+self-test ok: rejects turn sent to another destination
+self-test ok: rejects thought on this work after the boundary
+self-test ok: rejects thought on this work without a position
+self-test ok: rejects thought positioned in another edition
+self-test ok: rejects turn that used another edition
+self-test ok: the schema rejects an included answer with a citation marker
+ok   export context-pack.passage-and-nearby.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.selected-passage.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.selected-thoughts-audio-unavailable.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.selected-thoughts-restricted.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.selected-thoughts.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.work-search-no-position.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.work-search-restricted.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 1 included turn(s) from this destination
+ok   export context-pack.work-search-truncated.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture passage-and-nearby.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture selected-passage.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture selected-thoughts-audio-unavailable.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture selected-thoughts-restricted.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture selected-thoughts.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture work-search-no-position.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture work-search-restricted.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 1 included turn(s) from this destination
+ok   fixture work-search-truncated.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+checked the code-checked ContextPack rules on 16 packs, 0 failed
+self-test ok: rejects a key bound to another origin (base URL moved to another host)
+self-test ok: rejects a key bound to another origin (base URL moved to another port)
+ok   export provider-config.anthropic-hosted.json: key bound to https://api.anthropic.com, the origin of base_url
+ok   export provider-config.gateway-declared-hosted.json: key bound to https://gateway.example.com, the origin of base_url
+ok   export provider-config.local-generic-http.json: no key
+ok   export provider-config.openai-hosted.json: key bound to https://api.openai.com, the origin of base_url
+ok   export provider-config.transcription-timestamps.json: key bound to https://speech.example.com, the origin of base_url
+ok   fixture anthropic-hosted.json: key bound to https://api.anthropic.com, the origin of base_url
+ok   fixture gateway-declared-hosted.json: key bound to https://gateway.example.com, the origin of base_url
+ok   fixture local-generic-http.json: no key
+ok   fixture openai-hosted.json: key bound to https://api.openai.com, the origin of base_url
+ok   fixture transcription-timestamps.json: key bound to https://speech.example.com, the origin of base_url
+checked the code-checked ProviderConfig rule on 10 configurations, 0 failed

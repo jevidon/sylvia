@@ -1,0 +1,75 @@
+# environment: host: macOS 26.6.2 (25G83), arm64
+# toolchain: Xcode 27.0 Build version 27A266a 
+# command: Scripts/validate-contracts.py Contracts; Spikes/G05-AI/Scripts/explain-invalid-fixtures.py Contracts
+# commit: cf64744 (log copied 2026-10-12T15:32Z)
+
+schemas: 2  fixtures: 46  openapi: 0  instances: 0
+
+context-pack.v1/invalid/bad-citation-id.json: 1 error(s)
+    rule properties/evidence/items/properties/citation_id/pattern at /evidence/0/citation_id: 'source-1' does not match '^c[1-9][0-9]{0,3}$'
+context-pack.v1/invalid/coverage-label-mismatch.json: 1 error(s)
+    rule allOf/N/then/properties/coverage_label/const at /coverage_label: 'Excerpt only' was expected
+context-pack.v1/invalid/empty-evidence-text.json: 1 error(s)
+    rule properties/evidence/items/properties/text/minLength at /evidence/0/text: '' should be non-empty
+context-pack.v1/invalid/empty-pack-without-stated-limitation.json: 1 error(s)
+    rule allOf/N/then/anyOf at /: {'budget': {'context_limit_source': 'default_unknown_model', 'context_limit_tokens': 8192, 'estimated': True, 'estimator': {'kind': 'heuristic', 'name': 'utf8-b
+context-pack.v1/invalid/heuristic-estimate-not-labelled.json: 1 error(s)
+    rule properties/budget/then/properties/estimated/const at /budget/estimated: True was expected
+context-pack.v1/invalid/history-answer-with-citation-marker.json: 1 error(s)
+    rule properties/history/properties/included_turns/items/properties/answer/not at /history/included_turns/0/answer: 'A new doctor in Middlemarch [c1].' should not be valid under {'pattern': '\\[\\s*[cC][0-9]{1,4}(\\s*[,;]\\s*[cC][0-9]{1,4})*\\s*\\]'}
+context-pack.v1/invalid/history-excluded-without-reason.json: 1 error(s)
+    rule properties/history/then/required at /history: 'exclusion_reason' is a required property
+context-pack.v1/invalid/history-turn-without-edition.json: 1 error(s)
+    rule properties/history/properties/included_turns/items/then/required at /history/included_turns/0: 'edition_id' is a required property
+context-pack.v1/invalid/history-turn-without-shared-scopes.json: 1 error(s)
+    rule properties/history/properties/included_turns/items/required at /history/included_turns/0: 'shared_scopes' is a required property
+context-pack.v1/invalid/missing-question.json: 1 error(s)
+    rule required at /: 'question' is a required property
+context-pack.v1/invalid/no-passages-coverage-with-evidence.json: 1 error(s)
+    rule allOf/N/then/properties/evidence/maxItems at /evidence: [{'citation_id': 'c1', 'edition_id': '413513ED-46EE-42D2-8AE7-5FDE25810753', 'estimated_tokens': 638, 'evidence_id': '2174AFE4-5A91-43AB-AF5C-03DD04D0A0BA', 'lo
+context-pack.v1/invalid/note-without-capture-id.json: 1 error(s)
+    rule properties/evidence/items/allOf/N/then/required at /evidence/1: 'capture_id' is a required property
+context-pack.v1/invalid/position-without-edition.json: 1 error(s)
+    rule properties/evidence/items/dependentRequired at /evidence/0: 'edition_id' is a dependency of 'position'
+context-pack.v1/invalid/retrieved-evidence-without-score.json: 1 error(s)
+    rule properties/evidence/items/allOf/N/then/required at /evidence/0: 'retrieval' is a required property
+context-pack.v1/invalid/scope-label-whole-book-for-selection.json: 1 error(s)
+    rule allOf/N/then/properties/scope_label/const at /scope_label: 'Selected passage' was expected
+context-pack.v1/invalid/secret-field-in-endpoint.json: 1 error(s)
+    rule properties/endpoint/propertyNames/not at /endpoint: 'api_key' should not be valid under {'pattern': '(?i)^(api[_-]?key|apikey|key|secret|client[_-]?secret|password|passwd|token|access[_-]?token|auth[_-]?token|bea
+context-pack.v1/invalid/spoiler-enabled-without-max-ordinal.json: 1 error(s)
+    rule properties/spoiler_boundary/allOf/N/then/required at /spoiler_boundary: 'max_ordinal' is a required property
+context-pack.v1/invalid/truncated-without-disclosure.json: 1 error(s)
+    rule properties/truncation/then/required at /truncation: 'disclosure' is a required property
+context-pack.v1/invalid/unknown-limitation-code.json: 1 error(s)
+    rule properties/limitations/items/properties/code/enum at /limitations/0/code: 'model_should_explain' is not one of ['no_enforceable_position', 'no_searchable_terms', 'no_matching_passages', 'all_excluded_by_boundary', 'audio_passage_unava
+context-pack.v1/invalid/whole-work-with-spoiler-boundary.json: 1 error(s)
+    rule allOf/N/then/properties/spoiler_boundary/properties/enabled/const at /spoiler_boundary/enabled: False was expected
+context-pack.v1/invalid/work-search-claims-excerpt-coverage.json: 1 error(s)
+    rule allOf/N/then/properties/coverage/enum at /coverage: 'excerpt_only' is not one of ['retrieved_passages', 'no_passages']
+provider-config.v1/invalid/api-key-field.json: 1 error(s)
+    rule propertyNames/not at /: 'api_key' should not be valid under {'pattern': '(?i)^(api[_-]?key|apikey|key|secret|client[_-]?secret|password|passwd|token|access[_-]?token|auth[_-]?token|bea
+provider-config.v1/invalid/credential-ref-with-value.json: 1 error(s)
+    rule properties/credential_ref/additionalProperties at /credential_ref: Additional properties are not allowed ('value' was unexpected)
+provider-config.v1/invalid/credential-ref-without-origin.json: 1 error(s)
+    rule properties/credential_ref/required at /credential_ref: 'origin' is a required property
+provider-config.v1/invalid/doubled-version-in-base-url.json: 1 error(s)
+    rule properties/base_url/not at /base_url: 'https://gateway.example.com/api/v1/v1' should not be valid under {'pattern': '/$|/v([0-9]+)/v\\1(/|$)|/(chat/completions|responses|messages|audio/transcription
+provider-config.v1/invalid/endpoint-path-in-base-url.json: 1 error(s)
+    rule properties/base_url/not at /base_url: 'https://gateway.example.com/api/v1/chat/completions' should not be valid under {'pattern': '/$|/v([0-9]+)/v\\1(/|$)|/(chat/completions|responses|messages|audio
+provider-config.v1/invalid/first-party-over-http.json: 2 error(s)
+    rule allOf/N/then/properties/provider_kind/enum at /provider_kind: 'openai_responses' is not one of ['openai_compatible_chat', 'openai_compatible_transcription']
+    rule allOf/N/then/properties/base_url/pattern at /base_url: 'http://192.168.1.20:1234/v1' does not match '^https://'
+provider-config.v1/invalid/http-local-declared-hosted.json: 1 error(s)
+    rule allOf/N/then/properties/privacy_classification/const at /privacy_classification: 'local' was expected
+provider-config.v1/invalid/http-to-a-public-name.json: 1 error(s)
+    rule allOf/N/then/properties/base_url/pattern at /base_url: 'http://gateway.example.com/v1' does not match '^http://(127\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|172\\.(1[6-9]|2[0-
+provider-config.v1/invalid/http-to-dot-local-name.json: 1 error(s)
+    rule allOf/N/then/properties/base_url/pattern at /base_url: 'http://studio.local:1234/v1' does not match '^http://(127\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|172\\.(1[6-9]|2[0-9]
+provider-config.v1/invalid/http-without-opt-in.json: 1 error(s)
+    rule allOf/N/then/properties/allow_insecure_local_http/const at /allow_insecure_local_http: True was expected
+provider-config.v1/invalid/query-in-base-url.json: 1 error(s)
+    rule properties/base_url/pattern at /base_url: 'https://gateway.example.com/api/v1?key=abc' does not match '^https?://[^/?#@\\s]+(/[^?#\\s]*)?$'
+provider-config.v1/invalid/unknown-provider-kind.json: 1 error(s)
+    rule properties/provider_kind/enum at /provider_kind: 'openai_assistants' is not one of ['openai_responses', 'anthropic_messages', 'openai_compatible_chat', 'openai_compatible_transcription']
+checked 33 invalid fixtures: each fails only for its named rule

@@ -1,0 +1,622 @@
+# environment: host: macOS 26.6.2 (25G83), arm64
+# toolchain: Xcode 27.0 Build version 27A266a 
+# command: swift test, live tests not opted in (Scripts/ci.d/70-g05-ai.sh)
+# commit: cf64744 (log copied 2026-10-12T15:32Z)
+
+Building for debugging...
+[Computing dependencies]
+[Pre-planning 1 / 359]
+[Planning deferred tasks]
+[3 / 4] LiveProviderTests-product
+Build complete! (0.74 sec)
+Test Suite 'All tests' started at 2026-10-13 04:29:56.620.
+Test Suite 'All tests' passed at 2026-10-13 04:29:56.621.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'All tests' started at 2026-10-13 04:29:57.093.
+Test Suite 'All tests' passed at 2026-10-13 04:29:57.095.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'All tests' started at 2026-10-13 04:29:57.322.
+Test Suite 'All tests' passed at 2026-10-13 04:29:57.323.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "ContextPack builder" started.
+◇ Suite "Evaluation set (plan 20.3 seed)" started.
+◇ Test wholeWorkOnlyWhenItTrulyFits() started.
+◇ Test setCoversThePlanCategories() started.
+◇ Suite "EPUB extraction and chunking" started.
+◇ Suite "Lexical retrieval (FTS5 through GRDB)" started.
+◇ Suite "Conversation history: consent and citations" started.
+◇ Suite "Contract export" started.
+◇ Suite "Spoiler boundary" started.
+◇ Test wholeWorkIsNeverLabelledSoWhenASpoilerBoundaryApplies() started.
+◇ Test truncationIsDisclosedNotSilent() started.
+◇ Test disclosureCountsPassagesByHowTheyWereChosenAndThoughtsApart() started.
+◇ Test emptyAndAudioPacksStateTheirLimitation() started.
+◇ Test passageAndNearbyStaysInTheChapterAndIsBounded() started.
+◇ Test selectedThoughtsUseTheirOwnOriginsAndAreCapped() started.
+◇ Test oversizedSelectionIsAnErrorNotATrim() started.
+◇ Test workSearchRetrievesBoundedPassagesAndSaysSo() started.
+◇ Test everyItemPassesTheDeterministicGates() started.
+◇ Test waldenExtractsTheKnownPassage() started.
+◇ Test selectedPassageContainsExactlyTheSelection() started.
+◇ Test budgetArithmeticIsExplicitAndLabelledAsAnEstimate() started.
+◇ Test extractsBodyMatterInSpineOrder() started.
+◇ Test zipReaderDetectsCorruptedEntryBytes() started.
+◇ Test exportInstancesForSchemaValidation() started.
+◇ Test selectionMustExistInTheExtractedText() started.
+◇ Test exportIsDeterministic() started.
+◇ Test zipReaderRejectsUnsafeArchives() started.
+◇ Test chunksRespectTheParagraphAndSizeRules() started.
+◇ Test earlierAnswerBasedOnNotesNeverReachesANewDestination() started.
+◇ Test configsNormalizeAndPassPolicy() started.
+◇ Test earlierTurnsThatUsedLaterPassagesAreExcluded() started.
+◇ Test spoilerSelfCheckCoversSavedThoughts() started.
+◇ Test restrictedThoughtWithAnUnknownPlaceIsLeftOut() started.
+◇ Test restrictedWorkSearchContainsNothingAfterThePosition() started.
+◇ Test thoughtFromAnotherEditionHasNoPlaceInThisOne() started.
+◇ Test selectionAfterTheConfirmedPositionIsRefused(scope:) started.
+◇ Test packsAreSelfConsistent() started.
+◇ Test adjacentChunkNeverCrossesAMidChapterBoundary() started.
+◇ Test spoilerSelfCheckRefusesAPositionInAnotherEdition() started.
+◇ Test unrestrictedSearchDoesReachLaterChapters() started.
+◇ Test noEnforceablePositionMeansNoRetrievalRatherThanAFalsePromise() started.
+◇ Test finds_theKnownWaldenPassage() started.
+◇ Test hostileQueriesAreLiteralTermsNotSyntax(query:) started.
+◇ Test earlierTurnsFromAnotherEditionAreExcluded() started.
+◇ Test boundaryFiltersInSQLBeforeRanking() started.
+◇ Test indexIsConsistent() started.
+◇ Test nearbyTextStopsAtTheSelectionWhenRestricted() started.
+◇ Test matchExpressionQuotesEveryTerm() started.
+◇ Test restrictedThoughtsBeyondThePositionAreExcluded() started.
+◇ Test case passing 1 argument scope → .selectedPassage to selectionAfterTheConfirmedPositionIsRefused(scope:) started.
+◇ Test case passing 1 argument scope → .workSearch to selectionAfterTheConfirmedPositionIsRefused(scope:) started.
+◇ Test case passing 1 argument scope → .passageAndNearby to selectionAfterTheConfirmedPositionIsRefused(scope:) started.
+◇ Test case passing 1 argument query → "what about "quoted phrase" and NEAR(woods pond, 2)" to hostileQueriesAreLiteralTermsNotSyntax(query:) started.
+◇ Test case passing 1 argument query → "text: pond OR -woods AND ^solitude *" to hostileQueriesAreLiteralTermsNotSyntax(query:) started.
+◇ Test case passing 1 argument query → "'); DROP TABLE chunk; --" to hostileQueriesAreLiteralTermsNotSyntax(query:) started.
+◇ Test case passing 1 argument query → "chunk_fts MATCH 'x' "" """ to hostileQueriesAreLiteralTermsNotSyntax(query:) started.
+◇ Test case passing 1 argument query → "{text}: col* ~ ^ $ ( ) [ ] : ; ," to hostileQueriesAreLiteralTermsNotSyntax(query:) started.
+◇ Test case passing 1 argument query → "Ünïcödé — 😀 étang" to hostileQueriesAreLiteralTermsNotSyntax(query:) started.
+✔ Test zipReaderDetectsCorruptedEntryBytes() passed after 1.119 seconds.
+✔ Test setCoversThePlanCategories() passed after 1.120 seconds.
+✔ Test zipReaderRejectsUnsafeArchives() passed after 1.119 seconds.
+✔ Test waldenExtractsTheKnownPassage() passed after 1.119 seconds.
+✔ Test configsNormalizeAndPassPolicy() passed after 1.119 seconds.
+✔ Test wholeWorkIsNeverLabelledSoWhenASpoilerBoundaryApplies() passed after 1.120 seconds.
+✔ Test selectionMustExistInTheExtractedText() passed after 1.119 seconds.
+✔ Test selectedThoughtsUseTheirOwnOriginsAndAreCapped() passed after 1.120 seconds.
+✔ Test truncationIsDisclosedNotSilent() passed after 1.120 seconds.
+✔ Test workSearchRetrievesBoundedPassagesAndSaysSo() passed after 1.120 seconds.
+✔ Test selectedPassageContainsExactlyTheSelection() passed after 1.120 seconds.
+✔ Test budgetArithmeticIsExplicitAndLabelledAsAnEstimate() passed after 1.119 seconds.
+✔ Test passageAndNearbyStaysInTheChapterAndIsBounded() passed after 1.120 seconds.
+✔ Test wholeWorkOnlyWhenItTrulyFits() passed after 1.120 seconds.
+✔ Test disclosureCountsPassagesByHowTheyWereChosenAndThoughtsApart() passed after 1.120 seconds.
+✔ Test extractsBodyMatterInSpineOrder() passed after 1.120 seconds.
+✔ Test oversizedSelectionIsAnErrorNotATrim() passed after 1.120 seconds.
+✔ Test chunksRespectTheParagraphAndSizeRules() passed after 1.119 seconds.
+✔ Test finds_theKnownWaldenPassage() passed after 1.119 seconds.
+✔ Test spoilerSelfCheckCoversSavedThoughts() passed after 1.119 seconds.
+✔ Test spoilerSelfCheckRefusesAPositionInAnotherEdition() passed after 1.119 seconds.
+✔ Test restrictedThoughtWithAnUnknownPlaceIsLeftOut() passed after 1.119 seconds.
+✔ Test restrictedWorkSearchContainsNothingAfterThePosition() passed after 1.119 seconds.
+✔ Test noEnforceablePositionMeansNoRetrievalRatherThanAFalsePromise() passed after 1.119 seconds.
+✔ Test unrestrictedSearchDoesReachLaterChapters() passed after 1.119 seconds.
+✔ Test indexIsConsistent() passed after 1.119 seconds.
+✔ Test boundaryFiltersInSQLBeforeRanking() passed after 1.119 seconds.
+✔ Test matchExpressionQuotesEveryTerm() passed after 1.119 seconds.
+✔ Test thoughtFromAnotherEditionHasNoPlaceInThisOne() passed after 1.120 seconds.
+✔ Suite "EPUB extraction and chunking" passed after 1.122 seconds.
+✔ Test hostileQueriesAreLiteralTermsNotSyntax(query:) with 6 test cases passed after 1.126 seconds.
+✔ Suite "Lexical retrieval (FTS5 through GRDB)" passed after 1.126 seconds.
+✔ Test restrictedThoughtsBeyondThePositionAreExcluded() passed after 1.127 seconds.
+✔ Test emptyAndAudioPacksStateTheirLimitation() passed after 1.130 seconds.
+✔ Suite "ContextPack builder" passed after 1.130 seconds.
+✔ Test earlierTurnsThatUsedLaterPassagesAreExcluded() passed after 1.130 seconds.
+✔ Test earlierTurnsFromAnotherEditionAreExcluded() passed after 1.130 seconds.
+✔ Test nearbyTextStopsAtTheSelectionWhenRestricted() passed after 1.131 seconds.
+✔ Test selectionAfterTheConfirmedPositionIsRefused(scope:) with 3 test cases passed after 1.156 seconds.
+✔ Test earlierAnswerBasedOnNotesNeverReachesANewDestination() passed after 1.179 seconds.
+◇ Test aModelChangeAtTheSameOriginIsAnotherDestination() started.
+✔ Test aModelChangeAtTheSameOriginIsAnotherDestination() passed after 0.005 seconds.
+◇ Test earlierTurnsAreDisclosedAndCountTowardsConsent() started.
+✔ Test exportInstancesForSchemaValidation() passed after 1.188 seconds.
+✔ Test adjacentChunkNeverCrossesAMidChapterBoundary() passed after 1.199 seconds.
+✔ Suite "Spoiler boundary" passed after 1.200 seconds.
+✔ Test earlierTurnsAreDisclosedAndCountTowardsConsent() passed after 0.025 seconds.
+◇ Test earlierCitationIDsAreNeverResentOrResolvedAgainstTheNewPack() started.
+✔ Test earlierCitationIDsAreNeverResentOrResolvedAgainstTheNewPack() passed after 0.004 seconds.
+◇ Test neutralizingMarkersIsIdempotentAndLeavesOtherBracketsAlone() started.
+✔ Test neutralizingMarkersIsIdempotentAndLeavesOtherBracketsAlone() passed after 0.001 seconds.
+◇ Test aTurnRecordsWhatItsPackUsed() started.
+✔ Test packsAreSelfConsistent() passed after 1.217 seconds.
+✔ Test aTurnRecordsWhatItsPackUsed() passed after 0.006 seconds.
+✔ Suite "Conversation history: consent and citations" passed after 1.221 seconds.
+✔ Test exportIsDeterministic() passed after 1.251 seconds.
+✔ Suite "Contract export" passed after 1.251 seconds.
+EVAL-SUMMARY
+id	category	scope	evidence	unresolved	quotes	limitations	gate
+eval-001	passage_explanation	selected_passage	1	c2	exact		deterministic
+eval-002	passage_explanation	passage_and_nearby	4		exact,unsupported		deterministic
+eval-003	absent_information	work_search	7		unsupported		deterministic
+eval-004	absent_information	work_search	7	c42	unsupported		deterministic
+eval-005	contradictory_text	selected_thoughts	2		exact		deterministic
+eval-006	misleading_title	work_search	6				deterministic
+eval-007	spoiler_boundary	work_search	6				deterministic
+eval-008	spoiler_boundary	work_search	7				deterministic
+eval-009	spoiler_boundary	work_search	0	c1		no_enforceable_position	deterministic
+eval-010	prompt_injection	selected_thoughts	1	c9			deterministic
+eval-011	prompt_injection	selected_passage	1	c99			deterministic
+eval-012	audio_without_transcript	selected_thoughts	1		unsupported	audio_passage_unavailable	structural
+eval-013	companion_edition_mismatch	selected_thoughts	1		unsupported	audio_passage_unavailable	structural
+eval-014	after_media_removal	selected_passage	1		exact		deterministic
+eval-015	passage_explanation	work_search	7		exact		deterministic
+✔ Test everyItemPassesTheDeterministicGates() passed after 1.279 seconds.
+✔ Suite "Evaluation set (plan 20.3 seed)" passed after 1.279 seconds.
+✔ Test run with 47 tests in 7 suites passed after 1.279 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Credential safety" started.
+◇ Suite "Request lifecycle" started.
+◇ Suite "Connection test classification" started.
+◇ Suite "Test scratch directories" started.
+◇ Suite "Provider adapters end to end (loopback fake server)" started.
+◇ Suite "Local endpoint end to end" started.
+◇ Suite "Transcription" started.
+◇ Suite "Generic OpenAI-compatible chat stream" started.
+◇ Suite "Anthropic Messages stream" started.
+◇ Suite "Network policy" started.
+◇ Suite "OpenAI Responses stream" started.
+◇ Suite "Prompt injection (T48)" started.
+◇ Suite "SSE parser" started.
+◇ Test secretHasNoTextualRepresentation() started.
+◇ Test fullFlowLeaksNothingIntoLogsErrorsOrStoredRecords() started.
+◇ Test redactorRemovesFullAndPartialEchoes() started.
+◇ Test outputBeyondTheCapIsStoppedAndLabelledPartial() started.
+◇ Test retryAfterLongerThanTheCapIsNotWaitedOut() started.
+◇ Test destinationModelOrScopeChangeRequiresNewConsent() started.
+◇ Test aStoredKeyNeverReachesAnotherOrigin() started.
+◇ Test packWhoseEndpointDiffersFromTheConfigurationIsRefused() started.
+◇ Test slowOutputIsCheckpointedByTimeNotOnlyByLength() started.
+◇ Test packWithNotesNeedsBroaderConsentInTheCoordinator() started.
+◇ Test backoffIsCappedAndAttemptsAreBounded() started.
+◇ Test concurrentDraftsOfOneRequestWriteItOnce() started.
+◇ Test draftSentWithoutPrepareNeedsConsentAndSendsNothing() started.
+◇ Test outputWithinTheLimitsIsUntouched() started.
+◇ Test providerConfigAndPacksCarryOnlyACredentialReference() started.
+◇ Test refusalTextIsKeptApartFromTheAnswer() started.
+◇ Test userCancelBeforeAnyOutputNeverClaimsNotSent() started.
+◇ Test uncertainFailureWithoutOutputIsNotRetried() started.
+◇ Test destinationChangeBetweenPrepareAndSendNeedsConsentAgain() started.
+◇ Test recordIsDurableInSendingBeforeTheRequestLeaves() started.
+◇ Test finalEventsWithoutAnswerTextAreNeverAnAnswer() started.
+◇ Test outputBeyondTheTimeLimitIsStoppedAndLabelledPartial() started.
+◇ Test suspensionInterruptsForegroundWork() started.
+◇ Test aFailingProviderNeverCausesAnotherToBeCalled() started.
+◇ Test packWithALaterThoughtIsNeverStored() started.
+◇ Test packWithTextAfterItsOwnSpoilerBoundaryIsNeverStored() started.
+◇ Test midStreamFailureIsInterruptedAndNeverReplayedAutomatically() started.
+◇ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() started.
+◇ Test connectionTestErrorsAreScrubbed() started.
+◇ Suite "Grounding and citations" started.
+◇ Test partialOutputIsCheckpointedAndRelaunchShowsInterruptedPartialAnswer() started.
+◇ Test everyScratchDirectoryLivesUnderOneRootInTheConfiguredParent() started.
+◇ Test consentIsRequiredBeforeTheFirstRequest() started.
+◇ Test draftPersistsQuestionAndPackAndSendsNothing() started.
+◇ Test userCancelKeepsPartialOutputLabelled() started.
+◇ Test genericAdapterStreamsFromAFakeLocalServer() started.
+◇ Test failedStatesNeverFallBackToDraftNotSent() started.
+◇ Test requestCarriesExactlyThePackAndNothingElse() started.
+◇ Test earlyCloseMidStreamIsConnectionLostWithPartialText() started.
+◇ Test finishReasonsMapToHonestStates() started.
+◇ Test bodyBeyondTheByteCapIsStopped() started.
+◇ Test leavingTheForegroundStopsEveryInFlightRequest() started.
+◇ Test jitterStaysWithinHalfToFullDelay() started.
+◇ Test offlineSubmissionStaysADraftAndIsNeverSentAutomatically() started.
+◇ Test serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically(status:userManaged:) started.
+◇ Test genericAdapterSendsBearerKeyOnlyToItsOwnOrigin() started.
+◇ Test configurationFailureIsFinal() started.
+◇ Test keepaliveCommentsWithoutEndHitTheTimeLimit() started.
+◇ Test passingTestReportsDisclosureAndCapabilities() started.
+◇ Test contextTooLongIsExplainedAndEvidenceIsNotSilentlyDropped() started.
+◇ Test stopWhileTheSendingRecordIsBeingWrittenSendsNothing() started.
+◇ Test reconnectLoopContinuesPastAClipThatCouldNotBeSaved() started.
+◇ Test genericAdapterWorksWithANonStreamingEndpoint() started.
+◇ Test plainJSONWhenTimingIsNotConfigured() started.
+◇ Test replyWithNoAnswerTextIsNeverComplete(label:sse:reasoning:) started.
+◇ Test capabilityTestUploadsGeneratedSilenceOnly() started.
+◇ Test textCutOffByAFilterOrARefusalStopIsAPartialAnswer() started.
+◇ Test correctionSurvivesASecondRequestAndARelaunch() started.
+◇ Test noEndpointConfiguredSaysSoAndUploadsNothing() started.
+◇ Test openAIResponsesAdapterRequestShapeAndStream() started.
+◇ Test failureLeavesTheClipIntactAndNeverFallsBack() started.
+◇ Test singleJSONBodyIsBoundedInTimeAndSize() started.
+◇ Test uncertainTranscriptionFailureIsResentOnlyOnConfirmation() started.
+◇ Test retryAfterA503ThenStreamToComplete() started.
+◇ Test offlineDraftWaitsForTheUserUnderTheDefaultPolicy() started.
+◇ Test queuedClipWithoutStoredConsentAsksBeforeSending() started.
+◇ Test capabilityTestClassifiesATextOnlyServer() started.
+◇ Test oversizedClipIsRejectedBeforeUpload() started.
+◇ Test hostileRetryAfterOnTheSpeechPathIsClamped() started.
+◇ Test serverErrorAcceptanceDependsOnTheStatusAndTheEndpoint() started.
+◇ Test queuedClipIsSentAfterARelaunchOnlyUnderTheOptInPolicy() started.
+◇ Test queuedClipSurvivesARelaunchAndIsSentOnlyUnderThePolicy() started.
+◇ Test cleartextToANonLocalAddressIsRefusedOnTheSpeechPath(base:) started.
+◇ Test clipAwaitingConsentAsksAgainAfterARelaunch() started.
+◇ Test hostileSegmentTimesAreDroppedNotTrapped() started.
+◇ Test refusalIsSurfacedSeparately() started.
+◇ Test sendingIsDurableBeforeTheUploadStarts() started.
+◇ Test uploadCutOffByARelaunchIsNeverResentAutomatically() started.
+◇ Test toolCallIsRejectedAndArgumentsNeverSurface() started.
+◇ Test stopDuringBackoffWaitTakesEffectAndSendsNothingMore() started.
+◇ Test toolCallWithoutAToolFinishReasonIsNeverComplete() started.
+◇ Test silentStreamIsEndedByTheWallClockLimit() started.
+◇ Test finishReasonWithoutDoneIsComplete() started.
+◇ Test errorObjectMidStreamIsAProviderError() started.
+◇ Test leadingThinkBlockIsStrippedEvenWhenTagsAreSplit() started.
+◇ Test nonStreamingBodyDecodes() started.
+◇ Test usageOnlyFinalChunkIsReported() started.
+◇ Test reasoningFieldsAreNeverAnswerText() started.
+◇ Test earlyEOFWithoutFinishIsConnectionLostAndKeepsPartialText() started.
+◇ Test oversizedLineIsRejected() started.
+◇ Test doneWithoutFinishReasonIsCompleteButFlagged() started.
+◇ Test thinkTagLaterInTheAnswerIsLeftAlone() started.
+◇ Test earlyEOFIsConnectionLost() started.
+◇ Test normalStreamWithSplitUTF8AndCRLF() started.
+◇ Test emptyReplyIsResentOnlyWhenTheUserConfirms() started.
+◇ Test secondDraftWhileTheRequestIsOnTheWireLeavesItAlone() started.
+◇ Test overloadedErrorEventIsUncertainProviderError() started.
+◇ Test malformedJSONIsAnInvalidResponseWithUncertainAcceptance() started.
+◇ Test relaunchWithoutOutputIsFailedRetryableNeedingConfirmation() started.
+◇ Test firstPartyDefaultsJoinCorrectly() started.
+◇ Test anthropicAdapterRequestShapeAndStream() started.
+◇ Test sameOriginRedirectIsFollowed() started.
+◇ Test crossOriginRedirectIsBlockedAndTheKeyNeverReachesTheTarget() started.
+◇ Test baseURLRejectsCredentialsQueriesAndOtherSchemes() started.
+◇ Test baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test reasoningItemsAndSummariesAreDiscarded() started.
+◇ Test maxTokensIsOutputLimit() started.
+◇ Test unknownEventTypesAreIgnored() started.
+◇ Test thinkingBlocksAreNeverAnswerText() started.
+◇ Test earlyEOFIsConnectionLost() started.
+◇ Test declaredClassificationCanBroadenButNeverNarrow() started.
+◇ Test everyRedirectStatusToAnotherOriginIsBlocked(status:) started.
+◇ Test classificationOfHosts() started.
+◇ Test textDeltaAimedAtAThinkingBlockIsRejected() started.
+◇ Test redirectFromAFirstPartyHostToLoopbackIsBlocked() started.
+◇ Test injectedInstructionsInEvidenceNotesAndOutputAreInert() started.
+◇ Test cleartextRule() started.
+◇ Test refusalIsSurfacedSeparately() started.
+◇ Test anthropicToolUseAndThinkingInjectionAreInert() started.
+◇ Test providerRefusesToSendToARejectedCleartextEndpoint() started.
+◇ Test normalStreamFromTheReferenceShapes() started.
+◇ Test functionCallIsRejected() started.
+◇ Test transientFailuresRetryWithCappedBackoffAndRetryAfter() started.
+◇ Test refusalStopReasonKeepsPartialTextAndIsRefused() started.
+◇ Test incompleteForOutputLimitIsNotComplete() started.
+◇ Test malformedJSONIsInvalidResponse() started.
+◇ Test secondDraftForAnAnsweredRequestKeepsTheAnswer() started.
+◇ Test failedResponseAndErrorEventAreProviderErrors() started.
+◇ Test toolUseIsRejectedAndInputJSONNeverSurfaces() started.
+◇ Test basicStreamFromTheReference() started.
+◇ Test genericAdapterToleratesAServerThatIgnoresStreamTrue() started.
+◇ Test commentsAndKeepalivesBetweenChunksAreIgnored() started.
+◇ Test lengthFinishIsOutputLimitNotComplete() started.
+◇ Test reconnectLoopSendsOnlyClipsStillQueued(userSendStatus:) started.
+◇ Test concurrentRequestsForOneClipUploadItOnce() started.
+◇ Test oversizedOrTrickledTranscriptionResponsesAreRefused() started.
+◇ Test multipartUploadWithTimingAndProvenance() started.
+◇ Test aTextChatConfigurationIsNeverUsedForAudio() started.
+◇ Test earlyEOFDiscardsTheUnfinishedEvent() started.
+◇ Test fieldParsingFollowsTheStandard() started.
+◇ Test case passing 2 arguments status → 502, userManaged → false to serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically(status:userManaged:) started.
+◇ Test invalidUTF8BecomesReplacementCharacterNotACrash() started.
+◇ Test case passing 2 arguments status → 504, userManaged → false to serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically(status:userManaged:) started.
+◇ Test oversizedLineIsRejectedWithBoundedMemory() started.
+◇ Test eventWithoutDataIsNotDispatchedAndNameDoesNotLeak() started.
+◇ Test case passing 2 arguments status → 500, userManaged → false to serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically(status:userManaged:) started.
+◇ Test case passing 2 arguments status → 503, userManaged → true to serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically(status:userManaged:) started.
+◇ Test leadingByteOrderMarkIsStripped() started.
+◇ Test oversizedEventIsRejected() started.
+◇ Test case passing 2 arguments status → 529, userManaged → true to serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically(status:userManaged:) started.
+◇ Test crAtChunkEndFollowedByLfIsOneLineBreak() started.
+◇ Test multiByteUTF8SplitAcrossChunksIsReassembled() started.
+◇ Test commentsAndKeepalivesAreIgnoredAndCounted() started.
+◇ Test case passing 3 arguments label → "reasoning only", sse → ["data: {\"id\":\"x\",\"model\":\"local-model\",\"choices\":[{\"index\":0,\"delta\":{\"reasoning_content\":\"The user asks about Thoreau. I should think\"},\"finish_reason\":null}]}\n\n", "data: {\"id\":\"x\",\"model\":\"local-model\",\"choices\":[{\"index\":0,\"delta\":{\"reasoning_content\":\" for a long time.\"},\"finish_reason\":null}]}\n\n", "data: {\"id\":\"x\",\"model\":\"local-model\",\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}\n\n", "data: [DONE]\n\n"], reasoning → true to replyWithNoAnswerTextIsNeverComplete(label:sse:reasoning:) started.
+◇ Test crlfLfAndCrLineEndingsAreEquivalent() started.
+◇ Test partialEventIsHeldUntilBlankLine() started.
+◇ Test case passing 3 arguments label → "think block only", sse → ["data: {\"id\":\"x\",\"model\":\"local-model\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"<think>The user asks about Thoreau.\"},\"finish_reason\":null}]}\n\n", "data: {\"id\":\"x\",\"model\":\"local-model\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" Still thinking.</think>\\n\\n\"},\"finish_reason\":null}]}\n\n", "data: {\"id\":\"x\",\"model\":\"local-model\",\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}]}\n\n", "data: [DONE]\n\n"], reasoning → true to replyWithNoAnswerTextIsNeverComplete(label:sse:reasoning:) started.
+◇ Test case passing 3 arguments label → "[DONE] only", sse → ["data: [DONE]\n\n"], reasoning → false to replyWithNoAnswerTextIsNeverComplete(label:sse:reasoning:) started.
+◇ Test case passing 1 argument base → "http://localhost:8000/v1" to cleartextToANonLocalAddressIsRefusedOnTheSpeechPath(base:) started.
+◇ Test case passing 1 argument base → "http://gateway.example.com/v1" to cleartextToANonLocalAddressIsRefusedOnTheSpeechPath(base:) started.
+◇ Test case passing 1 argument base → "http://100.64.1.2:8000/v1" to cleartextToANonLocalAddressIsRefusedOnTheSpeechPath(base:) started.
+◇ Test case passing 1 argument base → "http://8.8.8.8/v1" to cleartextToANonLocalAddressIsRefusedOnTheSpeechPath(base:) started.
+◇ Test case passing 2 arguments input → "http://127.0.0.1:1234/v1", expected → "http://127.0.0.1:1234/v1/chat/completions" to baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test case passing 2 arguments input → "http://127.0.0.1:1234/v1/", expected → "http://127.0.0.1:1234/v1/chat/completions" to baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test case passing 2 arguments input → "http://127.0.0.1:1234/v1/chat/completions", expected → "http://127.0.0.1:1234/v1/chat/completions" to baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test case passing 2 arguments input → "http://127.0.0.1:1234/v1/v1", expected → "http://127.0.0.1:1234/v1/chat/completions" to baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test case passing 1 argument status → 301 to everyRedirectStatusToAnotherOriginIsBlocked(status:) started.
+◇ Test case passing 2 arguments input → "http://127.0.0.1:1234/v1/v1/chat/completions/", expected → "http://127.0.0.1:1234/v1/chat/completions" to baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test case passing 1 argument status → 302 to everyRedirectStatusToAnotherOriginIsBlocked(status:) started.
+◇ Test case passing 1 argument status → 303 to everyRedirectStatusToAnotherOriginIsBlocked(status:) started.
+◇ Test case passing 1 argument status → 307 to everyRedirectStatusToAnotherOriginIsBlocked(status:) started.
+◇ Test case passing 2 arguments input → "  HTTPS://Gateway.Example.COM:443/api/v1  ", expected → "https://gateway.example.com/api/v1/chat/completions" to baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test case passing 1 argument status → 308 to everyRedirectStatusToAnotherOriginIsBlocked(status:) started.
+◇ Test case passing 2 arguments input → "https://gateway.example.com", expected → "https://gateway.example.com/chat/completions" to baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test case passing 2 arguments input → "https://gateway.example.com/openai/v2/", expected → "https://gateway.example.com/openai/v2/chat/completions" to baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test case passing 2 arguments input → "http://[::1]:8080/v1", expected → "http://[::1]:8080/v1/chat/completions" to baseURLNormalizationNeverProducesDoubledVersion(input:expected:) started.
+◇ Test case passing 1 argument userSendStatus → 502 to reconnectLoopSendsOnlyClipsStillQueued(userSendStatus:) started.
+◇ Test case passing 1 argument userSendStatus → 429 to reconnectLoopSendsOnlyClipsStillQueued(userSendStatus:) started.
+✔ Test secretHasNoTextualRepresentation() passed after 0.034 seconds.
+✔ Test providerConfigAndPacksCarryOnlyACredentialReference() passed after 0.034 seconds.
+✔ Test destinationModelOrScopeChangeRequiresNewConsent() passed after 0.034 seconds.
+✔ Test redactorRemovesFullAndPartialEchoes() passed after 0.035 seconds.
+◇ Test outOfOrderEllipsisSegmentsAreNotExact() started.
+◇ Test fragmentsStitchedWithEllipsesAreNotExact() started.
+◇ Test exactQuotationsAreVerifiedAgainstSuppliedEvidence() started.
+◇ Test changedPunctuationInsideAQuoteIsNotExact() started.
+◇ Test partialWordsNeverMakeAnExactQuotation() started.
+◇ Test systemTextStatesTheRules() started.
+◇ Test evidenceCannotCloseItsElementOrForgeAnID() started.
+◇ Test markdownBlockQuotesAreChecked() started.
+◇ Test citationsResolveOnlyAgainstThePackAllowlist() started.
+◇ Test shortQuotationsAreLabelledButNeverExact() started.
+◇ Test letterCaseIsSignificantForAnExactQuotation() started.
+◇ Test everyQuotationStyleIsChecked() started.
+✔ Test everyScratchDirectoryLivesUnderOneRootInTheConfiguredParent() passed after 0.043 seconds.
+✔ Test jitterStaysWithinHalfToFullDelay() passed after 0.043 seconds.
+✔ Test serverErrorAcceptanceDependsOnTheStatusAndTheEndpoint() passed after 0.055 seconds.
+✔ Test nonStreamingBodyDecodes() passed after 0.062 seconds.
+✔ Test finishReasonWithoutDoneIsComplete() passed after 0.063 seconds.
+✔ Test usageOnlyFinalChunkIsReported() passed after 0.063 seconds.
+✔ Test doneWithoutFinishReasonIsCompleteButFlagged() passed after 0.063 seconds.
+✔ Test thinkTagLaterInTheAnswerIsLeftAlone() passed after 0.063 seconds.
+✔ Test packWithALaterThoughtIsNeverStored() passed after 0.065 seconds.
+✔ Test noEndpointConfiguredSaysSoAndUploadsNothing() passed after 0.065 seconds.
+✔ Test firstPartyDefaultsJoinCorrectly() passed after 0.064 seconds.
+✔ Test packWithTextAfterItsOwnSpoilerBoundaryIsNeverStored() passed after 0.065 seconds.
+✔ Test baseURLRejectsCredentialsQueriesAndOtherSchemes() passed after 0.064 seconds.
+✔ Test baseURLNormalizationNeverProducesDoubledVersion(input:expected:) with 9 test cases passed after 0.064 seconds.
+✔ Test unknownEventTypesAreIgnored() passed after 0.064 seconds.
+✔ Test declaredClassificationCanBroadenButNeverNarrow() passed after 0.074 seconds.
+✔ Test classificationOfHosts() passed after 0.074 seconds.
+✔ Test maxTokensIsOutputLimit() passed after 0.074 seconds.
+✔ Test refusalIsSurfacedSeparately() passed after 0.075 seconds.
+✔ Test earlyEOFWithoutFinishIsConnectionLostAndKeepsPartialText() passed after 0.074 seconds.
+✔ Test cleartextRule() passed after 0.074 seconds.
+✔ Test relaunchWithoutOutputIsFailedRetryableNeedingConfirmation() passed after 0.074 seconds.
+✔ Test errorObjectMidStreamIsAProviderError() passed after 0.075 seconds.
+✔ Test earlyEOFIsConnectionLost() passed after 0.075 seconds.
+✔ Test malformedJSONIsAnInvalidResponseWithUncertainAcceptance() passed after 0.075 seconds.
+✔ Test malformedJSONIsInvalidResponse() passed after 0.074 seconds.
+✔ Test leadingThinkBlockIsStrippedEvenWhenTagsAreSplit() passed after 0.075 seconds.
+✔ Test normalStreamWithSplitUTF8AndCRLF() passed after 0.075 seconds.
+✔ Test earlyEOFIsConnectionLost() passed after 0.075 seconds.
+✔ Test lengthFinishIsOutputLimitNotComplete() passed after 0.075 seconds.
+✔ Test overloadedErrorEventIsUncertainProviderError() passed after 0.078 seconds.
+✔ Test reasoningFieldsAreNeverAnswerText() passed after 0.080 seconds.
+✔ Test textDeltaAimedAtAThinkingBlockIsRejected() passed after 0.087 seconds.
+✔ Test toolCallIsRejectedAndArgumentsNeverSurface() passed after 0.088 seconds.
+✔ Test earlyEOFDiscardsTheUnfinishedEvent() passed after 0.082 seconds.
+✔ Test fieldParsingFollowsTheStandard() passed after 0.082 seconds.
+✔ Test incompleteForOutputLimitIsNotComplete() passed after 0.090 seconds.
+✔ Test refusalIsSurfacedSeparately() passed after 0.091 seconds.
+✔ Test invalidUTF8BecomesReplacementCharacterNotACrash() passed after 0.085 seconds.
+✔ Test eventWithoutDataIsNotDispatchedAndNameDoesNotLeak() passed after 0.085 seconds.
+✔ Test leadingByteOrderMarkIsStripped() passed after 0.087 seconds.
+✔ Test oversizedLineIsRejectedWithBoundedMemory() passed after 0.087 seconds.
+✔ Test oversizedEventIsRejected() passed after 0.087 seconds.
+✔ Test crAtChunkEndFollowedByLfIsOneLineBreak() passed after 0.091 seconds.
+✔ Test commentsAndKeepalivesAreIgnoredAndCounted() passed after 0.097 seconds.
+✔ Test multiByteUTF8SplitAcrossChunksIsReassembled() passed after 0.097 seconds.
+✔ Test functionCallIsRejected() passed after 0.104 seconds.
+✔ Test failedResponseAndErrorEventAreProviderErrors() passed after 0.103 seconds.
+✔ Test refusalStopReasonKeepsPartialTextAndIsRefused() passed after 0.104 seconds.
+✔ Test partialEventIsHeldUntilBlankLine() passed after 0.099 seconds.
+✔ Test crlfLfAndCrLineEndingsAreEquivalent() passed after 0.100 seconds.
+✔ Test commentsAndKeepalivesBetweenChunksAreIgnored() passed after 0.107 seconds.
+✔ Test oversizedLineIsRejected() passed after 0.108 seconds.
+✔ Test reasoningItemsAndSummariesAreDiscarded() passed after 0.110 seconds.
+✔ Test basicStreamFromTheReference() passed after 0.111 seconds.
+✔ Test toolUseIsRejectedAndInputJSONNeverSurfaces() passed after 0.111 seconds.
+✔ Test thinkingBlocksAreNeverAnswerText() passed after 0.113 seconds.
+✔ Test normalStreamFromTheReferenceShapes() passed after 0.116 seconds.
+✔ Test oversizedClipIsRejectedBeforeUpload() passed after 0.121 seconds.
+✔ Test toolCallWithoutAToolFinishReasonIsNeverComplete() passed after 0.121 seconds.
+✔ Test cleartextToANonLocalAddressIsRefusedOnTheSpeechPath(base:) with 4 test cases passed after 0.126 seconds.
+✔ Test aTextChatConfigurationIsNeverUsedForAudio() passed after 0.131 seconds.
+✔ Test outOfOrderEllipsisSegmentsAreNotExact() passed after 0.093 seconds.
+✔ Test fragmentsStitchedWithEllipsesAreNotExact() passed after 0.092 seconds.
+✔ Test changedPunctuationInsideAQuoteIsNotExact() passed after 0.092 seconds.
+✔ Test partialWordsNeverMakeAnExactQuotation() passed after 0.092 seconds.
+✔ Test systemTextStatesTheRules() passed after 0.092 seconds.
+✔ Test exactQuotationsAreVerifiedAgainstSuppliedEvidence() passed after 0.092 seconds.
+✔ Test markdownBlockQuotesAreChecked() passed after 0.092 seconds.
+✔ Test shortQuotationsAreLabelledButNeverExact() passed after 0.092 seconds.
+✔ Test letterCaseIsSignificantForAnExactQuotation() passed after 0.092 seconds.
+✔ Test citationsResolveOnlyAgainstThePackAllowlist() passed after 0.092 seconds.
+✔ Test everyQuotationStyleIsChecked() passed after 0.092 seconds.
+✔ Test evidenceCannotCloseItsElementOrForgeAnID() passed after 0.092 seconds.
+✔ Suite "Test scratch directories" passed after 0.134 seconds.
+✔ Test packWithNotesNeedsBroaderConsentInTheCoordinator() passed after 0.139 seconds.
+✔ Suite "Anthropic Messages stream" passed after 0.148 seconds.
+✔ Test failedStatesNeverFallBackToDraftNotSent() passed after 0.159 seconds.
+✔ Suite "OpenAI Responses stream" passed after 0.164 seconds.
+✔ Test draftPersistsQuestionAndPackAndSendsNothing() passed after 0.166 seconds.
+✔ Suite "SSE parser" passed after 0.169 seconds.
+✔ Suite "Generic OpenAI-compatible chat stream" passed after 0.184 seconds.
+✔ Test packWhoseEndpointDiffersFromTheConfigurationIsRefused() passed after 0.184 seconds.
+✔ Test providerRefusesToSendToARejectedCleartextEndpoint() passed after 0.189 seconds.
+✔ Suite "Grounding and citations" passed after 0.190 seconds.
+✔ Test stopWhileTheSendingRecordIsBeingWrittenSendsNothing() passed after 0.195 seconds.
+✔ Test uncertainFailureWithoutOutputIsNotRetried() passed after 0.200 seconds.
+✔ Test destinationChangeBetweenPrepareAndSendNeedsConsentAgain() passed after 0.200 seconds.
+✔ Test refusalTextIsKeptApartFromTheAnswer() passed after 0.201 seconds.
+✔ Test outputBeyondTheCapIsStoppedAndLabelledPartial() passed after 0.204 seconds.
+✔ Test draftSentWithoutPrepareNeedsConsentAndSendsNothing() passed after 0.205 seconds.
+✔ Test retryAfterLongerThanTheCapIsNotWaitedOut() passed after 0.210 seconds.
+✔ Test crossOriginRedirectIsBlockedAndTheKeyNeverReachesTheTarget() passed after 0.209 seconds.
+✔ Test queuedClipWithoutStoredConsentAsksBeforeSending() passed after 0.210 seconds.
+✔ Test configurationFailureIsFinal() passed after 0.210 seconds.
+✔ Test redirectFromAFirstPartyHostToLoopbackIsBlocked() passed after 0.211 seconds.
+✔ Test recordIsDurableInSendingBeforeTheRequestLeaves() passed after 0.212 seconds.
+✔ Test genericAdapterSendsBearerKeyOnlyToItsOwnOrigin() passed after 0.212 seconds.
+✔ Test passingTestReportsDisclosureAndCapabilities() passed after 0.212 seconds.
+✔ Test genericAdapterStreamsFromAFakeLocalServer() passed after 0.216 seconds.
+✔ Test openAIResponsesAdapterRequestShapeAndStream() passed after 0.216 seconds.
+✔ Test everyRedirectStatusToAnotherOriginIsBlocked(status:) with 5 test cases passed after 0.215 seconds.
+✔ Test sameOriginRedirectIsFollowed() passed after 0.215 seconds.
+✔ Test consentIsRequiredBeforeTheFirstRequest() passed after 0.217 seconds.
+✔ Test anthropicAdapterRequestShapeAndStream() passed after 0.216 seconds.
+✔ Test earlyCloseMidStreamIsConnectionLostWithPartialText() passed after 0.217 seconds.
+✔ Test hostileSegmentTimesAreDroppedNotTrapped() passed after 0.220 seconds.
+✔ Test capabilityTestUploadsGeneratedSilenceOnly() passed after 0.220 seconds.
+✔ Test anthropicToolUseAndThinkingInjectionAreInert() passed after 0.220 seconds.
+✔ Test plainJSONWhenTimingIsNotConfigured() passed after 0.220 seconds.
+✔ Test hostileRetryAfterOnTheSpeechPathIsClamped() passed after 0.223 seconds.
+✔ Test capabilityTestClassifiesATextOnlyServer() passed after 0.223 seconds.
+✔ Suite "Network policy" passed after 0.224 seconds.
+✔ Test clipAwaitingConsentAsksAgainAfterARelaunch() passed after 0.226 seconds.
+✔ Test queuedClipIsSentAfterARelaunchOnlyUnderTheOptInPolicy() passed after 0.226 seconds.
+✔ Test connectionTestErrorsAreScrubbed() passed after 0.227 seconds.
+◇ Test serverThatIgnoresStreamingIsReportedAsNotStreamed() started.
+✔ Test suspensionInterruptsForegroundWork() passed after 0.227 seconds.
+✔ Test sendingIsDurableBeforeTheUploadStarts() passed after 0.228 seconds.
+✔ Test genericAdapterToleratesAServerThatIgnoresStreamTrue() passed after 0.228 seconds.
+✔ Test genericAdapterWorksWithANonStreamingEndpoint() passed after 0.229 seconds.
+✔ Test failureLeavesTheClipIntactAndNeverFallsBack() passed after 0.230 seconds.
+✔ Test outputWithinTheLimitsIsUntouched() passed after 0.235 seconds.
+✔ Test multipartUploadWithTimingAndProvenance() passed after 0.234 seconds.
+✔ Suite "Provider adapters end to end (loopback fake server)" passed after 0.236 seconds.
+✔ Test aStoredKeyNeverReachesAnotherOrigin() passed after 0.236 seconds.
+✔ Test outputBeyondTheTimeLimitIsStoppedAndLabelledPartial() passed after 0.238 seconds.
+✔ Test replyWithNoAnswerTextIsNeverComplete(label:sse:reasoning:) with 3 test cases passed after 0.247 seconds.
+✔ Test stopDuringBackoffWaitTakesEffectAndSendsNothingMore() passed after 0.250 seconds.
+✔ Test secondDraftForAnAnsweredRequestKeepsTheAnswer() passed after 0.254 seconds.
+✔ Test requestCarriesExactlyThePackAndNothingElse() passed after 0.262 seconds.
+✔ Test contextTooLongIsExplainedAndEvidenceIsNotSilentlyDropped() passed after 0.262 seconds.
+✔ Test emptyReplyIsResentOnlyWhenTheUserConfirms() passed after 0.264 seconds.
+✔ Test userCancelKeepsPartialOutputLabelled() passed after 0.268 seconds.
+✔ Test userCancelBeforeAnyOutputNeverClaimsNotSent() passed after 0.268 seconds.
+✔ Test serverThatIgnoresStreamingIsReportedAsNotStreamed() passed after 0.042 seconds.
+✔ Test bodyBeyondTheByteCapIsStopped() passed after 0.269 seconds.
+✔ Test concurrentDraftsOfOneRequestWriteItOnce() passed after 0.270 seconds.
+◇ Test toolCallOnlyRouteFailsTheTest() started.
+✔ Test secondDraftWhileTheRequestIsOnTheWireLeavesItAlone() passed after 0.269 seconds.
+✔ Test partialOutputIsCheckpointedAndRelaunchShowsInterruptedPartialAnswer() passed after 0.271 seconds.
+✔ Test aFailingProviderNeverCausesAnotherToBeCalled() passed after 0.273 seconds.
+✔ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() passed after 0.273 seconds.
+✔ Test reconnectLoopContinuesPastAClipThatCouldNotBeSaved() passed after 0.273 seconds.
+✔ Test offlineDraftWaitsForTheUserUnderTheDefaultPolicy() passed after 0.274 seconds.
+✔ Test slowOutputIsCheckpointedByTimeNotOnlyByLength() passed after 0.275 seconds.
+✔ Test toolCallOnlyRouteFailsTheTest() passed after 0.008 seconds.
+◇ Test toolCallAfterTextStillFailsTheTest() started.
+✔ Test midStreamFailureIsInterruptedAndNeverReplayedAutomatically() passed after 0.279 seconds.
+✔ Test queuedClipSurvivesARelaunchAndIsSentOnlyUnderThePolicy() passed after 0.280 seconds.
+✔ Test offlineSubmissionStaysADraftAndIsNeverSentAutomatically() passed after 0.280 seconds.
+✔ Test toolCallAfterTextStillFailsTheTest() passed after 0.002 seconds.
+◇ Test toolCallFailsTheTestOnTheFirstPartyAdapters() started.
+✔ Test leavingTheForegroundStopsEveryInFlightRequest() passed after 0.281 seconds.
+✔ Test textCutOffByAFilterOrARefusalStopIsAPartialAnswer() passed after 0.285 seconds.
+✔ Test toolCallFailsTheTestOnTheFirstPartyAdapters() passed after 0.004 seconds.
+◇ Test reasoningOnlyReplyAtTheOutputLimitFailsTheTest() started.
+✔ Test reasoningOnlyReplyAtTheOutputLimitFailsTheTest() passed after 0.003 seconds.
+◇ Test replyCutOffAtTheOutputLimitFailsTheTest() started.
+✔ Test replyCutOffAtTheOutputLimitFailsTheTest() passed after 0.002 seconds.
+◇ Test refusalOnlyReplyFailsTheTest() started.
+✔ Test serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically(status:userManaged:) with 5 test cases passed after 0.293 seconds.
+✔ Test backoffIsCappedAndAttemptsAreBounded() passed after 0.294 seconds.
+✔ Test transientFailuresRetryWithCappedBackoffAndRetryAfter() passed after 0.294 seconds.
+✔ Test fullFlowLeaksNothingIntoLogsErrorsOrStoredRecords() passed after 0.295 seconds.
+✔ Suite "Credential safety" passed after 0.296 seconds.
+✔ Test refusalOnlyReplyFailsTheTest() passed after 0.006 seconds.
+◇ Test contentFilteredReplyFailsTheTest() started.
+✔ Test contentFilteredReplyFailsTheTest() passed after 0.002 seconds.
+◇ Test probeUsesTheOutputLimitRealQuestionsGet() started.
+✔ Test retryAfterA503ThenStreamToComplete() passed after 0.303 seconds.
+✔ Test probeUsesTheOutputLimitRealQuestionsGet() passed after 0.004 seconds.
+◇ Test onlyANormalEndWithTextPasses() started.
+✔ Test onlyANormalEndWithTextPasses() passed after 0.001 seconds.
+◇ Test dnsFailure() started.
+✔ Test dnsFailure() passed after 0.001 seconds.
+◇ Test localNetworkPermissionDenied() started.
+✔ Test localNetworkPermissionDenied() passed after 0.001 seconds.
+◇ Test offlineIsNotMistakenForPermissionDenial() started.
+✔ Test offlineIsNotMistakenForPermissionDenial() passed after 0.001 seconds.
+◇ Test hostUnreachableOnAClosedLoopbackPort() started.
+✔ Test uploadCutOffByARelaunchIsNeverResentAutomatically() passed after 0.317 seconds.
+✔ Test finishReasonsMapToHonestStates() passed after 0.334 seconds.
+✔ Test correctionSurvivesASecondRequestAndARelaunch() passed after 0.341 seconds.
+✔ Test uncertainTranscriptionFailureIsResentOnlyOnConfirmation() passed after 0.357 seconds.
+✔ Test injectedInstructionsInEvidenceNotesAndOutputAreInert() passed after 0.360 seconds.
+✔ Suite "Prompt injection (T48)" passed after 0.361 seconds.
+✔ Test hostUnreachableOnAClosedLoopbackPort() passed after 0.053 seconds.
+◇ Test tlsFailureAgainstAServerThatDoesNotSpeakTLS() started.
+✔ Test finalEventsWithoutAnswerTextAreNeverAnAnswer() passed after 0.363 seconds.
+✔ Suite "Request lifecycle" passed after 0.364 seconds.
+✔ Test tlsFailureAgainstAServerThatDoesNotSpeakTLS() passed after 0.005 seconds.
+◇ Test untrustedCertificateIsTLS() started.
+✔ Test untrustedCertificateIsTLS() passed after 0.001 seconds.
+◇ Test authenticationFailureWithKeyEchoedByServerIsScrubbed() started.
+✔ Test authenticationFailureWithKeyEchoedByServerIsScrubbed() passed after 0.002 seconds.
+◇ Test unsupportedModelOpenAIShape() started.
+✔ Test unsupportedModelOpenAIShape() passed after 0.002 seconds.
+◇ Test unsupportedModelAnthropicShape() started.
+✔ Test unsupportedModelAnthropicShape() passed after 0.002 seconds.
+◇ Test unsupportedDialectWhenThePathDoesNotExist() started.
+✔ Test unsupportedDialectWhenThePathDoesNotExist() passed after 0.002 seconds.
+◇ Test missingVersionSegmentIsUnsupportedDialectWithAHint() started.
+✔ Test missingVersionSegmentIsUnsupportedDialectWithAHint() passed after 0.002 seconds.
+◇ Test rateLimitWithRetryAfter() started.
+✔ Test rateLimitWithRetryAfter() passed after 0.002 seconds.
+◇ Test hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "99999999999999999999", expected → 86400.0 seconds to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "9223372036854775807", expected → 86400.0 seconds to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999", expected → 86400.0 seconds to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "86401", expected → 86400.0 seconds to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "Fri, 31 Dec 9999 23:59:59 GMT", expected → 86400.0 seconds to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "1e300", expected → nil to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "-5", expected → nil to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "nan", expected → nil to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "inf", expected → nil to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "0x10", expected → nil to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "1.5", expected → nil to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+◇ Test case passing 2 arguments value → "+3", expected → nil to hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) started.
+✔ Test hostileRetryAfterIsClampedOrIgnoredNeverTrapped(value:expected:) with 12 test cases passed after 0.027 seconds.
+◇ Test validRetryAfterFormsStillParse() started.
+✔ Test validRetryAfterFormsStillParse() passed after 0.001 seconds.
+◇ Test quotaExhaustedIsNotARateLimit() started.
+✔ Test quotaExhaustedIsNotARateLimit() passed after 0.002 seconds.
+◇ Test invalidResponseWhenAPortalReturnsHTML() started.
+✔ Test invalidResponseWhenAPortalReturnsHTML() passed after 0.002 seconds.
+◇ Test invalidResponseWhenTheWrongDialectStreams() started.
+✔ Test invalidResponseWhenTheWrongDialectStreams() passed after 0.001 seconds.
+◇ Test serverErrorIsClassified() started.
+✔ Test serverErrorIsClassified() passed after 0.002 seconds.
+◇ Test missingCredentialIsReportedWithoutSending() started.
+✔ Test missingCredentialIsReportedWithoutSending() passed after 0.001 seconds.
+◇ Test everyFailureKindHasADistinctActionableMessage() started.
+✔ Test everyFailureKindHasADistinctActionableMessage() passed after 0.001 seconds.
+✔ Suite "Connection test classification" passed after 0.422 seconds.
+✔ Test reconnectLoopSendsOnlyClipsStillQueued(userSendStatus:) with 2 test cases passed after 0.732 seconds.
+✔ Test concurrentRequestsForOneClipUploadItOnce() passed after 0.774 seconds.
+✔ Test keepaliveCommentsWithoutEndHitTheTimeLimit() passed after 2.194 seconds.
+✔ Test silentStreamIsEndedByTheWallClockLimit() passed after 2.240 seconds.
+✔ Test singleJSONBodyIsBoundedInTimeAndSize() passed after 2.250 seconds.
+✔ Suite "Local endpoint end to end" passed after 2.251 seconds.
+✔ Test oversizedOrTrickledTranscriptionResponsesAreRefused() passed after 2.268 seconds.
+✔ Suite "Transcription" passed after 2.269 seconds.
+✔ Test run with 191 tests in 14 suites passed after 2.269 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Live provider smoke tests" started.
+➜ Test transcriptionEndpointTranscribesTheFixtureClip() skipped: "live transcription test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_TRANSCRIPTION_BASE_URL and SYLVIA_LIVE_TRANSCRIPTION_MODEL"
+➜ Test openAIResponsesStreamsAGroundedAnswer() skipped: "live OpenAI Responses smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, OPENAI_API_KEY and SYLVIA_LIVE_OPENAI_MODEL"
+➜ Test openAICompatibleEndpointPassesTheConnectionTestAndStreams() skipped: "live OpenAI-compatible endpoint test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_COMPAT_BASE_URL and SYLVIA_LIVE_COMPAT_MODEL"
+➜ Test anthropicMessagesStreamsAGroundedAnswer() skipped: "live Anthropic Messages smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, ANTHROPIC_API_KEY and SYLVIA_LIVE_ANTHROPIC_MODEL"
+✔ Suite "Live provider smoke tests" passed after 0.001 seconds.
+✔ Test run with 4 tests in 1 suite passed after 0.001 seconds.

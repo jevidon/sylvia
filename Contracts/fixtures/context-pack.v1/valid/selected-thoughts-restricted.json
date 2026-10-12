@@ -1,0 +1,101 @@
+{
+  "budget": {
+    "context_limit_source": "default_unknown_model",
+    "context_limit_tokens": 8192,
+    "estimated": true,
+    "estimator": {
+      "kind": "heuristic",
+      "name": "utf8-bytes-div-3"
+    },
+    "evidence_budget_tokens": 5973,
+    "evidence_tokens": 101,
+    "history_tokens": 0,
+    "output_reserve_tokens": 1024,
+    "question_tokens": 27,
+    "safety_margin_tokens": 819,
+    "system_tokens": 349
+  },
+  "conversation_id": "4584911C-FB31-4C90-866B-6D955EDA0441",
+  "coverage": "saved_thoughts",
+  "coverage_label": "Selected thoughts only",
+  "created_at": "2026-10-10T00:00:00.123Z",
+  "endpoint": {
+    "base_path": "/v1",
+    "classification": "local",
+    "host": "127.0.0.1",
+    "model": "local-model",
+    "origin": "http://127.0.0.1:1234",
+    "provider_kind": "openai_compatible_chat"
+  },
+  "evidence": [
+    {
+      "capture_id": "1EF4229B-67FC-4A64-A549-738B425ECB01",
+      "citation_id": "c1",
+      "edition_id": "A24E2A9D-95A5-4F2A-A49C-9BC71EC6A04D",
+      "estimated_tokens": 59,
+      "evidence_id": "846F6810-D41A-4207-B82F-CC2942A23909",
+      "location_label": "Chapter I",
+      "origin": "saved_quote",
+      "position": {
+        "first_ordinal": 2,
+        "last_ordinal": 2,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/chapter-1.xhtml"
+      },
+      "role": "thought",
+      "source_quality": "exact_capture",
+      "text": "Miss Brooke had that kind of beauty which seems to be thrown into relief by poor dress.",
+      "text_sha256": "93bab3f9b6aea05dbf9191597e2eb8b1beff9b2bbe0c8958c6e0d2ab1fbeb63b",
+      "work_id": "F54AA025-78AF-4523-9C9F-27AC82AA8C0C"
+    },
+    {
+      "capture_id": "3DBCFD7C-93F6-4867-939E-FFE5A62619C0",
+      "citation_id": "c2",
+      "estimated_tokens": 42,
+      "evidence_id": "2CE9B3A2-E05F-414C-8824-F430D0C8434C",
+      "location_label": "Note",
+      "origin": "user_note",
+      "role": "thought",
+      "source_quality": "user_entered",
+      "text": "Compare with Walden on plain living.",
+      "text_sha256": "c96ab71ebed63948b6640ef6c16fefc57f504b55c6870370369207b7f386efa9",
+      "work_id": "8E2433A3-212D-4E00-820B-094EBC6ED3AD"
+    }
+  ],
+  "history": {
+    "excluded_turn_count": 0,
+    "included_turns": []
+  },
+  "limitations": [],
+  "mode": "source_grounded",
+  "pack_id": "0B4ACF57-CCD0-4789-BA8A-4A7463BAA7AC",
+  "pack_sha256": "57b63e1ab8bde2c0eaf8bf3f81ce2e9ea6e2c5c03020a8ccb68ab892dd18b6bc",
+  "prompt_template_version": "sylvia-grounded-3",
+  "question": "How do these relate?",
+  "request_id": "00AECFFB-1FC1-4ACE-A973-1A4F857C4184",
+  "schema_version": 1,
+  "scope": "selected_thoughts",
+  "scope_label": "Selected thoughts",
+  "spoiler_boundary": {
+    "basis": "user_confirmed_position",
+    "enabled": true,
+    "excluded_evidence_count": 1,
+    "max_ordinal": 569
+  },
+  "text_coverage": {
+    "resources_indexed": 95,
+    "resources_total": 95,
+    "state": "book_text_indexed"
+  },
+  "truncation": {
+    "omitted_evidence_count": 0,
+    "truncated": false
+  },
+  "work": {
+    "author_display": "George Eliot",
+    "edition_id": "A24E2A9D-95A5-4F2A-A49C-9BC71EC6A04D",
+    "source_kind": "local_epub",
+    "title": "Middlemarch",
+    "work_id": "F54AA025-78AF-4523-9C9F-27AC82AA8C0C"
+  }
+}

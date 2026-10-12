@@ -1,0 +1,110 @@
+{
+  "budget": {
+    "context_limit_source": "default_unknown_model",
+    "context_limit_tokens": 8192,
+    "estimated": true,
+    "estimator": {
+      "kind": "heuristic",
+      "name": "utf8-bytes-div-3"
+    },
+    "evidence_budget_tokens": 5973,
+    "evidence_tokens": 128,
+    "history_tokens": 0,
+    "output_reserve_tokens": 1024,
+    "question_tokens": 27,
+    "safety_margin_tokens": 819,
+    "system_tokens": 349
+  },
+  "conversation_id": "629EC2FD-7CDE-4201-8F56-D09F6BB17439",
+  "coverage": "saved_thoughts",
+  "coverage_label": "Selected thoughts only",
+  "created_at": "2026-10-10T00:00:00.123Z",
+  "endpoint": {
+    "base_path": "/v1",
+    "classification": "local",
+    "host": "127.0.0.1",
+    "model": "local-model",
+    "origin": "http://127.0.0.1:1234",
+    "provider_kind": "openai_compatible_chat"
+  },
+  "evidence": [
+    {
+      "capture_id": "5B65E3D0-1588-48F9-BA46-F460CBAF01B5",
+      "citation_id": "c1",
+      "edition_id": "99E0A711-8335-4F75-B35F-FD4568BE139E",
+      "estimated_tokens": 37,
+      "evidence_id": "5EB58641-B785-499C-A4F4-C50743422095",
+      "location_label": "Where I Lived, and What I Lived For",
+      "origin": "saved_quote",
+      "position": {
+        "first_ordinal": 241,
+        "last_ordinal": 241,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/where-i-lived-and-what-i-lived-for.xhtml"
+      },
+      "role": "thought",
+      "source_quality": "exact_capture",
+      "text": "Simplify, simplify.",
+      "text_sha256": "9d32c537ab260da37d9774fbc8aba5e066235cbe725ce6aca1fb3203ec25a48f",
+      "work_id": "15250A71-4BD0-46F8-A57B-35CE9F8D71CA"
+    },
+    {
+      "citation_id": "c2",
+      "estimated_tokens": 45,
+      "evidence_id": "096E7FB7-B86A-4680-856B-A1ED813004C6",
+      "location_label": "Note",
+      "origin": "user_note",
+      "role": "thought",
+      "source_quality": "user_entered",
+      "text": "Compare with Seneca on the shortness of life.",
+      "text_sha256": "3ee1355778e7bf958540ea9921258b9b49a1da1f408d57821c837e8648f54882"
+    },
+    {
+      "capture_id": "04049ADB-C586-4B3C-B32B-6E68B8FEB020",
+      "citation_id": "c3",
+      "estimated_tokens": 46,
+      "evidence_id": "DFD57D3A-B71C-42CA-837D-8CBD27D1492E",
+      "location_label": "Meditations, Book One, 0:02",
+      "origin": "transcript",
+      "role": "thought",
+      "source_quality": "machine_transcript",
+      "text": "From my grandfather Verus I learned good morals.",
+      "text_sha256": "a75c483a6b451a45bff43a3c6da17439d3dd6c70cad3944cfa875c5f00e40f8b"
+    }
+  ],
+  "history": {
+    "excluded_turn_count": 0,
+    "included_turns": []
+  },
+  "limitations": [],
+  "mode": "source_grounded",
+  "pack_id": "2B4420F0-1029-4C59-B17D-2553A9B9ECF7",
+  "pack_sha256": "d4372882cf1f2a2cdffcdaa8e0340786b0e03839abeb2617c1b7a4f88ea4dd4f",
+  "prompt_template_version": "sylvia-grounded-3",
+  "question": "How do these relate?",
+  "request_id": "6D027B99-D58B-4D95-8F87-4C8753C69EF5",
+  "schema_version": 1,
+  "scope": "selected_thoughts",
+  "scope_label": "Selected thoughts",
+  "spoiler_boundary": {
+    "basis": "none",
+    "enabled": false,
+    "excluded_evidence_count": 0
+  },
+  "text_coverage": {
+    "resources_indexed": 18,
+    "resources_total": 18,
+    "state": "book_text_indexed"
+  },
+  "truncation": {
+    "omitted_evidence_count": 0,
+    "truncated": false
+  },
+  "work": {
+    "author_display": "Henry David Thoreau",
+    "edition_id": "99E0A711-8335-4F75-B35F-FD4568BE139E",
+    "source_kind": "local_epub",
+    "title": "Walden",
+    "work_id": "15250A71-4BD0-46F8-A57B-35CE9F8D71CA"
+  }
+}

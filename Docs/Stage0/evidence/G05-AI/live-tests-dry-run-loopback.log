@@ -1,0 +1,19 @@
+# environment: host: macOS 26.6.2 (25G83), arm64; loopback fake server, NOT a real provider
+# toolchain: Xcode 27.0 Build version 27A266a 
+# command: Spikes/G05-AI/Scripts/live-tests-dry-run.sh
+# commit: cf64744 (log copied 2026-10-12T15:32Z)
+
+fake OpenAI-compatible server on 127.0.0.1:61891 (loopback only)
+fake-server POST /v1/audio/transcriptions
+fake-server POST /v1/chat/completions
+fake-server POST /v1/audio/transcriptions
+fake-server POST /v1/chat/completions
+➜ Test anthropicMessagesStreamsAGroundedAnswer() skipped: "live Anthropic Messages smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, ANTHROPIC_API_KEY and SYLVIA_LIVE_ANTHROPIC_MODEL"
+➜ Test openAIResponsesStreamsAGroundedAnswer() skipped: "live OpenAI Responses smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, OPENAI_API_KEY and SYLVIA_LIVE_OPENAI_MODEL"
+LIVE-COMPAT Connected to 127.0.0.1 · local · fake-model. Test reply received as a stream. reported-model=fake-model streamed=true
+LIVE-TRANSCRIPTION host=127.0.0.1 model=fake-speech timestamps-requested=false segments=0 discarded-segments=0 last-segment-end-ms=-1 start=Fake transcript from a loopback test server.
+✔ Test transcriptionEndpointTranscribesTheFixtureClip() passed after 0.017 seconds.
+LIVE-COMPAT-ANSWER model=fake-model max-output=1024 finish=complete streamed=true text-events=2 characters=41 citations=1 unresolved=0 reasoning-omitted=false refusal=false start=It describes living deliberately [c1]. OK
+✔ Test openAICompatibleEndpointPassesTheConnectionTestAndStreams() passed after 0.019 seconds.
+✔ Suite "Live provider smoke tests" passed after 0.019 seconds.
+✔ Test run with 4 tests in 1 suite passed after 0.019 seconds.

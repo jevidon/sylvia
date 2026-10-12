@@ -23,15 +23,19 @@ Contracts/
 - **Fixtures.** Every schema has at least one valid and one invalid fixture. Example IDs and digests are fixtures, not real data. Fixture text comes from the public-domain sources in `Fixtures/LICENSES.md`.
 - **Generated files.** The design token export is generated from `Packages/Design`, never edited by hand (plan A.5). The generator's output is checked against the committed file in CI.
 
-## Ownership during Stage 0
+## Ownership
 
-Each file has one owner so parallel work never edits the same contract.
+Each file has one owner so parallel work never edits the same contract. Another workstream that needs a change asks the owner, who makes it under the versioning rule above. `instances.json` is shared: each owner adds only the rows for its own instance files.
 
-| Contract | Owner |
-| --- | --- |
-| `openapi/source-service.v1.yaml`, `transfer-manifest`, `pairing-payload`, transfer receipts and capability payloads | G0.2 transfer spike |
-| `sylviapack-manifest`, `import-handoff-manifest` | G0.3 intake spike |
-| `context-pack`, `provider-config` | G0.5 AI spike |
-| `backup-manifest` | G0.5 recovery spike |
-| `design-tokens` and `design/` | G0.6 design package |
-| `capture-envelope`, `anchor` (EPUB, PDF, text, audio) | Contract consolidation after G0.1 and G0.4 report their locator evidence |
+At M0 integration (13 October 2026) the Stage 0 contracts moved to the milestone that builds on them (plan Section 21.2). The Stage 0 owner wrote the v1 file; the owner after M0 changes it from now on.
+
+| Contract | Stage 0 owner (wrote v1) | Owner after M0 |
+| --- | --- | --- |
+| `openapi/source-service.v1.yaml`, `transfer-manifest`, `pairing-payload`, `pair-request`, `pair-response`, `capabilities`, `catalog-page`, `device-inbox-page`, `receipt`, `error` | G0.2 transfer spike | M6 Mac/LAN/cable delivery |
+| `import-handoff-manifest`, `sylviapack-manifest` | G0.3 intake spike | M2 direct ingestion (the wired-bundle UX in M6 reads `sylviapack-manifest` and asks M2 for changes) |
+| `context-pack`, `provider-config` | G0.5 AI spike | M5 contextual AI |
+| `backup-manifest` | G0.5 recovery spike | M1 durable foundation (backup infrastructure starts in M1; its user experience is accepted in M7) |
+| `design-tokens` and `design/` | G0.6 design package | The `SylviaDesign` package owner. `design/` stays generated (never edited by hand), and a marker or vocabulary change follows plan Section 4.4.9 |
+| `capture-envelope`, `anchor` (EPUB, PDF, text, audio) | Not written in Stage 0 | Contract consolidation after the G0.4 merge, before M3 and M4 start (plan 21.2: they proceed after the domain and anchor contracts stabilize). Inputs: the PDF anchor envelope in ADR-0005 with valid fixtures from `Docs/Stage0/evidence/G01-PDF/anchor-samples.json`, the EPUB locator evidence in ADR-0004 and `G01-EPUB.md`, and G0.4's audio timeline evidence |
+
+After M0 integration the validator covers 15 schemas, 188 fixtures, 1 OpenAPI document and 1 listed instance (`Scripts/ci.sh contracts`).

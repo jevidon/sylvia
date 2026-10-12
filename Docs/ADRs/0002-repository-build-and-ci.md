@@ -1,6 +1,6 @@
 # ADR-0002: Repository, build and CI conventions
 
-- **Status:** Accepted for Stage 0 (product owner approved the defaults on 6 October 2026); revisit at the M0 gate
+- **Status:** Accepted for Stage 0 (product owner approved the defaults on 6 October 2026); revisit at the M0 gate. Amended at M0 integration on 13 October 2026 (dependency inventory pointer, the GRDB row, and the binary-file storage decision below); the amendments are agent-proposed, product-owner approval pending
 - **Date:** 2026-10-06
 - **Deciders:** Justin Evidon (product owner)
 - **Plan references:** Sections 22.1-22.3; Appendix C
@@ -20,11 +20,11 @@ Section 22 asks for a monorepo, pinned dependencies, CI that lints contracts and
 | Package | Version | Needed for |
 | --- | --- | --- |
 | readium/swift-toolkit | 3.11.0 | EPUB (D02, G0.1) |
-| groue/GRDB.swift | 7.11.1 | Persistence (D02, G0.5 recovery) |
+| groue/GRDB.swift | 7.11.1 | Persistence (D02, G0.5 recovery); FTS5 retrieval in the G0.5 AI spike (ADR-0011) |
 | pointfreeco/swift-snapshot-testing | 1.19.6 | Design snapshots (T51, T53) |
 | apple/swift-nio, swift-nio-ssl, swift-certificates, swift-crypto, swift-asn1 | 2.103.0, 2.37.5, 1.21.0, 5.0.0, 1.7.3 | Candidate stack for the Mac source service and certificate generation (G0.2 decides) |
 
-Readium 3.11.0 brings its own transitive dependencies (among them `readium/ZIPFoundation`, whose module is `ReadiumZIPFoundation`); they are part of the lock and the license inventory.
+Readium 3.11.0 brings its own transitive dependencies (among them `readium/ZIPFoundation`, whose module is `ReadiumZIPFoundation`); they are part of the lock and the license inventory. The complete lock after M0 integration, with every transitive package and its license read from the pinned checkout (including swift-nio's swift-atomics 1.3.1, swift-collections 1.7.1 and swift-system 1.8.1, and the BoringSSL that swift-nio-ssl vendors), is ADR-0014.
 
 **Simulators.** Every job creates and uses its own named simulator (`Scripts/lib/sim.sh`), so parallel jobs never share one. The default is an iPhone 17 on the iOS 26.5 runtime. The paired physical iPhone is used only in serialized device runs.
 
@@ -37,6 +37,14 @@ Readium 3.11.0 brings its own transitive dependencies (among them `readium/ZIPFo
 **Branches.** One branch and one pull request per milestone (`m0`, `m1`, ...), merged after the milestone's exit review.
 
 **Evidence.** Every Stage 0 claim names the command that produced it and the environment it ran in (host, simulator runtime and device type, or physical device and OS). Anything that needs a device or a person and has not been run is recorded as pending in `Docs/Stage0/`. Human sign-offs (security, QA, design) that were stood in for by review agents are marked "agent-reviewed; human sign-off pending".
+
+**Binary test baselines and evidence images (M0 integration, 13 October 2026).** Snapshot reference PNGs and Stage 0 evidence images stay in plain git for now. Git LFS is deferred, not rejected.
+
+- *Measured* (`Docs/Stage0/evidence/M0-Integration/binary-files.tsv`, written by `commands/measure.sh` beside it, read with git from all eight gate branches including `m0-g04-audio`): 786 binary files, 65,265,478 bytes. Of these, 762 are PNG (64,437,948 bytes, largest 450,701): 527 snapshot references in `Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/` (37,703,582 bytes, largest 368,357) and 235 evidence images under `Docs/Stage0/evidence/` (26,734,366 bytes: G0.6 198, G0.1 PDF 20, G0.1 EPUB 11, G0.4 6). The rest are generated fixtures (17 EPUB, 3 PDF that git detects as binary, 1 SQLite database, 3 DER certificates; 827,530 bytes). Already in plain git before M0: `Docs/Design/images` (25 PNG, 5,953,264 bytes) and `Fixtures/` (6,782,114 bytes including `LICENSES.md`).
+- *Why not now.* On the build Mac, git-lfs 3.7.1 is installed but not set up: `git config --show-origin --list` shows no `filter.lfs.*` setting at the system (`/opt/homebrew/etc/gitconfig`) or repository level, and there is no user `~/.gitconfig`. With a `.gitattributes` rule in place, every checkout made on this Mac (each parallel agent's worktree, and the clean verification run that follows integration) would contain small pointer files instead of PNGs, so the snapshot suite would fail and the evidence images would be unreadable until the owner runs `git lfs install`, which writes the user's global git configuration. That is the owner's action, not an agent's, and many agents work from worktrees of this repository at once.
+- *Cost of waiting.* PNG data does not delta-compress, so every committed version stays in history at about its full size: the 64 MB above already does, a full re-record of the snapshot references adds about 37 MB, and a G0.6 evidence refresh about 21 MB. LFS helps only from the commit that adopts it.
+- *Trigger and steps.* Adopt LFS before the first re-record of the snapshot references after M0 (the first token value change) or before `m0` is first pushed, whichever comes first, once the owner has run `git lfs install` on every Mac that builds Sylvia: (1) a `.gitattributes` with `Packages/**/__Snapshots__/**/*.png filter=lfs diff=lfs merge=lfs -text` and `Docs/Stage0/evidence/**/*.png filter=lfs diff=lfs merge=lfs -text` (`Docs/Design/images` and `Fixtures/` stay plain; the evidence pattern also covers G0.4's images); (2) `git add --renormalize` of those paths in a dedicated commit; (3) a CI drop-in that runs first and fails with a clear message if a tracked file matching those patterns is still an LFS pointer, so the snapshot suite never fails confusingly; (4) `lfs: true` on the checkout step in `.github/workflows/ci.yml`. Rewriting the unpushed history with `git lfs migrate import` would also keep the earlier copies off GitHub, but it changes every commit SHA that parallel branches start from, so it is a separate owner decision.
+- *Push-time cost once adopted.* LFS objects count against the owner's GitHub account LFS storage and bandwidth quotas (not verified here, so no figures are given). Old versions stay in LFS storage until purged, and each CI run with `lfs: true` downloads the current set, about 64 MB today.
 
 ## Consequences
 

@@ -2,20 +2,22 @@
 
 Approved decisions for Sylvia (plan Section 22.4). Copy `0000-template.md` for a new record. Numbers are assigned in advance during Stage 0 so parallel workstreams never collide.
 
-| ADR | Title | Owner during Stage 0 |
-| --- | --- | --- |
-| [0001](0001-platform-baseline-and-toolchain.md) | Platform baseline and toolchain | Kickoff |
-| [0002](0002-repository-build-and-ci.md) | Repository, build and CI conventions | Kickoff |
-| 0003 | Persistence: GRDB, durability, migrations | G0.5 recovery spike |
-| 0004 | EPUB reader adapter (Readium) | G0.1 EPUB spike |
-| 0005 | PDF reading and anchors (PDFKit) | G0.1 PDF spike |
-| 0006 | Audio playback, timeline and excerpt strategy | G0.4 audio spike |
-| 0007 | Lock-screen quick capture evaluation | G0.4 audio spike |
-| 0008 | Pairing and transport security | G0.2 transfer spike |
-| 0009 | Transfer protocol, manifests and resumability | G0.2 transfer spike |
-| 0010 | Intake handoff and wired bundles (`.sylviapack`) | G0.3 intake spike |
-| 0011 | AI providers, context packs and privacy | G0.5 AI spike |
-| 0012 | Retention, backup and restore | G0.5 recovery spike |
-| 0013 | Design language: tokens, Literata, Dynamic Type, grayscale method | G0.6 design package |
-| 0014 | Dependency lock and license inventory | M0 integration |
-| 0015 | Threat model | M0 integration |
+"Proposed" means written and agent-reviewed, with the named deciders' approval still pending; none of the Stage 0 records below is approved yet except where its status says so.
+
+| ADR | Title | Status (13 October 2026) | Owner during Stage 0 |
+| --- | --- | --- | --- |
+| [0001](0001-platform-baseline-and-toolchain.md) | Platform baseline and toolchain | Accepted for the platform floor; toolchain pin awaiting the owner's confirmation | Kickoff |
+| [0002](0002-repository-build-and-ci.md) | Repository, build and CI conventions | Accepted for Stage 0; amended at M0 integration (approval of the amendments pending) | Kickoff |
+| [0003](0003-persistence.md) | Persistence: GRDB, durability, migrations | Proposed | G0.5 recovery spike |
+| [0004](0004-epub-reader-adapter.md) | EPUB reader adapter (Readium) | Proposed | G0.1 EPUB spike |
+| [0005](0005-pdf-reading-and-anchors.md) | PDF reading and anchors (PDFKit) | Proposed | G0.1 PDF spike |
+| 0006 | Audio playback, timeline and excerpt strategy | Not on this branch yet: arrives with the G0.4 merge | G0.4 audio spike |
+| 0007 | Lock-screen quick capture evaluation | Not on this branch yet: arrives with the G0.4 merge | G0.4 audio spike |
+| [0008](0008-pairing-and-transport-security.md) | Pairing and transport security | Proposed; security sign-off pending | G0.2 transfer spike |
+| [0009](0009-transfer-protocol.md) | Transfer protocol, manifests and resumability | Proposed | G0.2 transfer spike |
+| [0010](0010-intake-handoff-and-wired-bundles.md) | Intake handoff and wired bundles (`.sylviapack`) | Proposed | G0.3 intake spike |
+| [0011](0011-ai-providers-context-and-privacy.md) | AI providers, context packs and privacy | Proposed | G0.5 AI spike |
+| [0012](0012-retention-backup-restore.md) | Retention, backup and restore | Proposed | G0.5 recovery spike |
+| [0013](0013-design-language.md) | Design language: tokens, Literata, Dynamic Type, grayscale method | Proposed; design review on devices pending | G0.6 design package |
+| [0014](0014-dependency-lock-and-license-inventory.md) | Dependency lock and license inventory | Proposed (G0.4 packages added at its merge) | M0 integration |
+| 0015 | Threat model | Not written yet | M0 integration |

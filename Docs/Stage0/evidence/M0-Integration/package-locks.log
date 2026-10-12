@@ -1,0 +1,111 @@
+lock check started 2026-10-12T17:03:12Z at 79b82096508717183f3062ffc2db571fd47e8bd3
+host: macOS 26.6.2 (25G83); Xcode 27.0 Build version 27A266a ; xcodegen Version: 2.46.0
+load:  6:03  up 9 days, 16:13, 1 user, load averages: 14.39 14.18 15.96
+
+### Xcode projects (sylvia_generate, then xcodebuild -resolvePackageDependencies -disableAutomaticPackageResolution -clonedSourcePackagesDirPath <dir>/.build/SourcePackages)
+
+== Apps/DesignCatalog
+resolve: ok (5 s)
+lock: unchanged after resolution (4 pins)
+Resolved source packages:
+  swift-issue-reporting: https://github.com/pointfreeco/swift-issue-reporting @ 2.1.1
+  swift-snapshot-testing: https://github.com/pointfreeco/swift-snapshot-testing @ 1.19.6
+  swift-syntax: https://github.com/swiftlang/swift-syntax @ 604.0.0
+  swift-custom-dump: https://github.com/pointfreeco/swift-custom-dump @ 1.7.3
+
+== Spikes/G01-EPUB
+resolve: ok (4 s)
+lock: unchanged after resolution (9 pins)
+Resolved source packages:
+  GCDWebServer: https://github.com/readium/GCDWebServer.git @ 4.0.1
+  DifferenceKit: https://github.com/ra1028/DifferenceKit.git @ 1.3.0
+  SwiftSoup: https://github.com/scinfu/SwiftSoup.git @ 2.13.9
+  ReadiumZIPFoundation: https://github.com/readium/ZIPFoundation.git @ 3.0.1
+  ReadiumFuzi: https://github.com/readium/Fuzi.git @ 4.0.1
+  SQLite.swift: https://github.com/stephencelis/SQLite.swift.git @ 0.16.0
+  Readium: https://github.com/readium/swift-toolkit.git @ 3.11.0
+  CryptoSwift: https://github.com/krzyzanowskim/CryptoSwift.git @ 1.10.0
+  Zip: https://github.com/marmelroy/Zip.git @ 2.1.2
+
+== Spikes/G01-PDF
+resolve: ok (1 s)
+no committed lock and none written (no remote packages)
+
+== Spikes/G02-Transfer/MacIdentityProbe
+resolve: ok (6 s)
+no committed lock and none written (no remote packages)
+Resolved source packages:
+  swift-collections: https://github.com/apple/swift-collections.git @ 1.7.1
+  swift-crypto: https://github.com/apple/swift-crypto.git @ 5.0.0
+  swift-atomics: https://github.com/apple/swift-atomics.git @ 1.3.1
+  swift-asn1: https://github.com/apple/swift-asn1.git @ 1.7.3
+  SylviaTransferKit: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5ce13c9e-6bf-2/Spikes/G02-Transfer/TransferKit @ local
+  swift-system: https://github.com/apple/swift-system.git @ 1.8.1
+  swift-certificates: https://github.com/apple/swift-certificates.git @ 1.21.0
+  swift-nio: https://github.com/apple/swift-nio.git @ 2.103.0
+  swift-nio-ssl: https://github.com/apple/swift-nio-ssl.git @ 2.37.5
+
+== Spikes/G02-Transfer/iOS
+resolve: ok (1 s)
+no committed lock and none written (no remote packages)
+Resolved source packages:
+  swift-asn1: https://github.com/apple/swift-asn1.git @ 1.7.3
+
+== Spikes/G03-Intake/App
+resolve: ok (1 s)
+lock: unchanged after resolution (1 pins)
+Resolved source packages:
+  ReadiumZIPFoundation: https://github.com/readium/ZIPFoundation.git @ 3.0.1
+
+== Spikes/G05-AI/ATSProbe
+resolve: ok (5 s)
+lock: unchanged after resolution (1 pins)
+Resolved source packages:
+  GRDB: https://github.com/groue/GRDB.swift.git @ 7.11.1
+
+### Swift packages (swift package resolve --force-resolved-versions)
+
+== Packages/Design
+resolve: ok (0 s)
+lock: unchanged (4 pins)
+
+== Spikes/G01-EPUB/Core
+resolve: ok (1 s)
+lock: unchanged (1 pins)
+
+== Spikes/G02-Transfer/SourceService
+resolve: ok (0 s)
+lock: unchanged (8 pins)
+
+== Spikes/G02-Transfer/TransferKit
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G03-Intake/IntakeKit
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G03-Intake/ZipEval/Common
+resolve: ok (1 s)
+no committed lock and none written (no remote packages)
+
+== Spikes/G03-Intake/ZipEval/Readium
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G03-Intake/ZipEval/Upstream
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G05-AI
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G05-Recovery
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+Spikes/G03-Intake/ZipEval/IdentityProbe: not resolved here; it is G0.3's probe that two packages named ZIPFoundation cannot share one graph (expected resolver failure, recorded by ZipEval/dependency-probe.sh).
+
+lock check finished 2026-10-12T17:03:39Z; failures: 0
+load:  6:03  up 9 days, 16:14, 1 user, load averages: 15.46 14.45 16.00

@@ -1,0 +1,53 @@
+{
+  "backup_id": "0b6f6c1e-8a51-4c43-9d55-2f1f5a0f7d10",
+  "complete": true,
+  "counts": {
+    "capture": 0,
+    "work": 0
+  },
+  "created_at": "2026-10-06T00:00:00Z",
+  "encryption": "none",
+  "excluded_classes": [
+    {
+      "class": "secrets",
+      "reason": "Provider keys and pairing identity stay in the Keychain."
+    }
+  ],
+  "excluded_media": [],
+  "files": [
+    {
+      "byte_count": 0,
+      "path": "database/library.sqlite",
+      "role": "database_snapshot",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "byte_count": 0,
+      "path": "export/library.json",
+      "role": "portable_json",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "format": "sylviabackup",
+  "future_optional_field": "readers ignore unknown optional fields",
+  "included_classes": [
+    "permanent_knowledge",
+    "database_snapshot",
+    "portable_json"
+  ],
+  "library": {
+    "migrations": [
+      "v1-initial",
+      "v2-rating-review-note",
+      "v2-recommendation-date-precision",
+      "v2-edition-cover-thumbnail"
+    ],
+    "schema_version": 2
+  },
+  "originating_device_id": "5d0f2a3c-77a1-4b8e-9f4e-0c2d1e6b9a44",
+  "schema_version": 1,
+  "snapshot": {
+    "change_journal_seq": 0,
+    "method": "sqlite_online_backup"
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "backup_id": "fcbacc30-3035-491f-9cbb-59e114da4474",
+  "complete": false,
+  "counts": {
+    "asset": 6,
+    "asset_location": 6,
+    "capture": 5,
+    "capture_anchor": 6,
+    "change_journal": 75,
+    "consumption_run": 4,
+    "context_evidence": 2,
+    "context_pack": 1,
+    "contributor": 4,
+    "conversation": 1,
+    "edition": 6,
+    "edition_asset": 6,
+    "export_record": 0,
+    "ledger_event": 9,
+    "message": 3,
+    "note": 7,
+    "note_revision": 9,
+    "rating": 2,
+    "recommendation_event": 3,
+    "retained_excerpt": 1,
+    "retention_lease": 1,
+    "work": 3,
+    "work_contributor": 4
+  },
+  "created_at": "2026-10-05T21:06:35.256Z",
+  "encryption": "none",
+  "excluded_classes": [
+    {
+      "class": "original_media",
+      "reason": "Knowledge backup; originals are listed in excluded_media."
+    },
+    {
+      "class": "derived_source_text",
+      "reason": "Full extracted text is optional and not included."
+    },
+    {
+      "class": "rebuildable_indexes",
+      "reason": "Search indexes and thumbnails beyond the canonical cover are rebuilt after restore."
+    },
+    {
+      "class": "staging_recovery",
+      "reason": "Partial transfers, staging and recovery copies."
+    },
+    {
+      "class": "secrets",
+      "reason": "Provider keys and pairing identity stay in the Keychain."
+    }
+  ],
+  "excluded_media": [],
+  "files": [
+    {
+      "byte_count": 24576,
+      "path": "blobs/covers/2f6b3c0e9a7d41c58e1f0b6a3d9c7e5f1a2b4c6d8e0f1a3b5c7d9e1f2a4b6c8d.jpg",
+      "role": "cover_thumbnail",
+      "sha256": "2f6b3c0e9a7d41c58e1f0b6a3d9c7e5f1a2b4c6d8e0f1a3b5c7d9e1f2a4b6c8d"
+    },
+    {
+      "byte_count": 12288,
+      "path": "blobs/covers/9c1e5a7b3d2f4e6a8c0b1d3f5e7a9c2b4d6f8a0c1e3b5d7f9a2c4e6b8d0f1a3c.png",
+      "role": "cover_thumbnail",
+      "sha256": "9c1e5a7b3d2f4e6a8c0b1d3f5e7a9c2b4d6f8a0c1e3b5d7f9a2c4e6b8d0f1a3c"
+    },
+    {
+      "byte_count": 240000,
+      "path": "blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3",
+      "role": "retained_excerpt",
+      "sha256": "7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f"
+    },
+    {
+      "byte_count": 360448,
+      "path": "database/library.sqlite",
+      "role": "database_snapshot",
+      "sha256": "21cb7fd86e2e09973d8537ce2648090bef0bfa1e5c786c9b8d3f27967b699755"
+    },
+    {
+      "byte_count": 37360,
+      "path": "export/library.json",
+      "role": "portable_json",
+      "sha256": "7577c19b429b040de2cdacfbd369ddfff443a8f75950fdcc3549579d14614042"
+    },
+    {
+      "byte_count": 215,
+      "path": "export/markdown/degard-s-field-notes-edition-3931f185.md",
+      "role": "markdown",
+      "sha256": "26a6cacf85b5521850a7a4576d7f7bfe4d36bb144d2235eff04e6437ed982dd7"
+    },
+    {
+      "byte_count": 1890,
+      "path": "export/markdown/meditations-322f5523.md",
+      "role": "markdown",
+      "sha256": "ef2e956ede478388b642e62755e32a07226d64629f0fa7a70b9fd1191af0beab"
+    },
+    {
+      "byte_count": 288,
+      "path": "export/markdown/walden-or-life-in-the-woods-9922847a.md",
+      "role": "markdown",
+      "sha256": "9a50b78aa4fb88e3139d5d5faf8e4d1b0124fbc6b569eafa3cdddf00f904fe48"
+    }
+  ],
+  "format": "sylviabackup",
+  "included_classes": [
+    "permanent_knowledge",
+    "retained_excerpt_audio",
+    "saved_ai_evidence",
+    "canonical_cover_thumbnail",
+    "database_snapshot",
+    "portable_json",
+    "markdown"
+  ],
+  "library": {
+    "migrations": [
+      "v1-initial",
+      "v2-rating-review-note",
+      "v2-recommendation-date-precision",
+      "v2-edition-cover-thumbnail"
+    ],
+    "schema_version": 2
+  },
+  "originating_device_id": "7e3e494c-dd08-481d-80a3-95f0b01f6289",
+  "schema_version": 1,
+  "snapshot": {
+    "change_journal_seq": 75,
+    "method": "sqlite_online_backup"
+  }
+}

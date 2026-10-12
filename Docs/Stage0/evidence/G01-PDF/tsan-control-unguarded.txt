@@ -1,0 +1,35 @@
+TSan control: OverlayBox.rects changed from Mutex<[CGRect]> to an unsynchronized cell (copy in .build/tsan-control)
+command: Spikes/G01-PDF/Tools/tsan_control_unguarded.sh; simulator Sylvia-M0-g01-pdf (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5), Xcode 27.0 Build version 27A266a 
+xcodebuild test -enableThreadSanitizer YES -only-testing:PDFAnchorKitTests/OverlayConcurrencyTests, TSAN_OPTIONS=halt_on_error=1
+xcodebuild exit status: 65; ThreadSanitizer reports: 1
+
+First report (Swift and PDFKit frames; addresses removed):
+WARNING: ThreadSanitizer: Swift access race (pid=11154)
+  Modifying access of Swift variable by main thread:
+    #0 UnguardedCell.withLock<A>(_:) HighlightOverlay.swift:228
+    #1 OverlayPage.highlightRects.setter HighlightOverlay.swift:64
+    #2 OverlayConcurrencyTests.testBackgroundDrawsWhileMainThreadChangesHighlights() OverlayConcurrencyTests.swift:80
+    #3 @objc OverlayConcurrencyTests.testBackgroundDrawsWhileMainThreadChangesHighlights() /<compiler-generated>
+  Previous modifying access of Swift variable by thread T9:
+    #0 UnguardedCell.withLock<A>(_:) HighlightOverlay.swift:228
+    #1 OverlayPage.highlightRects.getter HighlightOverlay.swift:61
+    #2 OverlayPage.draw(with:to:) HighlightOverlay.swift:77
+    #3 closure #2 in OverlayConcurrencyTests.testBackgroundDrawsWhileMainThreadChangesHighlights() OverlayConcurrencyTests.swift:68
+    #4 partial apply for closure #2 in OverlayConcurrencyTests.testBackgroundDrawsWhileMainThreadChangesHighlights() /<compiler-generated>
+    #5 thunk for @escaping @callee_guaranteed @Sendable () -> () /<compiler-generated>
+  Location is heap block of size 24 allocated by main thread:
+    #2 OverlayBox.init() HighlightOverlay.swift:119
+    #3 OverlayBox.__allocating_init() HighlightOverlay.swift
+    #4 closure #1 in static OverlayStorage.box(for:create:) HighlightOverlay.swift:138
+    #5 static OverlayStorage.box(for:create:) HighlightOverlay.swift:136
+    #6 OverlayPage.highlightRects.setter HighlightOverlay.swift:63
+    #7 OverlayConcurrencyTests.testBackgroundDrawsWhileMainThreadChangesHighlights() OverlayConcurrencyTests.swift:80
+    #8 @objc OverlayConcurrencyTests.testBackgroundDrawsWhileMainThreadChangesHighlights() /<compiler-generated>
+  Thread T9 (tid=5745140, running) is a GCD worker thread
+SUMMARY: ThreadSanitizer: Swift access race HighlightOverlay.swift:228 in UnguardedCell.withLock<A>(_:)
+
+Test results (a crashed test process is restarted by xcodebuild and the remaining tests run):
+Restarting after unexpected exit, crash, or test timeout; summary will include totals from previous launches.
+Test Case '-[PDFAnchorKitTests.OverlayConcurrencyTests testLivePDFViewDrawsWhileHighlightsAndScaleChange]' passed (6.595 seconds).
+Failing tests:
+	OverlayConcurrencyTests.testBackgroundDrawsWhileMainThreadChangesHighlights()

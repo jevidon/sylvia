@@ -1,0 +1,9 @@
+Unicode offsets on PDFKit text (unicode.pdf page 0), simulator iPhone18,3 (Sylvia-M0-g01-pdf), iOS 26.5 (23F77)
+target | PDFKit UTF-16 range | scalar range | restored
+\u{1D400}\u{1D401} end | {89, 8} | [89, 95) | exact
+cafe\u{301} | {128, 5} | [126, 131) | exact
+caf\u{E9} | {151, 4} | [149, 153) | exact
+\u{20BB7} | {186, 2} | [184, 185) | exact
+\u{1F600} then sequence \u{1F469}\u{200D}\u{1F52C} done | {199, 27} | [196, 220) | exact
+A\u{30A}ngstrom | {255, 9} | [249, 258) | exact
+Bold math: \u{1D400}\u{1D401} end of the math line.\nDecomposed: cafe\u{301} | {78, 55} | [78, 131) | exact

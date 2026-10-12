@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	Stage 0 harness only. The harness claims the canary scheme used by actions.pdf so that any URL PDFKit
+	opens on its own (without Sylvia asking) comes back to the harness and is recorded. Tests assert the
+	canary never arrives while the link interceptor is installed, and that it does arrive in the control
+	run without the interceptor (proving the detector works).
+	-->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.jevidon.sylvia.spike.pdf.canary</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sylvia-g01-canary</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,881 @@
+{
+  "capture_envelope_example" : {
+    "anchors" : [
+      {
+        "asset_id" : "00000000-0000-4000-8000-000000000001",
+        "asset_sha256" : "6ffa266bf32eea6c9bc2984d351bc55d19bd948c65714a4e6d2b9ab41d8138d1",
+        "exact_text" : "ts own counsel. Under a skin of grey ice the water\nstill moves, slowly, turning over the cold it gathered in the night. A walker\nwho stops at the",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 145,
+              "location" : 48,
+              "page_index" : 3
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.32743800000000001,
+                0.88064399999999998,
+                0.39659299999999997,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.86170500000000005,
+                0.57739200000000002,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.84276499999999999,
+                0.130886,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 3,
+            "page_label" : "1",
+            "page_rotation" : 0,
+            "page_text_sha256" : "a4746ee93c002a1122b57c8fb100a7a44d2d5700b22cd541f84ad01634e6d570",
+            "prefix" : "age 4\nThe pond in winter keeps i",
+            "suffix" : " shore hears it settle.\nSnow lie",
+            "text" : "ts own counsel. Under a skin of grey ice the water\nstill moves, slowly, turning over the cold it gathered in the night. A walker\nwho stops at the",
+            "text_range" : {
+              "end" : 193,
+              "start" : 48,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      }
+    ],
+    "capture_id" : "4d76e6bc-9e23-4d23-8b1a-1b3b8c487fe9",
+    "created_at" : "2026-10-06T00:00:00Z",
+    "edition_id" : "f95a48f1-c7b9-4bcb-8886-7728e490c5c2",
+    "kind" : "text_quote",
+    "quoted_text" : "ts own counsel. Under a skin of grey ice the water\nstill moves, slowly, turning over the cold it gathered in the night. A walker\nwho stops at the",
+    "revision" : 1,
+    "schema_version" : 1,
+    "source_snapshot" : {
+      "author_display" : "Fixture generator",
+      "location_label" : "Page 1",
+      "source_kind" : "local_pdf",
+      "title" : "Sylvia G0.1 PDF fixture: page labels"
+    },
+    "work_id" : "e8b1c045-32a7-47bc-9f0c-5f6788c405bb"
+  },
+  "description" : "Real PDF anchors captured by AnchorCaptureRestoreTests.testWriteAnchorSamples from the committed G0.1 fixtures, plus the proposed portable PDF anchor envelope. Generated; do not edit by hand.",
+  "environment" : "simulator iPhone18,3 (Sylvia-M0-g01-pdf), iOS 26.5 (23F77)",
+  "proposed_pdf_anchor" : {
+    "asset_id" : "UUID of the stored PDF asset, or null in fixtures",
+    "asset_sha256" : "lowercase hex SHA-256 of the PDF bytes; the anchor is exact only for this file",
+    "display_mapping" : "a client draws a rect r on a page shown rotated by R clockwise as: R=0 (x, 1-y-h, w, h); R=90 (y, x, h, w); R=180 (1-x-w, y, w, h); R=270 (1-y-h, 1-x-w, h, w), normalized to the displayed page with origin top-left",
+    "exact_text" : "the quotation exactly as selected (scalar-exact, never normalized); segments joined by a single \\n",
+    "extraction" : "{extractor, adapter_version, platform}: which text extraction the offsets index into",
+    "kind" : "\"pdf\"",
+    "reader_locator" : "adapter-opaque: {adapter: \"pdfkit\", utf16_ranges: [{page_index, location, length}]}; other platforms ignore it",
+    "segments[]" : {
+      "line_rects" : "[[x, y, w, h], ...] one per line, fractions of page_box, unrotated page space (origin lower-left, y up), 6 decimals",
+      "page_box" : "{name: \"crop\", rect: [x, y, w, h]} in PDF user-space points; rectangles are normalized to it",
+      "page_index" : "zero-based physical page index",
+      "page_label" : "printed label from /PageLabels, or null when the file supplies none (never invented)",
+      "page_rotation" : "0, 90, 180 or 270: the page's /Rotate (inherited), clockwise for display",
+      "page_text_sha256" : "SHA-256 of the page text's UTF-8 bytes, to detect extraction drift before trusting text_range",
+      "prefix" : "up to 32 scalars of page text before the segment",
+      "suffix" : "up to 32 scalars of page text after the segment",
+      "text" : "this segment's text, equal to the page text at text_range",
+      "text_range" : "{unit: \"unicode_scalar\", start, end}: half-open range into the page's extracted text"
+    },
+    "version" : "integer, 1"
+  },
+  "samples" : [
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000001",
+        "asset_sha256" : "6ffa266bf32eea6c9bc2984d351bc55d19bd948c65714a4e6d2b9ab41d8138d1",
+        "exact_text" : "ts own counsel. Under a skin of grey ice the water\nstill moves, slowly, turning over the cold it gathered in the night. A walker\nwho stops at the",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 145,
+              "location" : 48,
+              "page_index" : 3
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.32743800000000001,
+                0.88064399999999998,
+                0.39659299999999997,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.86170500000000005,
+                0.57739200000000002,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.84276499999999999,
+                0.130886,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 3,
+            "page_label" : "1",
+            "page_rotation" : 0,
+            "page_text_sha256" : "a4746ee93c002a1122b57c8fb100a7a44d2d5700b22cd541f84ad01634e6d570",
+            "prefix" : "age 4\nThe pond in winter keeps i",
+            "suffix" : " shore hears it settle.\nSnow lie",
+            "text" : "ts own counsel. Under a skin of grey ice the water\nstill moves, slowly, turning over the cold it gathered in the night. A walker\nwho stops at the",
+            "text_range" : {
+              "end" : 193,
+              "start" : 48,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/labels-multipage.pdf",
+      "fixture_sha256" : "6ffa266bf32eea6c9bc2984d351bc55d19bd948c65714a4e6d2b9ab41d8138d1",
+      "name" : "multiline"
+    },
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000002",
+        "asset_sha256" : "0ac65589469fc610ac4a5650c5732bc37c3d3d587a367afaee82b922da0165af",
+        "exact_text" : "It continues with the boats drawn up\non the gravel, each one turned over to\nkeep the rain out, their keels in a\nrow like the spines of closed books.\nRight column. The second column takes\nup the afternoo",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 202,
+              "location" : 226,
+              "page_index" : 0
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.117647,
+                0.76700800000000002,
+                0.28673700000000002,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.74806799999999996,
+                0.30374000000000001,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.72912900000000003,
+                0.25975799999999999,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.71018999999999999,
+                0.28271099999999999,
+                0.013889
+              ],
+              [
+                0.52941199999999999,
+                0.88064399999999998,
+                0.31966499999999998,
+                0.013889
+              ],
+              [
+                0.52941199999999999,
+                0.86170500000000005,
+                0.12091,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 0,
+            "page_label" : null,
+            "page_rotation" : 0,
+            "page_text_sha256" : "d06ec7a0c5a2d64ab8519e26d5988ce422ada0a558875267439dc0c197d0f234",
+            "prefix" : "ly a suggestion\nof darker grey.\n",
+            "suffix" : "n, when the wind comes\nround to ",
+            "text" : "It continues with the boats drawn up\non the gravel, each one turned over to\nkeep the rain out, their keels in a\nrow like the spines of closed books.\nRight column. The second column takes\nup the afternoo",
+            "text_range" : {
+              "end" : 428,
+              "start" : 226,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/two-column.pdf",
+      "fixture_sha256" : "0ac65589469fc610ac4a5650c5732bc37c3d3d587a367afaee82b922da0165af",
+      "name" : "cross-column"
+    },
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000003",
+        "asset_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+        "exact_text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 131,
+              "location" : 57,
+              "page_index" : 0
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.49225799999999997,
+                0.88064399999999998,
+                0.22781899999999999,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.86170500000000005,
+                0.59243599999999996,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.84276499999999999,
+                0.20680699999999999,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 0,
+            "page_label" : null,
+            "page_rotation" : 0,
+            "page_text_sha256" : "ec21c2870c0a14cc27d2637990f8104332b4ca5761795e686b6b2b0b55d38788",
+            "prefix" : "rotation. The words are written ",
+            "suffix" : "he same words however the page i",
+            "text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+            "text_range" : {
+              "end" : 188,
+              "start" : 57,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/rotated.pdf",
+      "fixture_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+      "name" : "rotate-0"
+    },
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000003",
+        "asset_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+        "exact_text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 131,
+              "location" : 58,
+              "page_index" : 1
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.49225799999999997,
+                0.88064399999999998,
+                0.22781899999999999,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.86170500000000005,
+                0.59243599999999996,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.84276499999999999,
+                0.20680699999999999,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 1,
+            "page_label" : null,
+            "page_rotation" : 90,
+            "page_text_sha256" : "90a92618f1dc55b5276de25f6faee3de4c91e9393df602842eeff434d16b0f28",
+            "prefix" : "rotation. The words are written ",
+            "suffix" : "he same words however the page i",
+            "text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+            "text_range" : {
+              "end" : 189,
+              "start" : 58,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/rotated.pdf",
+      "fixture_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+      "name" : "rotate-90"
+    },
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000003",
+        "asset_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+        "exact_text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 131,
+              "location" : 59,
+              "page_index" : 2
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.49225799999999997,
+                0.88064399999999998,
+                0.22781899999999999,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.86170500000000005,
+                0.59243599999999996,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.84276499999999999,
+                0.20680699999999999,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 2,
+            "page_label" : null,
+            "page_rotation" : 180,
+            "page_text_sha256" : "8a95819ed47a37796dab06ebd91888bbc0a71d8cb68f37feb43c19cc413f58dd",
+            "prefix" : "rotation. The words are written ",
+            "suffix" : "he same words however the page i",
+            "text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+            "text_range" : {
+              "end" : 190,
+              "start" : 59,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/rotated.pdf",
+      "fixture_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+      "name" : "rotate-180"
+    },
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000003",
+        "asset_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+        "exact_text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 131,
+              "location" : 59,
+              "page_index" : 3
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.49225799999999997,
+                0.88064399999999998,
+                0.22781899999999999,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.86170500000000005,
+                0.59243599999999996,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.84276499999999999,
+                0.20680699999999999,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 3,
+            "page_label" : null,
+            "page_rotation" : 270,
+            "page_text_sha256" : "4ae60567d21d4734ee4e5864563a5be4fcf87d2d7aef766d42a12dee2da81047",
+            "prefix" : "rotation. The words are written ",
+            "suffix" : "he same words however the page i",
+            "text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+            "text_range" : {
+              "end" : 190,
+              "start" : 59,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/rotated.pdf",
+      "fixture_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+      "name" : "rotate-270"
+    },
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000003",
+        "asset_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+        "exact_text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 131,
+              "location" : 87,
+              "page_index" : 4
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.49225799999999997,
+                0.88064399999999998,
+                0.22781899999999999,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.86170500000000005,
+                0.59243599999999996,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.84276499999999999,
+                0.20680699999999999,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 4,
+            "page_label" : null,
+            "page_rotation" : 90,
+            "page_text_sha256" : "ab8f7fbf2b1129d6ed5efdc7a3f6680f77fc73b60ab7d20f97abecadcbe554a8",
+            "prefix" : "rotation. The words are written ",
+            "suffix" : "he same words however the page i",
+            "text" : "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t",
+            "text_range" : {
+              "end" : 218,
+              "start" : 87,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/rotated.pdf",
+      "fixture_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+      "name" : "rotate-90-inherited"
+    },
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000003",
+        "asset_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+        "exact_text" : "ten in unrotated page\nspace and the page dictionary asks the viewer to turn the page for\ndisplay. A highlight sav",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 113,
+              "location" : 44,
+              "page_index" : 5
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.44406499999999999,
+                0.90667200000000003,
+                0.19992499999999999,
+                0.016417999999999999
+              ],
+              [
+                0.038462000000000003,
+                0.88428399999999996,
+                0.61849600000000005,
+                0.016417999999999999
+              ],
+              [
+                0.038462000000000003,
+                0.861896,
+                0.21515599999999999,
+                0.016417999999999999
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                20,
+                30,
+                520,
+                670
+              ]
+            },
+            "page_index" : 5,
+            "page_label" : null,
+            "page_rotation" : 270,
+            "page_text_sha256" : "5bb10dbb6cf8b3cdd1a494863b5a66f10b5c31c99a6d95517d06b660dbc35685",
+            "prefix" : "sts rotation. The words are writ",
+            "suffix" : "ed here must land on the same wo",
+            "text" : "ten in unrotated page\nspace and the page dictionary asks the viewer to turn the page for\ndisplay. A highlight sav",
+            "text_range" : {
+              "end" : 157,
+              "start" : 44,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/rotated.pdf",
+      "fixture_sha256" : "892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c",
+      "name" : "rotate-270-offset-cropbox"
+    },
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000001",
+        "asset_sha256" : "6ffa266bf32eea6c9bc2984d351bc55d19bd948c65714a4e6d2b9ab41d8138d1",
+        "exact_text" : "leaves early, and in between it is careful, touching each stone as if it\nwere counting them.\nBody, physical page 5\nThe heron at the in",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 92,
+              "location" : 300,
+              "page_index" : 3
+            },
+            {
+              "length" : 41,
+              "location" : 0,
+              "page_index" : 4
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.15262400000000001,
+                0.78594699999999995,
+                0.54147999999999996,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.76700800000000002,
+                0.16183700000000001,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 3,
+            "page_label" : "1",
+            "page_rotation" : 0,
+            "page_text_sha256" : "a4746ee93c002a1122b57c8fb100a7a44d2d5700b22cd541f84ad01634e6d570",
+            "prefix" : "ten. The light arrives late\nand ",
+            "suffix" : "",
+            "text" : "leaves early, and in between it is careful, touching each stone as if it\nwere counting them.",
+            "text_range" : {
+              "end" : 392,
+              "start" : 300,
+              "unit" : "unicode_scalar"
+            }
+          },
+          {
+            "line_rects" : [
+              [
+                0.117647,
+                0.95698300000000003,
+                0.154471,
+                0.011364000000000001
+              ],
+              [
+                0.117647,
+                0.88064399999999998,
+                0.15087300000000001,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 4,
+            "page_label" : "2",
+            "page_rotation" : 0,
+            "page_text_sha256" : "e74370171aa87ba797152e51507b01d3cecccc4eccd572f8d1b8230d48328557",
+            "prefix" : "",
+            "suffix" : "let waited without moving for th",
+            "text" : "Body, physical page 5\nThe heron at the in",
+            "text_range" : {
+              "end" : 41,
+              "start" : 0,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/labels-multipage.pdf",
+      "fixture_sha256" : "6ffa266bf32eea6c9bc2984d351bc55d19bd948c65714a4e6d2b9ab41d8138d1",
+      "name" : "multi-page"
+    },
+    {
+      "anchor" : {
+        "asset_id" : "00000000-0000-4000-8000-000000000004",
+        "asset_sha256" : "0d2182907c8bdde33b4553c2daf267f6d6b422acaab848d5b71d5d2817a52131",
+        "exact_text" : "𝐀𝐁 end of the math line.\nDecomposed: cafe",
+        "extraction" : {
+          "adapter_version" : 1,
+          "extractor" : "pdfkit.PDFPage.string",
+          "platform" : "iOS 26.5 (23F77)"
+        },
+        "kind" : "pdf",
+        "reader_locator" : {
+          "adapter" : "pdfkit",
+          "utf16_ranges" : [
+            {
+              "length" : 43,
+              "location" : 89,
+              "page_index" : 0
+            }
+          ]
+        },
+        "segments" : [
+          {
+            "line_rects" : [
+              [
+                0.20855899999999999,
+                0.85539200000000004,
+                0.19183500000000001,
+                0.013889
+              ],
+              [
+                0.117647,
+                0.83013899999999996,
+                0.14585799999999999,
+                0.013889
+              ]
+            ],
+            "page_box" : {
+              "name" : "crop",
+              "rect" : [
+                0,
+                0,
+                612,
+                792
+              ]
+            },
+            "page_index" : 0,
+            "page_label" : null,
+            "page_rotation" : 0,
+            "page_text_sha256" : "d519ebe73c70b64d002af0906a9b1a00280caa8862de19ee71d338d67f5d4f90",
+            "prefix" : " with other scalars.\nBold math: ",
+            "suffix" : "́ and precomposed: café here.\nSu",
+            "text" : "𝐀𝐁 end of the math line.\nDecomposed: cafe",
+            "text_range" : {
+              "end" : 130,
+              "start" : 89,
+              "unit" : "unicode_scalar"
+            }
+          }
+        ],
+        "version" : 1
+      },
+      "fixture" : "Spikes/G01-PDF/Fixtures/unicode.pdf",
+      "fixture_sha256" : "0d2182907c8bdde33b4553c2daf267f6d6b422acaab848d5b71d5d2817a52131",
+      "name" : "unicode-multiline"
+    }
+  ]
+}

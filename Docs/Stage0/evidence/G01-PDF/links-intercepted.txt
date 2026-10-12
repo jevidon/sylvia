@@ -1,0 +1,5 @@
+With LinkInterceptor, simulator iPhone18,3 (Sylvia-M0-g01-pdf), iOS 26.5 (23F77)
+PDFView.perform(link A, B, C) -> intercepted ["sylvia-g01-canary://link-uri", "https://example.invalid/track", "file:///Users/jevidon/Library/Developer/CoreSimulator/Devices/C4F2ABB2-9044-4C92-ABB1-289DAC8445B9/data/Containers/Bundle/Application/1E56C493-5FF8-444F-8BF9-BB18383E2060/PDFSpikeHarness.app/PlugIns/PDFAnchorKitTests.xctest/Fixtures//bin/sh"]
+decisions [PDFAnchorKit.LinkDecision.blocked(reason: "scheme sylvia-g01-canary is not allowed"), PDFAnchorKit.LinkDecision.askUserBeforeOpening(https://example.invalid/track), PDFAnchorKit.LinkDecision.blocked(reason: "scheme file is not allowed")]
+URLs delivered to the harness after 3.0 s: []
+link D (GoTo) -> current page index 1

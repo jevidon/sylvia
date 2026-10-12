@@ -1,0 +1,2 @@
+Overlay drawing while highlights change, simulator iPhone18,3 (Sylvia-M0-g01-pdf), iOS 26.5 (23F77)
+(a) offscreen: 6 worker threads drawing the 6 OverlayPages of rotated.pdf for 4 s while the main thread replaced highlightRects (0-6 rects) on every page each round and called HighlightOverlay.apply([]) every 5th round: 884120 rounds, 193159 draws, 0 reads mixing two writes, no crash

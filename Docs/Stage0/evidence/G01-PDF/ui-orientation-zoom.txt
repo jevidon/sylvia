@@ -1,0 +1,31 @@
+simulator iPhone18,3 (Sylvia-M0-g01-pdf), runtime 26.5
+Highlight on rotated.pdf page index 1 (/Rotate 90) through orientation changes and zoom
+1. portrait, fit to width
+screenshot 402x874 pt, orientation metadata 0, upright bitmap 1206x2622 px; app frame 402x874 pt
+PDF view frame (window points) (0.0, 116.0, 402.0, 590.0)
+underline (352.0, 267.0, 2.0, 71.0): 33 % of pixels within 24 of #8A5410; fill (353.0, 267.0, 6.0, 71.0): 52 % within 12 of #F1E4C8, 0 % white paper
+underline (345.0, 152.0, 1.0, 183.0): 34 % of pixels within 24 of #8A5410; fill (345.0, 152.0, 6.0, 183.0): 51 % within 12 of #F1E4C8, 0 % white paper
+underline (337.0, 152.0, 2.0, 64.0): 33 % of pixels within 24 of #8A5410; fill (338.0, 152.0, 5.0, 64.0): 49 % within 12 of #F1E4C8, 0 % white paper
+2. landscape (device landscapeLeft), app frame (0.0, 0.0, 874.0, 402.0), status: Highlights: 1 stored, 1 restored exactly
+screenshot 874x402 pt, orientation metadata 2, upright bitmap 2622x1206 px; app frame 874x402 pt
+PDF view frame (window points) (0.0, 78.0, 874.0, 188.0)
+line (719.0, 300.0, 11.0, 131.0) is outside the PDF view; not checked
+line (705.0, 85.0, 11.0, 341.0) runs past the PDF view; checking the part inside it
+underline (705.0, 85.0, 2.0, 181.0): 60 % of pixels within 24 of #8A5410; fill (706.0, 85.0, 10.0, 181.0): 53 % within 12 of #F1E4C8, 0 % white paper
+underline (691.0, 85.0, 2.0, 120.0): 60 % of pixels within 24 of #8A5410; fill (692.0, 85.0, 10.0, 120.0): 55 % within 12 of #F1E4C8, 0 % white paper
+3. landscape zoomed to 2.5 x fit: first line 326 pt long vs 130 pt at fit
+screenshot 874x402 pt, orientation metadata 2, upright bitmap 2622x1206 px; app frame 874x402 pt
+PDF view frame (window points) (0.0, 78.0, 874.0, 188.0)
+line (519.0, 615.0, 26.0, 328.0) is outside the PDF view; not checked
+line (483.0, 78.0, 27.0, 850.0) runs past the PDF view; checking the part inside it
+underline (483.0, 78.0, 4.0, 188.0): 99 % of pixels within 24 of #8A5410; fill (487.0, 78.0, 23.0, 188.0): 67 % within 12 of #F1E4C8, 0 % white paper
+line (448.0, 78.0, 27.0, 297.0) runs past the PDF view; checking the part inside it
+underline (448.0, 78.0, 4.0, 188.0): 99 % of pixels within 24 of #8A5410; fill (451.0, 78.0, 24.0, 188.0): 69 % within 12 of #F1E4C8, 0 % white paper
+4. back to portrait, still zoomed: first line 326 pt long vs 70 pt at fit; status: Highlights: 1 stored, 1 restored exactly
+screenshot 402x874 pt, orientation metadata 0, upright bitmap 1206x2622 px; app frame 402x874 pt
+PDF view frame (window points) (0.0, 116.0, 402.0, 590.0)
+line (171.0, 653.0, 26.0, 328.0) runs past the PDF view; checking the part inside it
+underline (171.0, 653.0, 4.0, 53.0): 99 % of pixels within 24 of #8A5410; fill (174.0, 653.0, 23.0, 53.0): 74 % within 12 of #F1E4C8, 0 % white paper
+line (135.0, 116.0, 27.0, 850.0) runs past the PDF view; checking the part inside it
+underline (135.0, 116.0, 4.0, 590.0): 99 % of pixels within 24 of #8A5410; fill (139.0, 116.0, 23.0, 590.0): 69 % within 12 of #F1E4C8, 0 % white paper
+underline (100.0, 116.0, 4.0, 297.0): 99 % of pixels within 24 of #8A5410; fill (103.0, 116.0, 24.0, 297.0): 70 % within 12 of #F1E4C8, 0 % white paper

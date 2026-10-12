@@ -1,0 +1,31 @@
+UI-test runner crash during development (6 October 2026, 10:06), fixed before the first commit
+
+Environment: simulator iPhone 17 (iPhone18,3), iOS 26.5 (23F77), Sylvia-M0-g01-pdf; host macOS 26.6.2 (25G83); Xcode 27.0 (27A266a).
+Source: ~/Library/Logs/DiagnosticReports/PDFSpikeHarnessUITests-Runner-2026-10-06-100623.ips (machine-local, not committed).
+
+Command:
+    python3 Spikes/G01-PDF/Tools/summarize_crash_reports.py ~/Library/Logs/DiagnosticReports/PDFSpikeHarnessUITests-Runner-2026-10-06-100623.ips
+
+Result: the UI-test runner (not the harness) stopped with a Swift runtime trap, "Double value cannot be converted to Int
+because it is either infinite or NaN", in HighlightUITests.pixels(_:_:pointsWide:) called from checkOverlayOnScreen
+during testStoredHighlightIsDrawnOnScreenOnRotatedPage. pixels() converted a rectangle's coordinates to Int; they are
+non-finite when the published rectangle cannot be parsed (Harness.rect returns CGRect.null) or the app's width reads 0.
+
+Fix: pixels() returns no pixels for a null, infinite, NaN or sub-pixel rectangle, or a zero width, before any Int
+conversion (first committed in d572e54 at 10:09; now ScreenCheckTestCase.pixels in Tests/UI/ScreenCheck.swift), so a
+bad rectangle fails the colour-share assertions instead of crashing the runner. The CI drop-in fails on any "Restarting
+after unexpected exit, crash, or test timeout"; no later run hit it.
+
+Summary:
+== PDFSpikeHarnessUITests-Runner-2026-10-06-100623.ips
+  captured 2026-10-06 10:06:18.9114 +1300; process PDFSpikeHarnessUITests-Runner (com.jevidon.sylvia.spike.pdf.uitests.xctrunner); host macOS 26.6.2 (25G83); build slice 3464360a-0b4c-3ad7-a7da-7a3f1f63eb75
+  exception EXC_BREAKPOINT SIGTRAP 
+  crashed thread 0, queue com.apple.main-thread
+    PDFSpikeHarnessUITests  Swift runtime failure: Double value cannot be converted to Int because it is either infinite or NaN (/<compiler-generated>:?)
+    PDFSpikeHarnessUITests  HighlightUITests.pixels(_:_:pointsWide:) (HighlightUITests.swift:31)
+    PDFSpikeHarnessUITests  HighlightUITests.checkOverlayOnScreen(_:name:) (HighlightUITests.swift:69)
+    PDFSpikeHarnessUITests  HighlightUITests.testStoredHighlightIsDrawnOnScreenOnRotatedPage() (HighlightUITests.swift:85)
+    PDFSpikeHarnessUITests  @objc HighlightUITests.testStoredHighlightIsDrawnOnScreenOnRotatedPage() (/<compiler-generated>:?)
+    CoreFoundation  __invoking___
+    CoreFoundation  -[NSInvocation invoke]
+    XCTestCore  +[XCTFailableInvocation invokeErrorConventionInvocation:completion:]

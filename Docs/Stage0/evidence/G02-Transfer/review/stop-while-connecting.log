@@ -1,0 +1,8 @@
+environment: host (macOS), in-process source on 127.0.0.1, real TLS; swift test --filter ServerStopStressTests
+iterations: 200 (source started, 3 pinned TLS clients with a new connection per request and 2 raw TCP
+  connections stalling the handshake in tight loops, source stopped after 2-26 ms while they kept connecting)
+connections accepted by the kernel and initialized: 2841
+requests answered before the stops: 837
+connections whose initializer ran after stop() began (closed unserved): 27, in 19 iterations
+served connections still open after stop() returned: 0 in every iteration (asserted)
+process trapped: no (the test process reached this line); duration: 10 s

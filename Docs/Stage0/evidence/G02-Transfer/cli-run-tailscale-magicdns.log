@@ -1,0 +1,90 @@
+environment: host (macOS 26.6.2 25G83); sylvia-source and sylvia-fetch as separate processes
+binds: 100.104.83.3 127.0.0.1; advertised host names: m5-max-mbp.[redacted]; clients use: m5-max-mbp.[redacted]
+source> Sylvia source (G0.2 spike), protocol 1.0
+source> source id: 482317da-cb5c-4833-8430-fe7e9e7b30fe
+source> source name: Scripted Mac
+source> fingerprint: EF86 F783 3DFA 9424 79FE 91E4 930D CF4C E6E3 58A0 CAA2 6F3C BB1A E825 A9EC 2A8A
+source> identity key: memory only (--ephemeral-identity)
+source> listening: 100.104.83.3:54693 127.0.0.1:54693
+source> endpoints in pairing payload: 100.104.83.3:54693 m5-max-mbp.[redacted]:54693
+source> shared folders: 1
+source> pairing code: [pairing code redacted]
+source> pairing link: [pairing code redacted]
+source> invitation expires: 2026-10-12T03:13:47Z (single use)
+source> ready
+source> pairing request from "Scripted client A" (device 4f1ab2d3-ea63-483f-b9e5-7e2f5fcd58a0, address 100.104.83.3)
+source> compare with the fingerprint shown on the phone: EF86 F783 3DFA 9424 79FE 91E4 930D CF4C E6E3 58A0 CAA2 6F3C BB1A E825 A9EC 2A8A
+source> approve? [y/N]
+script> y
+source> approved 4f1ab2d3-ea63-483f-b9e5-7e2f5fcd58a0
+clientA> source Scripted Mac (482317da-cb5c-4833-8430-fe7e9e7b30fe)
+clientA> pinned fingerprint: EF86 F783 3DFA 9424 79FE 91E4 930D CF4C E6E3 58A0 CAA2 6F3C BB1A E825 A9EC 2A8A
+clientA> endpoints: m5-max-mbp.[redacted]:54693
+clientA> device id: 4f1ab2d3-ea63-483f-b9e5-7e2f5fcd58a0
+clientA> pairing; approve on the Mac
+clientA> paired; scopes catalog,read,download,receipt
+clientA> connected via m5-max-mbp.[redacted]:54693
+clientA> catalog item 0e9ea53e-f989-460e-a374-05b87a86f50c (1 file(s), 997147 bytes)
+clientA> manifest version 8cd36219-d7d0-4d41-b0bf-e3467e742f1a: 1 file(s), 997147 bytes, 1 part(s)
+clientA> verified sha256 6168a788b950aae3e778bfe9e176feda5d948453ca0050cf00ba9e706d7332ae length 997147
+clientA> receipt downloaded_to_phone -> entry state none (catalog download)
+clientA> same receipt retried -> duplicate true
+clientA> simulated import: copied 1 verified file(s) to the output folder (the real importer is not part of this spike)
+clientA> receipt imported_into_sylvia -> entry state none (catalog download)
+clientA> done
+check: client A's file is byte-identical to Fixtures/epub/se-walden.epub (sha256 6168a788b950aae3e778bfe9e176feda5d948453ca0050cf00ba9e706d7332ae)
+check: client A paired and downloaded through the requested endpoint host only
+replay> source Scripted Mac (482317da-cb5c-4833-8430-fe7e9e7b30fe)
+replay> pinned fingerprint: EF86 F783 3DFA 9424 79FE 91E4 930D CF4C E6E3 58A0 CAA2 6F3C BB1A E825 A9EC 2A8A
+replay> endpoints: m5-max-mbp.[redacted]:54693
+replay> device id: 8cceb188-76cb-4a3c-b7ed-abc55ad7a3ed
+replay> pairing; approve on the Mac
+replay> error: http(status: 403, code: Optional("invitation_used"))
+check: reused invitation refused with invitation_used; no approval prompt was shown
+script> invite
+source> pairing code: [pairing code redacted]
+source> pairing link: [pairing code redacted]
+source> invitation expires: 2026-10-12T03:13:47Z (single use)
+source> pairing request from "Scripted client B" (device f13c48bf-c3df-42e3-b88c-07ff60b136a6, address 100.104.83.3)
+source> compare with the fingerprint shown on the phone: EF86 F783 3DFA 9424 79FE 91E4 930D CF4C E6E3 58A0 CAA2 6F3C BB1A E825 A9EC 2A8A
+source> approve? [y/N]
+script> y
+source> approved f13c48bf-c3df-42e3-b88c-07ff60b136a6
+script> items
+source> item 0e9ea53e-f989-460e-a374-05b87a86f50c ready single 997147 walden
+source> item 43cfca16-d00b-4de5-8405-8b30f456a118 not_prepared group 2642109 Meditations excerpts
+source> end
+script> send 43cfca16-d00b-4de5-8405-8b30f456a118 f13c48bf-c3df-42e3-b88c-07ff60b136a6
+source> preparing transfer
+source> queued d89ef439-f7cc-4bb5-83ab-3f1fea0f9c26 version d650fe66-af9a-49a9-b1ca-27bb7f5a00d7 state queued_on_mac
+clientB> source Scripted Mac (482317da-cb5c-4833-8430-fe7e9e7b30fe)
+clientB> pinned fingerprint: EF86 F783 3DFA 9424 79FE 91E4 930D CF4C E6E3 58A0 CAA2 6F3C BB1A E825 A9EC 2A8A
+clientB> endpoints: m5-max-mbp.[redacted]:54693
+clientB> device id: f13c48bf-c3df-42e3-b88c-07ff60b136a6
+clientB> pairing; approve on the Mac
+clientB> paired; scopes catalog,read,download,receipt
+clientB> connected via m5-max-mbp.[redacted]:54693
+clientB> inbox entry d89ef439-f7cc-4bb5-83ab-3f1fea0f9c26 item 43cfca16-d00b-4de5-8405-8b30f456a118 state observed_by_phone
+clientB> manifest version d650fe66-af9a-49a9-b1ca-27bb7f5a00d7: 2 file(s), 2642109 bytes, 4 part(s)
+clientB> verified sha256 6a3b752cc744ccb310a6d71149b96a7f29d632e35ca5a6ad8abb3e46c532a1ad length 1441009
+clientB> verified sha256 4e27b8d12646a2fc6c9e37bd31229405ea52a65a4904a069ce7aa5b005a163f3 length 1201100
+clientB> receipt downloaded_to_phone -> entry state downloaded_to_phone
+clientB> same receipt retried -> duplicate true
+clientB> simulated import: copied 2 verified file(s) to the output folder (the real importer is not part of this spike)
+clientB> receipt imported_into_sylvia -> entry state imported_into_sylvia
+clientB> done
+check: client B received both group members byte-identical, in order
+script> queue
+source> entry d89ef439-f7cc-4bb5-83ab-3f1fea0f9c26 device f13c48bf-c3df-42e3-b88c-07ff60b136a6 item 43cfca16-d00b-4de5-8405-8b30f456a118 state imported_into_sylvia
+source> end
+check: queue entry passed queued_on_mac -> observed_by_phone -> downloaded_to_phone -> imported_into_sylvia
+script> revoke 4f1ab2d3-ea63-483f-b9e5-7e2f5fcd58a0
+source> revoked 4f1ab2d3-ea63-483f-b9e5-7e2f5fcd58a0
+script> devices
+source> device 4f1ab2d3-ea63-483f-b9e5-7e2f5fcd58a0 revoked Scripted client A
+source> device f13c48bf-c3df-42e3-b88c-07ff60b136a6 active Scripted client B
+source> end
+script> quit
+source> stopped
+check: source folder unchanged; no pairing code in this log
+RESULT: PASS

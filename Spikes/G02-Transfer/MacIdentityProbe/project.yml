@@ -1,0 +1,68 @@
+# G0.2: does the Mac source's identity key really get the data protection keychain with
+# kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly when the code is signed with a keychain access group?
+# (Gate gap from the round 1 review: part 1 could only run the unsigned command-line store, which has no
+# access group and uses the login keychain.) Stage 0 probe only; never shipped.
+#
+# A minimal signed macOS app hosts a unit test bundle that runs the SylviaSourceService KeychainIdentityStore
+# with its default policy (data protection keychain only). Signing: automatic, team A4KBDX665Z (ADR-0001).
+# Generate with `sylvia_generate Spikes/G02-Transfer/MacIdentityProbe`; run with
+# Spikes/G02-Transfer/Scripts/mac-identity-probe-run.sh.
+name: G02MacIdentityProbe
+options:
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+packages:
+  SourceService:
+    path: ../SourceService
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: A4KBDX665Z
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+targets:
+  G02MacIdentityProbe:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources
+    dependencies:
+      - package: SourceService
+        product: SylviaSourceService
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.identityprobe
+        PRODUCT_NAME: G02MacIdentityProbe
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_ENTITLEMENTS: Config/Probe.entitlements
+        ENABLE_HARDENED_RUNTIME: YES
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+  G02MacIdentityProbeTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests
+    # SylviaSourceService comes from the host app (BUNDLE_LOADER), as in the iOS project.
+    dependencies:
+      - target: G02MacIdentityProbe
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.identityprobe.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/G02MacIdentityProbe.app/Contents/MacOS/G02MacIdentityProbe"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  G02MacIdentityProbe:
+    build:
+      targets:
+        G02MacIdentityProbe: all
+        G02MacIdentityProbeTests: [test]
+    test:
+      targets:
+        - G02MacIdentityProbeTests

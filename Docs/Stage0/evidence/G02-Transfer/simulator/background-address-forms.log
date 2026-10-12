@@ -1,0 +1,72 @@
+environment: simulator (Version 26.5 (Build 23F77)), hosted test in G02TransferHarness;
+  client: SylviaBackgroundTransfer with URLSessionConfiguration.background("com.jevidon.sylvia.spike.transfer.test.addresses.<uuid>")
+  source: sylvia-test-source on the host (see the run log for its options)
+PASS IPv4 loopback (127.0.0.1): pinned capabilities ok; background download imported, full SHA-256 matched, parts requested from ["127.0.0.1"]
+PASS IPv6 loopback (::1): pinned capabilities ok; background download imported, full SHA-256 matched, parts requested from ["::1"]
+PASS LAN IPv4 (192.168.20.104): pinned capabilities ok; background download imported, full SHA-256 matched, parts requested from ["192.168.20.104"]
+PASS Bonjour .local host name (M5-Max-MBP.local): pinned capabilities ok; background download imported, full SHA-256 matched, parts requested from ["M5-Max-MBP.local"]
+REFUSED (expected) Tailscale IPv4 (100.104.83.3): pinned capabilities ended in tlsFailure: ATS requires default trust for this host; see ats/ats-probe-*.log
+REFUSED (expected) Tailscale MagicDNS name (m5-max-mbp.[redacted]): pinned capabilities ended in tlsFailure: ATS requires default trust for this host; see ats/ats-probe-*.log
+2026-10-12T03:04:40.609Z staging_checked jobs=0 milliseconds=0 rehashed=true verified_bytes=0
+2026-10-12T03:04:40.610Z coordinator_start app_state=foreground jobs=0 protected_data_available=not_reported session=com.jevidon.sylvia.spike.transfer.test.addresses.88726a7b-511a-4753-a9ed-4834f4a075ad
+2026-10-12T03:04:40.614Z launch_reconciliation adopted=0 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
+2026-10-12T03:04:40.648Z endpoint_preferred host=127.0.0.1 port=54762 source=4012e21f-23cb-4a64-a22d-fd9e9faa693f
+2026-10-12T03:04:40.682Z job_created bytes=20971520 item=88dd9390-a1c6-4720-83bf-e5dba670740e job=a111ca81-b14d-4609-b78d-0524c1e872da parts=2 queue_entry=none version=e75cfb13-2a80-4acd-99fa-2df3b8cf5cc7
+2026-10-12T03:04:40.684Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=a111ca81-b14d-4609-b78d-0524c1e872da part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 port=54762
+2026-10-12T03:04:40.686Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=a111ca81-b14d-4609-b78d-0524c1e872da part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 port=54762
+2026-10-12T03:04:40.692Z trust_challenge app_state=foreground host=127.0.0.1 job=a111ca81-b14d-4609-b78d-0524c1e872da level=task method=NSURLAuthenticationMethodServerTrust part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 port=54762 result=matched
+2026-10-12T03:04:40.700Z trust_challenge app_state=foreground host=127.0.0.1 job=a111ca81-b14d-4609-b78d-0524c1e872da level=task method=NSURLAuthenticationMethodServerTrust part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 port=54762 result=matched
+2026-10-12T03:04:40.715Z task_metrics attempt=1 fetch_type=1 job=a111ca81-b14d-4609-b78d-0524c1e872da part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T03:04:40.715Z part_verified app_state=foreground attempt=1 commit_ms=3 job=a111ca81-b14d-4609-b78d-0524c1e872da part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1
+2026-10-12T03:04:40.726Z task_metrics attempt=1 fetch_type=1 job=a111ca81-b14d-4609-b78d-0524c1e872da part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T03:04:40.726Z part_verified app_state=foreground attempt=1 commit_ms=9 job=a111ca81-b14d-4609-b78d-0524c1e872da part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0
+2026-10-12T03:04:40.727Z assembly_started app_state=foreground job=a111ca81-b14d-4609-b78d-0524c1e872da
+2026-10-12T03:04:40.739Z assembly_verified app_state=foreground assets=1 bytes=20971520 job=a111ca81-b14d-4609-b78d-0524c1e872da milliseconds=10
+2026-10-12T03:04:40.743Z imported completions=1 duplicate_requests=0 import=c4d4ee50-37ba-4906-b3d5-fafaa988a945 job=a111ca81-b14d-4609-b78d-0524c1e872da version=e75cfb13-2a80-4acd-99fa-2df3b8cf5cc7
+2026-10-12T03:04:40.762Z receipt_acknowledged duplicate=false entry_state=none job=a111ca81-b14d-4609-b78d-0524c1e872da queue_entry=none state=downloaded_to_phone
+2026-10-12T03:04:40.772Z receipt_acknowledged duplicate=false entry_state=none job=a111ca81-b14d-4609-b78d-0524c1e872da queue_entry=none state=imported_into_sylvia
+2026-10-12T03:04:40.799Z endpoint_preferred host=::1 port=54762 source=4012e21f-23cb-4a64-a22d-fd9e9faa693f
+2026-10-12T03:04:40.822Z job_created bytes=20971520 item=88dd9390-a1c6-4720-83bf-e5dba670740e job=faac3c35-06cb-4203-8430-b272ba2c6dc8 parts=2 queue_entry=none version=e75cfb13-2a80-4acd-99fa-2df3b8cf5cc7
+2026-10-12T03:04:40.824Z part_requested app_state=foreground attempt=1 host=::1 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 port=54762
+2026-10-12T03:04:40.825Z part_requested app_state=foreground attempt=1 host=::1 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 port=54762
+2026-10-12T03:04:40.831Z trust_challenge app_state=foreground host=::1 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 level=task method=NSURLAuthenticationMethodServerTrust part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 port=54762 result=matched
+2026-10-12T03:04:40.841Z trust_challenge app_state=foreground host=::1 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 level=task method=NSURLAuthenticationMethodServerTrust part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 port=54762 result=matched
+2026-10-12T03:04:40.853Z task_metrics attempt=1 fetch_type=1 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T03:04:40.854Z part_verified app_state=foreground attempt=1 commit_ms=3 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1
+2026-10-12T03:04:40.864Z task_metrics attempt=1 fetch_type=1 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T03:04:40.864Z part_verified app_state=foreground attempt=1 commit_ms=10 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0
+2026-10-12T03:04:40.865Z assembly_started app_state=foreground job=faac3c35-06cb-4203-8430-b272ba2c6dc8
+2026-10-12T03:04:40.875Z assembly_verified app_state=foreground assets=1 bytes=20971520 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 milliseconds=8
+2026-10-12T03:04:40.878Z import_already_recorded completions=1 duplicate_requests=1 import=c4d4ee50-37ba-4906-b3d5-fafaa988a945 job=faac3c35-06cb-4203-8430-b272ba2c6dc8 version=e75cfb13-2a80-4acd-99fa-2df3b8cf5cc7
+2026-10-12T03:04:40.894Z receipt_acknowledged duplicate=false entry_state=none job=faac3c35-06cb-4203-8430-b272ba2c6dc8 queue_entry=none state=downloaded_to_phone
+2026-10-12T03:04:40.904Z receipt_acknowledged duplicate=false entry_state=none job=faac3c35-06cb-4203-8430-b272ba2c6dc8 queue_entry=none state=imported_into_sylvia
+2026-10-12T03:04:40.934Z endpoint_preferred host=192.168.20.104 port=54762 source=4012e21f-23cb-4a64-a22d-fd9e9faa693f
+2026-10-12T03:04:40.957Z job_created bytes=20971520 item=88dd9390-a1c6-4720-83bf-e5dba670740e job=ceaabaad-131d-450e-9cd2-e2c0fd953085 parts=2 queue_entry=none version=e75cfb13-2a80-4acd-99fa-2df3b8cf5cc7
+2026-10-12T03:04:40.959Z part_requested app_state=foreground attempt=1 host=192.168.20.104 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 port=54762
+2026-10-12T03:04:40.960Z part_requested app_state=foreground attempt=1 host=192.168.20.104 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 port=54762
+2026-10-12T03:04:40.967Z trust_challenge app_state=foreground host=192.168.20.104 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 level=task method=NSURLAuthenticationMethodServerTrust part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 port=54762 result=matched
+2026-10-12T03:04:40.976Z trust_challenge app_state=foreground host=192.168.20.104 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 level=task method=NSURLAuthenticationMethodServerTrust part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 port=54762 result=matched
+2026-10-12T03:04:40.990Z task_metrics attempt=1 fetch_type=1 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T03:04:40.990Z part_verified app_state=foreground attempt=1 commit_ms=3 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1
+2026-10-12T03:04:41.000Z task_metrics attempt=1 fetch_type=1 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T03:04:41.001Z part_verified app_state=foreground attempt=1 commit_ms=9 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0
+2026-10-12T03:04:41.002Z assembly_started app_state=foreground job=ceaabaad-131d-450e-9cd2-e2c0fd953085
+2026-10-12T03:04:41.013Z assembly_verified app_state=foreground assets=1 bytes=20971520 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 milliseconds=9
+2026-10-12T03:04:41.017Z import_already_recorded completions=1 duplicate_requests=2 import=c4d4ee50-37ba-4906-b3d5-fafaa988a945 job=ceaabaad-131d-450e-9cd2-e2c0fd953085 version=e75cfb13-2a80-4acd-99fa-2df3b8cf5cc7
+2026-10-12T03:04:41.035Z receipt_acknowledged duplicate=false entry_state=none job=ceaabaad-131d-450e-9cd2-e2c0fd953085 queue_entry=none state=downloaded_to_phone
+2026-10-12T03:04:41.045Z receipt_acknowledged duplicate=false entry_state=none job=ceaabaad-131d-450e-9cd2-e2c0fd953085 queue_entry=none state=imported_into_sylvia
+2026-10-12T03:04:41.078Z endpoint_preferred host=M5-Max-MBP.local port=54762 source=4012e21f-23cb-4a64-a22d-fd9e9faa693f
+2026-10-12T03:04:41.112Z job_created bytes=20971520 item=88dd9390-a1c6-4720-83bf-e5dba670740e job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 parts=2 queue_entry=none version=e75cfb13-2a80-4acd-99fa-2df3b8cf5cc7
+2026-10-12T03:04:41.113Z part_requested app_state=foreground attempt=1 host=M5-Max-MBP.local job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 port=54762
+2026-10-12T03:04:41.115Z part_requested app_state=foreground attempt=1 host=M5-Max-MBP.local job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 port=54762
+2026-10-12T03:04:41.123Z trust_challenge app_state=foreground host=m5-max-mbp.local job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 level=task method=NSURLAuthenticationMethodServerTrust part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 port=54762 result=matched
+2026-10-12T03:04:41.136Z trust_challenge app_state=foreground host=m5-max-mbp.local job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 level=task method=NSURLAuthenticationMethodServerTrust part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 port=54762 result=matched
+2026-10-12T03:04:41.149Z task_metrics attempt=1 fetch_type=1 job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T03:04:41.149Z part_verified app_state=foreground attempt=1 commit_ms=3 job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:1
+2026-10-12T03:04:41.159Z task_metrics attempt=1 fetch_type=1 job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T03:04:41.160Z part_verified app_state=foreground attempt=1 commit_ms=9 job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 part=e65d220a-a7dd-4b81-b4de-a1c38514179b:0
+2026-10-12T03:04:41.161Z assembly_started app_state=foreground job=b7187d35-3e8c-4918-b5f4-aa95960d8f19
+2026-10-12T03:04:41.171Z assembly_verified app_state=foreground assets=1 bytes=20971520 job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 milliseconds=9
+2026-10-12T03:04:41.174Z import_already_recorded completions=1 duplicate_requests=3 import=c4d4ee50-37ba-4906-b3d5-fafaa988a945 job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 version=e75cfb13-2a80-4acd-99fa-2df3b8cf5cc7
+2026-10-12T03:04:41.195Z receipt_acknowledged duplicate=false entry_state=none job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 queue_entry=none state=downloaded_to_phone
+2026-10-12T03:04:41.204Z receipt_acknowledged duplicate=false entry_state=none job=b7187d35-3e8c-4918-b5f4-aa95960d8f19 queue_entry=none state=imported_into_sylvia

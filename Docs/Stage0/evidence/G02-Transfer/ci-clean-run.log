@@ -1,0 +1,58 @@
+clean state: removing .build/ci-logs .build/DerivedData .build/scratch/g02-bg-run .build/scratch/g02-ios .build/scratch/g02-relaunch-run .build/scratch/g02-entry-run .build/scratch/g02-identity-probe Spikes/G02-Transfer/SourceService/.build Spikes/G02-Transfer/TransferKit/.build Spikes/G02-Transfer/iOS/.build Spikes/G02-Transfer/iOS/G02Transfer.xcodeproj Spikes/G02-Transfer/MacIdentityProbe/.build Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj
+git: ca1d5dd619a7bf97c29e4477fd204440845b485b (0 uncommitted paths in tracked files)
+started: 2026-10-12T03:01:28Z
+command: Scripts/ci.sh contracts g02-transfer
+==> 10-contracts
+    pass (0s)
+==> 40-g02-transfer
+    pass (461s)
+all 2 steps passed
+
+--- Scripts/ci.d/10-contracts.sh output (.build/ci-logs/10-contracts.log)
+schemas: 9  fixtures: 60  openapi: 1  instances: 0
+
+--- Scripts/ci.d/40-g02-transfer.sh output (.build/ci-logs/40-g02-transfer.log)
+G0.2 transfer CI drop-in, 2026-10-12T03:01:28Z
+host: macOS 26.6.2 (25G83), Apple M5 Max
+xcode: Xcode 27.0 Build version 27A266a 
+swift: swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+== contracts
+   pass (0 s) - Docs/Stage0/evidence/G02-Transfer/ci/contracts.log
+== fixtures-check
+   pass (0 s) - Docs/Stage0/evidence/G02-Transfer/ci/fixtures-check.log
+== trust-guards
+   pass (0 s) - Docs/Stage0/evidence/G02-Transfer/ci/trust-guards.log
+== host-transferkit
+   pass (12 s) - Docs/Stage0/evidence/G02-Transfer/ci/host-transferkit.log
+== host-sourceservice
+   pass (67 s) - Docs/Stage0/evidence/G02-Transfer/ci/host-sourceservice.log
+== captured-payloads
+   pass (0 s) - Docs/Stage0/evidence/G02-Transfer/ci/captured-payloads.log
+== large-5gib
+   pass (35 s) - Docs/Stage0/evidence/G02-Transfer/ci/large-5gib.log
+== cli-loopback-ipv4
+   pass (7 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-loopback-ipv4.log
+== cli-loopback-ipv6
+   pass (4 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-loopback-ipv6.log
+== cli-lan
+   pass (4 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-lan.log
+== cli-tailscale-ip
+   pass (5 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-tailscale-ip.log
+== cli-tailscale-magicdns
+   pass (4 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-tailscale-magicdns.log
+== mac-identity-signed
+   NOT RUN: code signing for team A4KBDX665Z is unavailable on this Mac (Docs/Stage0/evidence/G02-Transfer/keychain-identity-signed.log)
+== simulator
+   pass (23 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator.log
+== simulator-pairing
+   pass (7 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-pairing.log
+== simulator-background
+   pass (40 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-background.log
+== simulator-pairing-entry
+   pass (53 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-pairing-entry.log
+== simulator-relaunch
+   pass (193 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-relaunch.log
+
+not run on this Mac (see each log for the reason): mac-identity-signed
+all G0.2 transfer steps passed
+finished: 2026-10-12T03:09:09Z, exit 0

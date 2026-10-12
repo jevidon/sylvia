@@ -1,0 +1,13 @@
+first attempt of the signed identity probe, 12 October 2026 (about 10:45 NZDT), run directly:
+  Spikes/G02-Transfer/Scripts/mac-identity-probe-run.sh <log>, as first written (before it told "signing unavailable"
+  apart from other failures; the result line therefore says FAIL). Signing failed on the unaccepted Program License
+  Agreement. The later clean runs got "No Accounts" from Xcode instead (keychain-identity-signed.log).
+---
+environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+script> xcodebuild test -scheme G02MacIdentityProbe -destination platform=macOS -allowProvisioningUpdates (automatic signing, team A4KBDX665Z)
+--- test output (xcodebuild exit 65)
+	No profiles for 'com.jevidon.sylvia.spike.identityprobe' were found: Xcode couldn't find any Mac App Development provisioning profiles matching 'com.jevidon.sylvia.spike.identityprobe'.
+** TEST FAILED **
+Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj: error: No profiles for 'com.jevidon.sylvia.spike.identityprobe' were found: Xcode couldn't find any Mac App Development provisioning profiles matching 'com.jevidon.sylvia.spike.identityprobe'. (in target 'G02MacIdentityProbe' from project 'G02MacIdentityProbe')
+Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj: error: Unable to process request - PLA Update available: You currently don't have access to this membership resource. To resolve this issue, agree to the latest Program License Agreement in your developer account. (in target 'G02MacIdentityProbe' from project 'G02MacIdentityProbe')
+RESULT: FAIL (full log: .build/scratch/g02-identity-probe/xcodebuild.log)

@@ -1,0 +1,408 @@
+environment: host (macOS 26.6.2), swift test; in-process source on 127.0.0.1, ephemeral ports, real TLS
+the 5 GiB suite runs separately in step large-5gib
+removed earlier captures from Docs/Stage0/evidence/G02-Transfer/captured/
+Fetching https://github.com/apple/swift-collections.git from cache
+Fetching https://github.com/apple/swift-asn1.git from cache
+Fetching https://github.com/apple/swift-system.git from cache
+Fetching https://github.com/apple/swift-nio-ssl.git from cache
+Fetching https://github.com/apple/swift-atomics.git from cache
+Fetching https://github.com/apple/swift-nio.git from cache
+Fetching https://github.com/apple/swift-certificates.git from cache
+Fetching https://github.com/apple/swift-crypto.git from cache
+Fetched https://github.com/apple/swift-atomics.git from cache (1.34s)
+Fetched https://github.com/apple/swift-crypto.git from cache (1.36s)
+Fetched https://github.com/apple/swift-collections.git from cache (1.38s)
+Fetched https://github.com/apple/swift-nio.git from cache (1.42s)
+Fetched https://github.com/apple/swift-certificates.git from cache (1.42s)
+Fetched https://github.com/apple/swift-asn1.git from cache (1.43s)
+Fetched https://github.com/apple/swift-nio-ssl.git from cache (1.43s)
+Computing version for https://github.com/apple/swift-asn1.git
+Fetched https://github.com/apple/swift-system.git from cache (1.44s)
+Computed https://github.com/apple/swift-asn1.git at 1.7.3 (1.47s)
+Computing version for https://github.com/apple/swift-crypto.git
+Computed https://github.com/apple/swift-crypto.git at 5.0.0 (0.02s)
+Computing version for https://github.com/apple/swift-certificates.git
+Computed https://github.com/apple/swift-certificates.git at 1.21.0 (0.03s)
+Computing version for https://github.com/apple/swift-nio-ssl.git
+Computed https://github.com/apple/swift-nio-ssl.git at 2.37.5 (0.02s)
+Computing version for https://github.com/apple/swift-nio.git
+Computed https://github.com/apple/swift-nio.git at 2.103.0 (0.02s)
+Computing version for https://github.com/apple/swift-system.git
+Computed https://github.com/apple/swift-system.git at 1.8.1 (0.02s)
+Computing version for https://github.com/apple/swift-collections.git
+Computed https://github.com/apple/swift-collections.git at 1.7.1 (0.03s)
+Computing version for https://github.com/apple/swift-atomics.git
+Computed https://github.com/apple/swift-atomics.git at 1.3.1 (0.02s)
+Creating working copy for https://github.com/apple/swift-crypto.git
+Working copy of https://github.com/apple/swift-crypto.git resolved at 5.0.0
+Creating working copy for https://github.com/apple/swift-collections.git
+Working copy of https://github.com/apple/swift-collections.git resolved at 1.7.1
+Creating working copy for https://github.com/apple/swift-nio.git
+Working copy of https://github.com/apple/swift-nio.git resolved at 2.103.0
+Creating working copy for https://github.com/apple/swift-atomics.git
+Working copy of https://github.com/apple/swift-atomics.git resolved at 1.3.1
+Creating working copy for https://github.com/apple/swift-certificates.git
+Working copy of https://github.com/apple/swift-certificates.git resolved at 1.21.0
+Creating working copy for https://github.com/apple/swift-asn1.git
+Working copy of https://github.com/apple/swift-asn1.git resolved at 1.7.3
+Creating working copy for https://github.com/apple/swift-nio-ssl.git
+Working copy of https://github.com/apple/swift-nio-ssl.git resolved at 2.37.5
+Creating working copy for https://github.com/apple/swift-system.git
+Working copy of https://github.com/apple/swift-system.git resolved at 1.8.1
+Building for debugging...
+[Computing dependencies]
+[Provisioning 43 / 67]
+[Pre-planning 1 / 1487]
+[Planning deferred tasks]
+[Constructing 2908 / 3994]
+[287 / 1378]
+[317 / 1378]
+[344 / 1396] Atomics
+[350 / 1412] CNIOWindows
+[355 / 1438]
+[368 / 1488]
+[383 / 1488] CNIOOpenBSD
+[394 / 1488]
+[402 / 1558]
+[408 / 1558]
+[409 / 1558] Atomics
+[435 / 1558] CNIOBoringSSL
+[437 / 1558] CNIOBoringSSL
+[440 / 1558] CNIOBoringSSL
+[452 / 1558]
+[459 / 1558]
+[476 / 1558] NIOConcurrencyHelpers
+[486 / 1558] CNIOBoringSSL
+[496 / 1558]
+[498 / 1558]
+[511 / 1558] CNIOBoringSSL
+[515 / 1558] CNIOBoringSSL
+[519 / 1558] CNIOBoringSSL
+[526 / 1558] CNIOBoringSSL
+[532 / 1558] CNIOBoringSSL
+[542 / 1558] CNIOBoringSSL
+[544 / 1558] CNIOBoringSSL
+[550 / 1558] CNIOBoringSSL
+[553 / 1558] CNIOBoringSSL
+[557 / 1558] SwiftASN1
+[561 / 1558] CNIOBoringSSL
+[569 / 1558] CNIOBoringSSL
+[592 / 1558] CNIOBoringSSL
+[619 / 1558] CNIOBoringSSL
+[622 / 1558] CNIOBoringSSL
+[628 / 1558] CNIOBoringSSL
+[636 / 1558] CNIOBoringSSL
+[639 / 1558] CNIOBoringSSL
+[644 / 1558] CNIOBoringSSL
+[654 / 1558] CNIOBoringSSL
+[660 / 1558] CNIOBoringSSL
+[669 / 1558] CNIOBoringSSL
+[680 / 1558] CNIOBoringSSL
+[688 / 1558] CNIOBoringSSL
+[695 / 1558] CNIOBoringSSL
+[700 / 1558] CNIOBoringSSL
+[710 / 1558] CNIOBoringSSL
+[728 / 1558] CNIOBoringSSL
+[732 / 1558] CNIOBoringSSL
+[741 / 1558] CNIOBoringSSL
+[746 / 1558] CNIOBoringSSL
+[748 / 1558] CNIOBoringSSL
+[756 / 1558] CNIOBoringSSL
+[763 / 1558] CNIOBoringSSL
+[765 / 1558] CNIOBoringSSL
+[774 / 1558] CNIOBoringSSL
+[781 / 1558] CNIOBoringSSL
+[803 / 1558] CNIOBoringSSL
+[814 / 1558] CNIOBoringSSL
+[816 / 1558] CNIOBoringSSL
+[831 / 1558] CNIOBoringSSL
+[850 / 1558] CNIOBoringSSL
+[854 / 1558] CNIOBoringSSL
+[860 / 1558] CCryptoBoringSSL
+[870 / 1558] CCryptoBoringSSL
+[873 / 1558] CCryptoBoringSSL
+[880 / 1558] CCryptoBoringSSL
+[881 / 1558] CCryptoBoringSSL
+[892 / 1558] CCryptoBoringSSL
+[894 / 1558] CCryptoBoringSSL
+[902 / 1558] CCryptoBoringSSL
+[915 / 1558] CCryptoBoringSSL
+[922 / 1558] CCryptoBoringSSL
+[925 / 1558] CCryptoBoringSSL
+[934 / 1558] CCryptoBoringSSL
+[938 / 1558] CCryptoBoringSSL
+[943 / 1558] CCryptoBoringSSL
+[946 / 1558] CCryptoBoringSSL
+[953 / 1558] CCryptoBoringSSL
+[963 / 1558] CCryptoBoringSSL
+[977 / 1558] CCryptoBoringSSL
+[995 / 1558] CCryptoBoringSSL
+[1006 / 1558] CCryptoBoringSSL
+[1008 / 1558] CCryptoBoringSSL
+[1017 / 1558] CCryptoBoringSSL
+[1020 / 1558] CCryptoBoringSSL
+[1024 / 1558] CCryptoBoringSSL
+[1027 / 1558] CCryptoBoringSSL
+[1037 / 1558] CCryptoBoringSSL
+[1051 / 1558] CCryptoBoringSSL
+[1055 / 1558] CCryptoBoringSSL
+[1065 / 1558] CCryptoBoringSSL
+[1070 / 1558] CCryptoBoringSSL
+[1089 / 1558] CCryptoBoringSSL
+[1102 / 1558] CCryptoBoringSSL
+[1103 / 1558] CCryptoBoringSSL
+[1106 / 1558] CCryptoBoringSSL
+[1117 / 1558] CCryptoBoringSSL
+[1120 / 1558] CCryptoBoringSSL
+[1126 / 1558] CCryptoBoringSSL
+[1136 / 1558] CCryptoBoringSSL
+[1138 / 1558] CCryptoBoringSSL
+[1153 / 1558] CCryptoBoringSSL
+[1170 / 1558] CCryptoBoringSSL
+[1177 / 1558] CCryptoBoringSSL
+[1181 / 1558] CCryptoBoringSSL
+[1189 / 1558] CCryptoBoringSSL
+[1215 / 1558] CCryptoBoringSSL
+[1218 / 1558] CCryptoBoringSSL
+[1220 / 1558] CCryptoBoringSSL
+[1224 / 1558] CCryptoBoringSSL
+[1247 / 1558]
+[1251 / 1558] SwiftASN1-product
+[1261 / 1558]
+[1263 / 1558] CNIOPosix
+[1277 / 1558] _NIOBase64
+[1288 / 1558] InternalCollectionsUtilities
+[1296 / 1558] InternalCollectionsUtilities
+[1304 / 1558] CryptoBoringWrapper
+[1309 / 1558] Crypto
+[1314 / 1558] NIOConcurrencyHelpers
+[1319 / 1558] Crypto
+[1336 / 1558] CNIOFreeBSD
+[1355 / 1570] Atomics-product
+[1384 / 1586]
+[1399 / 1593] SpanPreview
+[1412 / 1594]
+[1425 / 1613] DequeModule
+[1433 / 1624] CNIOBoringSSLShims
+[1443 / 1644] SylviaTransferCore
+[1448 / 1644] DequeModule
+[1460 / 1644] SylviaTransferCore-product
+[1464 / 1644] CryptoExtras
+[1465 / 1644] CryptoExtras
+[1469 / 1644] CryptoExtras
+[1472 / 1644] CryptoExtras
+[1473 / 1644] CNIOLLHTTP
+[1483 / 1646] SylviaTransferCore
+[1486 / 1646]
+[1487 / 1646] CryptoExtras
+[1501 / 1659] CryptoExtras
+[1510 / 1659] DequeModule
+[1519 / 1660] SylviaTransferClient
+[1529 / 1662] SylviaTransferClient
+[1540 / 1681] X509
+[1542 / 1701] X509
+[1547 / 1710] sylvia-fetch-product
+[1549 / 1710] SylviaBackgroundTransfer
+[1558 / 1710] X509
+[1561 / 1710] SylviaTransferClient
+[1564 / 1710] SylviaTransferClient
+[1571 / 1710] SylviaBackgroundTransfer-product
+[1578 / 1710] NIOCore
+[1582 / 1710] NIOCore
+[1586 / 1710] NIOCore
+[1588 / 1710] NIOCore
+[1590 / 1710] NIOCore
+[1590 / 1710] X509
+[1599 / 1710] SylviaBackgroundTransfer
+[1600 / 1710] NIOCore
+[1609 / 1712] NIOEmbedded
+[1613 / 1716] NIOPosix
+[1640 / 1740] NIOPosix
+[1641 / 1740] NIOPosix
+[1644 / 1740] NIOPosix
+[1647 / 1740] NIOCore
+[1655 / 1741] NIOPosix
+[1655 / 1741] NIO
+[1666 / 1745] NIOTLS
+[1686 / 1771] NIOHTTP1
+[1694 / 1771] NIOTLS
+[1700 / 1772] NIOHTTP1
+[1706 / 1772] NIOHTTP1
+[1708 / 1793]
+[1730 / 1793] NIOSSL
+[1733 / 1793] NIOSSL
+[1740 / 1794] NIOSSL
+[1754 / 1806] SylviaSourceService
+[1763 / 1807] SylviaSourceService
+[1765 / 1809] SylviaSourceCLI
+[1777 / 1811] SylviaSourceService
+[1789 / 1812] sylvia-test-source-product
+[1795 / 1816] sylvia-source-product
+[1798 / 1829] SylviaSourceCLI
+[1814 / 1829] SylviaSourceServiceTests-product
+[1816 / 1829] sylvia-source-product
+[1818 / 1829] SylviaSourceServiceTests-product
+[1823 / 1829] SylviaSourceServiceTests-product
+[1825 / 1829] SylviaSourceServiceTests-product
+Build complete! (31.76 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Mac source: stop while clients connect (16.3, R1-01)" started.
+◇ Suite "HTTP contract (15.3)" started.
+◇ Suite "Background client on the host (15.4, 15.5, T38-T41)" started.
+◇ Suite "Pairing and trust (T36, T37)" started.
+◇ Suite "Mac source: queue, receipts, discovery, containment (16.2, 16.3)" started.
+◇ Test stoppingWhileClientsConnectNeverTrapsAndLeavesNoConnectionOpen() started.
+◇ Test capabilitiesAreUnauthenticatedAndCarryNoLibraryData() started.
+◇ Suite "Transfer faults and recovery (T38, T39, T40)" started.
+◇ Test fullTransferVerifiesImportsOnceAndSendsReceipts() started.
+◇ Test queueAndReceiptsKeepTheThreeAcknowledgementsApartAndAreIdempotent() started.
+◇ Test pairsOverPinnedTLSAfterApproval() started.
+◇ Test cleanTransferVerifiesEveryPartAndTheWholeFile() started.
+✔ Test pairsOverPinnedTLSAfterApproval() passed after 0.225 seconds.
+◇ Test rogueHostWithAnotherKeyNeverReceivesTheSecret() started.
+✔ Test queueAndReceiptsKeepTheThreeAcknowledgementsApartAndAreIdempotent() passed after 0.314 seconds.
+✔ Test capabilitiesAreUnauthenticatedAndCarryNoLibraryData() passed after 0.314 seconds.
+◇ Test queuedItemFollowsANewVersionWhenTheOriginalChanges() started.
+◇ Test catalogListsTopLevelFilesAndFoldersWithStablePagination() started.
+✔ Test rogueHostWithAnotherKeyNeverReceivesTheSecret() passed after 0.178 seconds.
+◇ Test wrongPinAgainstTheRealSourceSendsNothing() started.
+✔ Test wrongPinAgainstTheRealSourceSendsNothing() passed after 0.097 seconds.
+◇ Test fallsBackPastARogueEndpointToTheGenuineOne() started.
+✔ Test queuedItemFollowsANewVersionWhenTheOriginalChanges() passed after 0.282 seconds.
+◇ Test aFolderSwappedForASymbolicLinkIsNotFollowed() started.
+✔ Test cleanTransferVerifiesEveryPartAndTheWholeFile() passed after 0.625 seconds.
+◇ Test groupItemTransfersEveryMemberInOrder() started.
+✔ Test fallsBackPastARogueEndpointToTheGenuineOne() passed after 0.131 seconds.
+◇ Test slowApprovalOutlivesTheConnectionIdleLimit() started.
+✔ Test aFolderSwappedForASymbolicLinkIsNotFollowed() passed after 0.075 seconds.
+◇ Test anOpenSnapshotKeepsServingItsVersionAfterInvalidation() started.
+✔ Test anOpenSnapshotKeepsServingItsVersionAfterInvalidation() passed after 0.106 seconds.
+◇ Test idleConnectionsAreClosed() started.
+✔ Test groupItemTransfersEveryMemberInOrder() passed after 0.207 seconds.
+◇ Test faultOnOnePartRecoversWithoutAppendingInvalidBytes(_:) started.
+◇ Test case passing 1 argument faultCase → 200 to a range request to faultOnOnePartRecoversWithoutAppendingInvalidBytes(_:) started.
+✔ Test fullTransferVerifiesImportsOnceAndSendsReceipts() passed after 0.914 seconds.
+◇ Test wrongPartDigestIsRefetchedAndNeverJournalled() started.
+◇ Test case passing 1 argument faultCase → 412 to faultOnOnePartRecoversWithoutAppendingInvalidBytes(_:) started.
+✔ Test wrongPartDigestIsRefetchedAndNeverJournalled() passed after 0.363 seconds.
+◇ Test badResponsesNeverReachVerifiedBytes(_:_:_:) started.
+◇ Test case passing 3 arguments name → "range-ignored", fault → .ignoreRange, expectedRequests → 2 to badResponsesNeverReachVerifiedBytes(_:_:_:) started.
+◇ Test case passing 1 argument faultCase → 416 to faultOnOnePartRecoversWithoutAppendingInvalidBytes(_:) started.
+◇ Test case passing 1 argument faultCase → wrong part digest to faultOnOnePartRecoversWithoutAppendingInvalidBytes(_:) started.
+◇ Test case passing 3 arguments name → "precondition-412", fault → .preconditionFailed, expectedRequests → 2 to badResponsesNeverReachVerifiedBytes(_:_:_:) started.
+◇ Test case passing 1 argument faultCase → changed ETag to faultOnOnePartRecoversWithoutAppendingInvalidBytes(_:) started.
+✔ Test idleConnectionsAreClosed() passed after 1.039 seconds.
+◇ Test advertisesTheProductSpecificBonjourServiceType() started.
+◇ Test case passing 1 argument faultCase → short 206 to faultOnOnePartRecoversWithoutAppendingInvalidBytes(_:) started.
+◇ Test case passing 1 argument faultCase → gzip encoding to faultOnOnePartRecoversWithoutAppendingInvalidBytes(_:) started.
+◇ Test case passing 3 arguments name → "range-416", fault → .rangeNotSatisfiable, expectedRequests → 2 to badResponsesNeverReachVerifiedBytes(_:_:_:) started.
+✔ Test faultOnOnePartRecoversWithoutAppendingInvalidBytes(_:) with 7 test cases passed after 1.518 seconds.
+◇ Test connectionDropMidPartRetriesOnlyThatPart() started.
+◇ Test case passing 3 arguments name → "etag-changed", fault → .wrongETag, expectedRequests → 2 to badResponsesNeverReachVerifiedBytes(_:_:_:) started.
+✔ Test catalogListsTopLevelFilesAndFoldersWithStablePagination() passed after 2.308 seconds.
+◇ Test manifestDescribesAnImmutableVersionAndNegotiatesPartSize() started.
+✔ Test manifestDescribesAnImmutableVersionAndNegotiatesPartSize() passed after 0.244 seconds.
+◇ Test rangeRequestsFollowRFC9110Exactly() started.
+◇ Test case passing 3 arguments name → "gzip", fault → .gzipEncoding, expectedRequests → 2 to badResponsesNeverReachVerifiedBytes(_:_:_:) started.
+✔ Test rangeRequestsFollowRFC9110Exactly() passed after 0.165 seconds.
+◇ Test hostileRequestsNeverReachTheFileSystem() started.
+✔ Test hostileRequestsNeverReachTheFileSystem() passed after 0.143 seconds.
+◇ Test refusesWildcardBindUnlessExplicit() started.
+✔ Test refusesWildcardBindUnlessExplicit() passed after 0.001 seconds.
+✔ Suite "HTTP contract (15.3)" passed after 3.177 seconds.
+◇ Test case passing 3 arguments name → "short-206", fault → .shortRange(by: 10), expectedRequests → 2 to badResponsesNeverReachVerifiedBytes(_:_:_:) started.
+◇ Test case passing 3 arguments name → "dropped-mid-part", fault → .dropAfter(bytes: 70000), expectedRequests → 2 to badResponsesNeverReachVerifiedBytes(_:_:_:) started.
+✔ Test slowApprovalOutlivesTheConnectionIdleLimit() passed after 3.056 seconds.
+◇ Test invitationIsSingleUse() started.
+✔ Test invitationIsSingleUse() passed after 0.068 seconds.
+◇ Test concurrentUseOfOneInvitationPairsAtMostOneDevice() started.
+✔ Test concurrentUseOfOneInvitationPairsAtMostOneDevice() passed after 0.345 seconds.
+◇ Test expiredInvitationFailsOnBothEnds() started.
+✔ Test expiredInvitationFailsOnBothEnds() passed after 0.043 seconds.
+◇ Test wrongSecretsBurnTheInvitationAfterTheAttemptLimit() started.
+✔ Test wrongSecretsBurnTheInvitationAfterTheAttemptLimit() passed after 0.055 seconds.
+◇ Test pairingRequestsAreRateLimited() started.
+✔ Test pairingRequestsAreRateLimited() passed after 0.036 seconds.
+◇ Test deniedOrUnansweredApprovalIssuesNoToken() started.
+✔ Test deniedOrUnansweredApprovalIssuesNoToken() passed after 0.352 seconds.
+◇ Test approvalTimeoutHoldsEvenIfThePromptNeverReturns() started.
+✔ Test advertisesTheProductSpecificBonjourServiceType() passed after 3.101 seconds.
+◇ Test keychainIdentityStoreNeverFallsBackToTheLoginKeychainUnlessAskedTo() started.
+✔ Test keychainIdentityStoreNeverFallsBackToTheLoginKeychainUnlessAskedTo() passed after 0.007 seconds.
+◇ Test keychainIdentityStoreKeepsTheKeyAndReloadsTheSameIdentity() started.
+✔ Test keychainIdentityStoreKeepsTheKeyAndReloadsTheSameIdentity() passed after 0.053 seconds.
+◇ Test capturesPairingPayloadsWithSecretsReplaced() started.
+✔ Test capturesPairingPayloadsWithSecretsReplaced() passed after 0.041 seconds.
+✔ Suite "Mac source: queue, receipts, discovery, containment (16.2, 16.3)" passed after 5.023 seconds.
+✔ Test approvalTimeoutHoldsEvenIfThePromptNeverReturns() passed after 2.531 seconds.
+◇ Test sourceBindingIsChecked() started.
+✔ Test sourceBindingIsChecked() passed after 0.029 seconds.
+◇ Test revokedTokensAreDeniedAndStayDeniedAfterRestart() started.
+✔ Test revokedTokensAreDeniedAndStayDeniedAfterRestart() passed after 0.138 seconds.
+◇ Test changedSourceKeyRequiresExplicitRepairing() started.
+✔ Test changedSourceKeyRequiresExplicitRepairing() passed after 0.117 seconds.
+◇ Test tokensAreAcceptedOnlyInTheAuthorizationHeader() started.
+✔ Test tokensAreAcceptedOnlyInTheAuthorizationHeader() passed after 0.053 seconds.
+✔ Suite "Pairing and trust (T36, T37)" passed after 7.461 seconds.
+✔ Test connectionDropMidPartRetriesOnlyThatPart() passed after 5.119 seconds.
+◇ Test persistentFaultPausesAndKeepsVerifiedParts() started.
+✔ Test persistentFaultPausesAndKeepsVerifiedParts() passed after 0.361 seconds.
+◇ Test interruptedEngineResumesWithoutRefetchingVerifiedParts() started.
+✔ Test interruptedEngineResumesWithoutRefetchingVerifiedParts() passed after 0.198 seconds.
+◇ Test mutationOfALaterRegionKeepsIdenticalPartsAndYieldsTheNewVersion() started.
+✔ Test mutationOfALaterRegionKeepsIdenticalPartsAndYieldsTheNewVersion() passed after 0.228 seconds.
+◇ Test mutationOfAnAlreadyVerifiedRegionRefetchesThatPart() started.
+✔ Test mutationOfAnAlreadyVerifiedRegionRefetchesThatPart() passed after 0.256 seconds.
+◇ Test mutationWhileAPartIsStreamingServesOnlyTheSnapshot() started.
+✔ Test badResponsesNeverReachVerifiedBytes(_:_:_:) with 7 test cases passed after 7.467 seconds.
+◇ Test sourceChangedMidTransferYieldsTheNewVersionNeverAMix() started.
+✔ Test mutationWhileAPartIsStreamingServesOnlyTheSnapshot() passed after 0.400 seconds.
+◇ Test slowPreparationAnswersPreparingAndTheClientWaits() started.
+✔ Test sourceChangedMidTransferYieldsTheNewVersionNeverAMix() passed after 0.488 seconds.
+◇ Test revokedCredentialBlocksKeepsVerifiedBytesAndSurvivesRelaunch() started.
+✔ Test revokedCredentialBlocksKeepsVerifiedBytesAndSurvivesRelaunch() passed after 0.760 seconds.
+◇ Test relaunchKeepsVerifiedPartsAndRequestsOnlyMissingOnes() started.
+✔ Test stoppingWhileClientsConnectNeverTrapsAndLeavesNoConnectionOpen() passed after 10.138 seconds.
+✔ Suite "Mac source: stop while clients connect (16.3, R1-01)" passed after 10.138 seconds.
+✔ Test slowPreparationAnswersPreparingAndTheClientWaits() passed after 2.413 seconds.
+◇ Test finalDigestMismatchIsNeverHandedOff() started.
+✔ Test relaunchKeepsVerifiedPartsAndRequestsOnlyMissingOnes() passed after 1.385 seconds.
+◇ Test taskCompletedBeforeReconciliationIsNotAdopted() started.
+✔ Test finalDigestMismatchIsNeverHandedOff() passed after 0.147 seconds.
+◇ Test revocationMidTransferPausesAndKeepsVerifiedBytes() started.
+✔ Test revocationMidTransferPausesAndKeepsVerifiedBytes() passed after 0.114 seconds.
+◇ Test sourceIdentityChangeMidTransferPausesForRepairing() started.
+✔ Test sourceIdentityChangeMidTransferPausesForRepairing() passed after 0.129 seconds.
+◇ Test unreachableSourcePausesThenResumesAfterRestart() started.
+✔ Test taskCompletedBeforeReconciliationIsNotAdopted() passed after 0.469 seconds.
+◇ Test unreadableStoresDeferLaunchWithoutCancellingOrOverwriting() started.
+✔ Test unreachableSourcePausesThenResumesAfterRestart() passed after 0.556 seconds.
+✔ Suite "Transfer faults and recovery (T38, T39, T40)" passed after 12.280 seconds.
+✔ Test unreadableStoresDeferLaunchWithoutCancellingOrOverwriting() passed after 0.901 seconds.
+◇ Test fullPhoneStoragePausesWithInsufficientSpaceNotSourceUnreachable() started.
+✔ Test fullPhoneStoragePausesWithInsufficientSpaceNotSourceUnreachable() passed after 12.983 seconds.
+◇ Test newJobWithoutEnoughFreeSpacePausesBeforeAnyRequest() started.
+✔ Test newJobWithoutEnoughFreeSpacePausesBeforeAnyRequest() passed after 0.441 seconds.
+◇ Test persistentLocalWriteErrorPausesWithStorageUnavailable() started.
+✔ Test persistentLocalWriteErrorPausesWithStorageUnavailable() passed after 0.316 seconds.
+◇ Test changedSourceKeyPausesBeforeAnyRequestIsSent() started.
+✔ Test changedSourceKeyPausesBeforeAnyRequestIsSent() passed after 0.455 seconds.
+◇ Test lockedAfterFirstUnlockStillStartsReconcilesAndRequestsParts() started.
+✔ Test lockedAfterFirstUnlockStillStartsReconcilesAndRequestsParts() passed after 0.532 seconds.
+◇ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) started.
+◇ Test case passing 1 argument shape → "enospc-underlying" to systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) started.
+◇ Test case passing 1 argument shape → "cannot-create-low-space" to systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) started.
+◇ Test case passing 1 argument shape → "cannot-write-space-left" to systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) started.
+✔ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) with 3 test cases passed after 0.484 seconds.
+◇ Test spaceUsedElsewhereMidTransferPausesBeforeTheNextRequest() started.
+✔ Test spaceUsedElsewhereMidTransferPausesBeforeTheNextRequest() passed after 0.449 seconds.
+◇ Test unreachableSourceIsClassifiedByTheLocalNetworkCheck(_:) started.
+◇ Test case passing 1 argument denied → true to unreachableSourceIsClassifiedByTheLocalNetworkCheck(_:) started.
+◇ Test case passing 1 argument denied → false to unreachableSourceIsClassifiedByTheLocalNetworkCheck(_:) started.
+✔ Test unreachableSourceIsClassifiedByTheLocalNetworkCheck(_:) with 2 test cases passed after 0.899 seconds.
+◇ Test deviceInboxEntryIsObservedDownloadedAndImported() started.
+✔ Test deviceInboxEntryIsObservedDownloadedAndImported() passed after 0.242 seconds.
+✔ Suite "Background client on the host (15.4, 15.5, T38-T41)" passed after 29.555 seconds.
+✔ Test run with 63 tests in 6 suites passed after 29.555 seconds.

@@ -1,0 +1,30 @@
+environment: host (macOS 26.6.2), swift test --filter ServerStopStressTests
+code: the stress test of review finding R1-01 run against HTTPServer.swift from commit 77bcec8 (before the fix),
+  with only the two test counters added (refusedWhileStopping, openConnectionCount)
+result: the test process trapped in NIO before the 200 iterations finished (first attempt); the fixed server passes the same test
+  (review/stop-while-connecting.log)
+---
+Building for debugging...
+[Computing dependencies]
+[Using on-disk description]
+[1 / 5]
+[2 / 6] SylviaSourceService
+[3 / 7] SylviaSourceService
+[9 / 11] SylviaSourceService
+[10 / 12] SylviaSourceService
+[13 / 16] SylviaSourceServiceTests-product
+[15 / 16] SylviaSourceServiceTests-product
+[19 / 20] sylvia-test-source-product
+[20 / 28] SylviaSourceCLI
+[24 / 30] sylvia-test-source-product
+[30 / 31] sylvia-test-source-product
+Build complete! (3.24 sec)
+error: Process '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec/swift/pm/swiftpm-testing-helper --test-bundle-path <worktree>/Spikes/G02-Transfer/SourceService/.build/out/Products/Debug/SylviaSourceServiceTests.xctest/Contents/MacOS/SylviaSourceServiceTests --package-path Spikes/G02-Transfer/SourceService --filter ServerStopStressTests <worktree>/Spikes/G02-Transfer/SourceService/.build/out/Products/Debug/SylviaSourceServiceTests.xctest/Contents/MacOS/SylviaSourceServiceTests --testing-library swift-testing' exited with unexpected signal code 5
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Mac source: stop while clients connect (16.3, R1-01)" started.
+◇ Test stoppingWhileClientsConnectNeverTrapsAndLeavesNoConnectionOpen() started.
+NIOCore/NIOAsyncWriter.swift:177: Fatal error: Deinited NIOAsyncWriter without calling finish()
+Note: Some test targets reported failures:
+  - SylviaSourceServiceTests (Swift Testing)

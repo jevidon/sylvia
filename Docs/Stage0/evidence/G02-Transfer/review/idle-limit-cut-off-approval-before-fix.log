@@ -1,0 +1,11 @@
+host (macOS): swift test --filter slowApprovalOutlivesTheConnectionIdleLimit, run on 7 Oct 2026 with the
+idle-limit exemption deliberately disabled (CloseOnIdleHandler closing on every idle event), to show the
+test detects the defect found in review: a pairing approval slower than the connection idle limit was cut
+off after the invitation had already been consumed. Idle limit 1 s, approval after 3 s.
+
+✘ Test slowApprovalOutlivesTheConnectionIdleLimit() recorded an issue at PairingTests.swift:98:6: Caught error: .unreachable
+✘ Test slowApprovalOutlivesTheConnectionIdleLimit() failed after 1.060 seconds with 1 issue.
+✘ Suite "Pairing and trust (T36, T37)" failed after 1.060 seconds with 1 issue.
+✘ Test run with 1 test in 1 suite failed after 1.060 seconds with 1 issue.
+
+With the exemption restored the same test passes (see the CI drop-in log, Scripts/ci.d/40-g02-transfer.sh).

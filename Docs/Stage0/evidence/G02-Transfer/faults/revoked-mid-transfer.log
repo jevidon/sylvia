@@ -1,0 +1,14 @@
+host (macOS), in-process source, 1 MiB parts, asset 6295777 bytes
+request POST /v1/pair range=- -> 200
+request GET /v1/items/e7194615-d80b-40e4-babc-8ce614240a63/manifest range=- -> 200
+request GET /v1/assets/4650c7c0-1e88-4a48-88c6-b2289d849c91/content range=bytes=0-1048575 -> 206
+request GET /v1/assets/4650c7c0-1e88-4a48-88c6-b2289d849c91/content range=bytes=1048576-2097151 -> 206
+request GET /v1/assets/4650c7c0-1e88-4a48-88c6-b2289d849c91/content range=bytes=2097152-3145727 -> 401
+event manifestFetched(itemVersionID: "66d0fcc0-bf93-40be-8f5f-7aeaad8c7a33")
+event partRequested(assetID: "4650c7c0-1e88-4a48-88c6-b2289d849c91", index: 0, attempt: 1)
+event partVerified(assetID: "4650c7c0-1e88-4a48-88c6-b2289d849c91", index: 0)
+event partRequested(assetID: "4650c7c0-1e88-4a48-88c6-b2289d849c91", index: 1, attempt: 1)
+event partVerified(assetID: "4650c7c0-1e88-4a48-88c6-b2289d849c91", index: 1)
+event partRequested(assetID: "4650c7c0-1e88-4a48-88c6-b2289d849c91", index: 2, attempt: 1)
+event partFailed(assetID: "4650c7c0-1e88-4a48-88c6-b2289d849c91", index: 2, failure: SylviaTransferCore.PartFailure.unauthorized)
+event paused(SylviaTransferCore.PauseReason.reauthenticationRequired)

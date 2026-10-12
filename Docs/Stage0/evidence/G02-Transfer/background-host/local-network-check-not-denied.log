@@ -1,0 +1,40 @@
+environment: host (macOS), in-process source on 127.0.0.1, real TLS, 1 MiB parts; coordinator session kind: in-process download tasks
+after part 3 the source's address is a closed loopback port; local network check answer substituted: denied=false
+result: 4 transport failures for part 4, then paused source_unreachable; startJob error unchanged
+source request POST /v1/pair range=- -> 200
+source request GET /v1/items/<item>/manifest range=- -> 200
+source request GET /v1/assets/0a6cda12-f494-4035-9422-0e81bd6033db/content range=bytes=0-1048575 -> 206
+source request GET /v1/assets/0a6cda12-f494-4035-9422-0e81bd6033db/content range=bytes=1048576-2097151 -> 206
+source request GET /v1/assets/0a6cda12-f494-4035-9422-0e81bd6033db/content range=bytes=2097152-3145727 -> 206
+source request GET /v1/assets/0a6cda12-f494-4035-9422-0e81bd6033db/content range=bytes=3145728-4194303 -> 206
+client event staging_checked jobs=0 milliseconds=0 rehashed=true verified_bytes=0
+client event coordinator_start app_state=host_test jobs=0 protected_data_available=not_reported session=in_process
+client event launch_reconciliation adopted=0 app_state=host_test completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
+client event job_created bytes=6295777 item=f47ae94b-22f7-4f62-8850-cc056653362c job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 parts=7 queue_entry=none version=7f176ec7-999b-4de9-9abf-6b452610a537
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:0 port=54570
+client event trust_challenge app_state=host_test host=127.0.0.1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 level=task method=NSURLAuthenticationMethodServerTrust part=0a6cda12-f494-4035-9422-0e81bd6033db:0 port=54570 result=matched
+client event task_metrics attempt=1 fetch_type=1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:0 protocol=http/1.1 reused_connection=false tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=3 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:0
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:1 port=54570
+client event task_metrics attempt=1 fetch_type=1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:1 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=2 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:1
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:2 port=54570
+client event task_metrics attempt=1 fetch_type=1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:2 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=2 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:2
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:3 port=54570
+client event task_metrics attempt=1 fetch_type=1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:3 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=2 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:3
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4 port=54574
+client event task_metrics attempt=1 fetch_type=1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4 protocol=none reused_connection=false tls=none
+client event part_failed app_state=host_test attempt=1 failure=transport("NSURLErrorDomain -1004") job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4
+client event part_requested app_state=host_test attempt=2 host=127.0.0.1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4 port=54574
+client event task_metrics attempt=2 fetch_type=1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4 protocol=none reused_connection=false tls=none
+client event part_failed app_state=host_test attempt=2 failure=transport("NSURLErrorDomain -1004") job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4
+client event part_requested app_state=host_test attempt=3 host=127.0.0.1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4 port=54574
+client event task_metrics attempt=3 fetch_type=1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4 protocol=none reused_connection=false tls=none
+client event part_failed app_state=host_test attempt=3 failure=transport("NSURLErrorDomain -1004") job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4
+client event part_requested app_state=host_test attempt=4 host=127.0.0.1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4 port=54574
+client event task_metrics attempt=4 fetch_type=1 job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4 protocol=none reused_connection=false tls=none
+client event part_failed app_state=host_test attempt=4 failure=transport("NSURLErrorDomain -1004") job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 part=0a6cda12-f494-4035-9422-0e81bd6033db:4
+client event paused app_state=host_test job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42 reason=source_unreachable verified_parts=4
+client event local_network_checked denied=false job=1bb4572d-d9a7-4ee7-9c1d-f419cfecda42

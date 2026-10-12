@@ -1,0 +1,24 @@
+environment: simulator Sylvia-M0-g02-transfer (iPhone 17, iOS 26.5), sources on the host (macOS 26.6.2)
+command (3 times): Spikes/G02-Transfer/Scripts/simulator-pairing-entry-run.sh <log>
+why: one clean run failed the paste test after its Command-V fallback (the edit menu had not appeared): the field showed a
+  code but no connection reached the source. The fallback was removed (the test now retries the edit menu and requires the
+  field to hold exactly the code) and the script was run three times: 3 of 3 passed, the menu appeared on the first try.
+---
+run 1: exit 0; G02-UI paste: pasted with the edit menu's Paste (attempt 1) G02-UI paste: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).  RESULT: PASS
+G02-UI link: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+G02-UI paste: pasted with the edit menu's Paste (attempt 1)
+G02-UI paste: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+G02-UI override: status after pairing through the rogue address: pairing failed: pinMismatch
+G02-UI override-then-genuine: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+run 2: exit 0; G02-UI paste: pasted with the edit menu's Paste (attempt 1) G02-UI paste: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).  RESULT: PASS
+G02-UI link: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+G02-UI paste: pasted with the edit menu's Paste (attempt 1)
+G02-UI paste: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+G02-UI override: status after pairing through the rogue address: pairing failed: pinMismatch
+G02-UI override-then-genuine: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+run 3: exit 0; G02-UI paste: pasted with the edit menu's Paste (attempt 1) G02-UI paste: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).  RESULT: PASS
+G02-UI link: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+G02-UI paste: pasted with the edit menu's Paste (attempt 1)
+G02-UI paste: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+G02-UI override: status after pairing through the rogue address: pairing failed: pinMismatch
+G02-UI override-then-genuine: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).

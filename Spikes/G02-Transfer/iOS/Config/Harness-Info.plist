@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  G0.2 transfer harness: keys that cannot be expressed as INFOPLIST_KEY_ build settings. Merged with the
+  generated Info.plist (GENERATE_INFOPLIST_FILE = YES).
+
+  Deliberately absent: NSAppTransportSecurity. The pinned HTTPS connections to the Mac need no ATS
+  exception (ADR-0008, evidence in Docs/Stage0/evidence/G02-Transfer/ats/). Scripts/ci.d/40-g02-transfer.sh
+  fails if any ATS key appears here.
+-->
+<plist version="1.0">
+<dict>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_sylvia-src._tcp</string>
+	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Sylvia connects to the Mac you paired with on your network to download books and audiobooks you send to this iPhone.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan the pairing QR code shown on your Mac.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.jevidon.sylvia.spike.transfer.pairing</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sylvia</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

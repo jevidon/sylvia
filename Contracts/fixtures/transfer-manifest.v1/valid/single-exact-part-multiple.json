@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "protocol_version": {
+    "major": 1,
+    "minor": 0
+  },
+  "source_id": "5a1e0c3e-7d2b-4c1a-9f00-000000000001",
+  "item_id": "00000000-0000-4000-8000-000000000003",
+  "item_version_id": "00000000-0000-4000-8000-000000000004",
+  "created_at": "2026-10-06T09:00:00Z",
+  "manifest_digest": "53d7404830af5f27f02d95a22ebccf62fb7f5542d201f1af0f2e2b95c7bfe816",
+  "grouping": {
+    "kind": "single",
+    "title": "Exact multiple"
+  },
+  "assets": [
+    {
+      "asset_id": "00000000-0000-4000-8000-000000000102",
+      "ordinal": 0,
+      "display_name": "exact.pdf",
+      "media_type": "application/pdf",
+      "length": 2097152,
+      "etag": "\"sha256-6946b02cf32724e7cd15dd5db6a4bc9e0e4bd4c38e3cb4f95a173b57a4b05a74\"",
+      "sha256": "6946b02cf32724e7cd15dd5db6a4bc9e0e4bd4c38e3cb4f95a173b57a4b05a74",
+      "part_size": 1048576,
+      "parts": [
+        {
+          "index": 0,
+          "offset": 0,
+          "length": 1048576,
+          "sha256": "40b7b6ba45157e68c60772343dbd973d910095697649effbe78e8b1ab6072fdb"
+        },
+        {
+          "index": 1,
+          "offset": 1048576,
+          "length": 1048576,
+          "sha256": "0a6ea1b7261a069cd7d2f399335b763cf13e5a5ad99c7332f0de2d219d451905"
+        }
+      ]
+    }
+  ]
+}

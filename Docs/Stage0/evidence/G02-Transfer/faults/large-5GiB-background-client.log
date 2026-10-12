@@ -1,0 +1,13 @@
+environment: host (macOS Version 26.6.2 (Build 25G83)), in-process source on 127.0.0.1, real TLS; background client with its in-process session kind (download tasks, same delegate code as the background session)
+file: generate-g02-transfer-large.sh output, 5368709120 bytes, sha256 d2383fe38d8033b62ef9e6222756369fab813d2c64b2bce41e86ad9494af16d9; 320 parts of 16777216 bytes; window 4 tasks, 2 connections
+first coordinator invalidated after 164 verified parts (tasks in flight cancelled)
+relaunch: start() took 1.00 s; staging check re-hashed 2751463424 bytes in 1001 ms (2621 MiB/s)
+jobViews() polled 157 times during start(); slowest call 0.069 ms (asserted < 250 ms: the re-hash runs outside the lock)
+reconciliation: kept 164 verified parts, enqueued 4, discarded 0
+final full-file SHA-256 (assembly) took 2082 ms on the assembly queue; jobViews() polled 289 times while the job showed "assembling", slowest of those 4.871 ms (asserted < 250 ms: the check runs outside the lock)
+jobViews() polled 656 times from the relaunch to the import; slowest call 20.096 ms (asserted < 1 s). Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the 156 parts verified after the relaunch: median 10, max 15 (report finding 20)
+background-events completion handed in while the job showed "assembling": held, then called after assembly_verified
+content requests: 321 for 320 parts, no fault injected; parts requested more than once: 1 (a request in flight when the first coordinator stopped is made again); parts verified before the relaunch requested again: 0 (asserted 0)
+result: imported once (completions 1); imported asset digest from the verified assembly: matches
+elapsed: 15.1 s
+memory (proc_pid_rusage, whole test process): phys_footprint before 25 MiB, peak 29 MiB, growth 4 MiB (asserted < 256 MiB)

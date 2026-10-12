@@ -1,0 +1,11 @@
+environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+script> xcodebuild test -scheme G02MacIdentityProbe -destination platform=macOS -allowProvisioningUpdates (automatic signing, team A4KBDX665Z)
+--- test output (xcodebuild exit 65)
+	No Accounts: Add a new account in Accounts settings.
+	No profiles for 'com.jevidon.sylvia.spike.identityprobe' were found: Xcode couldn't find any Mac App Development provisioning profiles matching 'com.jevidon.sylvia.spike.identityprobe'.
+** TEST FAILED **
+Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj: error: No Accounts: Add a new account in Accounts settings. (in target 'G02MacIdentityProbe' from project 'G02MacIdentityProbe')
+Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj: error: No profiles for 'com.jevidon.sylvia.spike.identityprobe' were found: Xcode couldn't find any Mac App Development provisioning profiles matching 'com.jevidon.sylvia.spike.identityprobe'. (in target 'G02MacIdentityProbe' from project 'G02MacIdentityProbe')
+BLOCKED: code signing for team A4KBDX665Z is not available on this Mac (see the error lines above);
+  the account holder must resolve it (for example accept the Program License Agreement), then rerun this script.
+RESULT: NOT RUN (signing unavailable; full log: .build/scratch/g02-identity-probe/xcodebuild.log)

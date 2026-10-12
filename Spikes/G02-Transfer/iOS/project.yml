@@ -1,0 +1,140 @@
+# G0.2 transfer spike, iOS side (ADR-0008, ADR-0009). Stage 0 harness only; never shipped.
+# Generate with `sylvia_generate Spikes/G02-Transfer/iOS`. The project has no direct remote package: swift-asn1 is
+# pinned by TransferKit's exact: requirement and its committed Package.resolved.
+#
+# Part 1 used the app only to give hosted unit tests a keychain access group (a hostless test bundle on the
+# simulator gets errSecMissingEntitlement, -34018). Part 2 makes it the background-transfer harness: pairing
+# from the phone, manual addresses, Bonjour browsing, background URLSession downloads with launch
+# reconciliation (SylviaBackgroundTransfer), plus a UI test target that terminates and relaunches the app.
+name: G02Transfer
+options:
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+packages:
+  TransferKit:
+    path: ../TransferKit
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+targets:
+  G02TransferHarness:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources/Harness
+    dependencies:
+      - package: TransferKit
+        product: SylviaTransferCore
+      - package: TransferKit
+        product: SylviaTransferClient
+      - package: TransferKit
+        product: SylviaBackgroundTransfer
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.transfer
+        PRODUCT_NAME: G02TransferHarness
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Config/Harness-Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: Sylvia Transfer Spike
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+  G02TransferHostedTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/HostedUnit
+    # The TransferKit modules come from the host app (BUNDLE_LOADER). With the package products also listed here,
+    # Xcode 27 warned "'SylviaTransferClient' is missing a dependency on 'SylviaTransferCore'" (and on SwiftASN1)
+    # in every build; without them the tests build and run with no warning (12 Oct 2026).
+    dependencies:
+      - target: G02TransferHarness
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.transfer.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/G02TransferHarness.app/G02TransferHarness"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+  G02TransferUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/UITests
+    dependencies:
+      - target: G02TransferHarness
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.transfer.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: G02TransferHarness
+  # ATS probe only: the same harness code under another bundle ID and an Info.plist chosen by the build setting
+  # G02_ATS_VARIANT (Config/ATSVariant-<variant>.plist), to measure what an ATS key would change. Never shipped and
+  # never the harness's own configuration (G02TransferHarness has no ATS key).
+  G02TransferATSVariant:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources/Harness
+    dependencies:
+      - package: TransferKit
+        product: SylviaTransferCore
+      - package: TransferKit
+        product: SylviaTransferClient
+      - package: TransferKit
+        product: SylviaBackgroundTransfer
+    settings:
+      base:
+        G02_ATS_VARIANT: local-networking
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.transfer.atsvariant
+        PRODUCT_NAME: G02TransferATSVariant
+        PRODUCT_MODULE_NAME: G02TransferHarness
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Config/ATSVariant-$(G02_ATS_VARIANT).plist
+        INFOPLIST_KEY_CFBundleDisplayName: Sylvia ATS Probe
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+  G02TransferATSVariantTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/HostedUnit/ATSProbeTests.swift
+      - path: Tests/HostedUnit/SimulatorSupport.swift
+    # TransferKit modules from the host app, as for G02TransferHostedTests.
+    dependencies:
+      - target: G02TransferATSVariant
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.transfer.atsvariant.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/G02TransferATSVariant.app/G02TransferATSVariant"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  G02TransferATSVariant:
+    build:
+      targets:
+        G02TransferATSVariant: all
+        G02TransferATSVariantTests: [test]
+    test:
+      targets:
+        - G02TransferATSVariantTests
+  G02TransferHarness:
+    build:
+      targets:
+        G02TransferHarness: all
+        G02TransferHostedTests: [test]
+        G02TransferUITests: [test]
+    test:
+      targets:
+        - G02TransferHostedTests
+        - G02TransferUITests

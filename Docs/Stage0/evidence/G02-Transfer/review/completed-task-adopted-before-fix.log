@@ -1,0 +1,33 @@
+environment: host (macOS 26.6.2); swift test --package-path Spikes/G02-Transfer/SourceService --filter taskCompletedBeforeReconciliationIsNotAdopted
+control run on 12 Oct 2026 with the fix disabled (reconcile adopted the listed tasks unfiltered): the job stays
+'downloading' and never finishes, because the adopted task had already completed and holds part 6's slot
+--- test output
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+✘ Test taskCompletedBeforeReconciliationIsNotAdopted() recorded an issue at BackgroundClientHostTests.swift:324:9: Expectation failed: summary.completedBeforeReconciliation == 1
+↳ summary.completedBeforeReconciliation == 1 → false
+↳   summary.completedBeforeReconciliation → 0
+✘ Test taskCompletedBeforeReconciliationIsNotAdopted() recorded an issue at BackgroundClientHostTests.swift:325:9: Expectation failed: summary.adopted == 0
+↳ summary.adopted == 0 → false
+↳   summary.adopted → 1
+✘ Test taskCompletedBeforeReconciliationIsNotAdopted() recorded an issue at BackgroundClientHostTests.swift:59:21: Issue recorded
+↳ timed out; job is Optional(SylviaBackgroundTransfer.JobRecord.State.downloading) nil
+✘ Test taskCompletedBeforeReconciliationIsNotAdopted() recorded an issue at BackgroundClientHostTests.swift:74:26: Expectation failed: coordinator.importer.record(itemVersionID: version)
+↳ coordinator.importer.record(itemVersionID: version) → nil
+↳   coordinator.importer → SylviaBackgroundTransfer.StubImporter
+↳     ledger → ()
+↳     stopHook → ()
+↳   version → "8484ab8b-9d49-428c-b1e3-cfb402a1bbfd"
+✘ Test taskCompletedBeforeReconciliationIsNotAdopted() failed after 30.392 seconds with 4 issues.
+↳ /// Found in review: at relaunch the session may deliver a task's completion before `allTasks` answers, and
+↳ /// still list that task. Adopting it would hold its part's slot forever (the job would never finish). Here a
+↳ /// task for part 6 fails its digest and completes before reconciliation, and is then listed as outstanding.
+✘ Suite "Background client on the host (15.4, 15.5, T38-T41)" failed after 30.392 seconds with 4 issues.
+↳ /// The iOS background-download coordinator, run on the host against the in-process source (G0.2 part 2).
+↳ ///
+↳ /// Environment: host (macOS). The coordinator uses its `.inProcess` session kind: the same download
+↳ /// tasks, task descriptions, pinned task-level trust answer, synchronous move, verified-only journal,
+↳ /// assembly and importer as the background session, but tasks end with the process. The real background
+↳ /// session (tasks that outlive the app, relaunch) is exercised on the simulator by the iOS harness.
+✘ Test run with 1 test in 1 suite failed after 30.392 seconds with 4 issues.
+(the test stops at the failed import check before writing its event log; the passing run's log is background-host/completed-before-reconciliation.log)

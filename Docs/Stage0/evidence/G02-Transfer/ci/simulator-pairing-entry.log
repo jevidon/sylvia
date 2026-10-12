@@ -1,0 +1,57 @@
+environment: simulator Sylvia-M0-g02-transfer (2AC43275-3F2E-4815-B2DE-C4E87F95881D), runtime com.apple.CoreSimulator.SimRuntime.iOS-26-5, device type com.apple.CoreSimulator.SimDeviceType.iPhone-17; XCUITest
+  host: macOS 26.6.2 (25G83); sources: sylvia-test-source on 127.0.0.1 (auto-approve, codes in a file)
+  ENTRY (genuine Mac) ready: {"endpoints":[{"host":"127.0.0.1","port":55002}],"fingerprint":"236E 1093 F5BD F3FD 23F2 C440 242C 6854 24FE 9B37 40E7 517C 216F 0036 01D0 2074","port":55002,"roots":["\/Users\/jevidon\/Git\/sylvia\/.claude\/worktrees\/wf_cc8cfd94-737-12\/.build\/scratch\/g02-entry-run\/ENTRY\/library"],"source_id":"e68fe402-683a-4d37-8d5b-302c4379bcc9"}
+  ROGUE (another identity) ready: {"endpoints":[{"host":"127.0.0.1","port":55003}],"fingerprint":"9EC4 3B1F 53FF 83EC 49B7 DE2E 6484 4367 2AEF 0C37 C1B6 B9E9 FDA5 D9DA 5117 2232","port":55003,"roots":["\/Users\/jevidon\/Git\/sylvia\/.claude\/worktrees\/wf_cc8cfd94-737-12\/.build\/scratch\/g02-entry-run\/ROGUE\/library"],"source_id":"d6f11fbb-7849-4ded-a9ed-4d69f59abacf"}
+script> xcodebuild test -scheme G02TransferHarness -only-testing:G02TransferUITests/PairingEntryUITests (destination id=2AC43275-3F2E-4815-B2DE-C4E87F95881D)
+--- XCUITest (exit 0)
+G02-UI link: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+Test Case '-[G02TransferUITests.PairingEntryUITests testOpenedPairingLinkShowsTheFingerprintThenPairs]' passed (20.342 seconds).
+G02-UI paste: pasted with the edit menu's Paste (attempt 1)
+G02-UI paste: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+Test Case '-[G02TransferUITests.PairingEntryUITests testPastedCodeShowsTheFingerprintThenPairs]' passed (11.100 seconds).
+G02-UI override: status after pairing through the rogue address: pairing failed: pinMismatch
+G02-UI override-then-genuine: fingerprint shown in 16 groups of four, then paired: Paired with G02 ENTRY source. Token stored in the Keychain (after first unlock, this device only).
+Test Case '-[G02TransferUITests.PairingEntryUITests testReplacedAddressLeadingToAnotherMacSendsNothing]' passed (14.599 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 46.041 (46.043) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 46.041 (46.043) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 46.041 (46.044) seconds
+** TEST SUCCEEDED **
+--- ENTRY source output (requests carry IDs and paths only; codes were written to a file, never printed)
+ENTRY> TEST SOURCE: fault injection and test hooks active (auto-approve, codes to file); not a production configuration
+ENTRY> Sylvia source (G0.2 spike), protocol 1.0
+ENTRY> source id: e68fe402-683a-4d37-8d5b-302c4379bcc9
+ENTRY> source name: G02 ENTRY source
+ENTRY> fingerprint: 236E 1093 F5BD F3FD 23F2 C440 242C 6854 24FE 9B37 40E7 517C 216F 0036 01D0 2074
+ENTRY> identity key: memory only (--ephemeral-identity)
+ENTRY> listening: 127.0.0.1:55002
+ENTRY> endpoints in pairing payload: 127.0.0.1:55002
+ENTRY> shared folders: 1
+ENTRY> pairing codes written: 3 (single use, not printed)
+ENTRY> ready
+ENTRY> auto-approved pairing request from "Sylvia-M0-g02-transfer" (device 1d2fae6a-57a7-4259-b049-0411dc3da9bd, address 127.0.0.1)
+ENTRY> connections 2026-10-12T03:05:29.094Z accepted=1 decrypted_bytes=589
+ENTRY> request 2026-10-12T03:05:29.297Z POST /v1/pair range=- -> 200
+ENTRY> auto-approved pairing request from "Sylvia-M0-g02-transfer" (device 453aaa44-5d52-4cfc-beac-1eabef6d4992, address 127.0.0.1)
+ENTRY> connections 2026-10-12T03:05:39.672Z accepted=2 decrypted_bytes=1178
+ENTRY> request 2026-10-12T03:05:39.672Z POST /v1/pair range=- -> 200
+ENTRY> auto-approved pairing request from "Sylvia-M0-g02-transfer" (device f676252e-d3f4-47c4-81fb-2fb840fb8e82, address 127.0.0.1)
+ENTRY> connections 2026-10-12T03:05:54.755Z accepted=3 decrypted_bytes=1767
+ENTRY> request 2026-10-12T03:05:54.755Z POST /v1/pair range=- -> 200
+ENTRY> stopped (SIGTERM)
+--- ROGUE source output
+ROGUE> TEST SOURCE: fault injection and test hooks active (auto-approve, codes to file); not a production configuration
+ROGUE> Sylvia source (G0.2 spike), protocol 1.0
+ROGUE> source id: d6f11fbb-7849-4ded-a9ed-4d69f59abacf
+ROGUE> source name: G02 ROGUE source
+ROGUE> fingerprint: 9EC4 3B1F 53FF 83EC 49B7 DE2E 6484 4367 2AEF 0C37 C1B6 B9E9 FDA5 D9DA 5117 2232
+ROGUE> identity key: memory only (--ephemeral-identity)
+ROGUE> listening: 127.0.0.1:55003
+ROGUE> endpoints in pairing payload: 127.0.0.1:55003
+ROGUE> shared folders: 1
+ROGUE> pairing codes written: 1 (single use, not printed)
+ROGUE> ready
+ROGUE> connections 2026-10-12T03:05:52.024Z accepted=1 decrypted_bytes=0
+ROGUE> stopped (SIGTERM)
+ENTRY: successful POST /v1/pair: 3 (paste, link, and the genuine address after the rogue attempt)
+ROGUE: requests answered: 0; TCP connections accepted: 1; decrypted application bytes: 0
+RESULT: PASS

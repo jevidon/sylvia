@@ -1,0 +1,35 @@
+host (macOS), in-process source, 1 MiB parts, asset 6295777 bytes
+request POST /v1/pair range=- -> 200
+request GET /v1/items/c8727ef1-ab97-4bbe-b3f5-25c45f72d036/manifest range=- -> 200
+request GET /v1/assets/7d57af92-4701-4a20-bdca-0f19885c702d/content range=bytes=0-1048575 -> 206
+request GET /v1/assets/7d57af92-4701-4a20-bdca-0f19885c702d/content range=bytes=1048576-2097151 -> 206
+request GET /v1/assets/7d57af92-4701-4a20-bdca-0f19885c702d/content range=bytes=2097152-3145727 -> 206
+request GET /v1/assets/7d57af92-4701-4a20-bdca-0f19885c702d/content range=bytes=3145728-4194303 -> 206
+request GET /v1/assets/7d57af92-4701-4a20-bdca-0f19885c702d/content range=bytes=4194304-5242879 -> 206
+request GET /v1/assets/7d57af92-4701-4a20-bdca-0f19885c702d/content range=bytes=5242880-6291455 -> 412
+request GET /v1/items/c8727ef1-ab97-4bbe-b3f5-25c45f72d036/manifest range=- -> 200
+request GET /v1/assets/7d57af92-4701-4a20-bdca-0f19885c702d/content range=bytes=4194304-5242879 -> 206
+request GET /v1/assets/7d57af92-4701-4a20-bdca-0f19885c702d/content range=bytes=5242880-6291455 -> 206
+request GET /v1/assets/7d57af92-4701-4a20-bdca-0f19885c702d/content range=bytes=6291456-6295776 -> 206
+event manifestFetched(itemVersionID: "48fd89e8-71b1-4fd0-ab7c-27f03ebbeb90")
+event partRequested(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 0, attempt: 1)
+event partVerified(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 0)
+event partRequested(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 1, attempt: 1)
+event partVerified(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 1)
+event partRequested(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 2, attempt: 1)
+event partVerified(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 2)
+event partRequested(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 3, attempt: 1)
+event partVerified(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 3)
+event partRequested(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 4, attempt: 1)
+event partVerified(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 4)
+event partRequested(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 5, attempt: 1)
+event partFailed(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 5, failure: SylviaTransferCore.PartFailure.preconditionFailed)
+event manifestFetched(itemVersionID: "836a8b14-00c0-4e4a-be89-d22fc5a89349")
+event versionChanged(from: "48fd89e8-71b1-4fd0-ab7c-27f03ebbeb90", to: "836a8b14-00c0-4e4a-be89-d22fc5a89349", keptParts: 4, discardedParts: 1)
+event partRequested(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 4, attempt: 1)
+event partVerified(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 4)
+event partRequested(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 5, attempt: 1)
+event partVerified(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 5)
+event partRequested(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 6, attempt: 1)
+event partVerified(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d", index: 6)
+event assetFinalized(assetID: "7d57af92-4701-4a20-bdca-0f19885c702d")

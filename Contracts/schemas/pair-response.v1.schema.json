@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:pair-response:v1",
+  "title": "Pair response",
+  "description": "200 body of POST /v1/pair after the Mac user approved the device (plan 15.2, ADR-0008). token is the per-device bearer credential: the phone stores it only in Keychain (after-first-unlock, this device only) and sends it only in the Authorization header, never in a query string; the Mac stores only its SHA-256.",
+  "type": "object",
+  "required": ["schema_version", "source_id", "device_id", "token", "token_type", "scopes", "spki_sha256", "paired_at"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "source_id": { "$ref": "#/$defs/uuid" },
+    "device_id": { "$ref": "#/$defs/uuid" },
+    "token": {
+      "description": "Unpadded base64url of 32 random bytes.",
+      "type": "string",
+      "minLength": 43,
+      "maxLength": 86,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "token_type": { "const": "bearer" },
+    "scopes": {
+      "description": "Granted operations. There is no scope for deletion of source files or arbitrary file access.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["catalog", "read", "download", "receipt"] }
+    },
+    "spki_sha256": { "type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[0-9a-f]{64}$" },
+    "paired_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    }
+  }
+}

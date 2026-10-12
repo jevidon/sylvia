@@ -1,0 +1,25 @@
+environment: host (macOS), in-process source on 127.0.0.1, real TLS, 1 MiB parts; coordinator session kind: in-process download tasks
+pin replaced before relaunch; decrypted bytes at the source unchanged: 1964
+source request POST /v1/pair range=- -> 200
+source request GET /v1/items/<item>/manifest range=- -> 200
+source request GET /v1/assets/79f132d7-b0a4-471c-b919-c5fc7ff3f8b6/content range=bytes=0-1048575 -> 206
+source request GET /v1/assets/79f132d7-b0a4-471c-b919-c5fc7ff3f8b6/content range=bytes=1048576-2097151 -> 206
+client event staging_checked jobs=0 milliseconds=0 rehashed=true verified_bytes=0
+client event coordinator_start app_state=host_test jobs=0 protected_data_available=not_reported session=in_process
+client event launch_reconciliation adopted=0 app_state=host_test completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
+client event job_created bytes=6295777 item=de7e321c-19aa-493c-b7b3-648541ee4d10 job=edb96b29-a3c0-409d-80fe-620aacacbad7 parts=7 queue_entry=none version=ebc8d220-980b-4910-906f-ab3582f29fac
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=edb96b29-a3c0-409d-80fe-620aacacbad7 part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:0 port=54524
+client event trust_challenge app_state=host_test host=127.0.0.1 job=edb96b29-a3c0-409d-80fe-620aacacbad7 level=task method=NSURLAuthenticationMethodServerTrust part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:0 port=54524 result=matched
+client event task_metrics attempt=1 fetch_type=1 job=edb96b29-a3c0-409d-80fe-620aacacbad7 part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:0 protocol=http/1.1 reused_connection=false tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=2 job=edb96b29-a3c0-409d-80fe-620aacacbad7 part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:0
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=edb96b29-a3c0-409d-80fe-620aacacbad7 part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:1 port=54524
+client event task_metrics attempt=1 fetch_type=1 job=edb96b29-a3c0-409d-80fe-620aacacbad7 part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:1 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=1 job=edb96b29-a3c0-409d-80fe-620aacacbad7 part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:1
+client event staging_checked jobs=1 milliseconds=3 rehashed=true verified_bytes=2097152
+client event coordinator_start app_state=unknown jobs=1 protected_data_available=not_reported session=in_process
+client event part_requested app_state=unknown attempt=1 host=127.0.0.1 job=edb96b29-a3c0-409d-80fe-620aacacbad7 part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:2 port=54524
+client event launch_reconciliation adopted=0 app_state=unknown completed_before_reconciliation=0 discarded_parts=0 enqueued=1 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=2 outstanding_tasks=0 refreshes=0
+client event trust_challenge app_state=unknown host=127.0.0.1 job=edb96b29-a3c0-409d-80fe-620aacacbad7 level=task method=NSURLAuthenticationMethodServerTrust part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:2 port=54524 result=mismatched
+client event task_metrics attempt=1 fetch_type=1 job=edb96b29-a3c0-409d-80fe-620aacacbad7 part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:2 protocol=http/1.1 reused_connection=false tls=772
+client event part_failed app_state=unknown attempt=1 failure=sourceIdentityChanged job=edb96b29-a3c0-409d-80fe-620aacacbad7 part=79f132d7-b0a4-471c-b919-c5fc7ff3f8b6:2
+client event paused app_state=unknown job=edb96b29-a3c0-409d-80fe-620aacacbad7 reason=source_identity_changed verified_parts=2

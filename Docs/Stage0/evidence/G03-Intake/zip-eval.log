@@ -1,0 +1,123 @@
+# G0.3 ZIP library evaluation
+date: 2026-10-11T18:14:15Z
+environment: host, macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.0 Build version 27A266a 
+big entry: 4831850553 bytes (stored), plus text/small.txt (deflated)
+
+## 1. Can both packages share one SwiftPM graph with readium/swift-toolkit 3.11.0?
+Computed https://github.com/weichsel/ZIPFoundation.git at 0.9.20 (0.74s)
+error: Dependencies could not be resolved because root depends on 'zipfoundation' 0.9.20.
+
+## 2. Build
+Build complete! (5.84 sec)
+Build complete! (6.07 sec)
+
+## 3. Write a ZIP64 archive with each library
+[upstream ZIPFoundation 0.9.20] write ok archive=upstream.zip big=4831850553 elapsed=0.8s phys_footprint=4.2MiB peak_phys_footprint=4.2MiB max_rss=8.7MiB
+[upstream ZIPFoundation 0.9.20] expected big.bin sha256=7438443d693d61e7c946e0accf768422a38d0f6c3ab1e967183c61f012c29132
+        2.92 real         2.20 user         0.34 sys
+            10076160  maximum resident set size
+             5292536  peak memory footprint
+[ReadiumZIPFoundation 3.0.1] write ok archive=readium.zip big=4831850553 elapsed=0.8s phys_footprint=3.4MiB peak_phys_footprint=3.4MiB max_rss=8.0MiB
+[ReadiumZIPFoundation 3.0.1] expected big.bin sha256=7438443d693d61e7c946e0accf768422a38d0f6c3ab1e967183c61f012c29132
+        2.87 real         2.19 user         0.33 sys
+             9371648  maximum resident set size
+             4473384  peak memory footprint
+-rw-r--r--@ 1 jevidon  staff  4831851358 Oct 12 07:14 /Users/jevidon/Library/Caches/SylviaFixtures/generated/g03-intake/zipeval.xjvtHH/readium.zip
+-rw-r--r--@ 1 jevidon  staff  4831851358 Oct 12 07:14 /Users/jevidon/Library/Caches/SylviaFixtures/generated/g03-intake/zipeval.xjvtHH/upstream.zip
+
+## 4. Read every archive with every reader (streamed through SHA-256, CRC32 checked)
+-- archive written by upstream
+[upstream ZIPFoundation 0.9.20] entry path=audio/big.bin type=file compressed=false uncompressedSize=4831850553 compressedSize=4831850553 streamed=4831850553 crc32=211ab1d3 sha256=7438443d693d61e7c946e0accf768422a38d0f6c3ab1e967183c61f012c29132
+[upstream ZIPFoundation 0.9.20] entry path=text/small.txt type=file compressed=true uncompressedSize=135168 compressedSize=449 streamed=135168 crc32=dc7085f7 sha256=2d92a2905355e73776594b1cbd7127edf33fd3f0af90d1eb2ad86004f474636c
+[upstream ZIPFoundation 0.9.20] read ok entries=2 elapsed=1.8s phys_footprint=3.5MiB peak_phys_footprint=3.5MiB max_rss=8.0MiB
+        1.78 real         1.57 user         0.20 sys
+             8470528  maximum resident set size
+             3654136  peak memory footprint
+[ReadiumZIPFoundation 3.0.1] entry path=audio/big.bin type=file compressed=false uncompressedSize=4831850553 compressedSize=4831850553 streamed=4831850553 crc32=211ab1d3 sha256=7438443d693d61e7c946e0accf768422a38d0f6c3ab1e967183c61f012c29132
+[ReadiumZIPFoundation 3.0.1] entry path=text/small.txt type=file compressed=true uncompressedSize=135168 compressedSize=449 streamed=135168 crc32=dc7085f7 sha256=2d92a2905355e73776594b1cbd7127edf33fd3f0af90d1eb2ad86004f474636c
+[ReadiumZIPFoundation 3.0.1] read ok entries=2 elapsed=1.8s phys_footprint=4.9MiB peak_phys_footprint=4.9MiB max_rss=9.5MiB
+        1.78 real         1.58 user         0.20 sys
+             9994240  maximum resident set size
+             5128744  peak memory footprint
+[python zipfile] entry path=audio/big.bin method=0 file_size=4831850553 zip64_extra=True create_system=3 mode=0o100644 sha256=7438443d693d61e7c946e0accf768422a38d0f6c3ab1e967183c61f012c29132
+[python zipfile] entry path=text/small.txt method=8 file_size=135168 zip64_extra=True create_system=3 mode=0o100644 sha256=2d92a2905355e73776594b1cbd7127edf33fd3f0af90d1eb2ad86004f474636c
+[python zipfile] read ok
+[Info-ZIP unzip -tq] No errors detected in compressed data of /Users/jevidon/Library/Caches/SylviaFixtures/generated/g03-intake/zipeval.xjvtHH/upstream.zip.
+-- archive written by readium
+[upstream ZIPFoundation 0.9.20] entry path=audio/big.bin type=file compressed=false uncompressedSize=4831850553 compressedSize=4831850553 streamed=4831850553 crc32=211ab1d3 sha256=7438443d693d61e7c946e0accf768422a38d0f6c3ab1e967183c61f012c29132
+[upstream ZIPFoundation 0.9.20] entry path=text/small.txt type=file compressed=true uncompressedSize=135168 compressedSize=449 streamed=135168 crc32=dc7085f7 sha256=2d92a2905355e73776594b1cbd7127edf33fd3f0af90d1eb2ad86004f474636c
+[upstream ZIPFoundation 0.9.20] read ok entries=2 elapsed=1.8s phys_footprint=5.5MiB peak_phys_footprint=5.5MiB max_rss=10.1MiB
+        1.85 real         1.58 user         0.25 sys
+            10600448  maximum resident set size
+             5784056  peak memory footprint
+[ReadiumZIPFoundation 3.0.1] entry path=audio/big.bin type=file compressed=false uncompressedSize=4831850553 compressedSize=4831850553 streamed=4831850553 crc32=211ab1d3 sha256=7438443d693d61e7c946e0accf768422a38d0f6c3ab1e967183c61f012c29132
+[ReadiumZIPFoundation 3.0.1] entry path=text/small.txt type=file compressed=true uncompressedSize=135168 compressedSize=449 streamed=135168 crc32=dc7085f7 sha256=2d92a2905355e73776594b1cbd7127edf33fd3f0af90d1eb2ad86004f474636c
+[ReadiumZIPFoundation 3.0.1] read ok entries=2 elapsed=1.8s phys_footprint=5.9MiB peak_phys_footprint=5.9MiB max_rss=10.5MiB
+        1.81 real         1.57 user         0.23 sys
+            11059200  maximum resident set size
+             6193704  peak memory footprint
+[python zipfile] entry path=audio/big.bin method=0 file_size=4831850553 zip64_extra=True create_system=3 mode=0o100644 sha256=7438443d693d61e7c946e0accf768422a38d0f6c3ab1e967183c61f012c29132
+[python zipfile] entry path=text/small.txt method=8 file_size=135168 zip64_extra=True create_system=3 mode=0o100644 sha256=2d92a2905355e73776594b1cbd7127edf33fd3f0af90d1eb2ad86004f474636c
+[python zipfile] read ok
+[Info-ZIP unzip -tq] No errors detected in compressed data of /Users/jevidon/Library/Caches/SylviaFixtures/generated/g03-intake/zipeval.xjvtHH/readium.zip.
+
+## 5. Truncated copies of the 4.5 GiB archive (clone, then cut); each open gets 120s
+-- readium.zip truncated to 4831851357 of 4831851358 bytes
+[signature scan] last end-record signature in the truncated file: offset 4831851336 (21 bytes before the end)
+[upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=75.3s
+  !! truncated copy was ACCEPTED by zipeval-upstream
+[zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+zipfile.BadZipFile: File is not a zip file
+-- readium.zip truncated to 4831851336 of 4831851358 bytes
+[signature scan] last end-record signature in the truncated file: offset 2898523655 (1933327681 bytes before the end)
+[upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=55.8s
+  !! truncated copy was ACCEPTED by zipeval-upstream
+[zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+zipfile.BadZipFile: File is not a zip file
+-- readium.zip truncated to 4831851260 of 4831851358 bytes
+[signature scan] last end-record signature in the truncated file: offset 2898523655 (1933327605 bytes before the end)
+[upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=59.5s
+  !! truncated copy was ACCEPTED by zipeval-upstream
+[zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+zipfile.BadZipFile: File is not a zip file
+-- readium.zip truncated to 2415925679 of 4831851358 bytes
+[signature scan] last end-record signature in the truncated file: offset 934419628 (1481506051 bytes before the end)
+[upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=42.8s
+  !! truncated copy was ACCEPTED by zipeval-upstream
+[zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+zipfile.BadZipFile: File is not a zip file
+-- readium.zip truncated to 4096 of 4831851358 bytes
+[signature scan] last end-record signature in the truncated file: none
+[upstream ZIPFoundation 0.9.20] open FAILED: missingEndOfCentralDirectoryRecord elapsed=0.0s phys_footprint=1.7MiB peak_phys_footprint=1.7MiB max_rss=6.1MiB
+[ReadiumZIPFoundation 3.0.1] open FAILED: missingEndOfCentralDirectoryRecord elapsed=0.0s phys_footprint=1.9MiB peak_phys_footprint=1.9MiB max_rss=6.4MiB
+zipfile.BadZipFile: File is not a zip file
+
+## 6. The same cuts on a small archive (64 MiB stored entry), where a full backward scan is fast
+[ReadiumZIPFoundation 3.0.1] write ok archive=small.zip big=67121209 elapsed=0.0s phys_footprint=5.5MiB peak_phys_footprint=5.5MiB max_rss=10.1MiB
+-- small.zip truncated to 67121885 of 67121886 bytes
+[signature scan] last end-record signature in the truncated file: offset 67121864 (21 bytes before the end)
+[upstream ZIPFoundation 0.9.20] open FAILED: missingEndOfCentralDirectoryRecord elapsed=3.7s phys_footprint=1.7MiB peak_phys_footprint=1.7MiB max_rss=6.1MiB
+[ReadiumZIPFoundation 3.0.1] open FAILED: missingEndOfCentralDirectoryRecord elapsed=86.9s phys_footprint=2.0MiB peak_phys_footprint=2.0MiB max_rss=6.5MiB
+zipfile.BadZipFile: File is not a zip file
+-- small.zip truncated to 67121864 of 67121886 bytes
+[signature scan] last end-record signature in the truncated file: none
+[upstream ZIPFoundation 0.9.20] open FAILED: missingEndOfCentralDirectoryRecord elapsed=2.0s phys_footprint=1.6MiB peak_phys_footprint=1.6MiB max_rss=6.1MiB
+[ReadiumZIPFoundation 3.0.1] open FAILED: missingEndOfCentralDirectoryRecord elapsed=78.2s phys_footprint=1.9MiB peak_phys_footprint=1.9MiB max_rss=6.4MiB
+zipfile.BadZipFile: File is not a zip file
+-- small.zip truncated to 67121788 of 67121886 bytes
+[signature scan] last end-record signature in the truncated file: none
+[upstream ZIPFoundation 0.9.20] open FAILED: missingEndOfCentralDirectoryRecord elapsed=2.1s phys_footprint=1.6MiB peak_phys_footprint=1.6MiB max_rss=6.1MiB
+[ReadiumZIPFoundation 3.0.1] open FAILED: missingEndOfCentralDirectoryRecord elapsed=78.0s phys_footprint=1.9MiB peak_phys_footprint=1.9MiB max_rss=6.4MiB
+zipfile.BadZipFile: File is not a zip file
+-- small.zip truncated to 33560943 of 67121886 bytes
+[signature scan] last end-record signature in the truncated file: none
+[upstream ZIPFoundation 0.9.20] open FAILED: missingEndOfCentralDirectoryRecord elapsed=1.0s phys_footprint=1.6MiB peak_phys_footprint=1.6MiB max_rss=6.1MiB
+[ReadiumZIPFoundation 3.0.1] open FAILED: missingEndOfCentralDirectoryRecord elapsed=38.8s phys_footprint=1.9MiB peak_phys_footprint=1.9MiB max_rss=6.4MiB
+zipfile.BadZipFile: File is not a zip file
+-- small.zip truncated to 4096 of 67121886 bytes
+[signature scan] last end-record signature in the truncated file: none
+[upstream ZIPFoundation 0.9.20] open FAILED: missingEndOfCentralDirectoryRecord elapsed=0.0s phys_footprint=1.7MiB peak_phys_footprint=1.7MiB max_rss=6.1MiB
+[ReadiumZIPFoundation 3.0.1] open FAILED: missingEndOfCentralDirectoryRecord elapsed=0.0s phys_footprint=1.9MiB peak_phys_footprint=1.9MiB max_rss=6.4MiB
+zipfile.BadZipFile: File is not a zip file
+
+eval finished, status=0

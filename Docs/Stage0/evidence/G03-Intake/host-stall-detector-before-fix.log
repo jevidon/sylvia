@@ -1,0 +1,16 @@
+# G0.3 finding F13: the first stall detector, run against the round-1 slow-provider test.
+# 2026-10-11T16:47Z, host (macOS 26.6.2, Apple M5 Max), commit 8aa8d12 with one temporary change.
+# Change: ProgressProbe.value (ItemProviderIntake.swift) reduced to completedUnitCount only, which is what the first
+# implementation watched; total and fractionCompleted were held constant. Then:
+#   cd Spikes/G03-Intake/IntakeKit && swift test --filter providerSlowButMoving
+# The change was reverted afterwards; the same test passes with the committed code (host-intakekit-tests.log,
+# "slow but moving provider: received after ...").
+# The test's provider reports progress every 100 ms for 3 s, with a 0.5 s stall limit, then delivers the file.
+slow but moving provider: not received: the sharing app did not provide the file in time after 0.525314542 seconds
+✘ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" recorded an issue at ItemProviderIntakeTests.swift:156:9: Expectation failed: outcome.receipt != nil
+✘ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" recorded an issue at ItemProviderIntakeTests.swift:157:9: Expectation failed: delivered.isSet
+✘ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" recorded an issue at ItemProviderIntakeTests.swift:158:9: Expectation failed: elapsed >= .seconds(3)
+✘ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" failed after 0.538 seconds with 3 issues.
+✘ Suite "NSItemProvider intake and fallback" failed after 0.538 seconds with 3 issues.
+✘ Test run with 1 test in 1 suite failed after 0.538 seconds with 3 issues.
+exit=1

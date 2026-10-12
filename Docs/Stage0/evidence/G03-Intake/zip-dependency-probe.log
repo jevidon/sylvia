@@ -1,0 +1,35 @@
+# G0.3 archive dependency probe
+date: 2026-10-11T18:14:05Z
+environment: host, macOS 26.6.2 (25G83), Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+
+## 1. readium/swift-toolkit 3.11.0 alone: its ZIPFoundation requirement and what it resolves to
+requirement in swift-toolkit 3.11.0 Package.swift:
+  31:        .package(url: "https://github.com/readium/ZIPFoundation.git", from: "3.0.1"),
+  44:                .product(name: "ReadiumZIPFoundation", package: "ZIPFoundation"),
+  137:                .product(name: "ReadiumZIPFoundation", package: "ZIPFoundation"),
+resolved pin:
+  identity=zipfoundation location=https://github.com/readium/ZIPFoundation.git version=3.0.1 revision=adb49c8bfe060cc187370b12fa081012a6440b86
+IntakeKit lock:
+  identity=zipfoundation location=https://github.com/readium/ZIPFoundation.git version=3.0.1 revision=adb49c8bfe060cc187370b12fa081012a6440b86
+license of the resolved fork (first line):
+  MIT License
+
+## 2. Readium 3.11.0 plus upstream weichsel/ZIPFoundation 0.9.20 in one graph (full resolver output)
+  warning: 'zipfoundation': /Package@swift-5.9.swift:23:61: warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]
+  21 |     name: "ZIPFoundation",
+  22 |     platforms: [
+  23 |         .macOS(.v10_13), .iOS(.v12), .tvOS(.v12), .watchOS(.v4), .visionOS(.v1)
+     |                                                             `- warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]
+  24 |     ],
+  25 |     products: [
+  
+  [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+  error: Dependencies could not be resolved because root depends on 'zipfoundation' 0.9.20.
+  'zipfoundation' >= 3.0.1 is required because 'swift-toolkit' 3.11.0 depends on 'zipfoundation' 3.0.1..<4.0.0 and root depends on 'swift-toolkit' 3.11.0.
+  exit status of the resolve: 1
+
+## 3. Checks (ADR-0010 section 3)
+ok: Readium 3.11.0 resolves the same ZIPFoundation fork revision that IntakeKit locks
+ok: upstream ZIPFoundation 0.9.20 cannot join the graph (same package identity 'zipfoundation')
+
+dependency probe finished, status=0

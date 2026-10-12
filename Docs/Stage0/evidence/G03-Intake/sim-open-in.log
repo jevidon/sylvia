@@ -1,0 +1,36 @@
+# G0.3 open-in through the system (simctl openurl)
+date: 2026-10-11T18:13:34Z
+simulator: 12E99A8C-B113-4375-96C2-76AD49A1CB4D (Sylvia-M0-g03-intake (12E99A8C-B113-4375-96C2-76AD49A1CB4D) )
+Build complete! (0.44 sec)
+gen-pack ok: 4357385 bytes, 6 entries, zip64_end_record=false, manifest_sha256=9e7f8269dc1d11c125346efee1a73b8ded1870da40704b9d18ffebf335fbb367, elapsed=0.0s
+
+## open Small Book.sylviapack
+  openurl exit status: 0
+  harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Opened file staged: 4 file(s), state staged
+  ok: the system's copy was in Documents/Inbox (Documents/Inbox)
+  ok: Inbox copy removed after the import (0)
+  ok: bundle imported through the bundle importer (open_in jobs, states, items) (1 staged 4)
+  ok: files left in Documents (0)
+
+## open Cut Book.sylviapack
+  openurl exit status: 0
+  harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Open-in not imported: bundle rejected: truncated_or_not_a_pack: no end record at the end of the file
+  ok: truncated bundle rejected (outcome=Open-in not imported: bundle rejected: truncated_or_not_a_pack)
+  ok: Inbox copy removed after the rejection (0)
+  ok: no job for the truncated bundle (1)
+  ok: files left in Documents (0)
+
+## open Walden Open In.epub
+  openurl exit status: 0
+  harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Opened file staged: 1 file(s), state staged
+  ok: the system's copy was in Documents/Inbox (Documents/Inbox)
+  ok: EPUB imported through the single-file importer (2 staged,staged 4,1)
+  ok: files left in Documents (0)
+
+## open Walden Again.epub
+  openurl exit status: 0
+  harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Opened file staged: 1 file(s), state needs_review
+  ok: the same EPUB opened again is flagged for review, not staged twice (3 staged,staged,needs_review)
+  ok: files left in Documents (0)
+
+failures=0

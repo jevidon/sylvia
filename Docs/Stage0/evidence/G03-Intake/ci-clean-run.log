@@ -1,0 +1,216 @@
+# G0.3 clean CI run
+# started: 2026-10-11T18:02:28Z, commit 0b844e2, working tree clean: yes
+# build products deleted first: .build/DerivedData .build/ci-logs Spikes/G03-Intake/IntakeKit/.build Spikes/G03-Intake/App/.build Spikes/G03-Intake/App/G03Intake.xcodeproj
+# command: Scripts/ci.sh contracts g03-intake
+
+==> 10-contracts
+    pass (0s)
+==> 50-g03-intake
+    pass (1826s)
+all 2 steps passed
+
+# Scripts/ci.sh exit status: 0
+
+################ .build/ci-logs/10-contracts.log
+schemas: 2  fixtures: 46  openapi: 0  instances: 0
+
+################ .build/ci-logs/50-g03-intake.log
+G0.3 intake CI drop-in
+date: 2026-10-11T18:02:29Z
+host: macOS 26.6.2 (25G83), Apple M5 Max
+xcode: Xcode 27.0 Build version 27A266a 
+git: 0b844e2
+logs: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_ff64876d-3a7-5/.build/ci-logs/g03-intake
+
+=== 1. fixtures (18:02:30Z)
+ok       meditationsofmarcusaurelius_01_aurelius_64kb.mp3
+ok       /Users/jevidon/Library/Caches/SylviaFixtures/generated/g03-intake/large.sylviapack (982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268)
+
+=== 2. host: IntakeKit tests (swift test) (18:02:40Z)
+  short deflate stream: rejection code actual_size_mismatch
+  aggregate expansion: 2000 deflated entries of 1 MiB, archive 2721302 bytes, declares 2097152000 bytes (770:1): rejection code expansion_limit in 0.113026458 seconds
+  ✔ Test run with 45 tests in 3 suites passed after 18.872 seconds.
+  in-memory plain-text provider: materialized as a file and received
+  direct file URL provider registered ["public.file-url", "public.url"]; representation used: file_url
+  EPUB folder as a file representation: not received: the sharing app offered a folder, not a single file
+  slow but moving provider: received after 3.7672365 seconds
+  ✔ Test run with 37 tests in 3 suites passed after 4.743 seconds.
+  contract fixtures: import-handoff-manifest.v1 valid=3 invalid=17 agree with HandoffManifest
+  contract fixtures: sylviapack-manifest.v1 valid=4 invalid=22 agree with PackManifest
+  insufficient space: not enough space: free up 69.2 MB more (69205026 bytes)
+  uncoordinated writer: rejected at half: bundle rejected: truncated_or_not_a_pack: no end record at the end of the file; accepted after completion
+  ✔ Test "an uncoordinated writer still copying (as Finder may be): import is rejected until the copy completes" passed after 0.646 seconds.
+  coordinated writer: import waited 1.029857041 seconds for the coordinated write
+  ✔ Test "a coordinated writer: the coordinated snapshot waits for the write to finish" passed after 1.284 seconds.
+  ✔ Test run with 19 tests in 3 suites passed after 1.285 seconds.
+  no compiler warnings in our sources
+
+=== 3. host: large-pack run (18:03:17Z)
+  validate ACCEPTED: 4846059727 bytes, 7 entries, zip64_end_record=true, elapsed=2.0s, 2297 MiB/s
+  validate memory: sampled_peak_phys_footprint=7.4 MiB lifetime_peak_phys_footprint=7.4 MiB max_rss=12.6 MiB
+  extract ACCEPTED: 4846059727 bytes, 7 entries, zip64_end_record=true, elapsed=2.3s, 2003 MiB/s
+  extract memory: sampled_peak_phys_footprint=8.2 MiB lifetime_peak_phys_footprint=8.2 MiB max_rss=14.4 MiB
+    extracted=b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1
+    source   =b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1
+  truncation-sweep: 163 cut points x {truncated, zero-padded to full length} = 326 copies of a 4846059727-byte pack
+  truncation-sweep: partial copies accepted=0; zero-padded copies byte-identical to the original (accepted, correct)=2
+  truncation-sweep: rejection codes: truncated_or_not_a_pack=163, truncated_or_not_a_pack (zero-padded)=161
+  truncation-sweep: slowest single rejection 0.024s
+  copy-measure: 4831838986 bytes in 3.9s (1182 MiB/s), buffer 1048576 bytes
+  copy-measure: phys_footprint before=1.7 MiB
+  copy-measure memory: sampled_peak_phys_footprint=4.6 MiB lifetime_peak_phys_footprint=4.6 MiB max_rss=15.3 MiB
+
+=== 4. host: kill the handoff writer at every step and at random moments (18:04:14Z)
+  uninterrupted copy of 4831838986 bytes (process start to exit): 2.26s
+  kills that landed mid-copy (killed, no manifest, 0 < copied bytes < 4831838986): 12 of 12
+  failures=0
+
+=== 5. host: current output validates against the contract schemas (18:04:44Z)
+  Build complete! (0.24 sec)
+  RECEIVED handoff=D5832FCD-F3BC-4B25-9C10-97153CFFAE20 items=2 bytes=2438156
+  handoff.json written by HandoffSession now: valid against import-handoff-manifest.v1
+  large pack entries: ['sylviapack/manifest.json', 'sylviapack/manifest.sha256'] then 5 content entries
+  large pack sylviapack/manifest.json: valid against sylviapack-manifest.v1
+  manifest.sha256 entry equals SHA-256(manifest.json) + LF: True
+
+=== 6. simulator: IntakeKit tests on iOS (18:04:45Z)
+simulator: iOS-26-5 Sylvia-M0-g03-intake (iPhone-17), 12E99A8C-B113-4375-96C2-76AD49A1CB4D
+  aggregate expansion: 2000 deflated entries of 1 MiB, archive 2721302 bytes, declares 2097152000 bytes (770:1): rejection code expansion_limit in 0.107251292 seconds
+  ✔ Test run with 45 tests in 3 suites passed after 17.239 seconds.
+  direct file URL provider registered ["public.file-url", "public.url"]; representation used: file_url
+  in-memory plain-text provider: materialized as a file and received
+  slow but moving provider: received after 4.8819475830000005 seconds
+  ✔ Test run with 37 tests in 3 suites passed after 4.909 seconds.
+  contract fixtures: import-handoff-manifest.v1 valid=3 invalid=17 agree with HandoffManifest
+  contract fixtures: sylviapack-manifest.v1 valid=4 invalid=22 agree with PackManifest
+  ✔ Test run with 19 tests in 3 suites passed after 1.354 seconds.
+  ** TEST SUCCEEDED **
+  no compiler warnings in our sources
+
+=== 7. simulator: harness app, share extension, in-app and UI tests (18:05:19Z)
+  no compiler warnings in our sources
+  Xcode build-system warning (package targets; see report): warning: 'SylviaImportHandoff' is missing a dependency on 'SylviaIntakeCore' because dependency scan of Swift module 'SylviaImportHandoff' discovered a dependency on 'SylviaIntakeCore'
+  Xcode build-system warning (package targets; see report): warning: 'SylviaPack' is missing a dependency on 'ReadiumZIPFoundation' because dependency scan of Swift module 'SylviaPack' discovered a dependency on 'ReadiumZIPFoundation'
+  Xcode build-system warning (package targets; see report): warning: 'SylviaPack' is missing a dependency on 'SylviaIntakeCore' because dependency scan of Swift module 'SylviaPack' discovered a dependency on 'SylviaIntakeCore'
+  Files probe: se-walden.epub placed in On My iPhone as 'G03 Files Share.epub'
+  G03-EVIDENCE layout: documents=<app>/Documents database=<app>/Library/Application Support/Sylvia/Database/library.sqlite notes=<app>/Library/Application Support/Sylvia/Knowledge/Notes staging=<app>/Library/Application Support/Sylvia/Staging handoffInbox=<appgroup>/Intake/Handoffs
+  G03-EVIDENCE layout: Documents contains 0 item(s): []
+  G03-EVIDENCE layout: protection attributes (simulator): library.sqlite=none reported, library.sqlite-wal=none reported, library.sqlite-shm=none reported, Staging/=none reported, Staging/journal.json=absent, Knowledge/Notes/=none reported, Media/=none reported, <appgroup>/Intake/Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, handoff item=none reported
+  G03-EVIDENCE layout: excluded from backup: Staging=true handoffInbox=true; backup-eligible: Database, Knowledge, Media
+  G03-EVIDENCE types: UTType(filenameExtension: "md") in the harness app = net.daringfireball.markdown, dynamic=false
+  G03-EVIDENCE types: UTType(filenameExtension: "markdown") in the harness app = dyn.ah62d4rv4ge8042pwrrwg875s, dynamic=true
+  G03-EVIDENCE types: UTType(filenameExtension: "mdown") in the harness app = dyn.ah62d4rv4ge8043dts71a, dynamic=true
+  G03-EVIDENCE layout: clone protection (simulator): cloned=true sourceDir=none reported source=none reported targetDir=none reported clone=none reported
+  G03-EVIDENCE simulator validate: 4846059727 bytes, 7 entries, 2.1s, phys_footprint before 48.2 MiB, sampled peak 48.3 MiB (+0.0 MiB)
+  G03-EVIDENCE simulator extract: 2.4s, part-01.caf 4831838986 bytes, sampled peak phys_footprint 47.7 MiB (-0.5 MiB over the pre-validation baseline); lifetime phys_footprint=47.7 MiB peak_phys_footprint=48.9 MiB max_rss=276.7 MiB
+  G03-EVIDENCE simulator truncation: 80 of 80 partial copies rejected; codes ["truncated_or_not_a_pack": 80]
+  G03-EVIDENCE simulator handoff copy: 4831838986 bytes in 2.3s, phys_footprint before 47.6 MiB, sampled peak 47.6 MiB (+0.0 MiB)
+  ✔ Test run with 7 tests in 2 suites passed after 7.079 seconds.
+  G03-EVIDENCE files app Open With menu: Button, 0x10babea80, {{40.0, 475.4}, {250.0, 42.0}}, label: 'No Apps Available', Disabled | Button, 0x10babee40, {{40.0, 538.4}, {250.0, 42.0}}, label: 'Preview with Quick Look'
+  G03-EVIDENCE files app Open With offers Sylvia Intake Spike: false
+  Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppOpenWithOffersTheHarness]' passed (200.709 seconds).
+  G03-EVIDENCE files app share sheet (On My iPhone, G03 Files Share.epub): Cell, 0x1177f0640, {{27.3, 378.3}, {82.0, 138.3}}, identifier: 'shareCell', label: 'Sylvia Intake Spike' | Cell, 0x1177f0f00, {{115.7, 378.3}, {82.0, 122.3}}, identifier: 'shareCell', label: 'More' | Cell, 0x1177f1900, {{27.3, 518.3}, {82.0, 138.3}}, identifier: 'actionGroupCell', label: 'Copy'
+  G03-EVIDENCE files app share sheet offers Sylvia Intake Spike: true
+  G03-EVIDENCE files app share: extension reports '1 item(s), 997147 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE files app share: Received as: items/0.epub: file_representation, in place (org.idpf.epub-container)
+  G03-EVIDENCE files app share: Protection: Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, items/0.epub=none reported
+  G03-EVIDENCE files app share: harness scans launch requested 18:11:27.372Z, waited 0.0s, ran 0.0s -> launch: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 18:11:27.582Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0; summary jobs=1 staged=1 review=0 share=1
+  Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppShareSheetOffersTheExtension]' passed (147.484 seconds).
+  G03-EVIDENCE cancel mid-copy: extension shows 'Not received. Nothing was saved to Sylvia.' / 'The copy was cancelled.'
+  Test Case '-[IntakeHarnessUITests.ShareSheetUITests testCancelMidCopyShowsFallbackAndClaimsNothing]' passed (21.019 seconds).
+  G03-EVIDENCE share 67108864 bytes: extension Extension footprint: start 25282648 bytes, peak 32950360 bytes
+  G03-EVIDENCE share 67108864 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+  G03-EVIDENCE share 67108864 bytes: Footprint MiB by MiB copied: 1:26
+  G03-EVIDENCE share 67108864 bytes: extension reports '1 item(s), 67108864 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 67108864 bytes: Done tapped at 18:11:59.078Z
+  G03-EVIDENCE share 67108864 bytes: app scans: launch requested 18:11:53.631Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 18:11:53.810Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 18:11:59.798Z, waited 0.0s, ran 0.1s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+  G03-EVIDENCE share 1073741824 bytes: extension Extension footprint: start 25299008 bytes, peak 39766104 bytes
+  G03-EVIDENCE share 1073741824 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+  G03-EVIDENCE share 1073741824 bytes: Footprint MiB by MiB copied: 1:26
+  G03-EVIDENCE share 1073741824 bytes: extension reports '1 item(s), 1073741824 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 1073741824 bytes: Done tapped at 18:12:09.585Z
+  G03-EVIDENCE share 1073741824 bytes: app scans: launch requested 18:12:02.619Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 18:12:02.791Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 18:12:10.281Z, waited 0.0s, ran 0.4s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+  G03-EVIDENCE share 4294967297 bytes: extension Extension footprint: start 25102400 bytes, peak 48138472 bytes
+  G03-EVIDENCE share 4294967297 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+  G03-EVIDENCE share 4294967297 bytes: Footprint MiB by MiB copied: 1:26 1025:34 2049:45 3073:45
+  G03-EVIDENCE share 4294967297 bytes: extension reports '1 item(s), 4294967297 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 4294967297 bytes: Done tapped at 18:12:26.569Z
+  G03-EVIDENCE share 4294967297 bytes: app scans: launch requested 18:12:13.097Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 18:12:13.271Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 18:12:27.298Z, waited 0.0s, ran 1.6s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+  G03-EVIDENCE share 8589934593 bytes: extension Extension footprint: start 25348184 bytes, peak 47859968 bytes
+  G03-EVIDENCE share 8589934593 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+  G03-EVIDENCE share 8589934593 bytes: Footprint MiB by MiB copied: 1:26 1025:40 2049:45 3073:45 4097:45 5121:45 6145:45 7169:45
+  G03-EVIDENCE share 8589934593 bytes: extension reports '1 item(s), 8589934593 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 8589934593 bytes: Done tapped at 18:12:56.644Z
+  G03-EVIDENCE share 8589934593 bytes: app scans: launch requested 18:12:31.131Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 18:12:31.349Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 18:12:57.419Z, waited 0.0s, ran 4.6s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+  G03-EVIDENCE extension peak growth from 64 MiB to 8 GiB + 1 byte: 14909608 bytes; from 4 GiB + 1 to 8 GiB + 1: -278504 bytes
+  Test Case '-[IntakeHarnessUITests.ShareSheetUITests testExtensionMemoryDoesNotGrowWithFileSize]' passed (71.733 seconds).
+  G03-EVIDENCE kill mid-copy: SIGKILL sent to IntakeShare pid(s) [48914] in simulator 12E99A8C-B113-4375-96C2-76AD49A1CB4D (host-wide IntakeShare processes: 1) after '1.11 GB copied'
+  G03-EVIDENCE kill mid-copy: app scan after kill: manual: accepted=0 recovered=0 inProgress=1 removed=0 rejected=0; summary jobs=5 staged=5 review=0 share=5
+  Test Case '-[IntakeHarnessUITests.ShareSheetUITests testKillExtensionMidCopyClaimsNothing]' passed (20.227 seconds).
+  G03-EVIDENCE share 3 MiB: extension says Extension footprint: start 25299032 bytes, peak 29608024 bytes
+  G03-EVIDENCE share 3 MiB: extension reports '1 item(s), 3145728 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 3 MiB: Received as: items/0.epub: file_representation, in place (org.idpf.epub-container)
+  G03-EVIDENCE share 3 MiB: Protection: Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, items/0.epub=none reported
+  G03-EVIDENCE share 3 MiB: app summary after scan: jobs=6 staged=6 review=0 share=6
+  Test Case '-[IntakeHarnessUITests.ShareSheetUITests testShareIntoExtensionIsReceivedAndImported]' passed (9.996 seconds).
+  ** TEST EXECUTE SUCCEEDED **
+    harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Opened file staged: 4 file(s), state staged
+    ok: the system's copy was in Documents/Inbox (Documents/Inbox)
+    ok: Inbox copy removed after the import (0)
+    ok: bundle imported through the bundle importer (open_in jobs, states, items) (1 staged 4)
+    ok: files left in Documents (0)
+    harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Open-in not imported: bundle rejected: truncated_or_not_a_pack: no end record at the end of the file
+    ok: truncated bundle rejected (outcome=Open-in not imported: bundle rejected: truncated_or_not_a_pack)
+    ok: Inbox copy removed after the rejection (0)
+    ok: no job for the truncated bundle (1)
+    ok: files left in Documents (0)
+    harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Opened file staged: 1 file(s), state staged
+    ok: the system's copy was in Documents/Inbox (Documents/Inbox)
+    ok: EPUB imported through the single-file importer (2 staged,staged 4,1)
+    ok: files left in Documents (0)
+    harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Opened file staged: 1 file(s), state needs_review
+    ok: the same EPUB opened again is flagged for review, not staged twice (3 staged,staged,needs_review)
+    ok: files left in Documents (0)
+  failures=0
+
+=== 8. host: archive-library evidence (ADR-0010 section 3) (18:14:05Z)
+    exit status of the resolve: 1
+  ok: Readium 3.11.0 resolves the same ZIPFoundation fork revision that IntakeKit locks
+  ok: upstream ZIPFoundation 0.9.20 cannot join the graph (same package identity 'zipfoundation')
+  [upstream ZIPFoundation 0.9.20] write ok archive=upstream.zip big=4831850553 elapsed=0.8s phys_footprint=4.2MiB peak_phys_footprint=4.2MiB max_rss=8.7MiB
+  [ReadiumZIPFoundation 3.0.1] write ok archive=readium.zip big=4831850553 elapsed=0.8s phys_footprint=3.4MiB peak_phys_footprint=3.4MiB max_rss=8.0MiB
+  -- archive written by upstream
+  [upstream ZIPFoundation 0.9.20] read ok entries=2 elapsed=1.8s phys_footprint=3.5MiB peak_phys_footprint=3.5MiB max_rss=8.0MiB
+  [ReadiumZIPFoundation 3.0.1] read ok entries=2 elapsed=1.8s phys_footprint=4.9MiB peak_phys_footprint=4.9MiB max_rss=9.5MiB
+  -- archive written by readium
+  [upstream ZIPFoundation 0.9.20] read ok entries=2 elapsed=1.8s phys_footprint=5.5MiB peak_phys_footprint=5.5MiB max_rss=10.1MiB
+  [ReadiumZIPFoundation 3.0.1] read ok entries=2 elapsed=1.8s phys_footprint=5.9MiB peak_phys_footprint=5.9MiB max_rss=10.5MiB
+  -- readium.zip truncated to 4831851357 of 4831851358 bytes
+  [upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=75.3s
+    !! truncated copy was ACCEPTED by zipeval-upstream
+  [zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+  -- readium.zip truncated to 4831851336 of 4831851358 bytes
+  [upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=55.8s
+    !! truncated copy was ACCEPTED by zipeval-upstream
+  [zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+  -- readium.zip truncated to 4831851260 of 4831851358 bytes
+  [upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=59.5s
+    !! truncated copy was ACCEPTED by zipeval-upstream
+  [zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+  -- readium.zip truncated to 2415925679 of 4831851358 bytes
+  [upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=42.8s
+    !! truncated copy was ACCEPTED by zipeval-upstream
+  [zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+  -- readium.zip truncated to 4096 of 4831851358 bytes
+  [ReadiumZIPFoundation 3.0.1] write ok archive=small.zip big=67121209 elapsed=0.0s phys_footprint=5.5MiB peak_phys_footprint=5.5MiB max_rss=10.1MiB
+  -- small.zip truncated to 67121885 of 67121886 bytes
+  -- small.zip truncated to 67121864 of 67121886 bytes
+  -- small.zip truncated to 67121788 of 67121886 bytes
+  -- small.zip truncated to 33560943 of 67121886 bytes
+  -- small.zip truncated to 4096 of 67121886 bytes
+  eval finished, status=0
+
+G0.3 intake CI drop-in passed
+
+# finished: 2026-10-11T18:32:55Z
+clean-run finished

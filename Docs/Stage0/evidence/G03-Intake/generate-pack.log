@@ -1,0 +1,18 @@
+# G0.3: deterministic regeneration of the large pack
+environment: host, macOS 26.6.2 (25G83), Apple M5 Max, 2026-10-06
+command: Scripts/fixtures/generate-g03-intake-pack.sh --force   (after the clean CI run; the cached pack was deleted and rebuilt)
+result: the rebuilt pack's SHA-256 equals the digest pinned in the script, so the generator is deterministic.
+output (verbatim):
+
+Build complete! (0.35 sec)
+gen-pack ok: 4846059727 bytes, 7 entries, zip64_end_record=true, manifest_sha256=3d25fadbacd35567d2948f7a54bda7b8bdbc11f6c0e1c4daeabeea00c807d97c, elapsed=835.5s
+gen-pack (write + self-validation) memory: sampled_peak_phys_footprint=11.7 MiB lifetime_peak_phys_footprint=11.7 MiB max_rss=17.1 MiB
+afinfo part-01.caf:
+  File type ID:   caff
+  Data format:     1 ch,  44100 Hz, Int16
+  estimated duration: 54782.754172 sec
+  audio bytes: 4831838918
+pack: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g03-intake/large.sylviapack
+size: 4846059727 bytes
+sha256: 982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268
+matches the pinned digest

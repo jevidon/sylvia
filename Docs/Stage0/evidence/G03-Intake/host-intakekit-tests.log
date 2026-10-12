@@ -1,0 +1,186 @@
+Fetching https://github.com/readium/ZIPFoundation.git from cache
+Fetched https://github.com/readium/ZIPFoundation.git from cache (0.02s)
+Creating working copy for https://github.com/readium/ZIPFoundation.git
+Working copy of https://github.com/readium/ZIPFoundation.git resolved at 3.0.1
+Building for debugging...
+[Computing dependencies]
+[Pre-planning 1 / 415]
+[Planning deferred tasks]
+[86 / 191] ReadiumZIPFoundation
+[93 / 191]
+[95 / 193] ReadiumZIPFoundation
+[114 / 292]
+[119 / 292]
+[132 / 292]
+[135 / 292]
+[144 / 292]
+[148 / 292]
+[154 / 292]
+[161 / 292]
+[165 / 292]
+[167 / 292]
+[186 / 292] ReadiumZIPFoundation
+[187 / 292] SylviaIntakeCore
+[190 / 292] ReadiumZIPFoundation
+[208 / 294] ReadiumZIPFoundation
+[208 / 294] SylviaIntakeCore
+[212 / 302] SylviaImportHandoff
+[229 / 310] SylviaImportHandoff
+[246 / 311] SylviaPack
+[248 / 311] SylviaImportHandoff
+[259 / 318] SylviaPackTests-product
+[264 / 318] SylviaContainerLayout
+[276 / 328] SylviaPackTests-product
+[279 / 335] SylviaContainerLayout
+[300 / 338] SylviaImportHandoffTests-product
+[301 / 338] SylviaContainerLayoutTests-product
+[311 / 343] SylviaImportHandoffTests-product
+[316 / 343] SylviaContainerLayoutTests-product
+[321 / 343] sylviapack-tool-product
+[323 / 343] sylviapack-tool-product
+[325 / 343] SylviaImportHandoffTests-product
+[327 / 343] SylviaImportHandoffTests-product
+[333 / 343] SylviaPackTests-product
+[336 / 343] SylviaContainerLayoutTests-product
+[338 / 343] SylviaPackTests-product
+Build complete! (8.95 sec)
+Test Suite 'All tests' started at 2026-10-12 07:02:50.930.
+Test Suite 'All tests' passed at 2026-10-12 07:02:50.931.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'All tests' started at 2026-10-12 07:02:51.649.
+Test Suite 'All tests' passed at 2026-10-12 07:02:51.650.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'All tests' started at 2026-10-12 07:02:52.452.
+Test Suite 'All tests' passed at 2026-10-12 07:02:52.453.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test "the writer refuses an existing destination and leaves no partial file on bad input" passed after 0.741 seconds.
+✔ Test "a source that changes between hashing and packing is caught; no pack is published" passed after 0.741 seconds.
+✔ Test "executable and setuid bits are rejected" with 4 test cases passed after 0.741 seconds.
+✔ Test "a name that is not Unicode NFC is rejected" passed after 0.741 seconds.
+✔ Test "audio, EPUB, PDF and covers must be stored, not deflated" passed after 0.741 seconds.
+✔ Test "a path used both as a file and as a folder is rejected" passed after 0.741 seconds.
+✔ Test "a local header that disagrees with the central directory is rejected" passed after 0.741 seconds.
+✔ Test "an entry whose header size differs from the manifest is rejected" passed after 0.741 seconds.
+✔ Test "a stored entry whose compressed and uncompressed sizes differ is rejected" passed after 0.741 seconds.
+✔ Test "more than 10,000 entries: a forged count is rejected before the directory is read" passed after 0.741 seconds.
+✔ Test "a manifest file without an entry is rejected" passed after 0.741 seconds.
+✔ Test "entries out of manifest order are rejected" passed after 0.741 seconds.
+✔ Test "path traversal, absolute paths and other unsafe names" with 8 test cases passed after 0.741 seconds.
+✔ Test "an archive comment is rejected" passed after 0.741 seconds.
+✔ Test "a manifest path with traversal is rejected even when the entry name matches it" passed after 0.741 seconds.
+✔ Test "a directory entry (trailing slash) is rejected" passed after 0.741 seconds.
+✔ Test "per-kind size limits and audio member limits apply" passed after 0.741 seconds.
+✔ Test "bytes before the first entry or between entries are rejected" passed after 0.741 seconds.
+✔ Test "an entry not listed in the manifest is rejected" passed after 0.741 seconds.
+✔ Test "a manifest that lists more files than the entry limit allows is rejected" passed after 0.741 seconds.
+✔ Test "bytes after the end record mean the end record is not at the end" passed after 0.741 seconds.
+✔ Test "MS-DOS directory attribute is rejected" passed after 0.743 seconds.
+✔ Test "a deflated entry that produces more bytes than declared stops at the declared size" passed after 0.745 seconds.
+✔ Test "changed content with the original CRC fails the CRC check" passed after 0.756 seconds.
+✔ Test "changed content with a recomputed CRC fails the SHA-256 check" passed after 0.757 seconds.
+✔ Test "the raw baseline pack is accepted (control for every negative test)" passed after 0.761 seconds.
+✔ Test "the raw baseline with ZIP64 end records is accepted" passed after 0.762 seconds.
+✔ Test "a symbolic link to a valid pack is refused; the pack itself is accepted" passed after 0.762 seconds.
+✔ Test "a partial copy padded with zeros to the full length is rejected" with 4 test cases passed after 0.777 seconds.
+✔ Test "a complete-length copy with a zeroed range in the middle is rejected" passed after 0.792 seconds.
+✔ Test "duplicate names: exact, differing only in case, differing only in normalization" passed after 0.813 seconds.
+✔ Test "symbolic links, directories, FIFOs and devices are rejected" with 6 test cases passed after 0.871 seconds.
+✔ Test "writer output validates, extracts to identical bytes and is deterministic" passed after 0.901 seconds.
+✔ Suite "sylviapack reader: accepted packs" passed after 0.901 seconds.
+✔ Test "text too repetitive to deflate within the limits is written stored, and the pack validates" passed after 0.905 seconds.
+✔ Test "extraction checks free space first, names the shortfall and writes nothing" passed after 0.906 seconds.
+✔ Test "manifest paths: 15 components and 512 bytes are the limits, so every accepted path makes a readable pack" passed after 0.907 seconds.
+✔ Test "a failed extraction leaves nothing behind; an existing destination is refused" passed after 0.908 seconds.
+short deflate stream: rejection code actual_size_mismatch
+✔ Test "a deflated entry that produces fewer bytes than declared is rejected" passed after 0.939 seconds.
+✔ Test "encryption, data descriptors, unknown methods and newer versions are rejected" passed after 0.958 seconds.
+✔ Test "manifest problems: digest, missing, too large, not JSON, wrong version" passed after 1.104 seconds.
+✔ Test "the aggregate limit is the ratio times the deflated bytes plus a fixed allowance" passed after 1.136 seconds.
+aggregate expansion: 2000 deflated entries of 1 MiB, archive 2721302 bytes, declares 2097152000 bytes (770:1): rejection code expansion_limit in 0.113026458 seconds
+✔ Test "many deflated entries at or below the per-entry floor cannot add up to a bomb" passed after 1.299 seconds.
+✔ Suite "sylviapack reader: aggregate expansion, free space and path boundaries" passed after 1.299 seconds.
+✔ Test "more than 10,000 entries: a real 10,001-entry archive is rejected" passed after 1.311 seconds.
+✔ Test "excessive expansion: a 64 MiB run of zeros deflated about 1000:1 is rejected before inflating" passed after 1.889 seconds.
+truncation sweep: 122446 lengths rejected; codes ["truncated_or_not_a_pack=122446"]
+✔ Test "truncation at every byte offset of a small pack is rejected" passed after 18.871 seconds.
+✔ Suite "sylviapack reader: rejections (T13 archive half, T42)" passed after 18.872 seconds.
+✔ Test run with 45 tests in 3 suites passed after 18.872 seconds.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test "stored names never come from the shared file name" passed after 1.375 seconds.
+✔ Test "an item over the size limit is refused before copying" passed after 1.375 seconds.
+✔ Test "not enough space: refused before anything is written, naming the shortfall" passed after 1.375 seconds.
+✔ Test "cancellation mid-copy is not received and leaves nothing" passed after 1.411 seconds.
+✔ Test "a source that changes during the copy is not received" passed after 1.411 seconds.
+✔ Test "happy path: receipt only after the manifest; every step of the sequence is exercised" passed after 1.411 seconds.
+✔ Test "a directory or FIFO offered as a file is not received; a folder is named as such" passed after 1.411 seconds.
+✔ Test "process death after each accept step, then a fresh scan: exactly one staged job, bytes intact" with 4 test cases passed after 1.411 seconds.
+✔ Test "cleanup policy: an incomplete directory is kept while fresh and removed once stale; strays likewise" passed after 1.411 seconds.
+✔ Test "forged or damaged manifests are rejected" with 6 test cases passed after 1.412 seconds.
+in-memory plain-text provider: materialized as a file and received
+direct file URL provider registered ["public.file-url", "public.url"]; representation used: file_url
+✔ Test "a live extension whose directory was claimed as abandoned cannot commit and claims nothing" passed after 1.484 seconds.
+✔ Test "rejected handoffs are kept for the retention period, then removed with a cleanup record" passed after 1.484 seconds.
+✔ Test "supported and refused file types" passed after 1.484 seconds.
+✔ Test "every failure maps to an actionable fallback that never claims receipt" passed after 1.484 seconds.
+✔ Test "a web link is not a durable file: fallback names that" passed after 1.484 seconds.
+✔ Test "recovery after a crash: items that no longer match end the job as failed_final instead of retrying forever" with 2 test cases passed after 1.488 seconds.
+✔ Test "a directory with a modification time in the future is never treated as stale" passed after 1.488 seconds.
+✔ Test "provider file deleted before the copy: fallback, nothing received" passed after 1.489 seconds.
+✔ Test "an unsupported type is not received" passed after 1.489 seconds.
+✔ Test "a complete handoff is verified, moved into private staging and journaled once; rescans are no-ops" passed after 1.512 seconds.
+✔ Test "in-memory text only (no file): records what NSItemProvider does; the invariant holds either way" passed after 1.521 seconds.
+✔ Test "provider error: fallback, nothing received" passed after 1.525 seconds.
+✔ Test "simulated process death at every step: no receipt; no manifest unless the rename already happened" with 22 test cases passed after 1.530 seconds.
+✔ Test "the extension commits between the staleness check and the claim: the handoff is kept and imported" passed after 1.544 seconds.
+✔ Test "a direct file URL item is copied with coordination" passed after 1.549 seconds.
+✔ Test "injected I/O error at every step: failure, nothing left, nothing to import" with 22 test cases passed after 1.626 seconds.
+✔ Suite "share-extension write sequence (T07)" passed after 1.627 seconds.
+✔ Test "bytes changed after the manifest was written: rejected, quarantined, never journaled" passed after 1.646 seconds.
+✔ Test "a crash between a claim and its deletion: a claimed handoff with a manifest is restored, others removed" passed after 1.699 seconds.
+✔ Test "items removed between verification and the move: job failed_final, quarantined, nothing staged" with 2 test cases passed after 1.741 seconds.
+✔ Test "provider returns no file and no error: fallback" passed after 1.773 seconds.
+✔ Test "NSItemProvider(contentsOf:) for each supported kind" with 7 test cases passed after 1.852 seconds.
+✔ Test "the same bytes shared twice: the second job needs review as a duplicate of the first" passed after 1.853 seconds.
+✔ Suite "main-app inbox scan, commit journal and cleanup policy" passed after 1.854 seconds.
+✔ Test "a file representation (as Files offers) is streamed into the handoff" passed after 1.880 seconds.
+EPUB folder as a file representation: not received: the sharing app offered a folder, not a single file
+✔ Test "an EPUB package folder offered by a provider: the fallback names a folder, nothing received" passed after 1.899 seconds.
+✔ Test "provider that never delivers: stall timeout, fallback" passed after 2.005 seconds.
+✔ Test "a provider that makes progress and then stops is cut off after the stall timeout" passed after 3.268 seconds.
+slow but moving provider: received after 3.7672365 seconds
+✔ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" passed after 4.743 seconds.
+✔ Suite "NSItemProvider intake and fallback" passed after 4.743 seconds.
+✔ Test run with 37 tests in 3 suites passed after 4.743 seconds.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+contract fixtures: import-handoff-manifest.v1 valid=3 invalid=17 agree with HandoffManifest
+contract fixtures: sylviapack-manifest.v1 valid=4 invalid=22 agree with PackManifest
+✔ Test "import-handoff-manifest v1 fixtures" passed after 0.140 seconds.
+✔ Test "sylviapack-manifest v1 fixtures" passed after 0.140 seconds.
+✔ Test "unsupported single files and names outside the drop area are refused" passed after 0.140 seconds.
+✔ Test "staging and the handoff inbox are excluded from backup; knowledge and database are not" passed after 0.140 seconds.
+✔ Suite "contract fixtures agree with the Swift implementation" passed after 0.141 seconds.
+insufficient space: not enough space: free up 69.2 MB more (69205026 bytes)
+✔ Test "an open-in copy left in Documents/Inbox by a crash is listed and can be imported or removed" passed after 0.345 seconds.
+✔ Test "not enough space to extract: the shortfall is named, nothing is written, the bundle stays" passed after 0.409 seconds.
+✔ Test "a single-file import is an APFS clone: identical bytes, private mode, the source untouched" passed after 0.410 seconds.
+✔ Test "a partial bundle in Documents is rejected and leaves no job and no extracted files" with 4 test cases passed after 0.452 seconds.
+✔ Test "process death mid-copy (no commit intent yet): relaunch removes the partial copy and records no job" passed after 0.452 seconds.
+✔ Test "an intent whose bytes vanished is reported as failed_final, never as staged" passed after 0.466 seconds.
+✔ Test "deleting everything in Documents (as Finder can) leaves the catalog untouched" passed after 0.467 seconds.
+✔ Test "the layout puts every private class outside Documents and the Info.plist keys are checked" passed after 0.508 seconds.
+✔ Suite "container layout (T42: private data never Finder-visible)" passed after 0.508 seconds.
+✔ Test "open-in, document picker and share extension: the same bytes are flagged as duplicates the same way" passed after 0.623 seconds.
+✔ Test "open-in of a .sylviapack goes through the bundle importer; the Inbox copy is removed after success and failure" passed after 0.623 seconds.
+✔ Test "process death after each commit step of a bundle import, then relaunch: exactly one staged job, bytes intact" with 3 test cases passed after 0.624 seconds.
+uncoordinated writer: rejected at half: bundle rejected: truncated_or_not_a_pack: no end record at the end of the file; accepted after completion
+✔ Test "a bundle replaced in the drop area while it was being imported is not removed" passed after 0.631 seconds.
+✔ Test "an uncoordinated writer still copying (as Finder may be): import is rejected until the copy completes" passed after 0.646 seconds.
+✔ Test "a valid bundle copied into Documents imports into private staging, then leaves the drop area" passed after 0.669 seconds.
+coordinated writer: import waited 1.029857041 seconds for the coordinated write
+✔ Test "a coordinated writer: the coordinated snapshot waits for the write to finish" passed after 1.284 seconds.
+✔ Suite "drop-area import (Finder cable copy) and single-file routes (T08, T42)" passed after 1.285 seconds.
+✔ Test run with 19 tests in 3 suites passed after 1.285 seconds.

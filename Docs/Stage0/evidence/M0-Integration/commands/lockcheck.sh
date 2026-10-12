@@ -46,7 +46,7 @@ for dir in Apps/DesignCatalog Spikes/G01-EPUB Spikes/G01-PDF Spikes/G02-Transfer
     if [[ -f "$installed" ]]; then
       echo "no committed lock; Xcode wrote one with $(pins "$installed" | wc -l | tr -d ' ') pins:"; pins "$installed"
     else
-      echo "no committed lock and none written (no remote packages)"
+      n=$(grep -c " @ [0-9]" "$ROOT/.build/scratch/resolve-$(echo "$dir" | tr / _).log"); echo "no committed lock, and Xcode wrote none; remote packages resolved: $n (versions below)"
     fi
   fi
   grep -E 'Resolved source packages|^  [A-Za-z].*@' "$ROOT/.build/scratch/resolve-$(echo "$dir" | tr / _).log" | head -30
@@ -71,7 +71,7 @@ for dir in Packages/Design Spikes/G01-EPUB/Core Spikes/G02-Transfer/SourceServic
       echo "FAIL: lock changed"; git diff --stat -- "$dir/Package.resolved"; fails=$((fails+1))
     fi
   else
-    if [[ -f "$dir/Package.resolved" ]]; then echo "FAIL: no committed lock but resolution wrote one"; fails=$((fails+1)); else echo "no committed lock and none written (no remote packages)"; fi
+    if [[ -f "$dir/Package.resolved" ]]; then echo "FAIL: no committed lock but resolution wrote one"; fails=$((fails+1)); else echo "no committed lock and none written (no remote package dependencies)"; fi
   fi
 done
 echo

@@ -1,3 +1,5 @@
+command: python3 -I Docs/Stage0/evidence/M0-Integration/commands/license_inventory.py <root> .build/scratch/checkouts.txt
+commit: 100300d16b8f6afd434e55dd2b2cb64c746827e8
 packages pinned: 23; checkouts found: 43
 
 https://github.com/krzyzanowskim/CryptoSwift.git 1.10.0 pinned f2a627b84c1ff96f21ac2fcb623ab36142dd5512
@@ -30,7 +32,7 @@ https://github.com/readium/GCDWebServer.git 4.0.1 pinned 584db89a4c3c3be27206cce
 
 https://github.com/groue/GRDB.swift.git 7.11.1 pinned b83108d10f42680d78f23fe4d4d80fc88dab3212
   locks: Spikes/G05-AI, Spikes/G05-AI/ATSProbe, Spikes/G05-Recovery
-  checkout: Spikes/G05-Recovery/.build/checkouts/GRDB.swift (HEAD = pinned revision)
+  checkout: Spikes/G05-AI/.build/checkouts/GRDB.swift (HEAD = pinned revision)
   license file: LICENSE; notice: none
   | Copyright (C) 2015-2025 Gwendal Roué
   | Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in th
@@ -44,7 +46,7 @@ https://github.com/stephencelis/SQLite.swift.git 0.16.0 pinned 964c300fb0736699c
 
 https://github.com/apple/swift-asn1.git 1.7.3 pinned 3b6410f7dee09eb33cdd26260c5fd47fda19b0e2
   locks: Spikes/G02-Transfer/SourceService, Spikes/G02-Transfer/TransferKit
-  checkout: Spikes/G02-Transfer/SourceService/.build/checkouts/swift-asn1 (HEAD = pinned revision)
+  checkout: Spikes/G02-Transfer/iOS/.build/SourcePackages/checkouts/swift-asn1 (HEAD = pinned revision)
   license file: LICENSE.txt; notice: NOTICE.txt
   | Apache License
   | Version 2.0, January 2004
@@ -153,7 +155,7 @@ https://github.com/marmelroy/Zip.git 2.1.2 pinned 67fa55813b9e7b3b9acee9c0ae501d
 
 https://github.com/readium/ZIPFoundation.git 3.0.1 pinned adb49c8bfe060cc187370b12fa081012a6440b86
   locks: Spikes/G01-EPUB, Spikes/G03-Intake/App, Spikes/G03-Intake/IntakeKit, Spikes/G03-Intake/ZipEval/Readium
-  checkout: Spikes/G01-EPUB/.build/SourcePackages/checkouts/ZIPFoundation (HEAD = pinned revision)
+  checkout: Spikes/G03-Intake/IntakeKit/.build/checkouts/ZIPFoundation (HEAD = pinned revision)
   license file: LICENSE; notice: none
   | MIT License
   | Copyright (c) 2017-2024 Thomas Zoechling (https://www.peakstep.com)

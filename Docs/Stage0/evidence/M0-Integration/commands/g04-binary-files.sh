@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # G0.4 merge (M0 integration): the binary files the G0.4 squash commit adds (read with git, no checkout), their sizes,
 # the git attributes that apply to them, and whether each is a real PNG rather than a Git LFS pointer.
-#   Docs/Stage0/evidence/M0-Integration/commands/g04-binary-files.sh <squash commit> > Docs/Stage0/evidence/M0-Integration/g04-binary-files.txt
+#   Docs/Stage0/evidence/M0-Integration/commands/g04-binary-files.sh <squash commit> [<base>] > Docs/Stage0/evidence/M0-Integration/g04-binary-files.txt
 set -euo pipefail
 cd "$(dirname "$0")/../../../../.."
 squash="${1:?usage: g04-binary-files.sh <G0.4 squash commit>}"
-echo "# Command: Docs/Stage0/evidence/M0-Integration/commands/g04-binary-files.sh $squash; $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+echo "# Command: Docs/Stage0/evidence/M0-Integration/commands/g04-binary-files.sh $*; $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 echo "# Binary files (git diff --numstat shows - -) added by $(git log -1 --format='%h %s' "$squash" | cut -c1-80)..."
 echo "# .gitattributes in the tree: $(git ls-tree --name-only "$squash" -- .gitattributes | grep -c . || true); filter.lfs configured: $(git config --get-regexp '^filter\.lfs\.' | grep -c . || true)"
 printf 'bytes\tfirst bytes\tattributes\tpath\n'

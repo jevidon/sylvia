@@ -1,6 +1,6 @@
 # ADR-0014: Dependency lock and license inventory
 
-- **Status:** Proposed (M0 integration, 13 October 2026). G0.4 audio is not merged yet; its dependencies, if any, are added when it is.
+- **Status:** Proposed (M0 integration, 13 October 2026). G0.4 audio, merged on 14 October 2026, adds no package (Open items).
 - **Date:** 2026-10-13
 - **Deciders:** pending (technical lead for the lock; release owner for the licenses). Prepared by the M0 integration agent: agent-reviewed, human sign-off pending.
 - **Plan references:** Sections 6.3, 21.1 (G0.5: "confirm exact dependency/toolchain versions and license/security posture"), 21.2 (M0 dependency lock), 22.2 (CI verifies package licenses); ADR-0002 (pinning rules)
@@ -63,7 +63,7 @@ All on the **host** (macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.0 (27A266a), X
 
 ## Open items
 
-- G0.4 audio: add its packages (if any) when `m0-g04-audio` is merged. Owner: the agent that merges it.
+- G0.4 audio: done at its merge (14 October 2026). `Spikes/G04-Audio` declares no package (its `project.yml` has no `packages` key, and there is no `Package.swift` or `Package.resolved` under it), imports only Apple frameworks (and the Python standard library in its trial script), and contains no third-party code, so the lock and the table above are unchanged. Its fixture generators and CI drop-in use Homebrew ffmpeg 8.1.2 on the host, a tool that is not linked into any target (ADR-0002, Tooling).
 - `Spikes/G02-Transfer/MacIdentityProbe`: pin swift-atomics, swift-collections and swift-system for the project (for example by committing a lock next to `project.yml`), or record why not. Owner: G0.2 transfer.
 - A CI license step (above). Owner: M1 foundation.
 - Release owner: approve the licenses and produce the acknowledgements text before any distribution.

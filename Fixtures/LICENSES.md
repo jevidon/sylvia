@@ -72,6 +72,10 @@ Generator: `Spikes/G01-PDF/Tools/make_pdf_fixtures.py` (`--check` regenerates an
 
 `Contracts/fixtures/import-handoff-manifest.v1/` (3 valid, 17 invalid) and `Contracts/fixtures/sylviapack-manifest.v1/` (4 valid, 22 invalid) hold hand-written example JSON with placeholder IDs and digests. `sylviapack-manifest.v1/valid/generated-large-pack.json` reproduces the manifest that `Scripts/fixtures/generate-g03-intake-pack.sh` writes.
 
+### G0.4 Audio
+
+None committed (checked at its merge on 14 October 2026: the branch adds no audio, data or test-resource file). Its generated fixtures stay in the cache; see "Generated into the cache" below.
+
 ### G0.5 Recovery
 
 | File | Source | SHA-256 |
@@ -99,7 +103,7 @@ The context-pack fixtures and the evaluation seed quote short passages from the 
 | `Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests/*.png` (527 files, 37,703,582 bytes, largest 368,357 bytes) | Snapshot references recorded by `ComponentSnapshotTests` in record mode on the simulator `Sylvia-M0-g06-design` (iPhone 17, iOS 26.5). Content: Sylvia components rendering public-domain sample text (*Middlemarch*, *Walden*, *Meditations*) in Literata (SIL OFL 1.1, below) and the system fonts. |
 | `Packages/Design/LintFixtures/**` (9 files) | Hand-written samples for the design lint. |
 
-Generated, committed, not fixtures: `Packages/Design/Sources/SylviaDesign/Resources/Colors.xcassets`, `Symbols.xcassets` and `Vocabulary.xcstrings` (written by `sylvia-design-export write`). The images under `Docs/Stage0/evidence/` are evidence written by the gates' own runs, not fixtures; for G0.6 they are 196 screenshots under `G06-Design/screens/` from `Scripts/ci.d/21-design-catalog.sh` on the iPhone 17, iPhone SE (3rd generation) and iPad (A16) simulators (iOS 26.5), plus two symbol sheets, showing the same public-domain sample text.
+Generated, committed, not fixtures: `Packages/Design/Sources/SylviaDesign/Resources/Colors.xcassets`, `Symbols.xcassets` and `Vocabulary.xcstrings` (written by `sylvia-design-export write`). The images under `Docs/Stage0/evidence/` are evidence written by the gates' own runs, not fixtures; for G0.6 they are 196 screenshots under `G06-Design/screens/` from `Scripts/ci.d/21-design-catalog.sh` on the iPhone 17, iPhone SE (3rd generation) and iPad (A16) simulators (iOS 26.5), plus two symbol sheets, showing the same public-domain sample text; for G0.4 they are 12 screenshots (`G04-Audio/results/quick-capture-simulator-*.png`) taken by its quick-capture UI tests on the iPhone 17 simulator (iOS 26.5), showing the Shortcuts app, Control Center and the G0.4 harness.
 
 ## Generated into the cache (not committed)
 
@@ -109,8 +113,11 @@ Generated, committed, not fixtures: `Packages/Design/Sources/SylviaDesign/Resour
 | `generated/g02-transfer/large-5GiB.bin` | `Scripts/fixtures/generate-g02-transfer-large.sh` | 5,368,709,120 bytes; `d2383fe38d8033b62ef9e6222756369fab813d2c64b2bce41e86ad9494af16d9` (pinned) | AES-128-CTR keystream (key `000102...0f`, zero IV) |
 | `generated/g02-transfer/sim-*.bin` | `Scripts/fixtures/generate-g02-transfer-sim-files.sh` | Sizes and SHA-256 values pinned in the script | AES-128-CTR keystream, for the G0.2 simulator runs |
 | `generated/g03-intake/large.sylviapack` and `generated/g03-intake/work/part-01.caf` | `Scripts/fixtures/generate-g03-intake-pack.sh` | Pack 4,846,059,727 bytes; `982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268` (pinned) | Seeded synthetic CAF audio, fixed text, and the LibriVox *Meditations* section 01 MP3 listed above (public domain) |
+| `generated/g04-audio/` (28 files): two PCM masters (`master-600s.wav`, `master-long.wav`), a 1 kHz tone (`tone-1khz-60s.wav` and `.m4a`), 17 format fixtures (`fmt-*`: 16 ten-minute files made from `master-600s.wav` and the 22-minute LibriVox section 01 MP3), the four-member MP3 book `multi/` and three 10-hour files (`long-*`) | `Scripts/fixtures/generate-g04-audio-fixtures.sh` | 1,189,609,084 bytes in all; SHA-256 and size per file in `manifest.tsv` beside the files and in `Docs/Stage0/evidence/G04-Audio/fixture-generation.log` | Derived from the public-domain LibriVox *Meditations* sections 01 and 02 MP3 listed above (decoded, resampled, cut, concatenated, looped and re-encoded; `fmt-librivox-mp3-22k.mp3` is the section 01 MP3 copied unchanged), plus a generated 1 kHz sine |
+| `generated/g04-audio/long-formats/` (13 files): 10.2-hour files of every other provisional format and 3.0-hour native FLAC and Ogg Opus | `Scripts/fixtures/generate-g04-audio-long-formats.sh` | 7,804,065,816 bytes in all; per file in its own `manifest.tsv` and in `Docs/Stage0/evidence/G04-Audio/fixture-generation-long-formats.log` | `master-long.wav` above, looped and re-encoded (public domain, derived) |
+| `generated/g04-audio/probes/` (6 files): 60 s native FLAC and Ogg Opus with three Vorbis-comment chapter numberings | `Scripts/fixtures/generate-g04-audio-probes.sh` | 5,279,460 bytes in all; per file in its own `manifest.tsv` and in `Docs/Stage0/evidence/G04-Audio/fixture-generation-probes.log` | The first 60 s of `master-600s.wav` above (public domain, derived) |
 
-G0.4 audio fixtures are added to this file when the `m0-g04-audio` branch is merged.
+The G0.4 generators use Homebrew ffmpeg/ffprobe 8.1.2 (built with libmp3lame, libopus and AudioToolbox; the HE-AAC files come from AudioToolbox through ffmpeg's `aac_at`) and macOS `afconvert` (Opus in CAF), on macOS 26.6.2 (25G83). Each script writes a `.stamp` naming its own SHA-256, the ffmpeg version and the macOS version (and the master's SHA-256 for the long-format and probe scripts), and rebuilds everything when one of them changes; the AudioToolbox outputs are reproducible only on the same macOS version. The G0.4 tests also read the LibriVox M4B listed under "Fetched into the cache" as downloaded. A device build of the G0.4 test bundle copies these files and the M4B into the build products (about 8.6 GB; the CI drop-in builds it only with `G04_DEVICE_FIXTURES=1`), never into the repository. The G0.4 harness app bundles the two committed excerpts under `audio/` and plays them when no book has been copied into its Documents folder. Checked at the G0.4 merge (14 October 2026): all 47 generated files in the cache match their manifests' SHA-256 and size, and each manifest equals the one in the committed generation log (`Docs/Stage0/evidence/M0-Integration/g04-fixture-cache-check.log`).
 
 ## Bundled with the app (not fixtures)
 

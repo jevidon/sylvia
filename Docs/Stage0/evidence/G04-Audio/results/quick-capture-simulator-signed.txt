@@ -1,0 +1,77 @@
+# Quick capture through the system on the simulator (unlocked): Sylvia-M0-g04-audio (0230F6A4-8CBB-41E2-A9AD-C4E8284A1EEB) (Booted) 
+# Started 2026-10-13T05:54:12Z. Harness signing: signed. The harness's capture log line names the process that performed CaptureMomentIntent.
+## Harness code signature (as installed)
+  Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+  Authority=Apple Worldwide Developer Relations Certification Authority
+  Authority=Apple Root CA
+  TeamIdentifier=A4KBDX665Z
+## Shortcuts-related apps installed on the simulator
+  CFBundleIdentifier = "com.apple.ShortcutsActions"
+  CFBundleIdentifier = "com.apple.SystemIntents"
+  CFBundleIdentifier = "com.apple.shortcuts"
+## 1. URL scheme: openurl shortcuts://run-shortcut?name=Capture%20moment (exit 0)
+capture lines after the URL: 0
+log:
+  2026-10-13 18:54:19.733 Df CoreSimulatorBridge[53446:1e2995a] Opening URL (shortcuts://run-shortcut?name=Capture%20moment) with com.apple.shortcuts
+## 2. UI test: open the Shortcuts app and tap the App Shortcut tile 'Capture moment' while the harness plays
+xcodebuild exit 0
+  g04-quick-capture-ui harness_captures_before=1
+  g04-quick-capture-ui shortcuts_texts_after_tap=["All Shortcuts", "Files", "G04 Audio", "Scan Document", "Capture moment"]
+  g04-quick-capture-ui harness_captures_after=2 origins=["intent@com.jevidon.sylvia.spike.g04audio", "intent@com.jevidon.sylvia.spike.g04audio"]
+  Test Case '-[G04QuickCaptureUITests.QuickCaptureThroughShortcutsUITests testAppShortcutTileInShortcutsRunsTheCaptureIntent]' passed (26.144 seconds).
+linkd, Shortcuts and harness log about the App Shortcut:
+  2026-10-13 18:54:32.666 linkd: [FBSSystemService][0x52e1] Sending request to open "com.jevidon.sylvia.spike.g04audio" with action(s): <UILinkConnectionAction: 0xd34e000e>
+  2026-10-13 18:54:33.373 G04AudioHarness: [(FBSceneManager):sceneID:com.jevidon.sylvia.spike.g04audio-default] Received action(s) in scene-update: <UILinkConnectionAction: 0xd34e000e>
+  2026-10-13 18:54:36.447 Shortcuts: Reloading App Shortcuts with reason: Initial reload
+  2026-10-13 18:54:36.447 Shortcuts: appintents:fetch all app shortcuts
+  2026-10-13 18:54:37.426 Shortcuts: appintents:fetch all app shortcuts
+  2026-10-13 18:54:38.162 Shortcuts: appintents:fetch all app shortcuts
+  2026-10-13 18:54:47.309 G04AudioHarness: [(FBSceneManager):sceneID:com.jevidon.sylvia.spike.g04audio-default] Received action(s) in scene-update: <UILinkConnectionAction: 0x46fd0000>
+harness log lines during the UI test:
+  2026-10-13T05:54:33.212Z launch process=com.jevidon.sylvia.spike.g04audio state=1 protectedDataAvailable=true
+  2026-10-13T05:54:33.212Z output volume=0.01 preview_volume=0.01 reason=toggle_or_launch_argument
+  2026-10-13T05:54:33.546Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=107500 furthest_ms=107500
+  2026-10-13T05:54:33.546Z member index=0 duration_ms=137535 timing=estimatedCBR
+  2026-10-13T05:54:33.546Z member index=1 duration_ms=162299 timing=estimatedCBR
+  2026-10-13T05:54:33.546Z member index=2 duration_ms=150047 timing=estimatedCBR
+  2026-10-13T05:54:33.546Z member index=3 duration_ms=120137 timing=estimatedCBR
+  2026-10-13T05:54:33.572Z autoplay status=playing position_ms=107500
+  2026-10-13T05:54:47.373Z capture origin=intent@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 protectedDataAvailable=true was_playing=true result=saved id=D7184642-7485-47FA-9520-B5CD47E4E1AA ranges=91218-121218 record_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+  2026-10-13T05:54:47.483Z export id=D7184642-7485-47FA-9520-B5CD47E4E1AA status=Audio excerpt saved excerpt_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+capture lines: 1
+  origin=intent@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 was_playing=true result=saved record_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+  export id=D7184642-7485-47FA-9520-B5CD47E4E1AA status=Audio excerpt saved excerpt_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+requirement: met (process=com.jevidon.sylvia.spike.g04audio, origin intent@com.jevidon.sylvia.spike.g04audio, result=saved, Audio excerpt saved)
+## 3. UI test: add the control 'Capture the last 30 seconds' to Control Center and press it while the harness plays
+xcodebuild exit 0
+  g04-quick-capture-control-ui harness_captures_before=2
+  g04-quick-capture-control-ui removed_earlier_copies=1
+  g04-quick-capture-control-ui pressed=com.jevidon.sylvia.spike.g04audio.capture at=2026-10-13T05:55:32Z
+  g04-quick-capture-control-ui harness_captures_after=2 origins=["intent.control@com.jevidon.sylvia.spike.g04audio", "intent@com.jevidon.sylvia.spike.g04audio"]
+  Test Case '-[G04QuickCaptureUITests.QuickCaptureThroughControlCenterUITests testControlInControlCenterRunsTheCaptureIntent]' passed (39.043 seconds).
+chronod (performs the control's action) and the App Intents runtime in the harness:
+  2026-10-13 18:55:03.813 G04AudioHarness: Prepared surface to CaptureSurface(nil))
+  2026-10-13 18:55:03.813 G04AudioHarness: Beginning updateAppShortcutsParameters
+  2026-10-13 18:55:31.421 chronod: [<extensionIdentity: com.jevidon.sylvia.spike.g04audio::com.jevidon.sylvia.spike.g04audio.capturecontrol; kind: com.jevidon.sylvia.spike.g04audio.capture>]: Performing control action with the intent
+  2026-10-13 18:55:31.422 chronod: Starting to run action: <LNAction: 0x10a083de0, identifier: CaptureMomentIntent, mangledTypeName: 15G04AudioHarness19CaptureMomentIntentV, openAppWhenRun: NO, outputFlags: 4, outputType: (null), systemProtocols: <LNSystemProtocol: 0x10b2bb480, typeName: AudioStartingAction>, parameters: ( "<LNParameter: 0x10b2b8620, identifier: surface, value: (Enumeration) <redacted>>" ), url: (null), explicitAuthenticationPolicy: 0
+  2026-10-13 18:55:31.425 chronod: [FBSSystemService][0xa72c] Sending request to open "com.jevidon.sylvia.spike.g04audio" with action(s): <UILinkConnectionAction: 0xd14b0015>
+  2026-10-13 18:55:31.445 G04AudioHarness: Prepared surface to CaptureSurface(control)
+  2026-10-13 18:55:31.456 G04AudioHarness: [PerformAction <<N:4F82D199EEEC>>] Invoking CaptureMomentIntent.perform()
+harness log lines during the UI test:
+  2026-10-13T05:55:03.666Z launch process=com.jevidon.sylvia.spike.g04audio state=1 protectedDataAvailable=true
+  2026-10-13T05:55:03.667Z output volume=0.01 preview_volume=0.01 reason=toggle_or_launch_argument
+  2026-10-13T05:55:03.967Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=129183 furthest_ms=129183
+  2026-10-13T05:55:03.967Z member index=0 duration_ms=137535 timing=estimatedCBR
+  2026-10-13T05:55:03.967Z member index=1 duration_ms=162299 timing=estimatedCBR
+  2026-10-13T05:55:03.967Z member index=2 duration_ms=150047 timing=estimatedCBR
+  2026-10-13T05:55:03.967Z member index=3 duration_ms=120137 timing=estimatedCBR
+  2026-10-13T05:55:03.990Z autoplay status=playing position_ms=129183
+  2026-10-13T05:55:31.497Z capture origin=intent.control@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 protectedDataAvailable=true was_playing=true result=saved id=AA35B093-C7B1-4031-B1FC-844741C1E632 ranges=126612-137535,0-19077 record_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+  2026-10-13T05:55:31.595Z export id=AA35B093-C7B1-4031-B1FC-844741C1E632 status=Audio excerpt saved excerpt_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+capture lines: 1
+  origin=intent.control@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 was_playing=true result=saved record_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+  export id=AA35B093-C7B1-4031-B1FC-844741C1E632 status=Audio excerpt saved excerpt_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+requirement: met (process=com.jevidon.sylvia.spike.g04audio, origin intent\.control@com.jevidon.sylvia.spike.g04audio, result=saved, Audio excerpt saved)
+screenshots: quick-capture-simulator-signed-harness-after-tap.png quick-capture-simulator-signed-shortcuts-after-tap.png quick-capture-simulator-signed-shortcuts-library.png quick-capture-simulator-signed-harness-after-control.png quick-capture-simulator-signed-control-center-after-press.png quick-capture-simulator-signed-control-gallery.png
+harness output: 3 launches, 3 output lines, expected volume=0.01 preview_volume=0.01
+requirements for a signed build: all met

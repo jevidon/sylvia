@@ -1,0 +1,22 @@
+# A capture of the preceding 30 s at 34200.0 s in each 10-hour file, on fresh copies (cold). export_s = the excerpt export (decode, AAC
+# encode, durable write) as the capture transaction runs it after the anchor write; preview_start_s = beginPreview() of the pending
+# source range (34192.0-34200.0 s) to its first buffer reaching the analysis tap. Errors against master-long by cross-correlation.
+# Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 5.52 10.12 22.76 (1, 5, 15 min), 4 simulators booted on the host when the test run started
+format	file	export_s	export_start_err_ms	export_end_err_ms	preview_start_s	preview_head_err_ms	load_1m
+flac	long-formats/long-flac-10h.flac	27.199	0.0	0.0	27.628	0.0	5.3
+ogg-opus	long-formats/long-opus-10h.ogg	1.255	0.0	-1.0	1.245	0.0	5.2
+opus-ext	long-formats/long-opus-10h.opus	1.032	0.0	-1.0	1.001	0.0	5.1
+mp4-flac	long-formats/long-mp4-flac-10h.m4a	0.071	0.0	0.0	0.116	0.0	5.2
+mp4-opus	long-formats/long-mp4-opus-10h.m4a	0.104	0.0	-1.0	0.109	0.0	5.2
+caf-opus	long-formats/long-caf-opus-10h.caf	0.103	0.0	-1.0	0.128	0.0	5.1
+wav	long-formats/long-wav-10h.wav	0.059	0.0	0.0	0.124	0.0	5.1
+m4a-alac	long-formats/long-m4a-alac-10h.m4a	0.083	0.0	0.0	0.119	0.0	4.9
+m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	0.073	-47.9	-47.9	0.124	-47.9	4.9
+m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	0.080	-47.9	-47.9	0.118	-47.9	4.7
+m4a-aac-lc	long-aac-10h.m4b	0.068	0.0	0.0	0.138	0.0	4.7
+mp3-cbr	long-mp3-cbr-10h.mp3	11.954	-13.1	-13.1	8.603	-13.1	5.0
+mp3-vbr-xing	long-mp3-vbr-10h.mp3	10.410	-13.1	-13.1	7.539	-13.1	4.8
+mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	11.167	-13.1	-13.1	8.323	-13.1	5.0
+export of a 30 s excerpt 9.5 h into a 10-hour file, cold: n=14 p50=0.104 p95=17.290 max=27.199 s
+pending preview start 9.5 h into a 10-hour file, cold: n=14 p50=0.133 p95=15.262 max=27.628 s
+# at the end: host load averages 4.96 8.04 19.86 (1, 5, 15 min), 4 simulators booted on the host when the test run started

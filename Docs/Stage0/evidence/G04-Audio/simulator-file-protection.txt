@@ -1,0 +1,14 @@
+# What the iOS Simulator does with a file-protection class (review R5-04). Environment: simulator Sylvia-M0-g04-audio (0230F6A4-8CBB-41E2-A9AD-C4E8284A1EEB), iOS 26.5 (23F77) runtime; host macOS 26.6.2 (25G83), Xcode 27.0.
+# Command: xcodebuild test-without-building ... -only-testing:G04AudioTests/RealAV/ExcerptProtectionTests (started 2026-10-13T06:08:31Z; exit 0), then
+#   xcrun simctl spawn <udid> log show --start '<local start>' --predicate 'eventMessage CONTAINS "kCFURLFileProtectionKey"' --style compact
+# The test exports a 2 s excerpt: AACExcerptExporter creates the excerpt's directory with class C (completeUntilFirstUserAuthentication)
+# and sets class C on the finished temporary file before renaming it. Paths shortened to the file name; the log command's own
+# invocation line, which matches the predicate, left out.
+## Test result
+  Test Suite 'G04AudioTests.xctest' passed at 2026-10-13 19:08:36.213.
+  Test Suite 'Selected tests' passed at 2026-10-13 19:08:36.214.
+  ✔ Test theExporterAppliesClassCToTheFinishedExcerptBeforeItIsRenamedIntoPlace() passed after 0.141 seconds.
+  ✔ Test anExcerptWhoseClassCannotBeAppliedIsNotKept() passed after 0.026 seconds.
+  ✔ Test run with 2 tests in 2 suites passed after 0.169 seconds.
+## Simulator log lines about the protection key
+  2026-10-13 19:08:36.348 Df G04AudioHarness[70667:1e535d1] [com.apple.FileURL:default] ignoring unsupported value: kCFURLFileProtectionKey=NSFileProtectionCompleteUntilFirstUserAuthentication for .tmp-1A3A4477-4444-45F6-9927-3A048B1F7739.m4a

@@ -1,0 +1,14 @@
+# Capture paths with the per-file timing mode (members opened as the import decided: estimatedCBR for these proved-CBR MP3 files).
+# Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 10.03 9.55 17.29 (1, 5, 15 min), 4 simulators booted on the host when the test run started
+# export: a capture (anchor write) then preserveExcerpt (decode, AAC encode, durable write) on a fresh copy, cold; errors against master-long (ms).
+# preview: beginPreview of the pending source range on a fresh copy, cold; start_s = to the first buffer at the analysis tap.
+kind	file	range_s	seconds	head_err_ms	seam_errs_ms	tail_err_ms	length_err_ms	player_end_ms	post_end_rms_ratio	min_peak	load_1m
+export	long-mp3-cbr-10h.mp3	3600.0-3630.0	0.079	-13.1	-	-13.1	0.0	-	-	0.995	10.0
+export	long-mp3-cbr-10h.mp3	18000.0-18030.0	0.074	-13.1	-	-13.1	0.0	-	-	1.000	10.0
+export	long-mp3-cbr-10h.mp3	34170.0-34200.0	0.074	-13.1	-	-13.1	0.0	-	-	0.994	10.0
+preview	long-mp3-cbr-10h.mp3	34192.0-34200.0	0.125	-13.1	-	-	-	2.6	0.000	0.996	10.0
+export-cross-file	multi (estimatedCBR,estimatedCBR,estimatedCBR,estimatedCBR)	122.5-152.5 (global)	0.080	-13.1	-12.8	-13.1	-0.3	-	-	0.998	10.0
+export-cross-file	multi (estimatedCBR,estimatedCBR,estimatedCBR,estimatedCBR)	284.8-314.8 (global)	0.080	-13.1	-13.1	-13.1	0.0	-	-	0.997	10.0
+export-cross-file	multi (estimatedCBR,estimatedCBR,estimatedCBR,estimatedCBR)	434.9-464.9 (global)	0.080	-13.1	-13.1	-13.1	0.0	-	-	0.996	10.0
+preview-cross-file	multi	122535-137535 ms + 0-15000 ms	0.122	-13.1	-13.1	-	-	2.5	0.000	0.999	10.0
+# at the end: host load averages 10.00 9.59 16.95 (1, 5, 15 min), 4 simulators booted on the host when the test run started

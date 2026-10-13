@@ -1,0 +1,23 @@
+# Intermittent player stall in one of three codec-matrix runs made while fixing the G0.4 review (2026-10-12).
+# Environment: simulator iPhone 17 (iPhone18,3), iOS 26.5 (23F77); host macOS 26.6.2, Xcode 27.0 (27A266a).
+# Command: .build/scratch/test.sh -only-testing:G04AudioTests/RealAV/CodecMatrixTests (xcodebuild test-without-building on the worktree build), run 2 of 3.
+# fmt-mp3-vbr-noxing.mp3 had the same SHA-256 as in every other run. After zero-tolerance seeks to 37.3 s and 333.3 s, play()
+# produced no audio at the target within 15 s (start_latency_s=none); the seek to 587.2 s in the same player then worked.
+# Runs 1 and 3, and the clean CI run, passed every check for this file. Cause not isolated; device run will show whether it recurs.
+# codec-matrix.tsv row of run 2 (verdict and reasons are the last two columns):
+mp3-vbr-noxing	fmt-mp3-vbr-noxing.mp3	yes	.mp3	44100	1	600033	606224	none-in-file	0	none	13.1	0.984	56.6	13.1	20.7	1
+# codec-matrix-detail.tsv rows of run 2:
+mp3-vbr-noxing	chapters	-	-	-	expected=none-in-file reported=
+mp3-vbr-noxing	decoder_seek	1.75	-13.1	0.998	reported_start=1.8
+mp3-vbr-noxing	decoder_seek	37.3	-13.1	0.999	reported_start=37.3
+mp3-vbr-noxing	decoder_seek	151.7	-13.1	0.999	reported_start=151.7
+mp3-vbr-noxing	decoder_seek	333.3	-13.1	0.997	reported_start=333.3
+mp3-vbr-noxing	decoder_seek	471.05	-13.1	1.000	reported_start=471.1
+mp3-vbr-noxing	decoder_seek	587.2	-13.1	0.984	reported_start=587.2
+mp3-vbr-noxing	player_seek	587.2	start_offset=56.6 steady=-13.1	steady_peak=0.999	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.034 start_latency_s=0.021 chunks=57.2692+4096 587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096
+mp3-vbr-noxing	player_seek_estimated_timing	37.3	start_offset=-326.5	-	seek_s=0.000 start_latency_s=0.100 chunks=37.3000+4096 37.39
+mp3-vbr-noxing	player_seek_estimated_timing	333.3	start_offset=-1759.7	-	seek_s=0.000 start_latency_s=0.020 chunks=39.9006+4096 333.3
+mp3-vbr-noxing	player_seek_estimated_timing	587.2	start_offset=1490.2	-	seek_s=0.000 start_latency_s=0.020 chunks=335.7845+4096 587.
+mp3-vbr-noxing	export	221.37-251.37	-13.1/-13.1	0.998	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=292345
+mp3-vbr-noxing	export	0.0-12.5	-13.1/-13.1	0.999	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154801
+mp3-vbr-noxing	export	455.55-575.55	-13.1/-13.1	0.995	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=999201

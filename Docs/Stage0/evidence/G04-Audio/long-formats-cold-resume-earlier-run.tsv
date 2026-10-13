@@ -1,0 +1,84 @@
+# Earlier run of LongFormatTests.coldResumeByDepth with the same test code as the clean run, made while fixing review round 3
+# (2026-10-12, before the clean run): .build/scratch/test.sh -only-testing:G04AudioTests/RealAV/LongFormatTests, xcodebuild
+# test-without-building on this worktree's build of the sources of commit 613fd30. Kept for run-to-run variation: Ogg Opus (.ogg)
+# at 10.2 h had 3 of 6 trials over 1.5 s here and 0 of 6 in the clean run.
+# Cold resume (review R3-01): fresh copy, stored checkpoint at depth_h, new service: load (open + zero-tolerance seek) then play().
+# status_after_load must be paused (a slow open is .preparing while it lasts, never .failed). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build
+cold_resume	format	file	trial	depth_h	checkpoint_ms	load_s	play_to_audio_s	load_plus_play_s	saw_preparing	status_after_load	content_error_ms
+cold_resume	flac	long-formats/long-flac-10h.flac	0	0.33	1203400	29.150	0.097	29.247	yes	paused	0.0
+cold_resume	flac	long-formats/long-flac-10h.flac	0	5.03	18123400	28.835	0.103	28.937	yes	paused	0.0
+cold_resume	flac	long-formats/long-flac-10h.flac	0	10.00	35987600	29.019	0.100	29.119	yes	paused	0.0
+cold_resume	flac	long-formats/long-flac-10h.flac	1	0.33	1203400	28.570	0.101	28.671	yes	paused	0.0
+cold_resume	flac	long-formats/long-flac-10h.flac	1	5.03	18123400	28.996	0.101	29.097	yes	paused	0.0
+cold_resume	flac	long-formats/long-flac-10h.flac	1	10.00	35987600	29.990	0.099	30.089	yes	paused	0.0
+cold_resume	ogg-opus	long-formats/long-opus-10h.ogg	0	0.33	1203400	1.419	0.093	1.512	yes	paused	0.0
+cold_resume	ogg-opus	long-formats/long-opus-10h.ogg	0	5.03	18123400	1.557	0.085	1.641	yes	paused	0.0
+cold_resume	ogg-opus	long-formats/long-opus-10h.ogg	0	10.00	35987600	1.408	0.094	1.502	yes	paused	0.0
+cold_resume	ogg-opus	long-formats/long-opus-10h.ogg	1	0.33	1203400	1.386	0.085	1.471	yes	paused	0.0
+cold_resume	ogg-opus	long-formats/long-opus-10h.ogg	1	5.03	18123400	1.366	0.094	1.460	yes	paused	0.0
+cold_resume	ogg-opus	long-formats/long-opus-10h.ogg	1	10.00	35987600	1.325	0.092	1.417	yes	paused	0.0
+cold_resume	opus-ext	long-formats/long-opus-10h.opus	0	0.33	1203400	1.121	0.092	1.213	yes	paused	0.0
+cold_resume	opus-ext	long-formats/long-opus-10h.opus	0	5.03	18123400	1.096	0.087	1.183	yes	paused	0.0
+cold_resume	opus-ext	long-formats/long-opus-10h.opus	0	10.00	35987600	1.142	0.094	1.236	yes	paused	0.0
+cold_resume	opus-ext	long-formats/long-opus-10h.opus	1	0.33	1203400	1.175	0.093	1.268	yes	paused	0.0
+cold_resume	opus-ext	long-formats/long-opus-10h.opus	1	5.03	18123400	1.170	0.087	1.257	yes	paused	0.0
+cold_resume	opus-ext	long-formats/long-opus-10h.opus	1	10.00	35987600	1.192	0.086	1.278	yes	paused	0.0
+cold_resume	mp4-flac	long-formats/long-mp4-flac-10h.m4a	0	0.33	1203400	0.056	0.106	0.163	yes	paused	0.0
+cold_resume	mp4-flac	long-formats/long-mp4-flac-10h.m4a	0	5.03	18123400	0.045	0.103	0.148	yes	paused	0.0
+cold_resume	mp4-flac	long-formats/long-mp4-flac-10h.m4a	0	10.00	35987600	0.043	0.095	0.137	yes	paused	0.0
+cold_resume	mp4-flac	long-formats/long-mp4-flac-10h.m4a	1	0.33	1203400	0.053	0.104	0.157	yes	paused	0.0
+cold_resume	mp4-flac	long-formats/long-mp4-flac-10h.m4a	1	5.03	18123400	0.051	0.096	0.148	yes	paused	0.0
+cold_resume	mp4-flac	long-formats/long-mp4-flac-10h.m4a	1	10.00	35987600	0.051	0.096	0.147	yes	paused	0.0
+cold_resume	mp4-opus	long-formats/long-mp4-opus-10h.m4a	0	0.33	1203400	0.051	0.090	0.142	yes	paused	0.0
+cold_resume	mp4-opus	long-formats/long-mp4-opus-10h.m4a	0	5.03	18123400	0.074	0.095	0.168	yes	paused	0.0
+cold_resume	mp4-opus	long-formats/long-mp4-opus-10h.m4a	0	10.00	35987600	0.051	0.086	0.137	yes	paused	0.0
+cold_resume	mp4-opus	long-formats/long-mp4-opus-10h.m4a	1	0.33	1203400	0.052	0.085	0.137	yes	paused	0.0
+cold_resume	mp4-opus	long-formats/long-mp4-opus-10h.m4a	1	5.03	18123400	0.052	0.085	0.137	yes	paused	0.0
+cold_resume	mp4-opus	long-formats/long-mp4-opus-10h.m4a	1	10.00	35987600	0.046	0.091	0.137	yes	paused	0.0
+cold_resume	caf-opus	long-formats/long-caf-opus-10h.caf	0	0.33	1203400	0.057	0.087	0.143	yes	paused	0.0
+cold_resume	caf-opus	long-formats/long-caf-opus-10h.caf	0	5.03	18123400	0.046	0.091	0.137	yes	paused	0.2
+cold_resume	caf-opus	long-formats/long-caf-opus-10h.caf	0	10.00	35987600	0.045	0.092	0.137	yes	paused	0.0
+cold_resume	caf-opus	long-formats/long-caf-opus-10h.caf	1	0.33	1203400	0.046	0.091	0.137	yes	paused	0.0
+cold_resume	caf-opus	long-formats/long-caf-opus-10h.caf	1	5.03	18123400	0.057	0.091	0.148	yes	paused	0.2
+cold_resume	caf-opus	long-formats/long-caf-opus-10h.caf	1	10.00	35987600	0.045	0.092	0.137	yes	paused	0.0
+cold_resume	wav	long-formats/long-wav-10h.wav	0	0.33	1203400	0.046	0.099	0.145	yes	paused	0.0
+cold_resume	wav	long-formats/long-wav-10h.wav	0	5.03	18123400	0.055	0.099	0.155	yes	paused	0.0
+cold_resume	wav	long-formats/long-wav-10h.wav	0	10.00	35987600	0.056	0.102	0.159	yes	paused	0.0
+cold_resume	wav	long-formats/long-wav-10h.wav	1	0.33	1203400	0.057	0.101	0.159	yes	paused	0.0
+cold_resume	wav	long-formats/long-wav-10h.wav	1	5.03	18123400	0.056	0.103	0.159	yes	paused	0.0
+cold_resume	wav	long-formats/long-wav-10h.wav	1	10.00	35987600	0.055	0.103	0.158	yes	paused	0.0
+cold_resume	m4a-alac	long-formats/long-m4a-alac-10h.m4a	0	0.33	1203400	0.053	0.101	0.154	yes	paused	0.0
+cold_resume	m4a-alac	long-formats/long-m4a-alac-10h.m4a	0	5.03	18123400	0.055	0.103	0.159	yes	paused	0.0
+cold_resume	m4a-alac	long-formats/long-m4a-alac-10h.m4a	0	10.00	35987600	0.046	0.101	0.148	yes	paused	0.0
+cold_resume	m4a-alac	long-formats/long-m4a-alac-10h.m4a	1	0.33	1203400	0.054	0.105	0.159	yes	paused	0.0
+cold_resume	m4a-alac	long-formats/long-m4a-alac-10h.m4a	1	5.03	18123400	0.044	0.104	0.148	yes	paused	0.0
+cold_resume	m4a-alac	long-formats/long-m4a-alac-10h.m4a	1	10.00	35987600	0.054	0.094	0.148	yes	paused	0.0
+cold_resume	m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	0	0.33	1203400	0.052	0.101	0.153	yes	paused	-47.9
+cold_resume	m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	0	5.03	18123400	0.053	0.103	0.156	yes	paused	-47.9
+cold_resume	m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	0	10.00	35987600	0.054	0.094	0.148	yes	paused	-47.9
+cold_resume	m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	1	0.33	1203400	0.054	0.094	0.148	yes	paused	-47.9
+cold_resume	m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	1	5.03	18123400	0.045	0.103	0.148	yes	paused	-47.9
+cold_resume	m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	1	10.00	35987600	0.055	0.103	0.159	yes	paused	-47.9
+cold_resume	m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	0	0.33	1203400	0.043	0.100	0.143	yes	paused	-47.9
+cold_resume	m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	0	5.03	18123400	0.044	0.104	0.148	yes	paused	-47.9
+cold_resume	m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	0	10.00	35987600	0.054	0.104	0.159	yes	paused	-47.9
+cold_resume	m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	1	0.33	1203400	0.054	0.104	0.159	yes	paused	-47.9
+cold_resume	m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	1	5.03	18123400	0.055	0.104	0.159	yes	paused	-47.9
+cold_resume	m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	1	10.00	35987600	0.046	0.102	0.148	yes	paused	-47.9
+cold_resume	mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	0	0.33	1203400	8.680	0.094	8.774	yes	paused	-13.1
+cold_resume	mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	0	5.03	18123400	8.902	0.100	9.001	yes	paused	-13.1
+cold_resume	mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	0	10.00	35987600	8.857	0.101	8.958	yes	paused	-13.1
+cold_resume	mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	1	0.33	1203400	8.790	0.094	8.884	yes	paused	-13.1
+cold_resume	mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	1	5.03	18123400	8.793	0.102	8.895	yes	paused	-13.1
+cold_resume	mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	1	10.00	35987600	8.840	0.098	8.937	yes	paused	-13.1
+cold resume (load + play to audio), caf-opus 10 h (budget 1.5 s): n=6 p50=0.137 p95=0.147 max=0.148 s within_budget=6/6
+cold resume (load + play to audio), flac 10 h (budget 1.5 s): n=6 p50=29.108 p95=29.879 max=30.089 s within_budget=0/6
+cold resume (load + play to audio), m4a-alac 10 h (budget 1.5 s): n=6 p50=0.151 p95=0.159 max=0.159 s within_budget=6/6
+cold resume (load + play to audio), m4a-he-aac-v1 10 h (budget 1.5 s): n=6 p50=0.151 p95=0.158 max=0.159 s within_budget=6/6
+cold resume (load + play to audio), m4a-he-aac-v2 10 h (budget 1.5 s): n=6 p50=0.153 p95=0.159 max=0.159 s within_budget=6/6
+cold resume (load + play to audio), mp3-vbr-noxing 10 h (budget 1.5 s): n=6 p50=8.916 p95=8.991 max=9.001 s within_budget=0/6
+cold resume (load + play to audio), mp4-flac 10 h (budget 1.5 s): n=6 p50=0.148 p95=0.161 max=0.163 s within_budget=6/6
+cold resume (load + play to audio), mp4-opus 10 h (budget 1.5 s): n=6 p50=0.137 p95=0.162 max=0.168 s within_budget=6/6
+cold resume (load + play to audio), ogg-opus 10 h (budget 1.5 s): n=6 p50=1.487 p95=1.609 max=1.641 s within_budget=3/6
+cold resume (load + play to audio), opus-ext 10 h (budget 1.5 s): n=6 p50=1.246 p95=1.276 max=1.278 s within_budget=6/6
+cold resume (load + play to audio), wav 10 h (budget 1.5 s): n=6 p50=0.158 p95=0.159 max=0.159 s within_budget=6/6

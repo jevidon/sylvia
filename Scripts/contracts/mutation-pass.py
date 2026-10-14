@@ -3,7 +3,7 @@
 notices (ADR-0016, M0-contracts.md; review findings R1-01 and R2-01). Run by Scripts/ci.d/11-capture-anchor-contracts.sh
 on every change and by the clean evidence run.
 
-    python3 -I Docs/Stage0/evidence/M0-contracts/commands/mutation-pass.py [--jobs N] [--log <file>]
+    python3 -I Scripts/contracts/mutation-pass.py [--jobs N] [--log <file>]
 
 Each weakening is applied to a copy (the repository is never modified) and the checker's fixture checks are re-run
 (Scripts/check-spike-anchors.py: every valid fixture valid and passing the code rules, every invalid fixture failing

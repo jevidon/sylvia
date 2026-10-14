@@ -49,7 +49,7 @@ echo
 
 echo "## 2. Build"
 for p in Upstream Readium; do
-  (cd "$here/$p" && swift build -c release 2>&1 | tail -1) || { echo "build $p failed"; exit 1; }
+  (cd "$here/$p" && swift build --force-resolved-versions -c release 2>&1 | tail -1) || { echo "build $p failed"; exit 1; }
 done
 up="$here/Upstream/.build/release/zipeval-upstream"
 rd="$here/Readium/.build/release/zipeval-readium"

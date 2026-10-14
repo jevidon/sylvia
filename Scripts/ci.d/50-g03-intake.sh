@@ -90,7 +90,7 @@ step "1. fixtures"
 "$SYLVIA_ROOT/Scripts/fixtures/generate-g03-intake-pack.sh"
 
 step "2. host: IntakeKit tests (swift test)"
-logged "$logs/host-intakekit-tests.log" bash -c "cd '$kit' && swift test"
+logged "$logs/host-intakekit-tests.log" bash -c "cd '$kit' && swift test --force-resolved-versions"
 grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|uncoordinated writer|coordinated writer|short deflate stream|aggregate expansion:|slow but moving provider|EPUB folder|insufficient space:|cancel |coordinator cancelled|raw file|raw Finder file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:' \
   "$logs/host-intakekit-tests.log" | grep -v '^◇' | sed 's/^/  /'
 check_warnings "$logs/host-intakekit-tests.log"

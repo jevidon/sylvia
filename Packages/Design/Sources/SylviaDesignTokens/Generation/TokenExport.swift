@@ -162,7 +162,7 @@ public enum TokenExport {
                                       ("label", .string("the raw kind string, or the label empty_label_key when the kind is empty or only white space")),
                                       ("empty_label_key", .string(LabelKey.markerUnknownKind.rawValue)),
                                       ("never", .string(Marker.quote.rawValue))])),
-            ("status", .string("text_quote is from plan Appendix A.1; the other kind strings are proposed for the capture-envelope schema")),
+            ("status", .string("text_quote is from plan Appendix A.1; the capture-envelope schema adopts all five kind strings (ADR-0016)")),
         ])
     }
 

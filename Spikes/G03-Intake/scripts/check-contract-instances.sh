@@ -23,7 +23,7 @@ mkdir -p "$SYLVIA_ROOT/.build"
 work="$(mktemp -d "$SYLVIA_ROOT/.build/g03-contract-check.XXXXXX")"
 trap 'rm -rf "$work"' EXIT
 
-(cd "$kit" && swift build --configuration release --product sylviapack-tool 2>&1 | tail -1)
+(cd "$kit" && swift build --force-resolved-versions --configuration release --product sylviapack-tool 2>&1 | tail -1)
 tool="$kit/.build/release/sylviapack-tool"
 mkdir -p "$work/inbox"
 "$tool" handoff "$work/inbox" "$SYLVIA_ROOT/Fixtures/epub/se-walden.epub" "$SYLVIA_ROOT/Fixtures/audio/meditations-01-first180s.mp3"

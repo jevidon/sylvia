@@ -20,7 +20,7 @@ echo "# G0.3 host kill test"
 echo "date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 echo "environment: host, $(sw_vers -productName) $(sw_vers -productVersion) ($(sw_vers -buildVersion))"
 "$SYLVIA_ROOT/Scripts/fixtures/generate-g03-intake-pack.sh" >/dev/null || exit 1
-(cd "$kit" && swift build --configuration release --product sylviapack-tool 2>&1 | tail -1)
+(cd "$kit" && swift build --force-resolved-versions --configuration release --product sylviapack-tool 2>&1 | tail -1)
 tool="$kit/.build/release/sylviapack-tool"
 mkdir -p "$run/src"
 head -c 3000001 "$cache/work/part-01.caf" > "$run/src/a.epub"

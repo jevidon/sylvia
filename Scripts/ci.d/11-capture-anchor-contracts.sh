@@ -14,9 +14,9 @@
 set -euo pipefail
 source "$(cd "$(dirname "$0")/../lib" && pwd)/env.sh"
 
-# The fixture generator and the mutation pass. ADR-0016 records that they belong beside the checker
-# (Scripts/contracts/, requested in Docs/Stage0/M0-contracts.md); moving them changes only this line.
-tools="$SYLVIA_ROOT/Docs/Stage0/evidence/M0-contracts/commands"
+# The fixture generator and the mutation pass, beside the checker (ADR-0016 section 10; moved from
+# Docs/Stage0/evidence/M0-contracts/commands/ at M0 assembly, as Docs/Stage0/M0-contracts.md requested).
+tools="$SYLVIA_ROOT/Scripts/contracts"
 scratch="$SYLVIA_ROOT/.build/scratch/ci-11-capture-anchor-contracts"
 rm -rf "$scratch"
 mkdir -p "$scratch/fixtures"

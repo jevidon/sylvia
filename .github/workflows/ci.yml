@@ -22,7 +22,7 @@ jobs:
       SYLVIA_FIXTURE_CACHE: ${{ github.workspace }}/.fixture-cache
       SYLVIA_TOOLS_VENV: ${{ github.workspace }}/.venv-tools
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4 (v4.4.0; pinned per ADR-0014)
 
       - name: Select pinned Xcode (ADR-0001)
         run: |
@@ -37,8 +37,15 @@ jobs:
           ls -d /Applications/Xcode* || true
           exit 1
 
-      - name: Install XcodeGen
-        run: brew install xcodegen
+      - name: Install XcodeGen 2.46.0 (ADR-0002)
+        run: |
+          set -euo pipefail
+          brew install xcodegen
+          version="$(xcodegen --version)"
+          if [[ "$version" != "Version: 2.46.0" ]]; then
+            echo "::error::XcodeGen reports '$version'; ADR-0002 pins 2.46.0. Install that version or update ADR-0002 and ADR-0014."
+            exit 1
+          fi
 
       - name: Tools and fixtures
         run: |
@@ -50,7 +57,7 @@ jobs:
 
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4 (v4.6.2; pinned per ADR-0014)
         with:
           name: ci-logs
           path: .build/ci-logs/

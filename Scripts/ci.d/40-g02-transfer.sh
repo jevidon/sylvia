@@ -108,7 +108,7 @@ not_run_step() {
 # swift test exits 0 when nothing ran; also require a test run that executed tests and skipped none.
 swift_test() {
   local package="$1"; shift
-  xcrun swift test --package-path "$spike/$package" "$@" 2>&1
+  xcrun swift test --force-resolved-versions --package-path "$spike/$package" "$@" 2>&1
 }
 
 checked_swift_test() {
@@ -266,17 +266,17 @@ step_cli() {
 step_cli_qr() {
   echo "environment: host (macOS $(sw_vers -productVersion)); sylvia-source built from this checkout"
   local package="$spike/SourceService" bin
-  xcrun swift build --package-path "$package" --product sylvia-source || return 1
-  bin="$(xcrun swift build --package-path "$package" --show-bin-path)/sylvia-source"
+  xcrun swift build --force-resolved-versions --package-path "$package" --product sylvia-source || return 1
+  bin="$(xcrun swift build --force-resolved-versions --package-path "$package" --show-bin-path)/sylvia-source"
   /usr/bin/python3 "$spike/Scripts/qr-terminal-check.py" "$bin" "$SYLVIA_ROOT/.build/scratch/g02-qr-check" "$evidence/cli-qr-terminal.log" || return 1
 }
 
 step_cli_logging_recipe() {
   echo "environment: host (macOS $(sw_vers -productVersion)); sylvia-test-source and sylvia-fetch built from this checkout"
   local package="$spike/SourceService" bin
-  xcrun swift build --package-path "$package" --product sylvia-test-source || return 1
-  xcrun swift build --package-path "$package" --product sylvia-fetch || return 1
-  bin="$(xcrun swift build --package-path "$package" --show-bin-path)"
+  xcrun swift build --force-resolved-versions --package-path "$package" --product sylvia-test-source || return 1
+  xcrun swift build --force-resolved-versions --package-path "$package" --product sylvia-fetch || return 1
+  bin="$(xcrun swift build --force-resolved-versions --package-path "$package" --show-bin-path)"
   /usr/bin/python3 "$spike/Scripts/logging-source-recipe-check.py" "$bin/sylvia-test-source" "$bin/sylvia-fetch" \
     "$SYLVIA_ROOT/.build/scratch/g02-recipe-check" "$evidence/cli-logging-source-recipe.log" || return 1
 }

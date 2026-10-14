@@ -27,7 +27,7 @@ check() {  # check <description> <actual> <expected>
 echo "# G0.3 open-in through the system (simctl openurl)"
 echo "date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 echo "simulator: $udid ($(xcrun simctl list devices | grep "$udid" | sed 's/^ *//' | cut -c1-60))"
-(cd "$kit" && swift build --configuration release --product sylviapack-tool 2>&1 | tail -1)
+(cd "$kit" && swift build --force-resolved-versions --configuration release --product sylviapack-tool 2>&1 | tail -1)
 tool="$kit/.build/release/sylviapack-tool"
 mkdir -p "$work/src" "$work/open"
 "$tool" gen-pack "$work/open/Small Book.sylviapack" "$work/src" 1000000 | head -1

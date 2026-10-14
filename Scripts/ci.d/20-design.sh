@@ -39,8 +39,8 @@ step "design lint over product UI targets (Scripts/lint-design.py lint)"
 sylvia_python "$SYLVIA_ROOT/Scripts/lint-design.py" lint | tee "$EVIDENCE/lint-repository.log"
 
 step "token export drift check (sylvia-design-export check)"
-xcrun swift build --package-path "$PACKAGE" --product sylvia-design-export 2>&1 | tail -1
-EXPORTER="$(xcrun swift build --package-path "$PACKAGE" --show-bin-path)/sylvia-design-export"
+xcrun swift build --force-resolved-versions --package-path "$PACKAGE" --product sylvia-design-export 2>&1 | tail -1
+EXPORTER="$(xcrun swift build --force-resolved-versions --package-path "$PACKAGE" --show-bin-path)/sylvia-design-export"
 "$EXPORTER" check "$SYLVIA_ROOT" | tee "$EVIDENCE/export-check.log"
 
 step "design-token fixtures: one reason per invalid fixture (Scripts/lint-design.py fixtures)"

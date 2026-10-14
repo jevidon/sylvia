@@ -62,7 +62,7 @@ echo "no test doubles in SylviaAI or SylviaContext"
 echo "== host: build (warnings in Spikes/G05-AI code fail the step)"
 cd "$SPIKE"
 set +e
-swift build --build-tests > "$WORK/host-build.log" 2>&1
+swift build --force-resolved-versions --build-tests > "$WORK/host-build.log" 2>&1
 status=$?
 set -e
 grep -E "warning:|error:|Build complete" "$WORK/host-build.log" || true
@@ -78,7 +78,7 @@ echo "== host: swift test (exporting contract instances to $EXPORT)"
 SCRATCH="$WORK/test-scratch"
 mkdir -p "$SCRATCH"
 set +e
-env -u SYLVIA_LIVE_PROVIDER_TESTS G05_CONTRACT_EXPORT="$EXPORT" G05_TEST_SCRATCH="$SCRATCH" swift test 2>&1 | tee "$WORK/host-test.log" | grep -E "✔ Test run|✘|recorded an issue|skipped|EVAL-SUMMARY|^eval-|^id	"
+env -u SYLVIA_LIVE_PROVIDER_TESTS G05_CONTRACT_EXPORT="$EXPORT" G05_TEST_SCRATCH="$SCRATCH" swift test --force-resolved-versions 2>&1 | tee "$WORK/host-test.log" | grep -E "✔ Test run|✘|recorded an issue|skipped|EVAL-SUMMARY|^eval-|^id	"
 status="${PIPESTATUS[0]}"
 set -e
 if [[ "$status" -ne 0 ]]; then echo "FAIL: swift test exited $status" >&2; exit 1; fi

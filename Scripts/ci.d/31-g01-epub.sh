@@ -38,7 +38,7 @@ echo "== committed generated fixtures match their generator"
 echo "== host: G01EPUBCore (swift test, macOS)"
 echo "load: $(uptime)"
 # The sanitizer's timing and real-book fidelity results are written to $EVIDENCE.
-(cd "$SPIKE/Core" && SYLVIA_EVIDENCE_DIR="$EVIDENCE" xcrun swift test --scratch-path "$SPIKE/.build/core")
+(cd "$SPIKE/Core" && SYLVIA_EVIDENCE_DIR="$EVIDENCE" xcrun swift test --force-resolved-versions --scratch-path "$SPIKE/.build/core")
 
 echo "== generate the Xcode project"
 sylvia_generate "$SPIKE"

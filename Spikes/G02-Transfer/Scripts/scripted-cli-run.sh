@@ -41,9 +41,9 @@ extra_binds=("$@")
 client_args=()
 [[ -n "$client_host" ]] && client_args=(--only-host "$client_host")
 spike="$SYLVIA_ROOT/Spikes/G02-Transfer/SourceService"
-bin="$(xcrun swift build --package-path "$spike" --show-bin-path)"
-xcrun swift build --package-path "$spike" --product sylvia-source >/dev/null
-xcrun swift build --package-path "$spike" --product sylvia-fetch >/dev/null
+bin="$(xcrun swift build --force-resolved-versions --package-path "$spike" --show-bin-path)"
+xcrun swift build --force-resolved-versions --package-path "$spike" --product sylvia-source >/dev/null
+xcrun swift build --force-resolved-versions --package-path "$spike" --product sylvia-fetch >/dev/null
 
 work="$SYLVIA_ROOT/.build/scratch/g02-cli-run"
 rm -rf "$work"

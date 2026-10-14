@@ -21,8 +21,8 @@ udid="$(sylvia_sim_udid "$name")"
 sylvia_sim_boot "$udid"
 
 source_pkg="$spike/SourceService"
-xcrun swift build --package-path "$source_pkg" --product sylvia-source >/dev/null
-bin="$(xcrun swift build --package-path "$source_pkg" --show-bin-path)"
+xcrun swift build --force-resolved-versions --package-path "$source_pkg" --product sylvia-source >/dev/null
+bin="$(xcrun swift build --force-resolved-versions --package-path "$source_pkg" --show-bin-path)"
 
 work="$SYLVIA_ROOT/.build/scratch/g02-sim-run"
 rm -rf "$work"

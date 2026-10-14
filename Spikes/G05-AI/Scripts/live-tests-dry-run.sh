@@ -30,7 +30,7 @@ env -u OPENAI_API_KEY -u ANTHROPIC_API_KEY \
   SYLVIA_LIVE_PROVIDER_TESTS=1 \
   SYLVIA_LIVE_COMPAT_BASE_URL="http://127.0.0.1:$PORT/v1" SYLVIA_LIVE_COMPAT_MODEL=fake-model \
   SYLVIA_LIVE_TRANSCRIPTION_BASE_URL="http://127.0.0.1:$PORT/v1" SYLVIA_LIVE_TRANSCRIPTION_MODEL=fake-speech \
-  swift test --filter LiveProviderTests 2>&1 | grep -E "✔|✘|➜|recorded an issue|LIVE-"
+  swift test --force-resolved-versions --filter LiveProviderTests 2>&1 | grep -E "✔|✘|➜|recorded an issue|LIVE-"
 status="${PIPESTATUS[0]}"
 set -e
 exit "$status"

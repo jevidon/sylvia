@@ -58,7 +58,7 @@ if [[ "${1:-}" != "--force" && -f "$pack" && -f "$caf" && "$(stat -f %z "$caf")"
 fi
 
 "$SYLVIA_ROOT/Scripts/fixtures/fetch.sh" meditationsofmarcusaurelius_01 >/dev/null
-(cd "$kit" && swift build --configuration release --product sylviapack-tool 2>&1 | tail -1)
+(cd "$kit" && swift build --force-resolved-versions --configuration release --product sylviapack-tool 2>&1 | tail -1)
 tool="$kit/.build/release/sylviapack-tool"
 
 rebuild="$(mktemp -d "$out_dir/.rebuild.XXXXXX")"

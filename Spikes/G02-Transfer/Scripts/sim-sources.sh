@@ -15,8 +15,8 @@ G02_PIDS=()
 
 g02_build_test_source() {
   local package="$SYLVIA_ROOT/Spikes/G02-Transfer/SourceService"
-  xcrun swift build --package-path "$package" --product sylvia-test-source >/dev/null || return 1
-  G02_TEST_SOURCE="$(xcrun swift build --package-path "$package" --show-bin-path)/sylvia-test-source"
+  xcrun swift build --force-resolved-versions --package-path "$package" --product sylvia-test-source >/dev/null || return 1
+  G02_TEST_SOURCE="$(xcrun swift build --force-resolved-versions --package-path "$package" --show-bin-path)/sylvia-test-source"
 }
 
 g02_network_facts() {

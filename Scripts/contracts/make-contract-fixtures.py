@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Writes the anchor.v1 and capture-envelope.v1 contract fixtures (ADR-0016).
 
-    python3 -I Docs/Stage0/evidence/M0-contracts/commands/make-contract-fixtures.py [<output Contracts/fixtures directory>]
-    python3 -I Docs/Stage0/evidence/M0-contracts/commands/make-contract-fixtures.py --show <scratch directory>
+    python3 -I Scripts/contracts/make-contract-fixtures.py [<output Contracts/fixtures directory>]
+    python3 -I Scripts/contracts/make-contract-fixtures.py --show <scratch directory>
 
 With no argument it rewrites Contracts/fixtures/{anchor,capture-envelope}.v1; Scripts/ci.d/11-capture-anchor-contracts.sh
 writes into a scratch directory and compares, so the committed fixtures are exactly what this script produces. With

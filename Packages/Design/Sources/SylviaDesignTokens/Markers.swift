@@ -121,8 +121,8 @@ public enum Marker: String, CaseIterable, Sendable, Codable {
         }
     }
 
-    /// Portable capture `kind` strings (Appendix A.1) that map to this marker. Only `text_quote`
-    /// appears in the plan; the others are proposed here for the capture-envelope schema.
+    /// Portable capture `kind` strings that map to this marker. `text_quote` is from plan Appendix A.1;
+    /// the capture-envelope schema adopts all five kind strings (ADR-0016).
     public var captureKinds: [String] {
         switch self {
         case .quote: ["text_quote"]

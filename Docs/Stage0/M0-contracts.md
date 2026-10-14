@@ -14,12 +14,12 @@
 Scripts/ci.sh contracts                                                  # 10-contracts and 11-capture-anchor-contracts (fixtures, checker, mutation pass)
 Docs/Stage0/evidence/M0-contracts/commands/clean-run.sh                  # from a committed tree: CI, mutation-pass log, checker report, negative controls, pattern check
 Scripts/check-spike-anchors.py --report <file>                           # the checker alone (run with the tools venv)
-Docs/Stage0/evidence/M0-contracts/commands/mutation-pass.py --jobs 4     # (tools venv) remove each schema constraint and each code-rule branch in turn; every one must change a fixture outcome
+Scripts/contracts/mutation-pass.py --jobs 4                              # (tools venv) remove each schema constraint and each code-rule branch in turn; every one must change a fixture outcome
 Docs/Stage0/evidence/M0-contracts/commands/negative-controls.sh          # the checker fails on broken schemas, fixtures, spike output and related contracts
 Docs/Stage0/evidence/M0-contracts/commands/check-patterns.py             # (tools venv, needs node) every contract pattern in Python and in ECMA-262
 Docs/Stage0/evidence/M0-contracts/commands/run-g04-capture-probe.sh      # re-record the G0.4 capture records (needs the G0.4 fixture cache and Xcode)
 Docs/Stage0/evidence/M0-contracts/commands/check-g04-head.sh             # re-run the probe at 943d5e7 and the m0-g04-audio head into scratch and check the records
-python3 -I Docs/Stage0/evidence/M0-contracts/commands/make-contract-fixtures.py   # rewrite the fixtures (tools venv); --show <dir> prints each invalid fixture's errors beside its listed ones
+python3 -I Scripts/contracts/make-contract-fixtures.py                            # rewrite the fixtures (tools venv); --show <dir> prints each invalid fixture's errors beside its listed ones
 ```
 
 The committed evidence came from these runs, each from a committed tree: the G0.4 probe at commit `fa6075d` (`g04-capture-probe-run.log`, `g04-capture-records/`); the G0.4 head check at `4e9689f` (`g04-head-check.log`); and the clean run named in `ci-clean-run.log` (`ci-clean-run.log`, `mutation-pass.log`, `check-spike-anchors.txt`, `negative-controls.log`, `check-patterns.log`). Later commits change only this report, ADR-0016 and evidence.

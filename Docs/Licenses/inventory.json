@@ -29,8 +29,10 @@
     {"path": "Packages/Design/Package.resolved", "manifest": "Packages/Design/Package.swift"},
     {"path": "Spikes/G01-EPUB/Package.resolved", "manifest": "Spikes/G01-EPUB/project.yml"},
     {"path": "Spikes/G01-EPUB/Core/Package.resolved", "manifest": "Spikes/G01-EPUB/Core/Package.swift"},
+    {"path": "Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "manifest": "Spikes/G02-Transfer/MacIdentityProbe/project.yml", "note": "A copy of Spikes/G02-Transfer/SourceService/Package.resolved, which sylvia_generate installs into the generated project: Xcode writes no lock for a project whose only package is the local ../SourceService. Committed by G0.2 on m0-int-minors-g02-transfer (ADR-0014 request); the package-locks step of Scripts/ci.d/40-g02-transfer.sh checks that it equals that lock."},
     {"path": "Spikes/G02-Transfer/SourceService/Package.resolved", "manifest": "Spikes/G02-Transfer/SourceService/Package.swift"},
     {"path": "Spikes/G02-Transfer/TransferKit/Package.resolved", "manifest": "Spikes/G02-Transfer/TransferKit/Package.swift"},
+    {"path": "Spikes/G02-Transfer/iOS/Package.resolved", "manifest": "Spikes/G02-Transfer/iOS/project.yml", "note": "A copy of Spikes/G02-Transfer/TransferKit/Package.resolved, which sylvia_generate installs into the generated project: Xcode writes no lock for a project whose only package is the local ../TransferKit. Committed by G0.2 on m0-int-minors-g02-transfer (ADR-0014 request); the package-locks step of Scripts/ci.d/40-g02-transfer.sh checks that it equals that lock."},
     {"path": "Spikes/G03-Intake/App/Package.resolved", "manifest": "Spikes/G03-Intake/App/project.yml"},
     {"path": "Spikes/G03-Intake/IntakeKit/Package.resolved", "manifest": "Spikes/G03-Intake/IntakeKit/Package.swift"},
     {"path": "Spikes/G03-Intake/ZipEval/Readium/Package.resolved", "manifest": "Spikes/G03-Intake/ZipEval/Readium/Package.swift"},
@@ -40,18 +42,6 @@
     {"path": "Spikes/G05-Recovery/Package.resolved", "manifest": "Spikes/G05-Recovery/Package.swift"}
   ],
   "unlocked": [
-    {
-      "manifest": "Spikes/G02-Transfer/MacIdentityProbe/project.yml",
-      "reason": "Its only package is the local ../SourceService, and Xcode writes no lock for such a project, so nothing pins the packages it reaches. SourceService requires swift-nio, swift-nio-ssl, swift-certificates, swift-crypto and swift-asn1 exactly, but swift-atomics, swift-collections and swift-system come through those packages' version ranges (1.3.1, 1.7.1 and 1.8.1 on 12 October 2026, resolve-locks.log) and a fresh resolution after a new release could pick newer ones.",
-      "owner": "G0.2 transfer spike; the Mac companion (M6) inherits the rule",
-      "fix": "Commit a copy of Spikes/G02-Transfer/SourceService/Package.resolved as Spikes/G02-Transfer/MacIdentityProbe/Package.resolved (the Apps/DesignCatalog approach), then move this entry to locks."
-    },
-    {
-      "manifest": "Spikes/G02-Transfer/iOS/project.yml",
-      "reason": "Its only package is the local ../TransferKit, and Xcode writes no lock for such a project. The one remote package it reaches, swift-asn1, is required exactly (1.7.3) by TransferKit, so it cannot drift.",
-      "owner": "G0.2 transfer spike",
-      "fix": "Commit a copy of Spikes/G02-Transfer/TransferKit/Package.resolved as Spikes/G02-Transfer/iOS/Package.resolved, then move this entry to locks."
-    },
     {
       "manifest": "Spikes/G03-Intake/ZipEval/IdentityProbe/Package.swift",
       "reason": "A probe whose resolution is refused by design: readium/ZIPFoundation and weichsel/ZIPFoundation share the package identity zipfoundation (ADR-0010). There is nothing to lock.",
@@ -476,7 +466,7 @@
         {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["NIOCore", "NIOHTTP1", "NIOPosix"], "test": false},
         {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceServiceTests", "products": ["NIOCore", "NIOPosix"], "test": true}
       ],
-      "locks": ["Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
       "linked": "Linked into sylvia-source (host): NIOCore, NIOPosix, NIOHTTP1, the vendored llhttp (138 symbols) and CNIOAtomics (390 catmc_ functions, generated with uSHET's cpp_magic.h). NIOWebSocket and CNIOSHA1 are not linked.",
       "license": {
         "id": "Apache-2.0",
@@ -510,7 +500,7 @@
         {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["NIOSSL"], "test": false},
         {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceServiceTests", "products": ["NIOSSL"], "test": true}
       ],
-      "locks": ["Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
       "linked": "Linked into sylvia-source (host): NIOSSL and its vendored BoringSSL (3,832 CNIOBoringSSL_ symbols).",
       "license": {
         "id": "Apache-2.0; vendored BoringSSL under the OpenSSL License, the original SSLeay License and ISC (plus MIT for third_party/fiat)",
@@ -542,7 +532,7 @@
         {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["X509"], "test": false},
         {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceServiceTests", "products": ["X509"], "test": true}
       ],
-      "locks": ["Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
       "linked": "Linked into sylvia-source (host): X509 (11,055 symbols); it depends on swift-crypto's _CryptoExtras, which brings swift-crypto's BoringSSL.",
       "license": {
         "id": "Apache-2.0",
@@ -574,7 +564,7 @@
         {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["Crypto"], "test": false},
         {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceServiceTests", "products": ["Crypto"], "test": true}
       ],
-      "locks": ["Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
       "linked": "Linked into sylvia-source (host): Crypto (63 symbols, over the system CryptoKit), CryptoExtras/_CryptoExtras (3,159) and its vendored BoringSSL (3,368 CCryptoBoringSSL_ symbols). CXKCP (Keccak) is not linked.",
       "license": {
         "id": "Apache-2.0; vendored BoringSSL under Apache-2.0",
@@ -607,7 +597,7 @@
         {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["SwiftASN1"], "test": false},
         {"manifest": "Spikes/G02-Transfer/TransferKit/Package.swift", "target": "SylviaTransferCore", "products": ["SwiftASN1"], "test": false}
       ],
-      "locks": ["Spikes/G02-Transfer/SourceService/Package.resolved", "Spikes/G02-Transfer/TransferKit/Package.resolved"],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved", "Spikes/G02-Transfer/TransferKit/Package.resolved", "Spikes/G02-Transfer/iOS/Package.resolved"],
       "linked": "Linked into sylvia-source (host, 3,101 symbols) and, through SylviaTransferCore, into the G0.2 iOS transfer harness app (iOS Simulator, 2,715 symbols; linkage.log sections 1 and 5).",
       "license": {
         "id": "Apache-2.0",
@@ -635,7 +625,7 @@
       "headers": ["_AtomicsShims.h"],
       "direct_in": [],
       "used_by_targets": [],
-      "locks": ["Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
       "linked": "Linked into sylvia-source (606 symbols).",
       "license": {
         "id": "Apache-2.0 WITH Swift-exception",
@@ -661,7 +651,7 @@
       "modules": ["Collections", "BasicContainers", "BitCollections", "ContainersPreview", "DequeModule", "HashTreeCollections", "HeapModule", "OrderedCollections", "_RopeModule", "SpanPreview", "TrailingElementsModule", "SortedCollections", "InternalCollectionsUtilities", "_CollectionsTestSupport"],
       "direct_in": [],
       "used_by_targets": [],
-      "locks": ["Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
       "linked": "Linked into sylvia-source (DequeModule, 957 symbols).",
       "license": {
         "id": "Apache-2.0 WITH Swift-exception",
@@ -688,7 +678,7 @@
       "headers": ["CSystemDarwin.h", "CSystemFreeBSD.h", "CSystemLinux.h", "CSystemShared.h", "CSystemWASI.h", "CSystemWindows.h", "io_uring.h"],
       "direct_in": [],
       "used_by_targets": [],
-      "locks": ["Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
       "linked": "Resolved but not linked into sylvia-source (no SystemPackage symbols).",
       "license": {
         "id": "Apache-2.0 WITH Swift-exception",
@@ -819,8 +809,8 @@
     ]
   },
   "ci_actions": [
-    {"uses": "actions/checkout@v4", "workflow": ".github/workflows/ci.yml", "license": "MIT (Copyright (c) 2018 GitHub, Inc. and contributors, read at the v4 tag)", "pinned_to_commit": false, "release_on_13_october_2026": "v4.4.0, commit 11d5960a326750d5838078e36cf38b85af677262 (GitHub tags API, advisories-search.log)", "advisories": "None at v4.4.0 (GitHub Advisory Database; OSV lists none for any version). See advisories.md.", "reason": "The workflow (.github/workflows/ci.yml) is not owned by ADR-0014; it runs only on manual dispatch (ADR-0002), and pinning means editing it. The tag can move to a commit the inventory has not seen.", "owner": "workflow owner (requested in ADR-0014)", "fix": "In .github/workflows/ci.yml write `uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0`, then change this entry's uses to match and set pinned_to_commit true."},
-    {"uses": "actions/upload-artifact@v4", "workflow": ".github/workflows/ci.yml", "license": "MIT (Copyright (c) 2018 GitHub, Inc. and contributors, read at the v4 tag)", "pinned_to_commit": false, "release_on_13_october_2026": "v4.6.2, commit ea165f8d65b6e75b540449e92b4886f43607fa02 (GitHub tags API, advisories-search.log)", "advisories": "None at v4.6.2 (GitHub Advisory Database; OSV lists none for any version). See advisories.md.", "reason": "The workflow (.github/workflows/ci.yml) is not owned by ADR-0014; it runs only on manual dispatch (ADR-0002), and pinning means editing it. The tag can move to a commit the inventory has not seen.", "owner": "workflow owner (requested in ADR-0014)", "fix": "In .github/workflows/ci.yml write `uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2`, then change this entry's uses to match and set pinned_to_commit true."}
+    {"uses": "actions/checkout@11d5960a326750d5838078e36cf38b85af677262", "workflow": ".github/workflows/ci.yml", "license": "MIT (Copyright (c) 2018 GitHub, Inc. and contributors, read at the v4 tag)", "pinned_to_commit": true, "release": "v4.4.0, the release the v4 tag named on 13 October 2026 (GitHub tags API, advisories-search.log)", "advisories": "None at v4.4.0 (GitHub Advisory Database; OSV lists none for any version). See advisories.md.", "owner": "workflow owner (ADR-0002); pinned to the release SHA at M0 assembly (14 October 2026), as ADR-0014 requested"},
+    {"uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02", "workflow": ".github/workflows/ci.yml", "license": "MIT (Copyright (c) 2018 GitHub, Inc. and contributors, read at the v4 tag)", "pinned_to_commit": true, "release": "v4.6.2, the release the v4 tag named on 13 October 2026 (GitHub tags API, advisories-search.log)", "advisories": "None at v4.6.2 (GitHub Advisory Database; OSV lists none for any version). See advisories.md.", "owner": "workflow owner (ADR-0002); pinned to the release SHA at M0 assembly (14 October 2026), as ADR-0014 requested"}
   ],
   "host_tools": [
     {"name": "Xcode", "version": "27.0 (27A266a), Swift 6.4", "source": "/Applications/Xcode.app (DEVELOPER_DIR)", "license": "Apple Xcode and SDK agreement", "used_by": "every build and test", "required": true},

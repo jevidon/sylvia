@@ -58,7 +58,7 @@ if [[ -n "$(own_warnings "$LOGS/host-build.log")" ]]; then
   own_warnings "$LOGS/host-build.log"
   echo "FAIL: compiler warnings in Spikes/G05-Recovery sources"; exit 1
 fi
-TOOL="$(xcrun swift build --show-bin-path)/g05-recovery-tool"
+TOOL="$(xcrun swift build --force-resolved-versions --show-bin-path)/g05-recovery-tool"
 run_logged env-report "$TOOL" env-report
 
 step "3. host tests"

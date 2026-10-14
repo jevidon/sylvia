@@ -44,7 +44,7 @@ done
 
 echo "==> mutation pass (run by 11-capture-anchor-contracts): Docs/Stage0/evidence/M0-contracts/mutation-pass.log"
 {
-  echo "command: Docs/Stage0/evidence/M0-contracts/commands/mutation-pass.py --jobs 4 (run by Scripts/ci.d/11-capture-anchor-contracts.sh)"
+  echo "command: Scripts/contracts/mutation-pass.py --jobs 4 (run by Scripts/ci.d/11-capture-anchor-contracts.sh)"
   echo "commit: $(git -C "$SYLVIA_ROOT" rev-parse HEAD) (uncommitted files before the clean run: $uncommitted)"
   echo "(the time below was measured while other agents shared this Mac: indicative only)"
   sed -n '/^==> mutation pass/,$p' "$SYLVIA_ROOT/.build/ci-logs/11-capture-anchor-contracts.log" | tail -n +2

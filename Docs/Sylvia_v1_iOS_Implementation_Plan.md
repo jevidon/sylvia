@@ -2,15 +2,15 @@
 ## V1 iOS implementation plan
 ### Your library of thought.
 
-**Status:** Team-review draft 0.3 - not yet approved for execution  
-**Prepared:** 5 October 2026 · **Revised:** 7 October 2026 (unified content hub added to the roadmap; see Appendix D)  
+**Status:** Team-review draft 0.4 - standalone Gloss UX and roadmap revision of main's draft 0.3. The M3/M5 UX direction and later web reader are approved product direction; the execution specification and feasibility decisions remain subject to their existing gates (Section 23.3).\
+**Prepared:** 5 October 2026 · **Revised:** 15 October 2026 (Gloss-informed M3/M5 interactions and later web-reader roadmap; see Appendix D)\
 **Product owner:** Justin Evidon  
 **Delivery boundary:** Native iPhone/iPad application, iOS share extension, lightweight macOS transfer companion, portable data and transfer contracts. No mandatory service.  
 **Source of truth:** Agreed product discussion, *Sylvia - Product Brief*, and the *Sylvia Concept Designs* boards in `Docs/Design/` for visual language. Technical recommendations below are proposals unless explicitly identified as confirmed. [P1, P2]
 
 > **The release must prove one complete loop:** get a book onto the device reliably; read or listen offline; capture a passage and your thinking; ask a source-aware question when a model is reachable; then find that knowledge after the original media has been removed.
 
-This is a greenfield implementation proposal, not an audit of an existing repository. No app code, performance results, platform spikes or compatibility tests have been executed for this document. Requirements, interfaces, recovery rules and acceptance criteria are specified for review; the initial feasibility stage must validate the risky platform assumptions before feature implementation begins.
+This plan specifies requirements, interfaces, recovery rules and acceptance criteria. The separately reviewed, unmerged M0 work is linked in [P3]; this documentation revision incorporates its lessons for reuse without importing its implementation, gate evidence or proposed amendments. No requirement in this revision is a claim that a feature or feasibility gate has passed.
 
 # 1. Executive recommendation
 
@@ -31,6 +31,10 @@ The important decisions requiring explicit team approval are collected in Sectio
 **Proposed for this review:** iOS/iPadOS 18+ and macOS 14+; iPhone-led design with a functional adaptive iPad layout; GRDB and Readium; the precise import/transfer protocol; a five-star rating with half-star steps; no automatic media eviction; short-clip transcription through an optional speech endpoint; explicit knowledge export and restore in v1; no cloud/state sync; minimal status-based organization rather than a fixed taxonomy; the Marginalia token values, type roles and component inventory in Section 4.4.
 
 **Still open by design:** user-facing categorization, commercial model, production distribution and pricing. The engineering plan must not silently resolve these as subscriptions, a complex tagging system, or a hosted account service.
+
+**Confirmed direction (15 October 2026):** native iOS/iPadOS V1 and its lightweight Mac companion remain first. M3 and M5 refine passage capture, asking and source navigation using Gloss as an interaction reference; a browser-based reader is a separate post-V1 roadmap workstream (Section 24). This direction does not approve any pending M0 amendment, change the release's platforms or add accounts, state synchronization, web search or article ingestion to V1. [P3]
+
+**Implementation reference:** the separately reviewed `m0-integrate` snapshot contains native reader/anchor, AI/context, intake/transfer, audio and recovery spikes, plus a design package and interaction prototype [P3]. Evaluate that work for promotion through the normal milestone gates when it is integrated. Gloss informs interaction design and later article extraction; fit those ideas to Sylvia's planned native domain, evidence, provider and persistence architecture. Reconcile the recorded spike-to-product gaps before reuse, and avoid rebuilding its Markdown/JSON export without first assessing it for M7. No effort reduction or M0 approval is assumed from this comparison.
 
 # 2. Product goals and release invariants
 
@@ -110,6 +114,8 @@ Use three primary areas: **Library**, **Thoughts**, and **Inbox**. Global search
 **Inbox:** pending local imports, items available from a paired Mac, duplicates needing review and failed jobs. Transfer states use the fixed vocabulary of Section 4.4.6: queued, receiving, verifying, preparing, ready, needs attention. Do not make users inspect a developer log to finish an import.
 
 **Reader/player:** one consistent capture sheet with source preview, quote or audio range, comment, lookup, Ask AI and save status. The interaction must be usable one-handed on iPhone and adapt to a side pane on iPad without requiring a separate iPad product.
+
+**Passage and discussion:** M3 keeps the selected quotation and its source available while a reader writes a note, then returns to the same reading position. M5 extends this flow to questions, answers and follow-ups attached to that passage. Use the existing sheet on iPhone and the reader's side pane on iPad when there is sufficient space; compact layouts may use a sheet. Keep the passage visible where it fits, with an accessible expandable preview when the keyboard or large text needs the space. Compact presentation must not truncate saved text or reduce touch targets. Preserve Marginalia's distinct Quote, Note and Generated treatments. The four selection actions remain Highlight, Note, Look Up and Ask; the AI question starters belong inside Ask (Section 13.1). [P3, S25]
 
 ## 4.2 Onboarding
 
@@ -293,7 +299,7 @@ Further accessibility rules, extending Section 18.3: all roles scale through Dyn
 
 - **Package.** A `SylviaDesign` Swift package (Section 6.2) owns color tokens (asset catalog with light and dark variants, exposed as a typed enum), type roles (Literata registration, `UIFontMetrics` scaling, role enum), the marker enum and its presentation mapping from the domain's capture kinds, the status vocabulary strings under stable localization keys, and the SwiftUI component library in 4.4.7. The Mac companion consumes the same package; AppKit-hosted SwiftUI uses the same tokens with macOS control sizing.
 - **Single source.** No view declares a literal color, font size or state string. Lint rejects hex literals, `Font.system(size:)` calls and status phrases outside the package in UI targets.
-- **Portable tokens.** Tokens, type roles, marker definitions and the status vocabulary are also exported as versioned JSON under `Contracts/design/` alongside the schemas, so a later Android client implements the same system from the same file rather than from screenshots (Section 24).
+- **Portable tokens.** Tokens, type roles, marker definitions and the status vocabulary are also exported as versioned JSON under `Contracts/design/` alongside the schemas, so later Android and web clients implement the same system from the same file rather than from screenshots (Section 24). Platform mappings, including web typography and glyph equivalents, must preserve meaning and accessibility; they do not require identical native and browser layouts.
 - **Reference artifact.** The *Sylvia Concept Designs* boards are checked into `Docs/Design/` at each revision as rendered PNGs (`images/`) and board source (`canvas/`), with a README that maps each board to its plan section and a script that re-renders them. [P2] They are a reference, not a specification; this section is. The authoring canvas they come from is the product owner's private working copy; nothing in this plan requires access to it.
 - **Change control.** Token, role, marker or vocabulary changes require design review, a fixture update and a snapshot re-baseline. A screen may not introduce a new status phrase; it requests one through the vocabulary.
 - **Tests.** Snapshot tests for every component in light, dark, grayscale and Dynamic Type at the default and largest accessibility sizes (T51, T53); a vocabulary conformance test that walks every state machine's user-visible string (T54); a contrast check over every text/ground pair in the token file in CI.
@@ -519,6 +525,8 @@ Use the system dictionary interface where available. Availability of definitions
 
 A same-asset highlight must survive relaunch, font size/theme changes, orientation and extraction-cache rebuild. Returning from footnotes, search results and capture preview must preserve the user's reading position. VoiceOver must reach selection actions and saved-note content. Unsupported layout, image-only content or imperfect extraction should degrade with specific explanations, not a false "full text available" badge.
 
+M3 demonstrates selection → note → durable save → return to reading without losing the selected wording or the reading position (T55). Opening a saved capture from the work's Thoughts view preserves its retained quotation even if the source is unavailable or its anchor is ambiguous. Native Look Up retains the offline/runtime availability behavior in Section 9.3 and never silently becomes an AI request. This capture journey works without a configured provider; M5 adds the contextual Ask journey to the same presentation and records.
+
 # 10. Audiobook player and audio capture
 
 ## 10.1 Playback service
@@ -615,6 +623,10 @@ Whole-book inclusion is allowed only when the entire extracted text fits the con
 
 A ContextPack is built and stored before sending a request. It contains the user question, evidence snippets with stable local IDs, source/edition anchors, source-quality labels, scope, prompt-template version, retrieval settings, available-text coverage and any truncation. Persist exact sent snippets so the conversation remains understandable after media/index removal.
 
+M5 offers **Explain** and **Simplify** inside Ask as editable question starters. Explain asks what the selected passage means in context; Simplify asks for a plain-language rendering that preserves its meaning. Both prepare a question for review and explicit Send through the normal endpoint, scope, consent and request lifecycle. Opening Ask or choosing a starter sends nothing and never widens the evidence scope. Generated wording remains labelled Generated and does not replace the quotation. Native dictionary lookup stays a separate action. New labels and prompt templates follow the design-vocabulary and prompt-version rules. [P3, S25]
+
+Keep follow-ups in the same source-linked conversation without requiring another selection. The latest answer and composer are easy to reach; earlier turns may collapse but remain available. Each request saves its own ContextPack and applies the context budget, spoiler controls and destination consent in Sections 13.2, 13.3 and 14.2 to any included history; retaining a conversation in the interface does not authorize sending all its turns. Citations in earlier turns remain bound to their original ContextPacks; when history is supplied to a new request, those markers must not be interpreted as IDs in the new pack. Preserve the question draft when the sheet closes or a request fails, and preserve partial answers with their actual lifecycle status (Section 14.4). Closing the discussion restores the reading context. T56 exercises this flow on compact and wide layouts.
+
 ## 13.2 Retrieval algorithm
 
 For a text selection, prioritize exact text and bounded adjacent paragraphs from the same resource/page. For work search, run lexical search over that work's extracted text and optionally its retained knowledge, rank/deduplicate overlapping hits and include a limited number of adjacent chunks. Begin with 300-600-word extraction chunks preserving paragraph boundaries; tune using retrieval tests rather than treating this size as universal.
@@ -636,6 +648,8 @@ Delimit source material as untrusted evidence, not instructions. Ask the model t
 After generation, resolve citation IDs against the ContextPack allowlist. Invalid IDs remain visibly unresolved and are not turned into fabricated links; they render as struck-through grey chips with a one-line explanation beneath the answer (Section 4.4.5). A citation opens the exact retained snippet and, when available, the original anchor. Validate claimed direct quotations against supplied evidence; unverifiable wording is labelled as a paraphrase or unsupported quote, not an exact source quotation.
 
 Citation validity does not establish entailment. Include human evaluation for whether the cited passage actually supports the answer. Saved AI content should retain a model-generated label and permit user comments/corrections. When evidence is insufficient, the expected behavior is to say so or ask for a passage, not invent the contents of the book.
+
+M5 adds an evidence preview to citation navigation: tapping a resolved citation opens the exact retained snippet from that answer's ContextPack, with its source and location. Offer a separate action to show the passage in the reader only when the original asset and anchor resolve; returning preserves the answer, draft and prior reading position. With missing media or an ambiguous anchor the retained snippet remains available, and the unavailable source action explains why. Invalid citation IDs retain the unresolved treatment above. Preview and navigation must work by touch, keyboard and VoiceOver without depending on hover (T57). [P3, S25]
 
 # 14. AI providers, privacy and failure handling
 
@@ -679,7 +693,7 @@ Use bounded streaming parsers tested against split UTF-8 characters, partial SSE
 
 ## 14.5 UX, costs and user control
 
-Provide Explain, Define in context, Summarize this passage and Ask a question. Save all explicitly sent interactions locally, with a separate "Save to Thoughts" action to promote an answer. Allow deleting a conversation with a clear explanation of retained evidence deletion.
+Within Ask, provide Explain, Simplify, Define in context, Summarize this passage and Ask a question. These are editable question starters governed by Section 13.1's preview and explicit Send behavior. Simplify requests plainer wording while preserving meaning; Summarize requests a shorter account of the passage. Save all explicitly sent interactions locally, with a separate "Save to Thoughts" action to promote an answer. Allow deleting a conversation with a clear explanation of retained evidence deletion.
 
 Show provider/model and context preview before sending; display usage only when supplied reliably. Show a price estimate only when a maintained/user-configured pricing profile is available, and label it an estimate. No invented "free because you subscribe" messaging. Cap request/output sizes and audio duration rather than allowing accidental unbounded jobs.
 
@@ -958,6 +972,11 @@ Support a user-reviewed diagnostic bundle: app/OS versions, dependency/build ide
 | T52 | Every save/import/network failure UI | Draft preserved; truthful status; actionable retry/cancel and no duplicate commits |
 | T53 | Grayscale and Increase Contrast pass | With Color Filters set to grayscale and with Increase Contrast on, every capture kind, status pill, availability badge and button role in Section 4.4 remains distinguishable by glyph, label, typeface or frame; snapshot comparison against the color baseline shows no information carried by hue alone; hairline rises to 24% under Increase Contrast |
 | T54 | Status vocabulary conformance | Every user-visible state string across Sections 8.2, 10.2, 11.3, 14.4, 15.5 and 17.2 comes from the design package vocabulary; forbidden phrases in Section 4.4.6 are absent from all UI targets; "Saved" is rendered only after the durable commit callback (ties to T02); no literal color, font size or status phrase exists outside the design package |
+| T55 | M3 passage capture and return | Select a multiline EPUB/PDF passage, open Note, type with the keyboard visible, save and return to the prior reading position with one saved capture; exact quotation and source remain accessible. Reopen from Thoughts offline after relaunch; an unavailable or ambiguous source leaves the retained quotation intact. Repeat with rotation, large Dynamic Type and VoiceOver; Look Up sends no AI request |
+| T56 | M5 question starters and contextual follow-ups | Explain/Simplify populate an editable question without sending or widening scope; explicit Send uses the disclosed destination and persisted ContextPack. Ask a follow-up without reselecting; history follows consent, budget and spoiler rules. Passage preview, answer and composer remain reachable on iPhone/iPad with keyboard and large text. Closing/reopening preserves the draft; interruption retains truthful partial-output state |
+| T57 | M5 citation preview and source return | A valid citation opens that answer's retained evidence; source navigation is offered only for a resolvable anchor and preserves the answer, draft and return position. After media removal the evidence still opens; ambiguous/missing anchors and invalid IDs never fabricate a destination. Two answers using the same citation label for different snippets still open their own retained evidence. Touch, keyboard and VoiceOver can complete the flow with predictable focus return |
+
+T55-T57 are implementation acceptance cases for M3/M5, not additional M0 feasibility results. They use the capture, evidence and lifecycle requirements in this plan, and receive the same accessibility, grayscale and vocabulary checks as T51/T53/T54.
 
 ## 20.3 AI evaluation set
 
@@ -998,14 +1017,16 @@ These are review hypotheses, not established demand metrics. A weekly return to 
 | M0 - Feasibility and design freeze | G0.1-G0.6, threat model, interaction prototype, dependency lock, ADRs, `SylviaDesign` v0.1 (tokens, type roles, marker set, status vocabulary, component shells) | None | Team approves supported scope, contracts and design tokens |
 | M1 - Durable foundation | Domain, repositories, schema, file store, manual works, migrations, recovery journal | M0 | Offline records/capture fixture persists through faults |
 | M2 - Direct ingestion | Files/share/AirDrop/URL, multi-file order, manifests, minimal metadata, import recovery, Inbox using the status vocabulary | M1 | J-01 import portion; T06-T14; T54 for import states |
-| M3 - Reading and knowledge | EPUB/PDF/TXT views, capture/comments/lookup, anchors, Thoughts and FTS, all screens composed from `SylviaDesign` | M1-M2 | J-01 complete; same-asset anchor tests; design review on device including grayscale |
+| M3 - Reading and knowledge | EPUB/PDF/TXT views, capture/comments/lookup, anchors, Thoughts and FTS; passage preview while writing and return to reading (Sections 4.1, 9.4), composed from `SylviaDesign` | M1-M2 | J-01 complete; same-asset anchor tests; T55; design review on device including grayscale |
 | M4 - Audio learning | Player, system controls, timeline, durable clips, safe preview, progress, mini-player with capture control | M1-M2 | J-02 without AI; locked-device and clip tests; T54 for capture states |
-| M5 - Contextual AI | Provider setup, consent, evidence packs, retrieval, streaming, optional transcription, Generated marker and citation chips | M3-M4 context contracts | J-02/J-03; provider and grounding evaluation; T54 for AI states |
+| M5 - Contextual AI | Provider setup, consent, evidence packs, retrieval, streaming, optional transcription, Generated marker; Explain/Simplify starters, contextual follow-ups and citation evidence preview (Sections 13.1, 13.4) | M3-M4 context contracts | J-02/J-03; provider and grounding evaluation; T56/T57; T54 for AI states |
 | M6 - Mac/LAN/cable delivery | Source companion using shared tokens, pairing, manifests/ranges, queue/receipts, wired bundle UX | M1-M2 and M0 security gate | J-05 including >4 GiB and adverse conditions |
 | M7 - Lifelong record/recovery | Ledger polish, ratings/recommendations, retention controls and impact report, export/restore UX | M3-M6; backup foundations begin in M1 | J-04/J-06; no knowledge loss |
 | M8 - Release hardening and pilot | Full matrix, accessibility, performance, migration/recovery drills, TestFlight/review docs, T53/T54 across every screen | M1-M7 | All P0 gates plus product pilot review |
 
 M3 and M4 can proceed in parallel after domain/anchor contracts stabilize. M6 can proceed in parallel after the importer and protocol contracts stabilize. M5 must not invent new capture identities independent of M3/M4. Backup infrastructure starts in M1 even though its final user experience is accepted in M7. No screen is built before `SylviaDesign` v0.1 exists; screens built against it in M2 through M7 pick up token corrections without rework.
+
+As the separately reviewed M0 work is integrated, assess its native components and contracts against M1-M7 before commissioning replacements [P3]. The Gloss reference refines M3/M5 interaction outcomes within these milestones. No V1 milestone depends on the later web reader, which does not appear among its exit gates. Existing milestone dependencies and effort estimates remain unchanged. [S25]
 
 ## 21.3 Recommended ownership
 
@@ -1139,11 +1160,15 @@ Approval should result in a versioned 1.0 execution specification and prioritize
 
 # 24. Roadmap seams without building the roadmap
 
+**Sequence:** deliver native iOS/iPadOS V1 with the lightweight Mac companion first. Saved articles, a browser-based reader, subscriptions and companion-mode capture are later workstreams with separate implementation decisions. Shared contracts and design tokens support those clients without requiring web infrastructure during V1. [P3]
+
 **Docker hub (v1.5 candidate):** implement the same source/manifest contracts as the Mac, add an always-on ingestion inbox and authorized agent-delivered assets, then design actual state synchronization separately. Server authority, managed versus referenced storage, metadata conflict rules and household profiles are not settled by this v1 document.
 
 **Articles, feeds and newsletters - the unified content hub (post-v1, phased).** Product intent from the product owner (7 October 2026): content from many disparate systems - bookmarks, a standalone Substack app, RSS readers - should have one home in Sylvia, with the same permanent record of notes and questions that books get, and without relying on another service to synchronize that content or its context across devices. This is a stated goal for later releases; none of it is in v1 scope (Section 3.3).
 
 *Phase A - Saved articles (first post-v1 release).* The share extension and URL entry accept a webpage link and create an **Article** work kind: sanitized readable text and an HTML snapshot with provenance (source URL, publisher, author, published and saved dates, fetch time). The article opens in the existing reader and uses the same capture, note, Ask AI and search flows. When the page or its feed entry exposes an audio version (for example a Substack post's "listen" link or an enclosure), record it as an `AssetLocation` of kind remote-audio, with the URL and provenance. The player offers it as an explicit stream-or-download choice and never presents it as a local file until downloaded. Pasting one Substack article link therefore ends in the Inbox, readable and listenable later, with no bookmark folder or separate app.
+
+For Phase A, evaluate Gloss's `fetch-article.ts`, `html-to-blocks.ts` and `images.ts` as references for Readability preparation, streamed-page content, images, captions and tables. Test a bounded article corpus before selecting an implementation. Feed extracted content into Sylvia's planned intake, provenance, retained-snapshot and capture contracts; preserve exact source wording separately from reading/search normalization, and apply Sylvia's content-isolation and network rules. Adaptation may be native or use an explicitly chosen processing service; this investigation does not mandate a Node runtime or hosted account. Gloss's evaluation cases can inform coverage, while Sylvia verifies its own results. [S25]
 
 *Phase B - Subscriptions.* Add recurring Source adapters for RSS/Atom, including public Substack publications (their `/feed` addresses and per-post audio enclosures). New entries arrive in the Inbox as **Unread** items. Refresh runs on app open and on iOS background refresh, which the system schedules opportunistically; the interface must say when a feed was last checked and must not promise always-current delivery. An always-current Inbox is a property of the Docker hub or Mac companion (v1.5 candidate, above), not of the phone alone.
 
@@ -1160,6 +1185,14 @@ Approval should result in a versioned 1.0 execution specification and prioritize
 **Alignment/transcription:** add full-book asynchronous speech processing and edition-aware audio/text alignment after durable capture is proven. Store alignment confidence and provenance; preserve manual association and no-context modes.
 
 **Broader platforms:** reuse exported schemas, test fixtures, the transfer protocol and the exported design tokens in `Contracts/design/`; implement native platform adapters. A portable data model and token file are an investment in future clients, not a claim that a single Swift package will run every platform unchanged. The grayscale conformance work in Section 4.4.8 also prepares the language for reflective e-paper tablets, which are a plausible later target.
+
+**Web reader (post-V1, separate from saved-article ingestion):** add a browser client for reading supported content and revisiting the same source-linked knowledge. Use Gloss's typography, selection toolbar, anchored margin conversations, citation previews and responsive layout as design references, expressed through Sylvia's Marginalia tokens and Quote/Note/Generated distinctions. A React implementation is a candidate for evaluation, not a chosen framework or a replacement for the native clients. [P3, S25]
+
+Use Sylvia's planned versioned capture, anchor and ContextPack contracts and `Contracts/design/` export, validating the finalized contracts before the web prototype. Browser selection offsets need an explicit mapping to the declared locator units and source/extraction version; they must not become a competing identity system. Preserve retained quotations, answer evidence, unknown record kinds and original edition/asset bindings through import, editing and export. A web client must not imply access to a full work from a retained excerpt, or silently reinterpret a native anchor.
+
+Start with a bounded reading → annotation → question → evidence-preview prototype using fixture/imported data and a controllable test provider. Before committing the web build, decide supported formats, durable browser storage and eviction/recovery, backup/migration, credentials and provider access, untrusted-document isolation, keyboard/screen-reader/mobile-browser behavior, and how the client receives a user's library. Hosting, accounts, transfer and any cross-device synchronization require explicit architecture decisions; browser access alone does not establish sync. A hub dependency is optional and must be chosen separately. Promote the prototype only after it demonstrates fidelity, durable save/recovery, truthful AI scope and accessible return-to-source behavior. Its schedule follows V1; its ordering relative to article Phase A remains a roadmap decision.
+
+Any direct reuse of Gloss source or assets requires a suitable license or explicit permission recorded through the dependency and license review in Sections 18 and 22 before adoption. The reviewed snapshot declares no reuse license; interaction ideas can be implemented independently. Reuse must retain Sylvia's existing evidence, privacy and retention guarantees, and estimated savings require a measured adaptation rather than similarity of screens. [S25]
 
 **Later knowledge tools:** semantic retrieval, broader research across works, projects/taxonomy, vocabulary review and integrations can follow demonstrated use of retained knowledge. Do not make the initial data model depend on a particular embedding dimension, model provider or AI framework.
 
@@ -1296,6 +1329,8 @@ The export is generated from the Swift package, not hand-maintained; glyph names
 
 [P2] **Design basis:** *Sylvia Concept Designs*, 5-6 October 2026, checked in under `Docs/Design/` in this repository: rendered boards in `images/`, board source in `canvas/`, and a README that maps each board to its plan section. Contains the Marginalia design-language sheet, thirteen iPhone screens, an iPad reader with Thoughts pane, the Mac companion window, two Inbox row-layout options, and the six iPhone screens plus the tablet reader rendered in grayscale. Four palette alternatives were reviewed on 6 October 2026 and removed after the product owner confirmed Marginalia. The boards were authored on a design canvas private to the product owner; the checked-in export is the citable reference, and Section 4.4 is the specification.
 
+[P3] **Product direction, 15 October 2026:** the product owner directed the plan to keep iOS V1 first, incorporate relevant Gloss UX ideas into M3/M5 and include a later web reader. The separately reviewed, unmerged M0 baseline is [the gate summary at `d8e7d39`](https://github.com/jevidon/sylvia/blob/d8e7d399cd3f6468fa0b2c79c26868deeaa8b302/Docs/Stage0/M0-gate.md); integration gaps are recorded in [the contracts review at that snapshot](https://github.com/jevidon/sylvia/blob/d8e7d399cd3f6468fa0b2c79c26868deeaa8b302/Docs/Stage0/M0-contracts.md). These are background references, not files or amendments incorporated by this revision. The direction approves the UX and roadmap additions, not the pending Stage 0 proposals or a web implementation schedule.
+
 External references below were reviewed or retrieved on 5 October 2026 unless noted. These are implementation references, not a substitute for running Stage 0. Some Apple reference pages expose their full content only through JavaScript/Markdown; the exact API configuration and minimum-OS behavior must be checked in Xcode/documentation at kickoff. Avoid beta/develop branch assumptions. All security/API/store guidance must be rechecked before public release.
 
 [S1] **Readium Swift Toolkit** - official repository; supported publication/navigation capabilities and integration requirements. https://github.com/readium/swift-toolkit
@@ -1346,6 +1381,8 @@ External references below were reviewed or retrieved on 5 October 2026 unless no
 
 [S24] **Apple: UIFontMetrics** - scaling custom fonts with Dynamic Type against a text style. Added 6 October 2026. https://developer.apple.com/documentation/uikit/uifontmetrics
 
+[S25] **Gloss reference implementation** - reviewed 15 October 2026 at [commit `54b13b8882d8a109132c5b2045acd6b45628563d`](https://github.com/Nutlope/gloss/tree/54b13b8882d8a109132c5b2045acd6b45628563d). Interaction references: `components/reader/Lens.tsx`, `Margin.tsx`, `Answer.tsx`, `Reader.tsx`, and `lib/actions.ts` / `lib/prompts.ts`. Article references: `lib/fetch-article.ts`, `lib/html-to-blocks.ts`, `lib/images.ts` and the image/PDF evaluation cases under `scripts/`. These inform design and extraction experiments; they do not establish Sylvia's runtime behavior or replace its native stack. No reuse license was declared in that snapshot; direct source or asset adoption requires permission/license review under Sections 18 and 22.
+
 # Appendix C. Final release checklist
 
 Approve the versioned scope and decision register. Pin the SDK/dependencies and pass all Stage 0 gates. Demonstrate all six golden journeys on real devices. Pass every P0 acceptance case, including source deletion and restore. Resolve all critical/high privacy, data-loss, security and crash defects. Record any gated-feature exclusions in user-facing release notes rather than hiding them.
@@ -1355,6 +1392,14 @@ Verify source/capture fidelity, no false ready/saved states, no unexpected provi
 Complete privacy/distribution review, licensed sample content, support documentation and pilot feedback review. The final go/no-go question is not whether every component exists: **can a user reliably turn a reading or listening moment into knowledge they can find and trust later, even after the media is gone?**
 
 # Appendix D. Change log
+
+**Draft 0.4 - standalone Gloss UX and roadmap revision on main.** 15 October 2026. Based on main's draft 0.3, independently of the separately reviewed M0 branch and its own document revisions. Native iOS/iPadOS V1 and its lightweight Mac companion remain first. This revision does not import the M0 implementation, evidence, proposed amendments or gate approvals. [P3, S25]
+
+- Sections 1.1 and 21.2: assess the separately reviewed native work for reuse as it is integrated; preserve this plan's milestone dependencies, platform proposals and effort estimates.
+- Sections 4.1, 9.4, 13.1, 13.4 and 14.5: passage preview during capture/Ask, adaptive sheet/pane discussion, editable Explain/Simplify starters, source-linked follow-ups and retained-evidence previews with optional source navigation. M3's capture path remains independent of AI configuration.
+- Sections 20.2 and 21.2: acceptance cases T55-T57 and their M3/M5 exit demonstrations, including accessibility, missing-source and interrupted-request behavior. These are future product checks, not M0 passes.
+- Sections 4.4.9 and 24: portable design tokens include web clients; article extraction remains in post-V1 Phase A; the web reader is a separate later workstream with a bounded prototype and unresolved browser storage, provider, hosting and library-exchange decisions. No account, sync or web target is added to V1.
+- Appendix B: pin the M0 and Gloss background references and distinguish interaction inspiration from source reuse requiring a suitable license or permission. The companion addendum's sequencing note points to this roadmap; its future capture scope is unchanged.
 
 **Draft 0.2 - 6 October 2026.** Folded the Marginalia design language into the plan. Changes from draft 0.1:
 

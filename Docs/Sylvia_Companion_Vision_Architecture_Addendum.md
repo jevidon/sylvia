@@ -2,6 +2,7 @@
 ## Companion vision and architectural guardrails
 
 **Prepared:** 12 October 2026  
+**Revised:** 15 October 2026 (sequencing aligned with the standalone Gloss UX and roadmap revision)\
 **Status:** Proposed architecture addendum for review, not an expanded V1 implementation mandate  
 **Baseline reviewed:** *Sylvia_v1_iOS_Implementation_Plan.md*, team-review draft 0.1, 5 October 2026  
 **Scope authority:** The latest user direction is to keep V1 at its current scope. Nothing here promotes a deferred capability into V1 or resolves an existing open decision about AI, transfer, platform support or release delivery.
@@ -9,6 +10,8 @@
 > **Sylvia should preserve what a person takes from a work, regardless of where they read or listen. It must distinguish that retained knowledge from access to the underlying work.**
 
 This is a standalone supplement. It does not overwrite the original implementation plan. The baseline's relevant architecture and roadmap sections were reviewed; no application repository, runtime, connector or migration has been audited or tested for this addendum.
+
+**Current planning reference:** the 15 October implementation-plan revision adds Gloss-informed M3/M5 passage interactions and a later web reader while keeping native iOS/iPadOS V1 first. The native feasibility components, contracts and design prototype reviewed on `m0-integrate` remain separate, unmerged work linked in plan [P3]; their integration and M0 approvals are not part of this documentation revision. This update does not expand the future capture capabilities below.
 
 ---
 
@@ -231,6 +234,8 @@ These are **future feature tests**, not additions to V1's acceptance gate. Use t
 ## 11. Future sequencing
 
 Treat external capture, podcast subscriptions/native playback, and service-specific integrations as separable workstreams after V1.
+
+The later web reader is another separate workstream, governed by implementation plan Section 24. It can draw on Gloss's contextual reading interface while using Sylvia's versioned captures, evidence, locators and exported Marginalia tokens. Saved-article ingestion and browser-based reading have separate delivery decisions; neither adds a web target, account service or state synchronization to V1. Browser storage, credentials, library exchange and any hub or sync dependency are decisions for that later workstream. Its capture and AI flows preserve the evidence and retention boundaries in Sections 4, 7 and 8 of this addendum.
 
 The proposed first companion workstream should prove one complete capture-to-retrieval loop with real exported material, not start with a universal connector catalogue. Test a bounded physical-page flow or one explicitly supported clip representation. Verify save reliability, metadata ambiguity, provenance, correction, retention and evidence-scoped answers before claiming broad compatibility.
 

@@ -33,15 +33,32 @@ public enum AnswerOutcome: String, Codable, Sendable {
     case noAnswerText = "no_answer_text"
 }
 
+/// One attempt to send a record's request, and how it ended. Each attempt keeps its own ending, so a later attempt (a
+/// retry, or a resend the user confirmed) can replace the record's answer and failure without erasing the sign that an
+/// earlier attempt may have reached the provider and been billed (plan 14.4).
 public struct AttemptRecord: Codable, Sendable, Equatable {
     public var number: Int
     public var startedAt: Date
+    /// When Sylvia closed the attempt: when it ended or was stopped, or, for an attempt that was on the wire when Sylvia
+    /// closed, when the record was reconciled after the relaunch.
     public var endedAt: Date?
+    /// What ended the attempt when it failed: an error, a stop (Cancel or suspension), Sylvia's output limits, a relaunch,
+    /// or a final event from the provider with no answer text. Nil when the provider ended it with an answer, a partial
+    /// answer, a refusal or a content-filter stop; its `outcome` says how.
     public var failureKind: FailureKind?
+    /// Set with `failureKind`: whether the request may have reached the provider (`uncertain`), certainly did not
+    /// (`not_sent`), or was refused before anything was generated (`rejected`).
     public var acceptance: Acceptance?
     public var httpStatus: Int?
+    /// How the attempt's answer ended (`answer`, `partial`, `output_limit`, `no_answer_text` and so on) when the provider
+    /// ended the attempt or it produced answer text; nil when an error, a stop or a relaunch ended it before any.
+    public var outcome: AnswerOutcome?
+    /// Token usage the provider reported during this attempt, if any.
+    public var usage: TokenUsage?
     /// Partial text this attempt produced before a later attempt replaced it.
     public var supersededPartialText: String?
+    /// Refusal text this attempt received, kept here when a later attempt replaced the record's answer.
+    public var supersededRefusalText: String?
 
     enum CodingKeys: String, CodingKey {
         case number
@@ -50,7 +67,9 @@ public struct AttemptRecord: Codable, Sendable, Equatable {
         case failureKind = "failure_kind"
         case acceptance
         case httpStatus = "http_status"
+        case outcome, usage
         case supersededPartialText = "superseded_partial_text"
+        case supersededRefusalText = "superseded_refusal_text"
     }
 }
 

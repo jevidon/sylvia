@@ -1,9 +1,9 @@
 # environment: host: macOS 26.6.2 (25G83), arm64
 # toolchain: Xcode 27.0 Build version 27A266a 
 # command: Scripts/validate-contracts.py Contracts; Spikes/G05-AI/Scripts/explain-invalid-fixtures.py Contracts
-# commit: cf64744 (log copied 2026-10-12T15:32Z)
+# commit: 48a75c8 (log copied 2026-10-12T23:11Z)
 
-schemas: 2  fixtures: 46  openapi: 0  instances: 0
+schemas: 15  fixtures: 188  openapi: 1  instances: 1
 
 context-pack.v1/invalid/bad-citation-id.json: 1 error(s)
     rule properties/evidence/items/properties/citation_id/pattern at /evidence/0/citation_id: 'source-1' does not match '^c[1-9][0-9]{0,3}$'

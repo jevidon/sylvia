@@ -261,8 +261,18 @@ public struct ConversationTurnSnapshot: Codable, Sendable, Equatable {
 
     /// The turn an answered request adds to its conversation: its question and answer, the scopes and destination of
     /// its pack, and the highest position its pack used, counted in the pack's edition: -1 when it sent no evidence and
-    /// resent no turn that used any; nil when any evidence or resent turn has no known position in that edition (so a
-    /// restricted pack never includes it).
+    /// resent no turn that used any; nil when any evidence or resent turn has no known position in that edition. A
+    /// restricted pack never includes a turn whose position is nil. Unless the turn went to another destination, the
+    /// reason it gives first, it says the turn's place in this edition isn't known when a position is set, and that no
+    /// reading position is set when none is. A note or thought
+    /// with no position in the work counts as unknown too, even one on no work at all: the turn carries one maximum and
+    /// one edition, so it could not show later that a note made at a late place in another work is within that work's
+    /// boundary.
+    ///
+    /// The snapshot names an edition but no work. A turn about another work, with a position in that work's edition, is
+    /// left out of a restricted pack as one counted in "another edition", which is safe but names the wrong reason. Plan
+    /// 7.2 ties a conversation to one work (or a capture in it), so this arises only if M5 lets a conversation span
+    /// works; it would then need the work in the snapshot to say "another book".
     public init(question: String, answer: String, pack: ContextPack) {
         let edition = pack.work?.editionID
         let evidence = pack.evidence.map { item in item.editionID != nil && item.editionID == edition ? item.position?.lastOrdinal : nil }

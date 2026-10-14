@@ -52,6 +52,19 @@ public struct TextSelection: Sendable, Equatable {
     }
 }
 
+/// A position the user confirmed, in the edition whose extracted paragraphs its ordinal counts. Reading positions are
+/// edition-specific (plan 12): the same ordinal in another edition is a different paragraph, so the edition travels with
+/// the ordinal and a position from another edition is never applied to this one (plan 13.3).
+public struct ReadingPosition: Sendable, Equatable {
+    public var editionID: UUID
+    public var paragraphOrdinal: Int
+
+    public init(editionID: UUID, paragraphOrdinal: Int) {
+        self.editionID = editionID
+        self.paragraphOrdinal = paragraphOrdinal
+    }
+}
+
 public struct ContextRequest: Sendable {
     public var question: String
     public var conversationID: UUID
@@ -60,8 +73,10 @@ public struct ContextRequest: Sendable {
     public var thoughts: [SavedThought]
     /// "Do not include later passages" (plan 13.3).
     public var excludeLaterPassages: Bool
-    /// A position the user confirmed (for example their reading position). Without it the selection is the boundary.
-    public var confirmedBoundaryOrdinal: Int?
+    /// A position the user confirmed (for example their reading position), with the edition it counts in. Without it the
+    /// selection is the boundary. Under "Do not include later passages" a position in another edition than the pack's is
+    /// refused (`confirmedPositionInAnotherEdition`): it can't be compared with this edition's paragraphs.
+    public var confirmedPosition: ReadingPosition?
     public var history: [ConversationTurnSnapshot]
     /// Set when the user asks from a moment in a recording (for example "Meditations, Book One, 2:30"). Unless the
     /// pack carries a transcript or a confirmed companion passage for it, the pack states that the audio passage is
@@ -69,7 +84,7 @@ public struct ContextRequest: Sendable {
     public var audioMoment: String?
 
     public init(question: String, conversationID: UUID = UUID(), scope: ContextScope, selection: TextSelection? = nil,
-                thoughts: [SavedThought] = [], excludeLaterPassages: Bool = false, confirmedBoundaryOrdinal: Int? = nil,
+                thoughts: [SavedThought] = [], excludeLaterPassages: Bool = false, confirmedPosition: ReadingPosition? = nil,
                 history: [ConversationTurnSnapshot] = [], audioMoment: String? = nil) {
         self.question = question
         self.conversationID = conversationID
@@ -77,7 +92,7 @@ public struct ContextRequest: Sendable {
         self.selection = selection
         self.thoughts = thoughts
         self.excludeLaterPassages = excludeLaterPassages
-        self.confirmedBoundaryOrdinal = confirmedBoundaryOrdinal
+        self.confirmedPosition = confirmedPosition
         self.history = history
         self.audioMoment = audioMoment
     }
@@ -113,6 +128,9 @@ public enum ContextBuildError: Error, Equatable {
     case questionEmpty
     /// "Do not include later passages" is on and the selection lies after the user's confirmed position.
     case selectionAfterBoundary(selectionOrdinal: Int, boundaryOrdinal: Int)
+    /// "Do not include later passages" is on and the user's confirmed position counts the paragraphs of another edition,
+    /// which can't be compared with this one without an alignment (plan 12, 13.3).
+    case confirmedPositionInAnotherEdition
     /// Internal check failed: the assembled pack would hold text after its own spoiler boundary. Never expected.
     case spoilerBoundaryViolated([String])
     /// Internal check failed: the assembled pack would resend an earlier turn to a destination it did not go to, or with
@@ -135,6 +153,8 @@ public enum ContextBuildError: Error, Equatable {
         case .questionEmpty: "Enter a question."
         case .selectionAfterBoundary:
             "Your selection is after your confirmed position, and \"Do not include later passages\" is on. Move your position to the selection, or turn that setting off, to ask about it."
+        case .confirmedPositionInAnotherEdition:
+            "Your confirmed position is in another edition, which Sylvia can't compare with this one, and \"Do not include later passages\" is on. Confirm your position in this edition, or turn that setting off, to ask."
         case .spoilerBoundaryViolated:
             "Sylvia couldn't build this request without including passages after your position, so nothing was sent."
         case .historyRuleViolated:
@@ -178,8 +198,11 @@ public struct ContextPackBuilder: Sendable {
         // Spoiler boundary (plan 13.3): enforced by filtering before anything is assembled.
         var boundary = SpoilerBoundary.disabled
         if request.excludeLaterPassages {
-            if let confirmed = request.confirmedBoundaryOrdinal {
-                boundary = SpoilerBoundary(enabled: true, maxOrdinal: confirmed, basis: .userConfirmedPosition)
+            if let confirmed = request.confirmedPosition {
+                // A position counts one edition's paragraphs; applied to another edition it would draw the boundary on
+                // the wrong paragraphs, and the pack would claim a user-confirmed boundary it doesn't have.
+                guard confirmed.editionID == work.editionID else { throw ContextBuildError.confirmedPositionInAnotherEdition }
+                boundary = SpoilerBoundary(enabled: true, maxOrdinal: confirmed.paragraphOrdinal, basis: .userConfirmedPosition)
             } else if let selection = request.selection {
                 boundary = SpoilerBoundary(enabled: true, maxOrdinal: selection.paragraphOrdinal, basis: .selectionPosition)
             } else {
@@ -206,23 +229,40 @@ public struct ContextPackBuilder: Sendable {
         // History. A turn is resent only to the destination it was sent to (origin, classification and model): its
         // answer can repeat what it shared, for example the user's notes, and that destination has already received it
         // (plan 14.2, I-07). In a restricted pack, only turns whose evidence is known to lie within the boundary, counted
-        // in this edition's paragraphs (a turn that used another edition's text can't be compared with it). An
+        // in this edition's paragraphs (a turn that used another edition's text can't be compared with it). Each excluded
+        // turn is counted under the reason that is true for it: another destination, no position to compare with, another
+        // edition, an unknown place, or beyond the position (plan I-06, 22.3: the message matches the actual state). One
+        // exception is known: a turn names its edition but not its work, so a turn about another work counts as another
+        // edition (safe, but the wrong reason; plan 7.2 ties a conversation to one work, see ConversationTurnSnapshot). An
         // included answer's citation markers pointed into its own pack, whose evidence is not resent, so they are
         // replaced (plan 13.4, A.2).
         var included: [ConversationTurnSnapshot] = []
         var otherDestination = 0
         var beyondBoundary = 0
         var otherEdition = 0
+        // Turns whose evidence has no known place: a note or thought with no position in the work, or a thought from
+        // another edition (`ConversationTurnSnapshot.init(question:answer:pack:)` gives nil for these).
+        var unknownPlace = 0
+        // Turns that used any evidence while the boundary has no position to compare with (basis none).
+        var noPosition = 0
         for turn in request.history {
             if !turn.destination.isSameDestination(as: endpoint) {
                 otherDestination += 1
+                continue
+            }
+            if boundary.enabled, boundary.basis == .none, turn.maxEvidenceOrdinal != -1 {
+                noPosition += 1
                 continue
             }
             if boundary.enabled, turn.maxEvidenceOrdinal != nil, !turn.isPlaced(inEdition: work.editionID) {
                 otherEdition += 1
                 continue
             }
-            if boundary.enabled, (turn.maxEvidenceOrdinal ?? Int.max) > (maxOrdinal ?? Int.max) {
+            if boundary.enabled, turn.maxEvidenceOrdinal == nil {
+                unknownPlace += 1
+                continue
+            }
+            if boundary.enabled, let turnMax = turn.maxEvidenceOrdinal, turnMax > (maxOrdinal ?? Int.max) {
                 beyondBoundary += 1
                 continue
             }
@@ -242,7 +282,13 @@ public struct ContextPackBuilder: Sendable {
         if otherEdition > 0 {
             exclusionReasons.append("Earlier answers in this conversation used passages from another edition, which Sylvia can't compare with your position, so they weren't sent.")
         }
-        var excludedTurns = otherDestination + beyondBoundary + otherEdition
+        if unknownPlace > 0 {
+            exclusionReasons.append("Earlier answers in this conversation used material whose place in this edition isn't known, so they weren't sent.")
+        }
+        if noPosition > 0 {
+            exclusionReasons.append("\"Do not include later passages\" is on, but no reading position is set, so earlier answers in this conversation that used passages or saved thoughts weren't sent.")
+        }
+        var excludedTurns = otherDestination + beyondBoundary + otherEdition + unknownPlace + noPosition
         var historyTokens = included.map { estimator.estimate($0.question) + estimator.estimate($0.answer) + 10 }.reduce(0, +)
         var evidenceBudget = contextLimit - systemTokens - questionTokens - historyTokens - outputReserve - margin
         // Drop the oldest included turns if history alone crowds out evidence; disclose it.

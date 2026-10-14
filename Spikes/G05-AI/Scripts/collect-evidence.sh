@@ -12,7 +12,7 @@ mkdir -p "$OUT"
 HOST="host: $(sw_vers -productName) $(sw_vers -productVersion) ($(sw_vers -buildVersion)), $(uname -m)"
 XCODE="$(xcodebuild -version | tr '\n' ' ')"
 COMMIT="$(git -C "$SYLVIA_ROOT" rev-parse --short HEAD)"
-SIM="simulator: Sylvia-M0-g05-ai, $SYLVIA_SIM_DEVICE_TYPE, $SYLVIA_SIM_RUNTIME"
+SIM="simulator: ${SYLVIA_G05_SIM_NAME:-Sylvia-M0-g05-ai}, $SYLVIA_SIM_DEVICE_TYPE, $SYLVIA_SIM_RUNTIME"
 
 # file <source> <dest name> <environment> <command>
 file() {

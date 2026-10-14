@@ -94,10 +94,29 @@ The first agent's commit `d7ba9cc` contained only `Spikes/G05-AI/Package.swift` 
 - R5-03: saved thoughts and earlier turns carry the edition their ordinal counts in; positions are compared and recorded only in the pack's edition. The Swift self-check, the schema (`edition_id` with a position and on a turn that used evidence), the Python rule and two new invalid fixtures cover it. `TestPacks` now writes the work and edition on source text, as the builder does.
 - Mutation checks M54-M58 added (the mutation script now accepts several anchors for one safeguard, used by M54).
 
+## Review round 6 fixes (eleventh session, after M0 integration)
+
+- Branch `m0-int-minors-g05-ai` from the integration commit `b354dc7`; no earlier fixer had started (the branch did not exist). Simulator `Sylvia-M0-minors-g05-ai` (`SYLVIA_G05_SIM_NAME`), deleted at the end.
+- R6-01: each excluded earlier turn gets the reason that is true for it; new reasons for an unknown place and for no position set (the second was found while fixing the first). Tests through the real snapshot initializer (probes P3, P3b).
+- R6-02: `send` clears the earlier attempt's projection (partial text to `supersededPartialText`, outcome and failure cleared) before the offline branch, so a resend confirmed offline is a draft of the resend only.
+- R6-03: `HookedStore` can hold loads at a gate; the single-flight test releases it only after the second send has ended or reached the store. 30 of 30 unmutated runs pass, M1 caught 15 of 15 (`single-flight-determinism.log`). M54 now removes all three lookups in `createDraft`.
+- R6-04: `ContextRequest.confirmedPosition: ReadingPosition` (edition and ordinal); a position from another edition is refused under the boundary.
+- Mutation checks M59-M62 added; all 62 caught. CI minimums raised to 246 package tests.
+- The 1,664 `g05-<uuid>` directories in this Mac's temporary directory were counted, not deleted (outside the worktree; older G0.5 code may still be running elsewhere).
+
+## Review round 7 fixes (twelfth session)
+
+- Same branch, from `f838379`; no earlier fixer had started (no WIP commits after it). Simulator `Sylvia-M0-minors-g05-ai` again, deleted at the end.
+- R7-01 (blocker): `send` clears the earlier attempt's projection (`supersedeEarlierAttempt`) right after validation, before the consent check, so a confirmed resend that needs consent is `awaiting_consent` for the resend alone. Tests for a relaunch online and offline and for a model change (the reviewer's probes A1-A3).
+- R7-02 (major): every path that ends an attempt records how it ended on it: stops (`cancelled`, uncertain), relaunch reconciliation (`connection_lost`, uncertain), a stream without a final event (`invalid_response`, uncertain); each attempt also keeps its outcome and usage. Seven endings tested with an offline resend (probes B1-B3 and four more).
+- Found while fixing them: a resend carried over the earlier reasoning and tool-call flags, usage and refusal text (the reasoning flag reworded the resend's own message); a stream without a final event showed no reason beside its partial answer; a relaunch during a retry wait said the request "may have reached" the host, and the retry-stopped message said "refused" for an attempt that never reached the server. All fixed and tested.
+- R7-03: the mixed-pack test now has one turn per reason possible under a confirmed position (four), the snapshot comment is corrected, a turn about another work is recorded as a limitation, and ADR-0011's reasoning for refusing a position from another edition is corrected. R7-04: the leftover directories are pending-human (the owner).
+- Mutation checks M63-M77 added and M62 re-anchored; the full set of 77 is re-run on the final code.
+
 ## In progress / next
 
-Nothing in progress after the round 5 fixes. The workstream is complete for Stage 0 apart from the device and human steps in `Docs/Stage0/device-checklists/G05-AI.md` (pending by design). If resuming: re-run `Scripts/ci.sh g05-ai` and compare with `ci-clean-run.log`.
+Nothing in progress after the round 7 fixes. The workstream is complete for Stage 0 apart from the device and human steps in `Docs/Stage0/device-checklists/G05-AI.md` (pending by design). If resuming: re-run `Scripts/ci.sh g05-ai` and compare with `ci-clean-run.log`.
 
 ## Known problems
 
-None in the automated scope. Open risks are recorded as findings F1 (ATS on the simulator does not block cleartext to private IP literals), F6 (Local Network denial read from an undocumented error key) and the open questions in the report.
+One known wrong reason in the automated scope: a turn about another work is left out of a restricted pack as one from "another edition" (safe; report F23, review round 7), which can happen only if M5 lets a conversation span works. Open risks are recorded as findings F1 (ATS on the simulator does not block cleartext to private IP literals), F6 (Local Network denial read from an undocumented error key) and the open questions in the report.

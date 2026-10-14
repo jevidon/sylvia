@@ -252,7 +252,7 @@ struct ContextPackBuilderTests {
         let paragraph = Library.paragraph(in: Library.walden, containing: "I went to the woods because")
         #expect(throws: ContextBuildError.wholeWorkWithSpoilerBoundary) {
             try Library.build(ContextRequest(question: "Summarize", scope: .wholeWork, excludeLaterPassages: true,
-                                             confirmedBoundaryOrdinal: paragraph.ordinal), work: Library.walden, config: big)
+                                             confirmedPosition: ReadingPosition(editionID: Library.walden.snapshot.editionID, paragraphOrdinal: paragraph.ordinal)), work: Library.walden, config: big)
         }
         #expect(ContextBuildError.wholeWorkWithSpoilerBoundary.userMessage.contains("Relevant passages from this work"))
     }
@@ -269,7 +269,7 @@ struct ContextPackBuilderTests {
 
         let boundary = Library.middlemarch.work.paragraphs.last { $0.resourceHref == "text/chapter-10.xhtml" }!.ordinal
         let later = try Library.build(ContextRequest(question: "Raffles", scope: .workSearch, excludeLaterPassages: true,
-                                                     confirmedBoundaryOrdinal: boundary), work: Library.middlemarch)
+                                                     confirmedPosition: ReadingPosition(editionID: Library.middlemarch.snapshot.editionID, paragraphOrdinal: boundary)), work: Library.middlemarch)
         #expect(later.evidence.isEmpty && later.spoilerBoundary.excludedEvidenceCount > 0)
         #expect(later.limitations.map(\.code) == [.allExcludedByBoundary])
 
@@ -309,7 +309,7 @@ struct SpoilerBoundaryTests {
 
     @Test func restrictedWorkSearchContainsNothingAfterThePosition() throws {
         let request = ContextRequest(question: "Who is Raffles and what does he know about Bulstrode?", scope: .workSearch,
-                                     excludeLaterPassages: true, confirmedBoundaryOrdinal: Self.boundary)
+                                     excludeLaterPassages: true, confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary))
         let pack = try Library.build(request, work: Self.mm)
         #expect(pack.spoilerBoundary.enabled)
         #expect(pack.spoilerBoundary.basis == .userConfirmedPosition)
@@ -345,10 +345,11 @@ struct SpoilerBoundaryTests {
             ConversationTurnSnapshot(turnID: UUID(), question: "Unknown provenance", answer: "Something", maxEvidenceOrdinal: nil, editionID: Self.mm.snapshot.editionID, sharedScopes: [.sourceText], destination: Library.endpoint),
         ]
         let restricted = try Library.build(ContextRequest(question: "What is Bulstrode like?", scope: .workSearch, excludeLaterPassages: true,
-                                                          confirmedBoundaryOrdinal: Self.boundary, history: history), work: Self.mm)
+                                                          confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary), history: history), work: Self.mm)
         #expect(restricted.history.includedTurns.map(\.question) == ["Early question"])
         #expect(restricted.history.excludedTurnCount == 2)
-        #expect(restricted.history.exclusionReason?.contains("Start a new conversation") == true)
+        // R6-01: each excluded turn is counted under the reason that is true for it.
+        #expect(restricted.history.exclusionReason == "Earlier answers in this conversation used passages beyond your position, so they weren't sent. Start a new conversation with \"Do not include later passages\" to keep them out entirely. Earlier answers in this conversation used material whose place in this edition isn't known, so they weren't sent.")
         let body = PromptTemplate.request(for: restricted, maxOutputTokens: 100).messages.map(\.text).joined()
         #expect(!body.contains("Raffles"))
 
@@ -362,7 +363,7 @@ struct SpoilerBoundaryTests {
             SavedThought(captureID: UUID(), kind: .note, text: "Note on the ending", workID: Self.mm.snapshot.workID, editionID: Self.mm.snapshot.editionID, locationLabel: "LXXXVI", ordinal: Self.boundary + 3_000),
         ]
         let pack = try Library.build(ContextRequest(question: "q", scope: .selectedThoughts, thoughts: thoughts, excludeLaterPassages: true,
-                                                    confirmedBoundaryOrdinal: Self.boundary), work: Self.mm)
+                                                    confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary)), work: Self.mm)
         #expect(pack.evidence.map(\.text) == ["An early quote"])
         #expect(pack.spoilerBoundary.excludedEvidenceCount == 1)
         // R4-06: the kept thought records its work and place, so the stored pack shows it lies within the boundary.
@@ -383,7 +384,7 @@ struct SpoilerBoundaryTests {
             SavedThought(captureID: UUID(), kind: .note, text: "A general note", workID: nil, editionID: nil, locationLabel: "Note", ordinal: nil),
         ]
         let pack = try Library.build(ContextRequest(question: "q", scope: .selectedThoughts, thoughts: thoughts, excludeLaterPassages: true,
-                                                    confirmedBoundaryOrdinal: Self.boundary), work: Self.mm)
+                                                    confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary)), work: Self.mm)
         #expect(pack.evidence.map(\.text) == thoughts.map(\.text))
         #expect(pack.evidence.map(\.workID) == thoughts.map(\.workID))
         #expect(pack.evidence[1].position == nil && pack.evidence[2].position == nil, "no place in this work")
@@ -406,7 +407,7 @@ struct SpoilerBoundaryTests {
         let thought = SavedThought(captureID: UUID(), kind: .quote, text: "A quote whose place is not in this text", workID: Self.mm.snapshot.workID,
                                    editionID: Self.mm.snapshot.editionID, locationLabel: "?", ordinal: Self.mm.work.paragraphs.count + 50)
         let restricted = try Library.build(ContextRequest(question: "q", scope: .selectedThoughts, thoughts: [thought], excludeLaterPassages: true,
-                                                          confirmedBoundaryOrdinal: Self.mm.work.paragraphs.count + 100), work: Self.mm)
+                                                          confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.mm.work.paragraphs.count + 100)), work: Self.mm)
         #expect(restricted.evidence.isEmpty)
         #expect(restricted.spoilerBoundary.excludedEvidenceCount == 1)
         #expect(restricted.limitations == [ContextLimitation(code: .allExcludedByBoundary,
@@ -429,7 +430,7 @@ struct SpoilerBoundaryTests {
         #expect(10 < Self.boundary)
 
         let restricted = try Library.build(ContextRequest(question: "q", scope: .selectedThoughts, thoughts: [otherEdition, thisEdition],
-                                                          excludeLaterPassages: true, confirmedBoundaryOrdinal: Self.boundary), work: Self.mm)
+                                                          excludeLaterPassages: true, confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary)), work: Self.mm)
         #expect(restricted.evidence.map(\.text) == [thisEdition.text])
         #expect(restricted.evidence[0].editionID == Self.mm.snapshot.editionID)
         #expect(restricted.evidence[0].position == EvidencePosition(resourceHref: Self.mm.work.paragraphs[10].resourceHref, firstOrdinal: 10, lastOrdinal: 10))
@@ -437,7 +438,7 @@ struct SpoilerBoundaryTests {
         #expect(restricted.spoilerBoundaryViolations.isEmpty)
 
         let onlyOther = try Library.build(ContextRequest(question: "q", scope: .selectedThoughts, thoughts: [otherEdition], excludeLaterPassages: true,
-                                                         confirmedBoundaryOrdinal: Self.boundary), work: Self.mm)
+                                                         confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary)), work: Self.mm)
         #expect(onlyOther.evidence.isEmpty)
         #expect(onlyOther.limitations == [ContextLimitation(code: .allExcludedByBoundary,
                                                             disclosure: "None of the thoughts you selected can be shown to come before your position, so none were sent.")])
@@ -460,7 +461,7 @@ struct SpoilerBoundaryTests {
         let turn = ConversationTurnSnapshot(turnID: UUID(), question: "Early question", answer: "Early answer", maxEvidenceOrdinal: Self.boundary - 50,
                                             editionID: Self.mm.snapshot.editionID, sharedScopes: [.sourceText], destination: Library.endpoint)
         let pack = try Library.build(ContextRequest(question: "q", scope: .selectedThoughts, thoughts: [thought], excludeLaterPassages: true,
-                                                    confirmedBoundaryOrdinal: Self.boundary, history: [turn]), work: Self.mm)
+                                                    confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary), history: [turn]), work: Self.mm)
         #expect(pack.evidence.count == 1 && pack.history.includedTurns.count == 1)
         #expect(pack.spoilerBoundaryViolations.isEmpty)
 
@@ -490,7 +491,7 @@ struct SpoilerBoundaryTests {
         ]
         #expect(history[2].editionID == nil, "a turn that used no evidence names no edition")
         let restricted = try Library.build(ContextRequest(question: "What is Bulstrode like?", scope: .workSearch, excludeLaterPassages: true,
-                                                          confirmedBoundaryOrdinal: Self.boundary, history: history), work: Self.mm)
+                                                          confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary), history: history), work: Self.mm)
         #expect(restricted.history.includedTurns.map(\.question) == ["Asked in this edition", "Asked without evidence"])
         #expect(restricted.history.excludedTurnCount == 1)
         #expect(restricted.history.exclusionReason == "Earlier answers in this conversation used passages from another edition, which Sylvia can't compare with your position, so they weren't sent.")
@@ -501,6 +502,106 @@ struct SpoilerBoundaryTests {
         let next = ConversationTurnSnapshot(question: "What is Bulstrode like?", answer: "Pious.", pack: restricted)
         #expect(next.editionID == Self.mm.snapshot.editionID)
         #expect(next.maxEvidenceOrdinal.map { $0 <= Self.boundary } == true)
+    }
+
+    static let unknownPlaceReason = "Earlier answers in this conversation used material whose place in this edition isn't known, so they weren't sent."
+    static let beyondReason = "Earlier answers in this conversation used passages beyond your position, so they weren't sent. Start a new conversation with \"Do not include later passages\" to keep them out entirely."
+
+    /// R6-01 (I-06, plan 22.3): a turn whose evidence has no known place in this edition is left out of a restricted pack
+    /// with a reason that says so, never "used passages beyond your position". Both of the reviewer's probes go through the
+    /// real snapshot initializer: P3, a restricted pack holding only a general note (which a restricted pack may send);
+    /// P3b, an unrestricted pack holding a thought captured in another edition.
+    @Test func earlierTurnsWithAnUnknownPlaceSayWhy() throws {
+        let position = ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary)
+        let generalNote = SavedThought(captureID: UUID(), kind: .note, text: "A general note on vocation.", workID: nil, editionID: nil,
+                                       locationLabel: "Note", ordinal: nil)
+        let noteOnly = try Library.build(ContextRequest(question: "What does my note say?", scope: .selectedThoughts, thoughts: [generalNote],
+                                                        excludeLaterPassages: true, confirmedPosition: position), work: Self.mm)
+        #expect(noteOnly.evidence.map(\.origin) == [.userNote] && noteOnly.spoilerBoundary.enabled)
+        let p3 = ConversationTurnSnapshot(question: noteOnly.question, answer: "Your note says vocation matters.", pack: noteOnly)
+        #expect(p3.maxEvidenceOrdinal == nil && p3.editionID == nil, "a note has no place in this edition")
+
+        let otherEditionThought = SavedThought(captureID: UUID(), kind: .note, text: "Note made in another edition", workID: Self.mm.snapshot.workID,
+                                               editionID: UUID(), locationLabel: "Chapter I", ordinal: 10)
+        let foreign = try Library.build(ContextRequest(question: "What did I note?", scope: .selectedThoughts, thoughts: [otherEditionThought]), work: Self.mm)
+        let p3b = ConversationTurnSnapshot(question: foreign.question, answer: "You noted the opening.", pack: foreign)
+        #expect(p3b.maxEvidenceOrdinal == nil && p3b.editionID == nil)
+
+        for turn in [p3, p3b] {
+            let next = try Library.build(ContextRequest(question: "What is Bulstrode like?", scope: .workSearch, excludeLaterPassages: true,
+                                                        confirmedPosition: position, history: [turn]), work: Self.mm)
+            #expect(next.history.includedTurns.isEmpty)
+            #expect(next.history.excludedTurnCount == 1)
+            #expect(next.history.exclusionReason == Self.unknownPlaceReason)
+            #expect(next.spoilerBoundaryViolations.isEmpty)
+            // Without the restriction the turn is resent.
+            let open = try Library.build(ContextRequest(question: "What is Bulstrode like?", scope: .workSearch, history: [turn]), work: Self.mm)
+            #expect(open.history.includedTurns.map(\.turnID) == [turn.turnID] && open.history.exclusionReason == nil)
+        }
+
+        // One turn for each of the four reasons a turn can be left out of a pack with a confirmed position (the fifth, no
+        // position set, is the next test): each turn is counted once, under its own reason, and the reasons come in a
+        // fixed order. The turn that went to another model lies within the boundary, so the destination is its only reason.
+        var otherModel = Library.endpoint
+        otherModel.model = "another-local-model"
+        let elsewhere = ConversationTurnSnapshot(turnID: UUID(), question: "Asked of another model", answer: "Early.", maxEvidenceOrdinal: 10,
+                                                 editionID: Self.mm.snapshot.editionID, sharedScopes: [.sourceText], destination: otherModel)
+        let beyond = ConversationTurnSnapshot(turnID: UUID(), question: "Who is Raffles?", answer: "Later.", maxEvidenceOrdinal: Self.boundary + 2_000,
+                                              editionID: Self.mm.snapshot.editionID, sharedScopes: [.sourceText], destination: Library.endpoint)
+        let otherEdition = ConversationTurnSnapshot(turnID: UUID(), question: "Asked in another edition", answer: "Early.", maxEvidenceOrdinal: 10,
+                                                    editionID: UUID(), sharedScopes: [.sourceText], destination: Library.endpoint)
+        let mixed = try Library.build(ContextRequest(question: "What is Bulstrode like?", scope: .workSearch, excludeLaterPassages: true,
+                                                     confirmedPosition: position, history: [p3, beyond, elsewhere, otherEdition, p3b]), work: Self.mm)
+        #expect(mixed.history.includedTurns.isEmpty)
+        #expect(mixed.history.excludedTurnCount == 5)
+        #expect(mixed.history.exclusionReason == ["1 earlier question in this conversation went to a different provider or model, so it and its answer weren't sent to 127.0.0.1 · local · local-model.",
+                                                  Self.beyondReason,
+                                                  "Earlier answers in this conversation used passages from another edition, which Sylvia can't compare with your position, so they weren't sent.",
+                                                  Self.unknownPlaceReason].joined(separator: " "))
+    }
+
+    /// R6-01, same class: with "Do not include later passages" on and no position set, there is no position for an earlier
+    /// turn to be "beyond"; the reason says what is true.
+    @Test func earlierTurnsWithoutAPositionToCompareSayWhy() throws {
+        let used = ConversationTurnSnapshot(turnID: UUID(), question: "Who is Lydgate?", answer: "A doctor.", maxEvidenceOrdinal: 10,
+                                            editionID: Self.mm.snapshot.editionID, sharedScopes: [.sourceText], destination: Library.endpoint)
+        let unknown = ConversationTurnSnapshot(turnID: UUID(), question: "My note?", answer: "It says…", maxEvidenceOrdinal: nil,
+                                               editionID: nil, sharedScopes: [.savedThoughts], destination: Library.endpoint)
+        let none = ConversationTurnSnapshot(turnID: UUID(), question: "Hello?", answer: "Hello.", maxEvidenceOrdinal: -1,
+                                            editionID: nil, sharedScopes: [], destination: Library.endpoint)
+        let pack = try Library.build(ContextRequest(question: "What happens to Dorothea?", scope: .workSearch, excludeLaterPassages: true,
+                                                    history: [used, unknown, none]), work: Self.mm)
+        #expect(pack.spoilerBoundary.basis == .none)
+        #expect(pack.history.includedTurns.map(\.turnID) == [none.turnID], "a turn that used no evidence is kept")
+        #expect(pack.history.excludedTurnCount == 2)
+        #expect(pack.history.exclusionReason == "\"Do not include later passages\" is on, but no reading position is set, so earlier answers in this conversation that used passages or saved thoughts weren't sent.")
+    }
+
+    /// R6-04 (plan 12, 13.3): a confirmed position counts one edition's paragraphs. Under "Do not include later passages",
+    /// a position from another edition of the work is refused in every scope rather than applied to this edition's
+    /// paragraphs (where it would draw the boundary in the wrong place while the pack claimed a user-confirmed boundary).
+    /// The same ordinal in this edition is applied; without the restriction the position is not used at all.
+    @Test(arguments: [ContextScope.selectedPassage, .passageAndNearby, .workSearch, .selectedThoughts])
+    func confirmedPositionFromAnotherEditionIsRefused(scope: ContextScope) throws {
+        let early = Self.mm.work.paragraphs.first { $0.resourceHref == "text/chapter-5.xhtml" && $0.wordCount > 40 }!
+        let selection = TextSelection(paragraphOrdinal: early.ordinal, exactText: String(early.text.prefix(60)))
+        let thoughts = [SavedThought(captureID: UUID(), kind: .quote, text: "An early quote", workID: Self.mm.snapshot.workID,
+                                     editionID: Self.mm.snapshot.editionID, locationLabel: "I", ordinal: 10)]
+        func request(_ position: ReadingPosition, restricted: Bool) -> ContextRequest {
+            ContextRequest(question: "What does Dorothea want?", scope: scope, selection: scope == .selectedThoughts ? nil : selection,
+                           thoughts: scope == .selectedThoughts ? thoughts : [], excludeLaterPassages: restricted, confirmedPosition: position)
+        }
+        let foreign = ReadingPosition(editionID: UUID(), paragraphOrdinal: Self.boundary)
+        #expect(throws: ContextBuildError.confirmedPositionInAnotherEdition) { try Library.build(request(foreign, restricted: true), work: Self.mm) }
+        #expect(ContextBuildError.confirmedPositionInAnotherEdition.userMessage == "Your confirmed position is in another edition, which Sylvia can't compare with this one, and \"Do not include later passages\" is on. Confirm your position in this edition, or turn that setting off, to ask.")
+
+        let mine = try Library.build(request(ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary), restricted: true), work: Self.mm)
+        #expect(mine.spoilerBoundary == SpoilerBoundary(enabled: true, maxOrdinal: Self.boundary, basis: .userConfirmedPosition,
+                                                        excludedEvidenceCount: mine.spoilerBoundary.excludedEvidenceCount))
+        #expect(mine.spoilerBoundaryViolations.isEmpty)
+
+        let open = try Library.build(request(foreign, restricted: false), work: Self.mm)
+        #expect(open.spoilerBoundary == .disabled)
     }
 
     @Test func noEnforceablePositionMeansNoRetrievalRatherThanAFalsePromise() throws {
@@ -529,7 +630,7 @@ struct SpoilerBoundaryTests {
         let later = Self.mm.work.paragraphs.first { $0.ordinal > Self.boundary + 1_500 && $0.wordCount > 40 }!
         let selection = TextSelection(paragraphOrdinal: later.ordinal, exactText: String(later.text.prefix(60)))
         let request = ContextRequest(question: "What does this mean for Dorothea?", scope: scope, selection: selection,
-                                     excludeLaterPassages: true, confirmedBoundaryOrdinal: Self.boundary)
+                                     excludeLaterPassages: true, confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary))
         #expect(throws: ContextBuildError.selectionAfterBoundary(selectionOrdinal: later.ordinal, boundaryOrdinal: Self.boundary)) {
             try Library.build(request, work: Self.mm)
         }
@@ -542,7 +643,7 @@ struct SpoilerBoundaryTests {
                           Self.mm.work.paragraphs.first { $0.resourceHref == "text/chapter-5.xhtml" && $0.wordCount > 40 }!] {
             let inside = TextSelection(paragraphOrdinal: paragraph.ordinal, exactText: String(paragraph.text.prefix(60)))
             let pack = try Library.build(ContextRequest(question: "What does this mean for Dorothea?", scope: scope, selection: inside,
-                                                        excludeLaterPassages: true, confirmedBoundaryOrdinal: Self.boundary), work: Self.mm)
+                                                        excludeLaterPassages: true, confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: Self.boundary)), work: Self.mm)
             #expect(pack.spoilerBoundary.maxOrdinal == Self.boundary)
             #expect(pack.spoilerBoundaryViolations.isEmpty)
             #expect(pack.evidence.allSatisfy { ($0.position?.lastOrdinal ?? Int.min) <= Self.boundary })
@@ -566,7 +667,7 @@ struct SpoilerBoundaryTests {
             let words = Set(chunk.text.lowercased().split { !$0.isLetter }.map(String.init).filter { $0.count >= 8 })
             let question = words.sorted { ($0.count, $0) > ($1.count, $1) }.prefix(10).joined(separator: " ")
             let pack = try Library.build(ContextRequest(question: question, scope: .workSearch, excludeLaterPassages: true,
-                                                        confirmedBoundaryOrdinal: boundary), work: Self.mm)
+                                                        confirmedPosition: ReadingPosition(editionID: Self.mm.snapshot.editionID, paragraphOrdinal: boundary)), work: Self.mm)
             #expect(pack.spoilerBoundaryViolations.isEmpty, "boundary \(boundary)")
             #expect(pack.evidence.allSatisfy { ($0.position?.lastOrdinal ?? Int.min) <= boundary }, "boundary \(boundary)")
             #expect(!pack.evidence.contains { $0.text == chunks[i + 1].text }, "the later chunk in the same chapter is never sent")

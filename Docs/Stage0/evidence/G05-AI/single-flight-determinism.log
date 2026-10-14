@@ -1,0 +1,41 @@
+# command: .build/scratch/m1-repeat.sh (in this worktree): 30 runs of swift test --filter concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce, then 15 runs of cd Spikes/G05-AI && python3 Scripts/mutation-checks.py M1
+# Swift sources and tests as committed at 91fb45d (review round 6 WIP); host only, no simulator; no test plays audio
+# environment: host: macOS 26.6.2 (25G83), arm64
+# toolchain: Xcode 27.0 Build version 27A266a 
+# commit: 91fb45d (working tree as committed)
+# uptime at start:  6:42  up 9 days, 16:53, 1 user, load averages: 12.62 31.88 36.17
+## Unmutated: concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce run 30 times
+unmutated: 30 of 30 runs passed
+## M1 (in-flight guard removed) run 15 times: python3 Scripts/mutation-checks.py M1
+run 1: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 1:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 2: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 2:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 3: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 3:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 4: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 4:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 5: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 5:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 6: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 6:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 7: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 7:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 8: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 8:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 9: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 9:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 10: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 10:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 11: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 11:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 12: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 12:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 13: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 13:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 14: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 14:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+run 15: M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+run 15:     ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:731:9: Expectation failed: afterSecond == "second send ended"
+M1: caught in 15 of 15 runs
+# uptime at end:  6:43  up 9 days, 16:54, 1 user, load averages: 15.90 27.94 34.25

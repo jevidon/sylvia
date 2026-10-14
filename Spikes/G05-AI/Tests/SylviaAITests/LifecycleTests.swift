@@ -464,6 +464,354 @@ struct LifecycleTests {
         #expect(sent.state == .complete)
     }
 
+    /// R6-02 (plan 14.4, A.4): the user confirms a resend while offline of a request interrupted by a dropped connection
+    /// after some text, or failed with an uncertain 502. The record becomes a draft of the queued resend only: the earlier
+    /// attempt's partial text moves to that attempt, which already records how it ended (outcome, failure kind,
+    /// acceptance), so the draft never shows the earlier partial answer or its "may have been processed" failure beside
+    /// "Draft · not sent", in memory or on disk. Nothing is sent until the user sends again online, and that send needs no
+    /// second confirmation. The other ways an attempt can end are covered by
+    /// `confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded`, and a resend that needs consent first by
+    /// `confirmedResendThatNeedsConsentIsADraftOfTheResendOnly` (review round 7).
+    @Test(arguments: ["interrupted", "failed_retryable"])
+    func confirmedResendWhileOfflineIsADraftOfTheResendOnly(firstEnd: String) async throws {
+        let lost = ProviderError(kind: .connectionLost, acceptance: .uncertain, host: "127.0.0.1")
+        let badGateway = ProviderError(kind: .serverError, acceptance: .uncertain, host: "127.0.0.1", httpStatus: 502)
+        let firstScript: [ScriptedProvider.Step] = firstEnd == "interrupted" ? [Self.accepted, Self.text("Partial words"), .fail(lost)] : [.fail(badGateway)]
+        let h = try Harness(scripts: [firstScript, [Self.accepted, Self.text("Whole answer."), Self.done]])
+        let id = try await h.ready()
+        let first = try await h.coordinator.send(id)
+        #expect(first.state.rawValue == firstEnd)
+        #expect(first.failure?.resubmitNeedsConfirmation == true || first.state == .interrupted)
+
+        h.connectivity.set(online: false)
+        await #expect(throws: AskError.resubmitNeedsConfirmation) { try await h.coordinator.send(id) }
+        let queued = try await h.coordinator.send(id, userConfirmedResubmit: true)
+        #expect(queued.state == .draft && queued.queuedOffline)
+        #expect(queued.statusPhrase == "Draft · not sent")
+        #expect(queued.answerText.isEmpty && queued.refusalText.isEmpty)
+        #expect(queued.outcome == nil && queued.failure == nil)
+        // The earlier attempt keeps what it was: its partial text, outcome, failure kind and acceptance.
+        #expect(queued.attempts.count == 1)
+        #expect(queued.attempts[0].supersededPartialText == (firstEnd == "interrupted" ? "Partial words" : nil))
+        #expect(queued.attempts[0].outcome == (firstEnd == "interrupted" ? .partial : nil))
+        #expect(queued.attempts[0].failureKind == (firstEnd == "interrupted" ? .connectionLost : .serverError))
+        #expect(queued.attempts[0].acceptance == .uncertain)
+        #expect(queued.attempts[0].httpStatus == (firstEnd == "interrupted" ? nil : 502))
+        let stored = try #require(try await h.reloaded(id))
+        #expect(stored.state == .draft && stored.queuedOffline && stored.statusPhrase == "Draft · not sent", "the same projection is durable")
+        #expect(stored.answerText.isEmpty && stored.outcome == nil && stored.failure == nil)
+        #expect(stored.attempts.map(\.supersededPartialText) == queued.attempts.map(\.supersededPartialText))
+        #expect(stored.attempts.map(\.acceptance) == [.uncertain])
+        #expect(h.provider.requests.count == 1, "nothing is sent while offline")
+
+        h.connectivity.set(online: true)
+        let sent = try await h.coordinator.send(id)
+        #expect(sent.state == .complete && sent.answerText == "Whole answer." && sent.statusPhrase == "Complete")
+        #expect(sent.attempts.count == 2)
+        #expect(sent.attempts[0].supersededPartialText == queued.attempts[0].supersededPartialText)
+        #expect(h.provider.requests.count == 2)
+    }
+
+    /// Polls `condition` every 5 ms for up to 10 s and records an issue if it never holds, so a broken test fails
+    /// instead of hanging.
+    static func waitUntil(_ condition: @Sendable () async -> Bool) async throws {
+        let deadline = ContinuousClock.now + .seconds(10)
+        while !(await condition()) {
+            guard ContinuousClock.now < deadline else {
+                Issue.record("the awaited condition never held")
+                return
+            }
+            try await Task.sleep(for: .milliseconds(5))
+        }
+    }
+
+    /// Why a resend the user confirms needs consent before it can go out (R7-01).
+    enum ResendConsentCase: String, CaseIterable, CustomStringConvertible, Sendable {
+        /// Probe A1: Sylvia was relaunched. The spike keeps the text consent ledger in memory (Q7), so it is empty.
+        case relaunchedOnline = "relaunched, online"
+        /// Probe A3: the same while offline, R6-02's own case after a relaunch.
+        case relaunchedOffline = "relaunched, offline"
+        /// Probe A2: in the same session the provider's model was changed for another question and allowed there.
+        case modelChangedForAnotherQuestion = "model changed for another question"
+        var description: String { rawValue }
+    }
+
+    /// R7-01 (plan 14.4, A.4; the reviewer's probes A1-A3): consent is checked again when a resend the user confirmed is
+    /// sent, and it can be needed then. The record is stored as `awaiting_consent` for the resend alone: "Draft · not
+    /// sent" with no earlier partial answer, outcome or "may or may not have been processed" failure beside it, in memory
+    /// and on disk, while the earlier attempt keeps its partial text and how it ended (it may have reached the provider).
+    /// Nothing is sent before consent. Once the user allows it, the resend goes ahead without a second confirmation:
+    /// sent at once online, or queued as a draft offline and sent when the user sends it online.
+    @Test(arguments: ResendConsentCase.allCases)
+    func confirmedResendThatNeedsConsentIsADraftOfTheResendOnly(_ reason: ResendConsentCase) async throws {
+        let lost = ProviderError(kind: .connectionLost, acceptance: .uncertain, host: "127.0.0.1")
+        let h = try Harness(scripts: [[Self.accepted, Self.text("Partial words"), .fail(lost)],
+                                      [Self.accepted, Self.text("Whole answer."), Self.done]])
+        let id = try await h.ready()
+        let first = try await h.coordinator.send(id)
+        #expect(first.state == .interrupted && first.outcome == .partial && first.answerText == "Partial words")
+        #expect(first.failure?.userMessage == "The connection to 127.0.0.1 dropped. The request may or may not have been processed.")
+
+        let coordinator: AskCoordinator
+        switch reason {
+        case .relaunchedOnline, .relaunchedOffline:
+            h.connectivity.set(online: reason == .relaunchedOnline)
+            coordinator = AskCoordinator(store: try FileAskStore(directory: h.directory), providerFactory: { _ in h.provider },
+                                         connectivity: h.connectivity, sleeper: h.sleeper, clock: h.clock)
+            #expect(try await coordinator.reconcileAfterLaunch().isEmpty, "an interrupted record is not on the wire")
+        case .modelChangedForAnotherQuestion:
+            var otherModel = Self.localConfig
+            otherModel.model = "another-model"
+            let other = TestPacks.make(question: "Another question?", config: otherModel)
+            _ = try await h.coordinator.createDraft(pack: other, config: otherModel)
+            #expect(try await h.coordinator.prepare(other.requestID).state == .awaitingConsent)
+            _ = try await h.coordinator.grantConsent(other.requestID)
+            coordinator = h.coordinator
+        }
+        await #expect(throws: AskError.resubmitNeedsConfirmation) { try await coordinator.send(id) }
+        await #expect(throws: AskError.consentRequired) { try await coordinator.send(id, userConfirmedResubmit: true) }
+        #expect(h.provider.requests.count == 1, "nothing is resent before consent")
+        let disclosure = try #require(await coordinator.disclosure(for: id))
+        #expect(disclosure.reasons == (reason == .modelChangedForAnotherQuestion ? [.modelChanged(previousModel: "another-model")] : [.firstRequest]))
+        let stored = try #require(try await h.reloaded(id))
+        for record in [try await coordinator.record(id), stored] {
+            #expect(record.state == .awaitingConsent && record.statusPhrase == "Draft · not sent")
+            #expect(record.answerText.isEmpty && record.refusalText.isEmpty && record.outcome == nil && record.failure == nil,
+                    "nothing of the earlier attempt is shown beside \"Draft · not sent\"")
+            #expect(record.attempts.count == 1)
+            #expect(record.attempts.first?.supersededPartialText == "Partial words")
+            #expect(record.attempts.first?.outcome == .partial)
+            #expect(record.attempts.first?.failureKind == .connectionLost)
+            #expect(record.attempts.first?.acceptance == .uncertain, "the earlier attempt still says it may have reached the provider")
+        }
+
+        _ = try await coordinator.grantConsent(id)
+        var sent = try await coordinator.send(id)
+        if reason == .relaunchedOffline {
+            #expect(sent.state == .draft && sent.queuedOffline && sent.statusPhrase == "Draft · not sent")
+            #expect(sent.answerText.isEmpty && sent.outcome == nil && sent.failure == nil && sent.attempts == stored.attempts)
+            #expect(h.provider.requests.count == 1, "nothing is sent while offline")
+            h.connectivity.set(online: true)
+            sent = try await coordinator.send(id)
+        }
+        #expect(sent.state == .complete && sent.answerText == "Whole answer." && sent.statusPhrase == "Complete")
+        #expect(sent.attempts.count == 2)
+        #expect(sent.attempts.first == stored.attempts.first, "the earlier attempt is unchanged")
+        #expect(h.provider.requests.count == 2)
+    }
+
+    /// How a first attempt ended without a complete answer (R7-02).
+    enum EarlierEnding: String, CaseIterable, CustomStringConvertible, Sendable {
+        /// Probe B2.
+        case cancelledBeforeAnyText = "Cancel before any text"
+        case cancelledAfterText = "Cancel after some text"
+        case suspendedBeforeAnyText = "suspension before any text"
+        /// Probe B1.
+        case suspendedAfterText = "suspension after some text"
+        /// Probe B3: Sylvia closed while the request was on the wire; the relaunch reconciles the record.
+        case relaunchedBeforeAnyText = "relaunch before any text"
+        case relaunchedAfterText = "relaunch after some text"
+        /// A provider whose stream simply stops, with no final event and no error.
+        case endedWithoutAFinalEvent = "stream ended without a final event"
+
+        var description: String { rawValue }
+        var hasText: Bool { [.cancelledAfterText, .suspendedAfterText, .relaunchedAfterText, .endedWithoutAFinalEvent].contains(self) }
+        var isRelaunch: Bool { self == .relaunchedBeforeAnyText || self == .relaunchedAfterText }
+        var stop: StopReason? {
+            switch self {
+            case .cancelledBeforeAnyText, .cancelledAfterText: .user
+            case .suspendedBeforeAnyText, .suspendedAfterText: .suspension
+            default: nil
+            }
+        }
+        /// The state the first attempt leaves the record in.
+        var state: AskState {
+            switch self {
+            case .cancelledBeforeAnyText, .cancelledAfterText: .cancelled
+            case .suspendedBeforeAnyText, .relaunchedBeforeAnyText: .failedRetryable
+            case .suspendedAfterText, .relaunchedAfterText, .endedWithoutAFinalEvent: .interrupted
+            }
+        }
+        /// What the earlier attempt must record as having ended it.
+        var kind: FailureKind { stop != nil ? .cancelled : isRelaunch ? .connectionLost : .invalidResponse }
+    }
+
+    /// R7-02 (plan 14.4; the reviewer's probes B1-B3): every way an attempt can end without a complete answer records on
+    /// the attempt how it ended. A confirmed resend while offline clears the record's answer and failure, so the earlier
+    /// attempt is then the only place that says it may have reached the provider and been billed: it keeps its failure
+    /// kind, acceptance (uncertain), outcome and partial text, after a Cancel or a suspension before or after text, after
+    /// a relaunch while the request was on the wire (before or after text), and after a stream that stopped without a
+    /// final event (which also shows its reason beside "Interrupted · partial answer"). The draft holds only the resend;
+    /// back online it is sent without a second confirmation and the earlier attempt is unchanged.
+    @Test(arguments: EarlierEnding.allCases)
+    func confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_ ending: EarlierEnding) async throws {
+        let text = "Earlier words"
+        let reached = Mutex(false)
+        let firstScript: [ScriptedProvider.Step]
+        switch ending {
+        case .cancelledBeforeAnyText, .suspendedBeforeAnyText:
+            firstScript = [.hook { reached.withLock { $0 = true } }, .waitForCancellation]
+        case .cancelledAfterText, .suspendedAfterText:
+            firstScript = [Self.accepted, Self.text(text), .hook { reached.withLock { $0 = true } }, .waitForCancellation]
+        case .endedWithoutAFinalEvent:
+            firstScript = [Self.accepted, Self.text(text)]
+        case .relaunchedBeforeAnyText, .relaunchedAfterText:
+            firstScript = []  // the first attempt was sent by a process that closed; only its record is left
+        }
+        let resend: [ScriptedProvider.Step] = [Self.accepted, Self.text("Whole answer."), Self.done]
+        let h = try Harness(scripts: ending.isRelaunch ? [resend] : [firstScript, resend])
+        let id = try await h.ready()
+        var coordinator = h.coordinator
+        let first: AskRecord
+        if let stop = ending.stop {
+            let task = Task { try await h.coordinator.send(id) }
+            try await Self.waitUntil { reached.withLock { $0 } }
+            if ending.hasText { try await Self.waitUntil { (try? await h.coordinator.record(id).answerText) == text } }
+            await h.coordinator.stop(id, reason: stop)
+            first = try await task.value
+        } else if ending.isRelaunch {
+            // What a process that closed mid-request leaves on disk: the record in `sending`, or in `streaming` with its last
+            // checkpoint, and its attempt still open. The relaunched coordinator has the consent the app keeps.
+            var onTheWire = try await h.coordinator.record(id)
+            onTheWire.state = ending.hasText ? .streaming : .sending
+            onTheWire.answerText = ending.hasText ? text : ""
+            onTheWire.attempts = [AttemptRecord(number: 1, startedAt: h.clock.now())]
+            try await h.store.save(onTheWire)
+            coordinator = AskCoordinator(store: try FileAskStore(directory: h.directory), consent: await h.coordinator.consent,
+                                         providerFactory: { _ in h.provider }, connectivity: h.connectivity, sleeper: h.sleeper, clock: h.clock)
+            let reconciled = try await coordinator.reconcileAfterLaunch()
+            #expect(reconciled.map(\.id) == [id])
+            first = try #require(reconciled.first)
+        } else {
+            first = try await h.coordinator.send(id)
+        }
+        #expect(first.state == ending.state)
+        #expect(first.answerText == (ending.hasText ? text : ""))
+        #expect(first.statusPhrase != "Draft · not sent")
+        if ending == .endedWithoutAFinalEvent {
+            #expect(first.statusPhrase == "Interrupted · partial answer")
+            #expect(first.outcomeMessage == "The answer stopped without a final event.", "the reason is shown beside the partial answer")
+        }
+        #expect(first.attempts.count == 1)
+        let earlier = try #require(first.attempts.first)
+        #expect(earlier.endedAt != nil, "the attempt is closed")
+        #expect(earlier.failureKind == ending.kind)
+        #expect(earlier.acceptance == .uncertain, "the earlier attempt says it may have reached the provider")
+        #expect(earlier.outcome == (ending.hasText ? .partial : nil))
+
+        h.connectivity.set(online: false)
+        await #expect(throws: AskError.resubmitNeedsConfirmation) { try await coordinator.send(id) }
+        let queued = try await coordinator.send(id, userConfirmedResubmit: true)
+        let stored = try #require(try await h.reloaded(id))
+        for record in [queued, stored] {
+            #expect(record.state == .draft && record.queuedOffline && record.statusPhrase == "Draft · not sent")
+            #expect(record.answerText.isEmpty && record.outcome == nil && record.failure == nil)
+            #expect(record.attempts.count == 1)
+            #expect(record.attempts.first?.supersededPartialText == (ending.hasText ? text : nil))
+            #expect(record.attempts.first?.failureKind == ending.kind)
+            #expect(record.attempts.first?.acceptance == .uncertain, "the resend left the earlier attempt's acceptance in place")
+            #expect(record.attempts.first?.outcome == earlier.outcome && record.attempts.first?.endedAt == earlier.endedAt)
+        }
+        let earlierRequests = ending.isRelaunch ? 0 : 1
+        #expect(h.provider.requests.count == earlierRequests, "nothing is sent while offline")
+
+        h.connectivity.set(online: true)
+        let sent = try await coordinator.send(id)
+        #expect(sent.state == .complete && sent.answerText == "Whole answer.")
+        #expect(sent.attempts.count == 2)
+        #expect(sent.attempts.first == stored.attempts.first, "the earlier attempt is unchanged")
+        #expect(h.provider.requests.count == earlierRequests + 1)
+    }
+
+    /// R7-01 and R7-02 (A.4, I-04): a resend replaces everything the record showed for the earlier attempt, so nothing
+    /// that attempt left describes the resend. Its answer and refusal text move to its attempt record, which already holds
+    /// its outcome and usage, and the record's outcome, failure, usage and reasoning and tool-call flags are cleared. Left
+    /// over, the reasoning flag would make the resend's own "no answer text" message say the model sent only its
+    /// reasoning, and the usage would be shown as the resend's.
+    @Test func confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() async throws {
+        let lost = ProviderError(kind: .connectionLost, acceptance: .uncertain, host: "127.0.0.1")
+        let usage = TokenUsage(inputTokens: 40, outputTokens: 3)
+        let h = try Harness(scripts: [[Self.accepted, .event(.status(.reasoningOmitted)), Self.text("Partial words"),
+                                       .event(.status(.toolCallRejected(name: "search"))), .event(.refusal("Declined after that.")),
+                                       .event(.usage(usage)), .fail(lost)],
+                                      [Self.accepted, Self.done]])
+        let id = try await h.ready()
+        let first = try await h.coordinator.send(id)
+        #expect(first.state == .interrupted && first.reasoningOmitted && first.toolCallRejected)
+        #expect(first.refusalText == "Declined after that." && first.usage == usage)
+        #expect(first.attempts.first?.usage == usage, "the attempt records the usage reported during it")
+        #expect(first.attempts.first?.outcome == .partial)
+
+        h.connectivity.set(online: false)
+        let queued = try await h.coordinator.send(id, userConfirmedResubmit: true)
+        let stored = try #require(try await h.reloaded(id))
+        for record in [queued, stored] {
+            #expect(record.state == .draft && record.statusPhrase == "Draft · not sent")
+            #expect(record.answerText.isEmpty && record.refusalText.isEmpty && record.outcome == nil && record.failure == nil)
+            #expect(record.usage == nil, "the earlier attempt's usage is not shown as the resend's")
+            #expect(!record.reasoningOmitted && !record.toolCallRejected)
+            #expect(record.attempts.count == 1)
+            #expect(record.attempts.first?.supersededPartialText == "Partial words")
+            #expect(record.attempts.first?.supersededRefusalText == "Declined after that.")
+            #expect(record.attempts.first?.usage == usage && record.attempts.first?.outcome == .partial)
+            #expect(record.attempts.first?.failureKind == .connectionLost && record.attempts.first?.acceptance == .uncertain)
+        }
+
+        // The resend ends normally with no answer text and no reasoning: the message is the resend's own.
+        h.connectivity.set(online: true)
+        let resent = try await h.coordinator.send(id)
+        #expect(resent.state == .failedRetryable && resent.outcome == .noAnswerText)
+        #expect(resent.statusPhrase == "127.0.0.1 ended its reply without any answer text. If the model reasons first, it may need a larger maximum output for this endpoint.")
+        #expect(!resent.reasoningOmitted && !resent.toolCallRejected && resent.usage == nil)
+        #expect(resent.attempts.count == 2)
+        #expect(resent.attempts.last?.usage == nil && resent.attempts.first?.usage == usage)
+        #expect(h.provider.requests.count == 2)
+    }
+
+    /// Sylvia closes while waiting to retry an attempt the server certainly did not take: a 503 from a local server
+    /// (refused before generating) or a connection the server refused (never reached it). Only such failures are retried
+    /// automatically, and the next attempt is written before its request leaves, so nothing was on the wire. After the
+    /// relaunch the record says so, a plain Send goes ahead, and the refused attempt keeps its own ending instead of being
+    /// marked as one that may have reached the provider.
+    @Test(arguments: [Acceptance.rejected, .notSent])
+    func relaunchWhileWaitingToRetryKeepsTheRefusedAttempt(_ acceptance: Acceptance) async throws {
+        let directory = TestPacks.temporaryDirectory()
+        let refused = acceptance == .rejected
+            ? ProviderError(kind: .serverError, acceptance: .rejected, host: "127.0.0.1", httpStatus: 503)
+            : ProviderError(kind: .hostUnreachable, acceptance: .notSent, host: "127.0.0.1")
+        let provider = ScriptedProvider(config: Self.localConfig, scripts: [[.fail(refused)], [Self.accepted, Self.text("After the relaunch."), Self.done]])
+        let clock = ManualClock()
+        let sleeper = BlockingSleeper()
+        let original = AskCoordinator(store: try FileAskStore(directory: directory), providerFactory: { _ in provider },
+                                      connectivity: FakeConnectivity(online: true), sleeper: sleeper, clock: clock, retry: RetryPolicy(jitter: false))
+        let pack = TestPacks.make(config: Self.localConfig)
+        _ = try await original.createDraft(pack: pack, config: Self.localConfig)
+        _ = try await original.prepare(pack.requestID)
+        _ = try await original.grantConsent(pack.requestID)
+        let waiting = Task { try await original.send(pack.requestID) }
+        try await Self.waitUntil { sleeper.started.withLock { $0 } > 0 }
+        let onDisk = try #require(try await FileAskStore(directory: directory).load(pack.requestID))
+        #expect(onDisk.state == .sending && onDisk.attempts.count == 1 && onDisk.attempts.first?.endedAt != nil,
+                "what a process that closed during the wait leaves: `sending`, with the refused attempt closed")
+
+        let relaunched = AskCoordinator(store: try FileAskStore(directory: directory), consent: await original.consent,
+                                        providerFactory: { _ in provider }, connectivity: FakeConnectivity(online: true),
+                                        sleeper: RecordingSleeper(), clock: clock)
+        let reconciled = try #require(try await relaunched.reconcileAfterLaunch().first)
+        #expect(reconciled.state == .failedRetryable)
+        #expect(reconciled.failure?.acceptance == .notSent && reconciled.failure?.resubmitNeedsConfirmation == false)
+        #expect(reconciled.statusPhrase == (refused.acceptance == .rejected
+            ? "Retry stopped. 127.0.0.1 refused the earlier attempt before answering, so nothing is pending."
+            : "Retry stopped. The earlier attempt didn't reach 127.0.0.1, so nothing is pending."))
+        #expect(reconciled.attempts == onDisk.attempts, "the refused attempt keeps its own ending")
+        #expect(reconciled.attempts.first?.failureKind == refused.kind && reconciled.attempts.first?.acceptance == acceptance)
+        let sent = try await relaunched.send(pack.requestID)
+        #expect(sent.state == .complete && sent.attempts.count == 2, "nothing was pending, so no confirmation is needed")
+        #expect(provider.requests.count == 2)
+        await original.stop(pack.requestID, reason: .suspension)
+        _ = try? await waiting.value
+    }
+
     @Test func userCancelKeepsPartialOutputLabelled() async throws {
         let streaming = Mutex(false)
         let h = try Harness(scripts: [[Self.accepted, Self.text("Some words"), .hook { streaming.withLock { $0 = true } }, .waitForCancellation]])
@@ -553,9 +901,16 @@ struct LifecycleTests {
         }
     }
 
-    @Test func stopDuringBackoffWaitTakesEffectAndSendsNothingMore() async throws {
+    /// A stop during the wait before an automatic retry takes effect and sends nothing more. Nothing is pending, and the
+    /// message says why: the server refused the earlier attempt (a 503), or it never reached the server (connection
+    /// refused).
+    @Test(arguments: [Acceptance.rejected, .notSent])
+    func stopDuringBackoffWaitTakesEffectAndSendsNothingMore(_ acceptance: Acceptance) async throws {
+        let refused = acceptance == .rejected
+            ? ProviderError(kind: .serverError, acceptance: .rejected, host: "127.0.0.1", httpStatus: 503)
+            : ProviderError(kind: .hostUnreachable, acceptance: .notSent, host: "127.0.0.1")
         let provider = ScriptedProvider(config: Self.localConfig, scripts: [
-            [.fail(ProviderError(kind: .serverError, acceptance: .rejected, host: "127.0.0.1", httpStatus: 503))],
+            [.fail(refused)],
             [Self.accepted, Self.text("Should never be requested."), Self.done],
         ])
         let sleeper = BlockingSleeper()
@@ -572,19 +927,30 @@ struct LifecycleTests {
         #expect(record.state == .cancelled)
         #expect(record.failure?.acceptance == .notSent)
         #expect(record.failure?.resubmitNeedsConfirmation == false)
+        #expect(record.statusPhrase == (acceptance == .rejected
+            ? "Retry stopped. 127.0.0.1 refused the earlier attempt before answering, so nothing is pending."
+            : "Retry stopped. The earlier attempt didn't reach 127.0.0.1, so nothing is pending."))
         #expect(provider.requests.count == 1, "the retry never went out")
         #expect(record.attempts.count == 1)
-        #expect(record.attempts[0].failureKind == .serverError)
+        #expect(record.attempts[0].failureKind == refused.kind && record.attempts[0].acceptance == acceptance)
     }
 
-    /// Delegates to a FileAskStore and runs a hook before writing a record in a given state, or delays loads.
+    /// Delegates to a FileAskStore and runs a hook before writing a record in a given state, delays loads, or holds
+    /// loads at a gate. With `gateLoads`, every load parks until `releaseLoads()` and announces itself through
+    /// `onLoadParked`, so a test can put a second call inside the window of the first without relying on timing.
     actor HookedStore: AskStore {
         let inner: FileAskStore
         var onSave: (@Sendable (AskRecord) async -> Void)?
         let loadDelay: Duration
-        init(directory: URL, loadDelay: Duration = .zero) throws {
+        let gateLoads: Bool
+        let onLoadParked: @Sendable () -> Void
+        var gateOpen = false
+        var parkedLoads: [CheckedContinuation<Void, Never>] = []
+        init(directory: URL, loadDelay: Duration = .zero, gateLoads: Bool = false, onLoadParked: @escaping @Sendable () -> Void = {}) throws {
             inner = try FileAskStore(directory: directory)
             self.loadDelay = loadDelay
+            self.gateLoads = gateLoads
+            self.onLoadParked = onLoadParked
         }
         func setOnSave(_ hook: (@Sendable (AskRecord) async -> Void)?) { onSave = hook }
         func save(_ record: AskRecord) async throws {
@@ -593,7 +959,20 @@ struct LifecycleTests {
         }
         func load(_ id: UUID) async throws -> AskRecord? {
             if loadDelay > .zero { try await Task.sleep(for: loadDelay) }
+            if gateLoads, !gateOpen {
+                await withCheckedContinuation { continuation in
+                    parkedLoads.append(continuation)
+                    onLoadParked()
+                }
+            }
             return try await inner.load(id)
+        }
+        /// Resumes every parked load; later loads pass straight through.
+        func releaseLoads() {
+            gateOpen = true
+            let parked = parkedLoads
+            parkedLoads = []
+            for continuation in parked { continuation.resume() }
         }
         func all() async throws -> [AskRecord] { try await inner.all() }
     }
@@ -627,28 +1006,44 @@ struct LifecycleTests {
         #expect(stored.state == .cancelled, "the cancelled state is durable")
     }
 
+    /// F2 / plan A.4: `send` is single-flight per request. The first send claims the request and suspends loading the
+    /// record from the store (nothing cached: a fresh coordinator); the store holds that load at a gate until the test
+    /// has seen the second send end. With the in-flight guard, the second send is refused at once without loading
+    /// anything. Without it (mutation M1), the second send also reaches the store and parks there, and both read the
+    /// record as ready before either writes `sending`, so both would send. The order is fixed by the gate, not by
+    /// timing (R6-03: the earlier 50 ms delay let one mutated run in twelve pass).
     @Test func concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() async throws {
         let directory = TestPacks.temporaryDirectory()
         let provider = ScriptedProvider(config: Self.localConfig, scripts: [[Self.accepted, Self.text("One answer."), Self.done],
                                                                             [Self.accepted, Self.text("Duplicate."), Self.done]])
         let pack = TestPacks.make(config: Self.localConfig)
-        // Prepare the record with one coordinator, then send from a fresh one so the record is not cached and
-        // both calls suspend in the (delayed) load: the window in which a double tap could slip through.
         let setup = AskCoordinator(store: try FileAskStore(directory: directory), providerFactory: { _ in provider },
                                    connectivity: FakeConnectivity(online: true))
         _ = try await setup.createDraft(pack: pack, config: Self.localConfig)
         _ = try await setup.prepare(pack.requestID)
         _ = try await setup.grantConsent(pack.requestID)
         let consent = await setup.consent
-        let store = try HookedStore(directory: directory, loadDelay: .milliseconds(50))
+        let (events, eventSink) = AsyncStream<String>.makeStream()
+        let store = try HookedStore(directory: directory, gateLoads: true, onLoadParked: { eventSink.yield("load parked") })
         let coordinator = AskCoordinator(store: store, consent: consent, providerFactory: { _ in provider },
                                          connectivity: FakeConnectivity(online: true), sleeper: RecordingSleeper())
         @Sendable func attempt() async -> Result<AskRecord, any Error> {
             do { return .success(try await coordinator.send(pack.requestID)) } catch { return .failure(error) }
         }
-        async let first = attempt()
-        async let second = attempt()
-        let results = await [first, second]
+        var next = events.makeAsyncIterator()
+        let first = Task { await attempt() }
+        #expect(await next.next() == "load parked", "the first send holds the request and waits in its load")
+        let second = Task {
+            let result = await attempt()
+            eventSink.yield("second send ended")
+            return result
+        }
+        // With the guard: "second send ended". Without it: "load parked" (the second send reached the store too).
+        let afterSecond = await next.next()
+        await store.releaseLoads()
+        let results = [await first.value, await second.value]
+        eventSink.finish()
+        #expect(afterSecond == "second send ended", "the second send was refused while the first was suspended in its load")
         let completed = results.compactMap { try? $0.get() }
         let refused = results.compactMap { result -> AskError? in
             if case .failure(let error) = result { return error as? AskError }

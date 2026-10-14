@@ -144,7 +144,7 @@ struct EvaluationSetTests {
             }
             let question = item.question + (item.setup.inject_into_question ?? "")
             let request = ContextRequest(question: question, scope: ContextScope(rawValue: item.scope)!, selection: selection, thoughts: thoughts,
-                                         excludeLaterPassages: item.setup.exclude_later_passages ?? false, confirmedBoundaryOrdinal: boundary, history: history,
+                                         excludeLaterPassages: item.setup.exclude_later_passages ?? false, confirmedPosition: boundary.map { ReadingPosition(editionID: work.snapshot.editionID, paragraphOrdinal: $0) }, history: history,
                                          audioMoment: item.setup.audio_moment)
             var pack = try Library.build(request, work: work)
             let expected = item.expected

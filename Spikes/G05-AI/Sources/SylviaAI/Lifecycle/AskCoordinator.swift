@@ -75,6 +75,10 @@ public enum StopReason: Sendable, Equatable {
 /// - Transient failures that certainly were not accepted are retried with capped backoff and Retry-After;
 ///   a generation whose acceptance is uncertain is never replayed without the user's confirmation.
 /// - Retries reuse the same record: the question is stored and sent once per attempt, never duplicated.
+/// - Each attempt records how it ended (outcome, usage, and the failure kind and acceptance of an error, a stop or a
+///   relaunch). A resend the user confirmed clears the record's answer and failure before consent, the offline check or
+///   the request, so a resend that waits for consent or for the network reads "Draft · not sent" with nothing of the
+///   earlier attempt beside it; that attempt keeps its text and its ending on its own record.
 /// - A request ID has one record. `createDraft` for a request that already has one returns it unchanged, so a second
 ///   tap on Ask never resets an answered, failed or in-flight request to "Draft · not sent" (plan 11.1, 14.4, 14.5).
 /// - Offline submission leaves a draft ("Draft · not sent"); nothing is sent later without the user.
@@ -234,7 +238,9 @@ public actor AskCoordinator {
 
     /// Sends a ready record and runs it to a terminal state (or back to draft when offline).
     /// From `failed_retryable`, `interrupted` or `cancelled`, `userConfirmedResubmit` is required whenever the
-    /// last attempt may have been accepted or produced output.
+    /// last attempt may have been accepted or produced output. Once a resend is accepted here the record describes the
+    /// resend: if consent is needed first it is stored as `awaiting_consent`, and offline as a draft, either way without
+    /// the earlier attempt's answer or failure, which stay on that attempt's record.
     @discardableResult
     public func send(_ id: UUID, userConfirmedResubmit: Bool = false) async throws -> AskRecord {
         // Claimed before the first suspension point, so a concurrent call sees it.
@@ -259,9 +265,17 @@ public actor AskCoordinator {
         default:
             throw AskError.invalidState(record.state)
         }
-        // The pack must still describe this request, and consent is re-checked at send time: a draft may never have
-        // been prepared, and the destination or scope may have changed since prepare.
+        // The pack must still describe this request.
         try Self.validate(pack: record.pack, config: record.config)
+        // From here the record describes the request about to be sent, a resend included, before anything else can
+        // write it: the consent check, the offline draft or the request. So a resend the user confirmed that can't go out
+        // at once (consent is needed first, or the device is offline) is stored as a draft of the resend alone, never
+        // "Draft · not sent" beside the earlier partial answer and its "may have been processed" failure (R6-02, R7-01;
+        // plan A.4: each projected state is rendered with its own vocabulary string). The earlier attempt keeps how it
+        // ended on its own attempt record (`closeAttempt`).
+        Self.supersedeEarlierAttempt(&record)
+        // Consent is re-checked at send time: a draft may never have been prepared, and the destination or scope may have
+        // changed since prepare.
         if case .required(let disclosure) = consent.evaluate(pack: record.pack, providerID: record.config.providerID) {
             pendingDisclosures[id] = disclosure
             record.state = .awaitingConsent
@@ -276,13 +290,6 @@ public actor AskCoordinator {
             return record
         }
         record.queuedOffline = false
-        if !record.answerText.isEmpty, let last = record.attempts.indices.last {
-            record.attempts[last].supersededPartialText = record.answerText
-        }
-        record.answerText = ""
-        record.refusalText = ""
-        record.outcome = nil
-        record.failure = nil
 
         let maxOutput = record.pack.budget.outputReserveTokens
         let request = PromptTemplate.request(for: record.pack, maxOutputTokens: maxOutput)
@@ -328,7 +335,10 @@ public actor AskCoordinator {
                                                         : "Stopped before an answer arrived. The request may have reached \(record.pack.endpoint.host).",
                                                     retryAfterMs: nil, resubmitNeedsConfirmation: true)
                 }
-                closeAttempt(&record, failure: nil)
+                // The request was on the wire when the stop came, so it may have reached the provider and been billed,
+                // with or without text. The attempt records that, so it still says so after a confirmed resend clears
+                // the record's answer and failure (R7-02).
+                closeAttempt(&record, failure: ProviderError(kind: .cancelled, acceptance: .uncertain, host: record.pack.endpoint.host))
                 try await persist(record)
                 return record
             }
@@ -342,11 +352,16 @@ public actor AskCoordinator {
             }
             // The stream ended without a terminal state: an error was recorded in `failure`.
             guard let failure = record.failure else {
+                // Or it just stopped, with no final event and no error (the HTTP adapters throw `endedEarly` instead,
+                // so only another provider implementation gets here). Text that arrived is a labelled partial answer
+                // whose reason is shown beside "Interrupted · partial answer", and the attempt records how it ended.
+                let ended = ProviderError(kind: .invalidResponse, acceptance: .uncertain, host: record.pack.endpoint.host)
                 record.state = record.hasAnswerText ? .interrupted : .failedRetryable
-                record.failure = FailureSummary(kind: .invalidResponse, acceptance: .uncertain,
+                if record.hasAnswerText { record.outcome = .partial }
+                record.failure = FailureSummary(kind: ended.kind, acceptance: ended.acceptance,
                                                 userMessage: "The answer stopped without a final event.", retryAfterMs: nil,
                                                 resubmitNeedsConfirmation: true)
-                closeAttempt(&record, failure: nil)
+                closeAttempt(&record, failure: ended)
                 try await persist(record)
                 return record
             }
@@ -376,10 +391,11 @@ public actor AskCoordinator {
                 }
                 let stop = stopReasons.removeValue(forKey: id)
                 if stop != nil || !slept {
-                    // Every earlier attempt was refused before generating, so nothing is pending at the provider.
+                    // Every earlier attempt was refused before generating or never reached the server, so nothing is
+                    // pending at the provider.
                     record.state = stop == .user ? .cancelled : .failedRetryable
                     record.failure = FailureSummary(kind: .cancelled, acceptance: .notSent,
-                                                    userMessage: "Retry stopped. \(record.pack.endpoint.host) refused the earlier attempt before answering, so nothing is pending.",
+                                                    userMessage: Self.retryStoppedMessage(host: record.pack.endpoint.host, earlier: error.acceptance),
                                                     retryAfterMs: nil, resubmitNeedsConfirmation: false)
                     try await persist(record)
                     return record
@@ -396,6 +412,15 @@ public actor AskCoordinator {
 
     var lastErrors: [UUID: ProviderError] = [:]
 
+    /// What a record says when a wait to retry ends without sending, by a stop or by a relaunch. Only an attempt the
+    /// server certainly did not take is retried automatically: one it refused before generating (a 429, or a 503 or 529
+    /// from a hosted or local endpoint) or one that never reached it (DNS, connection refused). So nothing is pending, and
+    /// the message names which of the two the last attempt was (plan 22.3: the message matches the actual state).
+    static func retryStoppedMessage(host: String, earlier: Acceptance?) -> String {
+        earlier == .notSent ? "Retry stopped. The earlier attempt didn't reach \(host), so nothing is pending."
+                            : "Retry stopped. \(host) refused the earlier attempt before answering, so nothing is pending."
+    }
+
     static func terminalState(for failure: FailureSummary, hasOutput: Bool) -> AskState {
         if hasOutput { return .interrupted }
         switch failure.kind {
@@ -407,14 +432,39 @@ public actor AskCoordinator {
         }
     }
 
+    /// Closes the record's last attempt and records how it ended on it: the outcome and usage the record holds for it,
+    /// and `failure`, the error, stop or relaunch that ended it (kind, acceptance, HTTP status). Every path that ends an
+    /// attempt other than with an outcome from the provider passes one, so the attempt keeps saying whether it may have
+    /// reached the provider after a later attempt replaces the record's answer and failure.
     func closeAttempt(_ record: inout AskRecord, failure: ProviderError?) {
         guard let last = record.attempts.indices.last else { return }
         record.attempts[last].endedAt = clock.now()
+        record.attempts[last].outcome = record.outcome
+        record.attempts[last].usage = record.usage
         if let failure {
             record.attempts[last].failureKind = failure.kind
             record.attempts[last].acceptance = failure.acceptance
             record.attempts[last].httpStatus = failure.httpStatus
         }
+    }
+
+    /// Clears the record's projection of an earlier attempt before a new one is sent, queued offline or put to consent,
+    /// so the record describes only the new request (A.4, I-04): the answer and refusal text, outcome, failure, usage
+    /// and the reasoning and tool-call flags (the reasoning flag would otherwise reword the new attempt's own "no answer
+    /// text" message). Text the earlier attempt received moves to its attempt record; its outcome, usage, failure kind
+    /// and acceptance are already there (`closeAttempt`). A record with no earlier attempt has nothing to clear.
+    static func supersedeEarlierAttempt(_ record: inout AskRecord) {
+        if let last = record.attempts.indices.last {
+            if !record.answerText.isEmpty { record.attempts[last].supersededPartialText = record.answerText }
+            if !record.refusalText.isEmpty { record.attempts[last].supersededRefusalText = record.refusalText }
+        }
+        record.answerText = ""
+        record.refusalText = ""
+        record.outcome = nil
+        record.failure = nil
+        record.usage = nil
+        record.reasoningOmitted = false
+        record.toolCallRejected = false
     }
 
     /// Consumes one attempt's stream, updating the cached record and checkpointing.
@@ -596,11 +646,21 @@ public actor AskCoordinator {
     }
 
     /// After a relaunch, a record left in `sending` or `streaming` is reconciled: with partial output it becomes
-    /// `interrupted`; without, `failed_retryable` with resubmission needing confirmation (acceptance uncertain).
+    /// `interrupted`; without, `failed_retryable` with resubmission needing confirmation (acceptance uncertain). The
+    /// attempt that was on the wire is closed as one that may have reached the provider (`connection_lost`, uncertain).
+    /// A record whose last attempt is already closed was waiting to retry: only an attempt the server certainly did not
+    /// take is retried automatically, and the next attempt is written before its request leaves, so nothing was on the
+    /// wire. It says so, keeps that attempt's own ending, and can be sent again without confirmation.
     public func reconcileAfterLaunch() async throws -> [AskRecord] {
         var changed: [AskRecord] = []
         for var record in try await store.all() where record.state == .sending || record.state == .streaming {
-            if !record.hasAnswerText {
+            let waitingToRetry = record.attempts.last.map { $0.endedAt != nil && $0.acceptance != nil && $0.acceptance != .uncertain } ?? false
+            if waitingToRetry && !record.hasAnswerText {
+                record.state = .failedRetryable
+                record.failure = FailureSummary(kind: .cancelled, acceptance: .notSent,
+                                                userMessage: Self.retryStoppedMessage(host: record.pack.endpoint.host, earlier: record.attempts.last?.acceptance),
+                                                retryAfterMs: nil, resubmitNeedsConfirmation: false)
+            } else if !record.hasAnswerText {
                 record.state = .failedRetryable
                 record.failure = FailureSummary(kind: .connectionLost, acceptance: .uncertain,
                                                 userMessage: "Sylvia closed before an answer arrived. The request may have reached \(record.pack.endpoint.host).",
@@ -608,6 +668,9 @@ public actor AskCoordinator {
             } else {
                 record.state = .interrupted
                 record.outcome = .partial
+            }
+            if let last = record.attempts.last, last.endedAt == nil {
+                closeAttempt(&record, failure: ProviderError(kind: .connectionLost, acceptance: .uncertain, host: record.pack.endpoint.host))
             }
             try await persist(record)
             changed.append(record)

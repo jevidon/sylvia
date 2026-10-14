@@ -26,8 +26,8 @@ SIM_NAME="${SYLVIA_G05_SIM_NAME:-Sylvia-M0-g05-ai}"
 WORK="$SPIKE/.build/g05-ci"
 EXPORT="$WORK/contract-export"
 # Totals reported by Swift Testing (skipped live tests included); a drop means tests went missing.
-MIN_HOST_TESTS=242
-MIN_SIM_PACKAGE_TESTS=242
+MIN_HOST_TESTS=250
+MIN_SIM_PACKAGE_TESTS=250
 MIN_PROBE_TESTS=39
 
 sylvia_check_xcode || echo "continuing with the active Xcode"

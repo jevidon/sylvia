@@ -74,7 +74,7 @@ struct ContractExportTests {
             "selected-passage": try Library.build(ContextRequest(question: "What does he mean by deliberately?", scope: .selectedPassage, selection: selection), work: walden),
             "passage-and-nearby": try Library.build(ContextRequest(question: "What does he mean by deliberately?", scope: .passageAndNearby, selection: selection), work: walden),
             "work-search-restricted": try Library.build(ContextRequest(question: "What is Bulstrode like?", scope: .workSearch, excludeLaterPassages: true,
-                                                                       confirmedBoundaryOrdinal: boundary, history: history), work: mm),
+                                                                       confirmedPosition: ReadingPosition(editionID: mm.snapshot.editionID, paragraphOrdinal: boundary), history: history), work: mm),
             "work-search-truncated": try Library.build(ContextRequest(question: "Why did Thoreau go to the woods to live deliberately?", scope: .workSearch),
                                                        work: walden, config: small),
             "selected-thoughts": try Library.build(ContextRequest(question: "How do these relate?", scope: .selectedThoughts, thoughts: [
@@ -90,7 +90,7 @@ struct ContractExportTests {
                              workID: mm.snapshot.workID, editionID: mm.snapshot.editionID, locationLabel: "Chapter I", ordinal: Library.paragraph(in: mm, containing: "Miss Brooke had that kind of beauty").ordinal),
                 SavedThought(captureID: UUID(), kind: .note, text: "How it ends for Lydgate.", workID: mm.snapshot.workID, editionID: mm.snapshot.editionID, locationLabel: "Finale", ordinal: boundary + 3_000),
                 SavedThought(captureID: UUID(), kind: .note, text: "Compare with Walden on plain living.", workID: walden.snapshot.workID, editionID: walden.snapshot.editionID, locationLabel: "Note", ordinal: nil),
-            ], excludeLaterPassages: true, confirmedBoundaryOrdinal: boundary), work: mm),
+            ], excludeLaterPassages: true, confirmedPosition: ReadingPosition(editionID: mm.snapshot.editionID, paragraphOrdinal: boundary)), work: mm),
             // Nothing sent, and the pack says why (plan 13.3): "Do not include later passages" with no position set.
             "work-search-no-position": try Library.build(ContextRequest(question: "What happens to Dorothea?", scope: .workSearch, excludeLaterPassages: true), work: mm),
             // A question about a moment in a recording with no transcript (plan 10.4): the pack states the audio is unavailable.

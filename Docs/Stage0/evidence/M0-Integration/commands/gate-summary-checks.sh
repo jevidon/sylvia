@@ -14,8 +14,10 @@ source Scripts/lib/env.sh
 source Scripts/lib/sim.sh
 source Scripts/lib/xcodegen.sh
 status=0
+# Counted before the log is created, so the log itself (often written into the evidence folder) is not counted.
+uncommitted="$(git status --porcelain | wc -l | tr -d ' ')"
 {
-  echo "commit: $(git rev-parse HEAD); uncommitted files: $(git status --porcelain | wc -l | tr -d ' ')"
+  echo "commit: $(git rev-parse HEAD); uncommitted files before this run: $uncommitted"
   echo "start: $(date -u +%Y-%m-%dT%H:%M:%SZ); load: $(uptime)"
   echo
   echo "== 1. git diff --stat efc9479 HEAD -- Spikes Scripts Packages Apps Contracts Fixtures .github (nothing below = no change)"

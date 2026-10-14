@@ -18,22 +18,33 @@ Subcommands
                          a Color/UIColor/NSColor/CGColor/CIColor(hex:) call, or a 6/8-digit 0x
                          integer on a line that mentions color
         color-components Color/UIColor/NSColor/CGColor/CIColor component initializers, also
-                         spelled Color.init(...) or a bare .init(...) (red:, white:, hue:,
-                         displayP3Red:, srgbRed:, calibrated*, device*, linear*/extended*; with a
-                         color type also gray: and colorSpace:)
+                         spelled Color.init(...) or a bare .init(...), and the Canvas shading
+                         .color(...) (red:, white:, hue:, displayP3Red:, srgbRed:, calibrated*,
+                         device*, linear*/extended*; with a color type also gray: and colorSpace:)
         named-color      a named system color: Color/UIColor/NSColor/CGColor/CIColor.<member>
                          (Color.red, UIColor.label, NSColor.labelColor; Color.clear is allowed, it
                          draws nothing), any .system<Color> name (.systemBlue, .systemBackground),
-                         a bare palette or hierarchical name (.red, .black, .secondary,
-                         .accentColor, ...) as the argument of a color modifier (foregroundStyle,
-                         background, fill, stroke, tint, ...) or a color:/tint:/fill: (...) label, a bare
-                         palette name followed by .opacity/.gradient/.mix/.shadow, a palette name as
-                         a ternary branch in a color modifier's arguments (on ? .red : .blue), a
-                         named color typed as a color (let c: Color = .red, : UIColor = .label,
-                         var c: Color { .red }), bridged (Color(uiColor: .label), Color(.label)),
-                         assigned to a color property (view.backgroundColor = .white) or passed
-                         to a color setter (setTitleColor(.white, for:)), and a color looked up by
-                         a string name (Color("Name"), UIColor(named:))
+                         a bare palette, hierarchical or semantic style name (.red, .black,
+                         .secondary, .accentColor, .separator, .link, .placeholder, .selection,
+                         .windowBackground, .fill, .background; the environment styles .tint and
+                         .foreground are allowed) as the argument of a color modifier
+                         (foregroundStyle, background, fill, stroke, tint, listItemTint,
+                         presentationBackground, AnyShapeStyle(...), ListItemTint .fixed/.preferred,
+                         mix(with:), the Canvas shading .color(...), ...) or a color:/tint:/fill:
+                         (...) label, a bare palette name
+                         followed by .opacity/.gradient/.mix/.shadow, a palette name as a ternary
+                         branch or a ?? default in a color modifier's arguments (on ? .red : .blue,
+                         custom ?? .secondary), a palette name in a list of colors (a gradient's
+                         colors: [.red, .blue], an array typed [Color], also as a computed value;
+                         every list literal of the value, so also dark ? [.black] : [.white]) or
+                         as a value in a dictionary typed [Key: Color], a named color typed as a
+                         color or a shape style (let c: Color = .red, : UIColor = .label,
+                         var c: Color { .red }, let s: some ShapeStyle = .red,
+                         let s: AnyShapeStyle = .init(.red)), bridged
+                         (Color(uiColor: .label), Color(.label)), assigned to a color property
+                         (view.backgroundColor = .white) or passed to a color setter
+                         (setTitleColor(.white, for:)), and a color looked up by a string name
+                         (Color("Name"), UIColor(named:))
         color-provider   a dynamic color built in a UI target (UIColor { traits in ... },
                          UIColor(dynamicProvider:), NSColor(name:dynamicProvider:))
         font-size        Font.system(size:) / .system(size:), any *Font(ofSize:) factory
@@ -58,8 +69,10 @@ Subcommands
       Not caught (review, not lint; ADR-0013 Section 8 has the full list): colors and sizes
       computed at run time from non-literal values (for example a size read from a variable and
       passed to a role-free API the rules above do not name), a palette name passed to a parameter
-      the rules do not name (MyView(highlight: .red)) or returned from a multi-statement body,
-      and status text assembled from fragments that are not phrases on their own.
+      the rules do not name (MyView(highlight: .red), MyView(highlights: [.red])), held in another
+      collection (a Set<Color>, a dictionary keyed by colors) or returned from a multi-statement
+      body, materials and gradients built from tokens (Section 4.4.2 forbids both, but they are not
+      literal colors), and status text assembled from fragments that are not phrases on their own.
   self-test
       Runs the linter over Packages/Design/LintFixtures: every file under violating/ must produce
       exactly the findings its "lint-expect: <rule>" comments name (one per marked line), and every
@@ -221,23 +234,38 @@ COMPONENT_NAMES = (r"red|white|hue|displayP3Red|srgbRed|calibratedRed|deviceRed|
                    r"linearRed|extendedRed|extendedSRGBRed")
 # Named system colors (plan 4.4.9 and CLAUDE.md: product UI never declares a literal color; a named
 # system color is one). `clear` is allowed: it draws nothing and is the layout-spacer idiom.
+# SwiftUI's semantic shape styles that resolve to system colors are named colors too (review round
+# 3): `separator`, `link`, `placeholder`, `selection`, `windowBackground`, `fill` (the system fill
+# colors) and `background` (the background style: a system background unless an ancestor sets one,
+# and no token sets it). Allowed: the environment styles `.tint` and `.foreground`, which product
+# code sets from tokens (`.tint(ColorToken.pine.color)`, `.foregroundStyle(ColorToken.ink.color)`).
 PALETTE = (r"(?:red|orange|yellow|green|mint|teal|cyan|blue|indigo|purple|pink|brown|white|gray|grey|"
-           r"black|magenta|darkGray|lightGray|primary|secondary|tertiary|quaternary|quinary|accentColor)")
+           r"black|magenta|darkGray|lightGray|primary|secondary|tertiary|quaternary|quinary|accentColor|"
+           r"separator|link|placeholder|selection|windowBackground|fill|background)")
 SYSTEM_COLOR = (r"system(?:Red|Orange|Yellow|Green|Mint|Teal|Cyan|Blue|Indigo|Purple|Pink|Brown|Gray[2-6]?|"
                 r"Background|SecondaryBackground|TertiaryBackground|GroupedBackground|"
                 r"SecondaryGroupedBackground|TertiaryGroupedBackground|Fill|SecondaryFill|TertiaryFill|"
                 r"QuaternaryFill)\b")
+# Calls that take a color or shape style as an argument: view modifiers, `AnyShapeStyle(...)`, the
+# `ListItemTint.fixed(_:)` and `.preferred(_:)` factories of `listItemTint`, `mix(with:by:)`, and
+# the `GraphicsContext.Shading.color(_:)` that Canvas drawing fills and strokes with.
 COLOR_MODIFIERS = (r"(?:foregroundStyle|foregroundColor|background|backgroundStyle|fill|stroke|"
-                   r"strokeBorder|tint|accentColor|border|listRowBackground|listRowSeparatorTint|overlay|"
-                   r"colorMultiply|toolbarBackground|containerBackground|shadow)")
+                   r"strokeBorder|tint|accentColor|border|listRowBackground|listRowSeparatorTint|"
+                   r"listSectionSeparatorTint|listItemTint|presentationBackground|overlay|"
+                   r"colorMultiply|toolbarBackground|containerBackground|shadow|AnyShapeStyle|"
+                   r"fixed|preferred|mix|color)")
 COLOR_CONTEXT = (rf"(?:\b{COLOR_MODIFIERS}\s*\(\s*(?:[\w.]+\s*,\s*)?"
-                 r"|\b(?:color|tint|foreground|background|fill|stroke)\s*:\s*)")
+                 r"|\b(?:color|tint|foreground|background|fill|stroke)\s*:\s*"
+                 r"|\bmix\s*\(\s*with\s*:\s*)")
 # UIKit and AppKit semantic color names (UIColor.label, NSColor.labelColor, ...) in addition to the
 # palette, for places where the type is a UIKit or AppKit color: Color(uiColor: .label),
 # `: UIColor = .label`, `view.backgroundColor = .label`.
 PLATFORM_NAMES = (r"(?:label|secondaryLabel|tertiaryLabel|quaternaryLabel|link|placeholderText|separator|"
                   r"opaqueSeparator|darkText|lightText|\w+Color)")
 NAMED = rf"(?:{PALETTE}|{PLATFORM_NAMES})"
+# Types a bare palette name can be written as in SwiftUI: Color itself and the shape-style types
+# whose static members include Color's (`let s: some ShapeStyle = .red`).
+SWIFTUI_COLOR_TYPES = r"(?:Color|(?:some|any)\s+ShapeStyle|AnyShapeStyle)"
 # Code rules are searched in the whole comment-free file, so a call split across lines ("Color(\n
 # red: ...)", ".font(.system(\n size: 13))") is still one match; `\s*` spans line breaks. A finding
 # is reported on the line where the match starts.
@@ -247,9 +275,11 @@ CODE_RULES: list[tuple[str, re.Pattern[str], str]] = [
     ("color-components", re.compile(
         rf"\b{COLOR_TYPES}\s*(?:\.\s*init)?\s*\(\s*(?:\.\w+\s*,\s*)?"
         rf"(?:{COMPONENT_NAMES}|gray|colorSpace)\s*:"), "color component initializer"),
+    # A bare .init(red: ...) of a color-typed value, and the Canvas shading .color(red: ...) (also
+    # with a leading color space, .color(.sRGB, white: 0.5)).
     ("color-components", re.compile(
-        rf"(?<![\w])\.\s*init\s*\(\s*(?:\.\w+\s*,\s*)?(?:{COMPONENT_NAMES})\s*:"),
-     "color component initializer (.init)"),
+        rf"(?<![\w])\.\s*(?:init|color)\s*\(\s*(?:\.\w+\s*,\s*)?(?:{COMPONENT_NAMES})\s*:"),
+     "color component initializer (.init or .color)"),
     ("named-color", re.compile(rf"\b{COLOR_TYPES}\s*\.\s*(?!clear\b|init\b|self\b)[a-z]\w*"), "named system color"),
     ("named-color", re.compile(rf"\.\s*{SYSTEM_COLOR}"), "named system color"),
     ("named-color", re.compile(rf"{COLOR_CONTEXT}\.\s*{PALETTE}\b(?!\s*\()"), "named system color"),
@@ -262,9 +292,12 @@ CODE_RULES: list[tuple[str, re.Pattern[str], str]] = [
     ("named-color", re.compile(
         rf"\b{COLOR_TYPES}\s*(?:\.\s*init)?\s*\(\s*(?:(?:uiColor|nsColor|cgColor|ciColor|color)\s*:\s*)?"
         rf"\.\s*(?!init\b|sRGB\b|sRGBLinear\b|displayP3\b){NAMED}\b(?!\s*\()"), "named system color (bridged)"),
-    # let c: Color = .red; let u: UIColor = .label; var c: Color { .red }; func c() -> Color { return .red }
-    ("named-color", re.compile(rf"(?::|->)\s*Color\s*\??\s*(?:=|\{{\s*(?:return\s+)?)\s*\.\s*{PALETTE}\b(?!\s*\()"),
-     "named system color (typed as Color)"),
+    # let c: Color = .red; let u: UIColor = .label; var c: Color { .red }; func c() -> Color { return .red };
+    # the same typed as a shape style: let s: some ShapeStyle = .red, var s: AnyShapeStyle { .red };
+    # and wrapped in the type's own initializer: let s: AnyShapeStyle = .init(.red)
+    ("named-color", re.compile(rf"(?::|->)\s*{SWIFTUI_COLOR_TYPES}\s*\??\s*(?:=|\{{\s*(?:return\s+)?)\s*"
+                               rf"(?:\.\s*init\s*\(\s*)?\.\s*{PALETTE}\b(?!\s*\()"),
+     "named system color (typed as Color or a shape style)"),
     ("named-color", re.compile(rf"(?::|->)\s*(?:UIColor|NSColor|CGColor|CIColor)\s*!?\??\s*(?:=|\{{\s*(?:return\s+)?)"
                                rf"\s*\.\s*{NAMED}\b(?!\s*\()"), "named system color (typed as a platform color)"),
     # view.backgroundColor = .label, label.textColor = .white, layer.borderColor = .black
@@ -293,10 +326,30 @@ CUSTOM_FONT_RE = re.compile(r"\.\s*custom\s*\(")
 BARE_FONT_INIT_RE = re.compile(r"(?<![\w])\.\s*init\s*\(\s*(?=(?:name|descriptor)\s*:)")
 SIZE_LABEL_RE = re.compile(r"\b(?:size|fixedSize)\s*:")
 COLOR_MODIFIER_CALL_RE = re.compile(rf"\b{COLOR_MODIFIERS}\s*\(")
-# A ternary branch: "?" or ":" with white space before it (a label's colon has none).
-TERNARY_PALETTE_RE = re.compile(rf"\s[?:]\s*\.\s*{PALETTE}\b(?!\s*\()")
-# `: Color = cond ? .red : .blue` and the same for platform colors.
-TYPED_COLOR_ASSIGNMENT_RE = re.compile(r"(?::|->)\s*(?:Color|UIColor|NSColor|CGColor|CIColor)\s*[!?]?\s*=")
+# A conditional branch: a ternary's "?" or ":" with white space before it (a label's colon has
+# none), or the default of a nil-coalescing "??" (`custom ?? .secondary`; review round 3).
+TERNARY_PALETTE_RE = re.compile(rf"(?:\s*\?\?|\s[?:])\s*\.\s*{PALETTE}\b(?!\s*\()")
+# `: Color = cond ? .red : .blue`, the same for platform colors and shape styles.
+TYPED_COLOR_ASSIGNMENT_RE = re.compile(
+    rf"(?::|->)\s*(?:{SWIFTUI_COLOR_TYPES}|UIColor|NSColor|CGColor|CIColor)\s*[!?]?\s*=")
+ANY_COLOR_TYPE = rf"(?:{SWIFTUI_COLOR_TYPES}|UIColor|NSColor|CGColor|CIColor)"
+# The value of a typed declaration: `= ...`, or the body of a computed property or function
+# (`var c: [Color] { [...] }`, `-> [Color] { return [...] }`).
+TYPED_VALUE = r"\s*[!?]?\s*(?:=|\{\s*(?:return\s+)?)\s*"
+# Where a list of colors is written: the colors: argument of a gradient (LinearGradient(colors:
+# [.red, .blue]), Gradient(colors:), MeshGradient(..., colors:), .linearGradient(colors:)) and the
+# value of a declaration typed as an array of colors (`: [Color] = [...]`, also a computed property
+# or a function whose body is one expression). Every list literal at the top level of that value is
+# checked (each branch of `dark ? [.black] : [.white]`, each operand of `[...] + [...]`), and each
+# of its top-level elements that is a palette name (or a conditional branch of one) is reported.
+COLOR_LIST_ARGUMENT_RE = re.compile(r"\bcolors\s*:\s*")
+COLOR_ARRAY_DECLARATION_RE = re.compile(rf"(?::|->)\s*\[\s*{ANY_COLOR_TYPE}\s*\]{TYPED_VALUE}")
+LIST_ELEMENT_PALETTE_RE = re.compile(rf"(?:^|,)\s*\.\s*{PALETTE}\b(?!\s*\()")
+# A dictionary whose values are colors (`: [String: Color] = ["a": .red]`): in every dictionary
+# literal at the top level of the value, each top-level value that is a palette name (or a
+# conditional branch of one) is reported.
+COLOR_DICTIONARY_DECLARATION_RE = re.compile(rf"(?::|->)\s*\[\s*[\w.]+\s*:\s*{ANY_COLOR_TYPE}\s*\]{TYPED_VALUE}")
+DICTIONARY_VALUE_PALETTE_RE = re.compile(rf":\s*\.\s*{PALETTE}\b(?!\s*\()")
 HEX_INT_RE = re.compile(r"\b0x(?:[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})\b")
 # A dynamic color built in a UI target: UIColor { traits in ... }, UIColor(dynamicProvider:),
 # NSColor(name:dynamicProvider:). Appearance variants come only from the asset catalog.
@@ -447,6 +500,44 @@ def statement_end(code: str, start: int) -> int:
     return n
 
 
+def argument_end(code: str, start: int) -> int:
+    """The end of the call argument that continues at `start`: the first "," or closing bracket
+    outside brackets (an argument may continue over several lines)."""
+    depth, i, n = 0, start, len(code)
+    while i < n:
+        ch = code[i]
+        if ch in "([{":
+            depth += 1
+        elif ch in ")]}":
+            if depth == 0:
+                return i
+            depth -= 1
+        elif ch == "," and depth == 0:
+            return i
+        i += 1
+    return n
+
+
+def list_literals(code: str, start: int, end: int) -> list[tuple[int, str]]:
+    """(offset of "[", contents) of every list or dictionary literal at the top level of
+    code[start:end]: one for `[...]`, two for `on ? [...] : [...]` or `[...] + [...]`."""
+    found: list[tuple[int, str]] = []
+    depth, i = 0, start
+    while i < end:
+        ch = code[i]
+        if ch == "[" and depth == 0:
+            contents = call_arguments(code, i)
+            found.append((i, contents))
+            i += len(contents) + 2
+            continue
+        if ch in "([{":
+            depth += 1
+        elif ch in ")]}":
+            depth = max(depth - 1, 0)
+        i += 1
+    return found
+
+
 def lint_swift(path: Path, display: str, matcher: PhraseMatcher) -> list[Finding]:
     source = path.read_text(encoding="utf-8", errors="replace")
     code, strings = lex_swift(source)
@@ -479,6 +570,19 @@ def lint_swift(path: Path, display: str, matcher: PhraseMatcher) -> list[Finding
         expression = top_level(code[m.end():statement_end(code, m.end())])
         for t in TERNARY_PALETTE_RE.finditer(expression):
             report(m.end() + t.start(), "named-color", "named system color (conditional)")
+    color_lists = [(m.end(), argument_end(code, m.end())) for m in COLOR_LIST_ARGUMENT_RE.finditer(code)]
+    color_lists += [(m.end(), statement_end(code, m.end())) for m in COLOR_ARRAY_DECLARATION_RE.finditer(code)]
+    for start, end in color_lists:
+        for bracket, contents in list_literals(code, start, end):
+            elements = top_level(contents)
+            for t in list(LIST_ELEMENT_PALETTE_RE.finditer(elements)) + list(TERNARY_PALETTE_RE.finditer(elements)):
+                # Reported where the palette name ends (an element may follow a line break).
+                report(bracket + t.end(), "named-color", "named system color in a list of colors")
+    for m in COLOR_DICTIONARY_DECLARATION_RE.finditer(code):
+        for bracket, contents in list_literals(code, m.end(), statement_end(code, m.end())):
+            entries = top_level(contents)
+            for t in list(DICTIONARY_VALUE_PALETTE_RE.finditer(entries)) + list(TERNARY_PALETTE_RE.finditer(entries)):
+                report(bracket + t.end(), "named-color", "named system color in a dictionary of colors")
     for m in COLOR_PROVIDER_RE.finditer(code):
         # UIColor { ... } as a value, not `extension UIColor {` or `-> UIColor {`.
         if COLOR_PROVIDER_PRECEDERS.search(code[max(0, m.start() - 40):m.start()]):

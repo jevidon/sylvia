@@ -1,54 +1,54 @@
 Command line invocation:
-    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project DesignCatalog.xcodeproj -scheme DesignCatalog -destination id=5F2BC885-C36B-435E-B038-F1F140433E6A -derivedDataPath /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a4c596ac-ffb-1/Apps/DesignCatalog/.build/DerivedData -disableAutomaticPackageResolution "-only-testing:DesignCatalogTests"
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project DesignCatalog.xcodeproj -scheme DesignCatalog -destination id=5D949D85-4F92-4E1A-8972-580E28FB3F2F -derivedDataPath /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-5/Apps/DesignCatalog/.build/DerivedData -disableAutomaticPackageResolution "-only-testing:DesignCatalogTests"
 
 Resolve Package Graph
 
 
 Resolved source packages:
+  SylviaDesign: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-5/Packages/Design
+  swift-issue-reporting: https://github.com/pointfreeco/swift-issue-reporting @ 2.1.1
+  swift-syntax: https://github.com/swiftlang/swift-syntax @ 604.0.0
   swift-snapshot-testing: https://github.com/pointfreeco/swift-snapshot-testing @ 1.19.6
   swift-custom-dump: https://github.com/pointfreeco/swift-custom-dump @ 1.7.3
-  SylviaDesign: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a4c596ac-ffb-1/Packages/Design
-  swift-syntax: https://github.com/swiftlang/swift-syntax @ 604.0.0
-  swift-issue-reporting: https://github.com/pointfreeco/swift-issue-reporting @ 2.1.1
 
-Test Suite 'All tests' started at 2026-10-12 18:14:28.069.
-Test Suite 'DesignCatalogTests.xctest' started at 2026-10-12 18:14:28.069.
-Test Suite 'SaveOrderingTests' started at 2026-10-12 18:14:28.069.
+Test Suite 'All tests' started at 2026-10-13 11:03:58.724.
+Test Suite 'DesignCatalogTests.xctest' started at 2026-10-13 11:03:58.725.
+Test Suite 'SaveOrderingTests' started at 2026-10-13 11:03:58.725.
 Test Case '-[DesignCatalogTests.SaveOrderingTests testAudioCaptureScreenSavesThroughTheWrite]' started.
-Test Case '-[DesignCatalogTests.SaveOrderingTests testAudioCaptureScreenSavesThroughTheWrite]' passed (0.024 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testAudioCaptureScreenSavesThroughTheWrite]' passed (0.025 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testCommitWritesTheRecordBeforeReturning]' started.
 Test Case '-[DesignCatalogTests.SaveOrderingTests testCommitWritesTheRecordBeforeReturning]' passed (0.002 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testExcerptSavedOnlyAfterTheExcerptRecordIsWritten]' started.
-objc[61878]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x115284310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x114b00398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
-Test Case '-[DesignCatalogTests.SaveOrderingTests testExcerptSavedOnlyAfterTheExcerptRecordIsWritten]' passed (0.518 seconds).
+objc[26943]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x1130f4310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x1131b0398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+Test Case '-[DesignCatalogTests.SaveOrderingTests testExcerptSavedOnlyAfterTheExcerptRecordIsWritten]' passed (0.527 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedCommitWritesNothing]' started.
 Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedCommitWritesNothing]' passed (0.004 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedDiskWriteLeavesNothingForTheNextCommit]' started.
 Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedDiskWriteLeavesNothingForTheNextCommit]' passed (0.002 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedExcerptIsNotSaved]' started.
-Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedExcerptIsNotSaved]' passed (0.067 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedExcerptIsNotSaved]' passed (0.065 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedMomentWriteSavesNothing]' started.
-Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedMomentWriteSavesNothing]' passed (0.403 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedMomentWriteSavesNothing]' passed (0.394 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedSaveKeepsTheTextAndWritesNothing]' started.
 Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedSaveKeepsTheTextAndWritesNothing]' passed (0.131 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testInterruptedAnswerIsNeverComplete]' started.
-Test Case '-[DesignCatalogTests.SaveOrderingTests testInterruptedAnswerIsNeverComplete]' passed (2.327 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testInterruptedAnswerIsNeverComplete]' passed (2.313 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite]' started.
-Test Case '-[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite]' passed (0.527 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite]' passed (0.506 seconds).
 Test Case '-[DesignCatalogTests.SaveOrderingTests testStoppedAnswerKeepsWhatArrived]' started.
-Test Case '-[DesignCatalogTests.SaveOrderingTests testStoppedAnswerKeepsWhatArrived]' passed (1.522 seconds).
-Test Suite 'SaveOrderingTests' passed at 2026-10-12 18:14:33.599.
-	 Executed 11 tests, with 0 failures (0 unexpected) in 5.527 (5.530) seconds
-Test Suite 'DesignCatalogTests.xctest' passed at 2026-10-12 18:14:33.600.
-	 Executed 11 tests, with 0 failures (0 unexpected) in 5.527 (5.531) seconds
-Test Suite 'All tests' passed at 2026-10-12 18:14:33.600.
-	 Executed 11 tests, with 0 failures (0 unexpected) in 5.527 (5.532) seconds
-2026-10-12 18:14:33.885 xcodebuild[61829:16665065] [MT] IDETestOperationsObserverDebug: 7.483 elapsed -- Testing started completed.
-2026-10-12 18:14:33.885 xcodebuild[61829:16665065] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
-2026-10-12 18:14:33.885 xcodebuild[61829:16665065] [MT] IDETestOperationsObserverDebug: 7.483 sec, +7.483 sec -- end
+Test Case '-[DesignCatalogTests.SaveOrderingTests testStoppedAnswerKeepsWhatArrived]' passed (1.513 seconds).
+Test Suite 'SaveOrderingTests' passed at 2026-10-13 11:04:04.211.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 5.482 (5.486) seconds
+Test Suite 'DesignCatalogTests.xctest' passed at 2026-10-13 11:04:04.211.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 5.482 (5.486) seconds
+Test Suite 'All tests' passed at 2026-10-13 11:04:04.211.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 5.482 (5.487) seconds
+2026-10-13 11:04:04.504 xcodebuild[26867:27164546] [MT] IDETestOperationsObserverDebug: 7.680 elapsed -- Testing started completed.
+2026-10-13 11:04:04.504 xcodebuild[26867:27164546] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-13 11:04:04.504 xcodebuild[26867:27164546] [MT] IDETestOperationsObserverDebug: 7.681 sec, +7.680 sec -- end
 
 Test session results, code coverage, and logs:
-	/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a4c596ac-ffb-1/Apps/DesignCatalog/.build/DerivedData/Logs/Test/Test-DesignCatalog-2026.10.12_18-14-26-+1300.xcresult
+	/Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-5/Apps/DesignCatalog/.build/DerivedData/Logs/Test/Test-DesignCatalog-2026.10.13_11-03-56-+1300.xcresult
 
 ** TEST EXECUTE SUCCEEDED **
 

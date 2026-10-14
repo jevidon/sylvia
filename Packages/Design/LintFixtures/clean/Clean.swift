@@ -96,3 +96,62 @@ let tokenAssignment: Color = ColorToken.ink.color
 let blackWeight: Font.Weight = .black
 let coverRect = CGRect(origin: .zero, size: CGSize(width: 2, height: 3))
 let roleChoice: SylviaButtonRole = Bool.random() ? .primary : .secondary
+
+/// Near-misses for the list and shape-style rules of review round 3: gradients and shape styles
+/// built from tokens, a list of button roles that are not colors, and a colors: label whose value
+/// is not a list literal.
+struct GoodStyles: View {
+    private let roles: [SylviaButtonRole] = [.primary, .secondary]
+    private let tokenColors: [Color] = [ColorToken.pine.color, ColorToken.ink.color]
+
+    var body: some View {
+        VStack {
+            Circle().fill(LinearGradient(colors: [ColorToken.pine.color, ColorToken.ink.color],
+                                         startPoint: .top, endPoint: .bottom))
+            Circle().fill(Gradient(colors: tokenColors))
+            Text(verbatim: "x").listItemTint(ColorToken.pine.color)
+            Rectangle().fill(AnyShapeStyle(ColorToken.ink.color))
+            Rectangle().fill(AnyShapeStyle(roles.isEmpty ? ColorToken.ink.color : ColorToken.pine.color))
+        }
+    }
+}
+
+let tokenStyle: some ShapeStyle = ColorToken.pine.color
+var tokenStyleProperty: some ShapeStyle { ColorToken.ink.color }
+
+/// Near-misses for the second round 3 pass: `.fill`, `.placeholder`, `.selection` and `.fixed`
+/// where they are not colors, the environment styles `.tint` and `.foreground` (set from tokens),
+/// a `??` default that is not a color, token arguments to the ListItemTint factories and to
+/// mix(with:), and arrays and dictionaries of values that are not colors. Clean here means no
+/// literal color; a gradient built from tokens is still against Section 4.4.2 ("no gradients"),
+/// which is a review rule, not a lint rule (ADR-0013 Section 8).
+struct GoodStylesSecondPass: View {
+    let sizes: [CGFloat] = []
+
+    var body: some View {
+        VStack {
+            Image(systemName: "star").symbolVariant(.fill)
+            Image(systemName: "star").resizable().aspectRatio(contentMode: .fill)
+            Text(verbatim: "x").redacted(reason: .placeholder)
+            Text(verbatim: "x").textSelection(.enabled)
+            LazyVGrid(columns: [GridItem(.fixed(80)), GridItem(.flexible())]) { EmptyView() }
+            Text(verbatim: "x").foregroundStyle(.tint)
+            Circle().fill(.foreground)
+            Text(verbatim: "x").frame(width: sizes.first ?? .zero)
+            Text(verbatim: "x").listItemTint(.fixed(ColorToken.pine.color))
+            Text(verbatim: "x").foregroundStyle(ColorToken.ink.color.mix(with: ColorToken.ground.color, by: 0.2))
+            Rectangle().fill(LinearGradient(colors: sizes.isEmpty ? [ColorToken.ink.color] : [ColorToken.pine.color],
+                                            startPoint: .top, endPoint: .bottom))
+            Canvas { context, size in
+                context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(ColorToken.pine.color))
+            }
+        }
+    }
+}
+
+let rolesByName: [String: SylviaButtonRole] = ["save": .primary, "cancel": .secondary]
+let roleLists: [SylviaButtonRole] = Bool.random() ? [.primary] : [.secondary]
+let tokenWrapped: AnyShapeStyle = .init(ColorToken.ink.color)
+let tokenColorsByArea: [String: Color] = ["library": ColorToken.pine.color, "inbox": ColorToken.ink.color]
+var tokenTints: [Color] { [ColorToken.pine.color, ColorToken.ink.color] }
+let fillMode: ContentMode = .fill

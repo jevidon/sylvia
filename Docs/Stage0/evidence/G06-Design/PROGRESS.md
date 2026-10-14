@@ -196,3 +196,34 @@ audio capture deep link. If interrupted before the final commit: re-run
 Clean run after the fixes passed (`ci-clean-run.log`, commit c3f4d6d): 10-contracts, 20-design
 (527 references in verify mode), 21-design-catalog (11 unit; 13 + 3 + 2 UI tests; 196 screenshots).
 The first attempt failed on the new keyboard test (`ci-clean-run-attempt1-failed.log`); fixed.
+
+## Review round 3 fixes on the integration branch (2026-10-13)
+
+Branch `m0-int-minors-g06-design` from b354dc7. Simulators: `Sylvia-M0-minors-g06-design` (iPhone 17),
+`-SE` and `-iPad` (iOS 26.5).
+
+First attempt (WIP fd8dee8 to de06987, unreviewed): lint rules for R3-01 and a gate that took a Button
+action for the latest touch down; its clean run stopped halfway and de06987 committed partial evidence.
+
+Second agent (this state), each step committed as WIP:
+
+- R3-01: reviewed the first attempt's rules, added the further spellings of the same classes
+  (ListItemTint factories, semantic styles, `??`, `mix(with:)`, computed and conditional color
+  lists, color dictionaries, `.init(.red)` shape styles, Canvas `.color(...)` shading),
+  41 samples in `Styles.swift`, near-misses in `clean/`; `lint-r3-probe-host.log` (generator
+  `commands/r3_lint_probe.py`) with the reviewer's probe, the samples, the documented gaps
+  and a false-positive comparison over the package and spikes.
+- R3-02: the gate takes a Button action for the latest press whose touch lifted (recognizer reports
+  `touchesEnded`); unit tests `liftActivationEitherOrder`, `liftActivationLimits`.
+- Finding 18: the viewer takes presses over after about 0.15 s; the lift recognizer began at 0.25 s,
+  so 0.15-0.25 s presses did nothing. `minimumPress` is now 0.05 s; the UI test presses 0.15 and 0.2 s.
+  Evidence: `large-content-viewer-timing-probe-simulator.md` (scratch instrumented build),
+  `large-content-viewer-mutations-simulator.md`.
+- Docs: report (Lint row, large content viewer row, Finding 18, Review round 3), ADR-0013 Sections 8,
+  9, 10 and Evidence, checklist step 12.
+
+Clean run after the round 3 fixes passed (`ci-clean-run.log`, commit d3b4bb2, started
+2026-10-12T22:00:22Z): 10-contracts, 20-design (527 references in verify mode; host 59 + 51 tests,
+simulator 59 + 60 + 28), 21-design-catalog (11 unit; 14 + 3 + 2 UI tests; 196 screenshots). A run
+from 23dc5e1 was stopped by hand during 20-design to add lint rules. Report header, Review round 3,
+Finding 18 and open question 14 are final for round 3. Device and human steps stay pending.

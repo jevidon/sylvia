@@ -1,6 +1,6 @@
 # Type roles at the default and largest accessibility sizes
 
-Environment: simulator: Sylvia-M0-g06-design (iPhone18,3), iOS 26.5
+Environment: simulator: Sylvia-M0-minors-g06-design (iPhone18,3), iOS 26.5
 
 | Role | Face | Weight | Size at Large | Size at AX5 | Line at AX5 | opsz at AX5 | Bold Text weight |
 | --- | --- | --- | --- | --- | --- | --- | --- |

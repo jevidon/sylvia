@@ -1,6 +1,6 @@
 # UIFontMetrics against the system text style sizes
 
-Environment: simulator: Sylvia-M0-g06-design (iPhone18,3), iOS 26.5
+Environment: simulator: Sylvia-M0-minors-g06-design (iPhone18,3), iOS 26.5
 
 For each mapped text style and content size: the system size (`UIFont.preferredFont`), `UIFontMetrics.scaledValue(for: default size)`, `UIFontMetrics.scaledFont(for: systemFont(ofSize: default size))`, and Sylvia's resolved role size.
 

@@ -1,6 +1,6 @@
 # Contrast measured from the compiled asset catalog
 
-Environment: simulator: Sylvia-M0-g06-design (iPhone18,3), iOS 26.5
+Environment: simulator: Sylvia-M0-minors-g06-design (iPhone18,3), iOS 26.5
 
 Colors resolved with `ColorToken.catalogValue(in:)`: `UIColor(named:in:)` from the compiled Assets.car, resolved for each appearance's trait collection (user interface style and accessibility contrast), then WCAG 2.x contrast. 176 measurements, 0 failing; lowest 4.52 (markerAttentionText-on-markerAttentionTint, light_increased_contrast).
 

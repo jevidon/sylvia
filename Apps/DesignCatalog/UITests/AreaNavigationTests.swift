@@ -145,11 +145,16 @@ final class AreaNavigationTests: XCTestCase {
     /// A long press on a control with the large content viewer activates it exactly once at the
     /// largest accessibility text size: the player's Play/Pause button, which toggles, so a missed
     /// activation and a double one (the Button's own action plus the lift activation) both leave the
-    /// label unchanged. A short press (0.35 s) and a long one (3 s) must each flip Pause to Play or
-    /// back. At AX5 the viewer takes both presses over, so only the lift activation runs the action
-    /// (a run with the activation removed fails on the first press:
-    /// `large-content-viewer-lift-mutation-simulator.md`). At the default text size, where the viewer
-    /// is off, both must also toggle exactly once (the Button's own action, no lift activation).
+    /// label unchanged. Presses of 0.15, 0.2, 0.35 and 3 s must each flip Pause to Play or back.
+    /// At AX5 the viewer takes all of them over, so only the lift activation runs the action (a run
+    /// with the activation removed fails on the first long press:
+    /// `large-content-viewer-lift-mutation-simulator.md`). The 0.15 and 0.2 s presses were added in
+    /// review round 3: the viewer takes a press over after about 0.15 s, and with the lift
+    /// recognizer beginning only at 0.25 s such a press activated nothing. At the default text
+    /// size, where the viewer is off, every press must also toggle exactly once (the Button's own
+    /// action, no lift activation). Review round 3 (R3-02): at each size a 3 s press immediately
+    /// followed by a tap must toggle twice, so the gate takes the tap for a new press instead of
+    /// dropping it as the long press's late Button action (`large-content-viewer-mutations-simulator.md`).
     func testLargeContentViewerActivatesControlsOnce() {
         var rows: [String] = []
         for (variant, name) in [(Variant.ax5, "AX5"), (Variant.light, "Large (default)")] {
@@ -158,7 +163,7 @@ final class AreaNavigationTests: XCTestCase {
             XCTAssertNotNil(Harness.audit(app, name: "player"))
             var expected = "Pause"
             XCTAssertNotNil(waitForPlayPause(app, expected, seconds: 10), "\(name): no Pause button on the player")
-            for duration in [0.35, 3.0, 0.35, 3.0] {
+            for duration in [0.15, 0.2, 0.35, 3.0, 0.15, 0.2, 0.35, 3.0] {
                 // Scrolled wholly into view first (the transport sits below the cover at AX5).
                 guard Harness.reach(app, expected, showsMiniPlayer: false, context: "\(name) player") != nil,
                       let button = playPause(app, expected) else { return }
@@ -171,6 +176,29 @@ final class AreaNavigationTests: XCTestCase {
                 rows.append("| \(name) | \(String(format: "%.2f", duration)) s | \(expected) | \(once ? "yes" : "no") |")
                 if !once { return }
             }
+            // Review round 3 (R3-02): a 3 s press immediately followed by a tap at the same point.
+            // The tap is a new touch, so it toggles again, also when it comes within the gate's
+            // late-action window after a lift activation (the gate takes a Button action for the
+            // latest press whose touch lifted; were the tap taken for the long press's late Button
+            // action, it would be dropped and the label would stay toggled). Two toggles bring the
+            // label back.
+            guard Harness.reach(app, expected, showsMiniPlayer: false, context: "\(name) player") != nil,
+                  let button = playPause(app, expected) else { return }
+            // A screen point, not one relative to the button: the button's query matches its label,
+            // which the press changes, so an element-relative point would no longer resolve.
+            let frame = button.frame
+            let point = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.midX, dy: frame.midY))
+            let original = expected
+            point.press(forDuration: 3.0)
+            let lifted = Date()
+            point.tap()
+            let gap = Date().timeIntervalSince(lifted)
+            let back = waitForPlayPause(app, original, seconds: 3) != nil
+            Thread.sleep(forTimeInterval: 1.5)  // a late extra activation would flip it
+            let twice = back && playPause(app, original) != nil
+            XCTAssertTrue(twice, "\(name): a 3 s press followed by a tap did not toggle exactly twice (back to \(original))")
+            rows.append("| \(name) | 3.00 s, then a tap (tap returned \(String(format: "%.2f", gap)) s after the press) | \(original) (toggled twice) | \(twice ? "yes" : "no") |")
+            if !twice { return }
         }
         Harness.writeText("large-content-viewer-activation-simulator.md", """
             # Large content viewer: a long press activates a control exactly once
@@ -179,9 +207,17 @@ final class AreaNavigationTests: XCTestCase {
             `AreaNavigationTests.testLargeContentViewerActivatesControlsOnce` on the player's Play/Pause \
             button (XCUITest `press(forDuration:)`). The button toggles, so a missed activation and a \
             double one both leave the label unchanged; each row waits 0.5 s more for a late second \
-            activation.
+            activation. The 0.15 and 0.2 s presses (review round 3) are shorter than the 0.25 s at \
+            which the lift recognizer used to begin, and longer than the viewer's own delay at AX5. \
+            The last row of each text size is a 3 s press immediately followed by a tap at the same \
+            point (review round 3, R3-02): the tap is a new touch and must toggle again, so the label \
+            returns to where it was; the time is from the end of the press to the return of \
+            XCUITest's tap, an upper bound on when the tap's touch began. The case where the Button's \
+            own action arrives after the lift activation (a busy main thread) cannot be produced \
+            reliably here; the gate's handling of it is proven by the unit tests \
+            `liftActivationEitherOrder` and `liftActivationLimits`.
 
-            | Text size | Press | Label expected after the press | Toggled exactly once |
+            | Text size | Press | Label expected after the press | Toggled exactly once (twice for press and tap) |
             | --- | --- | --- | --- |
             \(rows.joined(separator: "\n"))
             """)

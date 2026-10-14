@@ -391,23 +391,144 @@ struct ComponentLogicTests {
         #expect(Set(SylviaArea.allCases.map(\.systemSymbol)).count == 3)
     }
 
+    /// A clock the gate tests advance by hand.
+    @MainActor
+    final class ManualClock {
+        var instant = ContinuousClock.now
+        func advance(_ duration: Duration) { instant = instant.advanced(by: duration) }
+    }
+
+    /// A whole touch on the control: down, then lifted. Whether the Button then runs its action
+    /// (a tap, or a press the viewer did not take over) is up to each test.
+    private func touch(_ gate: LiftActivationGate) {
+        gate.touchBegan()
+        gate.touchLifted()
+    }
+
     @Test("Large content viewer lift: the gate knows whether the Button's own action ran during the press (R2-02)")
     func liftActivationGate() {
         let gate = LiftActivationGate()
         var runs = 0
-        // A tap before any long press: the Button ran, no press is current.
-        gate.run { runs += 1 }
-        // A long press the viewer took over: the Button's action did not run, so the lift activates.
-        gate.pressBegan()
-        #expect(!gate.buttonActionRanDuringPress)
-        // A long press that ended as a normal tap: the Button ran, so the lift must not run it again.
-        gate.pressBegan()
+        // A tap: the Button ran for this press.
+        touch(gate)
         gate.run { runs += 1 }
         #expect(gate.buttonActionRanDuringPress)
-        // The next press starts clean.
-        gate.pressBegan()
+        // A long press the viewer took over: the Button's action did not run, so the lift activates.
+        touch(gate)
         #expect(!gate.buttonActionRanDuringPress)
+        gate.liftSettled(press: gate.liftedPress) { runs += 1 }
+        #expect(gate.liftActivatedDuringPress)
+        // A long press that ended as a normal tap: the Button ran, so the lift must not run it again.
+        touch(gate)
+        gate.run { runs += 1 }
+        gate.liftSettled(press: gate.liftedPress) { runs += 1 }
+        #expect(gate.buttonActionRanDuringPress && !gate.liftActivatedDuringPress)
+        // The next press starts clean.
+        gate.touchBegan()
+        #expect(!gate.buttonActionRanDuringPress && !gate.liftActivatedDuringPress)
+        #expect(runs == 3)
+    }
+
+    @Test("Large content viewer lift: one activation per press in either order, also when the Button's action arrives late (R3-02)")
+    func liftActivationEitherOrder() {
+        let clock = ManualClock()
+        let gate = LiftActivationGate(now: { clock.instant })
+        var runs = 0
+        // 1. Button first, lift after the settle delay: one run.
+        touch(gate)
+        gate.run { runs += 1 }
+        clock.advance(LargeContentViewerLift.settleDelay)
+        gate.liftSettled(press: gate.liftedPress) { runs += 1 }
+        #expect(runs == 1)
+        // 2. Lift first (the main thread was busy for longer than the settle delay), then the same
+        // press's Button action 400 ms later: the late action is dropped. One run.
+        touch(gate)
+        let second = gate.liftedPress
+        clock.advance(LargeContentViewerLift.settleDelay)
+        gate.liftSettled(press: second) { runs += 1 }
+        clock.advance(.milliseconds(400))
+        gate.run { runs += 1 }
         #expect(runs == 2)
+        // 3. A second lift activation for the same press never runs.
+        gate.liftSettled(press: second) { runs += 1 }
+        #expect(runs == 2)
+        // 4. A tap right after a press the viewer took over: the tap's touch lifts before its
+        // action arrives, so the action is the tap's and runs, even within the window.
+        touch(gate)
+        gate.liftSettled(press: gate.liftedPress) { runs += 1 }
+        touch(gate)
+        gate.run { runs += 1 }
+        #expect(runs == 4)
+        // 5. A new touch begins while the late action of a lift-activated press is still on its
+        // way (a busy main thread): the action belongs to the press that lifted and is dropped;
+        // the new touch's own action, after it lifts, runs. Two presses, two runs.
+        touch(gate)
+        gate.liftSettled(press: gate.liftedPress) { runs += 1 }
+        gate.touchBegan()
+        gate.run { runs += 1 }
+        #expect(runs == 5)
+        gate.touchLifted()
+        gate.run { runs += 1 }
+        #expect(runs == 6)
+        // 6. A press's Button action arrives after the next touch began and before the press's
+        // lift activation settles: it is taken for the press that lifted, so that lift does not
+        // run as well.
+        touch(gate)
+        let seventh = gate.liftedPress
+        gate.touchBegan()
+        gate.run { runs += 1 }
+        clock.advance(LargeContentViewerLift.settleDelay)
+        gate.liftSettled(press: seventh) { runs += 1 }
+        #expect(runs == 7)
+        // 7. A lift activation settles for its press after a new touch began: it runs for its own
+        // press, and the new touch's action runs once that touch lifts. Two presses, two runs.
+        gate.touchLifted()  // the press that began in 6 lifts; the viewer took it over (no action)
+        let eighth = gate.liftedPress
+        gate.touchBegan()
+        gate.liftSettled(press: eighth) { runs += 1 }
+        gate.touchLifted()
+        gate.run { runs += 1 }
+        #expect(runs == 9)
+    }
+
+    @Test("Large content viewer lift: the window, and the two stated limits of the gate (R3-02)")
+    func liftActivationLimits() {
+        let clock = ManualClock()
+        let gate = LiftActivationGate(now: { clock.instant })
+        var runs = 0
+        // Only one late action is dropped, and only within the window: a touch-free action (a
+        // keyboard or VoiceOver) with no touch lifting since is taken for the late action and
+        // dropped; the next one runs.
+        touch(gate)
+        gate.liftSettled(press: gate.liftedPress) { runs += 1 }
+        clock.advance(LargeContentViewerLift.lateActionWindow)
+        gate.run { runs += 1 }
+        gate.run { runs += 1 }
+        #expect(runs == 2)
+        // Later than the window after a lift activation, it runs.
+        touch(gate)
+        gate.liftSettled(press: gate.liftedPress) { runs += 1 }
+        clock.advance(LargeContentViewerLift.lateActionWindow + .milliseconds(1))
+        gate.run { runs += 1 }
+        #expect(runs == 4)
+        // Limit 1 (stated): a touch-free action during a press's settle delay is taken for that
+        // press's own action, so the lift activation does not run as well (one activation for two).
+        touch(gate)
+        let fifth = gate.liftedPress
+        gate.run { runs += 1 }
+        clock.advance(LargeContentViewerLift.settleDelay)
+        gate.liftSettled(press: fifth) { runs += 1 }
+        #expect(runs == 5)
+        // Limit 2 (stated): if a whole later tap lifts before the late action of a lift-activated
+        // press arrives, that late action is taken for the tap's and runs, so the earlier press
+        // activates twice; the tap's own action runs too.
+        touch(gate)
+        gate.liftSettled(press: gate.liftedPress) { runs += 1 }
+        touch(gate)
+        gate.run { runs += 1 }
+        gate.run { runs += 1 }
+        #expect(runs == 8)
+        #expect(LargeContentViewerLift.lateActionWindow > LargeContentViewerLift.settleDelay)
     }
 
     @Test("Large content viewer lift: the item under the finger is found from the item frames (R2-02)")

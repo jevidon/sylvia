@@ -1,7 +1,7 @@
 # Snapshot references
 
 Directory: `Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests`.
-Recorded on the reference device of `RecordingDevice` (model iPhone18,3, iOS 26.5; the suite refuses to compare on any other). Compared in this run on the simulator Sylvia-M0-g06-design (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5). 527 PNG files, 37900 KiB on disk.
+Recorded on the reference device of `RecordingDevice` (model iPhone18,3, iOS 26.5; the suite refuses to compare on any other). Compared in this run on the simulator Sylvia-M0-minors-g06-design (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5). 527 PNG files, 37900 KiB on disk.
 
 | Sample | Files | KiB |
 | --- | --- | --- |

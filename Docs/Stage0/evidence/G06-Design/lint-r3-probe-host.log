@@ -1,0 +1,127 @@
+# R3-01 probe: round 3 spellings linted with the review round 2 lint and with the current lint
+# Environment: host, macOS 26.6.2, Python 3.14.6
+# Date: 2026-10-12T23:07:28Z
+# Command: Docs/Stage0/evidence/G06-Design/commands/r3_lint_probe.py (scratch trees under .build/scratch/r3-lint-probe)
+# Probe 1 is the reviewer's four lines verbatim (Apps/Probe/Sources/Probe2.swift in a scratch tree);
+# probe 2 is Packages/Design/LintFixtures/violating/Styles.swift (41 marked lines) copied to a scratch tree;
+# probe 3 holds spellings that ADR-0013 Section 8 lists as not caught (materials, a token gradient, a list
+# passed to an unnamed parameter, a Set<Color>, a dictionary keyed by colors): 0 findings expected.
+# 'Before' is Scripts/lint-design.py at b354dc7 (integration commit, review round 2 rules);
+# 'After' is Scripts/lint-design.py in the commit that adds this log.
+# Probe 3 source (Apps/Probe/Sources/Gaps.swift):
+#   import SwiftUI
+#   
+#   // Spellings ADR-0013 Section 8 lists as not caught (review round 3): each must produce no finding.
+#   struct Gaps: View {
+#       var body: some View {
+#           Text("x").background(.ultraThinMaterial)
+#           Text("x").background(.bar)
+#           Circle().fill(LinearGradient(colors: [ColorToken.pine.color, ColorToken.ink.color], startPoint: .top, endPoint: .bottom))
+#           MyView(highlights: [.red])
+#       }
+#   }
+#   
+#   let colorSet: Set<Color> = [.red, .blue]
+#   let namesByColor: [Color: String] = [.red: "a"]
+
+## Probe 1: the reviewer's four lines; Before
+$ lint-design.py (b354dc7) lint --root .build/scratch/r3-lint-probe/reviewer --export Contracts/design/marginalia.v1.json
+design lint: UI targets scanned: Apps
+design lint: 1 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+design lint: 0 finding(s)
+# exit 0
+
+## Probe 1: the reviewer's four lines; After
+$ Scripts/lint-design.py lint --root .build/scratch/r3-lint-probe/reviewer --export Contracts/design/marginalia.v1.json
+design lint: UI targets scanned: Apps
+design lint: 1 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+Apps/Probe/Sources/Probe2.swift:5: named-color: named system color in a list of colors
+Apps/Probe/Sources/Probe2.swift:6: named-color: named system color in a list of colors
+Apps/Probe/Sources/Probe2.swift:7: named-color: named system color
+Apps/Probe/Sources/Probe2.swift:11: named-color: named system color (typed as Color or a shape style)
+design lint: 4 finding(s)
+# exit 1
+
+## Probe 2: Styles.swift; Before
+$ lint-design.py (b354dc7) lint --root .build/scratch/r3-lint-probe/styles --export Contracts/design/marginalia.v1.json
+design lint: UI targets scanned: Apps
+design lint: 1 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+Apps/Probe/Sources/Styles.swift:35: named-color: named system color
+Apps/Probe/Sources/Styles.swift:61: named-color: named system color
+design lint: 2 finding(s)
+# exit 1
+
+## Probe 2: Styles.swift; After
+$ Scripts/lint-design.py lint --root .build/scratch/r3-lint-probe/styles --export Contracts/design/marginalia.v1.json
+design lint: UI targets scanned: Apps
+design lint: 1 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+Apps/Probe/Sources/Styles.swift:12: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:13: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:14: named-color: named system color
+Apps/Probe/Sources/Styles.swift:15: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:16: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:20: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:23: named-color: named system color
+Apps/Probe/Sources/Styles.swift:24: named-color: named system color (conditional)
+Apps/Probe/Sources/Styles.swift:25: named-color: named system color
+Apps/Probe/Sources/Styles.swift:26: named-color: named system color
+Apps/Probe/Sources/Styles.swift:31: named-color: named system color (typed as Color or a shape style)
+Apps/Probe/Sources/Styles.swift:32: named-color: named system color (typed as Color or a shape style)
+Apps/Probe/Sources/Styles.swift:33: named-color: named system color (typed as Color or a shape style)
+Apps/Probe/Sources/Styles.swift:34: named-color: named system color (typed as Color or a shape style)
+Apps/Probe/Sources/Styles.swift:35: named-color: named system color
+Apps/Probe/Sources/Styles.swift:36: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:37: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:50: named-color: named system color
+Apps/Probe/Sources/Styles.swift:51: named-color: named system color
+Apps/Probe/Sources/Styles.swift:52: named-color: named system color
+Apps/Probe/Sources/Styles.swift:53: named-color: named system color
+Apps/Probe/Sources/Styles.swift:54: named-color: named system color
+Apps/Probe/Sources/Styles.swift:55: named-color: named system color
+Apps/Probe/Sources/Styles.swift:56: named-color: named system color
+Apps/Probe/Sources/Styles.swift:57: named-color: named system color
+Apps/Probe/Sources/Styles.swift:58: named-color: named system color
+Apps/Probe/Sources/Styles.swift:59: named-color: named system color (conditional)
+Apps/Probe/Sources/Styles.swift:60: named-color: named system color
+Apps/Probe/Sources/Styles.swift:61: named-color: named system color
+Apps/Probe/Sources/Styles.swift:62: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:63: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:64: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:65: named-color: named system color
+Apps/Probe/Sources/Styles.swift:66: color-components: color component initializer (.init or .color)
+Apps/Probe/Sources/Styles.swift:71: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:72: named-color: named system color (typed as Color or a shape style)
+Apps/Probe/Sources/Styles.swift:74: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:75: named-color: named system color in a list of colors
+Apps/Probe/Sources/Styles.swift:76: named-color: named system color in a dictionary of colors
+Apps/Probe/Sources/Styles.swift:77: named-color: named system color (conditional)
+Apps/Probe/Sources/Styles.swift:78: named-color: named system color (typed as Color or a shape style)
+design lint: 41 finding(s)
+# exit 1
+
+## Probe 3: documented gaps; Before
+$ lint-design.py (b354dc7) lint --root .build/scratch/r3-lint-probe/gaps --export Contracts/design/marginalia.v1.json
+design lint: UI targets scanned: Apps
+design lint: 1 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+design lint: 0 finding(s)
+# exit 0
+
+## Probe 3: documented gaps; After
+$ Scripts/lint-design.py lint --root .build/scratch/r3-lint-probe/gaps --export Contracts/design/marginalia.v1.json
+design lint: UI targets scanned: Apps
+design lint: 1 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+design lint: 0 finding(s)
+# exit 0
+
+## False-positive check: the new rules over Packages/Design and Spikes/
+# 343 Swift files copied to .build/scratch/r3-lint-probe/corpus/Apps and linted with both versions;
+# the code findings (colors and font sizes) only one version reports are listed.
+old lint: 139 code findings; new lint: 139
+reported only by the new rules: 0
+reported only by the old rules: 0

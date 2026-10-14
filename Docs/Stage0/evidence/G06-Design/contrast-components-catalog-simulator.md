@@ -1,6 +1,6 @@
 # Component contrast measured from the compiled asset catalog
 
-Environment: simulator: Sylvia-M0-g06-design (iPhone18,3), iOS 26.5
+Environment: simulator: Sylvia-M0-minors-g06-design (iPhone18,3), iOS 26.5
 
 Text and glyphs as the components draw them where that differs from a token pair (`ComponentContrastPairs`: the selection menu's opposite-appearance contents on its ink fill, the selected filter chip, the round play controls, the busy "Saving…" button, and every button role pressed and disabled, composited over the ground at the state's opacity). Colors from `ColorToken.catalogValue(in:)`. 56 measurements, 0 failing; 16 disabled-state measurements below the minimum, reported and exempt (WCAG 1.4.3: inactive controls). Text needs 4.5:1, glyphs 3:1.
 

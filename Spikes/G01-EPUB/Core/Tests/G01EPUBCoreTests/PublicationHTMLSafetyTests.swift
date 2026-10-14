@@ -289,6 +289,7 @@ struct PublicationHTMLSafetyTests {
             ("64 attributes per element", { doc(fill("<i " + attributeList(64) + ">x</i>", $0)) }),
             ("long attribute values", { doc(fill("<i title=\"" + String(repeating: "v", count: 4000) + "\">x</i>", $0)) }),
         ]
+        let loadBefore = Self.loadAverage()
         var rows: [String] = []
         for (name, make) in patterns {
             var times: [Int: Double] = [:]
@@ -311,16 +312,30 @@ struct PublicationHTMLSafetyTests {
              doc(String(repeating: "<i a=\"v\">x</i>", count: Safety.maxElementsPerDocument - 10))),
             ("no attributes, just under the element cap", doc(String(repeating: "<i>x</i>", count: Safety.maxElementsPerDocument - 10))),
         ]
+        // Review R3-01: one run of each is not a bound (a loaded rerun was up to 2.7x slower), so each is timed three
+        // times and every run is recorded; SanitizerAtCapsTimingTests times the same documents on a simulator or phone.
+        let atCapsRuns = 3
         for (name, input) in atCaps {
-            let r = await Safety.sanitize(html: input, budget: .seconds(120))
-            #expect(r.withheld == nil, "\(name): \(r.detail ?? "")")
-            #expect(r.seconds < Safety.defaultTimeBudget.seconds, "\(name): \(r.seconds) s")
-            let size = String(format: "%.2f MiB", Double(input.utf8.count) / Double(mib))
-            rows.append("\(name)\t\(size)\t\(String(format: "%.3f", r.seconds)) s\t\(r.withheld?.rawValue ?? "served") (\(r.elementCount) elements, \(r.attributeCount) attributes)")
+            for run in 1 ... atCapsRuns {
+                let r = await Safety.sanitize(html: input, budget: .seconds(120))
+                #expect(r.withheld == nil, "\(name): \(r.detail ?? "")")
+                #expect(r.seconds < Safety.defaultTimeBudget.seconds, "\(name): \(r.seconds) s")
+                let size = String(format: "%.2f MiB", Double(input.utf8.count) / Double(mib))
+                rows.append("\(name) (run \(run) of \(atCapsRuns))\t\(size)\t\(String(format: "%.3f", r.seconds)) s\t\(r.withheld?.rawValue ?? "served") (\(r.elementCount) elements, \(r.attributeCount) attributes)")
+            }
         }
-        let table = "# pattern\tinput\tseconds (host, debug build)\tresult\n" + rows.joined(separator: "\n") + "\n"
+        // Other jobs on the same Mac (and the other host tests, which Swift Testing runs in parallel with this one)
+        // change these figures; the load averages make that visible.
+        let header = "# load average (1, 5, 15 min) at start: \(loadBefore); at end: \(Self.loadAverage()); \(ProcessInfo.processInfo.activeProcessorCount) processors\n"
+        let table = header + "# pattern\tinput\tseconds (host, debug build)\tresult\n" + rows.joined(separator: "\n") + "\n"
         HostEvidence.write("sanitizer-timing.tsv", table)
         print("sanitizer timing (host):\n" + table)
+    }
+
+    static func loadAverage() -> String {
+        var values = [Double](repeating: 0, count: 3)
+        guard getloadavg(&values, 3) == 3 else { return "unavailable" }
+        return values.map { String(format: "%.2f", $0) }.joined(separator: ", ")
     }
 
     func attributeList(_ n: Int) -> String { (0 ..< n).map { "a\($0)=\"v\"" }.joined(separator: " ") }

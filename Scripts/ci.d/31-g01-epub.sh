@@ -29,11 +29,14 @@ xcodebuild -version
 xcrun swift --version 2>&1 | head -1
 xcodegen --version
 sw_vers | paste -sd' ' -
+# Timing evidence (sanitizer timings, open times) depends on what else runs on this Mac; record the load.
+echo "load: $(uptime)"
 
 echo "== committed generated fixtures match their generator"
 "$SYLVIA_ROOT/Scripts/fixtures/generate-g01-epub-fixtures.sh" --check
 
 echo "== host: G01EPUBCore (swift test, macOS)"
+echo "load: $(uptime)"
 # The sanitizer's timing and real-book fidelity results are written to $EVIDENCE.
 (cd "$SPIKE/Core" && SYLVIA_EVIDENCE_DIR="$EVIDENCE" xcrun swift test --scratch-path "$SPIKE/.build/core")
 
@@ -67,6 +70,7 @@ only=()
 for t in ${G01_EPUB_ONLY_TESTING:-}; do only+=("-only-testing:$t"); done
 
 echo "== test (simulator): hosted unit tests and UI tests"
+echo "load: $(uptime)"
 # TEST_RUNNER_ variables reach the test processes; the simulator shares the host file system, so the tests
 # write their evidence straight into $EVIDENCE.
 LOG="$SPIKE/.build/xcodebuild-test.log"
@@ -158,5 +162,6 @@ if [[ $crash_status -ne 0 ]]; then
   echo "crash reports show a crash the tests did not expect (see $EVIDENCE/crash-reports.txt)"
   exit 1
 fi
+echo "load: $(uptime)"
 echo "evidence written to $EVIDENCE"
 echo "G0.1 EPUB: all checks passed"

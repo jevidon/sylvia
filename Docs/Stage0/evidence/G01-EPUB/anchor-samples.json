@@ -520,7 +520,7 @@
     "observed_readium_locator_contents" : "Selection locators carry href, type, title, locations.{progression, totalProgression, position} and text.{before, highlight, after}; no CSS selector, partial CFI, DOM range or fragment. Content-iterator (extraction and search-hit) locators also carry locations.cssSelector. Reading-position locators carry no text.highlight. Readium 3.11.0 builds a selection locator from the navigator's current location (href, progression, position of the page shown) plus the selected text, so right after a jump its href can name the previous resource; the adapter's captureSelection() checks the href against the document holding the selection (readium_selection_href_vs_confirmed).",
     "summary" : "Portable fields are Sylvia's own and readable on any platform; reader.locator is the reader's locator stored verbatim and interpreted only by the adapter named in reader.adapter. Reanchoring order (plan 7.5): reader.locator, then exact_text with prefix\/suffix inside resource_href, then text_offsets when extraction_version matches."
   },
-  "environment" : "simulator: Sylvia-M0-g01-epub (iPhone18,3), iOS 26.5",
+  "environment" : "simulator: Sylvia-M0-minors-g01-epub (iPhone18,3), iOS 26.5",
   "extraction_version" : "readium-swift-3.11.0+html-content-iterator+sylvia-sanitizer-2+chunker-1",
   "generated_by" : "Spikes\/G01-EPUB\/Tests\/Unit\/AnchorSamplesTests.swift (Scripts\/ci.d\/31-g01-epub.sh)",
   "other_locators" : [

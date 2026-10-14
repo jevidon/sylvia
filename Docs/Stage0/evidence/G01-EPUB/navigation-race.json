@@ -6,21 +6,21 @@
     "runs" : [
       {
         "after_single_go_back_1_5s" : {
-          "progression" : 0,
-          "scrollX" : "0",
-          "visible" : false
+          "progression" : 0.083333333333333329,
+          "scrollX" : "804",
+          "visible" : true
         },
         "attempt" : 0,
         "endnote_visible_after_1_5s" : "1",
         "endnote_visible_immediately" : "evaluation failed",
-        "first_jump_into_book1_was_undone" : true,
+        "first_jump_into_book1_was_undone" : false,
         "lost_position" : false,
         "start" : {
-          "progression" : 0,
-          "scrollX" : "0",
-          "visible" : false
+          "progression" : 0.083333333333333329,
+          "scrollX" : "804",
+          "visible" : true
         },
-        "start_progression" : 0
+        "start_progression" : 0.083333333333333329
       },
       {
         "after_single_go_back_1_5s" : {
@@ -97,8 +97,8 @@
     ],
     "what" : "From 'From Rusticus' in book-1, a single go(to:) to endnotes.xhtml#note-6 and a single go(to:) back, no adapter repeat."
   },
-  "environment" : "simulator: Sylvia-M0-g01-epub (iPhone18,3), iOS 26.5",
-  "readium_single_go_reset_count" : 4,
+  "environment" : "simulator: Sylvia-M0-minors-g01-epub (iPhone18,3), iOS 26.5",
+  "readium_single_go_reset_count" : 5,
   "runs" : [
     {
       "adapter_after_1_5s" : {
@@ -144,13 +144,13 @@
       },
       "attempt" : 2,
       "readium_single_go_after_1_5s" : {
-        "progression" : 0.083333333333333329,
-        "scrollX" : "804",
-        "visible" : true
+        "progression" : 0,
+        "scrollX" : "0",
+        "visible" : false
       },
       "readium_single_go_immediately" : {
         "progression" : 0,
-        "scrollX" : "0",
+        "scrollX" : "804",
         "visible" : true
       }
     },
@@ -186,7 +186,7 @@
       },
       "readium_single_go_immediately" : {
         "progression" : 0,
-        "scrollX" : "0",
+        "scrollX" : "804",
         "visible" : true
       }
     }

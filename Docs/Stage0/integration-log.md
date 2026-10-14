@@ -266,4 +266,13 @@ After the run no tracked file had changed (only this agent's own edit to this lo
 - **M5:** the two non-portable patterns and the contract decisions in `M0-contracts.md` (row 40).
 - **`SylviaDesign` owner, with design review:** rows 27 and 78.
 - **G0.2/M6:** C46's script change.
-- **Gate summary (`M0-gate.md`, next agent):** row 60's threat-model row; the item verdicts above (deps: reject, two serious findings open).
+- **Gate summary (`M0-gate.md`, next agent):** row 60's threat-model row; the item verdicts above (deps: reject, two serious findings open). Done: section 8.
+
+## 8. M0 gate summary (15 October 2026)
+
+`M0-gate.md` was written on top of `74be11e` by an agent (agent-written; human sign-off pending). It carries row 60's threat-model row (its row 71) and the item verdicts of 7.1 (its Section 6.1).
+
+- **Status consistency.** Every status in its Section 2 was checked against the gate report row it cites; no gate report status disagreed with its evidence, so **no gate report was edited**. Five inconsistencies in other documents, none of which changes a status, are listed in its Section 6.3 for their owners: G0.1 PDF row 10c is a fourth gate's failed row that the plan, the amendments and `README.md` do not count; `README.md` omits G0.6's failed `UIFontMetrics` row; section 2 row 7 and `README.md` record G0.5 AI's minors as R6-01 to R6-04 with 62 mutations, where the branch also fixed R7-01 to R7-04 and its log says 77 of 77; `G04-Audio.md`'s shared-file requests 6-11 still read "Open"; and the amendments' re-check against the merged reports is not recorded.
+- **Git LFS.** The owner decided on 13 October 2026 to adopt LFS; the adoption attempted after the assembly made no commit, and its verification's verdict was reject (R2-01). The summary records the decision and that state; the tree has no `.gitattributes` and no `filter.lfs` setting (`evidence/M0-Integration/gate-summary-checks.log`).
+- **Checks.** `evidence/M0-Integration/commands/gate-summary-checks.sh` on the commit that adds the summary: no code change after `efc9479`; the LFS state; every path the summary cites exists and its 92 rows' statuses; and `Scripts/ci.sh contracts dependency-lock hard-rules` (`evidence/M0-Integration/gate-summary-checks.log`). No simulator was created or used.
+- `README.md` now links `M0-gate.md` in place of "written next".

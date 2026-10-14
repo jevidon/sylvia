@@ -1,0 +1,54 @@
+# check: g02-ats-variant-tailnet
+# expected on this Mac (stated before the run): pass
+# note: G02 checklist step 6.3: the ATS probe app with G02_ATS_VARIANT=tailnet-exception (the checklist names the scheme and setting but gives no command).
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:48:32Z; load at start: 8.60 5.19 3.29
+# command (from the repository root):
+#   xcodebuild build -project Spikes/G02-Transfer/iOS/G02Transfer.xcodeproj -scheme G02TransferATSVariant -configuration Debug G02_ATS_VARIANT=tailnet-exception -destination generic/platform=iOS -derivedDataPath Spikes/G02-Transfer/iOS/.build/DerivedData-ats -disableAutomaticPackageResolution DEVELOPMENT_TEAM=A4KBDX665Z 
+# finished: 2026-10-14T06:48:40Z after 8 s; exit status 0; load at end: 8.32 5.19 3.30
+--- result lines
+** BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+Provisioning Profile: "iOS Team Provisioning Profile: *"
+Signing Identity:     "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+--- warning count: 2 (first 20 unique)
+2026-10-14 19:48:40.196 appintentsmetadataprocessor[95341:35847442] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'G02TransferATSVariant' from project 'G02Transfer')
+--- last 15 lines of the output
+    builtin-validationUtility Spikes/G02-Transfer/iOS/.build/DerivedData-ats/Build/Products/Debug-iphoneos/G02TransferATSVariant.app -shallow-bundle -infoplist-subpath Info.plist
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'G02TransferATSVariant' from project 'G02Transfer')
+
+Touch Spikes/G02-Transfer/iOS/.build/DerivedData-ats/Build/Products/Debug-iphoneos/G02TransferATSVariant.app (in target 'G02TransferATSVariant' from project 'G02Transfer')
+    cd Spikes/G02-Transfer/iOS
+    /usr/bin/touch -c Spikes/G02-Transfer/iOS/.build/DerivedData-ats/Build/Products/Debug-iphoneos/G02TransferATSVariant.app
+
+PruneExplicitPrecompiledModules Spikes/G02-Transfer/iOS/.build/DerivedData-ats/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G02-Transfer/iOS/.build/DerivedData-ats/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G02-Transfer/iOS/.build/DerivedData-ats/SDKExplicitPrecompiledModules
+
+** BUILD SUCCEEDED **
+
+--- codesign checks of the products (in Spikes/G02-Transfer/iOS/.build/DerivedData-ats/Build/Products/Debug-iphoneos)
+== G02TransferATSVariant.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.transfer.atsvariant
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+# result: pass; expected: pass; as expected: yes
+--- built Info.plist of the ATS probe app (plutil -p, ATS keys and display name)
+  "CFBundleDisplayName" => "Sylvia ATS Probe"
+  "CFBundleIdentifier" => "com.jevidon.sylvia.spike.transfer.atsvariant"
+  "G02ATSVariant" => "tailnet-exception"
+  "NSAppTransportSecurity" => {
+    "NSExceptionDomains" => {
+      "100.64.0.0/10" => {
+        "NSExceptionAllowsInsecureHTTPLoads" => true
+      "ts.net" => {
+        "NSExceptionAllowsInsecureHTTPLoads" => true
+        "NSIncludesSubdomains" => true

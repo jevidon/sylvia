@@ -1,0 +1,25 @@
+# check: g02-sylvia-test-source
+# expected on this Mac (stated before the run): pass
+# note: G02 checklist Before you start: the request-logging test source for steps 13-17 (host build, as written).
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:53:58Z; load at start: 8.62 6.00 4.21
+# command (from the repository root):
+#   xcrun swift build --package-path Spikes/G02-Transfer/SourceService --product sylvia-test-source 
+# finished: 2026-10-14T06:54:01Z after 3 s; exit status 0; load at end: 8.62 6.00 4.21
+--- result lines
+Build complete! (1.77 sec)
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+--- warning count: 0 (first 20 unique)
+--- last 15 lines of the output
+Building for debugging...
+[Computing dependencies]
+[Pre-planning 1 / 1310]
+[Planning deferred tasks]
+[Starting]
+[10 / 109]
+[15 / 20] sylvia-test-source-product
+[20 / 22] sylvia-test-source-product
+Build complete! (1.77 sec)
+# result: pass; expected: pass; as expected: yes

@@ -1,0 +1,41 @@
+# check: g03-intake-tests-unsigned
+# expected on this Mac (stated before the run): pass
+# note: Unsigned compile check of the same G03 build (CODE_SIGNING_ALLOWED=NO): separates a code problem from a signing problem.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:48:43Z; load at start: 7.81 5.13 3.30
+# command (from the repository root):
+#   xcodebuild build-for-testing -project Spikes/G03-Intake/App/G03Intake.xcodeproj -scheme IntakeHarness -destination generic/platform=iOS -derivedDataPath Spikes/G03-Intake/App/.build/DerivedData-device -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO 
+# finished: 2026-10-14T06:48:52Z after 9 s; exit status 0; load at end: 8.71 5.36 3.39
+--- result lines
+** TEST BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+--- warning count: 10 (first 20 unique)
+2026-10-14 19:48:47.752 appintentsmetadataprocessor[95657:35848636] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:48.040 appintentsmetadataprocessor[95707:35848877] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:48.122 appintentsmetadataprocessor[95724:35848947] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:51.021 appintentsmetadataprocessor[95885:35849423] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:51.827 appintentsmetadataprocessor[95919:35849671] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:51.987 appintentsmetadataprocessor[95936:35849717] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:52.376 appintentsmetadataprocessor[95948:35849778] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+warning: 'SylviaImportHandoff' is missing a dependency on 'SylviaIntakeCore' because dependency scan of Swift module 'SylviaImportHandoff' discovered a dependency on 'SylviaIntakeCore'
+warning: 'SylviaPack' is missing a dependency on 'ReadiumZIPFoundation' because dependency scan of Swift module 'SylviaPack' discovered a dependency on 'ReadiumZIPFoundation'
+warning: 'SylviaPack' is missing a dependency on 'SylviaIntakeCore' because dependency scan of Swift module 'SylviaPack' discovered a dependency on 'SylviaIntakeCore'
+--- last 15 lines of the output
+Touch Spikes/G03-Intake/App/.build/DerivedData-device/Build/Products/Debug-iphoneos/IntakeHarnessUITests-Runner.app/PlugIns/IntakeHarnessUITests.xctest (in target 'IntakeHarnessUITests' from project 'G03Intake')
+    cd Spikes/G03-Intake/App
+    /usr/bin/touch -c Spikes/G03-Intake/App/.build/DerivedData-device/Build/Products/Debug-iphoneos/IntakeHarnessUITests-Runner.app/PlugIns/IntakeHarnessUITests.xctest
+
+PruneExplicitPrecompiledModules Spikes/G03-Intake/App/.build/DerivedData-device/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G03-Intake/App/.build/DerivedData-device/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G03-Intake/App/.build/DerivedData-device/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+warning: 'SylviaImportHandoff' is missing a dependency on 'SylviaIntakeCore' because dependency scan of Swift module 'SylviaImportHandoff' discovered a dependency on 'SylviaIntakeCore'
+warning: 'SylviaPack' is missing a dependency on 'SylviaIntakeCore' because dependency scan of Swift module 'SylviaPack' discovered a dependency on 'SylviaIntakeCore'
+warning: 'SylviaPack' is missing a dependency on 'ReadiumZIPFoundation' because dependency scan of Swift module 'SylviaPack' discovered a dependency on 'ReadiumZIPFoundation'
+** TEST BUILD SUCCEEDED **
+
+# result: pass; expected: pass; as expected: yes

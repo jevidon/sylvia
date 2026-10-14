@@ -1,0 +1,42 @@
+# check: design-catalog-debug
+# expected on this Mac (stated before the run): pass
+# note: G06 checklist Prerequisite: the checklist installs from Xcode (Run, Debug); this is that build on the command line.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:46:23Z; load at start: 1.83 1.85 1.92
+# command (from the repository root):
+#   xcodebuild build -project Apps/DesignCatalog/DesignCatalog.xcodeproj -scheme DesignCatalog -configuration Debug -destination generic/platform=iOS -derivedDataPath Apps/DesignCatalog/.build/DerivedData -disableAutomaticPackageResolution DEVELOPMENT_TEAM=A4KBDX665Z 
+# finished: 2026-10-14T06:46:37Z after 14 s; exit status 0; load at end: 7.15 2.95 2.31
+--- result lines
+** BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+Provisioning Profile: "iOS Team Provisioning Profile: *"
+Signing Identity:     "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+--- warning count: 1 (first 20 unique)
+2026-10-14 19:46:37.109 appintentsmetadataprocessor[92415:35835054] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+--- last 15 lines of the output
+    cd Apps/DesignCatalog
+    builtin-validationUtility Apps/DesignCatalog/.build/DerivedData/Build/Products/Debug-iphoneos/DesignCatalog.app -shallow-bundle -infoplist-subpath Info.plist
+
+Touch Apps/DesignCatalog/.build/DerivedData/Build/Products/Debug-iphoneos/DesignCatalog.app (in target 'DesignCatalog' from project 'DesignCatalog')
+    cd Apps/DesignCatalog
+    /usr/bin/touch -c Apps/DesignCatalog/.build/DerivedData/Build/Products/Debug-iphoneos/DesignCatalog.app
+
+PruneExplicitPrecompiledModules Apps/DesignCatalog/.build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Apps/DesignCatalog/.build/DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Apps/DesignCatalog/.build/DerivedData/SDKExplicitPrecompiledModules
+
+** BUILD SUCCEEDED **
+
+--- codesign checks of the products (in Apps/DesignCatalog/.build/DerivedData/Build/Products/Debug-iphoneos)
+== DesignCatalog.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.designcatalog
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+# result: pass; expected: pass; as expected: yes

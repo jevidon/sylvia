@@ -1,0 +1,48 @@
+# check: g04-tests-release-fixtures
+# expected on this Mac (stated before the run): pass
+# note: G04 checklist step 1.5 (Release, ENABLE_TESTABILITY=YES), as build-for-testing; fixtures bundled as in 1.1.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:51:37Z; load at start: 5.10 5.48 3.79
+# command (from the repository root):
+#   xcodebuild build-for-testing -project Spikes/G04-Audio/G04Audio.xcodeproj -scheme G04AudioHarness -configuration Release ENABLE_TESTABILITY=YES -destination generic/platform=iOS -derivedDataPath Spikes/G04-Audio/.build/DerivedData-release DEVELOPMENT_TEAM=A4KBDX665Z 
+# finished: 2026-10-14T06:53:07Z after 90 s; exit status 0; load at end: 3.55 4.93 3.75
+--- result lines
+** TEST BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+Provisioning Profile: "iOS Team Provisioning Profile: *"
+Signing Identity:     "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+--- warning count: 1 (first 20 unique)
+2026-10-14 19:51:44.647 appintentsmetadataprocessor[98222:35861507] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+--- last 15 lines of the output
+    builtin-validationUtility Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos/G04AudioHarness.app -shallow-bundle -infoplist-subpath Info.plist
+
+Touch Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos/G04AudioHarness.app (in target 'G04AudioHarness' from project 'G04Audio')
+    cd Spikes/G04-Audio
+    /usr/bin/touch -c Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos/G04AudioHarness.app
+
+PruneExplicitPrecompiledModules Spikes/G04-Audio/.build/DerivedData-release/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G04-Audio/.build/DerivedData-release/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G04-Audio/.build/DerivedData-release/SDKExplicitPrecompiledModules
+
+note: Run script build phase 'Bundle fixtures for device runs' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'G04AudioTests' from project 'G04Audio')
+** TEST BUILD SUCCEEDED **
+
+--- codesign checks of the products (in Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos)
+== G04AudioHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g04audio
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+== G04AudioHarness.app/PlugIns/G04AudioTests.xctest: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g04audio.tests
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+# result: pass; expected: pass; as expected: yes

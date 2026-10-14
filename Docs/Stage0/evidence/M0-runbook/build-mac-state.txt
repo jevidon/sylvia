@@ -1,0 +1,39 @@
+# build Mac state for the M0 device runbook
+# recorded 2026-10-14T06:46:21Z on host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+
+## code-signing identities (security find-identity -v -p codesigning; hashes removed)
+  1) <sha1> "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+     1 valid identities found
+
+## provisioning profiles Xcode keeps (~/Library/Developer/Xcode/UserData/Provisioning Profiles)
+- iOS Team Provisioning Profile: * | platform iOS | app ID A4KBDX665Z.* | expires Tue Aug 17 04:53:58 NZST 2027 | registered devices: 1
+  entitlement keys: application-identifier keychain-access-groups get-task-allow com.apple.developer.team-identifier 
+profiles: 3 in all; 2 of them for other apps' bundle IDs (not described)
+
+## developer accounts in Xcode (defaults read com.apple.dt.Xcode DVTDeveloperAccountManagerAppleIDLists; names masked)
+{
+    "IDE.Identifiers.Prod" =     (
+    );
+}
+entries naming an account: 0
+
+## System Information: does this Mac report a Provisioning UDID (the identifier a Mac is registered with for development; runbook 0.7)? The value is not printed
+Provisioning UDID field: present
+
+## device-run fixtures in $SYLVIA_FIXTURE_CACHE (/Users/jevidon/Library/Caches/SylviaFixtures)
+- downloads/MeditationsMarcusAurelius_librivox.m4b: 138201538 bytes
+- downloads/meditationsofmarcusaurelius_01_aurelius_64kb.mp3: 10862777 bytes
+- downloads/meditationsofmarcusaurelius_02_aurelius_64kb.mp3: 6449944 bytes
+- generated/g01-pdf/large-1000.pdf: 1713026 bytes
+- generated/g02-transfer/large-5GiB.bin: 5368709120 bytes
+- generated/g03-intake/large.sylviapack: 4846059727 bytes
+- generated/g03-intake/work/part-01.caf: 4831838986 bytes
+- generated/g04-audio/multi/Part 1.mp3: 1298711 bytes
+- generated/g04-audio/multi/Part 2.mp3: 1100598 bytes
+- generated/g04-audio/multi/Part 3.mp3: 1200699 bytes
+- generated/g04-audio/multi/Part 10.mp3: 961418 bytes
+- generated/g04-audio: stamp present
+- generated/g04-audio/long-formats: stamp present
+- generated/g04-audio/probes: stamp present
+- generated/g04-audio in all: 8.5G (du -h, binary units); apparent size: 8929281 KiB

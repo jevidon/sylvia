@@ -1,0 +1,34 @@
+# check: g05-recovery-tests-release
+# expected on this Mac (stated before the run): pass
+# note: Runbook correction for G05-Recovery step 2 (plan 19.1: budgets from a Release build): the package tests in the Release configuration with ENABLE_TESTABILITY=YES (the tests use @testable import), as build-for-testing, in a derived-data folder of its own; the runbook then runs only DurabilityTests/latency() from it.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:47:11Z; load at start: 13.33 4.65 2.93
+# command (from the repository root):
+#   bash -c $'cd Spikes/G05-Recovery && exec xcodebuild build-for-testing -scheme G05Recovery-Package -configuration Release ENABLE_TESTABILITY=YES \\\n      -destination generic/platform=iOS -derivedDataPath .build/DerivedData-release -disableAutomaticPackageResolution DEVELOPMENT_TEAM="$0"' A4KBDX665Z 
+# finished: 2026-10-14T06:47:49Z after 38 s; exit status 0; load at end: 7.93 4.35 2.90
+--- result lines
+** TEST BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+--- warning count: 1 (first 20 unique)
+2026-10-14 19:47:49.277 appintentsmetadataprocessor[93839:35840862] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+--- last 15 lines of the output
+    cd Spikes/G05-Recovery
+    builtin-RegisterExecutionPolicyException Spikes/G05-Recovery/.build/DerivedData-release/Build/Products/Release-iphoneos/SylviaRecoveryTests.xctest
+
+Touch Spikes/G05-Recovery/.build/DerivedData-release/Build/Products/Release-iphoneos/SylviaRecoveryTests.xctest (in target 'SylviaRecoveryTests-product' from project 'G05Recovery')
+    cd Spikes/G05-Recovery
+    /usr/bin/touch -c Spikes/G05-Recovery/.build/DerivedData-release/Build/Products/Release-iphoneos/SylviaRecoveryTests.xctest
+
+PruneExplicitPrecompiledModules Spikes/G05-Recovery/.build/DerivedData-release/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-Recovery/.build/DerivedData-release/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-Recovery/.build/DerivedData-release/SDKExplicitPrecompiledModules
+
+** TEST BUILD SUCCEEDED **
+
+# result: pass; expected: pass; as expected: yes
+--- signature state of SylviaRecoveryTests.xctest (information; codesign -dv)
+Spikes/G05-Recovery/.build/DerivedData-release/Build/Products/Release-iphoneos/SylviaRecoveryTests.xctest: code object is not signed at all

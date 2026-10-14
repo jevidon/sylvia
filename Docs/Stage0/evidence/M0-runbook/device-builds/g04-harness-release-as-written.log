@@ -1,0 +1,47 @@
+# check: g04-harness-release-as-written
+# expected on this Mac (stated before the run): pass
+# note: G04 checklist step 2.1 exactly as written (-derivedDataPath Spikes/G04-Audio/.build/DerivedData-release), run after step 1.5's build-for-testing in the same folder: does the Release app it installs carry step 1.5's test bundle?
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:53:10Z; load at start: 4.07 5.02 3.79
+# command (from the repository root):
+#   xcodebuild build -project Spikes/G04-Audio/G04Audio.xcodeproj -scheme G04AudioHarness -configuration Release -destination generic/platform=iOS -derivedDataPath Spikes/G04-Audio/.build/DerivedData-release DEVELOPMENT_TEAM=A4KBDX665Z 
+# finished: 2026-10-14T06:53:23Z after 12 s; exit status 0; load at end: 3.75 4.90 3.76
+--- result lines
+** BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+Provisioning Profile: "iOS Team Provisioning Profile: *"
+Signing Identity:     "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+--- warning count: 1 (first 20 unique)
+2026-10-14 19:53:16.899 appintentsmetadataprocessor[98507:35863700] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+--- last 15 lines of the output
+    cd Spikes/G04-Audio
+    /Applications/Xcode.app/Contents/Developer/usr/bin/embeddedBinaryValidationUtility Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos/G04AudioHarness.app/PlugIns/G04CaptureControl.appex -signing-cert 8D1D322CBAD3EDC5FD6BFBD44F96383C6863F871 -info-plist-path Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos/G04AudioHarness.app/Info.plist
+
+Validate Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos/G04AudioHarness.app (in target 'G04AudioHarness' from project 'G04Audio')
+    cd Spikes/G04-Audio
+    builtin-validationUtility Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos/G04AudioHarness.app -shallow-bundle -infoplist-subpath Info.plist
+
+PruneExplicitPrecompiledModules Spikes/G04-Audio/.build/DerivedData-release/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G04-Audio/.build/DerivedData-release/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G04-Audio/.build/DerivedData-release/SDKExplicitPrecompiledModules
+
+** BUILD SUCCEEDED **
+
+--- codesign checks of the products (in Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos)
+== G04AudioHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g04audio
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+# result: pass; expected: pass; as expected: yes
+--- contents of G04AudioHarness.app/PlugIns and the bundle's size (information)
+G04AudioTests.xctest
+G04AudioTests.xctest.dSYM
+G04CaptureControl.appex
+size: 8.7G (du -h, binary units); apparent size: 9085888 KiB

@@ -1,0 +1,33 @@
+# check: g02-sylvia-source
+# expected on this Mac (stated before the run): pass
+# note: G02 checklist Before you start: the Mac source (host build, as written).
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:53:25Z; load at start: 3.75 4.90 3.76
+# command (from the repository root):
+#   xcrun swift build --package-path Spikes/G02-Transfer/SourceService --product sylvia-source 
+# finished: 2026-10-14T06:53:58Z after 33 s; exit status 0; load at end: 8.62 6.00 4.21
+--- result lines
+Build complete! (21.88 sec)
+--- error lines (1 in all; first 40 unique)
+warning: 'swift-collections': skipping cache due to an error: The file “maintenance.lock” doesn’t exist.
+--- signing lines (first 20 unique)
+--- warning count: 1 (first 20 unique)
+warning: 'swift-collections': skipping cache due to an error: The file “maintenance.lock” doesn’t exist.
+--- last 15 lines of the output
+[1622 / 1665] NIOHTTP1
+[1628 / 1665] NIOHTTP1
+[1630 / 1686]
+[1649 / 1686] NIOSSL
+[1655 / 1686] NIOTLS
+[1655 / 1686] NIOSSL
+[1662 / 1687] NIOSSL
+[1664 / 1687] SylviaSourceService
+[1677 / 1700] SylviaSourceService
+[1684 / 1701] SylviaSourceService
+[1686 / 1703] SylviaSourceCLI
+[1697 / 1704] sylvia-source-product
+[1701 / 1706] SylviaSourceCLI
+[1704 / 1706] sylvia-source-product
+Build complete! (21.88 sec)
+# result: pass; expected: pass; as expected: yes

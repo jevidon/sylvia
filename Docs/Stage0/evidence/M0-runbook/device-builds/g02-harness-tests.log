@@ -1,0 +1,50 @@
+# check: g02-harness-tests
+# expected on this Mac (stated before the run): pass
+# note: G02 checklist step 1 (KeychainCredentialStoreTests on the device), as build-for-testing of the same scheme.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:48:29Z; load at start: 9.18 5.24 3.30
+# command (from the repository root):
+#   xcodebuild build-for-testing -project Spikes/G02-Transfer/iOS/G02Transfer.xcodeproj -scheme G02TransferHarness -destination generic/platform=iOS -derivedDataPath Spikes/G02-Transfer/iOS/.build/DerivedData -disableAutomaticPackageResolution DEVELOPMENT_TEAM=A4KBDX665Z 
+# finished: 2026-10-14T06:48:32Z after 3 s; exit status 0; load at end: 8.60 5.19 3.29
+--- result lines
+** TEST BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+Provisioning Profile: "iOS Team Provisioning Profile: *"
+Signing Identity:     "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+--- warning count: 3 (first 20 unique)
+2026-10-14 19:48:32.335 appintentsmetadataprocessor[95028:35846254] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:32.647 appintentsmetadataprocessor[95057:35846308] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'G02TransferHarness' from project 'G02Transfer')
+--- last 15 lines of the output
+    cd Spikes/G02-Transfer/iOS
+    builtin-RegisterExecutionPolicyException Spikes/G02-Transfer/iOS/.build/DerivedData/Build/Products/Debug-iphoneos/G02TransferUITests-Runner.app/PlugIns/G02TransferUITests.xctest
+
+Touch Spikes/G02-Transfer/iOS/.build/DerivedData/Build/Products/Debug-iphoneos/G02TransferUITests-Runner.app/PlugIns/G02TransferUITests.xctest (in target 'G02TransferUITests' from project 'G02Transfer')
+    cd Spikes/G02-Transfer/iOS
+    /usr/bin/touch -c Spikes/G02-Transfer/iOS/.build/DerivedData/Build/Products/Debug-iphoneos/G02TransferUITests-Runner.app/PlugIns/G02TransferUITests.xctest
+
+PruneExplicitPrecompiledModules Spikes/G02-Transfer/iOS/.build/DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G02-Transfer/iOS/.build/DerivedData/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G02-Transfer/iOS/.build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+** TEST BUILD SUCCEEDED **
+
+--- codesign checks of the products (in Spikes/G02-Transfer/iOS/.build/DerivedData/Build/Products/Debug-iphoneos)
+== G02TransferHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.transfer
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+== G02TransferHarness.app/PlugIns/G02TransferHostedTests.xctest: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.transfer.tests
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+# result: pass; expected: pass; as expected: yes

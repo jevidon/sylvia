@@ -1,0 +1,33 @@
+# check: g02-mac-identity-probe-signing
+# expected on this Mac (stated before the run): signing-stop
+# note: G02 checklist step 20 prerequisite: signed macOS build of the identity probe WITHOUT -allowProvisioningUpdates. Expected to stop for want of a Mac development profile (none on this Mac; Xcode has no account).
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:54:01Z; load at start: 8.62 6.00 4.21
+# command (from the repository root):
+#   xcodebuild build -project Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj -scheme G02MacIdentityProbe -destination platform=macOS -derivedDataPath Spikes/G02-Transfer/MacIdentityProbe/.build/DerivedData -disableAutomaticPackageResolution DEVELOPMENT_TEAM=A4KBDX665Z 
+# finished: 2026-10-14T06:54:08Z after 7 s; exit status 65; load at end: 8.13 5.98 4.22
+--- result lines
+** BUILD FAILED **
+--- error lines (1 in all; first 40 unique)
+Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj: error: No profiles for 'com.jevidon.sylvia.spike.identityprobe' were found: Xcode couldn't find any Mac App Development provisioning profiles matching 'com.jevidon.sylvia.spike.identityprobe'. Automatic signing is disabled and unable to generate a profile. To enable automatic signing, pass -allowProvisioningUpdates to xcodebuild. (in target 'G02MacIdentityProbe' from project 'G02MacIdentityProbe')
+--- signing lines (first 20 unique)
+Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj: error: No profiles for 'com.jevidon.sylvia.spike.identityprobe' were found: Xcode couldn't find any Mac App Development provisioning profiles matching 'com.jevidon.sylvia.spike.identityprobe'. Automatic signing is disabled and unable to generate a profile. To enable automatic signing, pass -allowProvisioningUpdates to xcodebuild. (in target 'G02MacIdentityProbe' from project 'G02MacIdentityProbe')
+--- warning count: 0 (first 20 unique)
+--- last 15 lines of the output
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk -x c++ -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk -x assembler-with-cpp -c /dev/null
+
+ReadFileContents /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/docc/features.json
+
+Build description signature: 1cadd1d3958b7e488029560676bf0efe
+Build description path: Spikes/G02-Transfer/MacIdentityProbe/.build/DerivedData/Build/Intermediates.noindex/XCBuildData/1cadd1d3958b7e488029560676bf0efe.xcbuilddata
+Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj: error: No profiles for 'com.jevidon.sylvia.spike.identityprobe' were found: Xcode couldn't find any Mac App Development provisioning profiles matching 'com.jevidon.sylvia.spike.identityprobe'. Automatic signing is disabled and unable to generate a profile. To enable automatic signing, pass -allowProvisioningUpdates to xcodebuild. (in target 'G02MacIdentityProbe' from project 'G02MacIdentityProbe')
+** BUILD FAILED **
+
+
+The following build commands failed:
+	Building project G02MacIdentityProbe with scheme G02MacIdentityProbe
+(1 failure)
+# result: FAIL; expected: signing-stop; as expected: yes

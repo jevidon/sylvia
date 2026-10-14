@@ -1,0 +1,39 @@
+# G0.3 review R2-01: sharing an item provider through the system share sheet on the simulator (observation)
+# Environment: simulator, iPhone 17, iOS 26.5 (23F77), device Sylvia-M0-minors-g03-intake; host macOS 26.6.2 (25G83).
+# Test: IntakeHarnessUITests/ShareSheetUITests/testCancelWhileProviderIsStillDelivering. The harness shares an
+# NSItemProvider whose EPUB file representation reports progress every 100 ms for 90 s before it delivers; the test
+# opens Sylvia Intake Spike from the share sheet and taps Cancel while nothing has been delivered yet.
+# Command (each run): xcodebuild test-without-building -project G03Intake.xcodeproj -scheme IntakeHarness
+#   -destination id=<this simulator> -derivedDataPath .build/DerivedData -only-testing:<the test>
+# Times are UTC; the simulator log prints local time (UTC+13), shown in brackets.
+
+## 1. Share sheet built from UIActivityItemsConfiguration(itemProviders: [provider]) (commit 3449a8b's harness)
+Run 2026-10-12T22:21:44Z-22:22:55Z: FAILED at ShareSheetUITests.swift:128, the extension's "share.copying" text did not
+appear within 60 s. XCTest's trace:
+    t =     4.69s Tap "harness.shareSlow" Button
+    t =     6.51s Tap "shareCell" Cell            (the cell labelled "Sylvia Intake Spike")
+    t =     6.93s Waiting 60.0s for "share.copying" StaticText to exist
+Simulator log over the same window (22:21:45Z-22:23:00Z [11:21:45-11:23:00]):
+    sharingd: "Created share activity proxy ... activity:<UISocialActivity ...> activityType:com.jevidon.sylvia.spike.intake.share"
+              at 22:21:51.572Z [11:21:51.572], so the sheet listed the extension;
+    no line from an IntakeShare process (log predicate: process == "IntakeShare"): the extension never launched;
+    no "G03-SLOWPROVIDER" line from the harness: the share sheet never asked the provider for its file.
+The tap selected nothing; the sheet stayed up until the test ended.
+
+## 2. The provider passed as an activity item: UIActivityViewController(activityItems: [provider], applicationActivities: nil)
+Run 2026-10-12T23:07:47Z-23:08:11Z (after rebuilding with this change to the share sheet; the same build also changed
+the document picker's evidence line, which this test does not touch): passed.
+    G03-EVIDENCE cancel before delivery: extension showed 'Zero KB copied' when Cancel was tapped; 'Not received. Nothing
+    was saved to Sylvia.' / 'The copy was cancelled.' 1.5 s after the tap (provider due to deliver at 90 s)
+    G03-EVIDENCE cancel before delivery: harness-side provider loads: load 1: started; app summary jobs=5 staged=3 review=2 share=1
+    simulator log: 23:07:57.829Z [12:07:57.829] IntakeHarness "G03-SLOWPROVIDER load 1: started"
+The clean CI run (ci-clean-run.log, sim-app-tests.log) passed the same way: "load 1: started" at 23:36:43.077Z
+[12:36:43.077].
+
+## 3. Whether the extension's Cancel reached the sharing app's provider
+In both passing runs the harness's provider logged only "load 1: started": no "asked to stop" (it checks its Progress
+for cancellation every 100 ms) and no "delivered" before the test ended and terminated the harness, about 15 s after
+the Cancel. Across the process boundary, cancelling the extension's load did not cancel the sharing app's own
+Progress within that time on the simulator. The extension is free at once either way (it stops waiting and claims
+nothing); the sharing app may go on producing a file nobody waits for. Device checklist steps 9 and 18 record what
+Mail and iCloud do.

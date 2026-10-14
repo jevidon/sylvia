@@ -2,12 +2,15 @@
 //
 //   make-caf <out.caf> <bytes>                     deterministic 16-bit mono LPCM CAF of exactly <bytes> bytes
 //   gen-pack <out.sylviapack> <work-dir> <audio-bytes> [<extra-file> <pack-path> <kind> <media-type>]...
+//   gen-many <out.sylviapack> <work-dir> <files> <path-bytes>   PackWriter with many one-byte files: how long it takes
 //   validate <pack> [--extract <dir>]              validate (and extract) with memory sampling
 //   truncation-sweep <pack> <work-dir> <points>    clone + cut at structural boundaries and spread offsets
 //   handoff <inbox> <file>...                      run the share-extension write sequence (no faults)
 //   handoff-kill <inbox> <step> <occurrence> <file>...   same, but SIGKILL at the given step
 //   copy-measure <inbox> <file>                    handoff of one large file with memory sampling, then cleanup
 //   scan <inbox> <staging> [<now-offset-seconds>]  run the main app's inbox scan and print the report
+//   check-manifest pack|handoff <json>...          the Swift readers' verdict on manifest files (accepted / refused)
+//   created-at pack|handoff <json>...              the instant each manifest's created_at decodes to (seconds since 1970)
 import Darwin
 import Foundation
 import SylviaImportHandoff
@@ -24,6 +27,32 @@ func fail(_ message: String) -> Never {
 }
 
 func seconds(_ d: Duration) -> Double { Double(d.components.seconds) + Double(d.components.attoseconds) / 1e18 }
+
+/// A manifest reader's refusal as one line: a strict-JSON violation, a decoding error with its coding path and
+/// Foundation's own description (for example "Number ... is not representable in Swift."), or a validation error.
+func refusalReason(_ error: any Error) -> String {
+    let text: String
+    switch error {
+    case let violation as StrictJSON.Violation:
+        text = "not strict JSON: \(violation)"
+    case let decoding as DecodingError:
+        let context: DecodingError.Context
+        switch decoding {
+        case let .typeMismatch(_, c), let .valueNotFound(_, c), let .keyNotFound(_, c), let .dataCorrupted(c): context = c
+        @unknown default: return "not decodable: \(decoding)"
+        }
+        let path = context.codingPath.map { $0.intValue.map(String.init) ?? $0.stringValue }.joined(separator: ".")
+        var detail = context.debugDescription
+        if let underlying = context.underlyingError as NSError?,
+           let description = underlying.userInfo[NSDebugDescriptionErrorKey] as? String {
+            detail += " " + description
+        }
+        text = "not decodable: " + (path.isEmpty ? detail : "\(path): \(detail)")
+    default:
+        text = String(describing: error)
+    }
+    return text.replacingOccurrences(of: "\n", with: " ")
+}
 
 func environment(_ inbox: URL, faults: any FaultInjecting = NoFaults()) -> HandoffEnvironment {
     HandoffEnvironment(inbox: inbox, producerBundleIdentifier: "com.jevidon.sylvia.spike.intake.tool",
@@ -138,6 +167,43 @@ case "gen-pack":
         printMemory("gen-pack (write + self-validation)", sampled: peak)
     } catch {
         fail("gen-pack: \(error)")
+    }
+
+case "gen-many":
+    // How PackWriter's time grows with the number of entries (G0.3 review R4-02: the reader accepts the 10,000-entry
+    // limit; can the spike's writer reach it?). One-byte cover files, no groups, each path exactly <path-bytes> bytes.
+    guard args.count == 5, let count = Int(args[3]), let pathBytes = Int(args[4]), (12...512).contains(pathBytes) else {
+        fail("gen-many <out> <work-dir> <files> <path-bytes 12...512>")
+    }
+    let out = URL(fileURLWithPath: args[1])
+    let work = URL(fileURLWithPath: args[2], isDirectory: true)
+    try FileManager.default.createDirectory(at: work, withIntermediateDirectories: true)
+    let source = work.appendingPathComponent("one-byte")
+    try Data([0x55]).write(to: source)
+    let sources = (0..<count).map { index -> PackSource in
+        // Folders of at most 250 bytes, then the file name, so that every component stays within 255 bytes.
+        var name = String(format: "%06d", index) + ".jpg"
+        var folders: [String] = []
+        var remaining = pathBytes - name.utf8.count
+        while remaining > 1 {
+            let take = min(250, remaining - 1)
+            folders.append(String(repeating: "a", count: take))
+            remaining -= take + 1
+        }
+        if remaining == 1 { name = "b" + name }
+        let path = (folders + [name]).joined(separator: "/")
+        if path.utf8.count != pathBytes { fail("path layout") }
+        return PackSource(url: source, path: path, kind: .cover, mediaType: "image/jpeg")
+    }
+    try? FileManager.default.removeItem(at: out)
+    let start = ContinuousClock.now
+    do {
+        let pack = try await PackWriter(generator: .init(name: "sylviapack-tool gen-many", version: "1"))
+            .write(sources: sources, groups: [], packID: packID, fixedDate: fixedDate, to: out)
+        let elapsed = seconds(ContinuousClock.now - start)
+        print("gen-many: \(count) files with \(pathBytes)-byte paths: \(pack.entryCount) entries, archive \(pack.archiveSize) bytes, written and self-validated in \(String(format: "%.1f", elapsed)) s")
+    } catch {
+        fail("gen-many: \(error)")
     }
 
 case "validate":
@@ -277,6 +343,43 @@ case "scan":
     print("scan: accepted=\(report.acceptedJobs.count) recovered=\(report.recoveredJobs.count) in_progress=\(report.inProgress.count) abandoned_removed=\(report.abandonedRemoved.count) rejected=\(report.rejected.count) already_accepted=\(report.alreadyAccepted.count)")
     for r in report.rejected { print("  rejected: \(r.reason)") }
     print("journal: jobs=\(journal.jobs.count) states=\(journal.jobs.map(\.state.rawValue).sorted())")
+
+case "check-manifest":
+    // The Swift readers' verdict on manifest JSON files (strict text check, decode, then the readers' semantic
+    // validation), one line per file: "accepted <file>" or "refused <file>: <reason>". The differential check
+    // (contract_differential.py, run by check-contract-instances.sh) compares it with the schemas' verdict and sorts
+    // every refusal of a schema-valid input by its reason.
+    // Each file goes through the readers' own size limit first, through the same functions (PackManifest.decode(_:limits:),
+    // whose limit PackReader checks on the entry's declared size; HandoffManifest.read(contentsOf:), as InboxScanner
+    // reads handoff.json), so the differential check meets those refusals too (G0.3 review R4-02).
+    guard args.count >= 3, ["pack", "handoff"].contains(args[1]) else { fail("check-manifest pack|handoff <json>...") }
+    for path in args.dropFirst(2) {
+        let name = (path as NSString).lastPathComponent
+        do {
+            if args[1] == "pack" {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path))
+                try PackManifest.decode(data, limits: PackLimits()).validate(limits: PackLimits())
+            } else {
+                let manifest = try HandoffManifest.read(contentsOf: URL(fileURLWithPath: path))
+                try manifest.validate(directoryName: manifest.handoffID.uuidString)
+            }
+            print("accepted \(name)")
+        } catch {
+            print("refused \(name): \(refusalReason(error))")
+        }
+    }
+
+case "created-at":
+    // The instant the reader decodes created_at to, for the differential check's comparison with Python's proleptic
+    // Gregorian instants (G0.3 review R4-03): "<file> <seconds since 1970>", or "<file> refused" when the manifest does
+    // not decode.
+    guard args.count >= 3, ["pack", "handoff"].contains(args[1]) else { fail("created-at pack|handoff <json>...") }
+    for path in args.dropFirst(2) {
+        let name = (path as NSString).lastPathComponent
+        let data = try Data(contentsOf: URL(fileURLWithPath: path))
+        let date = args[1] == "pack" ? (try? PackManifest.decode(data))?.createdAt : (try? HandoffManifest.decode(data))?.createdAt
+        print("\(name) \(date.map { String(format: "%.6f", $0.timeIntervalSince1970) } ?? "refused")")
+    }
 
 default:
     fail("unknown command \(command)")

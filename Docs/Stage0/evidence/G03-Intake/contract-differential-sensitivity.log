@@ -1,0 +1,356 @@
+G0.3 differential-check sensitivity
+date: 2026-10-13T07:14:58Z; commit 83f48dc; load: 20:14  up 10 days,  6:25, 1 user, load averages: 5.94 8.24 13.88
+host: macOS 26.6.2 (25G83); Xcode 27.0 Build version 27A266a 
+frozen check: check-contract-instances-round2.sh sha256 090b11f48fd8caf0af7a093c7ef2ffc97a1dd2e1c5c40a0d7612eae65982b25b (as committed; unchanged)
+frozen check: contract_differential-round3.py sha256 00315308781cd3dd69baa3b1ee9b45757dee0c6eec0c9621ba07f2418fa96787 (as committed; unchanged)
+
+== pack-dates-iso8601
+  defect: PackManifest.swift: 1 x 'decoder.dateDecodingStrategy = RFC3339.decodingStrategy' -> 'decoder.dateDecodingStrategy = .iso8601'
+Build complete! (13.85 sec)
+  named pack: agree 162, documented 25, reader-limit 12, quirk 14; not as expected 17
+  named handoff: agree 110, documented 6, reader-limit 8, quirk 9; not as expected 0
+  random pack: both accept 194, both refuse 1142, failed 1, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 37 created_at values compared with Python's, failures=5
+  differential: 363 named cases, 3000 random mutations and the instants of 37 date-times, failures=23
+  failed: MISMATCH: pack created_at-ok-02 ['2026-10-06t12:00:00z']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: pack created_at-ok-10 ['2026-10-06T12:00:00+23:59']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: pack created_at-ok-11 ['2026-10-06T12:00:00-23:59']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: pack created_at-bad-12 ['2026-02-30T12:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack created_at-bad-13 ['2025-02-29T00:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack created_at-bad-14 ['2026-10-06T24:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack created_at-bad-15 ['2026-10-06T12:00:60Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack created_at-bad-16 ['2026-10-06T12:00:00+1300']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack created_at-bad-21 ['0000-01-01T00:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack created_at-bad-24 ['2026-10-06T12:00:00Z ']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack created_at-bad-26 ['1900-02-29T00:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack created_at-quirk-trailing-line-feed ['2026-10-06T12:00:00Z\n']: schema=valid reader=accepted expected=quirk
+  failed: MISMATCH: pack created_at-quirk-lowercase-trailing-line-feed ['2026-10-06t12:00:00z\n']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=quirk
+  failed: MISMATCH: pack created_at-proleptic-0001-01-01-plus-23-59 ['0001-01-01T00:00:00+23:59']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: pack created_at-proleptic-9999-12-31-minus-23-59 ['9999-12-31T23:59:59-23:59']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: pack created_at-julian-only-leap-day-1000: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack created_at-julian-only-leap-day-1700: schema=invalid reader=accepted expected=agree
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0720.json: schema=invalid reader=accepted (); mutations: set-string 'created_at'
+  failed: INSTANT: pack created_at-ok-07 ['0001-01-01T00:00:00Z']: reader=-62135769600.000000 python=-62135596800
+  failed: INSTANT: pack created_at-proleptic-0004-02-29 ['0004-02-29T00:00:00Z']: reader=-62036064000.000000 python=-62035891200
+  failed: INSTANT: pack created_at-proleptic-1500-03-01 ['1500-03-01T00:00:00Z']: reader=-14825808000.000000 python=-14826672000
+  failed: INSTANT: pack created_at-proleptic-1582-10-04 ['1582-10-04T23:59:59Z']: reader=-12219292801.000000 python=-12220156801
+  failed: INSTANT: pack created_at-proleptic-1582-10-10 ['1582-10-10T00:00:00Z']: reader=-12218860800.000000 python=-12219724800
+  CAUGHT: exit status 1, 23 failing cases, 22 of them matching /^  [A-Z]+: pack created_at-/
+
+== the round 2 check (commit 4b8c634; review R3-02), against the same pack-dates-iso8601 tool
+  defect: old-check.sh: 1 x 'source "$(cd "$(dirname "$0")/../../../Scripts/lib" && pwd)/env.sh"' -> 'source "/Users/jevidon/Git/sylvia/.claude/worktrees/wf_744b95c1-309-12/Scripts/lib/env.sh"'
+  defect: old-check.sh: 1 x 'kit="$SYLVIA_ROOT/Spikes/G03-Intake/IntakeKit"' -> 'kit="/Users/jevidon/Git/sylvia/.claude/worktrees/wf_744b95c1-309-12/.build/g03-sensitivity.6wnWG7/kit"'
+  defect: old-check.sh: 1 x 'work="$SYLVIA_ROOT/.build/g03-contract-check"' -> 'work="/Users/jevidon/Git/sylvia/.claude/worktrees/wf_744b95c1-309-12/.build/g03-sensitivity.6wnWG7/old-check-work"'
+  differential: agree: 119 as expected, 0 not
+  differential: documented: 16 as expected, 0 not
+  differential: quirk: 2 as expected, 0 not
+  differential: 137 cases, mismatches=0
+  the round 2 check's exit status: 0; MISMATCH lines for pack created_at cases: 0
+  as review R3-02 found: the round 2 check passed against a pack reader that reads created_at with .iso8601
+
+== handoff-dates-iso8601
+  defect: HandoffManifest.swift: 1 x 'decoder.dateDecodingStrategy = RFC3339.decodingStrategy' -> 'decoder.dateDecodingStrategy = .iso8601'
+Build complete! (5.35 sec)
+  named pack: agree 177, documented 25, reader-limit 12, quirk 16; not as expected 0
+  named handoff: agree 95, documented 6, reader-limit 8, quirk 7; not as expected 17
+  random pack: both accept 194, both refuse 1143, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 37 created_at values compared with Python's, failures=5
+  differential: 363 named cases, 3000 random mutations and the instants of 37 date-times, failures=22
+  failed: MISMATCH: handoff created_at-ok-02 ['2026-10-06t12:00:00z']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: handoff created_at-ok-10 ['2026-10-06T12:00:00+23:59']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: handoff created_at-ok-11 ['2026-10-06T12:00:00-23:59']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: handoff created_at-bad-12 ['2026-02-30T12:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff created_at-bad-13 ['2025-02-29T00:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff created_at-bad-14 ['2026-10-06T24:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff created_at-bad-15 ['2026-10-06T12:00:60Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff created_at-bad-16 ['2026-10-06T12:00:00+1300']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff created_at-bad-21 ['0000-01-01T00:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff created_at-bad-24 ['2026-10-06T12:00:00Z ']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff created_at-bad-26 ['1900-02-29T00:00:00Z']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff created_at-quirk-trailing-line-feed ['2026-10-06T12:00:00Z\n']: schema=valid reader=accepted expected=quirk
+  failed: MISMATCH: handoff created_at-quirk-lowercase-trailing-line-feed ['2026-10-06t12:00:00z\n']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=quirk
+  failed: MISMATCH: handoff created_at-proleptic-0001-01-01-plus-23-59 ['0001-01-01T00:00:00+23:59']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: handoff created_at-proleptic-9999-12-31-minus-23-59 ['9999-12-31T23:59:59-23:59']: schema=valid reader=refused (not decodable: Expected date string to be ISO8601-formatted.) expected=agree
+  failed: MISMATCH: handoff created_at-julian-only-leap-day-1000: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff created_at-julian-only-leap-day-1700: schema=invalid reader=accepted expected=agree
+  failed: INSTANT: handoff created_at-ok-07 ['0001-01-01T00:00:00Z']: reader=-62135769600.000000 python=-62135596800
+  failed: INSTANT: handoff created_at-proleptic-0004-02-29 ['0004-02-29T00:00:00Z']: reader=-62036064000.000000 python=-62035891200
+  failed: INSTANT: handoff created_at-proleptic-1500-03-01 ['1500-03-01T00:00:00Z']: reader=-14825808000.000000 python=-14826672000
+  failed: INSTANT: handoff created_at-proleptic-1582-10-04 ['1582-10-04T23:59:59Z']: reader=-12219292801.000000 python=-12220156801
+  failed: INSTANT: handoff created_at-proleptic-1582-10-10 ['1582-10-10T00:00:00Z']: reader=-12218860800.000000 python=-12219724800
+  CAUGHT: exit status 1, 22 failing cases, 22 of them matching /^  [A-Z]+: handoff created_at-/
+
+== nulls-accepted
+  defect: PackManifest.swift: 7 x 'decodeIfPresentRejectingNull(' -> 'decodeIfPresent('
+Build complete! (5.20 sec)
+  named pack: agree 171, documented 25, reader-limit 12, quirk 16; not as expected 6
+  named handoff: agree 110, documented 6, reader-limit 8, quirk 9; not as expected 0
+  random pack: both accept 194, both refuse 1126, failed 17, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 42 created_at values compared with Python's, failures=0
+  differential: 363 named cases, 3000 random mutations and the instants of 42 date-times, failures=23
+  failed: MISMATCH: pack null-files.0.group_id: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack null-groups.0.title: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack null-groups.0.creators: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack null-groups.0.language: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack null-groups.0.identifiers: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack null-groups.1.member_order_basis: schema=invalid reader=accepted expected=agree
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0137.json: schema=invalid reader=accepted (); mutations: set-null 'group_id'; set-null 'order'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0253.json: schema=invalid reader=accepted (); mutations: add unknown member; set-null 'title'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0292.json: schema=invalid reader=accepted (); mutations: set-null 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0328.json: schema=invalid reader=accepted (); mutations: set-null 'title'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0331.json: schema=invalid reader=accepted (); mutations: delete 'group_id'; set-null 'identifiers'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0537.json: schema=invalid reader=accepted (); mutations: set-null 'creators'; repeat an array element
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0583.json: schema=invalid reader=accepted (); mutations: set-null 'member_order_basis'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0741.json: schema=invalid reader=accepted (); mutations: set-null 'member_order_basis'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0742.json: schema=invalid reader=accepted (); mutations: set-null 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0817.json: schema=invalid reader=accepted (); mutations: set-null 'title'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0868.json: schema=invalid reader=accepted (); mutations: set-null 'language'; set 0
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0916.json: schema=invalid reader=accepted (); mutations: add unknown member; set-null 'identifiers'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1094.json: schema=invalid reader=accepted (); mutations: set-null 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1138.json: schema=invalid reader=accepted (); mutations: set-null 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1286.json: schema=invalid reader=accepted (); mutations: set-null 'title'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1383.json: schema=invalid reader=accepted (); mutations: repeat an array element; set-null 'identifiers'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1414.json: schema=invalid reader=accepted (); mutations: set-null 'creators'
+  CAUGHT: exit status 1, 23 failing cases, 6 of them matching /^  [A-Z]+: pack null-/
+
+== text-not-checked
+  defect: PackManifest.swift: 1 x '    public static func decode(_ data: Data) throws -> PackManifest {\n        try StrictJSON.check(data)' -> '    public static func decode(_ data: Data) throws -> PackManifest {'
+Build complete! (6.08 sec)
+  named pack: agree 163, documented 25, reader-limit 4, quirk 13; not as expected 25
+  named handoff: agree 110, documented 6, reader-limit 8, quirk 9; not as expected 0
+  random pack: both accept 195, both refuse 1143, failed 15, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 1, schema accepts, reader refuses: reader-limit 16
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 42 created_at values compared with Python's, failures=0
+  differential: 363 named cases, 3000 random mutations and the instants of 42 date-times, failures=40
+  failed: MISMATCH: pack text-utf8-byte-order-mark: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-utf16le: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-utf16le-byte-order-mark: schema=invalid (the validator cannot load it: UnicodeDecodeError) reader=accepted expected=agree
+  failed: MISMATCH: pack text-utf16be: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-utf32le: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-trailing-comma-in-object: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-trailing-comma-in-array: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-invalid-utf8-in-an-unknown-member: schema=invalid (the validator cannot load it: UnicodeDecodeError) reader=accepted expected=agree
+  failed: MISMATCH: pack text-control-character-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-bad-escape-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-malformed-number-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-leading-zero-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=accepted expected=agree
+  failed: MISMATCH: pack text-nesting-513-levels: schema=valid reader=refused (not decodable: The given data was not valid JSON. Too many nested arrays or dictionaries around line 1, column 1811.) expected=re
+  failed: MISMATCH: pack text-integer-4301-digits-in-an-unknown-member: schema=invalid (the validator cannot load it: ValueError) reader=accepted expected=agree
+  failed: MISMATCH: pack text-unpaired-surrogate-in-an-unknown-member: schema=valid reader=accepted expected=reader-limit
+  failed: MISMATCH: pack text-unpaired-surrogate-in-a-member-name: schema=valid reader=accepted expected=reader-limit
+  failed: MISMATCH: pack text-nan-in-an-unknown-member: schema=valid reader=refused (not decodable: The given data was not valid JSON. Unexpected character 'N' around line 1, column 1298.) expected=quirk
+  failed: MISMATCH: pack text-infinity-in-an-unknown-member: schema=valid reader=refused (not decodable: The given data was not valid JSON. Unexpected character 'I' around line 1, column 1298.) expected=quirk
+  failed: MISMATCH: pack text--infinity-in-an-unknown-member: schema=valid reader=refused (not decodable: The given data was not valid JSON. Unexpected character 'I' in object around line 1, column 1299.) exp
+  failed: MISMATCH: pack text-unpaired-surrogate-in-a-title: schema=valid reader=refused (not decodable: The given data was not valid JSON. Missing low code point in surrogate pair around line 1, column 1032.
+  failed: MISMATCH: pack duplicate-generator.name-both-valid: schema=valid reader=accepted expected=reader-limit
+  failed: MISMATCH: pack duplicate-files-second-empty: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack duplicate-files-first-empty: schema=valid reader=refused (manifest_invalid: no files) expected=reader-limit
+  failed: MISMATCH: pack duplicate-name-written-with-an-escape: schema=valid reader=accepted expected=reader-limit
+  failed: MISMATCH: pack duplicate-name-in-an-unknown-member: schema=valid reader=accepted expected=reader-limit
+  failed: UNEXPLAINED: a quirk reason, but the input holds nothing that causes one: pack fuzz-0134.json: schema=valid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digit
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-0265.json: schema=valid reader=refused (not decodable: The given data was not valid JSON. Unexpected characte
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-0270.json: schema=valid reader=refused (not decodable: files: Expected to decode Array<Any> but found number 
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-0428.json: schema=valid reader=refused (not decodable: generator: Expected to decode Dictionary<String, Any> 
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-0655.json: schema=valid reader=refused (not decodable: groups: Expected to decode Array<Any> but found a stri
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-0709.json: schema=valid reader=refused (not decodable: files: Expected to decode Array<Any> but found a strin
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-0837.json: schema=valid reader=refused (not decodable: groups: Expected to decode Array<Any> but found a stri
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-0910.json: schema=valid reader=refused (not decodable: total_size: Expected to decode UInt64 but found a stri
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-1004.json: schema=valid reader=refused (not decodable: The given data was not valid JSON. Invalid unicode sca
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-1105.json: schema=valid reader=refused (not decodable: files: Expected to decode Array<Any> but found number 
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-1124.json: schema=valid reader=refused (manifest_invalid: format); mutations: repeat an array element; delete
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-1186.json: schema=valid reader=refused (not decodable: total_size: Expected to decode UInt64 but found a stri
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-1208.json: schema=valid reader=refused (not decodable: pack_id: Expected to decode String but found number in
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-1224.json: schema=valid reader=refused (not decodable: format: Expected to decode String but found number ins
+  failed: UNEXPLAINED: the reader refuses a schema-valid input for a reason in no class: pack fuzz-1499.json: schema=valid reader=refused (unsupported_version: schema_version 1073741825); mutations: set-numbe
+  CAUGHT: exit status 1, 40 failing cases, 25 of them matching /^  [A-Z]+: pack (text|duplicate)-/
+
+== uuid-not-canonical
+  defect: ContractDecoding.swift: 1 x '        let bytes = Array(text.utf8)\n        guard bytes.count == 36 else { return nil }' -> '        return UUID(uuidString: text)\n        let bytes = Array(text.utf8)\n        guard bytes.count == 36 else { return nil }'
+Build complete! (7.69 sec)
+  named pack: agree 175, documented 25, reader-limit 12, quirk 16; not as expected 2
+  named handoff: agree 108, documented 6, reader-limit 8, quirk 9; not as expected 2
+  random pack: both accept 194, both refuse 1143, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1173, failed 2, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 42 created_at values compared with Python's, failures=0
+  differential: 363 named cases, 3000 random mutations and the instants of 42 date-times, failures=6
+  failed: MISMATCH: pack pack_id-nul-suffix ['7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6C\x00']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack pack_id-nul-then-more ['7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6C\x00junk']: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff handoff_id-nul-suffix: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff item_id-nul-then-more: schema=invalid reader=accepted expected=agree
+  failed: UNSOUND: the reader accepts what the schema refuses: handoff fuzz-0934.json: schema=invalid reader=accepted (); mutations: set 'handoff_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: handoff fuzz-1134.json: schema=invalid reader=accepted (); mutations: set 'build_version'; set 'content_type'; set-string 'item_id'
+  CAUGHT: exit status 1, 6 failing cases, 4 of them matching /^  [A-Z]+: (pack pack_id|handoff (handoff|item)_id)-nul/
+
+== separators-as-characters (every PathBytes test with Swift String's Character-based operations, as before F18)
+  defect: PathBytes.swift: 1 x 'path.utf8.split(separator: separator, omittingEmptySubsequences: false).map { String(decoding: $0, as: UTF8.self) }' -> 'path.split(separator: "/", omittingEmptySubsequences: false).map(String.init)'
+  defect: PathBytes.swift: 1 x 'text.utf8.contains(separator)' -> 'text.contains("/")'
+  defect: PathBytes.swift: 1 x 'text.utf8.first == separator' -> 'text.hasPrefix("/")'
+  defect: PathBytes.swift: 1 x 'text.utf8.last == separator' -> 'text.hasSuffix("/")'
+  defect: PathBytes.swift: 1 x 'let bytes = Array(component.utf8)\n        return bytes == [dot] || bytes == [dot, dot]' -> 'return component == "." || component == ".."'
+  defect: PathBytes.swift: 1 x 'text.utf8.starts(with: prefix.utf8)' -> 'text.hasPrefix(prefix)'
+  defect: PathBytes.swift: 1 x 'text.utf8.reversed().starts(with: suffix.utf8.reversed())' -> 'text.hasSuffix(suffix)'
+  defect: PathBytes.swift: 1 x 'a.utf8.elementsEqual(b.utf8)' -> 'a == b'
+Build complete! (7.92 sec)
+  named pack: agree 170, documented 22, reader-limit 12, quirk 16; not as expected 10
+  named handoff: agree 108, documented 6, reader-limit 8, quirk 9; not as expected 2
+  random pack: both accept 196, both refuse 1141, failed 2, schema accepts, reader refuses: documented 128, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 42 created_at values compared with Python's, failures=0
+  differential: 363 named cases, 3000 random mutations and the instants of 42 date-times, failures=14
+  failed: MISMATCH: pack path-hidden-separator-dot-dot: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack path-hidden-separator-dot-dot-in-the-middle: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack path-hidden-separator-dot: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack path-hidden-separator-absolute: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack path-hidden-separator-empty-component: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack path-hidden-separator-trailing: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack path-hidden-separator-sixteen-components: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack rule-hidden-separator-file-is-also-a-folder: schema=valid reader=accepted expected=documented
+  failed: MISMATCH: handoff original_filename-hidden-separator: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: handoff original_filename-separator-after-prepended-mark: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack rule-path-not-nfc: schema=valid reader=accepted expected=documented
+  failed: MISMATCH: pack path-kelvin-sign: schema=valid reader=accepted expected=documented
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0808.json: schema=invalid reader=accepted (); mutations: set-string 'path'; repeat an array element
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0840.json: schema=invalid reader=accepted (); mutations: set-string 'path'
+  CAUGHT: exit status 1, 14 failing cases, 9 of them matching /^  [A-Z]+: (pack path-hidden-separator|handoff original_filename-hidden-separator|handoff original_filename-separator-after)/
+
+== group-id-lookup-unchecked (a file's group_id looked up without the pattern check, as before R4-01)
+  defect: PackManifest.swift: 1 x '                guard PackManifest.isValidGroupID(groupID) else { throw PackRejection(.manifestInvalid, "files.group_id") }\n' -> ''
+Build complete! (9.00 sec)
+  named pack: agree 175, documented 25, reader-limit 12, quirk 16; not as expected 2
+  named handoff: agree 110, documented 6, reader-limit 8, quirk 9; not as expected 0
+  random pack: both accept 194, both refuse 1079, failed 64, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 42 created_at values compared with Python's, failures=0
+  differential: 363 named cases, 3000 random mutations and the instants of 42 date-times, failures=66
+  failed: MISMATCH: pack group_id-kelvin-sign-on-the-file: schema=invalid reader=accepted expected=agree
+  failed: MISMATCH: pack group_id-kelvin-sign-on-audiobook-members: schema=invalid reader=accepted expected=agree
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0032.json: schema=invalid reader=accepted (); mutations: repeat an array element; canonical-twin 'group_id'; set-string 'path'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0040.json: schema=invalid reader=accepted (); mutations: add unknown member; canonical-twin 'group_id'; set-string 'media_type'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0052.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; set-number 'order'; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0149.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0154.json: schema=invalid reader=accepted (); mutations: repeat an array element; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0159.json: schema=invalid reader=accepted (); mutations: set 'name'; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0185.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0222.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0266.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0276.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0288.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0289.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0310.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; repeat an array element
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0390.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0404.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0427.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; set-number 'order'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0442.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0460.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0468.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0480.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; set 'name'; set-string 'path'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0488.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0551.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0571.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; set-string 'media_type'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0623.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0634.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0639.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0642.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0646.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0654.json: schema=invalid reader=accepted (); mutations: add unknown member; canonical-twin 'group_id'; repeat an array element
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0659.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; set 'name'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0670.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0679.json: schema=invalid reader=accepted (); mutations: add unknown member; set 'path'; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0697.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0752.json: schema=invalid reader=accepted (); mutations: add unknown member; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0754.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0755.json: schema=invalid reader=accepted (); mutations: repeat an array element; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0766.json: schema=invalid reader=accepted (); mutations: repeat an array element; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0789.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; set 'title'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0799.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; add unknown member; set-string 'media_type'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0823.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0833.json: schema=invalid reader=accepted (); mutations: add unknown member; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0911.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0948.json: schema=invalid reader=accepted (); mutations: set-number 'order'; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0950.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0965.json: schema=invalid reader=accepted (); mutations: set 0; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-0968.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1001.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1007.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1045.json: schema=invalid reader=accepted (); mutations: set-string 'media_type'; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1079.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1097.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; set-number 'order'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1114.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1170.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1204.json: schema=invalid reader=accepted (); mutations: add unknown member; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1217.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1235.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1257.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1293.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1296.json: schema=invalid reader=accepted (); mutations: add unknown member; canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1333.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; set 'media_type'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1390.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1395.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1429.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; set-string 'media_type'; repeat an array element
+  failed: UNSOUND: the reader accepts what the schema refuses: pack fuzz-1478.json: schema=invalid reader=accepted (); mutations: canonical-twin 'group_id'; add unknown member
+  CAUGHT: exit status 1, 66 failing cases, 66 of them matching /(^  [A-Z]+: pack group_id-kelvin-sign-on-(the-file|audiobook-members))|(^  UNSOUND: .*: pack fuzz-)/
+
+== the round 3 check (commit 937d53a; review R4-01), against the same group-id-lookup-unchecked tool
+  differential: 321 named cases and 3000 random mutations, failures=0
+  the round 3 check's exit status: 0; failing cases: 0
+  as the review found: the round 3 check passed against this defect
+
+== dates-julian (created_at converted with Foundation's Gregorian Calendar, as before R4-03)
+  defect: RFC3339.swift: 1 x '        let days = daysFromCivil(year: year, month: month, day: day)\n        let seconds = days * 86_400 + hour * 3_600 + minute * 60 + second - offsetSeconds\n        return Date(timeIntervalSince1970: TimeInterval(seconds) + fraction)' -> '        var calendar = Calendar(identifier: .gregorian)\n        calendar.timeZone = TimeZone(secondsFromGMT: 0)!\n        let components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: second)\n        guard let local = calendar.date(from: components) else { return nil }\n        return local.addingTimeInterval(fraction - Double(offsetSeconds))'
+Build complete! (5.26 sec)
+  named pack: agree 177, documented 25, reader-limit 12, quirk 16; not as expected 0
+  named handoff: agree 110, documented 6, reader-limit 8, quirk 9; not as expected 0
+  random pack: both accept 194, both refuse 1143, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 42 created_at values compared with Python's, failures=12
+  differential: 363 named cases, 3000 random mutations and the instants of 42 date-times, failures=12
+  failed: INSTANT: pack created_at-ok-07 ['0001-01-01T00:00:00Z']: reader=-62135769600.000000 python=-62135596800
+  failed: INSTANT: pack created_at-proleptic-0001-01-01-plus-23-59 ['0001-01-01T00:00:00+23:59']: reader=-62135855940.000000 python=-62135683140
+  failed: INSTANT: pack created_at-proleptic-0004-02-29 ['0004-02-29T00:00:00Z']: reader=-62036064000.000000 python=-62035891200
+  failed: INSTANT: pack created_at-proleptic-1500-03-01 ['1500-03-01T00:00:00Z']: reader=-14825808000.000000 python=-14826672000
+  failed: INSTANT: pack created_at-proleptic-1582-10-04 ['1582-10-04T23:59:59Z']: reader=-12219292801.000000 python=-12220156801
+  failed: INSTANT: pack created_at-proleptic-1582-10-10 ['1582-10-10T00:00:00Z']: reader=-12218860800.000000 python=-12219724800
+  failed: INSTANT: handoff created_at-ok-07 ['0001-01-01T00:00:00Z']: reader=-62135769600.000000 python=-62135596800
+  failed: INSTANT: handoff created_at-proleptic-0001-01-01-plus-23-59 ['0001-01-01T00:00:00+23:59']: reader=-62135855940.000000 python=-62135683140
+  failed: INSTANT: handoff created_at-proleptic-0004-02-29 ['0004-02-29T00:00:00Z']: reader=-62036064000.000000 python=-62035891200
+  failed: INSTANT: handoff created_at-proleptic-1500-03-01 ['1500-03-01T00:00:00Z']: reader=-14825808000.000000 python=-14826672000
+  failed: INSTANT: handoff created_at-proleptic-1582-10-04 ['1582-10-04T23:59:59Z']: reader=-12219292801.000000 python=-12220156801
+  failed: INSTANT: handoff created_at-proleptic-1582-10-10 ['1582-10-10T00:00:00Z']: reader=-12218860800.000000 python=-12219724800
+  CAUGHT: exit status 1, 12 failing cases, 10 of them matching /^  INSTANT: (pack|handoff) created_at-proleptic-/
+
+== manifest-size-unchecked (both readers without their manifest size limits, as before R4-02)
+  defect: PackManifest.swift: 1 x 'guard data.count <= limits.maxManifestBytes else {' -> 'guard data.count <= Int.max else {'
+  defect: HandoffManifest.swift: 1 x 'data = try AtomicFile.readSmall(url, limit: maxBytes)' -> 'data = try AtomicFile.readSmall(url, limit: Int.max)'
+Build complete! (7.79 sec)
+  named pack: agree 177, documented 24, reader-limit 12, quirk 16; not as expected 1
+  named handoff: agree 110, documented 5, reader-limit 8, quirk 9; not as expected 1
+  random pack: both accept 194, both refuse 1143, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 42 created_at values compared with Python's, failures=0
+  differential: 363 named cases, 3000 random mutations and the instants of 42 date-times, failures=2
+  failed: MISMATCH: pack size-one-byte-over-the-limit-16777217-bytes: schema=valid reader=accepted expected=documented
+  failed: MISMATCH: handoff size-one-byte-over-the-limit-262145-bytes: schema=valid reader=accepted expected=documented
+  CAUGHT: exit status 1, 2 failing cases, 2 of them matching /^  [A-Z]+: (pack|handoff) size-one-byte-over-the-limit/
+
+defects missed: 0 of 9

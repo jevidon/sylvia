@@ -1,0 +1,15 @@
+G0.3 PackWriter time against the number of entries
+date: 2026-10-13T07:26:00Z; commit d3ab26f
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.0 Build version 27A266a 
+load before: 20:26  up 10 days,  6:36, 1 user, load averages: 10.64 7.95 10.69
+Build complete! (0.21 sec)
+gen-many: 1000 files with 20-byte paths: 1002 entries, archive 346634 bytes, written and self-validated in 0.2 s
+gen-many: 2000 files with 20-byte paths: 2002 entries, archive 692634 bytes, written and self-validated in 0.4 s
+gen-many: 4000 files with 20-byte paths: 4002 entries, archive 1384634 bytes, written and self-validated in 0.8 s
+gen-many: 9998 files with 20-byte paths: 10000 entries, archive 3459942 bytes, written and self-validated in 2.2 s
+gen-many: 1000 files with 512-byte paths: 1002 entries, archive 1822634 bytes, written and self-validated in 0.2 s
+gen-many: 2000 files with 512-byte paths: 2002 entries, archive 3644634 bytes, written and self-validated in 0.7 s
+gen-many: 4000 files with 512-byte paths: 4002 entries, archive 7288634 bytes, written and self-validated in 1.4 s
+gen-many: 9998 files with 512-byte paths: 10000 entries, archive 18216990 bytes, written and self-validated in 5.3 s
+load after: 20:26  up 10 days,  6:36, 1 user, load averages: 10.45 8.00 10.68
+writer scaling finished

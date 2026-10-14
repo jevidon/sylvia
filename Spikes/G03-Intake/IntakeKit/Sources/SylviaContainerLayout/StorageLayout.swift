@@ -94,14 +94,14 @@ public enum LayoutAudit {
         let documents = layout.documents.standardizedFileURL.resolvingSymlinksInPath().path
         for (name, url) in layout.privateLocations {
             let path = url.standardizedFileURL.resolvingSymlinksInPath().path
-            if path == documents || path.hasPrefix(documents + "/") {
+            if PathBytes.equal(path, documents) || PathBytes.hasPrefix(path, documents + "/") {   // bytes (report F18)
                 violations.append(.init(rule: "private data outside Documents", detail: "\(name) is under Documents"))
             }
         }
         if let enumerator = FileManager.default.enumerator(atPath: layout.documents.path) {
             while let relative = enumerator.nextObject() as? String {
                 let lower = relative.lowercased()
-                if privateSuffixes.contains(where: { lower.hasSuffix($0) }) {
+                if privateSuffixes.contains(where: { PathBytes.hasSuffix(lower, $0) }) {
                     violations.append(.init(rule: "Documents is an inbound drop area only", detail: "found a private file type"))
                 }
             }

@@ -1,4 +1,5 @@
 import Foundation
+import SylviaIntakeCore
 
 /// Fixed entry names and order of a .sylviapack v1 archive.
 public enum PackLayout {
@@ -14,7 +15,12 @@ public enum PackLayout {
 public struct PackLimits: Sendable, Equatable {
     /// Total ZIP entries, manifest entries included (plan 8.3: 10,000 archive entries).
     public var maxEntries = 10_000
-    public var maxManifestBytes = 1 << 20
+    /// Bytes of `sylviapack/manifest.json`, whitespace and unknown members included. 16 MiB, so that the entry limit can
+    /// be reached: the writer's manifest for 9,998 files with every path at its 512-byte limit, in 20 audiobook groups
+    /// with their metadata at its limits, is 9,356,558 bytes (test "the entry limit is reachable ..."). The first limit,
+    /// 1 MiB, held at most about 5,800 files even with 4-byte paths, so the schema's `maxItems` 9998 could not be reached
+    /// (G0.3 review R4-02). The schema's description states the limit.
+    public var maxManifestBytes = 16 << 20
     /// Central directory bytes. 10,000 entries with 1 KiB paths and ZIP64 extras fit well inside this.
     public var maxCentralDirectoryBytes = 24 << 20
     public var maxAudioFile: UInt64 = 20 << 30          // plan 8.3
@@ -127,23 +133,28 @@ public enum PackPath {
     }
 
     /// A full archive entry name.
+    ///
+    /// Every separator test works on bytes (`PathBytes`), never on Swift `Character`s: a "/" followed by a combining
+    /// mark, or preceded by a prepended mark, is one `Character` with it, so the first version, which split and compared
+    /// Characters, accepted "../" + U+0301 + "x" (a ".." component to the file system), a leading "/" + U+0301, empty
+    /// components and more than 16 components, all of which the contract's pattern refuses (report finding F18).
     public static func validate(_ path: String, maxBytes: Int = PackPath.maxBytes, maxDepth: Int = PackPath.maxDepth) throws(PackRejection) {
         guard !path.isEmpty, path.utf8.count <= maxBytes else { throw PackRejection(.unsafePath, "length") }
         // Compare bytes: Swift's String == treats canonically equivalent strings as equal.
-        guard Array(path.utf8) == Array(path.precomposedStringWithCanonicalMapping.utf8) else {
+        guard PathBytes.equal(path, path.precomposedStringWithCanonicalMapping) else {
             throw PackRejection(.unsafePath, "not Unicode NFC")
         }
-        guard !path.hasPrefix("/") else { throw PackRejection(.unsafePath, "absolute") }
+        guard !PathBytes.startsWithSeparator(path) else { throw PackRejection(.unsafePath, "absolute") }
         for scalar in path.unicodeScalars {
             if scalar.value < 0x20 || scalar.value == 0x7F || scalar == "\\" || scalar == ":" {
                 throw PackRejection(.unsafePath, "forbidden character U+\(String(scalar.value, radix: 16, uppercase: true))")
             }
         }
-        let components = path.split(separator: "/", omittingEmptySubsequences: false)
+        let components = PathBytes.components(path)
         guard components.count <= maxDepth else { throw PackRejection(.unsafePath, "too deep") }
         for component in components {
-            guard !component.isEmpty else { throw PackRejection(.unsafePath, "empty component") }
-            guard component != ".", component != ".." else { throw PackRejection(.unsafePath, "dot component") }
+            guard !component.utf8.isEmpty else { throw PackRejection(.unsafePath, "empty component") }
+            guard !PathBytes.isDotOrDotDot(component) else { throw PackRejection(.unsafePath, "dot component") }
             guard component.utf8.count <= maxComponentBytes else { throw PackRejection(.unsafePath, "component length") }
         }
     }
@@ -153,14 +164,15 @@ public enum PackPath {
         path.precomposedStringWithCanonicalMapping.folding(options: [.caseInsensitive], locale: nil)
     }
 
-    /// Rejects a path that is both a file and a directory prefix of another path ("a" and "a/b").
+    /// Rejects a path that is both a file and a directory prefix of another path ("a" and "a/b"). Components are split
+    /// on bytes, as the file system splits them (F18).
     public static func checkNoFileDirectoryConflicts(_ paths: [String]) throws(PackRejection) {
         let files = Set(paths.map(collisionKey))
         for path in paths {
             var prefix = ""
-            let components = collisionKey(path).split(separator: "/")
+            let components = PathBytes.components(collisionKey(path))
             for component in components.dropLast() {
-                prefix += prefix.isEmpty ? String(component) : "/" + component
+                prefix += prefix.isEmpty ? component : "/" + component
                 if files.contains(prefix) { throw PackRejection(.pathConflict, "a file is also used as a folder") }
             }
         }

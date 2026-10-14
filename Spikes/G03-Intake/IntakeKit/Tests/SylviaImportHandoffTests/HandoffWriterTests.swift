@@ -168,6 +168,90 @@ struct HandoffWriterTests {
             #expect(!HandoffManifest.isValidStoredPath(bad), "\(bad)")
         }
     }
+
+    /// Found in the G0.3 review R4-01 audit: `cleanFilename` replaced "/" with Foundation's `replacingOccurrences`, which
+    /// leaves a "/" that a combining mark follows (one grapheme cluster with it); the manifest's own validation then
+    /// refused it, so the share failed. It now replaces code points.
+    @Test("a shared file name holding a slash before a combining mark is recorded with an underscore, and the share is received")
+    func slashBeforeCombiningMarkInName() throws {
+        let box = try Sandbox()
+        let src = try box.source("plain.epub", length: 10_000)
+        let session = HandoffSession(environment: box.environment())
+        let names = ["a/\u{301}b.epub", "\u{600}/x.epub", "a\u{0}/b.epub", String(repeating: "\u{E9}", count: 200) + "/x.epub"]
+        for name in names {
+            try session.addItem(copying: src, originalFilename: name, contentType: "org.idpf.epub-container",
+                                preferredExtension: "epub", representation: .fileURL, providerTypeIdentifier: "public.file-url",
+                                expectedLength: nil)
+        }
+        let receipt = try session.commit()
+        let manifest = try HandoffManifest.read(contentsOf: box.manifests()[0])
+        #expect(receipt.itemCount == names.count)
+        #expect(manifest.items.map { Array($0.originalFilename.unicodeScalars) } == [
+            Array("a_\u{301}b.epub".unicodeScalars), Array("\u{600}_x.epub".unicodeScalars), Array("a_b.epub".unicodeScalars),
+            Array((String(repeating: "\u{E9}", count: 127)).unicodeScalars),
+        ])
+        for item in manifest.items {
+            #expect(!PathBytes.containsSeparator(item.originalFilename) && item.originalFilename.utf8.count <= 255)
+        }
+    }
+
+    /// G0.3 review R4-02: the app's scan reads at most 256 KiB of handoff.json. 100 items (the share limit) with file
+    /// names and type identifiers at their limits fit; names that JSON must escape (control characters, six bytes each)
+    /// together with long type identifiers do not, and such a manifest is never committed, so no receipt is shown for a
+    /// handoff the app would refuse.
+    @Test("handoff.json size: 100 items at the name and type limits fit within 256 KiB; a larger manifest is never committed")
+    func manifestSize() throws {
+        let box = try Sandbox()
+        let src = try box.source("tiny.mp3", length: 16)
+        func share(name: String, type: String) throws -> Result<HandoffReceipt, HandoffFailure> {
+            let session = HandoffSession(environment: box.environment())
+            do {
+                for _ in 0..<HandoffManifest.maxItems {
+                    try session.addItem(copying: src, originalFilename: name, contentType: type, preferredExtension: "mp3",
+                                        representation: .fileRepresentation, providerTypeIdentifier: type, expectedLength: nil)
+                }
+                return .success(try session.commit())
+            } catch {
+                session.discard()
+                return .failure(HandoffFailure.from(error))
+            }
+        }
+        // 255-byte names (127 x U+00E9 + "a") and 128-character identifiers: the largest ordinary share.
+        let ordinary = try share(name: String(repeating: "\u{E9}", count: 127) + "a",
+                                 type: "public." + String(repeating: "a", count: 121))
+        let receipt = try #require(try? ordinary.get())
+        let manifest = try #require(box.manifests().first)
+        let size = try #require(try FileManager.default.attributesOfItem(atPath: manifest.path)[.size] as? Int)
+        #expect(size <= HandoffManifest.maxBytes)
+        #expect(try HandoffManifest.read(contentsOf: manifest).items.count == receipt.itemCount)
+        print("handoff.json size: \(receipt.itemCount) items with 255-byte names and 128-character type identifiers: \(size) bytes (limit \(HandoffManifest.maxBytes))")
+        try FileManager.default.removeItem(at: manifest.deletingLastPathComponent())
+        // 255 control characters per name (JSON writes each as six bytes) and 128-character astral identifiers.
+        let escaped = try share(name: String(repeating: "\u{1}", count: 255), type: String(repeating: "\u{1F600}", count: 128))
+        #expect(escaped == .failure(.manifestTooLarge))
+        #expect(box.manifests().isEmpty && box.inboxEntries().isEmpty, "nothing committed, nothing left")
+        #expect(FallbackRoute.for(.manifestTooLarge).headline == FallbackRoute.notReceivedHeadline)
+    }
+
+    @Test("the app reads handoff.json up to 256 KiB, whitespace included, and refuses one byte more")
+    func readLimit() throws {
+        let box = try Sandbox()
+        let src = try box.source("small.pdf", length: 1_000)
+        guard case .success = try HandoffSession.run(environment: box.environment(), files: [(src, "com.adobe.pdf")]) else {
+            Issue.record("the share failed")
+            return
+        }
+        let url = try #require(box.manifests().first)
+        let text = try Data(contentsOf: url)
+        try (text + Data(repeating: 0x20, count: HandoffManifest.maxBytes - text.count)).write(to: url)
+        #expect(throws: Never.self) { _ = try HandoffManifest.read(contentsOf: url) }
+        try (text + Data(repeating: 0x20, count: HandoffManifest.maxBytes - text.count + 1)).write(to: url)
+        #expect(throws: HandoffManifestError.tooLarge(limit: HandoffManifest.maxBytes)) { _ = try HandoffManifest.read(contentsOf: url) }
+        // The scan refuses it the same way: rejected, never imported.
+        let report = try box.scanner().scan()
+        #expect(report.acceptedJobs.isEmpty && report.rejected.count == 1)
+        #expect(report.rejected.first?.reason == "handoff.json is larger than \(HandoffManifest.maxBytes) bytes")
+    }
 }
 
 extension Result {

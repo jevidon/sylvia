@@ -1,0 +1,296 @@
+# G0.3 review R2-06: the generator overlap check run against the generator as it was before the fix
+# Run at 2026-10-12T21:50-21:53Z. Host: macOS 26.6.2 (25G83), Apple M5 Max.
+# How: GENERATOR=.build/scratch/old-generator.sh Spikes/G03-Intake/scripts/check-generator-overlap.sh <log>, with the
+# check script as committed in 0369a46. old-generator.sh is Scripts/fixtures/generate-g03-intake-pack.sh at 3449a8b
+# (before this round's change) with one line changed: its `source .../env.sh` names this worktree's Scripts/lib/env.sh
+# by absolute path, because the copy does not sit in Scripts/fixtures/. Both runs work in a private cache that is
+# removed afterwards; the shared fixture cache was not touched.
+# Seen below: run A fails because run B deleted the pack while A was verifying it; the watcher sees part-01.caf
+# half-written under its published name and the pack missing after it had been published (222 violations); the old
+# generator has no lock and no rebuild folder. With the fix the same check passes (generator-overlap.log).
+
+# G0.3 generator overlap check (review R2-06)
+date: 2026-10-12T21:50:45Z
+environment: host, macOS 26.6.2 (25G83), Apple M5 Max
+load: 10:50  up 9 days, 21:01, 1 user, load averages: 9.40 18.34 24.37
+generator: .build/scratch/old-generator.sh
+private cache: .build/g03-generator-overlap.spaE9O (removed on exit)
+Build complete! (0.27 sec)
+
+## 1. Two overlapping forced rebuilds
+run B starts at +20 s (run A still running: yes)
+run A finished at +22 s, exit 1 (published pack inode none)
+run B finished at +42 s, exit 0 (published pack inode 61141746)
+--- run A output
+  Build complete! (0.20 sec)
+  gen-pack ok: 4846059727 bytes, 7 entries, zip64_end_record=true, manifest_sha256=3d25fadbacd35567d2948f7a54bda7b8bdbc11f6c0e1c4daeabeea00c807d97c, elapsed=8.0s
+  gen-pack (write + self-validation) memory: sampled_peak_phys_footprint=12.7 MiB lifetime_peak_phys_footprint=12.7 MiB max_rss=18.2 MiB
+  afinfo part-01.caf:
+    File type ID:   caff
+    Data format:     1 ch,  44100 Hz, Int16
+    estimated duration: 54782.754172 sec
+    audio bytes: 4831838918
+  stat: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.spaE9O/generated/g03-intake/large.sylviapack: stat: No such file or directory
+--- run B output
+  Build complete! (0.35 sec)
+  gen-pack ok: 4846059727 bytes, 7 entries, zip64_end_record=true, manifest_sha256=3d25fadbacd35567d2948f7a54bda7b8bdbc11f6c0e1c4daeabeea00c807d97c, elapsed=8.0s
+  gen-pack (write + self-validation) memory: sampled_peak_phys_footprint=12.7 MiB lifetime_peak_phys_footprint=12.7 MiB max_rss=18.2 MiB
+  afinfo part-01.caf:
+    File type ID:   caff
+    Data format:     1 ch,  44100 Hz, Int16
+    estimated duration: 54782.754172 sec
+    audio bytes: 4831838918
+  pack: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.spaE9O/generated/g03-intake/large.sylviapack
+  size: 4846059727 bytes
+  sha256: 982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268
+  matches the pinned digest
+  FAIL: run A exit status: got '1', expected '0'
+  ok: run B exit status (0)
+  FAIL: run B waited for run A's lock: got '0', expected '1'
+  FAIL: run A matched the pinned digest: got '0', expected '1'
+  ok: run B matched the pinned digest (1)
+  ok: run B replaced run A's published pack (a new file under the same name) (yes)
+  ok: published pack digest (982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268)
+  ok: published part-01.caf digest (b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1)
+
+## 2. A rebuild killed mid-way, then a normal run
+run C's rebuild had written 0 bytes of part-01.caf when it was killed
+  FAIL: a rebuild folder was left behind by the killed run: got '0', expected '1'
+--- run D output (9 s)
+  ok       /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.spaE9O/generated/g03-intake/large.sylviapack (982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268)
+  ok: run D exit status (0)
+  ok: run D did not wait for a lock (the kernel released the killed run's) (0)
+  FAIL: run D removed the leftover rebuild folder: got '0', expected '1'
+  ok: run D took the quick check (published files intact, nothing rebuilt) (1)
+  ok: no rebuild folder remains (0)
+  FAIL: the published pack is the same file as before the killed run: got '61178704', expected '61141746'
+
+## Watcher (both sections)
+  21:50:49 VIOLATION caf size=222298180
+  21:50:49 VIOLATION caf size=501219396
+  21:50:49 VIOLATION caf size=791674948
+  21:50:49 VIOLATION caf size=1053818948
+  21:50:49 VIOLATION caf size=1298137156
+  21:50:50 VIOLATION caf size=1536163908
+  21:50:50 VIOLATION caf size=1792016452
+  21:50:50 VIOLATION caf size=2052063300
+  21:50:50 VIOLATION caf size=2318401604
+  21:50:50 VIOLATION caf size=2582642756
+  21:50:50 VIOLATION caf size=2860515396
+  21:50:50 VIOLATION caf size=3146776644
+  21:50:50 VIOLATION caf size=3404726340
+  21:50:50 VIOLATION caf size=3651141700
+  21:50:51 VIOLATION caf size=3901751364
+  21:50:51 VIOLATION caf size=4138729540
+  21:50:51 VIOLATION caf size=4390387780
+  21:50:51 VIOLATION caf size=4657774660
+  21:51:08 VIOLATION pack missing after it had been published
+  21:51:08 VIOLATION caf size=6291524
+  21:51:08 VIOLATION pack missing after it had been published
+  21:51:08 VIOLATION caf size=253755460
+  21:51:09 VIOLATION pack missing after it had been published
+  21:51:09 VIOLATION caf size=522190916
+  21:51:09 VIOLATION pack missing after it had been published
+  21:51:09 VIOLATION caf size=767557700
+  21:51:09 VIOLATION pack missing after it had been published
+  21:51:09 VIOLATION caf size=1034944580
+  21:51:09 VIOLATION pack missing after it had been published
+  21:51:09 VIOLATION caf size=1318060100
+  21:51:09 VIOLATION pack missing after it had been published
+  21:51:09 VIOLATION caf size=1534066756
+  21:51:09 VIOLATION pack missing after it had been published
+  21:51:09 VIOLATION caf size=1802502212
+  21:51:09 VIOLATION pack missing after it had been published
+  21:51:09 VIOLATION caf size=2092957764
+  21:51:09 VIOLATION pack missing after it had been published
+  21:51:09 VIOLATION caf size=2386559044
+  21:51:09 VIOLATION pack missing after it had been published
+  21:51:09 VIOLATION caf size=2683306052
+  21:51:10 VIOLATION pack missing after it had been published
+  21:51:10 VIOLATION caf size=2961178692
+  21:51:10 VIOLATION pack missing after it had been published
+  21:51:10 VIOLATION caf size=3222274116
+  21:51:10 VIOLATION pack missing after it had been published
+  21:51:10 VIOLATION caf size=3499098180
+  21:51:10 VIOLATION pack missing after it had been published
+  21:51:10 VIOLATION caf size=3790602308
+  21:51:10 VIOLATION pack missing after it had been published
+  21:51:10 VIOLATION caf size=4077912132
+  21:51:10 VIOLATION pack missing after it had been published
+  21:51:10 VIOLATION caf size=4376756292
+  21:51:10 VIOLATION pack missing after it had been published
+  21:51:10 VIOLATION caf size=4674551876
+  21:51:10 VIOLATION pack missing after it had been published
+  21:51:10 VIOLATION pack missing after it had been published
+  21:51:11 VIOLATION pack missing after it had been published
+  21:51:11 VIOLATION pack missing after it had been published
+  21:51:11 VIOLATION pack missing after it had been published
+  21:51:11 VIOLATION pack missing after it had been published
+  21:51:11 VIOLATION pack missing after it had been published
+  21:51:11 VIOLATION pack missing after it had been published
+  21:51:11 VIOLATION pack missing after it had been published
+  21:51:11 VIOLATION pack missing after it had been published
+  21:51:11 VIOLATION pack missing after it had been published
+  21:51:12 VIOLATION pack missing after it had been published
+  21:51:12 VIOLATION pack missing after it had been published
+  21:51:12 VIOLATION pack missing after it had been published
+  21:51:12 VIOLATION pack missing after it had been published
+  21:51:12 VIOLATION pack missing after it had been published
+  21:51:12 VIOLATION pack missing after it had been published
+  21:51:12 VIOLATION pack missing after it had been published
+  21:51:12 VIOLATION pack missing after it had been published
+  21:51:12 VIOLATION pack missing after it had been published
+  21:51:13 VIOLATION pack missing after it had been published
+  21:51:13 VIOLATION pack missing after it had been published
+  21:51:13 VIOLATION pack missing after it had been published
+  21:51:13 VIOLATION pack missing after it had been published
+  21:51:13 VIOLATION pack missing after it had been published
+  21:51:13 VIOLATION pack missing after it had been published
+  21:51:13 VIOLATION pack missing after it had been published
+  21:51:13 VIOLATION pack missing after it had been published
+  21:51:13 VIOLATION pack missing after it had been published
+  21:51:14 VIOLATION pack missing after it had been published
+  21:51:14 VIOLATION pack missing after it had been published
+  21:51:14 VIOLATION pack missing after it had been published
+  21:51:14 VIOLATION pack missing after it had been published
+  21:51:14 VIOLATION pack missing after it had been published
+  21:51:14 VIOLATION pack missing after it had been published
+  21:51:14 VIOLATION pack missing after it had been published
+  21:51:14 VIOLATION pack missing after it had been published
+  21:51:14 VIOLATION pack missing after it had been published
+  21:51:15 VIOLATION pack missing after it had been published
+  21:51:15 VIOLATION pack missing after it had been published
+  21:51:15 VIOLATION pack missing after it had been published
+  21:51:15 VIOLATION pack missing after it had been published
+  21:51:15 VIOLATION pack missing after it had been published
+  21:51:15 VIOLATION pack missing after it had been published
+  21:51:15 VIOLATION pack missing after it had been published
+  21:51:15 VIOLATION pack missing after it had been published
+  21:51:15 VIOLATION pack missing after it had been published
+  21:51:16 VIOLATION pack missing after it had been published
+  21:51:16 VIOLATION pack missing after it had been published
+  21:51:16 VIOLATION pack missing after it had been published
+  21:51:16 VIOLATION pack missing after it had been published
+  21:51:16 VIOLATION pack missing after it had been published
+  21:51:16 VIOLATION pack missing after it had been published
+  21:51:16 VIOLATION pack missing after it had been published
+  21:51:16 VIOLATION pack missing after it had been published
+  21:51:59 VIOLATION pack missing after it had been published
+  21:51:59 VIOLATION pack missing after it had been published
+  21:51:59 VIOLATION caf missing after it had been published
+  21:51:59 VIOLATION pack missing after it had been published
+  21:51:59 VIOLATION caf size=91226180
+  21:51:59 VIOLATION pack missing after it had been published
+  21:51:59 VIOLATION caf size=277872708
+  21:52:00 VIOLATION pack missing after it had been published
+  21:52:00 VIOLATION caf size=459276356
+  21:52:00 VIOLATION pack missing after it had been published
+  21:52:00 VIOLATION caf size=657457220
+  21:52:00 VIOLATION pack missing after it had been published
+  21:52:00 VIOLATION caf size=854589508
+  21:52:00 VIOLATION pack missing after it had been published
+  21:52:00 VIOLATION caf size=1044381764
+  21:52:00 VIOLATION pack missing after it had been published
+  21:52:00 VIOLATION caf size=1236271172
+  21:52:00 VIOLATION pack missing after it had been published
+  21:52:00 VIOLATION caf size=1448083524
+  21:52:00 VIOLATION pack missing after it had been published
+  21:52:00 VIOLATION caf size=1621098564
+  21:52:00 VIOLATION pack missing after it had been published
+  21:52:00 VIOLATION caf size=1827668036
+  21:52:01 VIOLATION pack missing after it had been published
+  21:52:01 VIOLATION caf size=2010120260
+  21:52:01 VIOLATION pack missing after it had been published
+  21:52:01 VIOLATION caf size=2216689732
+  21:52:01 VIOLATION pack missing after it had been published
+  21:52:01 VIOLATION caf size=2416967748
+  21:52:01 VIOLATION pack missing after it had been published
+  21:52:01 VIOLATION caf size=2613051460
+  21:52:01 VIOLATION pack missing after it had been published
+  21:52:01 VIOLATION caf size=2819620932
+  21:52:01 VIOLATION pack missing after it had been published
+  21:52:01 VIOLATION caf size=3019898948
+  21:52:01 VIOLATION pack missing after it had been published
+  21:52:01 VIOLATION caf size=3243245636
+  21:52:01 VIOLATION pack missing after it had been published
+  21:52:01 VIOLATION caf size=3458203716
+  21:52:01 VIOLATION pack missing after it had been published
+  21:52:01 VIOLATION caf size=3667918916
+  21:52:02 VIOLATION pack missing after it had been published
+  21:52:02 VIOLATION caf size=3878682692
+  21:52:02 VIOLATION pack missing after it had been published
+  21:52:02 VIOLATION caf size=4109369412
+  21:52:02 VIOLATION pack missing after it had been published
+  21:52:02 VIOLATION caf size=4334813252
+  21:52:02 VIOLATION pack missing after it had been published
+  21:52:02 VIOLATION caf size=4583325764
+  21:52:02 VIOLATION pack missing after it had been published
+  21:52:02 VIOLATION caf size=4818206788
+  21:52:02 VIOLATION pack missing after it had been published
+  21:52:02 VIOLATION pack missing after it had been published
+  21:52:02 VIOLATION pack missing after it had been published
+  21:52:02 VIOLATION pack missing after it had been published
+  21:52:03 VIOLATION pack missing after it had been published
+  21:52:03 VIOLATION pack missing after it had been published
+  21:52:03 VIOLATION pack missing after it had been published
+  21:52:03 VIOLATION pack missing after it had been published
+  21:52:03 VIOLATION pack missing after it had been published
+  21:52:03 VIOLATION pack missing after it had been published
+  21:52:03 VIOLATION pack missing after it had been published
+  21:52:03 VIOLATION pack missing after it had been published
+  21:52:04 VIOLATION pack missing after it had been published
+  21:52:04 VIOLATION pack missing after it had been published
+  21:52:04 VIOLATION pack missing after it had been published
+  21:52:04 VIOLATION pack missing after it had been published
+  21:52:04 VIOLATION pack missing after it had been published
+  21:52:04 VIOLATION pack missing after it had been published
+  21:52:04 VIOLATION pack missing after it had been published
+  21:52:04 VIOLATION pack missing after it had been published
+  21:52:04 VIOLATION pack missing after it had been published
+  21:52:05 VIOLATION pack missing after it had been published
+  21:52:05 VIOLATION pack missing after it had been published
+  21:52:05 VIOLATION pack missing after it had been published
+  21:52:05 VIOLATION pack missing after it had been published
+  21:52:05 VIOLATION pack missing after it had been published
+  21:52:05 VIOLATION pack missing after it had been published
+  21:52:05 VIOLATION pack missing after it had been published
+  21:52:05 VIOLATION pack missing after it had been published
+  21:52:05 VIOLATION pack missing after it had been published
+  21:52:06 VIOLATION pack missing after it had been published
+  21:52:06 VIOLATION pack missing after it had been published
+  21:52:06 VIOLATION pack missing after it had been published
+  21:52:06 VIOLATION pack missing after it had been published
+  21:52:06 VIOLATION pack missing after it had been published
+  21:52:06 VIOLATION pack missing after it had been published
+  21:52:06 VIOLATION pack missing after it had been published
+  21:52:06 VIOLATION pack missing after it had been published
+  21:52:06 VIOLATION pack missing after it had been published
+  21:52:07 VIOLATION pack missing after it had been published
+  21:52:07 VIOLATION pack missing after it had been published
+  21:52:07 VIOLATION pack missing after it had been published
+  21:52:07 VIOLATION pack missing after it had been published
+  21:52:07 VIOLATION pack missing after it had been published
+  21:52:07 VIOLATION pack missing after it had been published
+  21:52:07 VIOLATION pack missing after it had been published
+  21:52:07 VIOLATION pack missing after it had been published
+  21:52:07 VIOLATION pack missing after it had been published
+  21:52:08 VIOLATION pack missing after it had been published
+  21:52:08 VIOLATION pack missing after it had been published
+  21:52:08 VIOLATION pack missing after it had been published
+  21:52:08 VIOLATION pack missing after it had been published
+  21:52:08 VIOLATION pack missing after it had been published
+  21:52:08 VIOLATION pack missing after it had been published
+  21:52:08 VIOLATION pack missing after it had been published
+  21:52:08 VIOLATION pack missing after it had been published
+  21:52:08 VIOLATION pack missing after it had been published
+  21:52:09 VIOLATION pack missing after it had been published
+  21:52:09 VIOLATION pack missing after it had been published
+  21:52:09 VIOLATION pack missing after it had been published
+  21:52:09 VIOLATION pack missing after it had been published
+  21:52:09 VIOLATION pack missing after it had been published
+  watcher stopped; pack seen=1 caf seen=1
+  FAIL: watcher violations (a published file missing after it appeared, or not at its final size): got '222', expected '0'
+  ok: watcher saw both files published (1)
+
+load: 10:53  up 9 days, 21:03, 1 user, load averages: 34.10 29.68 28.23
+failures=7

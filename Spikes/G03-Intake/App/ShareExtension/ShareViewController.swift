@@ -31,12 +31,14 @@ final class ShareModel: ObservableObject {
     /// for a process that "is not an app"); nil when the kernel did not fill the field.
     @Published var limitRemainingAtStart: UInt64?
     @Published var series = ""
-    /// Data-protection class of what this extension wrote (plan 18.1; device checklist step 22). "none reported" on
+    /// Data-protection class of what this extension wrote (plan 18.1; device checklist step 24). "none reported" on
     /// the simulator, which has no data protection.
     @Published var protection = ""
     /// How each item reached the extension (file representation in place, file representation copy, or file URL).
     @Published var representations = ""
-    let cancelFlag = CancelFlag()
+    /// Cancel acts while the provider is still delivering (an iCloud download, a mail attachment), while a coordinated
+    /// read waits, and during the copy (G0.3 review R2-01).
+    let cancellation = CancellationSignal()
 }
 
 /// Records phys_footprint every 1 GiB copied, so a run shows whether memory follows the bytes copied.
@@ -74,14 +76,6 @@ final class ProgressThrottle: @unchecked Sendable {
     }
 }
 
-/// Thread-safe cancellation flag polled by the copier between chunks.
-final class CancelFlag: @unchecked Sendable {
-    private let lock = NSLock()
-    private var value = false
-    func cancel() { lock.withLock { value = true } }
-    var isCancelled: Bool { lock.withLock { value } }
-}
-
 final class ShareViewController: UIViewController {
     private let model = ShareModel()
     private var sampler: FootprintSampler?
@@ -90,7 +84,7 @@ final class ShareViewController: UIViewController {
         super.viewDidLoad()
         let host = UIHostingController(rootView: ShareView(model: model,
                                                            done: { [weak self] in self?.finish() },
-                                                           cancel: { [weak self] in self?.model.cancelFlag.cancel() }))
+                                                           cancel: { [weak self] in self?.model.cancellation.cancel() }))
         addChild(host)
         host.view.frame = view.bounds
         host.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -108,12 +102,12 @@ final class ShareViewController: UIViewController {
         sampler.start()
         self.sampler = sampler
         let model = self.model
-        let cancelFlag = model.cancelFlag
+        let cancellation = model.cancellation
         let box = ProvidersBox(providers)
         let throttle = ProgressThrottle()
         let series = FootprintSeries()
         Task.detached(priority: .userInitiated) {
-            let (outcome, protection, representations) = await ShareViewController.handOff(box.providers, cancelFlag: cancelFlag) { bytes in
+            let (outcome, protection, representations) = await ShareViewController.handOff(box.providers, cancellation: cancellation) { bytes in
                 series.record(bytes)
                 guard throttle.shouldReport(bytes) else { return }
                 Task { @MainActor in model.copiedBytes = bytes }
@@ -134,7 +128,7 @@ final class ShareViewController: UIViewController {
 
     /// Runs off the main actor: receive every provider into one session, then commit (manifest last). Also returns the
     /// protection classes of what was written and how each item arrived (evidence lines, no names).
-    nonisolated static func handOff(_ providers: [NSItemProvider], cancelFlag: CancelFlag,
+    nonisolated static func handOff(_ providers: [NSItemProvider], cancellation: CancellationSignal,
                                     progress: @escaping @Sendable (UInt64) -> Void) async -> (Result<HandoffReceipt, HandoffFailure>, String, String) {
         guard !providers.isEmpty else { return (.failure(.noSupportedItem), "", "") }
         guard let group = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
@@ -155,14 +149,14 @@ final class ShareViewController: UIViewController {
                 let base = completedBytes
                 let delivered = InPlaceFlag()
                 let item = try await intake.receive(provider, into: session,
-                                                    isCancelled: { cancelFlag.isCancelled },
+                                                    cancellation: cancellation,
                                                     progress: { progress(base + $0) },
                                                     openedInPlace: { delivered.set($0) })
                 completedBytes += item.byteCount
                 items.append(item)
                 inPlace.append(delivered.value.map { $0 ? "in place" : "temporary copy" } ?? "n/a")
             }
-            let receipt = try session.commit()
+            let receipt = try session.commit(isCancelled: { cancellation.isCancelled })
             let representations = zip(items, inPlace).map { item, place in
                 "\(item.storedPath): \(item.representation.rawValue), \(place) (\(item.providerTypeIdentifier))"
             }.joined(separator: "; ")
@@ -187,7 +181,7 @@ final class ShareViewController: UIViewController {
         switch model.phase {
         case .received: extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
         case .notReceived, .copying:
-            model.cancelFlag.cancel()
+            model.cancellation.cancel()
             extensionContext?.cancelRequest(withError: NSError(domain: "com.jevidon.sylvia.spike.intake.share",
                                                                code: NSUserCancelledError))
         }

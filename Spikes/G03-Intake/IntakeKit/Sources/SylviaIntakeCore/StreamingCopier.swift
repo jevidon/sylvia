@@ -5,6 +5,11 @@ import Foundation
 public struct CopyResult: Sendable, Equatable {
     public let byteCount: UInt64
     public let sha256: String
+
+    public init(byteCount: UInt64, sha256: String) {
+        self.byteCount = byteCount
+        self.sha256 = sha256
+    }
 }
 
 public enum CopyFailure: Error, Equatable, CustomStringConvertible, Sendable {

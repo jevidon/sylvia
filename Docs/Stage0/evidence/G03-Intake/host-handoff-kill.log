@@ -1,7 +1,7 @@
 # G0.3 host kill test
-date: 2026-10-11T18:04:14Z
+date: 2026-10-13T07:28:24Z
 environment: host, macOS 26.6.2 (25G83)
-Build complete! (0.61 sec)
+Build complete! (0.25 sec)
 
 ## 1. SIGKILL at every step of the write sequence
 checkSpace#1               exit=137 receipt_printed=no  manifests=0 | fresh scan: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0 | +2h scan: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0
@@ -28,19 +28,19 @@ renameManifest#1           exit=137 receipt_printed=no  manifests=0 | fresh scan
 syncHandoffDirectory#1     exit=137 receipt_printed=no  manifests=1 | fresh scan: scan: accepted=1 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0 | +2h scan: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0
 
 ## 2. SIGKILL at random moments while copying the 4.5 GiB file
-uninterrupted copy of 4831838986 bytes (process start to exit): 2.26s
-kill after 0.47s: exit=137 receipt=no manifests=0 copied=1025507328 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 1.95s: exit=137 receipt=no manifests=0 copied=4738514944 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 0.66s: exit=137 receipt=no manifests=0 copied=1598029824 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 0.65s: exit=137 receipt=no manifests=0 copied=1401946112 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 1.35s: exit=137 receipt=no manifests=0 copied=3286237184 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 1.66s: exit=137 receipt=no manifests=0 copied=4133486592 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 0.81s: exit=137 receipt=no manifests=0 copied=1886388224 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 0.64s: exit=137 receipt=no manifests=0 copied=1422917632 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 1.06s: exit=137 receipt=no manifests=0 copied=2614099968 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 1.26s: exit=137 receipt=no manifests=0 copied=3036676096 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 1.04s: exit=137 receipt=no manifests=0 copied=2553282560 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
-kill after 1.08s: exit=137 receipt=no manifests=0 copied=2659188736 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
+uninterrupted copy of 4831838986 bytes (process start to exit): 4.14s
+kill after 0.86s: exit=137 receipt=no manifests=0 copied=1928331264 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
+kill after 3.58s: exit=0 receipt=yes manifests=1 copied=4831838986 bytes | fresh: scan: accepted=1 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0
+kill after 1.20s: exit=137 receipt=no manifests=0 copied=2450522112 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
+kill after 1.20s: exit=137 receipt=no manifests=0 copied=2486173696 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
+kill after 2.48s: exit=0 receipt=yes manifests=1 copied=4831838986 bytes | fresh: scan: accepted=1 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0
+kill after 3.04s: exit=0 receipt=yes manifests=1 copied=4831838986 bytes | fresh: scan: accepted=1 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0
+kill after 1.49s: exit=137 receipt=no manifests=0 copied=3470786560 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
+kill after 1.16s: exit=137 receipt=no manifests=0 copied=2690646016 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
+kill after 1.95s: exit=137 receipt=no manifests=0 copied=4479516672 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
+kill after 2.31s: exit=0 receipt=yes manifests=1 copied=4831838986 bytes | fresh: scan: accepted=1 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=0 rejected=0 already_accepted=0
+kill after 1.91s: exit=137 receipt=no manifests=0 copied=4470079488 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
+kill after 1.99s: exit=137 receipt=no manifests=0 copied=4673503232 bytes | fresh: scan: accepted=0 recovered=0 in_progress=1 abandoned_removed=0 rejected=0 already_accepted=0 | +2h: scan: accepted=0 recovered=0 in_progress=0 abandoned_removed=1 rejected=0 already_accepted=0
 
-kills that landed mid-copy (killed, no manifest, 0 < copied bytes < 4831838986): 12 of 12
+kills that landed mid-copy (killed, no manifest, 0 < copied bytes < 4831838986): 8 of 12
 failures=0

@@ -5,6 +5,26 @@ import SylviaIntakeCore
 import SylviaPack
 import Testing
 
+/// Stands in for a writer that is still copying a drop-area file: appends `bytes` to it, once.
+final class AppendOnce: @unchecked Sendable {
+    private let url: URL
+    private let bytes: Int
+    private let lock = NSLock()
+    private var done = false
+    init(_ url: URL, bytes: Int) {
+        self.url = url
+        self.bytes = bytes
+    }
+    func appendIfFirst() {
+        let first: Bool = lock.withLock { defer { done = true }; return !done }
+        guard first, let handle = try? FileHandle(forWritingTo: url) else { return }
+        defer { try? handle.close() }
+        _ = try? handle.seekToEnd()
+        try? handle.write(contentsOf: Data(repeating: 0x5A, count: bytes))
+    }
+    var appended: Bool { lock.withLock { done } }
+}
+
 struct FakeContainer {
     let root: URL
     let layout: StorageLayout
@@ -107,7 +127,7 @@ struct DropAreaImportTests {
         try await c.makePack(named: "p").write(to: c.layout.documents.appendingPathComponent("Book.sylviapack"))
         let importer = try c.importer()
         #expect(importer.listDropArea().map(\.kind) == [.bundle])
-        let job = try await importer.importBundle(named: "Book.sylviapack")
+        let job = try await importer.importDropAreaItem(named: "Book.sylviapack")
         #expect(job.state == .staged && job.route == .documentsBundle)
         let staged = c.layout.staging.appendingPathComponent(job.stagedDirectory)
         for item in job.items {
@@ -121,7 +141,7 @@ struct DropAreaImportTests {
         #expect(LayoutAudit.audit(c.layout, infoDictionary: goodInfo).isEmpty)
         // The same bundle copied again is a duplicate: needs_review, and its transport copy is removed too.
         try await c.makePack(named: "p").write(to: c.layout.documents.appendingPathComponent("Book.sylviapack"))
-        #expect(try await importer.importBundle(named: "Book.sylviapack").state == .needsReview)
+        #expect(try await importer.importDropAreaItem(named: "Book.sylviapack").state == .needsReview)
         #expect(importer.listDropArea().isEmpty)
     }
 
@@ -138,7 +158,7 @@ struct DropAreaImportTests {
                 try replacement.write(to: bundle)
             }
         })
-        #expect(try await importer.importBundle(named: "Book.sylviapack").state == .staged)
+        #expect(try await importer.importDropAreaItem(named: "Book.sylviapack").state == .staged)
         #expect(try Data(contentsOf: bundle) == replacement, "the new copy is kept for the user")
     }
 
@@ -151,7 +171,7 @@ struct DropAreaImportTests {
         let importer = DropAreaImporter(layout: c.layout, journal: try IntakeJournal(url: c.layout.journal),
                                         reader: PackReader(availableCapacity: { _ in available }))
         do {
-            _ = try await importer.importBundle(named: "Book.sylviapack")
+            _ = try await importer.importDropAreaItem(named: "Book.sylviapack")
             Issue.record("imported without space")
         } catch {
             guard case let .insufficientSpace(needed) = error else { Issue.record("wrong error \(error)"); return }
@@ -202,12 +222,12 @@ struct DropAreaImportTests {
         try DeterministicBytes(seed: 6).writeFile(inbox.appendingPathComponent("Other.pdf"), length: 1_000)
         #expect(importer.listDropArea().map(\.name) == ["Inbox/Left.epub", "Inbox/Other.pdf"])
         #expect(importer.listDropArea().map(\.kind) == [.file, .file])
-        let job = try await importer.importBundle(named: "Inbox/Left.epub")
+        let job = try await importer.importDropAreaItem(named: "Inbox/Left.epub")
         #expect(job.state == .staged && job.route == .openIn)
         try importer.removeFromDropArea(named: "Inbox/Other.pdf")
         #expect(importer.listDropArea().isEmpty)
-        await #expect(throws: DropAreaImporter.ImportError.notInDropArea) { try await importer.importBundle(named: "Inbox/../x") }
-        await #expect(throws: DropAreaImporter.ImportError.notInDropArea) { try await importer.importBundle(named: "Inbox/") }
+        await #expect(throws: DropAreaImporter.ImportError.notInDropArea) { try await importer.importDropAreaItem(named: "Inbox/../x") }
+        await #expect(throws: DropAreaImporter.ImportError.notInDropArea) { try await importer.importDropAreaItem(named: "Inbox/") }
     }
 
     @Test("a single-file import is an APFS clone: identical bytes, private mode, the source untouched")
@@ -217,7 +237,10 @@ struct DropAreaImportTests {
         let src = c.root.appendingPathComponent("Walden.epub")
         try DeterministicBytes(seed: 11).writeFile(src, length: 3 << 20)
         let before = try FileDigest.sha256(of: src)
+        let identityBefore = try #require(DropAreaImporter.FileIdentity.of(src))
         let job = try importer.importSingleFile(at: src, route: .documentPicker)
+        // The source is untouched (review R3-05): same device, inode, size and modification time, and the same bytes.
+        #expect(DropAreaImporter.FileIdentity.of(src) == identityBefore)
         let staged = c.layout.staging.appendingPathComponent(job.stagedDirectory).appendingPathComponent(job.items[0].relativePath)
         #expect(job.items[0].sha256 == before.sha256 && job.items[0].byteCount == before.byteCount)
         #expect(try FileDigest.sha256(of: staged) == before)
@@ -238,7 +261,7 @@ struct DropAreaImportTests {
         let data = try await c.makePack(named: "p")
         try data.prefix(Int(Double(data.count) * fraction)).write(to: c.layout.documents.appendingPathComponent("Book.sylviapack"))
         let importer = try c.importer()
-        await #expect(throws: DropAreaImporter.ImportError.self) { try await importer.importBundle(named: "Book.sylviapack") }
+        await #expect(throws: DropAreaImporter.ImportError.self) { try await importer.importDropAreaItem(named: "Book.sylviapack") }
         #expect(importer.journal.jobs.isEmpty)
         #expect(try FileManager.default.contentsOfDirectory(atPath: c.layout.extracting.path).isEmpty)
         #expect(FileManager.default.fileExists(atPath: c.layout.documents.appendingPathComponent("Book.sylviapack").path),
@@ -258,14 +281,14 @@ struct DropAreaImportTests {
         let importer = try c.importer()
         var attempts: [String] = []
         do {
-            _ = try await importer.importBundle(named: "Slow.sylviapack")
+            _ = try await importer.importDropAreaItem(named: "Slow.sylviapack")
             attempts.append("accepted at half")
         } catch {
             attempts.append("rejected at half: \(error)")
         }
         _ = data.suffix(from: half).withUnsafeBytes { write(fd, $0.baseAddress!, data.count - half) }
         close(fd)
-        let job = try await importer.importBundle(named: "Slow.sylviapack")
+        let job = try await importer.importDropAreaItem(named: "Slow.sylviapack")
         attempts.append("accepted after completion")
         print("uncoordinated writer: \(attempts.joined(separator: "; "))")
         #expect(attempts.first?.hasPrefix("rejected") == true)
@@ -296,7 +319,7 @@ struct DropAreaImportTests {
             try await Task.sleep(for: .milliseconds(10))
         }
         let started = ContinuousClock.now
-        let job = try await c.importer().importBundle(named: "Coordinated.sylviapack")
+        let job = try await c.importer().importDropAreaItem(named: "Coordinated.sylviapack")
         let waited = ContinuousClock.now - started
         print("coordinated writer: import waited \(waited) for the coordinated write")
         #expect(job.state == .staged)
@@ -326,10 +349,15 @@ struct DropAreaImportTests {
         #expect(openIn.state == .needsReview)
         #expect(!FileManager.default.fileExists(atPath: openInCopy.path), "the system's Inbox copy is removed after import")
 
-        // Document picker route: the original stays where it is.
+        // Document picker route: the original stays where it is, untouched (I-08; review R3-05): the same device, inode,
+        // size and modification time afterwards, and the same bytes.
+        let identityBefore = try #require(DropAreaImporter.FileIdentity.of(src))
+        let digestBefore = try FileDigest.sha256(of: src)
         let picker = try importer.importSingleFile(at: src, route: .documentPicker)
         #expect(picker.state == .needsReview)
-        #expect(FileManager.default.fileExists(atPath: src.path), "imports copy; the source is never modified (I-08)")
+        #expect(DropAreaImporter.FileIdentity.of(src) == identityBefore, "imports copy; the source is never modified (I-08)")
+        #expect(try FileDigest.sha256(of: src) == digestBefore)
+        #expect(picker.items[0].sha256 == digestBefore.sha256 && picker.items[0].byteCount == digestBefore.byteCount)
 
         let jobs = importer.journal.jobs
         #expect(jobs.count == 3)
@@ -346,7 +374,7 @@ struct DropAreaImportTests {
             if reached == step { throw SimulatedProcessDeath(step: .renameManifest) }
         })
         await #expect(throws: DropAreaImporter.ImportError.simulatedProcessDeath) {
-            try await dying.importBundle(named: "Book.sylviapack")
+            try await dying.importDropAreaItem(named: "Book.sylviapack")
         }
         // Relaunch: a new journal read from disk, then the launch-time recovery.
         let relaunched = try c.importer()
@@ -394,6 +422,83 @@ struct DropAreaImportTests {
         #expect(importer.journal.job(id: job.jobID)?.state == .failedFinal)
     }
 
+    /// G0.3 review R2-05: plan 8.5 allows a raw file copied with Finder (user-initiated, coordinated). It used to be
+    /// sent to the bundle importer and refused as "truncated_or_not_a_pack".
+    @Test("a raw EPUB copied into Documents with Finder imports through the single-file importer and stays until removed")
+    func rawFinderFile() async throws {
+        let c = try FakeContainer()
+        let importer = try c.importer()
+        let raw = c.layout.documents.appendingPathComponent("Walden.epub")
+        try DeterministicBytes(seed: 77).writeFile(raw, length: 750_000)
+        try DeterministicBytes(seed: 78).writeFile(c.layout.documents.appendingPathComponent("photo.jpg"), length: 1_000)
+        #expect(importer.listDropArea().map(\.name) == ["Walden.epub", "photo.jpg"])
+        #expect(importer.listDropArea().map(\.kind) == [.file, .unsupported])
+
+        let job = try await importer.importDropAreaItem(named: "Walden.epub")
+        #expect(job.route == .documentsFile && job.state == .staged)
+        #expect(job.items.count == 1 && job.items[0].byteCount == 750_000 && job.items[0].contentType == "org.idpf.epub-container")
+        let staged = c.layout.staging.appendingPathComponent(job.stagedDirectory).appendingPathComponent(job.items[0].relativePath)
+        #expect(try Data(contentsOf: staged) == Data(contentsOf: raw))
+        #expect(FileManager.default.fileExists(atPath: raw.path),
+                "a raw Finder file is never removed automatically: nothing proves Finder had finished")
+        let again = try await importer.importDropAreaItem(named: "Walden.epub")
+        #expect(again.state == .needsReview, "the same bytes again are a duplicate, as on every other route")
+        await #expect(throws: DropAreaImporter.ImportError.unsupportedType) { try await importer.importDropAreaItem(named: "photo.jpg") }
+        try importer.removeFromDropArea(named: "Walden.epub")
+        #expect(importer.listDropArea().map(\.name) == ["photo.jpg"])
+        #expect(importer.journal.jobs.count == 2)
+        print("raw Finder file: imported as \(job.route.rawValue) \(job.state.rawValue), again \(again.state.rawValue); the Documents copy stayed until removed")
+    }
+
+    @Test("a raw file still being written (as Finder may be) is staged as the partial bytes: without a manifest nothing proves completeness")
+    func rawFinderFileStillCopying() async throws {
+        let c = try FakeContainer()
+        let importer = try c.importer()
+        let dest = c.layout.documents.appendingPathComponent("Long.m4b")
+        let full = c.root.appendingPathComponent("full.m4b")
+        try DeterministicBytes(seed: 79).writeFile(full, length: 4 << 20)
+        let data = try Data(contentsOf: full)
+        let fd = open(dest.path, O_WRONLY | O_CREAT | O_TRUNC, 0o644)
+        try #require(fd >= 0)
+        let half = data.count / 2
+        _ = data.prefix(half).withUnsafeBytes { write(fd, $0.baseAddress!, half) }
+        let partial = try await importer.importDropAreaItem(named: "Long.m4b")
+        _ = data.suffix(from: half).withUnsafeBytes { write(fd, $0.baseAddress!, data.count - half) }
+        close(fd)
+        #expect(try Data(contentsOf: dest) == data, "the writer's copy is intact: the import did not remove or change it")
+        let complete = try await importer.importDropAreaItem(named: "Long.m4b")
+        print("raw file still copying: import at half staged \(partial.items[0].byteCount) of \(data.count) bytes (\(partial.state.rawValue)); after the copy finished \(complete.items[0].byteCount) bytes (\(complete.state.rawValue))")
+        // This is the limitation plan 8.5 states, recorded rather than hidden (report F15): the partial job is staged,
+        // not trusted, and only the type's later validation can catch it; a bundle in the same situation is rejected
+        // (uncoordinatedWriter above).
+        #expect(partial.state == .staged && partial.items[0].byteCount == UInt64(half))
+        #expect(complete.state == .staged && complete.items[0].byteCount == UInt64(data.count))
+    }
+
+    /// A raw file Finder is still writing changes while it is imported. The hook stands in for that writer: right after
+    /// the snapshot is hashed (the window in which a live copy keeps writing) it appends to the file once.
+    @Test("a raw file that changes while it is imported (Finder still copying) is refused and nothing is staged; once it stops changing it imports")
+    func rawFinderFileChangingDuringImport() async throws {
+        let c = try FakeContainer()
+        let raw = c.layout.documents.appendingPathComponent("Copying.mp3")
+        try DeterministicBytes(seed: 80).writeFile(raw, length: 2 << 20)
+        let writer = AppendOnce(raw, bytes: 4096)
+        let importer = DropAreaImporter(layout: c.layout, journal: try IntakeJournal(url: c.layout.journal), hook: { step in
+            if step == .verified { writer.appendIfFirst() }
+        })
+        await #expect(throws: DropAreaImporter.ImportError.stillBeingWritten) {
+            try await importer.importDropAreaItem(named: "Copying.mp3")
+        }
+        #expect(writer.appended)
+        #expect(importer.journal.jobs.isEmpty, "no commit intent for a file that was still changing")
+        #expect(try FileManager.default.contentsOfDirectory(atPath: c.layout.extracting.path).isEmpty)
+        #expect(FileManager.default.fileExists(atPath: raw.path), "the file stays for the next attempt")
+        // The writer has stopped: the next import stages the whole file.
+        let job = try await importer.importDropAreaItem(named: "Copying.mp3")
+        #expect(job.route == .documentsFile && job.state == .staged && job.items[0].byteCount == (2 << 20) + 4096)
+        print("raw file changing during its import: refused (stillBeingWritten); after it stopped changing: staged \(job.items[0].byteCount) bytes")
+    }
+
     @Test("unsupported single files and names outside the drop area are refused")
     func refusals() async throws {
         let c = try FakeContainer()
@@ -401,7 +506,7 @@ struct DropAreaImportTests {
         let exe = c.root.appendingPathComponent("tool.sh")
         try Data("#!/bin/sh".utf8).write(to: exe)
         #expect(throws: DropAreaImporter.ImportError.unsupportedType) { try importer.importSingleFile(at: exe, route: .openIn) }
-        await #expect(throws: DropAreaImporter.ImportError.notInDropArea) { try await importer.importBundle(named: "../x.sylviapack") }
-        await #expect(throws: DropAreaImporter.ImportError.notInDropArea) { try await importer.importBundle(named: "missing.sylviapack") }
+        await #expect(throws: DropAreaImporter.ImportError.notInDropArea) { try await importer.importDropAreaItem(named: "../x.sylviapack") }
+        await #expect(throws: DropAreaImporter.ImportError.notInDropArea) { try await importer.importDropAreaItem(named: "missing.sylviapack") }
     }
 }

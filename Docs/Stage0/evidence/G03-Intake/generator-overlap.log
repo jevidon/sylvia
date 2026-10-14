@@ -1,0 +1,78 @@
+# G0.3 review R2-06: overlapping and killed runs of the large-pack generator, after the fix
+# Command: Spikes/G03-Intake/scripts/check-generator-overlap.sh <log>; the generator and the check as committed in
+# 0369a46. Private fixture cache, removed afterwards; the shared fixture cache was not touched. Timings are indicative
+# only (other agents were building on this Mac; load averages are printed at the start and the end).
+
+# G0.3 generator overlap check (review R2-06)
+date: 2026-10-12T21:43:29Z
+environment: host, macOS 26.6.2 (25G83), Apple M5 Max
+load: 10:43  up 9 days, 20:54, 1 user, load averages: 117.25 45.09 33.48
+generator: Scripts/fixtures/generate-g03-intake-pack.sh
+private cache: .build/g03-generator-overlap.Mva7Zs (removed on exit)
+Build complete! (12.32 sec)
+
+## 1. Two overlapping forced rebuilds
+run B starts at +20 s (run A still running: yes)
+run A finished at +30 s, exit 0 (published pack inode 61095186)
+run B finished at +63 s, exit 0 (published pack inode 61098738)
+--- run A output
+  Build complete! (0.24 sec)
+  gen-pack ok: 4846059727 bytes, 7 entries, zip64_end_record=true, manifest_sha256=3d25fadbacd35567d2948f7a54bda7b8bdbc11f6c0e1c4daeabeea00c807d97c, elapsed=7.7s
+  gen-pack (write + self-validation) memory: sampled_peak_phys_footprint=12.0 MiB lifetime_peak_phys_footprint=12.0 MiB max_rss=17.4 MiB
+  afinfo part-01.caf:
+    File type ID:   caff
+    Data format:     1 ch,  44100 Hz, Int16
+    estimated duration: 54782.754172 sec
+    audio bytes: 4831838918
+  pack: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.Mva7Zs/generated/g03-intake/large.sylviapack
+  size: 4846059727 bytes
+  sha256: 982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268
+  matches the pinned digest
+  part-01.caf matches its pinned digest (b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1)
+  published by rename: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.Mva7Zs/generated/g03-intake/work/part-01.caf, then /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.Mva7Zs/generated/g03-intake/large.sylviapack
+--- run B output
+  waiting for another run of this generator to finish (lock: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.Mva7Zs/generated/g03-intake/.generate.lock)
+  lock acquired
+  Build complete! (0.24 sec)
+  gen-pack ok: 4846059727 bytes, 7 entries, zip64_end_record=true, manifest_sha256=3d25fadbacd35567d2948f7a54bda7b8bdbc11f6c0e1c4daeabeea00c807d97c, elapsed=7.9s
+  gen-pack (write + self-validation) memory: sampled_peak_phys_footprint=12.0 MiB lifetime_peak_phys_footprint=12.0 MiB max_rss=17.5 MiB
+  afinfo part-01.caf:
+    File type ID:   caff
+    Data format:     1 ch,  44100 Hz, Int16
+    estimated duration: 54782.754172 sec
+    audio bytes: 4831838918
+  pack: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.Mva7Zs/generated/g03-intake/large.sylviapack
+  size: 4846059727 bytes
+  sha256: 982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268
+  matches the pinned digest
+  part-01.caf matches its pinned digest (b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1)
+  published by rename: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.Mva7Zs/generated/g03-intake/work/part-01.caf, then /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.Mva7Zs/generated/g03-intake/large.sylviapack
+  ok: run A exit status (0)
+  ok: run B exit status (0)
+  ok: run B waited for run A's lock (1)
+  ok: run A matched the pinned digest (1)
+  ok: run B matched the pinned digest (1)
+  ok: run B replaced run A's published pack (a new file under the same name) (yes)
+  ok: published pack digest (982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268)
+  ok: published part-01.caf digest (b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1)
+
+## 2. A rebuild killed mid-way, then a normal run
+run C's rebuild had written 1029701700 bytes of part-01.caf when it was killed
+  ok: a rebuild folder was left behind by the killed run (1)
+--- run D output (9 s)
+  removing the leftovers of an interrupted rebuild: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.Mva7Zs/generated/g03-intake/.rebuild.T8rMlf
+  ok       /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-8/.build/g03-generator-overlap.Mva7Zs/generated/g03-intake/large.sylviapack (982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268)
+  ok: run D exit status (0)
+  ok: run D did not wait for a lock (the kernel released the killed run's) (0)
+  ok: run D removed the leftover rebuild folder (1)
+  ok: run D took the quick check (published files intact, nothing rebuilt) (1)
+  ok: no rebuild folder remains (0)
+  ok: the published pack is the same file as before the killed run (61098738)
+
+## Watcher (both sections)
+  watcher stopped; pack seen=1 caf seen=1
+  ok: watcher violations (a published file missing after it appeared, or not at its final size) (0)
+  ok: watcher saw both files published (1)
+
+load: 10:45  up 9 days, 20:55, 1 user, load averages: 35.33 36.76 31.56
+failures=0

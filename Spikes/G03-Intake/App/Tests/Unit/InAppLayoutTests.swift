@@ -36,7 +36,7 @@ struct InAppLayoutTests {
         print("G03-EVIDENCE layout: Documents contains \(documentsContents.count) item(s): \(documentsContents.sorted())")
         // Data protection (plan 18.1: database, WAL/SHM, staging, manifests; G8). A handoff is written here through the
         // extension's own write routine into the real App Group inbox so its directory, manifest and item are covered;
-        // the extension also shows the class of what it wrote (device checklist step 22).
+        // the extension also shows the class of what it wrote (device checklist step 24).
         let probeSource = fm.temporaryDirectory.appendingPathComponent("protection-probe.epub")
         try DeterministicBytes(seed: 22).writeFile(probeSource, length: 4096)
         let inbox = try #require(layout.handoffInbox)

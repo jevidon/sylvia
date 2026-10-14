@@ -1,5 +1,9 @@
-# Scripts/ci.sh contracts; host, macOS 26.6.2 (25G83); 2026-10-11T18:02:28Z; commit 0b844e2 (the clean run, ci-clean-run.log)
+# Scripts/ci.sh contracts; host, macOS 26.6.2 (25G83); 2026-10-13T07:26:47Z; commit 34fe383 (the clean run, ci-clean-run.log)
+# After M0 integration the validator covers every contract in the repository (15 schemas). G0.3's two contracts
+# hold 90 of the 232 fixtures: import-handoff-manifest.v1 5 valid and 30 invalid, sylviapack-manifest.v1 7 valid and
+# 48 invalid (Contracts/fixtures/; counted by ContractFixtureTests in host-intakekit-tests.log and listed with each
+# fixture's schema error in contract-fixture-reasons.log).
 ==> 10-contracts
-    pass (0s)
+    pass (1s)
 --- .build/ci-logs/10-contracts.log
-schemas: 2  fixtures: 46  openapi: 0  instances: 0
+schemas: 15  fixtures: 232  openapi: 1  instances: 1

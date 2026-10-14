@@ -90,14 +90,18 @@ public struct PackReader: Sendable {
             }
         }
 
-        // 3. Manifest and its digest: fixed names, first two entries, stored, size-limited.
-        guard entries[0].name == PackLayout.manifestEntry, entries[1].name == PackLayout.manifestDigestEntry else {
+        // 3. Manifest and its digest: fixed names, first two entries, stored, size-limited. Names are compared byte for
+        //    byte here and below (G0.3 review R4-01): String's == treats canonically equivalent names as equal.
+        guard PathBytes.equal(entries[0].name, PackLayout.manifestEntry),
+              PathBytes.equal(entries[1].name, PackLayout.manifestDigestEntry) else {
             throw PackRejection(.missingManifest, "the first two entries are not the manifest and its digest")
         }
         for entry in entries.prefix(2) where entry.method != 0 {
             throw PackRejection(.unsupportedCompression, "manifest entries must be stored")
         }
-        guard entries[0].uncompressedSize <= UInt64(limits.maxManifestBytes) else { throw PackRejection(.manifestTooLarge) }
+        guard entries[0].uncompressedSize <= UInt64(limits.maxManifestBytes) else {
+            throw PackRejection(.manifestTooLarge, "more than \(limits.maxManifestBytes) bytes")
+        }
         guard entries[1].uncompressedSize == 65 else { throw PackRejection(.manifestDigestMismatch, "digest entry size") }
         let manifestBytes = try readStoredEntry(fd: fd, entries[0])
         let digestBytes = try readStoredEntry(fd: fd, entries[1])
@@ -105,7 +109,11 @@ public struct PackReader: Sendable {
         guard digestBytes == Data((manifestSHA + "\n").utf8) else { throw PackRejection(.manifestDigestMismatch) }
         let manifest: PackManifest
         do {
-            manifest = try PackManifest.decode(manifestBytes)
+            manifest = try PackManifest.decode(manifestBytes, limits: limits)
+        } catch let rejection as PackRejection {
+            throw rejection
+        } catch let violation as StrictJSON.Violation {
+            throw PackRejection(.manifestInvalid, "not strict JSON (\(violation.kind.rawValue))")
         } catch {
             throw PackRejection(.manifestInvalid, "not a v1 manifest")
         }
@@ -120,7 +128,7 @@ public struct PackReader: Sendable {
         var deflatedUncompressed: UInt64 = 0
         var deflatedCompressed: UInt64 = 0
         for (entry, file) in zip(content, manifest.files) {
-            guard entry.name == PackLayout.contentPrefix + file.path else {
+            guard PathBytes.equal(entry.name, PackLayout.contentPrefix + file.path) else {
                 if byName[entry.name] == nil { throw PackRejection(.unexpectedEntry, "entry \(entry.index) is not in the manifest") }
                 throw PackRejection(.entryOrderMismatch, "entry \(entry.index)")
             }
@@ -159,7 +167,7 @@ public struct PackReader: Sendable {
         let libraryEntries = try await archive.entries()
         guard libraryEntries.count == entries.count else { throw PackRejection(.libraryDisagreement, "entry count") }
         for (ours, theirs) in zip(entries, libraryEntries) {
-            guard theirs.path == ours.name, theirs.type == .file,
+            guard PathBytes.equal(theirs.path, ours.name), theirs.type == .file,
                   theirs.uncompressedSize == ours.uncompressedSize, theirs.compressedSize == ours.compressedSize,
                   theirs.checksum == ours.crc32 else {
                 throw PackRejection(.libraryDisagreement, "entry \(ours.index)")
@@ -186,7 +194,17 @@ public struct PackReader: Sendable {
         for (index, file) in manifest.files.enumerated() {
             let ours = content[index]
             let theirs = libraryEntries[ours.index]
-            let sink = try ContentSink(declaredSize: file.size, output: destination.map { $0.appendingPathComponent(file.path) })
+            var output: URL?
+            if let destination {
+                let target = destination.appendingPathComponent(file.path)
+                // Defense in depth (report F18): the path rules already refuse anything that leaves the directory, and
+                // extraction refuses it again, comparing the standardized target with the directory byte for byte.
+                guard PathBytes.isInside(target, directory: destination) else {
+                    throw PackRejection(.unsafePath, "entry \(ours.index) would be written outside the extraction directory")
+                }
+                output = target
+            }
+            let sink = try ContentSink(declaredSize: file.size, output: output)
             let crc: CRC32
             do {
                 crc = try await archive.extract(theirs, bufferSize: bufferSize, skipCRC32: false) { chunk in
@@ -204,7 +222,7 @@ public struct PackReader: Sendable {
                 throw PackRejection(.actualSizeMismatch, "entry \(ours.index): \(count) of \(file.size) bytes")
             }
             guard crc == ours.crc32 else { throw PackRejection(.crcMismatch, "entry \(ours.index)") }
-            guard digest == file.sha256 else { throw PackRejection(.contentDigestMismatch, "entry \(ours.index)") }
+            guard PathBytes.equal(digest, file.sha256) else { throw PackRejection(.contentDigestMismatch, "entry \(ours.index)") }
         }
         if let destination { try ContentSink.syncTree(destination) }
 

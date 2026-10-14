@@ -24,7 +24,8 @@ public struct CleanupPolicy: Sendable, Equatable {
 /// The main app's commit sequence for one handoff (plan 8.2 commit journal). The scanner's hook is called
 /// right after each step completes, so a test can simulate process death between any two steps.
 public enum AcceptStep: String, CaseIterable, Sendable {
-    case verified        // manifest valid, every item's size and SHA-256 re-checked
+    case verified        // manifest valid, every item's size and SHA-256 re-checked (DropAreaImporter: a single
+                         // file's snapshot taken and hashed, before its source is checked again)
     case intentRecorded  // journal row in `accepting`
     case moved           // Handoffs/<id> renamed into private staging
     case finished        // journal row `staged` or `needs_review`
@@ -226,7 +227,7 @@ public final class InboxScanner: @unchecked Sendable {
     private func scanEntry(named name: String, into report: inout InboxScanReport) throws {
         let url = inbox.appendingPathComponent(name)
         guard let info = try Durability.lstatInfo(url) else { return }
-        guard info.isDirectory, let handoffID = UUID(uuidString: name), handoffID.uuidString == name else {
+        guard info.isDirectory, let handoffID = UUID(uuidString: name), PathBytes.equal(handoffID.uuidString, name) else {
             // Not something the extension writes. Remove only once it is old enough to be certainly stale.
             if isStale(newestModification(of: url)) {
                 let bytes = treeByteCount(url)
@@ -295,22 +296,22 @@ public final class InboxScanner: @unchecked Sendable {
     }
 
     /// Reads and validates handoff.json, then re-checks every item's type, size and SHA-256 against it.
-    /// The items directory must contain exactly the manifest's items.
+    /// The items directory must contain exactly the manifest's items, compared as bytes (G0.3 review R4-01).
     func verifiedManifest(in directory: URL, name: String) throws -> HandoffManifest {
         let manifestURL = directory.appendingPathComponent(HandoffManifest.fileName)
-        let manifest = try HandoffManifest.decode(AtomicFile.readSmall(manifestURL, limit: HandoffManifest.maxBytes))
+        let manifest = try HandoffManifest.read(contentsOf: manifestURL)
         try manifest.validate(directoryName: name)
         let itemsDirectory = directory.appendingPathComponent("items", isDirectory: true)
-        let present = Set(try FileManager.default.contentsOfDirectory(atPath: itemsDirectory.path))
-        let expected = Set(manifest.items.map { String($0.storedPath.dropFirst("items/".count)) })
-        guard present == expected else { throw HandoffVerificationError.unexpectedFiles }
+        let present = try FileManager.default.contentsOfDirectory(atPath: itemsDirectory.path)
+        let expected = manifest.items.map { String($0.storedPath.dropFirst("items/".count)) }
+        guard InboxScanner.sameNames(present, expected) else { throw HandoffVerificationError.unexpectedFiles }
         for item in manifest.items {
             let itemURL = directory.appendingPathComponent(item.storedPath)
             guard let info = try Durability.lstatInfo(itemURL), info.isRegularFile else {
                 throw HandoffVerificationError.itemNotRegularFile
             }
             guard UInt64(info.st_size) == item.byteCount else { throw HandoffVerificationError.sizeMismatch }
-            guard try FileDigest.sha256(of: itemURL).sha256 == item.sha256 else {
+            guard PathBytes.equal(try FileDigest.sha256(of: itemURL).sha256, item.sha256) else {
                 throw HandoffVerificationError.digestMismatch
             }
         }
@@ -346,7 +347,7 @@ public final class InboxScanner: @unchecked Sendable {
     func stagedItemsIntact(_ directory: URL, items: [IntakeJournal.StagedItem]) -> Bool {
         let itemsDirectory = directory.appendingPathComponent("items", isDirectory: true)
         guard let present = try? FileManager.default.contentsOfDirectory(atPath: itemsDirectory.path),
-              Set(present) == Set(items.map { String($0.relativePath.dropFirst("items/".count)) }) else { return false }
+              InboxScanner.sameNames(present, items.map { String($0.relativePath.dropFirst("items/".count)) }) else { return false }
         for item in items {
             guard let info = try? Durability.lstatInfo(directory.appendingPathComponent(item.relativePath)),
                   info.isRegularFile, UInt64(info.st_size) == item.byteCount else { return false }
@@ -374,6 +375,11 @@ public final class InboxScanner: @unchecked Sendable {
             Durability.removeTree(url)
         }
         try journal.recordCleanup(.init(directoryName: name, reason: "rejected: \(reason)", byteCount: bytes, removedAt: now()))
+    }
+
+    /// The same set of names, compared as UTF-8 bytes (not with String's canonical equivalence).
+    static func sameNames(_ a: [String], _ b: [String]) -> Bool {
+        Set(a.map { Array($0.utf8) }) == Set(b.map { Array($0.utf8) })
     }
 
     private func isStale(_ newest: Date) -> Bool {

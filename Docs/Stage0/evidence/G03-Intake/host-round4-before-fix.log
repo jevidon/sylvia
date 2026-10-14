@@ -1,0 +1,73 @@
+G0.3 review round 4: the new tests against the code with each fix reverted
+date: 2026-10-13T07:16:01Z; commit 55dc3ec; load: 20:16  up 10 days,  6:26, 1 user, load averages: 15.41 10.35 14.27
+host: macOS 26.6.2 (25G83); Xcode 27.0 Build version 27A266a 
+
+== R4-01: a file group_id looked up without the pattern check
+  reverted: PackManifest.swift: '                guard PackManifest.isValidGroupID(groupID) else { throw PackRejection(.manifestInvalid, "files.group_id") }\n' -> ''
+  canonical equivalence: "WALDEN_\u{212A}" == "WALDEN_K" is true; as bytes: false
+  ✔ Test "platform fact (recorded): Swift's ==, Set and Dictionary take U+212A for K; byte comparison does not" passed after 0.001 seconds.
+  ✘ Test "the manifest reader refuses a file group_id that is a canonical twin of its group's, for audiobook members and a publication" recorded an issue at PackCanonicalEquivalenceTests.swift:51:13: Expectation failed: an error was expected but none was thrown
+  ✘ Test "the manifest reader refuses a file group_id that is a canonical twin of its group's, for audiobook members and a publication" recorded an issue at PackCanonicalEquivalenceTests.swift:51:13: Expectation failed: an error was expected but none was thrown
+  ✘ Test "the manifest reader refuses a file group_id that is a canonical twin of its group's, for audiobook members and a publication" recorded an issue at PackCanonicalEquivalenceTests.swift:64:13: Expectation failed: an error was expected but none was thrown
+  ✘ Test "the manifest reader refuses a file group_id that is a canonical twin of its group's, for audiobook members and a publication" recorded an issue at PackCanonicalEquivalenceTests.swift:64:13: Expectation failed: an error was expected but none was thrown
+  ✘ Test "the manifest reader refuses a file group_id that is a canonical twin of its group's, for audiobook members and a publication" failed after 0.005 seconds with 4 issues.
+  ✘ Test "a pack whose manifest holds such a group_id is refused by validation and by extraction, which writes nothing" recorded an issue at PackCanonicalEquivalenceTests.swift:92:15: Expectation failed: an error was expected but none was thrown and "ValidatedPack(manifest: SylviaPack.PackManifest(schemaVersion: 1, format: "sylviapack", packID: 6F1A0C2E-3B4D-4E5F-8A9B-0C1D2E3F4A5B, createdAt: 2026-0
+  ✘ Test "the writer refuses such a manifest before writing anything" recorded an issue at PackCanonicalEquivalenceTests.swift:80:15: Expectation failed: an error was expected but none was thrown and "ValidatedPack(manifest: SylviaPack.PackManifest(schemaVersion: 1, format: "sylviapack", packID: 285C67BA-ADB2-4467-832F-61B67A1F3D67, createdAt: 2026-10-13 07:16:14 +0000, generator: SylviaPack.PackMan
+  ✘ Test "the writer refuses such a manifest before writing anything" recorded an issue at PackCanonicalEquivalenceTests.swift:84:9: Expectation failed: left.isEmpty
+  ✘ Test "the writer refuses such a manifest before writing anything" failed after 0.018 seconds with 2 issues.
+  ✘ Test "a pack whose manifest holds such a group_id is refused by validation and by extraction, which writes nothing" recorded an issue at PackCanonicalEquivalenceTests.swift:94:15: Expectation failed: an error was expected but none was thrown and "ValidatedPack(manifest: SylviaPack.PackManifest(schemaVersion: 1, format: "sylviapack", packID: 6F1A0C2E-3B4D-4E5F-8A9B-0C1D2E3F4A5B, createdAt: 2026-0
+  ✘ Test "a pack whose manifest holds such a group_id is refused by validation and by extraction, which writes nothing" recorded an issue at PackCanonicalEquivalenceTests.swift:97:9: Expectation failed: !FileManager.default.fileExists(atPath: destination.path)
+  ✘ Test "a pack whose manifest holds such a group_id is refused by validation and by extraction, which writes nothing" failed after 0.038 seconds with 3 issues.
+  ✘ Test run with 4 tests in 1 suite failed after 0.038 seconds with 9 issues.
+  FAILS WITHOUT THE FIX, as it should (swift test exit status 1)
+
+== R4-01 audit: the writer's cleanFilename with Foundation's replacingOccurrences
+  reverted: HandoffWriter.swift: '        var scalars = String.UnicodeScalarView()\n        for scalar in name.unicodeScalars where scalar != "\\u{0}" {\n            scalars.append(scalar == "/" ? "_" : scalar)\n        }\n        var cleaned = String(scalars)' -> '        var cleaned = name.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "\\u{0}", with: "")'
+  ✘ Test "a shared file name holding a slash before a combining mark is recorded with an underscore, and the share is received" recorded an issue at HandoffWriterTests.swift:175:6: Caught error: invalid field original_filename
+  ✘ Test "a shared file name holding a slash before a combining mark is recorded with an underscore, and the share is received" failed after 0.049 seconds with 1 issue.
+  ✘ Test run with 1 test in 1 suite failed after 0.049 seconds with 1 issue.
+  FAILS WITHOUT THE FIX, as it should (swift test exit status 1)
+
+== R4-02: the 1 MiB pack manifest limit
+  reverted: PackRules.swift: 'public var maxManifestBytes = 16 << 20' -> 'public var maxManifestBytes = 1 << 20'
+  ✘ Test "the entry limit is reachable: 9,998 files with every path at its 512-byte limit, in 20 audiobook groups at their metadata limits, make a pack the reader accepts" recorded an issue at PackLimitTests.swift:236:9: Expectation failed: manifestBytes.count <= limits.maxManifestBytes
+  ✘ Test "the entry limit is reachable: 9,998 files with every path at its 512-byte limit, in 20 audiobook groups at their metadata limits, make a pack the reader accepts" recorded an issue at PackLimitTests.swift:230:6: Caught error: manifest_too_large: more than 1048576 bytes
+  ✘ Test "the entry limit is reachable: 9,998 files with every path at its 512-byte limit, in 20 audiobook groups at their metadata limits, make a pack the reader accepts" failed after 0.561 seconds with 2 issues.
+  ✘ Test run with 1 test in 1 suite failed after 0.561 seconds with 2 issues.
+  FAILS WITHOUT THE FIX, as it should (swift test exit status 1)
+
+== R4-02: the share extension commits a handoff.json the app's scan refuses
+  reverted: HandoffWriter.swift: '        guard encoded.count <= HandoffManifest.maxBytes else { throw HandoffFailure.manifestTooLarge }\n' -> ''
+  handoff.json size: 100 items with 255-byte names and 128-character type identifiers: 87803 bytes (limit 262144)
+  ✘ Test "handoff.json size: 100 items at the name and type limits fit within 256 KiB; a larger manifest is never committed" recorded an issue at HandoffWriterTests.swift:231:9: Expectation failed: escaped == .failure(.manifestTooLarge)
+  ✘ Test "handoff.json size: 100 items at the name and type limits fit within 256 KiB; a larger manifest is never committed" recorded an issue at HandoffWriterTests.swift:232:9: Expectation failed: box.manifests().isEmpty && box.inboxEntries().isEmpty
+  ✘ Test "handoff.json size: 100 items at the name and type limits fit within 256 KiB; a larger manifest is never committed" failed after 0.874 seconds with 2 issues.
+  ✘ Test run with 1 test in 1 suite failed after 0.875 seconds with 2 issues.
+  FAILS WITHOUT THE FIX, as it should (swift test exit status 1)
+
+== R4-03: created_at converted with Foundation's Gregorian Calendar
+  reverted: RFC3339.swift: '        let days = daysFromCivil(year: year, month: month, day: day)\n        let seconds = days * 86_400 + hour * 3_600 + minute * 60 + second - offsetSeconds\n        return Date(timeIntervalSince1970: TimeInterval(seconds) + fraction)' -> '        var calendar = Calendar(identifier: .gregorian)\n        calendar.timeZone = TimeZone(secondsFromGMT: 0)!\n        let components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: second)\n        guard let local = calendar.date(from: components) else { return nil }\n        return local.addingTimeInterval(fraction - Double(offsetSeconds))'
+  ✘ Test "created_at: RFC 3339 exactly as the schemas' date-time format (fractions, offsets and lowercase t/z accepted; 30 February, hour 24, leap seconds, offsets without a colon refused)" recorded an issue at ContractFixtureTests.swift:90:27: Expectation failed: abs(date.timeIntervalSince1970 - expected) < 0.000_1
+  ✘ Test "created_at: RFC 3339 exactly as the schemas' date-time format (fractions, offsets and lowercase t/z accepted; 30 February, hour 24, leap seconds, offsets without a colon refused)" recorded an issue at ContractFixtureTests.swift:90:27: Expectation failed: abs(date.timeIntervalSince1970 - expected) < 0.000_1
+  ✘ Test "created_at: RFC 3339 exactly as the schemas' date-time format (fractions, offsets and lowercase t/z accepted; 30 February, hour 24, leap seconds, offsets without a colon refused)" recorded an issue at ContractFixtureTests.swift:90:27: Expectation failed: abs(date.timeIntervalSince1970 - expected) < 0.000_1
+  ✘ Test "created_at: RFC 3339 exactly as the schemas' date-time format (fractions, offsets and lowercase t/z accepted; 30 February, hour 24, leap seconds, offsets without a colon refused)" recorded an issue at ContractFixtureTests.swift:90:27: Expectation failed: abs(date.timeIntervalSince1970 - expected) < 0.000_1
+  ✘ Test "created_at: RFC 3339 exactly as the schemas' date-time format (fractions, offsets and lowercase t/z accepted; 30 February, hour 24, leap seconds, offsets without a colon refused)" recorded an issue at ContractFixtureTests.swift:90:27: Expectation failed: abs(date.timeIntervalSince1970 - expected) < 0.000_1
+  ✘ Test "created_at: RFC 3339 exactly as the schemas' date-time format (fractions, offsets and lowercase t/z accepted; 30 February, hour 24, leap seconds, offsets without a colon refused)" recorded an issue at ContractFixtureTests.swift:90:27: Expectation failed: abs(date.timeIntervalSince1970 - expected) < 0.000_1
+  ✘ Test "created_at: RFC 3339 exactly as the schemas' date-time format (fractions, offsets and lowercase t/z accepted; 30 February, hour 24, leap seconds, offsets without a colon refused)" recorded an issue at ContractFixtureTests.swift:90:27: Expectation failed: abs(date.timeIntervalSince1970 - expected) < 0.000_1
+  ✘ Test "created_at: RFC 3339 exactly as the schemas' date-time format (fractions, offsets and lowercase t/z accepted; 30 February, hour 24, leap seconds, offsets without a colon refused)" failed after 0.002 seconds with 7 issues.
+  created_at continuity: 119987 consecutive months from 0001-01 to 9999-12, 13 not one month apart: ["0100-03-01T00:00:00Z", "0200-03-01T00:00:00Z", "0300-03-01T00:00:00Z", "0500-03-01T00:00:00Z", "0600-03-01T00:00:00Z"]
+  ✘ Test "created_at: the first of every month from 0001 to 9999 lies exactly one proleptic Gregorian month after the previous one" recorded an issue at ContractFixtureTests.swift:138:9: Expectation failed: mismatches.isEmpty
+  ✘ Test "created_at: the first of every month from 0001 to 9999 lies exactly one proleptic Gregorian month after the previous one" failed after 0.559 seconds with 1 issue.
+  ✘ Test run with 2 tests in 1 suite failed after 0.560 seconds with 8 issues.
+  FAILS WITHOUT THE FIX, as it should (swift test exit status 1)
+
+== R4-04: the stall timeout finishes the gate even after work has begun (the seam kept)
+  reverted: ItemProviderIntake.swift: '                    if self.finish(.failure(HandoffFailure.providerTimedOut), onlyBeforeWork: true) { probe.cancel() }' -> '                    probe.cancel()\n                    self.finish(.failure(HandoffFailure.providerTimedOut))'
+  stall timeout vs a delivery in its window: failure(the sharing app did not provide the file in time) after 0.50525375 seconds; load cancelled: true
+  ✘ Test "a delivery at the moment the stall timeout fires wins: the timeout neither fails the share nor cancels the load" recorded an issue at ItemProviderIntakeTests.swift:217:9: Expectation failed: (try? outcome.get()) == 42
+  ✘ Test "a delivery at the moment the stall timeout fires wins: the timeout neither fails the share nor cancels the load" recorded an issue at ItemProviderIntakeTests.swift:218:9: Expectation failed: !progress.isCancelled
+  ✘ Test "a delivery at the moment the stall timeout fires wins: the timeout neither fails the share nor cancels the load" failed after 0.507 seconds with 2 issues.
+  ✘ Test run with 1 test in 1 suite failed after 0.507 seconds with 2 issues.
+  FAILS WITHOUT THE FIX, as it should (swift test exit status 1)
+
+fixes whose tests passed without them: 0 of 6

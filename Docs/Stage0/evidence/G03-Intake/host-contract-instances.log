@@ -1,6 +1,423 @@
-Build complete! (0.24 sec)
-RECEIVED handoff=D5832FCD-F3BC-4B25-9C10-97153CFFAE20 items=2 bytes=2438156
+Build complete! (0.37 sec)
+RECEIVED handoff=07470B79-1FFD-4078-9EC3-E1B2DDB83DE8 items=2 bytes=2438156
 handoff.json written by HandoffSession now: valid against import-handoff-manifest.v1
 large pack entries: ['sylviapack/manifest.json', 'sylviapack/manifest.sha256'] then 5 content entries
 large pack sylviapack/manifest.json: valid against sylviapack-manifest.v1
 manifest.sha256 entry equals SHA-256(manifest.json) + LF: True
+
+differential check (schema verdict vs Swift reader verdict):
+named cases: 363 (pack 230, handoff 133)
+  ok: pack generator.name-ascii-0: schema=invalid reader=refused (manifest_invalid: generator.name length) expected=agree
+  ok: pack generator.name-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack generator.name-ascii-128: schema=valid reader=accepted expected=agree
+  ok: pack generator.name-ascii-129: schema=invalid reader=refused (manifest_invalid: generator.name length) expected=agree
+  ok: pack generator.name-nonascii-128cp-256bytes: schema=valid reader=accepted expected=agree
+  ok: pack generator.name-nonascii-129cp-258bytes: schema=invalid reader=refused (manifest_invalid: generator.name length) expected=agree
+  ok: pack generator.version-ascii-0: schema=invalid reader=refused (manifest_invalid: generator.version length) expected=agree
+  ok: pack generator.version-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack generator.version-ascii-64: schema=valid reader=accepted expected=agree
+  ok: pack generator.version-ascii-65: schema=invalid reader=refused (manifest_invalid: generator.version length) expected=agree
+  ok: pack generator.version-nonascii-64cp-128bytes: schema=valid reader=accepted expected=agree
+  ok: pack generator.version-nonascii-65cp-130bytes: schema=invalid reader=refused (manifest_invalid: generator.version length) expected=agree
+  ok: pack media_type-ascii-0: schema=invalid reader=refused (manifest_invalid: media_type length) expected=agree
+  ok: pack media_type-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack media_type-ascii-128: schema=valid reader=accepted expected=agree
+  ok: pack media_type-ascii-129: schema=invalid reader=refused (manifest_invalid: media_type length) expected=agree
+  ok: pack media_type-nonascii-128cp-256bytes: schema=valid reader=accepted expected=agree
+  ok: pack media_type-nonascii-129cp-258bytes: schema=invalid reader=refused (manifest_invalid: media_type length) expected=agree
+  ok: pack title-ascii-0: schema=valid reader=accepted expected=agree
+  ok: pack title-ascii-1024: schema=valid reader=accepted expected=agree
+  ok: pack title-ascii-1025: schema=invalid reader=refused (manifest_invalid: groups.title length) expected=agree
+  ok: pack title-nonascii-1024cp-2048bytes: schema=valid reader=accepted expected=agree
+  ok: pack title-nonascii-1025cp-2050bytes: schema=invalid reader=refused (manifest_invalid: groups.title length) expected=agree
+  ok: pack creator-ascii-0: schema=valid reader=accepted expected=agree
+  ok: pack creator-ascii-512: schema=valid reader=accepted expected=agree
+  ok: pack creator-ascii-513: schema=invalid reader=refused (manifest_invalid: groups.creators length) expected=agree
+  ok: pack creator-nonascii-512cp-1024bytes: schema=valid reader=accepted expected=agree
+  ok: pack creator-nonascii-513cp-1026bytes: schema=invalid reader=refused (manifest_invalid: groups.creators length) expected=agree
+  ok: pack language-ascii-0: schema=valid reader=accepted expected=agree
+  ok: pack language-ascii-35: schema=valid reader=accepted expected=agree
+  ok: pack language-ascii-36: schema=invalid reader=refused (manifest_invalid: groups.language length) expected=agree
+  ok: pack language-nonascii-35cp-70bytes: schema=valid reader=accepted expected=agree
+  ok: pack language-nonascii-36cp-72bytes: schema=invalid reader=refused (manifest_invalid: groups.language length) expected=agree
+  ok: pack identifier.scheme-ascii-0: schema=invalid reader=refused (manifest_invalid: groups.identifiers length) expected=agree
+  ok: pack identifier.scheme-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack identifier.scheme-ascii-64: schema=valid reader=accepted expected=agree
+  ok: pack identifier.scheme-ascii-65: schema=invalid reader=refused (manifest_invalid: groups.identifiers length) expected=agree
+  ok: pack identifier.scheme-nonascii-64cp-128bytes: schema=valid reader=accepted expected=agree
+  ok: pack identifier.scheme-nonascii-65cp-130bytes: schema=invalid reader=refused (manifest_invalid: groups.identifiers length) expected=agree
+  ok: pack identifier.value-ascii-0: schema=invalid reader=refused (manifest_invalid: groups.identifiers length) expected=agree
+  ok: pack identifier.value-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack identifier.value-ascii-512: schema=valid reader=accepted expected=agree
+  ok: pack identifier.value-ascii-513: schema=invalid reader=refused (manifest_invalid: groups.identifiers length) expected=agree
+  ok: pack identifier.value-nonascii-512cp-1024bytes: schema=valid reader=accepted expected=agree
+  ok: pack identifier.value-nonascii-513cp-1026bytes: schema=invalid reader=refused (manifest_invalid: groups.identifiers length) expected=agree
+  ok: handoff bundle_identifier-ascii-0: schema=invalid reader=refused (invalid field producer.bundle_identifier) expected=agree
+  ok: handoff bundle_identifier-ascii-1: schema=valid reader=accepted expected=agree
+  ok: handoff bundle_identifier-ascii-255: schema=valid reader=accepted expected=agree
+  ok: handoff bundle_identifier-ascii-256: schema=invalid reader=refused (invalid field producer.bundle_identifier) expected=agree
+  ok: handoff bundle_identifier-nonascii-255cp-510bytes: schema=valid reader=accepted expected=agree
+  ok: handoff bundle_identifier-nonascii-256cp-512bytes: schema=invalid reader=refused (invalid field producer.bundle_identifier) expected=agree
+  ok: handoff build_version-ascii-0: schema=invalid reader=refused (invalid field producer.build_version) expected=agree
+  ok: handoff build_version-ascii-1: schema=valid reader=accepted expected=agree
+  ok: handoff build_version-ascii-64: schema=valid reader=accepted expected=agree
+  ok: handoff build_version-ascii-65: schema=invalid reader=refused (invalid field producer.build_version) expected=agree
+  ok: handoff build_version-nonascii-64cp-128bytes: schema=valid reader=accepted expected=agree
+  ok: handoff build_version-nonascii-65cp-130bytes: schema=invalid reader=refused (invalid field producer.build_version) expected=agree
+  ok: handoff content_type-ascii-0: schema=invalid reader=refused (invalid field content_type) expected=agree
+  ok: handoff content_type-ascii-1: schema=valid reader=accepted expected=agree
+  ok: handoff content_type-ascii-128: schema=valid reader=accepted expected=agree
+  ok: handoff content_type-ascii-129: schema=invalid reader=refused (invalid field content_type) expected=agree
+  ok: handoff content_type-nonascii-128cp-256bytes: schema=valid reader=accepted expected=agree
+  ok: handoff content_type-nonascii-129cp-258bytes: schema=invalid reader=refused (invalid field content_type) expected=agree
+  ok: handoff provider_type_identifier-ascii-0: schema=invalid reader=refused (invalid field provider_type_identifier) expected=agree
+  ok: handoff provider_type_identifier-ascii-1: schema=valid reader=accepted expected=agree
+  ok: handoff provider_type_identifier-ascii-128: schema=valid reader=accepted expected=agree
+  ok: handoff provider_type_identifier-ascii-129: schema=invalid reader=refused (invalid field provider_type_identifier) expected=agree
+  ok: handoff provider_type_identifier-nonascii-128cp-256bytes: schema=valid reader=accepted expected=agree
+  ok: handoff provider_type_identifier-nonascii-129cp-258bytes: schema=invalid reader=refused (invalid field provider_type_identifier) expected=agree
+  ok: pack order--1-publication-member: schema=invalid reader=refused (manifest_invalid: order below 1) expected=agree
+  ok: pack order-0-publication-member: schema=invalid reader=refused (manifest_invalid: order below 1) expected=agree
+  ok: pack order-1-publication-member: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-00 ['2026-10-06T12:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-01 ['2026-10-06T12:00:00.5Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-02 ['2026-10-06t12:00:00z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-03 ['2026-10-06T12:00:00+13:00']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-04 ['2026-10-06T12:00:00-00:00']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-05 ['2026-10-06T15:30:00.123456789+13:00']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-06 ['2024-02-29T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-07 ['0001-01-01T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-08 ['9999-12-31T23:59:59.999999999Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-09 ['2000-02-29T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-10 ['2026-10-06T12:00:00+23:59']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-11 ['2026-10-06T12:00:00-23:59']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-bad-12 ['2026-02-30T12:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-13 ['2025-02-29T00:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-14 ['2026-10-06T24:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-15 ['2026-10-06T12:00:60Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-16 ['2026-10-06T12:00:00+1300']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-17 ['2026-10-06T12:00:00+24:00']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-18 ['2026-10-06T12:00:00']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-19 ['2026-10-06 12:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-20 ['2026-10-06T12:00:00.Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-21 ['0000-01-01T00:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-22 ['20261006T120000Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-23 ['6 October 2026']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-24 ['2026-10-06T12:00:00Z ']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-25 ['٢026-10-06T12:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-26 ['1900-02-29T00:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-27 ['2026-13-01T00:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-28 ['2026-10-06T12:00:00+23:60']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-bad-29 ['２026-10-06T12:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-quirk-trailing-line-feed ['2026-10-06T12:00:00Z\n']: schema=valid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=quirk
+  ok: pack created_at-quirk-lowercase-trailing-line-feed ['2026-10-06t12:00:00z\n']: schema=valid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=quirk
+  ok: pack created_at-proleptic-1582-10-10 ['1582-10-10T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-proleptic-1582-10-04 ['1582-10-04T23:59:59Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-proleptic-1582-10-15 ['1582-10-15T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-proleptic-1500-03-01 ['1500-03-01T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-proleptic-0004-02-29 ['0004-02-29T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-proleptic-1600-02-29 ['1600-02-29T12:00:00.25Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-proleptic-0001-01-01-plus-23-59 ['0001-01-01T00:00:00+23:59']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-proleptic-9999-12-31-minus-23-59 ['9999-12-31T23:59:59-23:59']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-proleptic-1969-12-31-fraction ['1969-12-31T23:59:59.999Z']: schema=valid reader=accepted expected=agree
+  ok: pack created_at-julian-only-leap-day-1000: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack created_at-julian-only-leap-day-1700: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-ok-00 ['2026-10-06T12:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-01 ['2026-10-06T12:00:00.5Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-02 ['2026-10-06t12:00:00z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-03 ['2026-10-06T12:00:00+13:00']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-04 ['2026-10-06T12:00:00-00:00']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-05 ['2026-10-06T15:30:00.123456789+13:00']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-06 ['2024-02-29T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-07 ['0001-01-01T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-08 ['9999-12-31T23:59:59.999999999Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-09 ['2000-02-29T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-10 ['2026-10-06T12:00:00+23:59']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-11 ['2026-10-06T12:00:00-23:59']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-bad-12 ['2026-02-30T12:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-13 ['2025-02-29T00:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-14 ['2026-10-06T24:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-15 ['2026-10-06T12:00:60Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-16 ['2026-10-06T12:00:00+1300']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-17 ['2026-10-06T12:00:00+24:00']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-18 ['2026-10-06T12:00:00']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-19 ['2026-10-06 12:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-20 ['2026-10-06T12:00:00.Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-21 ['0000-01-01T00:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-22 ['20261006T120000Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-23 ['6 October 2026']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-24 ['2026-10-06T12:00:00Z ']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-25 ['٢026-10-06T12:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-26 ['1900-02-29T00:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-27 ['2026-13-01T00:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-28 ['2026-10-06T12:00:00+23:60']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-bad-29 ['２026-10-06T12:00:00Z']: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-quirk-trailing-line-feed ['2026-10-06T12:00:00Z\n']: schema=valid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=quirk
+  ok: handoff created_at-quirk-lowercase-trailing-line-feed ['2026-10-06t12:00:00z\n']: schema=valid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=quirk
+  ok: handoff created_at-proleptic-1582-10-10 ['1582-10-10T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-proleptic-1582-10-04 ['1582-10-04T23:59:59Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-proleptic-1582-10-15 ['1582-10-15T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-proleptic-1500-03-01 ['1500-03-01T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-proleptic-0004-02-29 ['0004-02-29T00:00:00Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-proleptic-1600-02-29 ['1600-02-29T12:00:00.25Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-proleptic-0001-01-01-plus-23-59 ['0001-01-01T00:00:00+23:59']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-proleptic-9999-12-31-minus-23-59 ['9999-12-31T23:59:59-23:59']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-proleptic-1969-12-31-fraction ['1969-12-31T23:59:59.999Z']: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-julian-only-leap-day-1000: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: handoff created_at-julian-only-leap-day-1700: schema=invalid reader=refused (not decodable: created_at: not an RFC 3339 date-time) expected=agree
+  ok: pack path-ascii-512bytes: schema=valid reader=accepted expected=agree
+  ok: pack path-ascii-513bytes: schema=invalid reader=refused (unsafe_path: length) expected=agree
+  ok: pack path-nonascii-512bytes-258cp: schema=valid reader=accepted expected=agree
+  ok: pack path-nonascii-513bytes-259cp: schema=valid reader=refused (unsafe_path: length) expected=documented
+  ok: pack path-example-607bytes-307cp: schema=valid reader=refused (unsafe_path: length) expected=documented
+  ok: pack path-component-255bytes: schema=valid reader=accepted expected=agree
+  ok: pack path-component-256bytes-128cp: schema=valid reader=refused (unsafe_path: component length) expected=documented
+  ok: pack path-sixteen-components: schema=invalid reader=refused (unsafe_path: too deep) expected=agree
+  ok: pack path-hidden-separator-dot-dot: schema=invalid reader=refused (unsafe_path: dot component) expected=agree
+  ok: pack path-hidden-separator-dot-dot-in-the-middle: schema=invalid reader=refused (unsafe_path: dot component) expected=agree
+  ok: pack path-hidden-separator-dot: schema=invalid reader=refused (unsafe_path: dot component) expected=agree
+  ok: pack path-hidden-separator-absolute: schema=invalid reader=refused (unsafe_path: absolute) expected=agree
+  ok: pack path-hidden-separator-empty-component: schema=invalid reader=refused (unsafe_path: empty component) expected=agree
+  ok: pack path-hidden-separator-trailing: schema=invalid reader=refused (unsafe_path: empty component) expected=agree
+  ok: pack path-hidden-separator-sixteen-components: schema=invalid reader=refused (unsafe_path: too deep) expected=agree
+  ok: pack path-combining-mark-inside-a-component: schema=valid reader=accepted expected=agree
+  ok: pack path-c1-control-character: schema=valid reader=accepted expected=agree
+  ok: pack rule-hidden-separator-file-is-also-a-folder: schema=valid reader=refused (path_conflict: a file is also used as a folder) expected=documented
+  ok: handoff original_filename-ascii-255bytes: schema=valid reader=accepted expected=agree
+  ok: handoff original_filename-ascii-256bytes: schema=invalid reader=refused (invalid field original_filename) expected=agree
+  ok: handoff original_filename-nonascii-255bytes-128cp: schema=valid reader=accepted expected=agree
+  ok: handoff original_filename-nonascii-256bytes-128cp: schema=valid reader=refused (invalid field original_filename) expected=documented
+  ok: handoff original_filename-empty: schema=invalid reader=refused (invalid field original_filename) expected=agree
+  ok: handoff original_filename-with-line-feed: schema=valid reader=accepted expected=agree
+  ok: handoff original_filename-hidden-separator: schema=invalid reader=refused (invalid field original_filename) expected=agree
+  ok: handoff original_filename-separator-after-prepended-mark: schema=invalid reader=refused (invalid field original_filename) expected=agree
+  ok: handoff original_filename-combining-mark: schema=valid reader=accepted expected=agree
+  ok: pack rule-path-not-nfc: schema=valid reader=refused (unsafe_path: not Unicode NFC) expected=documented
+  ok: pack rule-paths-equal-ignoring-case: schema=valid reader=refused (duplicate_path: manifest lists a path twice (case and Unicode normalization ignored)) expected=documented
+  ok: pack rule-file-is-also-a-folder: schema=valid reader=refused (path_conflict: a file is also used as a folder) expected=documented
+  ok: pack rule-total-size-not-the-sum: schema=valid reader=refused (manifest_invalid: total_size is not the sum of sizes) expected=documented
+  ok: pack rule-unknown-group-id: schema=valid reader=refused (manifest_invalid: unknown group_id) expected=documented
+  ok: pack rule-audio-member-without-order: schema=valid reader=refused (manifest_invalid: audiobook member needs order >= 1) expected=documented
+  ok: pack rule-duplicate-member-order: schema=valid reader=refused (manifest_invalid: duplicate member order) expected=documented
+  ok: pack rule-epub-in-audiobook-group: schema=valid reader=refused (manifest_invalid: audiobook member must be audio or cover) expected=documented
+  ok: pack rule-order-without-group: schema=valid reader=refused (manifest_invalid: order without group_id) expected=documented
+  ok: pack rule-duplicate-group-id: schema=valid reader=refused (manifest_invalid: duplicate group_id) expected=documented
+  ok: pack rule-epub-over-1gib: schema=valid reader=refused (limit_exceeded: epub file of 1073741825 bytes) expected=documented
+  ok: pack rule-audio-over-20gib: schema=valid reader=refused (limit_exceeded: audio file of 21474836481 bytes) expected=documented
+  ok: pack rule-pdf-at-limit: schema=valid reader=accepted expected=agree
+  ok: pack rule-pdf-over-limit: schema=valid reader=refused (limit_exceeded: pdf file of 2147483649 bytes) expected=documented
+  ok: pack rule-text-at-limit: schema=valid reader=accepted expected=agree
+  ok: pack rule-text-over-limit: schema=valid reader=refused (limit_exceeded: text file of 268435457 bytes) expected=documented
+  ok: pack rule-cover-at-limit: schema=valid reader=accepted expected=agree
+  ok: pack rule-cover-over-limit: schema=valid reader=refused (limit_exceeded: cover file of 33554433 bytes) expected=documented
+  ok: pack rule-500-audio-members: schema=valid reader=accepted expected=agree
+  ok: pack rule-501-audio-members: schema=valid reader=refused (limit_exceeded: 501 audio members in one group) expected=documented
+  ok: pack rule-total-10x20gib: schema=valid reader=accepted expected=agree
+  ok: pack rule-total-11x20gib: schema=valid reader=refused (limit_exceeded: total size 236223201280) expected=documented
+  ok: handoff rule-duplicate-stored-path: schema=valid reader=refused (duplicate item id or stored_path) expected=documented
+  ok: handoff rule-duplicate-item-id: schema=valid reader=refused (duplicate item id or stored_path) expected=documented
+  ok: handoff rule-total-bytes-not-the-sum: schema=valid reader=refused (total_bytes is not the sum of byte_count) expected=documented
+  ok: handoff rule-byte-count-sum-overflows: schema=valid reader=refused (invalid field byte_count) expected=documented
+  ok: pack null-files.0.group_id: schema=invalid reader=refused (not decodable: files.0.group_id: explicit null: the contract admits no null here) expected=agree
+  ok: pack null-files.1.order: schema=invalid reader=refused (not decodable: files.1.order: explicit null: the contract admits no null here) expected=agree
+  ok: pack null-groups.0.title: schema=invalid reader=refused (not decodable: groups.0.title: explicit null: the contract admits no null here) expected=agree
+  ok: pack null-groups.0.creators: schema=invalid reader=refused (not decodable: groups.0.creators: explicit null: the contract admits no null here) expected=agree
+  ok: pack null-groups.0.language: schema=invalid reader=refused (not decodable: groups.0.language: explicit null: the contract admits no null here) expected=agree
+  ok: pack null-groups.0.identifiers: schema=invalid reader=refused (not decodable: groups.0.identifiers: explicit null: the contract admits no null here) expected=agree
+  ok: pack null-groups.1.member_order_basis: schema=invalid reader=refused (not decodable: groups.1.member_order_basis: explicit null: the contract admits no null here) expected=agree
+  ok: pack null-generator: schema=invalid reader=refused (not decodable: generator: Cannot get keyed decoding container -- found null value instead) expected=agree
+  ok: pack null-files: schema=invalid reader=refused (not decodable: files: Cannot get unkeyed decoding container -- found null value instead) expected=agree
+  ok: pack null-total_size: schema=invalid reader=refused (not decodable: total_size: Cannot get value of type UInt64 -- found null value instead) expected=agree
+  ok: pack null-groups.0.creators.0: schema=invalid reader=refused (not decodable: groups.0.creators.0: Cannot get value of type String -- found null value instead) expected=agree
+  ok: handoff null-producer.build_version: schema=invalid reader=refused (not decodable: producer.build_version: Cannot get value of type String -- found null value instead) expected=agree
+  ok: handoff null-items.0.sha256: schema=invalid reader=refused (not decodable: items.0.sha256: Cannot get value of type String -- found null value instead) expected=agree
+  ok: handoff null-created_at: schema=invalid reader=refused (not decodable: created_at: Cannot get value of type Date -- found null value instead) expected=agree
+  ok: pack null-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: handoff null-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: pack pack_id-lowercase ['7a1e2c3d-4b5f-4e6a-9c8b-1d2e3f4a5b6c']: schema=valid reader=accepted expected=agree
+  ok: pack pack_id-nul-suffix ['7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6C\x00']: schema=invalid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=agree
+  ok: pack pack_id-nul-then-more ['7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6C\x00junk']: schema=invalid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=agree
+  ok: pack pack_id-braces ['{7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6C}']: schema=invalid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=agree
+  ok: pack pack_id-no-hyphens ['7A1E2C3D4B5F4E6A9C8B1D2E3F4A5B6C']: schema=invalid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=agree
+  ok: pack pack_id-urn-prefix ['urn:uuid:7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6C']: schema=invalid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=agree
+  ok: pack pack_id-extra-hyphen ['7A1E2C3D-4B5F-4E6A-9C8B--1D2E3F4A5B6C']: schema=valid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: pack pack_id-trailing-hyphen ['7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6C-']: schema=valid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: pack pack_id-hyphen-in-last-group ['7A1E2C3D-4B5F-4E6A-9C8B-1D2E-3F4A5B6C']: schema=valid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: pack pack_id-underscore-between-digits ['7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5_6C']: schema=valid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: pack pack_id-leading-plus ['+A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6C']: schema=valid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: pack pack_id-arabic-indic-digit ['٥A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6C']: schema=valid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: pack pack_id-trailing-space ['7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6 ']: schema=valid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: pack pack_id-urn-suffix ['7A1E2C3D-4B5F-4E6A-9C8B-1D2E3F4A5B6Curn:']: schema=valid reader=refused (not decodable: pack_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: handoff handoff_id-nul-suffix: schema=invalid reader=refused (not decodable: handoff_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=agree
+  ok: handoff item_id-nul-then-more: schema=invalid reader=refused (not decodable: items.0.item_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=agree
+  ok: handoff handoff_id-extra-hyphen: schema=valid reader=refused (not decodable: handoff_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: handoff item_id-extra-hyphen: schema=valid reader=refused (not decodable: items.0.item_id: not a canonical UUID (8-4-4-4-12 hexadecimal digits)) expected=quirk
+  ok: pack text-utf8-byte-order-mark: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: byte_order_mark at byte 0) expected=agree
+  ok: pack text-utf16le: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 1) expected=agree
+  ok: pack text-utf16le-byte-order-mark: schema=invalid (the validator cannot load it: UnicodeDecodeError) reader=refused (not strict JSON: not_json at byte 0) expected=agree
+  ok: pack text-utf16be: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 0) expected=agree
+  ok: pack text-utf32le: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 1) expected=agree
+  ok: pack text-trailing-comma-in-object: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 1283) expected=agree
+  ok: pack text-trailing-comma-in-array: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 709) expected=agree
+  ok: pack text-crlf-tabs-and-spaces: schema=valid reader=accepted expected=agree
+  ok: pack text-invalid-utf8-in-an-unknown-member: schema=invalid (the validator cannot load it: UnicodeDecodeError) reader=refused (not strict JSON: invalid_utf8 at byte 1299) expected=agree
+  ok: pack text-control-character-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 1299) expected=agree
+  ok: pack text-bad-escape-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 1298) expected=agree
+  ok: pack text-malformed-number-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 1300) expected=agree
+  ok: pack text-leading-zero-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 1299) expected=agree
+  ok: pack text-noncharacter-and-nul-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: pack text-nesting-512-levels: schema=valid reader=accepted expected=agree
+  ok: pack text-nesting-513-levels: schema=valid reader=refused (not strict JSON: nested_too_deep at byte 1808) expected=reader-limit
+  ok: pack text-integer-4300-digits-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: pack text-integer-4301-digits-in-an-unknown-member: schema=invalid (the validator cannot load it: ValueError) reader=refused (not strict JSON: integer_too_long at byte 1297) expected=agree
+  ok: pack text-float-5000-digits-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: pack text-unpaired-surrogate-in-an-unknown-member: schema=valid reader=refused (not strict JSON: unpaired_surrogate at byte 1298) expected=reader-limit
+  ok: pack text-unpaired-surrogate-in-a-member-name: schema=valid reader=refused (not strict JSON: unpaired_surrogate at byte 1299) expected=reader-limit
+  ok: pack text-surrogate-pair-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: pack text-nan-in-an-unknown-member: schema=valid reader=refused (not strict JSON: nan_or_infinity at byte 1297) expected=quirk
+  ok: pack text-infinity-in-an-unknown-member: schema=valid reader=refused (not strict JSON: nan_or_infinity at byte 1297) expected=quirk
+  ok: pack text--infinity-in-an-unknown-member: schema=valid reader=refused (not strict JSON: nan_or_infinity at byte 1297) expected=quirk
+  ok: pack unknown-members-of-every-type: schema=valid reader=accepted expected=agree
+  ok: handoff text-utf8-byte-order-mark: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: byte_order_mark at byte 0) expected=agree
+  ok: handoff text-utf16le: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 1) expected=agree
+  ok: handoff text-utf16le-byte-order-mark: schema=invalid (the validator cannot load it: UnicodeDecodeError) reader=refused (not strict JSON: not_json at byte 0) expected=agree
+  ok: handoff text-utf16be: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 0) expected=agree
+  ok: handoff text-utf32le: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 1) expected=agree
+  ok: handoff text-trailing-comma-in-object: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 636) expected=agree
+  ok: handoff text-trailing-comma-in-array: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 466) expected=agree
+  ok: handoff text-crlf-tabs-and-spaces: schema=valid reader=accepted expected=agree
+  ok: handoff text-invalid-utf8-in-an-unknown-member: schema=invalid (the validator cannot load it: UnicodeDecodeError) reader=refused (not strict JSON: invalid_utf8 at byte 652) expected=agree
+  ok: handoff text-control-character-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 652) expected=agree
+  ok: handoff text-bad-escape-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 651) expected=agree
+  ok: handoff text-malformed-number-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 653) expected=agree
+  ok: handoff text-leading-zero-in-an-unknown-member: schema=invalid (the validator's json.loads refuses it) reader=refused (not strict JSON: not_json at byte 652) expected=agree
+  ok: handoff text-noncharacter-and-nul-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: handoff text-nesting-512-levels: schema=valid reader=accepted expected=agree
+  ok: handoff text-nesting-513-levels: schema=valid reader=refused (not strict JSON: nested_too_deep at byte 1161) expected=reader-limit
+  ok: handoff text-integer-4300-digits-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: handoff text-integer-4301-digits-in-an-unknown-member: schema=invalid (the validator cannot load it: ValueError) reader=refused (not strict JSON: integer_too_long at byte 650) expected=agree
+  ok: handoff text-float-5000-digits-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: handoff text-unpaired-surrogate-in-an-unknown-member: schema=valid reader=refused (not strict JSON: unpaired_surrogate at byte 651) expected=reader-limit
+  ok: handoff text-unpaired-surrogate-in-a-member-name: schema=valid reader=refused (not strict JSON: unpaired_surrogate at byte 652) expected=reader-limit
+  ok: handoff text-surrogate-pair-in-an-unknown-member: schema=valid reader=accepted expected=agree
+  ok: handoff text-nan-in-an-unknown-member: schema=valid reader=refused (not strict JSON: nan_or_infinity at byte 650) expected=quirk
+  ok: handoff text-infinity-in-an-unknown-member: schema=valid reader=refused (not strict JSON: nan_or_infinity at byte 650) expected=quirk
+  ok: handoff text--infinity-in-an-unknown-member: schema=valid reader=refused (not strict JSON: nan_or_infinity at byte 650) expected=quirk
+  ok: handoff unknown-members-of-every-type: schema=valid reader=accepted expected=agree
+  ok: pack text-unpaired-surrogate-in-a-title: schema=valid reader=refused (not strict JSON: unpaired_surrogate at byte 1025) expected=reader-limit
+  ok: pack text-nul-in-a-title: schema=valid reader=accepted expected=agree
+  ok: handoff text-unpaired-surrogate-in-original_filename: schema=valid reader=refused (not strict JSON: unpaired_surrogate at byte 242) expected=reader-limit
+  ok: pack text-nan-as-a-size: schema=invalid reader=refused (not strict JSON: nan_or_infinity at byte 245) expected=agree
+  ok: handoff duplicate-build_version-second-too-long: schema=invalid reader=refused (not strict JSON: duplicate_member_name at byte 503) expected=agree
+  ok: handoff duplicate-build_version-first-too-long: schema=valid reader=refused (not strict JSON: duplicate_member_name at byte 567) expected=reader-limit
+  ok: handoff duplicate-build_version-both-valid: schema=valid reader=refused (not strict JSON: duplicate_member_name at byte 503) expected=reader-limit
+  ok: pack duplicate-generator.name-both-valid: schema=valid reader=refused (not strict JSON: duplicate_member_name at byte 775) expected=reader-limit
+  ok: pack duplicate-files-second-empty: schema=invalid reader=refused (not strict JSON: duplicate_member_name at byte 711) expected=agree
+  ok: pack duplicate-files-first-empty: schema=valid reader=refused (not strict JSON: duplicate_member_name at byte 52) expected=reader-limit
+  ok: pack duplicate-name-written-with-an-escape: schema=valid reader=refused (not strict JSON: duplicate_member_name at byte 1284) expected=reader-limit
+  ok: pack duplicate-name-in-an-unknown-member: schema=valid reader=refused (not strict JSON: duplicate_member_name at byte 1306) expected=reader-limit
+  ok: pack distinct-names-that-look-alike: schema=valid reader=accepted expected=agree
+  ok: pack number-size-with-a-zero-fraction: schema=valid reader=accepted expected=agree
+  ok: pack number-size-with-an-exponent: schema=valid reader=accepted expected=agree
+  ok: pack number-schema_version-1.0: schema=valid reader=accepted expected=agree
+  ok: pack number-schema_version-1e0: schema=valid reader=accepted expected=agree
+  ok: pack number-order-1.0: schema=valid reader=accepted expected=agree
+  ok: pack number-size-1.5: schema=invalid reader=refused (not decodable: The given data was not valid JSON. Number 1.5 is not representable in Swift.) expected=agree
+  ok: pack number-size-1e400: schema=invalid reader=refused (not decodable: The given data was not valid JSON. Number 1e400 is not representable in Swift.) expected=agree
+  ok: pack number-size-true: schema=invalid reader=refused (not decodable: files.0.size: Expected to decode UInt64 but found bool instead.) expected=agree
+  ok: pack number-size-uint64-max: schema=valid reader=refused (limit_exceeded: epub file of 18446744073709551615 bytes) expected=documented
+  ok: pack number-size-2^64: schema=valid reader=refused (not decodable: The given data was not valid JSON. Number 18446744073709551616 is not representable in Swift.) expected=reader-limit
+  ok: pack number-size-2^64-as-a-float: schema=valid reader=refused (not decodable: The given data was not valid JSON. Number 1.8446744073709552e19 is not representable in Swift.) expected=reader-limit
+  ok: pack number-total_size-2^64: schema=valid reader=refused (not decodable: The given data was not valid JSON. Number 18446744073709551616 is not representable in Swift.) expected=reader-limit
+  ok: pack number-order-2^63: schema=valid reader=refused (not decodable: The given data was not valid JSON. Number 9223372036854775808 is not representable in Swift.) expected=reader-limit
+  ok: handoff number-byte_count-2^64: schema=valid reader=refused (not decodable: The given data was not valid JSON. Number 18446744073709551616 is not representable in Swift.) expected=reader-limit
+  ok: handoff number-total_bytes-2^64: schema=valid reader=refused (not decodable: The given data was not valid JSON. Number 18446744073709551616 is not representable in Swift.) expected=reader-limit
+  ok: handoff number-total_bytes-with-a-zero-fraction: schema=valid reader=accepted expected=agree
+  ok: pack number-size-minus-zero ['-0']: schema=valid reader=accepted expected=agree
+  ok: handoff number-byte_count-minus-zero ['-0']: schema=valid reader=accepted expected=agree
+  ok: pack number-size-minus-zero-fraction ['-0.0']: schema=valid reader=accepted expected=agree
+  ok: handoff number-byte_count-minus-zero-fraction ['-0.0']: schema=valid reader=accepted expected=agree
+  ok: pack number-size-zero-exponent ['0e0']: schema=valid reader=accepted expected=agree
+  ok: handoff number-byte_count-zero-exponent ['0e0']: schema=valid reader=accepted expected=agree
+  ok: pack number-size-underflow-to-zero ['1e-400']: schema=valid reader=accepted expected=agree
+  ok: handoff number-byte_count-underflow-to-zero ['1e-400']: schema=valid reader=accepted expected=agree
+  ok: pack number-size-negative-underflow-to-zero ['-1e-400']: schema=valid reader=accepted expected=agree
+  ok: handoff number-byte_count-negative-underflow-to-zero ['-1e-400']: schema=valid reader=accepted expected=agree
+  ok: pack number-order-minus-zero: schema=invalid reader=refused (manifest_invalid: order below 1) expected=agree
+  ok: pack number-size-smallest-subnormal: schema=invalid reader=refused (not decodable: The given data was not valid JSON. Number 5e-324 is not representable in Swift.) expected=agree
+  ok: pack group_id-kelvin-sign-on-the-file: schema=invalid reader=refused (manifest_invalid: files.group_id) expected=agree
+  ok: pack group_id-kelvin-sign-on-audiobook-members: schema=invalid reader=refused (manifest_invalid: files.group_id) expected=agree
+  ok: pack group_id-kelvin-sign-on-the-group: schema=invalid reader=refused (manifest_invalid: group_id) expected=agree
+  ok: pack group_id-kelvin-sign-on-both: schema=invalid reader=refused (manifest_invalid: group_id) expected=agree
+  ok: pack group_id-ascii-K-on-both: schema=valid reader=accepted expected=agree
+  ok: pack group_id-greek-question-mark: schema=invalid reader=refused (manifest_invalid: group_id) expected=agree
+  ok: pack path-kelvin-sign: schema=valid reader=refused (unsafe_path: not Unicode NFC) expected=documented
+  ok: pack paths-K-and-its-kelvin-twin: schema=valid reader=refused (unsafe_path: not Unicode NFC) expected=documented
+  ok: pack kind-value-written-with-an-escape: schema=valid reader=accepted expected=agree
+  ok: handoff original_filename-kelvin-sign: schema=valid reader=accepted expected=agree
+  ok: pack unknown-member-names-K-and-its-kelvin-twin: schema=valid reader=accepted expected=agree
+  ok: pack unknown-top-level-members-K-and-its-kelvin-twin: schema=valid reader=accepted expected=agree
+  ok: handoff unknown-member-names-K-and-its-kelvin-twin: schema=valid reader=accepted expected=agree
+  ok: handoff unknown-top-level-members-K-and-its-kelvin-twin: schema=valid reader=accepted expected=agree
+  ok: pack size-at-the-limit-16777216-bytes: schema=valid reader=accepted expected=agree
+  ok: pack size-one-byte-over-the-limit-16777217-bytes: schema=valid reader=refused (manifest_too_large: more than 16777216 bytes) expected=documented
+  ok: handoff size-at-the-limit-262144-bytes: schema=valid reader=accepted expected=agree
+  ok: handoff size-one-byte-over-the-limit-262145-bytes: schema=valid reader=refused (handoff.json is larger than 262144 bytes) expected=documented
+  ok: pack size-9998-files-with-512-byte-paths-in-20-audiobook-groups: schema=valid reader=accepted expected=agree
+  ok: pack size-9999-files-with-512-byte-paths-in-20-audiobook-groups: schema=invalid reader=refused (too_many_entries: 9999 files) expected=agree
+  ok: pack quirk-sha256-trailing-line-feed: schema=valid reader=refused (manifest_invalid: sha256) expected=quirk
+  ok: pack quirk-path-trailing-line-feed: schema=valid reader=refused (unsafe_path: forbidden character U+A) expected=quirk
+  ok: pack quirk-group_id-trailing-line-feed: schema=valid reader=refused (manifest_invalid: group_id) expected=quirk
+  ok: handoff quirk-stored-path-trailing-line-feed: schema=valid reader=refused (stored_path is not items/<n>[.<ext>]) expected=quirk
+  ok: handoff quirk-sha256-trailing-line-feed: schema=valid reader=refused (invalid field sha256) expected=quirk
+named pack: agree 177, documented 25, reader-limit 12, quirk 16; not as expected 0
+named handoff: agree 110, documented 6, reader-limit 8, quirk 9; not as expected 0
+random mutations: seed 20261013, 1500 per kind
+random pack: both accept 194, both refuse 1143, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  ok: pack created_at-ok-00 ['2026-10-06T12:00:00Z']: reader=1791288000.000000 python=1791288000
+  ok: pack created_at-ok-01 ['2026-10-06T12:00:00.5Z']: reader=1791288000.500000 python=1791288000.5
+  ok: pack created_at-ok-02 ['2026-10-06t12:00:00z']: reader=1791288000.000000 python=1791288000
+  ok: pack created_at-ok-03 ['2026-10-06T12:00:00+13:00']: reader=1791241200.000000 python=1791241200
+  ok: pack created_at-ok-04 ['2026-10-06T12:00:00-00:00']: reader=1791288000.000000 python=1791288000
+  ok: pack created_at-ok-05 ['2026-10-06T15:30:00.123456789+13:00']: reader=1791253800.123457 python=1791253800.123456789
+  ok: pack created_at-ok-06 ['2024-02-29T00:00:00Z']: reader=1709164800.000000 python=1709164800
+  ok: pack created_at-ok-07 ['0001-01-01T00:00:00Z']: reader=-62135596800.000000 python=-62135596800
+  ok: pack created_at-ok-08 ['9999-12-31T23:59:59.999999999Z']: reader=253402300800.000000 python=253402300799.999999999
+  ok: pack created_at-ok-09 ['2000-02-29T00:00:00Z']: reader=951782400.000000 python=951782400
+  ok: pack created_at-ok-10 ['2026-10-06T12:00:00+23:59']: reader=1791201660.000000 python=1791201660
+  ok: pack created_at-ok-11 ['2026-10-06T12:00:00-23:59']: reader=1791374340.000000 python=1791374340
+  ok: pack created_at-proleptic-0001-01-01-plus-23-59 ['0001-01-01T00:00:00+23:59']: reader=-62135683140.000000 python=-62135683140
+  ok: pack created_at-proleptic-0004-02-29 ['0004-02-29T00:00:00Z']: reader=-62035891200.000000 python=-62035891200
+  ok: pack created_at-proleptic-1500-03-01 ['1500-03-01T00:00:00Z']: reader=-14826672000.000000 python=-14826672000
+  ok: pack created_at-proleptic-1582-10-04 ['1582-10-04T23:59:59Z']: reader=-12220156801.000000 python=-12220156801
+  ok: pack created_at-proleptic-1582-10-10 ['1582-10-10T00:00:00Z']: reader=-12219724800.000000 python=-12219724800
+  ok: pack created_at-proleptic-1582-10-15 ['1582-10-15T00:00:00Z']: reader=-12219292800.000000 python=-12219292800
+  ok: pack created_at-proleptic-1600-02-29 ['1600-02-29T12:00:00.25Z']: reader=-11670955199.750000 python=-11670955199.75
+  ok: pack created_at-proleptic-1969-12-31-fraction ['1969-12-31T23:59:59.999Z']: reader=-0.001000 python=-0.001
+  ok: pack created_at-proleptic-9999-12-31-minus-23-59 ['9999-12-31T23:59:59-23:59']: reader=253402387139.000000 python=253402387139
+  ok: handoff created_at-ok-00 ['2026-10-06T12:00:00Z']: reader=1791288000.000000 python=1791288000
+  ok: handoff created_at-ok-01 ['2026-10-06T12:00:00.5Z']: reader=1791288000.500000 python=1791288000.5
+  ok: handoff created_at-ok-02 ['2026-10-06t12:00:00z']: reader=1791288000.000000 python=1791288000
+  ok: handoff created_at-ok-03 ['2026-10-06T12:00:00+13:00']: reader=1791241200.000000 python=1791241200
+  ok: handoff created_at-ok-04 ['2026-10-06T12:00:00-00:00']: reader=1791288000.000000 python=1791288000
+  ok: handoff created_at-ok-05 ['2026-10-06T15:30:00.123456789+13:00']: reader=1791253800.123457 python=1791253800.123456789
+  ok: handoff created_at-ok-06 ['2024-02-29T00:00:00Z']: reader=1709164800.000000 python=1709164800
+  ok: handoff created_at-ok-07 ['0001-01-01T00:00:00Z']: reader=-62135596800.000000 python=-62135596800
+  ok: handoff created_at-ok-08 ['9999-12-31T23:59:59.999999999Z']: reader=253402300800.000000 python=253402300799.999999999
+  ok: handoff created_at-ok-09 ['2000-02-29T00:00:00Z']: reader=951782400.000000 python=951782400
+  ok: handoff created_at-ok-10 ['2026-10-06T12:00:00+23:59']: reader=1791201660.000000 python=1791201660
+  ok: handoff created_at-ok-11 ['2026-10-06T12:00:00-23:59']: reader=1791374340.000000 python=1791374340
+  ok: handoff created_at-proleptic-0001-01-01-plus-23-59 ['0001-01-01T00:00:00+23:59']: reader=-62135683140.000000 python=-62135683140
+  ok: handoff created_at-proleptic-0004-02-29 ['0004-02-29T00:00:00Z']: reader=-62035891200.000000 python=-62035891200
+  ok: handoff created_at-proleptic-1500-03-01 ['1500-03-01T00:00:00Z']: reader=-14826672000.000000 python=-14826672000
+  ok: handoff created_at-proleptic-1582-10-04 ['1582-10-04T23:59:59Z']: reader=-12220156801.000000 python=-12220156801
+  ok: handoff created_at-proleptic-1582-10-10 ['1582-10-10T00:00:00Z']: reader=-12219724800.000000 python=-12219724800
+  ok: handoff created_at-proleptic-1582-10-15 ['1582-10-15T00:00:00Z']: reader=-12219292800.000000 python=-12219292800
+  ok: handoff created_at-proleptic-1600-02-29 ['1600-02-29T12:00:00.25Z']: reader=-11670955199.750000 python=-11670955199.75
+  ok: handoff created_at-proleptic-1969-12-31-fraction ['1969-12-31T23:59:59.999Z']: reader=-0.001000 python=-0.001
+  ok: handoff created_at-proleptic-9999-12-31-minus-23-59 ['9999-12-31T23:59:59-23:59']: reader=253402387139.000000 python=253402387139
+instants: 42 created_at values compared with Python's, failures=0
+differential: 363 named cases, 3000 random mutations and the instants of 42 date-times, failures=0

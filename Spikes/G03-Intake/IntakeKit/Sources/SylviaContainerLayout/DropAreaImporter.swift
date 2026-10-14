@@ -14,6 +14,8 @@ import UniformTypeIdentifiers
 /// - A bundle in the drop area is removed once its job is durably staged (or flagged `needs_review` as a duplicate,
 ///   whose bytes are also staged), and only if it is still the same file that was validated (device, inode, size and
 ///   modification time unchanged); otherwise it stays. A rejected bundle stays until the user removes it.
+/// - A raw file that Finder copied into the drop area stays after its import until the user removes it: without a
+///   manifest nothing proves Finder had finished, so removing it could cut off a copy still in progress.
 /// - A system open-in or AirDrop copy in `Documents/Inbox` is removed whatever the outcome: the sender still has the
 ///   original, and Sylvia never keeps a second, Finder-visible copy. A copy left there by a crash is listed in the
 ///   drop area (as `Inbox/<name>`) so the user can import or remove it.
@@ -25,6 +27,10 @@ import UniformTypeIdentifiers
 /// - A file's size or modification time staying unchanged does not prove the writer finished (plan 8.5).
 /// - What the app can prove is whether the bytes it has are a complete, valid pack. It snapshots the file
 ///   (APFS clone, inside a coordinated read) and validates the snapshot; a partial copy fails validation.
+/// - For a raw file (no manifest) it can prove nothing about completeness: the snapshot is whatever Finder had written
+///   when the user tapped Import. If the file changes while it is being imported, the copy is evidently still running
+///   and the import is refused (`stillBeingWritten`); a copy that is paused or has stopped is not detected. The user
+///   is told to wait for Finder; the type's own validation comes later (plan 8.2 `validating`).
 public final class DropAreaImporter: @unchecked Sendable {
     public struct DropItem: Sendable, Equatable {
         public enum Kind: String, Sendable { case bundle, file, unsupported }
@@ -39,6 +45,9 @@ public final class DropAreaImporter: @unchecked Sendable {
         case notAFile
         case unsupportedType
         case coordinationFailed
+        /// A raw drop-area file changed between its snapshot and the end of hashing: Finder (or another writer that
+        /// does not coordinate) is still copying it. Nothing was imported; the file stays.
+        case stillBeingWritten
         case rejected(PackRejection)
         /// The volume lacks the space to import; plan 8.4 asks the message to name the additional space.
         case insufficientSpace(additionalBytesNeeded: UInt64)
@@ -52,6 +61,7 @@ public final class DropAreaImporter: @unchecked Sendable {
             case .notAFile: "not a regular file"
             case .unsupportedType: "unsupported file type"
             case .coordinationFailed: "file coordination failed"
+            case .stillBeingWritten: "the file changed while it was being imported (still being copied?): wait until the copy has finished, then import again"
             case let .rejected(r): "bundle rejected: \(r)"
             case let .insufficientSpace(n):
                 "not enough space: free up \(ByteCountFormatter.string(fromByteCount: Int64(clamping: n), countStyle: .file)) more (\(n) bytes)"
@@ -72,8 +82,9 @@ public final class DropAreaImporter: @unchecked Sendable {
     public let layout: StorageLayout
     public let journal: IntakeJournal
     public let reader: PackReader
-    /// Called right after each commit step of `publish` (`.intentRecorded`, `.moved`); a test throws
-    /// `SimulatedProcessDeath` to stop there without cleanup.
+    /// Called right after each commit step of `publish` (`.intentRecorded`, `.moved`, `.finished`), and for a single
+    /// file after its snapshot is hashed (`.verified`); a test throws `SimulatedProcessDeath` to stop there without
+    /// cleanup, or acts on the source to stand in for a writer that is still copying.
     private let hook: @Sendable (AcceptStep) throws -> Void
 
     public init(layout: StorageLayout, journal: IntakeJournal, reader: PackReader = PackReader(),
@@ -93,7 +104,7 @@ public final class DropAreaImporter: @unchecked Sendable {
         func items(in directory: URL, prefix: String) -> [DropItem] {
             let names = (try? FileManager.default.contentsOfDirectory(atPath: directory.path)) ?? []
             return names.sorted().compactMap { name in
-                guard !name.hasPrefix(".") else { return nil }
+                guard !PathBytes.hasPrefix(name, ".") else { return nil }   // hidden: the first byte is "."
                 guard let info = try? Durability.lstatInfo(directory.appendingPathComponent(name)), info.isRegularFile else {
                     return nil
                 }
@@ -150,15 +161,30 @@ public final class DropAreaImporter: @unchecked Sendable {
         return report
     }
 
-    /// Imports a .sylviapack from the drop area: one the user copied into Documents with Finder, or an open-in copy
-    /// listed as `Inbox/<name>`. After a durable import the drop-area file is removed if it is still the file that was
-    /// validated (plan 16.4); a rejected bundle stays until the user removes it.
-    public func importBundle(named name: String) async throws(ImportError) -> IntakeJournal.Job {
+    /// Imports the drop-area item the user chose (the Import button; never automatic):
+    /// - a `.sylviapack` the user copied into Documents with Finder, through the bundle importer (validated against its
+    ///   manifest, so a partial copy is rejected);
+    ///   After a durable import the bundle is removed if it is still the file that was validated (plan 16.4); a rejected
+    ///   bundle stays until the user removes it;
+    /// - a raw supported file (EPUB, PDF, text, Markdown, audio) copied with Finder, through the single-file importer
+    ///   (plan 8.5 allows it: user-initiated, coordinated). Its bytes end `staged`, owned but not trusted; checking that
+    ///   they are a whole, readable book is the pipeline's later validation (plan 8.2 `validating`, the G0.1 adapters).
+    ///   Unlike a bundle, nothing here can prove Finder had finished: a file that changes during its import is refused
+    ///   as still being written, but one whose copy is paused or has stopped is staged as the partial bytes it had
+    ///   (plan 8.5; G0.3 report F15), which is why large transfers use the bundle. For the same reason the raw file is
+    ///   never removed automatically: an unchanged identity right after the snapshot cannot rule out a writer that is
+    ///   still copying, and removing its file would lose the rest of the copy. It stays until the user removes it; the
+    ///   staged APFS clone shares its blocks, so keeping it costs no extra space until one changes;
+    /// - an open-in copy left as `Inbox/<name>`, as an opened file.
+    public func importDropAreaItem(named name: String) async throws(ImportError) -> IntakeJournal.Job {
         let source = try dropAreaFile(named: name)
         if isSystemInboxCopy(source) {
             return try await importOpenedFile(at: source, route: .openIn)
         }
-        return try await importBundle(at: source, route: .documentsBundle, afterSuccess: .removeIfUnchanged)
+        if source.pathExtension.lowercased() == PackLayout.fileExtension {
+            return try await importBundle(at: source, route: .documentsBundle, afterSuccess: .removeIfUnchanged)
+        }
+        return try importSingleFile(at: source, route: .documentsFile)
     }
 
     /// Open-in or AirDrop (the system's `onOpenURL`): a .sylviapack goes through the bundle importer, anything else
@@ -208,10 +234,16 @@ public final class DropAreaImporter: @unchecked Sendable {
         return published
     }
 
-    /// One supported file (document picker, or open-in through `importOpenedFile`): coordinated, security-scoped
-    /// snapshot into private staging. On APFS the snapshot is a clone (no second copy of the bytes; the clone is
-    /// immutable, so the hash describes exactly what is kept); across volumes it is a streaming copy. The source is
-    /// never modified or removed here.
+    /// One supported file (document picker, a raw drop-area file, or open-in through `importOpenedFile`): coordinated,
+    /// security-scoped snapshot into private staging. On APFS the snapshot is a clone (no second copy of the bytes; the
+    /// clone is immutable, so the hash describes exactly what is kept); across volumes it is a streaming copy. The
+    /// source is never modified or removed here.
+    ///
+    /// A raw drop-area file (`.documentsFile`) was written by Finder, which does not coordinate, so the coordinated
+    /// read cannot wait for it. After hashing the snapshot, its source is checked again: if its device, inode, size or
+    /// modification time changed since the snapshot, the copy is still going on and the import is refused
+    /// (`stillBeingWritten`) rather than staging part of the file. An unchanged file proves nothing (plan 8.5): a copy
+    /// that is paused, or has stopped, is not detected; its bytes are staged, not trusted (G0.3 report F15).
     public func importSingleFile(at url: URL, route: IntakeJournal.Route) throws(ImportError) -> IntakeJournal.Job {
         guard let type = SupportedContent.supportedType(forFileExtension: url.pathExtension) else { throw .unsupportedType }
         let jobID = UUID()
@@ -219,7 +251,7 @@ public final class DropAreaImporter: @unchecked Sendable {
         let storedPath = HandoffManifest.storedPath(ordinal: 0, preferredExtension: url.pathExtension)
         let scoped = url.startAccessingSecurityScopedResource()
         defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-        var copy: Result<CopyResult, any Error> = .failure(ImportError.coordinationFailed)
+        var copy: Result<(CopyResult, FileIdentity), any Error> = .failure(ImportError.coordinationFailed)
         var coordinationError: NSError?
         do {
             try FileManager.default.createDirectory(at: extracted.appendingPathComponent("items"), withIntermediateDirectories: true)
@@ -232,8 +264,9 @@ public final class DropAreaImporter: @unchecked Sendable {
             throw .coordinationFailed
         }
         let result: CopyResult
+        let identity: FileIdentity
         do {
-            result = try copy.get()
+            (result, identity) = try copy.get()
             // The copy itself was synced by the copier; make its directory entries durable too, so a commit intent
             // recorded next never points at bytes a power loss could still drop (recoverInterruptedImports trusts it).
             try Durability.syncDirectory(extracted.appendingPathComponent("items", isDirectory: true))
@@ -242,6 +275,21 @@ public final class DropAreaImporter: @unchecked Sendable {
         } catch {
             Durability.removeTree(extracted)
             throw .io(String(describing: error))
+        }
+        do {
+            try hook(.verified)
+        } catch is SimulatedProcessDeath {
+            throw .simulatedProcessDeath   // a killed process cleans nothing up
+        } catch {
+            Durability.removeTree(extracted)
+            throw .io(String(describing: error))
+        }
+        if route == .documentsFile {
+            let now = try? Durability.lstatInfo(url)
+            guard let now, now.isRegularFile, FileIdentity(now) == identity else {
+                Durability.removeTree(extracted)
+                throw .stillBeingWritten
+            }
         }
         let job = IntakeJournal.Job(
             jobID: jobID, route: route, state: .accepting, handoffID: nil,
@@ -261,16 +309,19 @@ public final class DropAreaImporter: @unchecked Sendable {
 
     // MARK: - Helpers
 
-    /// A top-level drop-area file, or `Inbox/<name>` for a system open-in copy.
+    /// A top-level drop-area file, or `Inbox/<name>` for a system open-in copy. Names are tested byte by byte: a "/" that
+    /// a combining mark follows is invisible to Character-based `contains` and `hasPrefix`, and the first version
+    /// resolved "../" + U+0301 + "x" to a file beside Documents (report finding F18).
     private func dropAreaFile(named name: String) throws(ImportError) -> URL {
         var directory = layout.documents
         var leaf = name
         let inboxPrefix = DropAreaImporter.systemInboxName + "/"
-        if name.hasPrefix(inboxPrefix) {
+        if PathBytes.hasPrefix(name, inboxPrefix) {
             directory = systemInbox
-            leaf = String(name.dropFirst(inboxPrefix.count))
+            leaf = String(decoding: name.utf8.dropFirst(inboxPrefix.utf8.count), as: UTF8.self)
         }
-        guard !leaf.isEmpty, !leaf.contains("/"), leaf != ".", leaf != "..", leaf != DropAreaImporter.systemInboxName || directory != layout.documents else {
+        guard !leaf.utf8.isEmpty, !PathBytes.containsSeparator(leaf), !PathBytes.isDotOrDotDot(leaf),
+              !(directory == layout.documents && PathBytes.equal(leaf, DropAreaImporter.systemInboxName)) else {
             throw .notInDropArea
         }
         let url = directory.appendingPathComponent(leaf)
@@ -281,7 +332,7 @@ public final class DropAreaImporter: @unchecked Sendable {
 
     func isSystemInboxCopy(_ url: URL) -> Bool {
         let inbox = systemInbox.standardizedFileURL.resolvingSymlinksInPath().path
-        return url.standardizedFileURL.resolvingSymlinksInPath().path.hasPrefix(inbox + "/")
+        return PathBytes.hasPrefix(url.standardizedFileURL.resolvingSymlinksInPath().path, inbox + "/")
     }
 
     private func removeSystemInboxCopy(_ url: URL) {
@@ -289,19 +340,30 @@ public final class DropAreaImporter: @unchecked Sendable {
     }
 
     /// What identifies the file that was snapshotted: if any of these differ later, it is not the same file.
-    struct FileIdentity: Equatable {
-        let device: Int32
-        let inode: UInt64
-        let size: Int64
-        let modifiedSeconds: Int
-        let modifiedNanoseconds: Int
+    /// What identifies a file's state without reading it: device, inode, size and modification time (nanoseconds).
+    /// Public so the harness and tests can show that a picked file is left untouched (review R3-05).
+    public struct FileIdentity: Equatable, Sendable, CustomStringConvertible {
+        public let device: Int32
+        public let inode: UInt64
+        public let size: Int64
+        public let modifiedSeconds: Int
+        public let modifiedNanoseconds: Int
 
-        init(_ info: stat) {
+        public init(_ info: stat) {
             device = info.st_dev
             inode = info.st_ino
             size = info.st_size
             modifiedSeconds = info.st_mtimespec.tv_sec
             modifiedNanoseconds = info.st_mtimespec.tv_nsec
+        }
+
+        /// The identity of the file at `url` (not following a final symbolic link), or nil when there is none.
+        public static func of(_ url: URL) -> FileIdentity? {
+            (try? Durability.lstatInfo(url)).flatMap { $0 }.map(FileIdentity.init)
+        }
+
+        public var description: String {
+            "device \(device), inode \(inode), \(size) bytes, modified \(modifiedSeconds).\(String(format: "%09d", modifiedNanoseconds))"
         }
     }
 
@@ -344,8 +406,10 @@ public final class DropAreaImporter: @unchecked Sendable {
     }
 
     /// Snapshot of one file into a new private file: an APFS clone of the open descriptor when possible (hashed after
-    /// cloning, so the digest describes the immutable clone), otherwise a streaming copy. Mode 0600, synced.
-    static func cloneOrCopy(_ source: URL, to destination: URL) throws -> CopyResult {
+    /// cloning, so the digest describes the immutable clone), otherwise a streaming copy (which itself fails if the
+    /// source changes while it copies). Mode 0600, synced. Also returns the source's identity, read from the same open
+    /// descriptor just before the snapshot.
+    static func cloneOrCopy(_ source: URL, to destination: URL) throws -> (CopyResult, FileIdentity) {
         let fd = open(source.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
         guard fd >= 0 else { throw IntakeIOError("open source") }
         var closed = false
@@ -353,6 +417,7 @@ public final class DropAreaImporter: @unchecked Sendable {
         var info = stat()
         guard fstat(fd, &info) == 0 else { throw IntakeIOError("fstat source") }
         guard info.isRegularFile else { throw CopyFailure.sourceNotRegularFile }
+        let identity = FileIdentity(info)
         if fclonefileat(fd, AT_FDCWD, destination.path, 0) == 0 {
             closed = true
             close(fd)
@@ -361,10 +426,10 @@ public final class DropAreaImporter: @unchecked Sendable {
             defer { close(out) }
             guard fchmod(out, 0o600) == 0 else { throw IntakeIOError("fchmod clone") }
             try Durability.fullSync(fd: out)
-            return try FileDigest.sha256(of: destination)
+            return (try FileDigest.sha256(of: destination), identity)
         }
         guard errno == ENOTSUP || errno == EXDEV else { throw IntakeIOError("clonefile") }
-        return try StreamingCopier().copy(from: source, toNewFile: destination)
+        return (try StreamingCopier().copy(from: source, toNewFile: destination), identity)
     }
 
     /// Commit sequence (plan 8.2): the bytes under `Extracting/<job id>` are complete and synced; record the

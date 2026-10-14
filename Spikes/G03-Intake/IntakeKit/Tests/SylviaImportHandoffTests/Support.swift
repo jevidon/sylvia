@@ -68,6 +68,24 @@ struct SendableCompletion: @unchecked Sendable {
     init(_ completion: @escaping (URL?, Bool, (any Error)?) -> Void) { self.completion = completion }
 }
 
+/// A user's Cancel landing at one step of the write sequence: cancels the signal when the step is reached, and lets
+/// the step itself succeed.
+final class CancelAtStep: FaultInjecting, @unchecked Sendable {
+    let step: HandoffWriteStep
+    let signal: CancellationSignal
+    private let hit = Flag()
+    init(step: HandoffWriteStep, signal: CancellationSignal) {
+        self.step = step
+        self.signal = signal
+    }
+    func reach(_ reached: HandoffWriteStep) throws {
+        guard reached == step else { return }
+        hit.set()
+        signal.cancel()
+    }
+    var reached: Bool { hit.isSet }
+}
+
 final class Flag: @unchecked Sendable {
     private let lock = NSLock()
     private var value = false

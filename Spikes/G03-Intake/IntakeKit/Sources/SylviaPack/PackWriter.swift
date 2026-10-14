@@ -103,6 +103,10 @@ public struct PackWriter: Sendable {
         do { try manifest.validate(limits: limits) } catch { throw .invalidInput(error) }
         let manifestBytes: Data
         do { manifestBytes = try manifest.encoded() } catch { throw .io("encoding the manifest") }
+        // The reader's size limit, checked before anything is written (the self-check would refuse the pack anyway).
+        guard manifestBytes.count <= limits.maxManifestBytes else {
+            throw .invalidInput(PackRejection(.manifestTooLarge, "more than \(limits.maxManifestBytes) bytes"))
+        }
         let digestBytes = Data((hex(SHA256.hash(data: manifestBytes)) + "\n").utf8)
         afterPassOne?()
 

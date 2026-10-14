@@ -1,0 +1,108 @@
+# G0.3 review R2-01: the cancel tests run against the behaviour before the fix
+# Run at 2026-10-12T17:38Z (06:38 on 13 October local time, UTC+13; one minute after commit b31d21f, 06:37:58 +13:00).
+# Corrected in review round 3 (R3-04): this line said "2026-10-13T06:38Z", the local time labelled as UTC.
+# Host: macOS 26.6.2 (25G83), Apple M5 Max.
+# Load (uptime right after the run): load averages 70.68 51.57 42.79 (other agents building on this Mac; timings indicative only).
+# How: on commit b31d21f (the fix), the two push-style cancel paths were disabled temporarily, which restores the old
+# behaviour in which only the copier read the cancel flag, between chunks; then, in Spikes/G03-Intake/IntakeKit,
+#   swift test --skip-build --filter 'cancelBeforeDelivery|cancelBeforeFileURLDelivery|cancelDuringCoordinatedWait'
+# and the edit was reverted. The temporary edit:
+#   diff --git a/Spikes/G03-Intake/IntakeKit/Sources/SylviaImportHandoff/ItemProviderIntake.swift b/Spikes/G03-Intake/IntakeKit/Sources/SylviaImportHandoff/ItemProviderIntake.swift
+#   index cfecb7c..07fc382 100644
+#   --- a/Spikes/G03-Intake/IntakeKit/Sources/SylviaImportHandoff/ItemProviderIntake.swift
+#   +++ b/Spikes/G03-Intake/IntakeKit/Sources/SylviaImportHandoff/ItemProviderIntake.swift
+#   @@ -108,7 +108,7 @@ public struct ItemProviderIntake: Sendable {
+#                    })
+#                }
+#                gate.armStallTimeout(after: providerStallTimeout, progress: loading)
+#   -            gate.armCancellation(cancellation, progress: loading)
+#   +            _ = 0 // BEFORE-FIX PROBE: no cancel before delivery
+#            }
+#        }
+#    
+#   @@ -137,7 +137,7 @@ public struct ItemProviderIntake: Sendable {
+#                    })
+#                }
+#                gate.armStallTimeout(after: providerStallTimeout, progress: loading)
+#   -            gate.armCancellation(cancellation, progress: loading)
+#   +            _ = 0 // BEFORE-FIX PROBE: no cancel before delivery
+#            }
+#        }
+#    
+#   @@ -152,7 +152,7 @@ public struct ItemProviderIntake: Sendable {
+#            let scoped = url.startAccessingSecurityScopedResource()
+#            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+#            let coordinator = CoordinatorBox(NSFileCoordinator(filePresenter: nil))
+#   -        let registration = cancellation.onCancel { coordinator.coordinator.cancel() }
+#   +        let registration = cancellation.onCancel { _ = coordinator } // BEFORE-FIX PROBE
+#            defer { cancellation.remove(registration) }
+#            // A cancel that lands between this check and the coordinator starting its wait may not interrupt that wait;
+#            // the copier then still checks the signal before its first read, so nothing is copied or claimed.
+# Expected before the fix, and seen below: each test fails, because the share is cancelled only when the provider
+# delivers (30 s, 60 s) or the other writer finishes (30 s), and the provider is never told to stop. With the fix the
+# same tests pass: each share ends as cancelled 1.0-2.6 s after it started, the cancel being sent at 1 s
+# (host-intakekit-tests.log of the clean run after review round 2, under the load recorded in ci-clean-run.log).
+
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "NSItemProvider intake and fallback" started.
+◇ Test "Cancel while the provider is still delivering (progress moving): fails as cancelled at once, the provider is told to stop, nothing received" started.
+◇ Test "Cancel while a direct file URL provider is still delivering: fails as cancelled at once, nothing received" started.
+◇ Test "Cancel while the coordinated read waits for another writer: the wait is cancelled, nothing copied or received" started.
+cancel during a coordinated-read wait: not received: cancelled after 30.01823825 seconds, writer still holding: true
+✘ Test "Cancel while the coordinated read waits for another writer: the wait is cancelled, nothing copied or received" recorded an issue at ItemProviderIntakeTests.swift:303:9: Expectation failed: elapsed < .seconds(5)
+↳ the coordinated wait must end on cancel, not when the writer finishes (30 s): 30.01823825 seconds
+↳ elapsed < .seconds(5) → false
+↳   elapsed → 30.01823825 seconds
+↳     _low → 11571494176290448384
+↳     _high → 1
+↳   .seconds(5) → 5.0 seconds
+↳     _low → 5000000000000000000
+↳     _high → 0
+✘ Test "Cancel while the coordinated read waits for another writer: the wait is cancelled, nothing copied or received" failed after 30.050 seconds with 1 issue.
+cancel before delivery (file URL): not received: cancelled after 30.093823209 seconds, delivery due at 30 s
+✘ Test "Cancel while a direct file URL provider is still delivering: fails as cancelled at once, nothing received" recorded an issue at ItemProviderIntakeTests.swift:257:9: Expectation failed: elapsed < .seconds(5)
+↳ elapsed < .seconds(5) → false
+↳   elapsed → 30.093823209 seconds
+↳     _low → 11647079135290448384
+↳     _high → 1
+↳   .seconds(5) → 5.0 seconds
+↳     _low → 5000000000000000000
+↳     _high → 0
+✘ Test "Cancel while a direct file URL provider is still delivering: fails as cancelled at once, nothing received" recorded an issue at ItemProviderIntakeTests.swift:258:9: Expectation failed: !delivered.isSet
+↳ !delivered.isSet → true
+↳   delivered.isSet → false
+↳     delivered → SylviaImportHandoffTests.Flag
+↳       lock → <NSLock: 0x100c12e50>{name = nil}
+↳       value → true
+↳     isSet → true
+✘ Test "Cancel while a direct file URL provider is still delivering: fails as cancelled at once, nothing received" failed after 30.102 seconds with 2 issues.
+cancel before delivery (file representation): not received: cancelled after 62.074788749999996 seconds, cancel sent at 1 s, delivery due at 60 s
+✘ Test "Cancel while the provider is still delivering (progress moving): fails as cancelled at once, the provider is told to stop, nothing received" recorded an issue at ItemProviderIntakeTests.swift:222:9: Expectation failed: elapsed < .seconds(5)
+↳ cancel must act well before the provider delivers: 62.074788749999996 seconds
+↳ elapsed < .seconds(5) → false
+↳   elapsed → 62.074788749999996 seconds
+↳     _low → 6734556528871345152
+↳     _high → 3
+↳   .seconds(5) → 5.0 seconds
+↳     _low → 5000000000000000000
+↳     _high → 0
+cancel before delivery (file representation): provider saw the cancel: false
+✘ Test "Cancel while the provider is still delivering (progress moving): fails as cancelled at once, the provider is told to stop, nothing received" recorded an issue at ItemProviderIntakeTests.swift:228:9: Expectation failed: providerSawCancel.isSet
+↳ cancelling the load's Progress must reach the provider's own Progress
+↳ providerSawCancel.isSet → false
+↳   providerSawCancel → SylviaImportHandoffTests.Flag
+↳     lock → <NSLock: 0x78440c120>{name = nil}
+↳     value → false
+↳   isSet → false
+✘ Test "Cancel while the provider is still delivering (progress moving): fails as cancelled at once, the provider is told to stop, nothing received" failed after 62.393 seconds with 2 issues.
+↳ /// G0.3 review R2-01: Cancel used to reach only the copier, so while a provider was still delivering (an iCloud
+↳ /// download, a mail attachment) the sheet could not be cancelled until delivery or a 60 s stall.
+✘ Suite "NSItemProvider intake and fallback" failed after 62.393 seconds with 5 issues.
+↳ /// NSItemProvider behaviour the share extension depends on. Runs on host (macOS Foundation) and, through the
+↳ /// harness app's test bundle, on the simulator.
+✘ Test run with 3 tests in 1 suite failed after 62.393 seconds with 5 issues.
+Note: Some test targets reported failures:
+  - SylviaImportHandoffTests (Swift Testing)
+exit=1

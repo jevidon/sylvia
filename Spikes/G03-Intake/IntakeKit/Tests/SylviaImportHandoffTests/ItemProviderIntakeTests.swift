@@ -13,12 +13,15 @@ struct ItemProviderIntakeTests {
         var failure: HandoffFailure?
     }
 
-    /// Runs one provider through the same sequence the extension uses: receive, then commit or discard.
-    func share(_ provider: NSItemProvider, box: Sandbox, stall: Duration = .seconds(60)) async -> Outcome {
-        let session = HandoffSession(environment: box.environment())
+    /// Runs one provider through the same sequence the extension uses (ShareViewController.handOff): receive, then
+    /// commit unless cancelled, or discard.
+    func share(_ provider: NSItemProvider, box: Sandbox, stall: Duration = .seconds(60),
+               cancellation: CancellationSignal = CancellationSignal(),
+               faults: any FaultInjecting = NoFaults()) async -> Outcome {
+        let session = HandoffSession(environment: box.environment(faults: faults))
         do {
-            _ = try await ItemProviderIntake(providerStallTimeout: stall).receive(provider, into: session)
-            return Outcome(receipt: try session.commit(), failure: nil)
+            _ = try await ItemProviderIntake(providerStallTimeout: stall).receive(provider, into: session, cancellation: cancellation)
+            return Outcome(receipt: try session.commit(isCancelled: { cancellation.isCancelled }), failure: nil)
         } catch {
             session.discard()
             return Outcome(receipt: nil, failure: HandoffFailure.from(error))
@@ -182,6 +185,239 @@ struct ItemProviderIntakeTests {
         try checkInvariant(outcome, box: box)
     }
 
+    /// G0.3 review R4-04: the stall timeout checked that work had not begun, then finished the gate unconditionally. A
+    /// provider that delivered between the two started the copy, and the share still ended as timed out (the caller then
+    /// discarded the session the copy was writing into). The seam runs the delivery in exactly that window.
+    @Test("a delivery at the moment the stall timeout fires wins: the timeout neither fails the share nor cancels the load")
+    func stallTimeoutLosesToADeliveryInItsWindow() async throws {
+        final class GateBox: @unchecked Sendable { var gate: OnceGate<Int>? }
+        let box = GateBox()
+        let progress = Progress(totalUnitCount: 100)   // never moves: the timeout fires
+        let delivered = Flag()
+        let gate = OnceGate<Int>(beforeStallTimeoutFires: {
+            // The provider's completion handler, arriving right now: it begins work, and its copy finishes a little later.
+            guard let gate = box.gate, gate.beginWork() else { return }
+            delivered.set()
+            DispatchQueue.global().asyncAfter(deadline: .now() + 0.2) { gate.finish(.success(42)) }
+        })
+        box.gate = gate
+        let started = ContinuousClock.now
+        let outcome: Result<Int, any Error>
+        do {
+            outcome = .success(try await withCheckedThrowingContinuation { continuation in
+                gate.install(continuation)
+                gate.armStallTimeout(after: .milliseconds(300), progress: progress)
+            })
+        } catch {
+            outcome = .failure(error)
+        }
+        let elapsed = ContinuousClock.now - started
+        print("stall timeout vs a delivery in its window: \(String(describing: outcome)) after \(elapsed); load cancelled: \(progress.isCancelled)")
+        #expect(delivered.isSet, "the seam ran: the timeout fired")
+        #expect((try? outcome.get()) == 42, "the copy's result, not providerTimedOut")
+        #expect(!progress.isCancelled, "the load was not cancelled under a copy that had begun")
+    }
+
+    /// G0.3 review R2-01: Cancel used to reach only the copier, so while a provider was still delivering (an iCloud
+    /// download, a mail attachment) the sheet could not be cancelled until delivery or a 60 s stall.
+    @Test("Cancel while the provider is still delivering (progress moving): fails as cancelled at once, the provider is told to stop, nothing received")
+    func cancelBeforeDelivery() async throws {
+        let box = try Sandbox()
+        let src = try box.source("Slow.epub", length: 200_000)
+        let provider = NSItemProvider()
+        let providerSawCancel = Flag()
+        let delivered = Flag()
+        provider.registerFileRepresentation(forTypeIdentifier: UTType.epub.identifier, fileOptions: [], visibility: .all) { completion in
+            // As a large iCloud download: progress every 100 ms for 60 s (the stall limit never fires), then the file.
+            let progress = SendableProgress(Progress(totalUnitCount: 600))
+            let deliver = SendableCompletion(completion)
+            DispatchQueue.global().async {
+                for step in 1...600 {
+                    if progress.progress.isCancelled { providerSawCancel.set(); break }
+                    usleep(100_000)
+                    progress.progress.completedUnitCount = Int64(step)
+                }
+                // A provider that delivers anyway after being cancelled must not cause a copy or a receipt.
+                delivered.set()
+                deliver.completion(src, false, nil)
+            }
+            return progress.progress
+        }
+        let cancellation = CancellationSignal()
+        let started = ContinuousClock.now
+        let canceller = Task {
+            try await Task.sleep(for: .seconds(1))
+            cancellation.cancel()
+        }
+        let outcome = await share(provider, box: box, cancellation: cancellation)
+        let elapsed = ContinuousClock.now - started
+        _ = try await canceller.value
+        print("cancel before delivery (file representation): \(outcome.receipt != nil ? "received" : "not received: \(outcome.failure!)") after \(elapsed), cancel sent at 1 s, delivery due at 60 s")
+        #expect(outcome.failure == .cancelled)
+        #expect(elapsed < .seconds(5), "cancel must act well before the provider delivers: \(elapsed)")
+        let waitStart = ContinuousClock.now
+        while !delivered.isSet && ContinuousClock.now - waitStart < .seconds(10) {
+            try await Task.sleep(for: .milliseconds(50))
+        }
+        print("cancel before delivery (file representation): provider saw the cancel: \(providerSawCancel.isSet)")
+        #expect(providerSawCancel.isSet, "cancelling the load's Progress must reach the provider's own Progress")
+        try await Task.sleep(for: .milliseconds(300))   // the late delivery has been handled (and ignored)
+        try checkInvariant(outcome, box: box)
+    }
+
+    @Test("Cancel while a direct file URL provider is still delivering: fails as cancelled at once, nothing received")
+    func cancelBeforeFileURLDelivery() async throws {
+        let box = try Sandbox()
+        let src = try box.source("Slow.pdf", length: 100_000)
+        let provider = NSItemProvider()
+        let delivered = Flag()
+        provider.registerItem(forTypeIdentifier: UTType.fileURL.identifier) { completion, _, _ in
+            guard let completion else { return }
+            DispatchQueue.global().asyncAfter(deadline: .now() + 30) {
+                delivered.set()
+                completion(src as NSURL, nil)
+            }
+        }
+        let cancellation = CancellationSignal()
+        let started = ContinuousClock.now
+        let canceller = Task {
+            try await Task.sleep(for: .seconds(1))
+            cancellation.cancel()
+        }
+        let outcome = await share(provider, box: box, cancellation: cancellation)
+        let elapsed = ContinuousClock.now - started
+        _ = try await canceller.value
+        print("cancel before delivery (file URL): \(outcome.receipt != nil ? "received" : "not received: \(outcome.failure!)") after \(elapsed), delivery due at 30 s")
+        #expect(outcome.failure == .cancelled)
+        #expect(elapsed < .seconds(5))
+        #expect(!delivered.isSet)
+        try checkInvariant(outcome, box: box)
+    }
+
+    @Test("Cancel while the coordinated read waits for another writer: the wait is cancelled, nothing copied or received")
+    func cancelDuringCoordinatedWait() async throws {
+        let box = try Sandbox()
+        let src = try box.source("Held.epub", length: 300_000)
+        let writerHolding = Flag()
+        let releaseWriter = Flag()
+        let writer = Thread {
+            var error: NSError?
+            NSFileCoordinator(filePresenter: nil).coordinate(writingItemAt: src, options: [], error: &error) { _ in
+                writerHolding.set()
+                let until = Date().addingTimeInterval(30)
+                while !releaseWriter.isSet && Date() < until { Thread.sleep(forTimeInterval: 0.05) }
+            }
+        }
+        writer.start()
+        defer { releaseWriter.set() }
+        while !writerHolding.isSet { try await Task.sleep(for: .milliseconds(10)) }
+
+        let session = HandoffSession(environment: box.environment())
+        let cancellation = CancellationSignal()
+        let started = ContinuousClock.now
+        let canceller = Task {
+            try await Task.sleep(for: .seconds(1))
+            cancellation.cancel()
+        }
+        let copy = Task.detached {
+            Result {
+                try ItemProviderIntake.copyCoordinated(
+                    src, originalFilename: "Held.epub", type: .epub, representation: .fileRepresentation,
+                    providerTypeIdentifier: UTType.epub.identifier, session: session,
+                    cancellation: cancellation, progress: { _ in })
+            }
+        }
+        let result = await copy.value
+        let elapsed = ContinuousClock.now - started
+        _ = try await canceller.value
+        let writerStillHolding = !releaseWriter.isSet
+        session.discard()
+        let failure: HandoffFailure? = if case let .failure(error) = result { HandoffFailure.from(error) } else { nil }
+        print("cancel during a coordinated-read wait: \(failure.map { "not received: \($0)" } ?? "copied") after \(elapsed), writer still holding: \(writerStillHolding)")
+        #expect(failure == .cancelled)
+        #expect(elapsed < .seconds(5), "the coordinated wait must end on cancel, not when the writer finishes (30 s): \(elapsed)")
+        #expect(writerStillHolding)
+        #expect(box.manifests().isEmpty && box.inboxEntries().isEmpty)
+    }
+
+    /// The copier polls the signal only before each read. A Cancel that lands after the last byte was read, while the
+    /// item is synced and verified, used to end in "Received"; the commit now checks the signal first.
+    @Test("Cancel after the last byte is copied but before the commit: discarded, nothing received")
+    func cancelAfterLastByteBeforeCommit() async throws {
+        let box = try Sandbox()
+        let src = try box.source("Late.epub", length: 300_000)
+        let provider = NSItemProvider()
+        provider.registerFileRepresentation(forTypeIdentifier: UTType.epub.identifier, fileOptions: [], visibility: .all) { completion in
+            completion(src, false, nil)
+            return nil
+        }
+        let cancellation = CancellationSignal()
+        // The user's Cancel arrives while the copied item is verified (after its full sync), the last write step before
+        // the commit.
+        let faults = CancelAtStep(step: .verifyItem, signal: cancellation)
+        let outcome = await share(provider, box: box, cancellation: cancellation, faults: faults)
+        print("cancel after the last byte, before the commit: \(outcome.receipt != nil ? "received" : "not received: \(outcome.failure!)")")
+        #expect(faults.reached, "the copy must have run to its verify step")
+        #expect(outcome.failure == .cancelled)
+        try checkInvariant(outcome, box: box)
+    }
+
+    /// copyCoordinated registers its cancel handler, checks the signal and then starts the coordinated read. A cancel in
+    /// that gap calls NSFileCoordinator.cancel() before coordinate(...) has begun. This pins the platform behaviour that
+    /// keeps such a cancel effective: the later coordinate call does not wait for the other writer.
+    @Test("platform: a file coordinator cancelled before its coordinate call returns at once with NSUserCancelledError (copyCoordinated relies on it)")
+    func coordinatorCancelledBeforeCoordinate() async throws {
+        let box = try Sandbox()
+        let src = try box.source("Held.pdf", length: 4096)
+        let writerHolding = Flag()
+        let releaseWriter = Flag()
+        let writer = Thread {
+            var error: NSError?
+            NSFileCoordinator(filePresenter: nil).coordinate(writingItemAt: src, options: [], error: &error) { _ in
+                writerHolding.set()
+                let until = Date().addingTimeInterval(30)
+                while !releaseWriter.isSet && Date() < until { Thread.sleep(forTimeInterval: 0.05) }
+            }
+        }
+        writer.start()
+        defer { releaseWriter.set() }
+        while !writerHolding.isSet { try await Task.sleep(for: .milliseconds(10)) }
+
+        let read = Task.detached { () -> (Duration, Bool, Int?) in
+            let coordinator = NSFileCoordinator(filePresenter: nil)
+            coordinator.cancel()
+            let started = ContinuousClock.now
+            var error: NSError?
+            var ran = false
+            coordinator.coordinate(readingItemAt: src, options: [.withoutChanges], error: &error) { _ in ran = true }
+            return (ContinuousClock.now - started, ran, error.map { $0.domain == NSCocoaErrorDomain ? $0.code : -1 })
+        }
+        let (elapsed, ran, code) = await read.value
+        print("coordinator cancelled before coordinate: returned after \(elapsed), block ran: \(ran), error code: \(code.map(String.init) ?? "none")")
+        #expect(!ran)
+        #expect(code == NSUserCancelledError)
+        #expect(elapsed < .seconds(5), "must not wait for the writer (it holds the file for 30 s): \(elapsed)")
+    }
+
+    @Test("a signal cancelled before the share starts: nothing is loaded or received")
+    func cancelledBeforeStart() async throws {
+        let box = try Sandbox()
+        let src = try box.source("Early.epub", length: 10_000)
+        let loaded = Flag()
+        let provider = NSItemProvider()
+        provider.registerFileRepresentation(forTypeIdentifier: UTType.epub.identifier, fileOptions: [], visibility: .all) { completion in
+            loaded.set()
+            completion(src, false, nil)
+            return nil
+        }
+        let cancellation = CancellationSignal()
+        cancellation.cancel()
+        let outcome = await share(provider, box: box, cancellation: cancellation)
+        #expect(outcome.failure == .cancelled)
+        #expect(!loaded.isSet)
+        try checkInvariant(outcome, box: box)
+    }
+
     @Test("an EPUB package folder offered by a provider: the fallback names a folder, nothing received")
     func providerOffersFolder() async throws {
         let box = try Sandbox()
@@ -262,7 +498,8 @@ struct ItemProviderIntakeTests {
     func fallbackCopy() {
         let failures: [HandoffFailure] = [.noSupportedItem, .notADurableFile, .folderNotFile, .providerFailed, .providerTimedOut,
                                           .insufficientSpace(additionalBytesNeeded: 5_000_000_000), .insufficientSpace(additionalBytesNeeded: nil),
-                                          .itemTooLarge(limit: 20 << 30), .sourceChanged, .cancelled, .writeFailed("x"), .tooManyItems]
+                                          .itemTooLarge(limit: 20 << 30), .sourceChanged, .cancelled, .writeFailed("x"), .tooManyItems,
+                                          .manifestTooLarge]
         for failure in failures {
             let route = FallbackRoute.for(failure)
             #expect(route.headline.hasPrefix("Not received"))

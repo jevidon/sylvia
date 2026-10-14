@@ -9,9 +9,9 @@ final class ShareSheetUITests: XCTestCase {
         continueAfterFailure = false
     }
 
-    private func launch(bytes: Int, ext: String = "epub") -> XCUIApplication {
+    private func launch(bytes: Int, ext: String = "epub", extraArguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments += ["-G03ShareBytes", String(bytes), "-G03ShareExtension", ext]
+        app.launchArguments += ["-G03ShareBytes", String(bytes), "-G03ShareExtension", ext] + extraArguments
         app.launch()
         XCTAssertTrue(app.staticTexts["harness.summary"].waitForExistence(timeout: 20))
         return app
@@ -27,8 +27,10 @@ final class ShareSheetUITests: XCTestCase {
     /// Opens the share sheet and taps the Sylvia Intake extension, scrolling or using More if needed.
     /// On the iOS 26.5 simulator the share sheet labels a third-party share extension with its containing app's
     /// display name ("Sylvia Intake Spike"), in a cell with identifier "shareCell".
-    private func openExtension(_ app: XCUIApplication) {
-        app.buttons["harness.share"].tap()
+    private func openExtension(_ app: XCUIApplication, from button: String = "harness.share") {
+        let control = app.buttons[button]
+        for _ in 0..<4 where !(control.exists && control.isHittable) { app.swipeUp() }
+        control.tap()
         let target = app.cells.matching(NSPredicate(format: "identifier == %@ AND label == %@", "shareCell", "Sylvia Intake Spike")).firstMatch
         if target.waitForExistence(timeout: 15), target.isHittable {
             target.tap()
@@ -115,6 +117,37 @@ final class ShareSheetUITests: XCTestCase {
         XCTAssertEqual(shareJobs(app), before, "a cancelled share must not import")
     }
 
+    /// G0.3 review R2-01 through the real share sheet and extension: the shared item provider (in the harness process)
+    /// reports progress for 90 s before it would deliver, as an iCloud download or a mail attachment being fetched does.
+    /// Cancel must act within seconds, show the fallback, claim nothing and import nothing. Whether the cancel also
+    /// reaches the provider across the process boundary is recorded, not required: that is the system's XPC behaviour.
+    func testCancelWhileProviderIsStillDelivering() throws {
+        let app = launch(bytes: 1 << 20, extraArguments: ["-G03SlowProviderSeconds", "90"])
+        let before = shareJobs(app)
+        openExtension(app, from: "harness.shareSlow")
+        XCTAssertTrue(app.staticTexts["share.copying"].waitForExistence(timeout: 60), "\(app.debugDescription)")
+        sleep(2)   // the provider is still delivering: nothing has been copied yet
+        let copiedBeforeCancel = app.staticTexts["share.copiedBytes"].label
+        let tapped = Date()
+        app.buttons["share.cancel"].tap()
+        let notReceived = app.staticTexts["share.notReceived"]
+        XCTAssertTrue(notReceived.waitForExistence(timeout: 20), "Cancel did nothing while the provider was delivering:\n\(app.debugDescription)")
+        let elapsed = Date().timeIntervalSince(tapped)
+        let reason = app.staticTexts["share.reason"].label
+        XCTAssertFalse(app.staticTexts["share.received"].exists)
+        print("G03-EVIDENCE cancel before delivery: extension showed '\(copiedBeforeCancel)' when Cancel was tapped; '\(notReceived.label)' / '\(reason)' \(String(format: "%.1f", elapsed)) s after the tap (provider due to deliver at 90 s)")
+        XCTAssertTrue(reason.localizedCaseInsensitiveContains("cancelled"), reason)
+        XCTAssertLessThan(elapsed, 20)
+        app.buttons["share.done"].tap()
+        returnToHarness(app)
+        app.buttons["harness.scan"].tap()
+        sleep(3)
+        XCTAssertEqual(shareJobs(app), before, "a share cancelled before delivery must not import")
+        let providerLog = app.staticTexts["harness.slowProvider"]
+        if !providerLog.exists || !providerLog.isHittable { app.swipeUp() }
+        print("G03-EVIDENCE cancel before delivery: harness-side provider loads: \(providerLog.label); app summary \(app.staticTexts["harness.summary"].label)")
+    }
+
     /// Real process death of the share extension mid-copy (T07 on the simulator). The simulator's processes are
     /// host processes, so the test finds the extension by name and sends SIGKILL, but only to an IntakeShare whose
     /// executable lies inside this simulator's own device directory: an extension running in another simulator (a
@@ -156,6 +189,9 @@ final class ShareSheetUITests: XCTestCase {
         let close = app.buttons["header.closeButton"]
         if close.waitForExistence(timeout: 5) && close.isHittable { close.tap() }
         let scan = app.buttons["harness.scan"]
+        // The harness list may have been scrolled to reach a test button; the scan button is at its top.
+        sleep(1)
+        for _ in 0..<3 where !(scan.exists && scan.isHittable) { app.swipeDown() }
         let hittable = NSPredicate(format: "hittable == true")
         XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: hittable, object: scan)], timeout: 15), .completed,
                        "harness not reachable after the share sheet:\n\(app.debugDescription)")

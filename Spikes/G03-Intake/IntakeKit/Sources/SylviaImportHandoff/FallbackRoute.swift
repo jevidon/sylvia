@@ -72,6 +72,8 @@ public struct FallbackRoute: Sendable, Equatable {
             reason = "Sylvia could not write its copy of the file."
         case .tooManyItems:
             reason = "Share at most \(HandoffManifest.maxItems) files at a time."
+        case .manifestTooLarge:
+            reason = "The names of the shared files are too long to record in one share. Share fewer files at a time."
         }
         return FallbackRoute(headline: notReceivedHeadline, reason: reason, alternatives: alternatives)
     }

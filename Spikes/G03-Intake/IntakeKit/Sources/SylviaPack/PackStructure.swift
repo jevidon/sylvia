@@ -323,7 +323,9 @@ public struct PackStructure: Sendable {
 
     /// Only regular, non-executable files. Returns the Unix mode when the entry carries one.
     static func checkEntryType(versionMadeBy: UInt16, externalAttributes: UInt32, name: String) throws -> UInt32? {
-        if name.hasSuffix("/") { throw PackRejection(.specialEntry, "directory entry") }
+        // The last byte, not the last Character: after a prepended mark (U+0600) a final "/" is part of a Character
+        // that is not "/" (report finding F18).
+        if PathBytes.endsWithSeparator(name) { throw PackRejection(.specialEntry, "directory entry") }
         let host = versionMadeBy >> 8
         switch host {
         case 3, 19:  // Unix, OS X: st_mode in the high 16 bits

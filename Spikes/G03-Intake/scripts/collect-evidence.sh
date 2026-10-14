@@ -17,7 +17,7 @@ grep -v -E '^(◇|􀟈)|Test case passing .* started' "$src/host-intakekit-tests
 for f in sim-intakekit-tests sim-app-tests; do
   {
     echo "# Reduced from the full xcodebuild log ($f.log of the CI run): test results, issues and evidence lines only."
-    grep -E 'G03-EVIDENCE|^(✔|✘)|Test Case|recorded an issue|error:|\*\* TEST|Executed|contract fixtures:|in-memory plain-text|direct file URL provider|truncation sweep:|coordinated writer|short deflate stream|aggregate expansion:|slow but moving provider|EPUB folder|insufficient space:|↳' "$src/$f.log"
+    grep -E 'G03-EVIDENCE|^(✔|✘)|Test Case|recorded an issue|error:|\*\* TEST|Executed|contract fixtures:|in-memory plain-text|direct file URL provider|truncation sweep:|coordinated writer|short deflate stream|aggregate expansion:|slow but moving provider|EPUB folder|insufficient space:|cancel |coordinator cancelled|raw file|raw Finder file|non-ASCII paths|platform JSONDecoder|hidden-separator|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:|↳' "$src/$f.log"
   } > "$dst/$f.log"
 done
 {

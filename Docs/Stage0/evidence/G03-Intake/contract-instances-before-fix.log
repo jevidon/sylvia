@@ -1,0 +1,163 @@
+# G0.3 review R2-04: the differential check run against the manifest readers as they were before the fix
+# Run at 2026-10-12T21:55Z (finished). Host: macOS 26.6.2 (25G83), Apple M5 Max.
+# How: Spikes/G03-Intake/scripts/check-contract-instances.sh as committed in cc1ca03, run once while
+# Spikes/G03-Intake/IntakeKit/Sources/SylviaPack/PackManifest.swift and .../SylviaImportHandoff/HandoffManifest.swift
+# were temporarily replaced by their versions at 3449a8b (before this round's change), then restored with
+# git checkout. Those readers did not check the generator, group metadata, producer or provider-type string bounds,
+# counted media_type and content_type in UTF-8 bytes, checked order only for audio members of an audiobook group,
+# and read created_at with JSONDecoder's .iso8601 strategy. sylviapack-tool's check-manifest command, added in this
+# round, is the same in both runs.
+# Seen below: 45 mismatches, every one in the "agree" class (schema and reader disagreed where they must agree);
+# the documented divergences and the validator quirk behave as they do after the fix. With the fix the same check
+# finds none (host-contract-instances.log, clean run).
+
+Build complete! (5.81 sec)
+RECEIVED handoff=4DC2511C-A08C-485F-A17E-AA1C7D484F69 items=2 bytes=2438156
+handoff.json written by HandoffSession now: valid against import-handoff-manifest.v1
+large pack entries: ['sylviapack/manifest.json', 'sylviapack/manifest.sha256'] then 5 content entries
+large pack sylviapack/manifest.json: valid against sylviapack-manifest.v1
+manifest.sha256 entry equals SHA-256(manifest.json) + LF: True
+
+differential check (schema verdict vs Swift reader verdict on edge inputs):
+  137 cases written
+  MISMATCH: pack generator.name-ascii-0: schema=invalid reader=accepted expected=agree
+  ok: pack generator.name-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack generator.name-ascii-128: schema=valid reader=accepted expected=agree
+  MISMATCH: pack generator.name-ascii-129: schema=invalid reader=accepted expected=agree
+  ok: pack generator.name-nonascii-128cp-256bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: pack generator.name-nonascii-129cp-258bytes: schema=invalid reader=accepted expected=agree
+  MISMATCH: pack generator.version-ascii-0: schema=invalid reader=accepted expected=agree
+  ok: pack generator.version-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack generator.version-ascii-64: schema=valid reader=accepted expected=agree
+  MISMATCH: pack generator.version-ascii-65: schema=invalid reader=accepted expected=agree
+  ok: pack generator.version-nonascii-64cp-128bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: pack generator.version-nonascii-65cp-130bytes: schema=invalid reader=accepted expected=agree
+  ok: pack media_type-ascii-0: schema=invalid reader=refused (manifest_invalid: media_type) expected=agree
+  ok: pack media_type-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack media_type-ascii-128: schema=valid reader=accepted expected=agree
+  ok: pack media_type-ascii-129: schema=invalid reader=refused (manifest_invalid: media_type) expected=agree
+  MISMATCH: pack media_type-nonascii-128cp-256bytes: schema=valid reader=refused (manifest_invalid: media_type) expected=agree
+  ok: pack media_type-nonascii-129cp-258bytes: schema=invalid reader=refused (manifest_invalid: media_type) expected=agree
+  ok: pack title-ascii-0: schema=valid reader=accepted expected=agree
+  ok: pack title-ascii-1024: schema=valid reader=accepted expected=agree
+  MISMATCH: pack title-ascii-1025: schema=invalid reader=accepted expected=agree
+  ok: pack title-nonascii-1024cp-2048bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: pack title-nonascii-1025cp-2050bytes: schema=invalid reader=accepted expected=agree
+  ok: pack creator-ascii-0: schema=valid reader=accepted expected=agree
+  ok: pack creator-ascii-512: schema=valid reader=accepted expected=agree
+  MISMATCH: pack creator-ascii-513: schema=invalid reader=accepted expected=agree
+  ok: pack creator-nonascii-512cp-1024bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: pack creator-nonascii-513cp-1026bytes: schema=invalid reader=accepted expected=agree
+  ok: pack language-ascii-0: schema=valid reader=accepted expected=agree
+  ok: pack language-ascii-35: schema=valid reader=accepted expected=agree
+  MISMATCH: pack language-ascii-36: schema=invalid reader=accepted expected=agree
+  ok: pack language-nonascii-35cp-70bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: pack language-nonascii-36cp-72bytes: schema=invalid reader=accepted expected=agree
+  MISMATCH: pack identifier.scheme-ascii-0: schema=invalid reader=accepted expected=agree
+  ok: pack identifier.scheme-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack identifier.scheme-ascii-64: schema=valid reader=accepted expected=agree
+  MISMATCH: pack identifier.scheme-ascii-65: schema=invalid reader=accepted expected=agree
+  ok: pack identifier.scheme-nonascii-64cp-128bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: pack identifier.scheme-nonascii-65cp-130bytes: schema=invalid reader=accepted expected=agree
+  MISMATCH: pack identifier.value-ascii-0: schema=invalid reader=accepted expected=agree
+  ok: pack identifier.value-ascii-1: schema=valid reader=accepted expected=agree
+  ok: pack identifier.value-ascii-512: schema=valid reader=accepted expected=agree
+  MISMATCH: pack identifier.value-ascii-513: schema=invalid reader=accepted expected=agree
+  ok: pack identifier.value-nonascii-512cp-1024bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: pack identifier.value-nonascii-513cp-1026bytes: schema=invalid reader=accepted expected=agree
+  MISMATCH: handoff bundle_identifier-ascii-0: schema=invalid reader=accepted expected=agree
+  ok: handoff bundle_identifier-ascii-1: schema=valid reader=accepted expected=agree
+  ok: handoff bundle_identifier-ascii-255: schema=valid reader=accepted expected=agree
+  MISMATCH: handoff bundle_identifier-ascii-256: schema=invalid reader=accepted expected=agree
+  ok: handoff bundle_identifier-nonascii-255cp-510bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: handoff bundle_identifier-nonascii-256cp-512bytes: schema=invalid reader=accepted expected=agree
+  MISMATCH: handoff build_version-ascii-0: schema=invalid reader=accepted expected=agree
+  ok: handoff build_version-ascii-1: schema=valid reader=accepted expected=agree
+  ok: handoff build_version-ascii-64: schema=valid reader=accepted expected=agree
+  MISMATCH: handoff build_version-ascii-65: schema=invalid reader=accepted expected=agree
+  ok: handoff build_version-nonascii-64cp-128bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: handoff build_version-nonascii-65cp-130bytes: schema=invalid reader=accepted expected=agree
+  ok: handoff content_type-ascii-0: schema=invalid reader=refused (invalid field content_type) expected=agree
+  ok: handoff content_type-ascii-1: schema=valid reader=accepted expected=agree
+  ok: handoff content_type-ascii-128: schema=valid reader=accepted expected=agree
+  ok: handoff content_type-ascii-129: schema=invalid reader=refused (invalid field content_type) expected=agree
+  MISMATCH: handoff content_type-nonascii-128cp-256bytes: schema=valid reader=refused (invalid field content_type) expected=agree
+  ok: handoff content_type-nonascii-129cp-258bytes: schema=invalid reader=refused (invalid field content_type) expected=agree
+  MISMATCH: handoff provider_type_identifier-ascii-0: schema=invalid reader=accepted expected=agree
+  ok: handoff provider_type_identifier-ascii-1: schema=valid reader=accepted expected=agree
+  ok: handoff provider_type_identifier-ascii-128: schema=valid reader=accepted expected=agree
+  MISMATCH: handoff provider_type_identifier-ascii-129: schema=invalid reader=accepted expected=agree
+  ok: handoff provider_type_identifier-nonascii-128cp-256bytes: schema=valid reader=accepted expected=agree
+  MISMATCH: handoff provider_type_identifier-nonascii-129cp-258bytes: schema=invalid reader=accepted expected=agree
+  MISMATCH: pack order--1-publication-member: schema=invalid reader=accepted expected=agree
+  MISMATCH: pack order-0-publication-member: schema=invalid reader=accepted expected=agree
+  ok: pack order-1-publication-member: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-00 [2026-10-06T12:00:00Z]: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-01 [2026-10-06T12:00:00.5Z]: schema=valid reader=accepted expected=agree
+  MISMATCH: pack created_at-ok-02 [2026-10-06t12:00:00z]: schema=valid reader=refused (not decodable) expected=agree
+  ok: pack created_at-ok-03 [2026-10-06T12:00:00+13:00]: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-04 [2026-10-06T12:00:00-00:00]: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-05 [2026-10-06T15:30:00.123456789+13:00]: schema=valid reader=accepted expected=agree
+  ok: pack created_at-ok-06 [2024-02-29T00:00:00Z]: schema=valid reader=accepted expected=agree
+  MISMATCH: pack created_at-bad-07 [2026-02-30T12:00:00Z]: schema=invalid reader=accepted expected=agree
+  MISMATCH: pack created_at-bad-08 [2025-02-29T00:00:00Z]: schema=invalid reader=accepted expected=agree
+  MISMATCH: pack created_at-bad-09 [2026-10-06T24:00:00Z]: schema=invalid reader=accepted expected=agree
+  MISMATCH: pack created_at-bad-10 [2026-10-06T12:00:60Z]: schema=invalid reader=accepted expected=agree
+  MISMATCH: pack created_at-bad-11 [2026-10-06T12:00:00+1300]: schema=invalid reader=accepted expected=agree
+  ok: pack created_at-bad-12 [2026-10-06T12:00:00+24:00]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: pack created_at-bad-13 [2026-10-06T12:00:00]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: pack created_at-bad-14 [2026-10-06 12:00:00Z]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: pack created_at-bad-15 [2026-10-06T12:00:00.Z]: schema=invalid reader=refused (not decodable) expected=agree
+  MISMATCH: pack created_at-bad-16 [0000-01-01T00:00:00Z]: schema=invalid reader=accepted expected=agree
+  ok: pack created_at-bad-17 [20261006T120000Z]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: pack created_at-bad-18 [6 October 2026]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: handoff created_at-ok-00 [2026-10-06T12:00:00Z]: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-01 [2026-10-06T12:00:00.5Z]: schema=valid reader=accepted expected=agree
+  MISMATCH: handoff created_at-ok-02 [2026-10-06t12:00:00z]: schema=valid reader=refused (not decodable) expected=agree
+  ok: handoff created_at-ok-03 [2026-10-06T12:00:00+13:00]: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-04 [2026-10-06T12:00:00-00:00]: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-05 [2026-10-06T15:30:00.123456789+13:00]: schema=valid reader=accepted expected=agree
+  ok: handoff created_at-ok-06 [2024-02-29T00:00:00Z]: schema=valid reader=accepted expected=agree
+  MISMATCH: handoff created_at-bad-07 [2026-02-30T12:00:00Z]: schema=invalid reader=accepted expected=agree
+  MISMATCH: handoff created_at-bad-08 [2025-02-29T00:00:00Z]: schema=invalid reader=accepted expected=agree
+  MISMATCH: handoff created_at-bad-09 [2026-10-06T24:00:00Z]: schema=invalid reader=accepted expected=agree
+  MISMATCH: handoff created_at-bad-10 [2026-10-06T12:00:60Z]: schema=invalid reader=accepted expected=agree
+  MISMATCH: handoff created_at-bad-11 [2026-10-06T12:00:00+1300]: schema=invalid reader=accepted expected=agree
+  ok: handoff created_at-bad-12 [2026-10-06T12:00:00+24:00]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: handoff created_at-bad-13 [2026-10-06T12:00:00]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: handoff created_at-bad-14 [2026-10-06 12:00:00Z]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: handoff created_at-bad-15 [2026-10-06T12:00:00.Z]: schema=invalid reader=refused (not decodable) expected=agree
+  MISMATCH: handoff created_at-bad-16 [0000-01-01T00:00:00Z]: schema=invalid reader=accepted expected=agree
+  ok: handoff created_at-bad-17 [20261006T120000Z]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: handoff created_at-bad-18 [6 October 2026]: schema=invalid reader=refused (not decodable) expected=agree
+  ok: pack path-ascii-512bytes: schema=valid reader=accepted expected=agree
+  ok: pack path-ascii-513bytes: schema=invalid reader=refused (unsafe_path: length) expected=agree
+  ok: pack path-nonascii-512bytes-258cp: schema=valid reader=accepted expected=agree
+  ok: pack path-nonascii-513bytes-259cp: schema=valid reader=refused (unsafe_path: length) expected=documented
+  ok: pack path-example-607bytes-307cp: schema=valid reader=refused (unsafe_path: length) expected=documented
+  ok: pack path-component-255bytes: schema=valid reader=accepted expected=agree
+  ok: pack path-component-256bytes-128cp: schema=valid reader=refused (unsafe_path: component length) expected=documented
+  ok: pack path-sixteen-components: schema=invalid reader=refused (unsafe_path: too deep) expected=agree
+  ok: handoff original_filename-ascii-255bytes: schema=valid reader=accepted expected=agree
+  ok: handoff original_filename-ascii-256bytes: schema=invalid reader=refused (invalid field original_filename) expected=agree
+  ok: handoff original_filename-nonascii-255bytes-128cp: schema=valid reader=accepted expected=agree
+  ok: handoff original_filename-nonascii-256bytes-128cp: schema=valid reader=refused (invalid field original_filename) expected=documented
+  ok: handoff original_filename-empty: schema=invalid reader=refused (invalid field original_filename) expected=agree
+  ok: pack rule-path-not-nfc: schema=valid reader=refused (unsafe_path: not Unicode NFC) expected=documented
+  ok: pack rule-paths-equal-ignoring-case: schema=valid reader=refused (duplicate_path: manifest lists a path twice (case and Unicode normalization ignored)) expected=documented
+  ok: pack rule-file-is-also-a-folder: schema=valid reader=refused (path_conflict: a file is also used as a folder) expected=documented
+  ok: pack rule-total-size-not-the-sum: schema=valid reader=refused (manifest_invalid: total_size is not the sum of sizes) expected=documented
+  ok: pack rule-unknown-group-id: schema=valid reader=refused (manifest_invalid: unknown group_id) expected=documented
+  ok: pack rule-audio-member-without-order: schema=valid reader=refused (manifest_invalid: audiobook member needs order >= 1) expected=documented
+  ok: pack rule-duplicate-member-order: schema=valid reader=refused (manifest_invalid: duplicate member order) expected=documented
+  ok: pack rule-epub-in-audiobook-group: schema=valid reader=refused (manifest_invalid: audiobook member must be audio or cover) expected=documented
+  ok: pack rule-order-without-group: schema=valid reader=refused (manifest_invalid: order without group_id) expected=documented
+  ok: pack rule-epub-over-1gib: schema=valid reader=refused (limit_exceeded: epub file of 1073741825 bytes) expected=documented
+  ok: handoff rule-duplicate-stored-path: schema=valid reader=refused (duplicate item id or stored_path) expected=documented
+  ok: handoff rule-total-bytes-not-the-sum: schema=valid reader=refused (total_bytes is not the sum of byte_count) expected=documented
+  ok: pack quirk-sha256-trailing-line-feed: schema=valid reader=refused (manifest_invalid: sha256) expected=quirk
+  ok: handoff quirk-stored-path-trailing-line-feed: schema=valid reader=refused (stored_path is not items/<n>[.<ext>]) expected=quirk
+differential: agree: 74 as expected, 45 not
+differential: documented: 16 as expected, 0 not
+differential: quirk: 2 as expected, 0 not
+differential: 137 cases, mismatches=45

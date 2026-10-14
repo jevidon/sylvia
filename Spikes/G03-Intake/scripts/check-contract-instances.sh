@@ -1,21 +1,31 @@
 #!/usr/bin/env bash
-# G0.3: checks that what the current code writes conforms to the contracts, not just the hand-written fixtures.
+# G0.3: checks that what the current code writes and reads conforms to the contracts, not just the hand-written
+# fixtures.
 #   1. a handoff.json written now by the share extension's write routine (sylviapack-tool handoff, the same
 #      HandoffSession code) validates against import-handoff-manifest.v1;
 #   2. the manifest inside the generated large pack validates against sylviapack-manifest.v1, and its
-#      sylviapack/manifest.sha256 entry is the SHA-256 of the manifest bytes plus a line feed.
+#      sylviapack/manifest.sha256 entry is the SHA-256 of the manifest bytes plus a line feed;
+#   3. differential check (reviews R2-04, R3-01, R3-02, R4-01 to R4-03; contract_differential.py beside this script):
+#      named edge inputs and seeded random mutations go through the schemas, judged as Scripts/validate-contracts.py
+#      would judge them as fixtures, and through the Swift readers (sylviapack-tool check-manifest, which applies the
+#      readers' size limits too). A named case must give its expected outcome; a random one must agree or be refused by
+#      the reader for a reason in a documented class. A manifest a reader accepts and its schema refuses always fails.
+#      Every created_at both sides accept must decode to Python's proleptic Gregorian instant (sylviapack-tool
+#      created-at).
 #
 #   Spikes/G03-Intake/scripts/check-contract-instances.sh
 set -euo pipefail
 source "$(cd "$(dirname "$0")/../../../Scripts/lib" && pwd)/env.sh"
 kit="$SYLVIA_ROOT/Spikes/G03-Intake/IntakeKit"
 pack="$SYLVIA_FIXTURE_CACHE/generated/g03-intake/large.sylviapack"
-work="$SYLVIA_ROOT/.build/g03-contract-check"
 [[ -f "$pack" ]] || { echo "missing $pack; run Scripts/fixtures/generate-g03-intake-pack.sh" >&2; exit 1; }
+mkdir -p "$SYLVIA_ROOT/.build"
+work="$(mktemp -d "$SYLVIA_ROOT/.build/g03-contract-check.XXXXXX")"
+trap 'rm -rf "$work"' EXIT
 
 (cd "$kit" && swift build --configuration release --product sylviapack-tool 2>&1 | tail -1)
 tool="$kit/.build/release/sylviapack-tool"
-rm -rf "$work"; mkdir -p "$work/inbox"
+mkdir -p "$work/inbox"
 "$tool" handoff "$work/inbox" "$SYLVIA_ROOT/Fixtures/epub/se-walden.epub" "$SYLVIA_ROOT/Fixtures/audio/meditations-01-first180s.mp3"
 handoff="$(find "$work/inbox" -name handoff.json)"
 
@@ -51,4 +61,8 @@ print(f"manifest.sha256 entry equals SHA-256(manifest.json) + LF: {ok}")
 failures += 0 if ok else 1
 sys.exit(1 if failures else 0)
 PY
-rm -rf "$work"
+
+echo
+echo "differential check (schema verdict vs Swift reader verdict):"
+mkdir -p "$work/differential"
+sylvia_python "$(dirname "$0")/contract_differential.py" "$SYLVIA_ROOT/Contracts" "$work/differential" "$tool"

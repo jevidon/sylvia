@@ -9,6 +9,8 @@ public final class IntakeJournal: @unchecked Sendable {
         case shareExtension = "share_extension"
         case openIn = "open_in"
         case documentsBundle = "documents_bundle"
+        /// A raw supported file (EPUB, PDF, text, Markdown, audio) that Finder copied into the drop area (plan 8.5).
+        case documentsFile = "documents_file"
         case documentPicker = "document_picker"
     }
 

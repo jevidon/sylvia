@@ -10,17 +10,31 @@
 #                                                       # probe still runs); the clean evidence run never skips it
 #
 # Steps (each exits non-zero on failure):
-#   1. fixtures: LibriVox download (fetch.sh) and the deterministic >4 GiB pack (generate-g03-intake-pack.sh)
+#   1. fixtures: the deterministic >4 GiB pack (generate-g03-intake-pack.sh, which downloads the LibriVox file the pack
+#      holds with Scripts/fixtures/fetch.sh only when it has to rebuild the pack)
 #   2. host: IntakeKit test suite (swift test)
 #   3. host: large-pack run (validate, extract, cross-checks, truncation sweep, multi-GiB copy memory)
 #   4. host: SIGKILL of the handoff writer at every step and at random moments of a 4.5 GiB copy
-#   5. host: current code's handoff.json and pack manifest validate against the contract schemas
+#   5. host: current code's handoff.json and pack manifest validate against the contract schemas, and the schemas
+#      and the Swift readers give the same verdict on edge inputs except the documented divergences
 #   6. simulator: IntakeKit test suite on iOS (xcodebuild, IntakeKit-Package scheme)
-#   7. simulator: harness app in-app tests (layout, >4 GiB pack), UI tests through the real share sheet and the Files
-#      app, and open-in through the system's document handling (sim-open-in.sh)
+#   7. simulator: harness app in-app tests (layout, >4 GiB pack), UI tests through the real share sheet, the Files
+#      app and the document picker, and open-in through the system's document handling (sim-open-in.sh)
 #   8. host: archive-library evidence for ADR-0010 section 3 (dependency probe; ZIP64 and truncation evaluation)
 # Host scripts work in mktemp directories of their own and test sandboxes are removed per test, so parallel runs
-# do not collide. The fixtures in the cache are shared read-only.
+# do not collide. The fixture cache ($SYLVIA_FIXTURE_CACHE) is shared by every run on the Mac:
+#   - Step 1 is the only step that writes the cache's files. The generator holds an exclusive lock for its whole
+#     check-and-build sequence, including the LibriVox download a rebuild needs, and publishes each file with one rename,
+#     so a run that overlaps a rebuild in another worktree sees the previous complete file or the new one, never part of
+#     one (review R2-06), and two runs of this drop-in never download at the same time (review R4-06; before it, step 1
+#     also ran fetch.sh outside the lock).
+#   - Steps 2 to 8 only read the cache's files; steps 3 and 8 keep their own work in mktemp folders beside them,
+#     removed on exit.
+#   - fetch.sh downloads to the fixed path <name>.partial and then renames it. A fetch.sh run outside the lock (another
+#     workstream's, or a person fetching every fixture) at the same time as a rebuild's can therefore truncate the other's
+#     download or publish a file the other is still writing. The pinned pack digest stops a wrong pack from being
+#     published, so here the effect is a failed run; the fix (download to a mktemp name, verify, then rename) is
+#     requested from fetch.sh's owner (report, "Requests to the owners of shared files").
 # Needs: Xcode 27.0, XcodeGen, Python 3, network for the package and fixture downloads, about 30 GiB free disk.
 set -euo pipefail
 source "$(cd "$(dirname "$0")/../lib" && pwd)/env.sh"
@@ -73,12 +87,11 @@ echo "git: $(git -C "$SYLVIA_ROOT" rev-parse --short HEAD 2>/dev/null || echo un
 echo "logs: $logs"
 
 step "1. fixtures"
-"$SYLVIA_ROOT/Scripts/fixtures/fetch.sh" meditationsofmarcusaurelius_01
 "$SYLVIA_ROOT/Scripts/fixtures/generate-g03-intake-pack.sh"
 
 step "2. host: IntakeKit tests (swift test)"
 logged "$logs/host-intakekit-tests.log" bash -c "cd '$kit' && swift test"
-grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|uncoordinated writer|coordinated writer|short deflate stream|aggregate expansion:|slow but moving provider|EPUB folder|insufficient space:' \
+grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|uncoordinated writer|coordinated writer|short deflate stream|aggregate expansion:|slow but moving provider|EPUB folder|insufficient space:|cancel |coordinator cancelled|raw file|raw Finder file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:' \
   "$logs/host-intakekit-tests.log" | grep -v '^◇' | sed 's/^/  /'
 check_warnings "$logs/host-intakekit-tests.log"
 
@@ -90,9 +103,9 @@ step "4. host: kill the handoff writer at every step and at random moments"
 own_log "$logs/host-handoff-kill.log" "$spike/scripts/host-handoff-kill.sh"
 grep -E '^failures=|^kills that landed|^uninterrupted copy' "$logs/host-handoff-kill.log" | sed 's/^/  /'
 
-step "5. host: current output validates against the contract schemas"
+step "5. host: current output validates against the contract schemas; schema and reader agree on edge inputs"
 logged "$logs/host-contract-instances.log" "$spike/scripts/check-contract-instances.sh"
-sed 's/^/  /' "$logs/host-contract-instances.log"
+grep -v -E '^  ok: ' "$logs/host-contract-instances.log" | sed 's/^/  /'
 
 step "6. simulator: IntakeKit tests on iOS"
 sim_name="${G03_SIM_NAME:-Sylvia-M0-g03-intake}"
@@ -115,7 +128,7 @@ for devices in json.load(sys.stdin)["devices"].values():
 echo "simulator: $runtime ($devtype), $udid"
 logged "$logs/sim-intakekit-tests.log" bash -c "cd '$kit' && xcodebuild test -scheme IntakeKit-Package \
   -destination 'id=$udid' -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution"
-grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|aggregate expansion:|slow but moving provider|\*\* TEST' \
+grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|aggregate expansion:|slow but moving provider|cancel |coordinator cancelled|raw file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:|\*\* TEST' \
   "$logs/sim-intakekit-tests.log" | grep -v '^◇' | sed 's/^/  /'
 check_warnings "$logs/sim-intakekit-tests.log"
 

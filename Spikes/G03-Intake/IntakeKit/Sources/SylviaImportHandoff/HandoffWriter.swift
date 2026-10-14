@@ -58,6 +58,9 @@ public enum HandoffFailure: Error, Equatable, Sendable, CustomStringConvertible 
     case cancelled
     case writeFailed(String)
     case tooManyItems
+    /// The handoff's manifest would exceed the size the app's scan reads (`HandoffManifest.maxBytes`): only file names
+    /// and type identifiers near their limits, full of characters JSON escapes, come near it (G0.3 review R4-02).
+    case manifestTooLarge
 
     public var description: String {
         switch self {
@@ -72,6 +75,7 @@ public enum HandoffFailure: Error, Equatable, Sendable, CustomStringConvertible 
         case .cancelled: "cancelled"
         case let .writeFailed(reason): "could not write the copy: \(reason)"
         case .tooManyItems: "too many items in one share"
+        case .manifestTooLarge: "the shared files' names are too long to record in one share"
         }
     }
 
@@ -197,12 +201,18 @@ public final class HandoffSession: @unchecked Sendable {
     }
 
     /// Writes handoff.json atomically and last. Returns the receipt only after the rename is durable.
-    public func commit() throws -> HandoffReceipt {
+    ///
+    /// `isCancelled` is checked once more before the commit starts: the copier polls it only before each read, so a
+    /// Cancel tapped after the last byte was read (while the item is synced and verified) would otherwise still end in
+    /// "Received" (G0.3 review R2-01). Once the commit has started it runs to the end (milliseconds), and its receipt
+    /// stands.
+    public func commit(isCancelled: () -> Bool = { false }) throws -> HandoffReceipt {
         let snapshot: [HandoffManifest.Item] = try lock.withLock {
             guard !finished else { throw HandoffFailure.writeFailed("session already finished") }
             guard !items.isEmpty else { throw HandoffFailure.noSupportedItem }
             return items
         }
+        if isCancelled() { throw HandoffFailure.cancelled }
         let faults = environment.faults
         try faults.reach(.syncItemsDirectory)
         try Durability.syncDirectory(directory.appendingPathComponent("items", isDirectory: true))
@@ -216,8 +226,12 @@ public final class HandoffSession: @unchecked Sendable {
             totalBytes: snapshot.reduce(0) { $0 + $1.byteCount }
         )
         try manifest.validate(directoryName: handoffID.uuidString)
+        // The app's scan refuses a handoff.json over `HandoffManifest.maxBytes`, so committing one would show "Received"
+        // for a handoff the app then rejects (G0.3 review R4-02). Refuse it here: the user gets the fallback instead.
+        let encoded = try manifest.encoded()
+        guard encoded.count <= HandoffManifest.maxBytes else { throw HandoffFailure.manifestTooLarge }
         try AtomicFile.write(
-            try manifest.encoded(),
+            encoded,
             to: directory.appendingPathComponent(HandoffManifest.fileName),
             policy: .noReplace,
             faults: faults,
@@ -254,7 +268,7 @@ public final class HandoffSession: @unchecked Sendable {
                     isCancelled: isCancelled, progress: progress
                 )
             }
-            return .success(try session.commit())
+            return .success(try session.commit(isCancelled: isCancelled))
         } catch let death as SimulatedProcessDeath {
             throw death
         } catch {
@@ -263,8 +277,16 @@ public final class HandoffSession: @unchecked Sendable {
         }
     }
 
+    /// The shared file's name as metadata: every "/" code point becomes "_", U+0000 is dropped, and the result is cut to
+    /// 255 UTF-8 bytes at a character boundary. Code points, not `Character`s: Foundation's `replacingOccurrences(of:
+    /// "/", ...)` leaves a "/" that a combining mark follows (one grapheme cluster with it), which the manifest's own
+    /// validation then refused, so such a share failed (found in the G0.3 review R4-01 audit; report F18).
     static func cleanFilename(_ name: String, fallback: String) -> String {
-        var cleaned = name.replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "\u{0}", with: "")
+        var scalars = String.UnicodeScalarView()
+        for scalar in name.unicodeScalars where scalar != "\u{0}" {
+            scalars.append(scalar == "/" ? "_" : scalar)
+        }
+        var cleaned = String(scalars)
         while cleaned.utf8.count > 255 { cleaned.removeLast() }
         return cleaned.isEmpty ? fallback : cleaned
     }

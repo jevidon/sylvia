@@ -1,0 +1,16 @@
+node v22.23.1; python 3.14.6
+1. contract patterns: 98 in 18 documents; all compile in Python, in the checker's ECMA-262 check and in node with and without the u flag, except the 2 recorded ones, which fail in the checker and in node with and without u
+   unsupported here '\\p{L}': checker refuses; node with u accepts
+   unsupported here '\\P{Lu}': checker refuses; node with u accepts
+   unsupported here '(?<a>x)|(?<a>y)': checker refuses; node with u refuses: Invalid regular expression: /(?<a>x)|(?<a>y)/u: Duplicate capture group name
+   unsupported here '(?i:a)': checker refuses; node with u refuses: Invalid regular expression: /(?i:a)/u: Invalid group
+   unsupported here '(?<ä>x)': checker refuses; node with u accepts
+2. grammar check against node with the u flag: 42 valid and 42 invalid patterns given the same verdict; 5 refused on purpose (never accepted where node refuses)
+3. secret-name pattern: 292 names (151 refused, among them the lookalike spellings), the same in the context-pack (?i) pattern in Python, the portable pattern in Python, and node with and without u
+4. failure-reason guard: 20 refused, 14 allowed and 5 residual strings, the same in Python and node with and without u
+5. secret 'key\n': Python matches, node does not match (Python's $ also matches before a final newline)
+5. reason 'x\x1c/private/var/x': Python matches, node does not match (Python's \s includes U+001C-U+001F)
+5. reason 'x\x85/private/var/x': Python matches, node does not match (Python's \s includes U+0085)
+5. reason 'x\ufeff/private/var/x': Python does not match, node matches (ECMA-262's \s includes U+FEFF)
+6. case classes: for all 26 ASCII letters the checker's class equals a scan of every code point (non-ASCII members: i: U+0130 U+0131, k: U+212A, s: U+017F)
+result: pass (0 problem(s))

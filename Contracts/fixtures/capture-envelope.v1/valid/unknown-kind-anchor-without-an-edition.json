@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "capture_id": "16fbbd93-6b7a-54ba-82ca-e407cf313ea0",
+  "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+  "kind": "note",
+  "source_snapshot": {
+    "title": "Meditations",
+    "author_display": "Marcus Aurelius",
+    "source_kind": "later_source_example"
+  },
+  "anchors": [
+    {
+      "schema_version": 1,
+      "kind": "later_kind_example",
+      "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+      "later_field": {
+        "opaque": true,
+        "note": "A field only a later writer understands."
+      }
+    }
+  ],
+  "notes": [
+    {
+      "note_id": "02071957-b74e-5269-ba8d-dc7b3d6b15b2",
+      "current_revision": 1,
+      "revisions": [
+        {
+          "revision": 1,
+          "body": "Located only by a later writer's anchor.",
+          "format": "plain",
+          "saved_at": "2026-10-13T08:00:10Z"
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "surface": "manual_entry",
+    "idempotency_key": "fixture-later-no-edition"
+  },
+  "created_at": "2026-10-13T08:00:00Z",
+  "updated_at": "2026-10-13T08:00:00Z",
+  "revision": 1
+}

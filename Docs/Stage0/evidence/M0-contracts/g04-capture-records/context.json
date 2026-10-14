@@ -1,0 +1,58 @@
+{
+  "audio_output" : "none: decode and encode only (no player, no audio session)",
+  "durable_writes" : {
+    "3D58072B-818D-468F-8B35-D5AC8A2465FA" : 1,
+    "732EB85E-B21C-4546-A122-D4915D6D2B95" : 2,
+    "56962481-DBE5-4712-A50E-AF182ADD29E4" : 2,
+    "B0C1C2E2-ED9E-4364-A610-E5A54A75749E" : 2,
+    "B9168DF4-3824-4B1F-9F73-0E3A4EEE38DC" : 1
+  },
+  "edition_id" : "00000000-0000-4000-8000-000000000301",
+  "environment" : "host: macOS Version 26.6.2 (Build 25G83), 18 cores",
+  "excerpt_files" : [
+    {
+      "byte_count" : 295185,
+      "capture_id" : "732EB85E-B21C-4546-A122-D4915D6D2B95",
+      "file_name" : "732EB85E-B21C-4546-A122-D4915D6D2B95.m4a",
+      "sha256" : "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6"
+    },
+    {
+      "byte_count" : 288429,
+      "capture_id" : "B0C1C2E2-ED9E-4364-A610-E5A54A75749E",
+      "file_name" : "B0C1C2E2-ED9E-4364-A610-E5A54A75749E.m4a",
+      "sha256" : "c35745a28041b410171461f0d0629f42c8b32765e9c3623d563493025cd6964d"
+    }
+  ],
+  "members" : [
+    {
+      "asset_id" : "00000000-0000-4000-8000-000000000401",
+      "byte_count" : 1298711,
+      "duration_ms" : 162299,
+      "file_name" : "Part 1.mp3",
+      "sha256" : "2d1e16363bc6d43f9acbd52f91a029ee19eef27871791e820975eb4d2348a94a"
+    },
+    {
+      "asset_id" : "00000000-0000-4000-8000-000000000402",
+      "byte_count" : 1100598,
+      "duration_ms" : 137535,
+      "file_name" : "Part 2.mp3",
+      "sha256" : "9f096a3ae944e155e8b3e6321bb62a42d02f51256a20f299b25b3256e008bfaf"
+    },
+    {
+      "asset_id" : "00000000-0000-4000-8000-000000000403",
+      "byte_count" : 1200699,
+      "duration_ms" : 150047,
+      "file_name" : "Part 3.mp3",
+      "sha256" : "ed3c23c360c9f3a8157f494b30c681247647d223b71e581475686634858e8cba"
+    },
+    {
+      "asset_id" : "00000000-0000-4000-8000-000000000404",
+      "byte_count" : 961418,
+      "duration_ms" : 120137,
+      "file_name" : "Part 10.mp3",
+      "sha256" : "1f46ef641cbee6b6d0b0cc19e843457919f060bc4c899f7daf20a16041ec7967"
+    }
+  ],
+  "timeline_revision" : 1,
+  "what" : "Records written by G0.4's FileCaptureStore through CaptureService and AACExcerptExporter, and facts the spike does not record (member digests, excerpt digests, the number of durable writes the store made per record)."
+}

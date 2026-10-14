@@ -1,0 +1,5164 @@
+[
+  {
+    "fixture": "invalid/missing-schema-version.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/schema_version"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "schema_version"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/newer-schema-version.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/schema_version",
+        "value": 2
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "const",
+        "instance_path": "/schema_version",
+        "schema_path": "properties/schema_version/const"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-capture-id.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/capture_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "capture_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/uppercase-capture-id.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/capture_id",
+        "value": "2D9E93BA-A5D0-5540-BB2A-586ABEDDD1E9"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/capture_id",
+        "schema_path": "properties/capture_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-work-id.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/work_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "work_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-kind.json",
+    "base": "note-on-a-physical-book-page.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/kind"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "kind"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/kind-uppercase.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/kind",
+        "value": "TEXT_QUOTE"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/kind",
+        "schema_path": "properties/kind/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-source-snapshot.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/source_snapshot"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "source_snapshot"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/empty-snapshot-title.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/source_snapshot/title",
+        "value": ""
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minLength",
+        "instance_path": "/source_snapshot/title",
+        "schema_path": "properties/source_snapshot/properties/title/minLength"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-anchors.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/anchors"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "anchors"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-notes.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/notes"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "notes"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-provenance.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/provenance"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "provenance"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-idempotency-key.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/provenance/idempotency_key"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/provenance",
+        "schema_path": "properties/provenance/required",
+        "property": "idempotency_key"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/unknown-provenance-surface.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/provenance/surface",
+        "value": "share_extension"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/provenance/surface",
+        "schema_path": "allOf[known-kind-values]/then/properties/provenance/properties/surface/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-created-at.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/created_at"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "created_at"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/non-utc-created-at.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/created_at",
+        "value": "2026-10-13T10:00:00+02:00"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/created_at",
+        "schema_path": "properties/created_at/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/created-at-impossible-date.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/created_at",
+        "value": "2026-02-30T08:00:00Z"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "format",
+        "instance_path": "/created_at",
+        "schema_path": "properties/created_at/format"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-updated-at.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/updated_at"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "updated_at"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-revision.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/revision"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "revision"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/revision-zero.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/revision",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/revision",
+        "schema_path": "properties/revision/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/null-edition-id.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/edition_id",
+        "value": null
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/edition_id",
+        "schema_path": "properties/edition_id/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/secret-field-name.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/password",
+        "value": "not-a-real-password"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "propertyNames/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/trashed-at-not-utc.json",
+    "base": "quote-in-trash.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/trashed_at",
+        "value": "2026-10-14T10:00:00+01:00"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/trashed_at",
+        "schema_path": "properties/trashed_at/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/location-label-without-origin.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/source_snapshot/location_label_origin"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "dependentRequired",
+        "instance_path": "/source_snapshot",
+        "schema_path": "properties/source_snapshot/dependentRequired",
+        "property": "location_label_origin"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/location-origin-without-label.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/source_snapshot/location_label"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "dependentRequired",
+        "instance_path": "/source_snapshot",
+        "schema_path": "properties/source_snapshot/dependentRequired",
+        "property": "location_label"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/location-origin-machine.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/source_snapshot/location_label_origin",
+        "value": "machine_suggested"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/source_snapshot/location_label_origin",
+        "schema_path": "allOf[known-kind-values]/then/properties/source_snapshot/properties/location_label_origin/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-revision-html-format.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/revisions/0/format",
+        "value": "html"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/notes/0/revisions/0/format",
+        "schema_path": "allOf[known-kind-values]/then/properties/notes/items/properties/revisions/items/properties/format/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-revision-missing-saved-at.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/notes/0/revisions/0/saved_at"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/notes/0/revisions/0",
+        "schema_path": "properties/notes/items/properties/revisions/items/required",
+        "property": "saved_at"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-without-revisions.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/revisions",
+        "value": []
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/notes/0/revisions",
+        "schema_path": "properties/notes/items/properties/revisions/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quoted-text-without-origin.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/quoted_text_origin"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "dependentRequired",
+        "instance_path": "",
+        "schema_path": "dependentRequired",
+        "property": "quoted_text_origin"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/origin-without-quoted-text.json",
+    "base": "note-on-a-physical-book-page.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/quoted_text_origin",
+        "value": "user_entered"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "dependentRequired",
+        "instance_path": "",
+        "schema_path": "dependentRequired",
+        "property": "quoted_text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/empty-quoted-text.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text",
+        "value": ""
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minLength",
+        "instance_path": "/quoted_text",
+        "schema_path": "properties/quoted_text/minLength"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/selection-without-anchors.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors",
+        "value": []
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/anchors",
+        "schema_path": "allOf[selection-has-anchors]/then/properties/anchors/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/anchors-without-edition-id.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/edition_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[anchor-names-edition]/then/required",
+        "property": "edition_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/anchors-without-edition-id-pdf.json",
+    "base": "quote-pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/edition_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[anchor-names-edition]/then/required",
+        "property": "edition_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/anchors-without-edition-id-text.json",
+    "base": "quote-text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/edition_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[anchor-names-edition]/then/required",
+        "property": "edition_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/anchors-without-edition-id-audio.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/edition_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[anchor-names-edition]/then/required",
+        "property": "edition_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-kind-with-an-unknown-surface.json",
+    "base": "note-on-a-physical-book-page.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/provenance/surface",
+        "value": "share_extension"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/provenance/surface",
+        "schema_path": "allOf[known-kind-values]/then/properties/provenance/properties/surface/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-with-an-unknown-surface.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/provenance/surface",
+        "value": "share_extension"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/provenance/surface",
+        "schema_path": "allOf[known-kind-values]/then/properties/provenance/properties/surface/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-with-an-unknown-location-origin.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/source_snapshot/location_label_origin",
+        "value": "machine_suggested"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/source_snapshot/location_label_origin",
+        "schema_path": "allOf[known-kind-values]/then/properties/source_snapshot/properties/location_label_origin/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/word-with-an-unknown-note-format.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/revisions/0/format",
+        "value": "html"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/notes/0/revisions/0/format",
+        "schema_path": "allOf[known-kind-values]/then/properties/notes/items/properties/revisions/items/properties/format/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/anchor-without-asset-digest.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors/0",
+        "value": {
+          "asset_id": "6d154f6c-4092-5eac-8ffc-3356c559a93e",
+          "exact_text": "From my mother,3 piety and beneficence",
+          "kind": "epub",
+          "position": 5,
+          "prefix": "Book\n\t\t\t\tI\n\t\t\t\n\t\t\tFrom my grandfather Verus1 I learned good morals and the government of my temper.\n\t\t\tFrom the reputation and remembrance of my father,2 modesty and a manly character.\n\t\t\t",
+          "progression": 0.041666666666666664,
+          "reader": {
+            "adapter": "readium-swift",
+            "adapter_version": "3.11.0",
+            "locator": {
+              "href": "epub/text/book-1.xhtml",
+              "locations": {
+                "position": 5,
+                "progression": 0.041666666666666664,
+                "totalProgression": 0.025716145833333332
+              },
+              "text": {
+                "after": ", and abstinence, not only from evil deeds, but even from evil thoughts; and further, simplicity in my way of living, far removed from the habits of the rich.\n\t\t\tFrom my great-grandfather,4 not to",
+                "before": "Book\n\t\t\t\tI\n\t\t\t\n\t\t\tFrom my grandfather Verus1 I learned good morals and the government of my temper.\n\t\t\tFrom the reputation and remembrance of my father,2 modesty and a manly character.\n\t\t\t",
+                "highlight": "From my mother,3 piety and beneficence"
+              },
+              "title": "Book I",
+              "type": "application/xhtml+xml"
+            }
+          },
+          "resource_href": "epub/text/book-1.xhtml",
+          "resource_media_type": "application/xhtml+xml",
+          "suffix": ", and abstinence, not only from evil deeds, but even from evil thoughts; and further, simplicity in my way of living, far removed from the habits of the rich.\n\t\t\tFrom my great-grandfather,4 not to",
+          "text_offsets": {
+            "basis": "sylvia-extraction",
+            "block_index": 3,
+            "end": 38,
+            "extraction_version": "readium-swift-3.11.0+html-content-iterator+sylvia-sanitizer-2+chunker-1",
+            "start": 0,
+            "unit": "unicode_scalar"
+          },
+          "total_progression": 0.025716145833333332,
+          "schema_version": 1,
+          "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+          "edition_id": "72c2260b-4f1b-52f7-a9e7-883bd8d80481"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/anchors/0",
+        "schema_path": "properties/anchors/items/allOf[epub]/then/required",
+        "property": "asset_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-without-quoted-text.json",
+    "base": "quote-typed-for-a-physical-book.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/quoted_text"
+      },
+      {
+        "op": "remove",
+        "path": "/quoted_text_origin"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text_quote]/then/required",
+        "property": "quoted_text"
+      }
+    ],
+    "why": "the quotation and its origin, which requires it (dependentRequired)"
+  },
+  {
+    "fixture": "invalid/quote-from-machine-transcript.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text_origin",
+        "value": "machine_transcript"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[transcript-origin]/then/required",
+        "property": "transcript"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-with-audio-anchor.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors/0",
+        "value": {
+          "schema_version": 1,
+          "kind": "audio",
+          "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+          "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55",
+          "timeline_revision": 1,
+          "ranges": [
+            {
+              "asset_id": "00000000-0000-4000-8000-000000000401",
+              "asset_sha256": "2d1e16363bc6d43f9acbd52f91a029ee19eef27871791e820975eb4d2348a94a",
+              "start_ms": 60000,
+              "end_ms": 90000
+            }
+          ]
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/anchors/0",
+        "schema_path": "allOf[text_quote]/then/properties/anchors/items/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-with-word-entry.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/word",
+        "value": {
+          "headword": "beneficence",
+          "source_sentence": "From my mother,3 piety and beneficence, and abstinence, not only from evil deeds, but even from evil thoughts; and further, simplicity in my way of living, far removed from the habits of the rich."
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[text_quote]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-with-generated-answer.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/generated_answer",
+        "value": {
+          "conversation_id": "2a73fbc7-91f2-5a57-b29e-ed3d102d490b",
+          "message_id": "4212cf05-9a0a-586a-9e6f-df3c1b98939c",
+          "context_pack_id": "40f7ccbe-4587-5ffc-856a-37ed78bd927d",
+          "question": "What does he mean by piety here?",
+          "answer_text": "In the selected passage [c1], piety is listed among what he learned from his mother.",
+          "answer_state": "complete",
+          "endpoint": {
+            "provider_kind": "anthropic_messages",
+            "host": "api.example.invalid",
+            "classification": "hosted",
+            "model": "fixture-model-1"
+          }
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[text_quote]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-with-excerpt.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "pending"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[text_quote]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-with-transcript.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/transcript",
+        "value": {
+          "clip_sha256": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6",
+          "raw_text": "From the gods, to have had good grandfathers, good parents, a good sister.",
+          "segments": [
+            {
+              "start_ms": 0,
+              "end_ms": 4200,
+              "text": "From the gods, to have had good grandfathers, good parents, a good sister."
+            }
+          ],
+          "language": "en",
+          "provider_kind": "openai_compatible_transcription",
+          "host": "speech.example.invalid",
+          "model": "fixture-transcriber-1",
+          "created_at": "2026-10-13T08:05:00Z",
+          "discarded_segment_count": 0
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[text_quote]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-typed-at-an-epub-anchor.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text_origin",
+        "value": "user_entered"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/anchors/0",
+        "schema_path": "allOf[typed-quote-has-no-reader-anchor]/then/properties/anchors/items/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-typed-at-a-pdf-anchor.json",
+    "base": "quote-pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text_origin",
+        "value": "user_entered"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/anchors/0",
+        "schema_path": "allOf[typed-quote-has-no-reader-anchor]/then/properties/anchors/items/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-typed-at-a-text-anchor.json",
+    "base": "quote-text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text_origin",
+        "value": "user_entered"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/anchors/0",
+        "schema_path": "allOf[typed-quote-has-no-reader-anchor]/then/properties/anchors/items/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/word-without-word-entry.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/word"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[word]/then/required",
+        "property": "word"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/word-without-headword.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/word/headword"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/word",
+        "schema_path": "properties/word/required",
+        "property": "headword"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/word-without-quoted-text.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/quoted_text"
+      },
+      {
+        "op": "remove",
+        "path": "/quoted_text_origin"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[word]/then/required",
+        "property": "quoted_text"
+      }
+    ],
+    "why": "the quotation and its origin, which requires it (dependentRequired)"
+  },
+  {
+    "fixture": "invalid/word-typed-by-user.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text_origin",
+        "value": "user_entered"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "const",
+        "instance_path": "/quoted_text_origin",
+        "schema_path": "allOf[word]/then/properties/quoted_text_origin/const"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/word-without-anchors.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors",
+        "value": []
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/anchors",
+        "schema_path": "allOf[selection-has-anchors]/then/properties/anchors/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/word-with-audio-anchor.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors/0",
+        "value": {
+          "schema_version": 1,
+          "kind": "audio",
+          "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+          "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55",
+          "timeline_revision": 1,
+          "ranges": [
+            {
+              "asset_id": "00000000-0000-4000-8000-000000000401",
+              "asset_sha256": "2d1e16363bc6d43f9acbd52f91a029ee19eef27871791e820975eb4d2348a94a",
+              "start_ms": 60000,
+              "end_ms": 90000
+            }
+          ]
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/anchors/0",
+        "schema_path": "allOf[word]/then/properties/anchors/items/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/word-with-generated-answer.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/generated_answer",
+        "value": {
+          "conversation_id": "2a73fbc7-91f2-5a57-b29e-ed3d102d490b",
+          "message_id": "4212cf05-9a0a-586a-9e6f-df3c1b98939c",
+          "context_pack_id": "40f7ccbe-4587-5ffc-856a-37ed78bd927d",
+          "question": "What does he mean by piety here?",
+          "answer_text": "In the selected passage [c1], piety is listed among what he learned from his mother.",
+          "answer_state": "complete",
+          "endpoint": {
+            "provider_kind": "anthropic_messages",
+            "host": "api.example.invalid",
+            "classification": "hosted",
+            "model": "fixture-model-1"
+          }
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[word]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/word-with-excerpt.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "pending"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[word]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/word-with-transcript.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/transcript",
+        "value": {
+          "clip_sha256": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6",
+          "raw_text": "From the gods, to have had good grandfathers, good parents, a good sister.",
+          "segments": [
+            {
+              "start_ms": 0,
+              "end_ms": 4200,
+              "text": "From the gods, to have had good grandfathers, good parents, a good sister."
+            }
+          ],
+          "language": "en",
+          "provider_kind": "openai_compatible_transcription",
+          "host": "speech.example.invalid",
+          "model": "fixture-transcriber-1",
+          "created_at": "2026-10-13T08:05:00Z",
+          "discarded_segment_count": 0
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[word]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-kind-without-notes.json",
+    "base": "note-on-a-physical-book-page.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes",
+        "value": []
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/notes",
+        "schema_path": "allOf[note]/then/properties/notes/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-kind-with-quoted-text.json",
+    "base": "note-on-a-physical-book-page.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/quoted_text",
+        "value": "A note is the user's words, not a quotation."
+      },
+      {
+        "op": "add",
+        "path": "/quoted_text_origin",
+        "value": "user_entered"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[note]/then/not"
+      }
+    ],
+    "why": "a quotation with the origin it requires (dependentRequired)"
+  },
+  {
+    "fixture": "invalid/note-kind-with-word-entry.json",
+    "base": "note-on-a-physical-book-page.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/word",
+        "value": {
+          "headword": "beneficence",
+          "source_sentence": "From my mother,3 piety and beneficence, and abstinence, not only from evil deeds, but even from evil thoughts; and further, simplicity in my way of living, far removed from the habits of the rich."
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[note]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-kind-with-generated-answer.json",
+    "base": "note-on-a-physical-book-page.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/generated_answer",
+        "value": {
+          "conversation_id": "2a73fbc7-91f2-5a57-b29e-ed3d102d490b",
+          "message_id": "4212cf05-9a0a-586a-9e6f-df3c1b98939c",
+          "context_pack_id": "40f7ccbe-4587-5ffc-856a-37ed78bd927d",
+          "question": "What does he mean by piety here?",
+          "answer_text": "In the selected passage [c1], piety is listed among what he learned from his mother.",
+          "answer_state": "complete",
+          "endpoint": {
+            "provider_kind": "anthropic_messages",
+            "host": "api.example.invalid",
+            "classification": "hosted",
+            "model": "fixture-model-1"
+          }
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[note]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-kind-with-excerpt.json",
+    "base": "note-on-a-physical-book-page.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "pending"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[note]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-kind-with-transcript.json",
+    "base": "note-on-a-physical-book-page.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/transcript",
+        "value": {
+          "clip_sha256": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6",
+          "raw_text": "From the gods, to have had good grandfathers, good parents, a good sister.",
+          "segments": [
+            {
+              "start_ms": 0,
+              "end_ms": 4200,
+              "text": "From the gods, to have had good grandfathers, good parents, a good sister."
+            }
+          ],
+          "language": "en",
+          "provider_kind": "openai_compatible_transcription",
+          "host": "speech.example.invalid",
+          "model": "fixture-transcriber-1",
+          "created_at": "2026-10-13T08:05:00Z",
+          "discarded_segment_count": 0
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[note]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-without-excerpt-record.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[audio_capture]/then/required",
+        "property": "retained_excerpt"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-without-anchors.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors",
+        "value": []
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/anchors",
+        "schema_path": "allOf[audio_capture]/then/properties/anchors/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-with-two-anchors.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/anchors/1",
+        "value": {
+          "schema_version": 1,
+          "kind": "audio",
+          "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+          "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55",
+          "timeline_revision": 1,
+          "ranges": [
+            {
+              "asset_id": "00000000-0000-4000-8000-000000000401",
+              "asset_sha256": "2d1e16363bc6d43f9acbd52f91a029ee19eef27871791e820975eb4d2348a94a",
+              "start_ms": 142299,
+              "end_ms": 162299
+            },
+            {
+              "asset_id": "00000000-0000-4000-8000-000000000402",
+              "asset_sha256": "9f096a3ae944e155e8b3e6321bb62a42d02f51256a20f299b25b3256e008bfaf",
+              "start_ms": 0,
+              "end_ms": 10000
+            }
+          ]
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "maxItems",
+        "instance_path": "/anchors",
+        "schema_path": "allOf[audio_capture]/then/properties/anchors/maxItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-with-epub-anchor.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors/0",
+        "value": {
+          "asset_id": "6d154f6c-4092-5eac-8ffc-3356c559a93e",
+          "exact_text": "From my mother,3 piety and beneficence",
+          "kind": "epub",
+          "position": 5,
+          "prefix": "Book\n\t\t\t\tI\n\t\t\t\n\t\t\tFrom my grandfather Verus1 I learned good morals and the government of my temper.\n\t\t\tFrom the reputation and remembrance of my father,2 modesty and a manly character.\n\t\t\t",
+          "progression": 0.041666666666666664,
+          "reader": {
+            "adapter": "readium-swift",
+            "adapter_version": "3.11.0",
+            "locator": {
+              "href": "epub/text/book-1.xhtml",
+              "locations": {
+                "position": 5,
+                "progression": 0.041666666666666664,
+                "totalProgression": 0.025716145833333332
+              },
+              "text": {
+                "after": ", and abstinence, not only from evil deeds, but even from evil thoughts; and further, simplicity in my way of living, far removed from the habits of the rich.\n\t\t\tFrom my great-grandfather,4 not to",
+                "before": "Book\n\t\t\t\tI\n\t\t\t\n\t\t\tFrom my grandfather Verus1 I learned good morals and the government of my temper.\n\t\t\tFrom the reputation and remembrance of my father,2 modesty and a manly character.\n\t\t\t",
+                "highlight": "From my mother,3 piety and beneficence"
+              },
+              "title": "Book I",
+              "type": "application/xhtml+xml"
+            }
+          },
+          "resource_href": "epub/text/book-1.xhtml",
+          "resource_media_type": "application/xhtml+xml",
+          "suffix": ", and abstinence, not only from evil deeds, but even from evil thoughts; and further, simplicity in my way of living, far removed from the habits of the rich.\n\t\t\tFrom my great-grandfather,4 not to",
+          "text_offsets": {
+            "basis": "sylvia-extraction",
+            "block_index": 3,
+            "end": 38,
+            "extraction_version": "readium-swift-3.11.0+html-content-iterator+sylvia-sanitizer-2+chunker-1",
+            "start": 0,
+            "unit": "unicode_scalar"
+          },
+          "total_progression": 0.025716145833333332,
+          "schema_version": 1,
+          "asset_sha256": "c2b77e9daa37694b978f78f9ae2d801fd263be533af187e8b36b7da28845e0c8",
+          "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+          "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "const",
+        "instance_path": "/anchors/0/kind",
+        "schema_path": "allOf[audio_capture]/then/properties/anchors/items/properties/kind/const"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-with-selection-origin.json",
+    "base": "audio-typed-by-user.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text_origin",
+        "value": "selection"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/quoted_text_origin",
+        "schema_path": "allOf[audio_capture]/then/properties/quoted_text_origin/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-with-word-entry.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/word",
+        "value": {
+          "headword": "beneficence",
+          "source_sentence": "From my mother,3 piety and beneficence, and abstinence, not only from evil deeds, but even from evil thoughts; and further, simplicity in my way of living, far removed from the habits of the rich."
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[audio_capture]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-with-generated-answer.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/generated_answer",
+        "value": {
+          "conversation_id": "2a73fbc7-91f2-5a57-b29e-ed3d102d490b",
+          "message_id": "4212cf05-9a0a-586a-9e6f-df3c1b98939c",
+          "context_pack_id": "40f7ccbe-4587-5ffc-856a-37ed78bd927d",
+          "question": "What does he mean by piety here?",
+          "answer_text": "In the selected passage [c1], piety is listed among what he learned from his mother.",
+          "answer_state": "complete",
+          "endpoint": {
+            "provider_kind": "anthropic_messages",
+            "host": "api.example.invalid",
+            "classification": "hosted",
+            "model": "fixture-model-1"
+          }
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[audio_capture]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-machine-transcript-without-transcript.json",
+    "base": "audio-machine-transcript-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[transcript-origin]/then/required",
+        "property": "transcript"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-transcript-quote-with-pending-excerpt.json",
+    "base": "audio-machine-transcript-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "pending"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/retained_excerpt/state",
+        "schema_path": "allOf[transcript-origin]/then/properties/retained_excerpt/properties/state/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-corrected-transcript-without-correction.json",
+    "base": "audio-corrected-transcript-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/corrected_text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript",
+        "schema_path": "allOf[corrected-transcript]/then/properties/transcript/required",
+        "property": "corrected_text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-corrected-transcript-without-transcript.json",
+    "base": "audio-corrected-transcript-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[transcript-origin]/then/required",
+        "property": "transcript"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-corrected-transcript-quote-with-pending-excerpt.json",
+    "base": "audio-corrected-transcript-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "pending"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/retained_excerpt/state",
+        "schema_path": "allOf[transcript-origin]/then/properties/retained_excerpt/properties/state/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-without-state.json",
+    "base": "audio-pending.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/state"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/required",
+        "property": "state"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-state-saved.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/state",
+        "value": "saved"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/retained_excerpt/state",
+        "schema_path": "properties/retained_excerpt/properties/state/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-without-blob-digest.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/blob_sha256"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/required",
+        "property": "blob_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-without-file-extension.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/file_extension"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/required",
+        "property": "file_extension"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-without-media-type.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/media_type"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/required",
+        "property": "media_type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-without-byte-count.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/byte_count"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/required",
+        "property": "byte_count"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-without-format.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/format"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/required",
+        "property": "format"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-without-read-back-duration.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/duration_ms"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/required",
+        "property": "duration_ms"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-without-sample-rate.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/sample_rate_hz"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/required",
+        "property": "sample_rate_hz"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-without-frame-count.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/frame_count"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/required",
+        "property": "frame_count"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-without-actual-ranges.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/actual_ranges"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/required",
+        "property": "actual_ranges"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-with-failure.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/failure",
+        "value": {
+          "reason": "x",
+          "attempts": 1
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-preserved-with-removed-at.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/removed_at",
+        "value": "2026-10-20T09:00:00Z"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[preserved]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-fractional-sample-rate.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/sample_rate_hz",
+        "value": 44100.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/retained_excerpt/sample_rate_hz",
+        "schema_path": "properties/retained_excerpt/properties/sample_rate_hz/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-without-source-format.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/actual_ranges/0/source_format"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt/actual_ranges/0",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/required",
+        "property": "source_format"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-without-clip-offset.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/actual_ranges/0/clip_start_ms"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt/actual_ranges/0",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/required",
+        "property": "clip_start_ms"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-removed-without-removed-at.json",
+    "base": "audio-excerpt-removed-after-its-transcript.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/removed_at"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[removed]/then/required",
+        "property": "removed_at"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-removed-without-blob-digest.json",
+    "base": "audio-excerpt-removed-after-its-transcript.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/blob_sha256"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[removed]/then/required",
+        "property": "blob_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-removed-with-failure.json",
+    "base": "audio-excerpt-removed-after-its-transcript.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/failure",
+        "value": {
+          "reason": "x",
+          "attempts": 1
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[removed]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failed-without-failure.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/failure"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[failed]/then/required",
+        "property": "failure"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-without-attempts.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/failure/attempts"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt/failure",
+        "schema_path": "properties/retained_excerpt/properties/failure/required",
+        "property": "attempts"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-reason-with-a-file-path.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/failure/reason",
+        "value": "decodeFailed(\"Part 3.mp3: The file /private/var/mobile/Library/Part 3.mp3 could not be opened.\")"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt/failure/reason",
+        "schema_path": "properties/retained_excerpt/properties/failure/properties/reason/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-reason-with-a-file-url.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/failure/reason",
+        "value": "Error Domain=NSCocoaErrorDomain Code=260 UserInfo={NSURL=file:///private/var/mobile/Part%203.mp3}"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt/failure/reason",
+        "schema_path": "properties/retained_excerpt/properties/failure/properties/reason/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-reason-with-a-home-path.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/failure/reason",
+        "value": "cannot open ~/Library/Audiobooks/Part 3.mp3"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt/failure/reason",
+        "schema_path": "properties/retained_excerpt/properties/failure/properties/reason/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-reason-with-a-drive-path.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/failure/reason",
+        "value": "cannot open C:\\Audiobooks\\Part 3.mp3"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt/failure/reason",
+        "schema_path": "properties/retained_excerpt/properties/failure/properties/reason/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-reason-with-a-unc-path.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/failure/reason",
+        "value": "cannot open \\\\nas\\audiobooks\\Part 3.mp3"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt/failure/reason",
+        "schema_path": "properties/retained_excerpt/properties/failure/properties/reason/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-reason-with-a-path-after-an-angle-bracket.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/failure/reason",
+        "value": "decodeFailed(path>/private/var/mobile/Part 3.mp3)"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt/failure/reason",
+        "schema_path": "properties/retained_excerpt/properties/failure/properties/reason/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failed-with-blob-digest.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/blob_sha256",
+        "value": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[failed]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failed-with-file-extension.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/file_extension",
+        "value": "m4a"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[failed]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failed-with-media-type.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/media_type",
+        "value": "audio/mp4"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[failed]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failed-with-byte-count.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/byte_count",
+        "value": 1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[failed]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failed-with-removed-at.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/removed_at",
+        "value": "2026-10-20T09:00:00Z"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[failed]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-pending-with-blob-digest.json",
+    "base": "audio-pending.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/blob_sha256",
+        "value": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[pending]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-pending-with-format.json",
+    "base": "audio-pending.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/format",
+        "value": "m4a/aac-lc/64k/44.1k/mono"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[pending]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-pending-with-duration.json",
+    "base": "audio-pending.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/duration_ms",
+        "value": 30000
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[pending]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-pending-with-sample-rate.json",
+    "base": "audio-pending.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/sample_rate_hz",
+        "value": 44100
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[pending]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-pending-with-frame-count.json",
+    "base": "audio-pending.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/frame_count",
+        "value": 1323000
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[pending]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-pending-with-actual-ranges.json",
+    "base": "audio-pending.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/actual_ranges",
+        "value": [
+          {
+            "asset_id": "00000000-0000-4000-8000-000000000401",
+            "start_ms": 60000,
+            "end_ms": 90000,
+            "clip_start_ms": 0,
+            "source_format": ".mp3/44100/1"
+          }
+        ]
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[pending]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-pending-with-failure.json",
+    "base": "audio-pending.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/failure",
+        "value": {
+          "reason": "x",
+          "attempts": 1
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[pending]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-pending-with-removed-at.json",
+    "base": "audio-pending.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt/removed_at",
+        "value": "2026-10-20T09:00:00Z"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/retained_excerpt",
+        "schema_path": "properties/retained_excerpt/allOf[pending]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-without-clip-digest.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/clip_sha256"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript",
+        "schema_path": "properties/transcript/required",
+        "property": "clip_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-text-provider-kind.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/provider_kind",
+        "value": "openai_responses"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/transcript/provider_kind",
+        "schema_path": "properties/transcript/properties/provider_kind/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-secret-field.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/transcript/api_key",
+        "value": "not-a-real-key"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/transcript",
+        "schema_path": "properties/transcript/propertyNames/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-without-answer-object.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[generated_answer]/then/required",
+        "property": "generated_answer"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-with-quoted-text.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/quoted_text",
+        "value": "A model answer is not a quotation."
+      },
+      {
+        "op": "add",
+        "path": "/quoted_text_origin",
+        "value": "user_entered"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[generated_answer]/then/not"
+      }
+    ],
+    "why": "a quotation with the origin it requires (dependentRequired)"
+  },
+  {
+    "fixture": "invalid/generated-answer-with-word-entry.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/word",
+        "value": {
+          "headword": "beneficence",
+          "source_sentence": "From my mother,3 piety and beneficence, and abstinence, not only from evil deeds, but even from evil thoughts; and further, simplicity in my way of living, far removed from the habits of the rich."
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[generated_answer]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-with-excerpt.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "pending"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[generated_answer]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-with-transcript.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/transcript",
+        "value": {
+          "clip_sha256": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6",
+          "raw_text": "From the gods, to have had good grandfathers, good parents, a good sister.",
+          "segments": [
+            {
+              "start_ms": 0,
+              "end_ms": 4200,
+              "text": "From the gods, to have had good grandfathers, good parents, a good sister."
+            }
+          ],
+          "language": "en",
+          "provider_kind": "openai_compatible_transcription",
+          "host": "speech.example.invalid",
+          "model": "fixture-transcriber-1",
+          "created_at": "2026-10-13T08:05:00Z",
+          "discarded_segment_count": 0
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[generated_answer]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-without-context-pack.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/context_pack_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer",
+        "schema_path": "properties/generated_answer/required",
+        "property": "context_pack_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-without-answer-state.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/answer_state"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer",
+        "schema_path": "properties/generated_answer/required",
+        "property": "answer_state"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-draft-state.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/generated_answer/answer_state",
+        "value": "draft"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/generated_answer/answer_state",
+        "schema_path": "properties/generated_answer/properties/answer_state/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-without-answer-text.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/generated_answer/answer_text",
+        "value": ""
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minLength",
+        "instance_path": "/generated_answer/answer_text",
+        "schema_path": "properties/generated_answer/properties/answer_text/minLength"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-endpoint-with-credential.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/generated_answer/endpoint/authorization",
+        "value": "not-a-real-header"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "/generated_answer/endpoint",
+        "schema_path": "properties/generated_answer/properties/endpoint/propertyNames/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-from-the-reader.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/provenance/surface",
+        "value": "reader"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "const",
+        "instance_path": "/provenance/surface",
+        "schema_path": "allOf[generated_answer]/then/properties/provenance/properties/surface/const"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/unknown-kind-with-a-new-excerpt-state.json",
+    "base": "unknown-kind-from-a-later-writer.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "streaming"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/retained_excerpt/state",
+        "schema_path": "properties/retained_excerpt/properties/state/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/unknown-kind-anchor-of-a-known-kind-without-capture-edition.json",
+    "base": "unknown-kind-anchor-without-an-edition.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/anchors/1",
+        "value": {
+          "schema_version": 1,
+          "kind": "text",
+          "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+          "edition_id": "addf4dc7-2ae4-5cdb-b24b-1b1873d3ba89",
+          "asset_id": "2ce9b41e-2088-5fff-ab18-bd2795f0d647",
+          "asset_sha256": "ff5769a05f8c85dabbc78f4932c9416f6477fe5811c77d67747f9fde54fa70d8",
+          "media_type": "text/plain",
+          "exact_text": "to front only the essential facts of life",
+          "prefix": " I wished to live deliberately, ",
+          "suffix": ", and see if I could not learn w",
+          "text_range": {
+            "unit": "unicode_scalar",
+            "start": 59,
+            "end": 100
+          },
+          "source_text": {
+            "extraction_version": "sylvia-text-1+utf-8",
+            "text_sha256": "ff5769a05f8c85dabbc78f4932c9416f6477fe5811c77d67747f9fde54fa70d8"
+          }
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[anchor-names-edition]/then/required",
+        "property": "edition_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/unknown-kind-origin-not-a-token.json",
+    "base": "unknown-kind-from-a-later-writer.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text_origin",
+        "value": "Later Origin"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/quoted_text_origin",
+        "schema_path": "properties/quoted_text_origin/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/unknown-kind-surface-not-a-token.json",
+    "base": "unknown-kind-from-a-later-writer.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/provenance/surface",
+        "value": "Later Surface"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/provenance/surface",
+        "schema_path": "properties/provenance/properties/surface/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/unknown-kind-location-origin-not-a-token.json",
+    "base": "unknown-kind-from-a-later-writer.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/source_snapshot/location_label_origin",
+        "value": "Later Origin"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/source_snapshot/location_label_origin",
+        "schema_path": "properties/source_snapshot/properties/location_label_origin/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/unknown-kind-note-format-not-a-token.json",
+    "base": "unknown-kind-from-a-later-writer.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/revisions/0/format",
+        "value": "Rich Text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/notes/0/revisions/0/format",
+        "schema_path": "properties/notes/items/properties/revisions/items/properties/format/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/uppercase-work-id.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/work_id",
+        "value": "53603273-26DE-531B-A132-2BBD8D202727"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/work_id",
+        "schema_path": "properties/work_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/non-utc-updated-at.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/updated_at",
+        "value": "2026-10-13T10:00:11+02:00"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/updated_at",
+        "schema_path": "properties/updated_at/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/quote-with-an-unknown-origin.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text_origin",
+        "value": "ocr"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/quoted_text_origin",
+        "schema_path": "allOf[known-kind-values]/then/properties/quoted_text_origin/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/provenance-without-surface.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/provenance/surface"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/provenance",
+        "schema_path": "properties/provenance/required",
+        "property": "surface"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/snapshot-without-title.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/source_snapshot/title"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/source_snapshot",
+        "schema_path": "properties/source_snapshot/required",
+        "property": "title"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/snapshot-without-author.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/source_snapshot/author_display"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/source_snapshot",
+        "schema_path": "properties/source_snapshot/required",
+        "property": "author_display"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/snapshot-without-source-kind.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/source_snapshot/source_kind"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/source_snapshot",
+        "schema_path": "properties/source_snapshot/required",
+        "property": "source_kind"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/snapshot-source-kind-not-a-token.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/source_snapshot/source_kind",
+        "value": "Local EPUB"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/source_snapshot/source_kind",
+        "schema_path": "properties/source_snapshot/properties/source_kind/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/snapshot-identifier-name-not-a-token.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/source_snapshot/edition_identifiers/ISBN",
+        "value": "9780000000002"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/source_snapshot/edition_identifiers",
+        "schema_path": "properties/source_snapshot/properties/edition_identifiers/propertyNames/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/snapshot-identifier-empty.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/source_snapshot/edition_identifiers/standard_ebooks",
+        "value": ""
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minLength",
+        "instance_path": "/source_snapshot/edition_identifiers/standard_ebooks",
+        "schema_path": "properties/source_snapshot/properties/edition_identifiers/additionalProperties/minLength"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-without-id.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/notes/0/note_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/notes/0",
+        "schema_path": "properties/notes/items/required",
+        "property": "note_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-uppercase-id.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/note_id",
+        "value": "50DA3226-CFCD-5FCA-8DCF-8840B8E4BF9C"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/notes/0/note_id",
+        "schema_path": "properties/notes/items/properties/note_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-without-current-revision.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/notes/0/current_revision"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/notes/0",
+        "schema_path": "properties/notes/items/required",
+        "property": "current_revision"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-current-revision-zero.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/current_revision",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/notes/0/current_revision",
+        "schema_path": "properties/notes/items/properties/current_revision/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-without-revision-list.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/notes/0/revisions"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/notes/0",
+        "schema_path": "properties/notes/items/required",
+        "property": "revisions"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-revision-without-number.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/notes/0/revisions/0/revision"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/notes/0/revisions/0",
+        "schema_path": "properties/notes/items/properties/revisions/items/required",
+        "property": "revision"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-revision-number-zero.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/revisions/0/revision",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/notes/0/revisions/0/revision",
+        "schema_path": "properties/notes/items/properties/revisions/items/properties/revision/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-revision-without-body.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/notes/0/revisions/0/body"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/notes/0/revisions/0",
+        "schema_path": "properties/notes/items/properties/revisions/items/required",
+        "property": "body"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-revision-without-format.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/notes/0/revisions/0/format"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/notes/0/revisions/0",
+        "schema_path": "properties/notes/items/properties/revisions/items/required",
+        "property": "format"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-revision-saved-at-not-utc.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/revisions/0/saved_at",
+        "value": "2026-10-13T10:00:10+02:00"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/notes/0/revisions/0/saved_at",
+        "schema_path": "properties/notes/items/properties/revisions/items/properties/saved_at/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-trashed-at-not-utc.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/notes/0/trashed_at",
+        "value": "2026-10-14T10:00:00+01:00"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/notes/0/trashed_at",
+        "schema_path": "properties/notes/items/properties/trashed_at/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-without-question.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/question"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer",
+        "schema_path": "properties/generated_answer/required",
+        "property": "question"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-without-answer-text-field.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/answer_text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer",
+        "schema_path": "properties/generated_answer/required",
+        "property": "answer_text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-without-conversation.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/conversation_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer",
+        "schema_path": "properties/generated_answer/required",
+        "property": "conversation_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-without-message.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/message_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer",
+        "schema_path": "properties/generated_answer/required",
+        "property": "message_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-without-endpoint.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/endpoint"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer",
+        "schema_path": "properties/generated_answer/required",
+        "property": "endpoint"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-uppercase-conversation-id.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/generated_answer/conversation_id",
+        "value": "2A73FBC7-91F2-5A57-B29E-ED3D102D490B"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/generated_answer/conversation_id",
+        "schema_path": "properties/generated_answer/properties/conversation_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-uppercase-message-id.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/generated_answer/message_id",
+        "value": "4212CF05-9A0A-586A-9E6F-DF3C1B98939C"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/generated_answer/message_id",
+        "schema_path": "properties/generated_answer/properties/message_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-uppercase-context-pack-id.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/generated_answer/context_pack_id",
+        "value": "40F7CCBE-4587-5FFC-856A-37ED78BD927D"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/generated_answer/context_pack_id",
+        "schema_path": "properties/generated_answer/properties/context_pack_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-endpoint-without-provider-kind.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/endpoint/provider_kind"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer/endpoint",
+        "schema_path": "properties/generated_answer/properties/endpoint/required",
+        "property": "provider_kind"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-endpoint-without-host.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/endpoint/host"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer/endpoint",
+        "schema_path": "properties/generated_answer/properties/endpoint/required",
+        "property": "host"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-endpoint-without-classification.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/endpoint/classification"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer/endpoint",
+        "schema_path": "properties/generated_answer/properties/endpoint/required",
+        "property": "classification"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-endpoint-without-model.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/generated_answer/endpoint/model"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/generated_answer/endpoint",
+        "schema_path": "properties/generated_answer/properties/endpoint/required",
+        "property": "model"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-endpoint-unknown-provider-kind.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/generated_answer/endpoint/provider_kind",
+        "value": "google_genai"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/generated_answer/endpoint/provider_kind",
+        "schema_path": "properties/generated_answer/properties/endpoint/properties/provider_kind/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/generated-answer-endpoint-unknown-classification.json",
+    "base": "generated-answer-complete.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/generated_answer/endpoint/classification",
+        "value": "cloud"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/generated_answer/endpoint/classification",
+        "schema_path": "properties/generated_answer/properties/endpoint/properties/classification/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-uppercase-blob-digest.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/blob_sha256",
+        "value": "8DB23FFA61679189458D3C0D47D81F2C7F554C4390F9B32D38E84E252219E3B6"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/retained_excerpt/blob_sha256",
+        "schema_path": "properties/retained_excerpt/properties/blob_sha256/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-file-extension-uppercase.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/file_extension",
+        "value": "M4A"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/retained_excerpt/file_extension",
+        "schema_path": "properties/retained_excerpt/properties/file_extension/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-media-type-not-a-media-type.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/media_type",
+        "value": "audio"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/retained_excerpt/media_type",
+        "schema_path": "properties/retained_excerpt/properties/media_type/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-byte-count-zero.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/byte_count",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/retained_excerpt/byte_count",
+        "schema_path": "properties/retained_excerpt/properties/byte_count/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-duration-zero.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/duration_ms",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/retained_excerpt/duration_ms",
+        "schema_path": "properties/retained_excerpt/properties/duration_ms/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-sample-rate-zero.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/sample_rate_hz",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/retained_excerpt/sample_rate_hz",
+        "schema_path": "properties/retained_excerpt/properties/sample_rate_hz/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-frame-count-zero.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/frame_count",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/retained_excerpt/frame_count",
+        "schema_path": "properties/retained_excerpt/properties/frame_count/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-no-actual-ranges.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges",
+        "value": []
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/retained_excerpt/actual_ranges",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-without-asset-id.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/actual_ranges/0/asset_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt/actual_ranges/0",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/required",
+        "property": "asset_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-without-start.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/actual_ranges/0/start_ms"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt/actual_ranges/0",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/required",
+        "property": "start_ms"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-without-end.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/actual_ranges/0/end_ms"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt/actual_ranges/0",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/required",
+        "property": "end_ms"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-asset-id-not-a-uuid.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0/asset_id",
+        "value": "part-1"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/retained_excerpt/actual_ranges/0/asset_id",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/properties/asset_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-negative-start.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0/start_ms",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/retained_excerpt/actual_ranges/0/start_ms",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/properties/start_ms/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-end-zero.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0/end_ms",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/retained_excerpt/actual_ranges/0/end_ms",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/properties/end_ms/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-negative-clip-offset.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0/clip_start_ms",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/retained_excerpt/actual_ranges/0/clip_start_ms",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/properties/clip_start_ms/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-removed-at-not-utc.json",
+    "base": "audio-excerpt-removed-after-its-transcript.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/removed_at",
+        "value": "2026-10-20T10:00:00+01:00"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/retained_excerpt/removed_at",
+        "schema_path": "properties/retained_excerpt/properties/removed_at/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-without-reason.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt/failure/reason"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/retained_excerpt/failure",
+        "schema_path": "properties/retained_excerpt/properties/failure/required",
+        "property": "reason"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-attempts-zero.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/failure/attempts",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/retained_excerpt/failure/attempts",
+        "schema_path": "properties/retained_excerpt/properties/failure/properties/attempts/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-uppercase-clip-digest.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/clip_sha256",
+        "value": "8DB23FFA61679189458D3C0D47D81F2C7F554C4390F9B32D38E84E252219E3B6"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/transcript/clip_sha256",
+        "schema_path": "properties/transcript/properties/clip_sha256/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-created-at-not-utc.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/created_at",
+        "value": "2026-10-13T10:05:00+02:00"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/transcript/created_at",
+        "schema_path": "properties/transcript/properties/created_at/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-without-raw-text.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/raw_text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript",
+        "schema_path": "properties/transcript/required",
+        "property": "raw_text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-without-segments.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/segments"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript",
+        "schema_path": "properties/transcript/required",
+        "property": "segments"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-without-provider-kind.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/provider_kind"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript",
+        "schema_path": "properties/transcript/required",
+        "property": "provider_kind"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-without-host.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/host"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript",
+        "schema_path": "properties/transcript/required",
+        "property": "host"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-without-model.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/model"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript",
+        "schema_path": "properties/transcript/required",
+        "property": "model"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-without-created-at.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/created_at"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript",
+        "schema_path": "properties/transcript/required",
+        "property": "created_at"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-without-discarded-count.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/discarded_segment_count"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript",
+        "schema_path": "properties/transcript/required",
+        "property": "discarded_segment_count"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-negative-discarded-count.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/discarded_segment_count",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/transcript/discarded_segment_count",
+        "schema_path": "properties/transcript/properties/discarded_segment_count/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-segment-without-start.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/segments/0/start_ms"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript/segments/0",
+        "schema_path": "properties/transcript/properties/segments/items/required",
+        "property": "start_ms"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-segment-without-end.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/segments/0/end_ms"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript/segments/0",
+        "schema_path": "properties/transcript/properties/segments/items/required",
+        "property": "end_ms"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-segment-without-text.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/transcript/segments/0/text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/transcript/segments/0",
+        "schema_path": "properties/transcript/properties/segments/items/required",
+        "property": "text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-segment-negative-start.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/segments/0/start_ms",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/transcript/segments/0/start_ms",
+        "schema_path": "properties/transcript/properties/segments/items/properties/start_ms/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-segment-negative-end.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/segments/0/end_ms",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/transcript/segments/0/end_ms",
+        "schema_path": "properties/transcript/properties/segments/items/properties/end_ms/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/revision-fractional.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/revision",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/revision",
+        "schema_path": "properties/revision/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-fractional-current-revision.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/current_revision",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/notes/0/current_revision",
+        "schema_path": "properties/notes/items/properties/current_revision/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/note-revision-fractional-number.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/revisions/0/revision",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/notes/0/revisions/0/revision",
+        "schema_path": "properties/notes/items/properties/revisions/items/properties/revision/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-fractional-duration.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/duration_ms",
+        "value": 30000.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/retained_excerpt/duration_ms",
+        "schema_path": "properties/retained_excerpt/properties/duration_ms/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-fractional-frame-count.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/frame_count",
+        "value": 1323000.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/retained_excerpt/frame_count",
+        "schema_path": "properties/retained_excerpt/properties/frame_count/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-fractional-start.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0/start_ms",
+        "value": 60000.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/retained_excerpt/actual_ranges/0/start_ms",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/properties/start_ms/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-fractional-end.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0/end_ms",
+        "value": 90000.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/retained_excerpt/actual_ranges/0/end_ms",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/properties/end_ms/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-actual-range-fractional-clip-offset.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0/clip_start_ms",
+        "value": 0.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/retained_excerpt/actual_ranges/0/clip_start_ms",
+        "schema_path": "properties/retained_excerpt/properties/actual_ranges/items/properties/clip_start_ms/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/excerpt-failure-fractional-attempts.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/failure/attempts",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/retained_excerpt/failure/attempts",
+        "schema_path": "properties/retained_excerpt/properties/failure/properties/attempts/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-segment-fractional-start.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/segments/0/start_ms",
+        "value": 0.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/transcript/segments/0/start_ms",
+        "schema_path": "properties/transcript/properties/segments/items/properties/start_ms/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-segment-fractional-end.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/segments/0/end_ms",
+        "value": 4200.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/transcript/segments/0/end_ms",
+        "schema_path": "properties/transcript/properties/segments/items/properties/end_ms/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/transcript-fractional-discarded-count.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/discarded_segment_count",
+        "value": 0.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/transcript/discarded_segment_count",
+        "schema_path": "properties/transcript/properties/discarded_segment_count/type"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/u1-note-with-an-unpaired-surrogate.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/revisions/0/body",
+        "value": "First thought.\udc00"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "U1"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c1-anchor-names-another-edition.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors/0/edition_id",
+        "value": "08ce3917-4cc0-5803-8996-0f2771464c55"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C1"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c1-anchor-names-another-work.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors/0/work_id",
+        "value": "7125e2c5-aba8-5014-bd57-91f4fdaa1f49"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C1"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c2-quoted-text-trimmed.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text",
+        "value": "From my mother,3 piety and beneficenc"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c2-resources-joined-with-one-newline.json",
+    "base": "quote-epub-across-two-resources.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text",
+        "value": "The first chapter closes on this sentence, which a reader might keep together with the opening of the next.\nThe second chapter opens here, continuing the thought across the resource boundary."
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c2-word-sentence-without-the-word.json",
+    "base": "word-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/word/source_sentence",
+        "value": "From my mother, piety and abstinence."
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c3-epub-anchors-out-of-order.json",
+    "base": "quote-epub-across-two-resources.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors",
+        "value": [
+          {
+            "asset_id": "ea5304a8-edfe-545d-8f56-24bca4b419c6",
+            "exact_text": "The second chapter opens here, continuing the thought across the resource boundary.",
+            "kind": "epub",
+            "position": 2,
+            "prefix": "Chapter Two: The Second Leaf\n",
+            "progression": 0,
+            "reader": {
+              "adapter": "readium-swift",
+              "adapter_version": "3.11.0",
+              "locator": {
+                "href": "OEBPS/c2.xhtml",
+                "locations": {
+                  "position": 2,
+                  "progression": 0,
+                  "totalProgression": 0.5
+                },
+                "text": {
+                  "after": "\nThe orchard keeper counted the rows twice before the light went, and wrote the number in a small book kept for that purpose alone. The orchard keeper counted the rows twice before the light went",
+                  "before": "Chapter Two: The Second Leaf\n",
+                  "highlight": "The second chapter opens here, continuing the thought across the resource boundary."
+                },
+                "title": "Chapter Two",
+                "type": "application/xhtml+xml"
+              }
+            },
+            "resource_href": "OEBPS/c2.xhtml",
+            "resource_media_type": "application/xhtml+xml",
+            "segment": {
+              "count": 2,
+              "index": 1
+            },
+            "suffix": "\nThe orchard keeper counted the rows twice before the light went, and wrote the number in a small book kept for that purpose alone. The orchard keeper counted the rows twice before the light went",
+            "text_offsets": {
+              "basis": "sylvia-extraction",
+              "block_index": 1,
+              "end": 83,
+              "extraction_version": "readium-swift-3.11.0+html-content-iterator+sylvia-sanitizer-2+chunker-1",
+              "start": 0,
+              "unit": "unicode_scalar"
+            },
+            "total_progression": 0.5,
+            "schema_version": 1,
+            "asset_sha256": "dada2710805d97de0b7349bda206675d4f1779c075fc133eae38428ed887807d",
+            "work_id": "c0efdaef-2745-5b12-bf27-bc9d8faf51a4",
+            "edition_id": "4eacc8c8-c0d4-5e03-baf3-2327f7a6d138"
+          },
+          {
+            "asset_id": "ea5304a8-edfe-545d-8f56-24bca4b419c6",
+            "exact_text": "The first chapter closes on this sentence, which a reader might keep together with the opening of the next.",
+            "kind": "epub",
+            "position": 1,
+            "prefix": "and wrote the number in a small book kept for that purpose alone. The orchard keeper counted the rows twice before the light went, and wrote the number in a small book kept for that purpose alone. \n",
+            "progression": 0.6666666666666666,
+            "reader": {
+              "adapter": "readium-swift",
+              "adapter_version": "3.11.0",
+              "locator": {
+                "href": "OEBPS/c1.xhtml",
+                "locations": {
+                  "position": 1,
+                  "progression": 0.6666666666666666,
+                  "totalProgression": 0.3333333333333333
+                },
+                "text": {
+                  "after": "\n",
+                  "before": "and wrote the number in a small book kept for that purpose alone. The orchard keeper counted the rows twice before the light went, and wrote the number in a small book kept for that purpose alone. \n",
+                  "highlight": "The first chapter closes on this sentence, which a reader might keep together with the opening of the next."
+                },
+                "title": "Chapter One",
+                "type": "application/xhtml+xml"
+              }
+            },
+            "resource_href": "OEBPS/c1.xhtml",
+            "resource_media_type": "application/xhtml+xml",
+            "segment": {
+              "count": 2,
+              "index": 0
+            },
+            "suffix": "\n",
+            "text_offsets": {
+              "basis": "sylvia-extraction",
+              "block_index": 5,
+              "end": 107,
+              "extraction_version": "readium-swift-3.11.0+html-content-iterator+sylvia-sanitizer-2+chunker-1",
+              "start": 0,
+              "unit": "unicode_scalar"
+            },
+            "total_progression": 0.3333333333333333,
+            "schema_version": 1,
+            "asset_sha256": "dada2710805d97de0b7349bda206675d4f1779c075fc133eae38428ed887807d",
+            "work_id": "c0efdaef-2745-5b12-bf27-bc9d8faf51a4",
+            "edition_id": "4eacc8c8-c0d4-5e03-baf3-2327f7a6d138"
+          }
+        ]
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C3"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c3-epub-anchors-from-two-assets.json",
+    "base": "quote-epub-across-two-resources.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors/1/asset_sha256",
+        "value": "c2b77e9daa37694b978f78f9ae2d801fd263be533af187e8b36b7da28845e0c8"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C3"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c3-single-anchor-claims-a-second-segment.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/anchors/0/segment",
+        "value": {
+          "index": 0,
+          "count": 2
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C3"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c4-actual-ranges-name-another-asset.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0/asset_id",
+        "value": "00000000-0000-4000-8000-000000000402"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C4"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c4-actual-range-empty.json",
+    "base": "audio-preserved-cross-file-quick-capture.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "preserved",
+          "blob_sha256": "c35745a28041b410171461f0d0629f42c8b32765e9c3623d563493025cd6964d",
+          "file_extension": "m4a",
+          "media_type": "audio/mp4",
+          "byte_count": 288429,
+          "format": "m4a/aac-lc/64k/44.1k/mono",
+          "sample_rate_hz": 44100,
+          "frame_count": 882000,
+          "actual_ranges": [
+            {
+              "asset_id": "00000000-0000-4000-8000-000000000401",
+              "start_ms": 142299,
+              "end_ms": 162299,
+              "clip_start_ms": 0,
+              "source_format": ".mp3/44100/1"
+            },
+            {
+              "asset_id": "00000000-0000-4000-8000-000000000402",
+              "start_ms": 5000,
+              "end_ms": 5000,
+              "clip_start_ms": 20000,
+              "source_format": ".mp3/44100/1"
+            }
+          ],
+          "duration_ms": 20000
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C4"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c4-actual-range-elsewhere-in-the-file.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0",
+        "value": {
+          "asset_id": "00000000-0000-4000-8000-000000000401",
+          "start_ms": 0,
+          "end_ms": 30000,
+          "clip_start_ms": 0,
+          "source_format": ".mp3/44100/1"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C4"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c5-machine-quote-differs-from-raw-text.json",
+    "base": "audio-machine-transcript-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text",
+        "value": "From the gods, to have had good grandfathers, good parents, a good sister. More."
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C5"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c5-transcript-of-another-clip.json",
+    "base": "audio-machine-transcript-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/clip_sha256",
+        "value": "c35745a28041b410171461f0d0629f42c8b32765e9c3623d563493025cd6964d"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C5"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c6-note-revisions-skip-a-number.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/revisions/1/revision",
+        "value": 3
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C6"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c6-current-revision-not-latest.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/notes/0/current_revision",
+        "value": 1
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C6"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c6-two-notes-share-an-id.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/notes/1",
+        "value": {
+          "note_id": "50da3226-cfcd-5fca-8dcf-8840b8e4bf9c",
+          "current_revision": 2,
+          "revisions": [
+            {
+              "revision": 1,
+              "body": "First thought.",
+              "format": "markdown",
+              "saved_at": "2026-10-13T08:00:10Z"
+            },
+            {
+              "revision": 2,
+              "body": "Second thought, *Markdown*.",
+              "format": "markdown",
+              "saved_at": "2026-10-13T08:00:11Z"
+            }
+          ]
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C6"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c7-transcript-segment-runs-backwards.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/segments/0/start_ms",
+        "value": 5000
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C7"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c7-transcript-segment-past-the-excerpt.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/transcript/segments/0/end_ms",
+        "value": 31001
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C7"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c8-preserved-excerpt-at-revision-1.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/revision",
+        "value": 1
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C8"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c8-second-failed-attempt-at-revision-2.json",
+    "base": "audio-failed-source-not-on-device.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/failure/attempts",
+        "value": 2
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C8"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c8-trashed-at-revision-1.json",
+    "base": "quote-in-trash.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/revision",
+        "value": 1
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C8"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c9-first-range-not-at-the-excerpt-start.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0/clip_start_ms",
+        "value": 5
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C9"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c9-second-range-after-a-gap.json",
+    "base": "audio-preserved-cross-file-quick-capture.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/1/clip_start_ms",
+        "value": 25000
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C9"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c9-frame-count-not-the-ranges.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/frame_count",
+        "value": 1325205
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C9"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c9-duration-not-the-frames.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/duration_ms",
+        "value": 1
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C9"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a2-quote-anchor-offsets-shorter-than-text.json",
+    "base": "quote-epub.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors/0/text_offsets/end",
+        "value": 37
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c2-pdf-quote-is-not-its-anchor-text.json",
+    "base": "quote-pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text",
+        "value": "leaves early, and in between it is careful, touching each stone as if it were counting them. Body, physical page 5 The heron at the in"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c2-text-quote-is-not-its-anchor-text.json",
+    "base": "quote-text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text",
+        "value": "to front only the essential facts"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c2-two-pdf-anchors-have-no-defined-join.json",
+    "base": "quote-pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/anchors/1",
+        "value": {
+          "asset_id": "00000000-0000-4000-8000-000000000001",
+          "asset_sha256": "6ffa266bf32eea6c9bc2984d351bc55d19bd948c65714a4e6d2b9ab41d8138d1",
+          "exact_text": "ts own counsel. Under a skin of grey ice the water\nstill moves, slowly, turning over the cold it gathered in the night. A walker\nwho stops at the",
+          "extraction": {
+            "adapter_version": 1,
+            "extractor": "pdfkit.PDFPage.string",
+            "platform": "iOS 26.5 (23F77)"
+          },
+          "kind": "pdf",
+          "segments": [
+            {
+              "line_rects": [
+                [
+                  0.327438,
+                  0.880644,
+                  0.396593,
+                  0.013889
+                ],
+                [
+                  0.117647,
+                  0.861705,
+                  0.577392,
+                  0.013889
+                ],
+                [
+                  0.117647,
+                  0.842765,
+                  0.130886,
+                  0.013889
+                ]
+              ],
+              "page_box": {
+                "name": "crop",
+                "rect": [
+                  0,
+                  0,
+                  612,
+                  792
+                ]
+              },
+              "page_index": 3,
+              "page_label": "1",
+              "page_rotation": 0,
+              "page_text_sha256": "a4746ee93c002a1122b57c8fb100a7a44d2d5700b22cd541f84ad01634e6d570",
+              "prefix": "age 4\nThe pond in winter keeps i",
+              "suffix": " shore hears it settle.\nSnow lie",
+              "text": "ts own counsel. Under a skin of grey ice the water\nstill moves, slowly, turning over the cold it gathered in the night. A walker\nwho stops at the",
+              "text_range": {
+                "end": 193,
+                "start": 48,
+                "unit": "unicode_scalar"
+              }
+            }
+          ],
+          "schema_version": 1,
+          "reader": {
+            "adapter": "pdfkit",
+            "locator": {
+              "utf16_ranges": [
+                {
+                  "length": 145,
+                  "location": 48,
+                  "page_index": 3
+                }
+              ]
+            }
+          },
+          "work_id": "7dc21cb2-fe2a-5654-9f63-9c8f63a1937f",
+          "edition_id": "dcd17d6c-383f-5f97-a511-f3b7a2743f5b"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c2-quote-differs-from-its-epub-anchor-beside-a-later-kind-anchor.json",
+    "base": "unknown-kind-anchor-beside-an-epub-selection.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text",
+        "value": "Words that appear nowhere in the anchored passage."
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c3-epub-segment-count-not-the-number-of-anchors.json",
+    "base": "quote-epub-across-two-resources.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/anchors/1/segment/count",
+        "value": 3
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C3"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c4-actual-range-overlaps-by-one-millisecond.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt/actual_ranges/0",
+        "value": {
+          "asset_id": "00000000-0000-4000-8000-000000000401",
+          "start_ms": 89999,
+          "end_ms": 119999,
+          "clip_start_ms": 0,
+          "source_format": ".mp3/44100/1"
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C4"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c4-actual-range-starts-late.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "preserved",
+          "blob_sha256": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6",
+          "file_extension": "m4a",
+          "media_type": "audio/mp4",
+          "byte_count": 295185,
+          "format": "m4a/aac-lc/64k/44.1k/mono",
+          "sample_rate_hz": 44100,
+          "frame_count": 1296540,
+          "actual_ranges": [
+            {
+              "asset_id": "00000000-0000-4000-8000-000000000401",
+              "start_ms": 60600,
+              "end_ms": 90000,
+              "clip_start_ms": 0,
+              "source_format": ".mp3/44100/1"
+            }
+          ],
+          "duration_ms": 29400
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C4"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c4-actual-range-ends-early.json",
+    "base": "audio-preserved-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/retained_excerpt",
+        "value": {
+          "state": "preserved",
+          "blob_sha256": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6",
+          "file_extension": "m4a",
+          "media_type": "audio/mp4",
+          "byte_count": 295185,
+          "format": "m4a/aac-lc/64k/44.1k/mono",
+          "sample_rate_hz": 44100,
+          "frame_count": 1296540,
+          "actual_ranges": [
+            {
+              "asset_id": "00000000-0000-4000-8000-000000000401",
+              "start_ms": 60000,
+              "end_ms": 89400,
+              "clip_start_ms": 0,
+              "source_format": ".mp3/44100/1"
+            }
+          ],
+          "duration_ms": 29400
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C4"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c5-corrected-quote-differs-from-corrected-text.json",
+    "base": "audio-corrected-transcript-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/quoted_text",
+        "value": "From the gods, to have had good grandfathers, good parents, a good sister."
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C5"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c5-later-kind-transcript-quote-without-an-excerpt.json",
+    "base": "unknown-kind-reusing-the-excerpt-and-transcript.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/retained_excerpt"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C5"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c8-removed-excerpt-at-revision-3.json",
+    "base": "audio-excerpt-removed-after-its-transcript.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/revision",
+        "value": 3
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C8"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/c8-transcript-at-revision-2.json",
+    "base": "audio-transcript-not-saved-as-quote.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/revision",
+        "value": 2
+      }
+    ],
+    "expect": [
+      {
+        "rule": "C8"
+      }
+    ]
+  }
+]

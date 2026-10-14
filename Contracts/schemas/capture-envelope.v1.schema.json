@@ -1,0 +1,414 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:capture-envelope:v1",
+  "title": "Capture envelope v1",
+  "description": "One saved thought in portable form (plan Appendix A.1, 4.4.5, 7.2, 10.2, 11.1-11.2, 17.2-17.3; ADR-0016): what was captured, where (anchors), from what source as it looked then (source snapshot), the user's notes as separate revisions, for audio the retained excerpt with the timing actually exported, and how it was made. `kind` maps one-to-one onto the five capture markers of plan 4.4.5, with exactly the strings the design package resolves (`Contracts/design/marginalia.v1.json` `capture_kind_mapping`; `Marker.resolve(captureKind:)`): `text_quote` Quote, `note` Note, `audio_capture` Audio, `generated_answer` Generated, `word` Word. Compatibility rule for an unknown kind: a reader accepts any lowercase token as `kind`, keeps the whole record unchanged, shows it with the Pending marker and the raw kind token as its label, never renders it (or its `quoted_text`) as a Quote, offers no action that depends on its kind, and never drops it; a v1 writer emits only the five kinds (`$defs/known_kind`). A record from a later writer stays readable by v1 only while it keeps v1's definitions: `schema_version` 1; every field v1 defines keeps its v1 shape and values on every kind, except that a capture of an unknown kind may use new values in the four fields of `$defs/known_kind_values`; anchors of the four v1 anchor kinds validate as anchor.v1, and a capture holding one names its edition (an anchor of a later kind may be located without an edition). A later writer that needs anything else uses a new field, a new kind or a new `schema_version`; v1 refuses such a record, like any record that is not valid, before changing anything (ADR-0016 section 6). Text exists only where it really exists (I-04, I-05): `quoted_text` is the immutable captured wording with its origin; an audio capture has none unless a labelled transcript or the user's own typed wording supplies it; a note and a generated answer never have one; a quotation the user typed is never attached to an EPUB, PDF or text anchor. Optional fields are omitted when unknown, never written as null; a capture with no precise location has no anchor rather than an invented one. Timestamps are the device's wall clock in UTC: a clock change can put a later event at an earlier time, so nothing rejects or orders records by timestamps alone (`revision` counts changes). Readers tolerate unknown optional fields (Contracts/README.md). Each member of the top-level `allOf` (and of `retained_excerpt`'s) has a `title`, which the checker uses to name the rule an invalid fixture breaks. Rules JSON Schema cannot express are checked in code by `Scripts/check-spike-anchors.py` (rule IDs in ADR-0016 section 5), together with the anchor rules on every anchor: U1 every string is a sequence of Unicode scalar values; C1 every anchor names the capture's `work_id`, and every anchor that names an edition names the capture's `edition_id`; C2 a `text_quote` or `word` whose `quoted_text_origin` is `selection` has `quoted_text` equal to the text of its anchors of the kinds v1 reads text from (`epub`, `pdf`, `text`): one PDF or text anchor's `exact_text`, or the EPUB anchors' `exact_text` in segment order joined with U+000A U+000A (the G0.1 adapter's separator), while any other set of them (two PDF anchors, an EPUB anchor with a PDF anchor) is not a selection; anchors of a later writer's kinds beside them are not compared, and a selection whose anchors are all of later kinds has nothing a v1 reader can compare and is not checked; a word's `source_sentence` contains its `quoted_text`; C3 a capture's EPUB anchors name one asset and digest, several of them each carry `segment` with `count` equal to their number and `index` equal to their position, and a single one carries none; C4 a preserved or removed excerpt's `actual_ranges` name the audio anchor's assets in the same order, and each is non-empty, overlaps the anchor's range at its position and starts and ends within 500 ms of that range's start and end (plan 19.2's capture boundary budget); C5 `quoted_text` from a transcript equals `transcript.raw_text` (machine) or `transcript.corrected_text` (corrected), and the capture has the retained excerpt the transcript was made from: the transcript's `clip_sha256` is the excerpt's `blob_sha256`; C6 each note's revisions are numbered 1..n in order, `current_revision` is n, and no two notes share a `note_id`; C7 a transcript segment never runs backwards (start_ms <= end_ms), and a segment of a transcript of this capture's excerpt ends at most 1,000 ms after the excerpt's `duration_ms`; C8 `revision` is at least the number of durable writes the capture's state implies (1 at creation, 1 more for a preserved excerpt, `failure.attempts` more for a failed one, 2 more for a removed one, 1 more for a transcript and 1 more while trashed); C9 a preserved or removed excerpt's timing is consistent: the first actual range starts at `clip_start_ms` 0 and each later one where the previous one ends in the excerpt (within 1 ms), `frame_count` / `sample_rate_hz` equals the actual ranges' total length (within 1 ms per range), and `duration_ms` is within 4,096 sample frames plus 1 ms of `frame_count` / `sample_rate_hz`.",
+  "type": "object",
+  "required": ["schema_version", "capture_id", "work_id", "kind", "source_snapshot", "anchors", "notes", "provenance", "created_at", "updated_at", "revision"],
+  "propertyNames": { "$ref": "#/$defs/not_secret_name" },
+  "properties": {
+    "schema_version": { "description": "Version of this envelope format. A reader refuses a version it does not know.", "const": 1 },
+    "capture_id": { "$ref": "#/$defs/uuid" },
+    "work_id": { "description": "The Work the thought belongs to (I-02: it outlives every file).", "$ref": "#/$defs/uuid" },
+    "edition_id": { "description": "The edition the capture was made in. Omitted when the edition is unknown (left unresolved rather than invented); required when an anchor of a known kind is present (rule anchor-names-edition).", "$ref": "#/$defs/uuid" },
+    "kind": {
+      "description": "Marker kind (plan 4.4.5). Known kinds: `$defs/known_kind`, matched exactly and case-sensitively as the design package does; any other token is handled by the compatibility rule above.",
+      "$ref": "#/$defs/kind_token"
+    },
+    "quoted_text": {
+      "description": "The immutable captured wording (plan 11.1), exactly as captured: never trimmed, normalized or truncated. Its origin is `quoted_text_origin`.",
+      "type": "string",
+      "minLength": 1
+    },
+    "quoted_text_origin": {
+      "description": "Values for the known kinds (`$defs/known_kind_values`): selection: selected in the reader (equal to the anchors' text, rule C2). user_entered: typed by the user (a manual record of a printed book, or \"Type what you heard\" for audio, plan 10.4); never attached to an EPUB, PDF or text anchor (rule typed-quote-has-no-reader-anchor). machine_transcript: a machine transcription of the retained excerpt, shown with its label (plan 10.4). corrected_transcript: the user's correction of that transcription; the raw transcription is kept in `transcript`.",
+      "$ref": "#/$defs/value_token"
+    },
+    "word": {
+      "description": "Vocabulary entry of a `word` capture (plan 9.3, 7.2). The selected word is `quoted_text`. There is no dictionary definition field: system dictionary content is not exported (plan 9.3). The user's own meaning (plan 7.2) is one of the capture's notes.",
+      "type": "object",
+      "required": ["headword"],
+      "properties": {
+        "headword": { "description": "The word as listed (the selected form, or the form the user chose).", "type": "string", "minLength": 1, "maxLength": 512 },
+        "source_sentence": { "description": "The sentence around the word, exactly as in the source, when known; it contains `quoted_text` (rule C2).", "type": "string", "minLength": 1 }
+      }
+    },
+    "generated_answer": {
+      "description": "A saved model answer (plan 11.1, 13.4; marker Generated). It links to the conversation, the answering message and the ContextPack that holds the exact evidence sent (urn:sylvia:schema:context-pack:v1: `context_pack_id` is the pack's `pack_id`, `conversation_id` its `conversation_id`), and keeps the question and answer as they were saved so the record reads on its own. An answer is never a quotation (I-05).",
+      "type": "object",
+      "required": ["conversation_id", "message_id", "context_pack_id", "question", "answer_text", "answer_state", "endpoint"],
+      "properties": {
+        "conversation_id": { "$ref": "#/$defs/uuid" },
+        "message_id": { "$ref": "#/$defs/uuid" },
+        "context_pack_id": { "$ref": "#/$defs/uuid" },
+        "question": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "answer_text": { "description": "The answer text as saved; always some text (a reply with none is not saved as an answer).", "type": "string", "minLength": 1 },
+        "answer_state": {
+          "description": "The request's final state (G0.5 AI `AskState`). complete: a normal end with answer text, the only state shown as \"Complete\". interrupted: answer text, then an early stop. cancelled: answer text, then the user stopped it. interrupted and cancelled are shown as \"Interrupted · partial answer\", never as complete (I-04).",
+          "enum": ["complete", "interrupted", "cancelled"]
+        },
+        "endpoint": {
+          "description": "Destination and model identity without credentials (plan 11.2): the context-pack contract's `endpoint` without `origin` and `base_path`, which the ContextPack keeps. `provider_kind` and `classification` have exactly that contract's values (checked in CI).",
+          "type": "object",
+          "required": ["provider_kind", "host", "classification", "model"],
+          "propertyNames": { "$ref": "#/$defs/not_secret_name" },
+          "properties": {
+            "provider_kind": { "enum": ["openai_responses", "anthropic_messages", "openai_compatible_chat"] },
+            "host": { "type": "string", "minLength": 1, "maxLength": 255 },
+            "classification": { "enum": ["local", "user_managed", "hosted"] },
+            "model": { "type": "string", "minLength": 1, "maxLength": 200 }
+          }
+        }
+      }
+    },
+    "source_snapshot": {
+      "description": "The source as observed at capture time (plan 11.2). Live metadata may change; this stays, so the capture exports meaningfully after its source is gone or retitled.",
+      "type": "object",
+      "required": ["title", "author_display", "source_kind"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "author_display": { "description": "May be empty when no author is known.", "type": "string", "maxLength": 1000 },
+        "source_kind": {
+          "description": "Medium and origin as observed. Values written in v1 include local_epub, local_pdf, local_text, local_markdown, local_audio, physical (a printed book recorded by hand) and work (a note on the whole work, made in no particular edition or medium). A reader shows an unknown value as given.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,63}$"
+        },
+        "edition_identifiers": {
+          "description": "Bibliographic identifiers known at capture time (ISBN and the like), as hints (plan 7.3).",
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$" },
+          "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 512 }
+        },
+        "location_label": {
+          "description": "Chapter, page or timestamp label as shown or typed at capture time (plan 11.2). Never a rendered EPUB page number (plan 7.5). Omitted when there is none.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "location_label_origin": {
+          "description": "Who supplied `location_label` (addendum 4.3). Values for the known kinds: app: derived by Sylvia from the publication or the player. user: typed by the user (for a printed book), not verified. Required with `location_label`.",
+          "$ref": "#/$defs/value_token"
+        }
+      },
+      "dependentRequired": {
+        "location_label": ["location_label_origin"],
+        "location_label_origin": ["location_label"]
+      }
+    },
+    "anchors": {
+      "description": "Where the capture was made (urn:sylvia:schema:anchor:v1), in order. Empty when there is no precise location (a manual record, a note on the whole work): missing information stays missing. A reader that cannot resolve an anchor keeps it unchanged and still shows the capture; loss of a precise location never deletes the capture or links it to another passage (plan 7.5). These anchors are never moved or replaced, including by a cross-edition relocation the user confirms (ADR-0016 section 7).",
+      "type": "array",
+      "maxItems": 1000,
+      "items": { "$ref": "urn:sylvia:schema:anchor:v1" }
+    },
+    "notes": {
+      "description": "The user's own words attached to this capture, each note with every saved revision (plan 7.2, 7.3, 11.1). Notes are never the source's wording and never model output.",
+      "type": "array",
+      "maxItems": 1000,
+      "items": { "$ref": "#/$defs/note" }
+    },
+    "retained_excerpt": {
+      "description": "The audio excerpt kept in retained-knowledge storage (plan 7.2, 10.2, 17.1, 17.2; ADR-0006 decisions 13-15; ADR-0012). The requested ranges are the audio anchor's ranges. pending: the anchor and notes are durable and the export has not finished (\"Moment saved · preserving audio\"). preserved: the excerpt file exists with the digest below, was read back, and records the timing actually exported (\"Audio excerpt saved\"). failed: the export failed; the capture and its notes stay, and Retry is offered (\"Excerpt not preserved · Retry\"). removed: the user removed the excerpt audio (plan 17.2, \"Remove excerpt audio\"); the record of what was exported stays (its digest and timing, so a transcript still names its clip), the file is no longer kept or backed up, and nothing exports it again unless the user asks (it is not pending). Only a preserved or a removed excerpt names a file and its timing (`$defs/excerpt_file_fields`).",
+      "type": "object",
+      "required": ["state"],
+      "properties": {
+        "state": { "enum": ["pending", "preserved", "failed", "removed"] },
+        "blob_sha256": { "description": "SHA-256 of the excerpt file; it is stored content-addressed as `<blob_sha256>.<file_extension>` (ADR-0012).", "$ref": "#/$defs/sha256" },
+        "file_extension": { "type": "string", "pattern": "^[a-z0-9]{1,8}$" },
+        "media_type": { "$ref": "urn:sylvia:schema:anchor:v1#/$defs/media_type" },
+        "byte_count": { "$ref": "urn:sylvia:schema:anchor:v1#/$defs/int64_positive" },
+        "format": { "description": "The excerpt's own encoding, for example `m4a/aac-lc/64k/44.1k/mono` (ADR-0006 decision 13).", "type": "string", "minLength": 1, "maxLength": 128 },
+        "duration_ms": { "description": "Duration of the written file as read back after writing (encoder priming and padding applied). A writer that cannot read it back has not preserved the excerpt. Within 4,096 sample frames plus 1 ms of `frame_count` / `sample_rate_hz` (rule C9: AAC-LC adds 2,112 priming and up to 1,023 padding frames, which a reader that ignores the edit list counts).", "type": "integer", "minimum": 1 },
+        "sample_rate_hz": { "type": "integer", "minimum": 1 },
+        "frame_count": { "description": "Sample frames written: the actual ranges' samples, back to back (rule C9).", "type": "integer", "minimum": 1 },
+        "actual_ranges": {
+          "description": "Where the exported samples came from, per source range in the anchor's order, as the decoder's timestamps place them (plan 10.2: actual exported timing), and where each sits in the excerpt (`clip_start_ms`, plan 7.2: clip-local offsets). The excerpt is these ranges back to back, with nothing before, between or after them (rules C4 and C9). ADR-0006 measured how far the decoder's timestamps are from the true content position per codec.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "required": ["asset_id", "start_ms", "end_ms", "clip_start_ms", "source_format"],
+            "properties": {
+              "asset_id": { "$ref": "#/$defs/uuid" },
+              "start_ms": { "type": "integer", "minimum": 0 },
+              "end_ms": { "type": "integer", "minimum": 1 },
+              "clip_start_ms": { "description": "Where this range's first sample sits in the excerpt, in milliseconds from its start: 0 for the first range, then where the previous range ends (rule C9). With it a position in the excerpt, a transcript segment's for example, maps back to its source file and time.", "type": "integer", "minimum": 0 },
+              "source_format": { "description": "Codec, sample rate and channels of the source track, for example `.mp3/44100/1`.", "type": "string", "minLength": 1, "maxLength": 128 }
+            }
+          }
+        },
+        "failure": {
+          "type": "object",
+          "required": ["reason", "attempts"],
+          "properties": {
+            "reason": {
+              "description": "A short diagnostic reason, for example G0.4's \"source not on this device\". The user sees the vocabulary phrase, not this. Backups carry it (plan 17.3), so a writer builds it from an error code and at most a bare file name, never from a platform error's free text, which can name a file URL or path (ADR-0016). The pattern is a heuristic guard against a path that slips through anyway: it refuses a file URL (`file:/`, not inside a word), an absolute, home-relative or UNC path at the start of a word (a `/`, `~/` or `\\\\` at the start or after white space, a quotation mark or backquote, an opening bracket, `<`, `>`, `=`, `:`, `,`, `;` or `|`) and a drive path (`C:\\`). It does not catch a path after any other character (`x)/private/...`, `+/private/...`), a path whose leading slash was dropped (`Users/name/...`, which reads like a relative path), another user's home (`~name/...`) or a percent-encoded URL. A bare file name or a path relative to Sylvia's own storage is allowed: it locates nothing outside Sylvia's container.",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000,
+              "not": { "pattern": "(^|[^A-Za-z0-9+.-])[Ff][Ii][Ll][Ee]:/|(^|[\\s\"'`(\\[{<>=:,;|])(~?/[^\\s/]|\\\\\\\\[^\\s\\\\])|(^|[^A-Za-z0-9])[A-Za-z]:\\\\" }
+            },
+            "attempts": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "removed_at": { "description": "When the user removed the excerpt audio (device clock, UTC).", "$ref": "#/$defs/utc_timestamp" }
+      },
+      "allOf": [
+        {
+          "title": "preserved",
+          "if": { "required": ["state"], "properties": { "state": { "const": "preserved" } } },
+          "then": {
+            "$ref": "#/$defs/excerpt_file",
+            "not": { "anyOf": [{ "required": ["failure"] }, { "required": ["removed_at"] }] }
+          }
+        },
+        {
+          "title": "removed",
+          "if": { "required": ["state"], "properties": { "state": { "const": "removed" } } },
+          "then": {
+            "$ref": "#/$defs/excerpt_file",
+            "required": ["removed_at"],
+            "not": { "required": ["failure"] }
+          }
+        },
+        {
+          "title": "failed",
+          "if": { "required": ["state"], "properties": { "state": { "const": "failed" } } },
+          "then": { "required": ["failure"], "not": { "anyOf": [{ "$ref": "#/$defs/excerpt_file_fields" }, { "required": ["removed_at"] }] } }
+        },
+        {
+          "title": "pending",
+          "if": { "required": ["state"], "properties": { "state": { "const": "pending" } } },
+          "then": { "not": { "anyOf": [{ "$ref": "#/$defs/excerpt_file_fields" }, { "required": ["failure"] }, { "required": ["removed_at"] }] } }
+        }
+      ]
+    },
+    "transcript": {
+      "description": "A machine transcription of a retained excerpt, with provenance (plan 10.4; G0.5 AI `TranscriptRecord`). The raw text, the user's correction and the timestamps are kept apart. A client shows it with the design package's machine-transcription label (plan 10.4: potentially inaccurate); the label is not stored.",
+      "type": "object",
+      "required": ["clip_sha256", "raw_text", "segments", "provider_kind", "host", "model", "created_at", "discarded_segment_count"],
+      "propertyNames": { "$ref": "#/$defs/not_secret_name" },
+      "properties": {
+        "clip_sha256": { "description": "SHA-256 of the excerpt file that was transcribed (only the retained clip is ever sent, plan 10.4). G0.5 named the clip by an ID (`clip_id`).", "$ref": "#/$defs/sha256" },
+        "raw_text": { "description": "The machine text exactly as returned. May be empty (silence).", "type": "string" },
+        "segments": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "description": "Clip-local timing in milliseconds (code-checked, rule C7: start_ms <= end_ms, and at most 1,000 ms past the end of the excerpt it transcribes). G0.5 drops server segments that are not finite, negative, backwards or more than 1 s past the clip.",
+            "type": "object",
+            "required": ["start_ms", "end_ms", "text"],
+            "properties": {
+              "start_ms": { "type": "integer", "minimum": 0 },
+              "end_ms": { "type": "integer", "minimum": 0 },
+              "text": { "type": "string" }
+            }
+          }
+        },
+        "language": { "type": "string", "minLength": 1, "maxLength": 35 },
+        "provider_kind": { "description": "A transcription provider kind of the provider-config contract (checked in CI).", "enum": ["openai_compatible_transcription"] },
+        "host": { "type": "string", "minLength": 1, "maxLength": 255 },
+        "model": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "created_at": { "$ref": "#/$defs/utc_timestamp" },
+        "corrected_text": { "description": "The user's corrected wording, kept apart from `raw_text`.", "type": "string", "minLength": 1 },
+        "discarded_segment_count": { "description": "Segments the server sent with unusable timing, dropped.", "type": "integer", "minimum": 0 }
+      }
+    },
+    "provenance": {
+      "description": "How the capture was made (plan 11.1).",
+      "type": "object",
+      "required": ["surface", "idempotency_key"],
+      "properties": {
+        "surface": {
+          "description": "Values for the known kinds: reader: a selection in the EPUB, PDF or text reader. player: the in-player Capture button. quick_capture: a system surface that runs the capture intent (ADR-0007). manual_entry: typed by the user outside a reader or player (a note on a work, a record of a printed book). conversation: saved from an AI conversation.",
+          "$ref": "#/$defs/value_token"
+        },
+        "entry_point": { "description": "Finer detail of the surface as recorded, for example G0.4's `intent.control@<bundle id>`.", "type": "string", "minLength": 1, "maxLength": 256 },
+        "idempotency_key": { "description": "The capture command's local idempotency key (plan 11.1): a repeated command returns this capture instead of making another.", "type": "string", "minLength": 1, "maxLength": 256 }
+      }
+    },
+    "created_at": { "description": "When the capture was first durably saved (device clock, UTC).", "$ref": "#/$defs/utc_timestamp" },
+    "updated_at": { "description": "When the capture or one of its notes last changed durably (device clock, UTC).", "$ref": "#/$defs/utc_timestamp" },
+    "revision": {
+      "description": "The capture's own revision: 1 when created, plus 1 for each later durable change to the capture itself (its anchors, quoted text, retained excerpt or transcript, or moving it to or from the trash). Edits are made against the current revision (plan 7.3). A note's edits are counted in that note's revisions, not here. Plan 10.2 writes the anchor before the export's outcome, so the state implies a lower bound (rule C8).",
+      "type": "integer",
+      "minimum": 1
+    },
+    "trashed_at": { "description": "Present while the capture is in the trash (plan 11.4); exported as identified trash.", "$ref": "#/$defs/utc_timestamp" }
+  },
+  "dependentRequired": {
+    "quoted_text": ["quoted_text_origin"],
+    "quoted_text_origin": ["quoted_text"]
+  },
+  "allOf": [
+    {
+      "title": "known-kind-values",
+      "description": "Enumerated values of the fields every capture has are fixed for the known kinds; a capture of an unknown kind may carry values a later writer added (compatibility rule).",
+      "if": { "required": ["kind"], "properties": { "kind": { "$ref": "#/$defs/known_kind" } } },
+      "then": { "$ref": "#/$defs/known_kind_values" }
+    },
+    {
+      "title": "anchor-names-edition",
+      "description": "An anchor of a known kind binds to one edition's bytes, so a capture holding one names that edition (rule C1 checks that it is the same one). An anchor of a later writer's kind may be located without an edition (addendum 4.3: a clip located in a retained clip while the edition is unknown).",
+      "if": {
+        "required": ["anchors"],
+        "properties": { "anchors": { "contains": { "required": ["kind"], "properties": { "kind": { "$ref": "urn:sylvia:schema:anchor:v1#/$defs/known_kind" } } } } }
+      },
+      "then": { "required": ["edition_id"] }
+    },
+    {
+      "title": "text_quote",
+      "description": "A quotation: selected in a reader or typed by the user, never located in audio. Its origin is therefore `selection` or `user_entered`: the transcript origins need a `transcript` (rule transcript-origin), which a text_quote never has.",
+      "if": { "required": ["kind"], "properties": { "kind": { "const": "text_quote" } } },
+      "then": {
+        "required": ["quoted_text"],
+        "properties": {
+          "anchors": { "items": { "not": { "required": ["kind"], "properties": { "kind": { "const": "audio" } } } } }
+        },
+        "not": { "anyOf": [{ "required": ["word"] }, { "required": ["generated_answer"] }, { "required": ["retained_excerpt"] }, { "required": ["transcript"] }] }
+      }
+    },
+    {
+      "title": "typed-quote-has-no-reader-anchor",
+      "description": "A quotation the user typed is never attached to an EPUB, PDF or text anchor: the anchor's `exact_text` would locate other words than the typed ones (I-05, plan 11.1), and nothing could check them against each other. A typed record of a printed book has `anchors: []` and keeps its page in `source_snapshot.location_label`. A cleaned-up correction of a selected quotation keeps `quoted_text_origin` `selection` and its anchors; v1 has no field for the correction (ADR-0016 open items).",
+      "if": {
+        "required": ["kind", "quoted_text_origin"],
+        "properties": { "kind": { "const": "text_quote" }, "quoted_text_origin": { "const": "user_entered" } }
+      },
+      "then": {
+        "properties": {
+          "anchors": { "items": { "not": { "required": ["kind"], "properties": { "kind": { "enum": ["epub", "pdf", "text"] } } } } }
+        }
+      }
+    },
+    {
+      "title": "word",
+      "description": "A word is always selected in a reader, so it has the anchors it was selected at (rule selection-has-anchors), never an audio anchor.",
+      "if": { "required": ["kind"], "properties": { "kind": { "const": "word" } } },
+      "then": {
+        "required": ["quoted_text", "word"],
+        "properties": {
+          "quoted_text_origin": { "const": "selection" },
+          "anchors": { "items": { "not": { "required": ["kind"], "properties": { "kind": { "const": "audio" } } } } }
+        },
+        "not": { "anyOf": [{ "required": ["generated_answer"] }, { "required": ["retained_excerpt"] }, { "required": ["transcript"] }] }
+      }
+    },
+    {
+      "title": "selection-has-anchors",
+      "description": "A selected quotation always has the anchors it was selected at.",
+      "if": { "required": ["quoted_text_origin"], "properties": { "quoted_text_origin": { "const": "selection" } } },
+      "then": { "properties": { "anchors": { "minItems": 1 } } }
+    },
+    {
+      "title": "note",
+      "description": "A note is the user's words only. A note on the whole work (plan 11.1: notes may be work-level) is a `note` capture with no anchors and that note as its `notes` entry; one attached to an AI conversation (plan 7.2) has no form in v1 yet (ADR-0016 open items).",
+      "if": { "required": ["kind"], "properties": { "kind": { "const": "note" } } },
+      "then": {
+        "properties": { "notes": { "minItems": 1 } },
+        "not": { "anyOf": [{ "required": ["quoted_text"] }, { "required": ["word"] }, { "required": ["generated_answer"] }, { "required": ["retained_excerpt"] }, { "required": ["transcript"] }] }
+      }
+    },
+    {
+      "title": "audio_capture",
+      "description": "An audio capture has exactly one audio anchor (its ordered file-local ranges) and an excerpt record; text only from a labelled transcript or the user's own typing (I-04).",
+      "if": { "required": ["kind"], "properties": { "kind": { "const": "audio_capture" } } },
+      "then": {
+        "required": ["retained_excerpt"],
+        "properties": {
+          "anchors": { "minItems": 1, "maxItems": 1, "items": { "properties": { "kind": { "const": "audio" } } } },
+          "quoted_text_origin": { "enum": ["user_entered", "machine_transcript", "corrected_transcript"] }
+        },
+        "not": { "anyOf": [{ "required": ["word"] }, { "required": ["generated_answer"] }] }
+      }
+    },
+    {
+      "title": "transcript-origin",
+      "description": "Text from a transcript needs the transcript and the excerpt it was made from: preserved, or removed later by the user (rule C5 checks that the transcript is of that excerpt).",
+      "if": { "required": ["quoted_text_origin"], "properties": { "quoted_text_origin": { "enum": ["machine_transcript", "corrected_transcript"] } } },
+      "then": { "required": ["transcript"], "properties": { "retained_excerpt": { "properties": { "state": { "enum": ["preserved", "removed"] } } } } }
+    },
+    {
+      "title": "corrected-transcript",
+      "description": "A corrected transcript quotation keeps the user's correction in the transcript.",
+      "if": { "required": ["quoted_text_origin"], "properties": { "quoted_text_origin": { "const": "corrected_transcript" } } },
+      "then": { "properties": { "transcript": { "required": ["corrected_text"] } } }
+    },
+    {
+      "title": "generated_answer",
+      "description": "A model answer is never a quotation.",
+      "if": { "required": ["kind"], "properties": { "kind": { "const": "generated_answer" } } },
+      "then": {
+        "required": ["generated_answer"],
+        "properties": { "provenance": { "properties": { "surface": { "const": "conversation" } } } },
+        "not": { "anyOf": [{ "required": ["quoted_text"] }, { "required": ["word"] }, { "required": ["retained_excerpt"] }, { "required": ["transcript"] }] }
+      }
+    }
+  ],
+  "$defs": {
+    "uuid": { "$ref": "urn:sylvia:schema:anchor:v1#/$defs/uuid" },
+    "sha256": { "$ref": "urn:sylvia:schema:anchor:v1#/$defs/sha256" },
+    "kind_token": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$" },
+    "known_kind": {
+      "description": "The capture kinds a v1 writer emits, one per capture marker of plan 4.4.5, as the design package maps them (`capture_kind_mapping`; checked in CI).",
+      "enum": ["text_quote", "note", "audio_capture", "generated_answer", "word"]
+    },
+    "value_token": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$" },
+    "known_kind_values": {
+      "description": "The values a v1 writer uses in the fields every capture has. They are closed for the known kinds: a new value would change what a record means (for example a new origin of quoted text), so a later writer that needs one uses a new kind, which v1 readers show as Pending.",
+      "properties": {
+        "quoted_text_origin": { "enum": ["selection", "user_entered", "machine_transcript", "corrected_transcript"] },
+        "source_snapshot": { "properties": { "location_label_origin": { "enum": ["app", "user"] } } },
+        "provenance": { "properties": { "surface": { "enum": ["reader", "player", "quick_capture", "manual_entry", "conversation"] } } },
+        "notes": { "items": { "properties": { "revisions": { "items": { "properties": { "format": { "enum": ["plain", "markdown"] } } } } } } }
+      }
+    },
+    "excerpt_file": {
+      "description": "A preserved or removed excerpt names its file and the timing actually exported.",
+      "required": ["blob_sha256", "file_extension", "media_type", "byte_count", "format", "duration_ms", "sample_rate_hz", "frame_count", "actual_ranges"]
+    },
+    "excerpt_file_fields": {
+      "description": "The fields that name an excerpt file and its timing; only a preserved or a removed excerpt has them.",
+      "anyOf": [
+        { "required": ["blob_sha256"] },
+        { "required": ["file_extension"] },
+        { "required": ["media_type"] },
+        { "required": ["byte_count"] },
+        { "required": ["format"] },
+        { "required": ["duration_ms"] },
+        { "required": ["sample_rate_hz"] },
+        { "required": ["frame_count"] },
+        { "required": ["actual_ranges"] }
+      ]
+    },
+    "utc_timestamp": { "type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z$" },
+    "not_secret_name": { "$ref": "urn:sylvia:schema:anchor:v1#/$defs/not_secret_name" },
+    "note": {
+      "type": "object",
+      "required": ["note_id", "current_revision", "revisions"],
+      "properties": {
+        "note_id": { "description": "Unique among the capture's notes (rule C6).", "$ref": "#/$defs/uuid" },
+        "current_revision": { "type": "integer", "minimum": 1 },
+        "revisions": {
+          "description": "Every saved revision, oldest first (code-checked: numbered 1..n, rule C6). Revision-checked edits never overwrite a later one (plan 7.3).",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "required": ["revision", "body", "format", "saved_at"],
+            "properties": {
+              "revision": { "type": "integer", "minimum": 1 },
+              "body": { "description": "The user's text. May be empty when the user cleared it.", "type": "string" },
+              "format": { "description": "Values for the known kinds: plain, or markdown (the modest Markdown subset of plan 11.1).", "$ref": "#/$defs/value_token" },
+              "saved_at": { "$ref": "#/$defs/utc_timestamp" }
+            }
+          }
+        },
+        "trashed_at": { "$ref": "#/$defs/utc_timestamp" }
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "capture_id": "8719545c-7c3a-53f0-8da0-80fbf3d8481b",
+  "work_id": "c0efdaef-2745-5b12-bf27-bc9d8faf51a4",
+  "edition_id": "4eacc8c8-c0d4-5e03-baf3-2327f7a6d138",
+  "kind": "text_quote",
+  "quoted_text": "The first chapter closes on this sentence, which a reader might keep together with the opening of the next.\n\nThe second chapter opens here, continuing the thought across the resource boundary.",
+  "quoted_text_origin": "selection",
+  "source_snapshot": {
+    "title": "Sylvia G0.1 Unicode fixture",
+    "author_display": "Fixture generator",
+    "source_kind": "local_epub",
+    "location_label": "Chapter One",
+    "location_label_origin": "app"
+  },
+  "anchors": [
+    {
+      "asset_id": "ea5304a8-edfe-545d-8f56-24bca4b419c6",
+      "exact_text": "The first chapter closes on this sentence, which a reader might keep together with the opening of the next.",
+      "kind": "epub",
+      "position": 1,
+      "prefix": "and wrote the number in a small book kept for that purpose alone. The orchard keeper counted the rows twice before the light went, and wrote the number in a small book kept for that purpose alone. \n",
+      "progression": 0.6666666666666666,
+      "reader": {
+        "adapter": "readium-swift",
+        "adapter_version": "3.11.0",
+        "locator": {
+          "href": "OEBPS/c1.xhtml",
+          "locations": {
+            "position": 1,
+            "progression": 0.6666666666666666,
+            "totalProgression": 0.3333333333333333
+          },
+          "text": {
+            "after": "\n",
+            "before": "and wrote the number in a small book kept for that purpose alone. The orchard keeper counted the rows twice before the light went, and wrote the number in a small book kept for that purpose alone. \n",
+            "highlight": "The first chapter closes on this sentence, which a reader might keep together with the opening of the next."
+          },
+          "title": "Chapter One",
+          "type": "application/xhtml+xml"
+        }
+      },
+      "resource_href": "OEBPS/c1.xhtml",
+      "resource_media_type": "application/xhtml+xml",
+      "segment": {
+        "count": 2,
+        "index": 0
+      },
+      "suffix": "\n",
+      "text_offsets": {
+        "basis": "sylvia-extraction",
+        "block_index": 5,
+        "end": 107,
+        "extraction_version": "readium-swift-3.11.0+html-content-iterator+sylvia-sanitizer-2+chunker-1",
+        "start": 0,
+        "unit": "unicode_scalar"
+      },
+      "total_progression": 0.3333333333333333,
+      "schema_version": 1,
+      "asset_sha256": "dada2710805d97de0b7349bda206675d4f1779c075fc133eae38428ed887807d",
+      "work_id": "c0efdaef-2745-5b12-bf27-bc9d8faf51a4",
+      "edition_id": "4eacc8c8-c0d4-5e03-baf3-2327f7a6d138"
+    },
+    {
+      "asset_id": "ea5304a8-edfe-545d-8f56-24bca4b419c6",
+      "exact_text": "The second chapter opens here, continuing the thought across the resource boundary.",
+      "kind": "epub",
+      "position": 2,
+      "prefix": "Chapter Two: The Second Leaf\n",
+      "progression": 0,
+      "reader": {
+        "adapter": "readium-swift",
+        "adapter_version": "3.11.0",
+        "locator": {
+          "href": "OEBPS/c2.xhtml",
+          "locations": {
+            "position": 2,
+            "progression": 0,
+            "totalProgression": 0.5
+          },
+          "text": {
+            "after": "\nThe orchard keeper counted the rows twice before the light went, and wrote the number in a small book kept for that purpose alone. The orchard keeper counted the rows twice before the light went",
+            "before": "Chapter Two: The Second Leaf\n",
+            "highlight": "The second chapter opens here, continuing the thought across the resource boundary."
+          },
+          "title": "Chapter Two",
+          "type": "application/xhtml+xml"
+        }
+      },
+      "resource_href": "OEBPS/c2.xhtml",
+      "resource_media_type": "application/xhtml+xml",
+      "segment": {
+        "count": 2,
+        "index": 1
+      },
+      "suffix": "\nThe orchard keeper counted the rows twice before the light went, and wrote the number in a small book kept for that purpose alone. The orchard keeper counted the rows twice before the light went",
+      "text_offsets": {
+        "basis": "sylvia-extraction",
+        "block_index": 1,
+        "end": 83,
+        "extraction_version": "readium-swift-3.11.0+html-content-iterator+sylvia-sanitizer-2+chunker-1",
+        "start": 0,
+        "unit": "unicode_scalar"
+      },
+      "total_progression": 0.5,
+      "schema_version": 1,
+      "asset_sha256": "dada2710805d97de0b7349bda206675d4f1779c075fc133eae38428ed887807d",
+      "work_id": "c0efdaef-2745-5b12-bf27-bc9d8faf51a4",
+      "edition_id": "4eacc8c8-c0d4-5e03-baf3-2327f7a6d138"
+    }
+  ],
+  "notes": [],
+  "provenance": {
+    "surface": "reader",
+    "idempotency_key": "fixture-quote-epub-2"
+  },
+  "created_at": "2026-10-13T08:00:00Z",
+  "updated_at": "2026-10-13T08:00:00Z",
+  "revision": 1
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "capture_id": "fdadc98d-2a06-566c-907b-bbfae4498163",
+  "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+  "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55",
+  "kind": "audio_capture",
+  "source_snapshot": {
+    "title": "Meditations",
+    "author_display": "Marcus Aurelius",
+    "source_kind": "local_audio",
+    "location_label": "Part 1 · 1:30",
+    "location_label_origin": "app"
+  },
+  "anchors": [
+    {
+      "schema_version": 1,
+      "kind": "audio",
+      "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+      "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55",
+      "timeline_revision": 1,
+      "ranges": [
+        {
+          "asset_id": "00000000-0000-4000-8000-000000000401",
+          "asset_sha256": "2d1e16363bc6d43f9acbd52f91a029ee19eef27871791e820975eb4d2348a94a",
+          "start_ms": 60000,
+          "end_ms": 90000
+        }
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "note_id": "02aa183d-8206-59e7-8342-4d1b77581c6a",
+      "current_revision": 1,
+      "revisions": [
+        {
+          "revision": 1,
+          "body": "Kept even though the excerpt failed.",
+          "format": "plain",
+          "saved_at": "2026-10-13T08:00:10Z"
+        }
+      ]
+    }
+  ],
+  "retained_excerpt": {
+    "state": "failed",
+    "failure": {
+      "reason": "source not on this device",
+      "attempts": 1
+    }
+  },
+  "provenance": {
+    "surface": "player",
+    "idempotency_key": "fixture-audio-failed"
+  },
+  "created_at": "2026-10-13T08:00:00Z",
+  "updated_at": "2026-10-13T08:00:01Z",
+  "revision": 2
+}

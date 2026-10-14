@@ -23,7 +23,7 @@ An "accept-with-minor" verdict is an agent review's judgment that the branch is 
 
 An agent review's "accept-with-minor" on an `m0-int-minors-*` branch accepts the fixes of the findings named above; any minor findings that review raised stay with the gate, and the fixes are agent-reviewed, human sign-off pending.
 
-[integration-log.md](integration-log.md) records how the gate branches were combined into one tree at M0 integration (G0.4 a day after the other seven) and how the thirteen M0 items below were merged at M0 assembly (section 7): the commit for each, the shared-file requests and their outcomes, and the checks run, including the complete CI run from a clean tree on the assembled commit.
+[integration-log.md](integration-log.md) records how the gate branches were combined into one tree at M0 integration (G0.4 a day after the other seven) and how the thirteen M0 items below were merged at M0 assembly (section 7): the commit for each, the shared-file requests and their outcomes, and the checks run, including the complete CI runs from a clean tree on the assembled commits (section 7.6).
 
 The M0 deliverables beyond the gates (plan 21.2), each Proposed and agent-reviewed, with human sign-off pending:
 

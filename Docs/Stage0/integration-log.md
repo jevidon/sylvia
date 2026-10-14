@@ -255,7 +255,7 @@ Both complete runs used `Docs/Stage0/evidence/M0-Integration/commands/ci-assembl
 
 **Re-run of `71-g05-recovery` once the screen is unlocked:** a waiter in this session polls the lock state and runs the drop-in alone when it is unlocked; the result is recorded here if it ran before this assembly ended, and otherwise this row stays pending (open items).
 
-After the run no tracked file had changed (only this agent's own edit to this log): no drop-in wrote over committed evidence (R1-01). The documents committed after `efc9479` change no code; `Scripts/ci.sh contracts dependency-lock hard-rules`, the drop-ins that read documents, were run again on the final commit: @@FAST@@
+After the run no tracked file had changed (only this agent's own edit to this log): no drop-in wrote over committed evidence (R1-01). The documents committed after `efc9479` change no code; `Scripts/ci.sh contracts dependency-lock hard-rules`, the drop-ins that read documents, were run again on `b08f927`, the commit that records these runs: all four passed (`ci-documents-final.log`). Later commits add only this sentence and evidence logs.
 
 ### 7.7 Open items from assembly
 

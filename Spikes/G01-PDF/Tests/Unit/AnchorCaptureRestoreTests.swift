@@ -98,7 +98,9 @@ final class AnchorCaptureRestoreTests: XCTestCase {
                     XCTAssertEqual(original, segment.lineRects, "\(sample.name): line rects from the range differ from the selection's lines")
                 }
             }
-            // A multi-segment quote is the segments joined by "\n" (PDFKit's own joining).
+            // Each sample has one segment per page, and PDFKit joins a selection's pages with "\n". (Several pieces on one
+            // page are composed differently: ComposedSelectionTests.)
+            XCTAssertEqual(Set(anchor.segments.map(\.pageIndex)).count, anchor.segments.count, "\(sample.name): one segment per page")
             XCTAssertTrue(UnicodeOffsets.scalarsEqual(anchor.segments.map(\.text).joined(separator: "\n"), anchor.exactText), sample.name)
 
             // Store-and-reload through JSON, then restore against a freshly opened copy of the document.
@@ -294,7 +296,7 @@ final class AnchorCaptureRestoreTests: XCTestCase {
         "kind": "\"pdf\"",
         "asset_id": "UUID of the stored PDF asset, or null in fixtures",
         "asset_sha256": "lowercase hex SHA-256 of the PDF bytes; the anchor is exact only for this file",
-        "exact_text": "the quotation exactly as selected (scalar-exact, never normalized); segments joined by a single \\n",
+        "exact_text": "the quotation exactly as selected (scalar-exact, never normalized). With one segment it equals that segment's text; with several it is the reader's own composition of the pieces (PDFKit: pages joined by \\n, pieces on one page next to each other, a piece ending at a line's end keeping that break when another follows on its page), so it is not the segments' texts joined by one separator. Capture stores an anchor only if its segments, rebuilt as the resolver rebuilds them, give back exactly this text",
         "extraction": "{extractor, adapter_version, platform}: which text extraction the offsets index into",
         "segments[]": [
             "page_index": "zero-based physical page index",

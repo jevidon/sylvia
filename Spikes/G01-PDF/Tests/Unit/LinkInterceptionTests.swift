@@ -78,15 +78,36 @@ final class LinkInterceptionTests: XCTestCase {
                       "the canary detector did not see a deliberate open; later 'no canary' results would prove nothing")
     }
 
-    /// Control: without Sylvia's delegate, PDFKit's default link handling opens the URL by itself.
+    /// Control: without Sylvia's delegate, PDFKit's default link handling opens the URL by itself, and only that URL
+    /// (the file's open action, page-open action and document JavaScript, all canaries too, do not arrive).
     func testControlPDFKitDefaultOpensURLWithoutInterceptor() throws {
         let (window, view, source) = try actionsView(delegate: nil)
         defer { window.isHidden = true }
         view.perform(try linkAction(source, 0))
         let received = waitUntil(timeout: 10) { URLOpenRecorder.shared.received.contains(URL(string: "sylvia-g01-canary://link-uri")!) }
         XCTAssertTrue(received, "expected PDFKit's default to open the canary link (this is the behaviour the interceptor prevents)")
+        spinRunLoop(seconds: Self.canaryWait)
+        XCTAssertEqual(URLOpenRecorder.shared.received.map(\.absoluteString), ["sylvia-g01-canary://link-uri"],
+                       "PDFKit's default opens the performed link and nothing else")
         Evidence.write("links-control-no-interceptor.txt",
-                       "Control without LinkInterceptor, \(Evidence.environmentLabel): PDFView.perform(link A) -> URLs delivered to the harness: \(URLOpenRecorder.shared.received.map(\.absoluteString))\n")
+                       "Control without LinkInterceptor, \(Evidence.environmentLabel): PDFView.perform(link A), then \(Self.canaryWait) s -> URLs delivered to the harness: \(URLOpenRecorder.shared.received.map(\.absoluteString))\n")
+    }
+
+    /// Control for `testOpeningTheDocumentRunsNoOpenActionOrJavaScript`, without Sylvia's delegate: displaying
+    /// actions.pdf and changing pages delivers none of its canaries (catalog /OpenAction URI, page 0 /AA /O URI,
+    /// document JavaScript), so PDFKit itself does not run them; the delegate is not what stops them. That PDFKit's
+    /// default does deliver a canary it performs is the control above.
+    func testControlWithoutInterceptorOpeningRunsNoOpenActionOrJavaScript() throws {
+        let (window, view, _) = try actionsView(delegate: nil)
+        defer { window.isHidden = true }
+        view.go(to: try XCTUnwrap(view.document?.page(at: 1)))
+        view.go(to: try XCTUnwrap(view.document?.page(at: 0)))
+        spinRunLoop(seconds: Self.canaryWait)
+        XCTAssertEqual(URLOpenRecorder.shared.received, [], "without the delegate, the /OpenAction, page /AA /O and JavaScript must not open anything")
+        Evidence.write("links-open-actions-control-no-interceptor.txt", "Control without LinkInterceptor: displaying actions.pdf (catalog /OpenAction URI "
+                       + "sylvia-g01-canary://open-action, page 0 /AA /O URI sylvia-g01-canary://page-open-action, /Names JavaScript asking for "
+                       + "sylvia-g01-canary://javascript) for \(Self.canaryWait) s with page changes 1, 0, \(Evidence.environmentLabel)\n"
+                       + "URLs delivered to the harness: \(URLOpenRecorder.shared.received.map(\.absoluteString))\n")
     }
 
     func testInterceptorReceivesLinksAndNothingIsOpened() throws {

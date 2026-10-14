@@ -1,0 +1,76 @@
+actions-chained.pdf: declared actions read from the file's dictionaries (PDFActionAudit: open action, document /AA, JavaScript name tree, outline, form fields, page /AA, annotations /A and /AA, every /Next), simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77)
+73 actions and 1 marker row(s):
+  catalog /OpenAction | GoTo | -
+  catalog /OpenAction /Next | URI | sylvia-g01-canary://open-action-next
+  catalog /AA /DP | URI | sylvia-g01-canary://doc-did-print
+  catalog /AA /DS | URI | sylvia-g01-canary://doc-did-save
+  catalog /AA /WC | URI | sylvia-g01-canary://doc-will-close
+  catalog /AA /WP | URI | sylvia-g01-canary://doc-will-print
+  catalog /AA /WS | URI | sylvia-g01-canary://doc-will-save
+  catalog /Names /JavaScript [0] | JavaScript | app.launchURL('sylvia-g01-canary://javascript-tree', true);
+  catalog /Names /JavaScript [0] /Next | URI | sylvia-g01-canary://javascript-tree-next
+  catalog /Names /JavaScript [1] | JavaScript | app.launchURL('sylvia-g01-canary://javascript-tree-second', true);
+  catalog /Outlines item 0 /A | URI | sylvia-g01-canary://outline-uri
+  catalog /Outlines item 1 /A | GoTo | -
+  catalog /Outlines item 1 /A /Next | URI | sylvia-g01-canary://outline-next
+  catalog /Outlines item 1.0 /A | JavaScript | app.launchURL('sylvia-g01-canary://outline-child-javascript', true);
+  catalog /AcroForm field 1 /AA /Bl | URI | sylvia-g01-canary://second-field-blur
+  catalog /AcroForm field 1 /AA /C | JavaScript | app.launchURL('sylvia-g01-canary://second-field-calculate', true);
+  catalog /AcroForm field 1 /AA /D | URI | sylvia-g01-canary://second-field-mouse-down
+  catalog /AcroForm field 1 /AA /F | JavaScript | app.launchURL('sylvia-g01-canary://second-field-format', true);
+  catalog /AcroForm field 1 /AA /Fo | URI | sylvia-g01-canary://second-field-focus
+  catalog /AcroForm field 1 /AA /K | JavaScript | app.launchURL('sylvia-g01-canary://second-field-keystroke', true);
+  catalog /AcroForm field 1 /AA /U | URI | sylvia-g01-canary://second-field-mouse-up
+  catalog /AcroForm field 1 /AA /V | JavaScript | app.launchURL('sylvia-g01-canary://second-field-validate', true);
+  page 0 /AA /C | URI | sylvia-g01-canary://page-close
+  page 0 /AA /O | GoTo | -
+  page 0 /AA /O /Next | URI | sylvia-g01-canary://page-open-next
+  page 0 annotation 0 /A | GoTo | -
+  page 0 annotation 0 /A /Next | URI | sylvia-g01-canary://next-after-goto
+  page 0 annotation 1 /A | Named | -
+  page 0 annotation 1 /A /Next | URI | sylvia-g01-canary://next-after-named
+  page 0 annotation 2 /A | GoTo | -
+  page 0 annotation 2 /A /Next[0] | URI | sylvia-g01-canary://next-array
+  page 0 annotation 2 /A /Next[1] | Launch | /bin/sh
+  page 0 annotation 2 /A /Next[2] | JavaScript | app.launchURL('sylvia-g01-canary://next-array-javascript', true);
+  page 0 annotation 3 /A | URI | https://example.invalid/chained
+  page 0 annotation 3 /A /Next | URI | sylvia-g01-canary://next-after-uri
+  page 0 annotation 4 /AA /U | URI | sylvia-g01-canary://aa-mouse-up-only
+  page 0 annotation 5 /A | GoTo | -
+  page 0 annotation 5 /AA /Bl | URI | sylvia-g01-canary://aa-bl
+  page 0 annotation 5 /AA /D | URI | sylvia-g01-canary://aa-d
+  page 0 annotation 5 /AA /E | URI | sylvia-g01-canary://aa-e
+  page 0 annotation 5 /AA /Fo | URI | sylvia-g01-canary://aa-fo
+  page 0 annotation 5 /AA /PC | URI | sylvia-g01-canary://aa-pc
+  page 0 annotation 5 /AA /PI | URI | sylvia-g01-canary://aa-pi
+  page 0 annotation 5 /AA /PO | URI | sylvia-g01-canary://aa-po
+  page 0 annotation 5 /AA /PV | URI | sylvia-g01-canary://aa-pv
+  page 0 annotation 5 /AA /U | URI | sylvia-g01-canary://aa-u
+  page 0 annotation 5 /AA /X | URI | sylvia-g01-canary://aa-x
+  page 0 annotation 6 /A | GoTo | -
+  page 0 annotation 6 /A /Next | URI | sylvia-g01-canary://next-cycle
+  page 0 annotation 6 /A /Next /Next | (cycle) | returns to an action listed above
+  page 0 annotation 7 /AA /D | URI | sylvia-g01-canary://aa-down-up-d
+  page 0 annotation 7 /AA /U | URI | sylvia-g01-canary://aa-down-up-u
+  page 0 annotation 8 /AA /D | URI | sylvia-g01-canary://aa-up-down-d
+  page 0 annotation 8 /AA /U | URI | sylvia-g01-canary://aa-up-down-u
+  page 0 annotation 9 /AA /D | URI | sylvia-g01-canary://aa-down-only
+  page 0 annotation 10 /AA /E | URI | sylvia-g01-canary://aa-up-enter-e
+  page 0 annotation 10 /AA /U | URI | sylvia-g01-canary://aa-up-enter-u
+  page 0 annotation 11 /A | URI | sylvia-g01-canary://uri-first
+  page 0 annotation 11 /A /Next | URI | sylvia-g01-canary://uri-next
+  page 0 annotation 12 /AA /Bl | URI | sylvia-g01-canary://field-blur
+  page 0 annotation 12 /AA /C | JavaScript | app.launchURL('sylvia-g01-canary://field-calculate', true);
+  page 0 annotation 12 /AA /D | URI | sylvia-g01-canary://field-mouse-down
+  page 0 annotation 12 /AA /E | URI | sylvia-g01-canary://field-enter
+  page 0 annotation 12 /AA /F | JavaScript | app.launchURL('sylvia-g01-canary://field-format', true);
+  page 0 annotation 12 /AA /Fo | URI | sylvia-g01-canary://field-focus
+  page 0 annotation 12 /AA /K | JavaScript | app.launchURL('sylvia-g01-canary://field-keystroke', true);
+  page 0 annotation 12 /AA /PC | URI | sylvia-g01-canary://field-page-close
+  page 0 annotation 12 /AA /PI | URI | sylvia-g01-canary://field-page-invisible
+  page 0 annotation 12 /AA /PO | URI | sylvia-g01-canary://field-page-open
+  page 0 annotation 12 /AA /PV | URI | sylvia-g01-canary://field-page-visible
+  page 0 annotation 12 /AA /U | URI | sylvia-g01-canary://field-mouse-up
+  page 0 annotation 12 /AA /V | JavaScript | app.launchURL('sylvia-g01-canary://field-validate', true);
+  page 0 annotation 12 /AA /X | URI | sylvia-g01-canary://field-exit
+  page 0 annotation 14 /AA /U | URI | sylvia-g01-canary://third-field-mouse-up

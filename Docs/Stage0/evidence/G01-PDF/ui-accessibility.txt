@@ -1,15 +1,16 @@
-simulator iPhone18,3 (Sylvia-M0-g01-pdf), runtime 26.5
+simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), runtime 26.5
 Accessibility of the reader screen, labels-multipage.pdf
 toolbar: button, label "Highlight selection", hittable true
 PDF view: element type 1, 1 accessibility children
 edit menu: menu item "Highlight", hittable true
 after Highlight the status line is an accessibility element: "Saved highlight (1 on this file)"
-accessibility audit (all audit types): 8 issues
+accessibility audit (all audit types): 9 issues
+  - dynamicType on 48 id "pdfViewFrame" label "0.0,116.0,402.0,582.7;0.64839,0.00000,0.": Dynamic Type font sizes are unsupported
+  - dynamicType on 48 id "selectionInfo" label "": Dynamic Type font sizes are unsupported
   - dynamicType on 48 id "linkFrames" label "": Dynamic Type font sizes are unsupported
   - dynamicType on 48 id "probePoint" label "132.3,173.8": Dynamic Type font sizes are unsupported
-  - dynamicType on 48 id "selectionInfo" label "": Dynamic Type font sizes are unsupported
-  - dynamicType on 48 id "pdfViewFrame" label "0.0,116.0,402.0,589.3;0.64839,0.00000,0.": Dynamic Type font sizes are unsupported
   - dynamicType on 48 id "selectionFrames" label "": Dynamic Type font sizes are unsupported
+  - dynamicType on 48 id "fieldValues" label "": Dynamic Type font sizes are unsupported
   - dynamicType on 48 id "overlayFrames" label "u=118.2,176.5,12.7,0.9 f=118.2,170.2,12.": Dynamic Type font sizes are unsupported
+  - dynamicType on 48 id "lineEndProbePoint" label "302.5,173.8": Dynamic Type font sizes are unsupported
   - textClipped on 48 id "openedURLs" label "URLs opened into the harness: none": Text clipped
-  - elementDetection on - id "" label "": Potentially inaccessible element

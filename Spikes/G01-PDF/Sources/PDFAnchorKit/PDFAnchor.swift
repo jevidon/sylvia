@@ -17,8 +17,10 @@ public struct PDFAnchor: Codable, Hashable, Sendable {
     public var assetID: UUID?
     /// Lowercase hex SHA-256 of the PDF file's bytes. The anchor is only exact for this asset.
     public var assetSHA256: String
-    /// The quotation exactly as PDFKit returned it for the user's selection (scalar-exact; never normalized).
-    /// For a selection with several segments PDFKit joins the segment texts with one "\n".
+    /// The quotation exactly as PDFKit returned it for the user's selection (scalar-exact; never normalized). For one
+    /// segment it equals the segment's text. For several it is PDFKit's own composition of the pieces, which is not
+    /// one fixed separator (`PDFAnchorBuilder.capture`, `ComposedSelectionTests`); the builder only stores an anchor
+    /// whose segments, rebuilt the way `PDFAnchorResolver` rebuilds them, give back exactly this text.
     public var exactText: String
     public var segments: [Segment]
     public var extraction: ExtractionVersion

@@ -7,11 +7,17 @@ import UIKit
 ///   -resetHighlights             delete stored highlights for the fixture before opening
 ///   -seedRange <page>:<start>:<end>   capture and store a highlight for this scalar range, then show that page
 ///   -noRedrawAfterHighlight      control run: after saving a highlight, do not call PDFView.setNeedsDisplay()
+///   -seedDrift                   with -seedRange: store the seeded record as if the page text had changed since it
+///                                was captured (digest mismatch, shifted range, stale rectangles), so it relocates
+///   -startPage <index>           show the top of this physical page of the fixture after opening (default 0;
+///                                -seedRange's page takes precedence)
 struct HarnessOptions {
     var fixture = "labels-multipage.pdf"
     var installLinkInterceptor = true
     var resetHighlights = false
     var seedRange: (page: Int, start: Int, end: Int)?
+    var startPage = 0
+    var simulateExtractionDrift = false
     var redrawAfterHighlight = true
 
     static func fromProcess() -> HarnessOptions {
@@ -25,6 +31,8 @@ struct HarnessOptions {
         o.installLinkInterceptor = !args.contains("-noLinkInterceptor")
         o.resetHighlights = args.contains("-resetHighlights")
         o.redrawAfterHighlight = !args.contains("-noRedrawAfterHighlight")
+        o.simulateExtractionDrift = args.contains("-seedDrift")
+        if let p = value(after: "-startPage").flatMap({ Int($0) }) { o.startPage = p }
         if let s = value(after: "-seedRange") {
             let parts = s.split(separator: ":").compactMap { Int($0) }
             if parts.count == 3 { o.seedRange = (parts[0], parts[1], parts[2]) }

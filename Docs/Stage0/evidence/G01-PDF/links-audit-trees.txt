@@ -1,0 +1,15 @@
+PDFActionAudit on in-memory PDFs with cyclic and deeply nested trees, simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77)
+cycles (outline siblings and a child pointing back, a field that is its own grandchild, a name-tree leaf naming the root):
+  catalog /Names /JavaScript [0] | JavaScript | script
+  catalog /Names /JavaScript /Kids | (cycle) | reaches a node visited above
+  catalog /Outlines item 0 /A | URI | sylvia-g01-canary://outline-a
+  catalog /Outlines item 1 /A | URI | sylvia-g01-canary://outline-b
+  catalog /Outlines item 1.0 | (cycle) | reaches an item visited above
+  catalog /Outlines item 2 | (cycle) | reaches an item visited above
+  catalog /AcroForm field 0 /AA /K | JavaScript | keystroke
+  catalog /AcroForm field 0.0 /A | URI | sylvia-g01-canary://field-g
+  catalog /AcroForm field 0.0.0 | (cycle) | reaches a field visited above
+100 levels of nesting in the outline, the field tree and the name tree (19670 bytes):
+  catalog /Names /JavaScript /Kids | (depth limit) | not followed past 64 levels
+  catalog /Outlines item 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 | (depth limit) | not followed past 64 levels
+  catalog /AcroForm field 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 | (depth limit) | not followed past 64 levels

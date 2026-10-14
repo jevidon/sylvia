@@ -85,12 +85,12 @@
     "work_id" : "e8b1c045-32a7-47bc-9f0c-5f6788c405bb"
   },
   "description" : "Real PDF anchors captured by AnchorCaptureRestoreTests.testWriteAnchorSamples from the committed G0.1 fixtures, plus the proposed portable PDF anchor envelope. Generated; do not edit by hand.",
-  "environment" : "simulator iPhone18,3 (Sylvia-M0-g01-pdf), iOS 26.5 (23F77)",
+  "environment" : "simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77)",
   "proposed_pdf_anchor" : {
     "asset_id" : "UUID of the stored PDF asset, or null in fixtures",
     "asset_sha256" : "lowercase hex SHA-256 of the PDF bytes; the anchor is exact only for this file",
     "display_mapping" : "a client draws a rect r on a page shown rotated by R clockwise as: R=0 (x, 1-y-h, w, h); R=90 (y, x, h, w); R=180 (1-x-w, y, w, h); R=270 (1-y-h, 1-x-w, h, w), normalized to the displayed page with origin top-left",
-    "exact_text" : "the quotation exactly as selected (scalar-exact, never normalized); segments joined by a single \\n",
+    "exact_text" : "the quotation exactly as selected (scalar-exact, never normalized). With one segment it equals that segment's text; with several it is the reader's own composition of the pieces (PDFKit: pages joined by \\n, pieces on one page next to each other, a piece ending at a line's end keeping that break when another follows on its page), so it is not the segments' texts joined by one separator. Capture stores an anchor only if its segments, rebuilt as the resolver rebuilds them, give back exactly this text",
     "extraction" : "{extractor, adapter_version, platform}: which text extraction the offsets index into",
     "kind" : "\"pdf\"",
     "reader_locator" : "adapter-opaque: {adapter: \"pdfkit\", utf16_ranges: [{page_index, location, length}]}; other platforms ignore it",

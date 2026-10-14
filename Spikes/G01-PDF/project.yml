@@ -63,6 +63,10 @@ targets:
       - path: Fixtures
         type: folder
         buildPhase: resources
+      # Anchors captured on iOS 26.5, restored by CrossOSRestoreTests: <bundle>/Resources/*.json
+      - path: Tests/Resources
+        type: folder
+        buildPhase: resources
     dependencies:
       - target: PDFSpikeHarness
       - target: PDFAnchorKit

@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 # G0.1 PDF spike (ADR-0005): verifies the committed fixtures, generates the large PDF, regenerates the Xcode
 # project, then builds and runs every unit and UI test on the simulator Sylvia-M0-g01-pdf (iPhone 17, iOS 26.5),
-# then runs the overlay concurrency tests again in a Thread Sanitizer build.
-# Fails on any build error, failed, skipped or crashed test, or sanitizer report.
+# then runs the overlay concurrency tests again in a Thread Sanitizer build, then shuts that simulator down and runs
+# CrossOSRestoreTests (anchors captured on iOS 26.5, and the page text of every fixture page) on a simulator of the
+# same name on the iOS 27.0 runtime ($SYLVIA_SIM_RUNTIME_LATEST), whose PDFKit is that release's build, and compares
+# the two runtimes' page text. One simulator runs at a time.
+# Fails on any build error, failed, skipped or crashed test, or sanitizer report. A page-text difference between the
+# runtimes is printed, not failed (the extractor ships with the OS; anchors relocate when it changes).
 #
 # Evidence files written by the tests go to $G01_PDF_EVIDENCE_DIR (default .build/g01-pdf-evidence), never into
 # Docs/ automatically.
@@ -17,6 +21,12 @@ EVIDENCE_DIR="${G01_PDF_EVIDENCE_DIR:-$SYLVIA_ROOT/.build/g01-pdf-evidence}"
 LARGE_PDF="$SYLVIA_FIXTURE_CACHE/generated/g01-pdf/large-1000.pdf"
 LOG_DIR="$SYLVIA_ROOT/.build/g01-pdf-logs"
 mkdir -p "$EVIDENCE_DIR" "$LOG_DIR"
+# The tests run inside the simulator with their own working directory, so they get an absolute path; a relative
+# G01_PDF_EVIDENCE_DIR is taken relative to the directory this script was started from.
+EVIDENCE_DIR="$(cd "$EVIDENCE_DIR" && pwd)"
+# Files named after the runtime that wrote them: remove earlier runs' copies, so the comparison at the end reads only
+# what this run wrote.
+rm -f "$EVIDENCE_DIR"/page-text-digests-*.txt "$EVIDENCE_DIR"/cross-os-restore-*.txt
 
 echo "== toolchain"
 xcodebuild -version
@@ -49,6 +59,8 @@ run_tests() {
 }
 
 echo "== build and test (log: $LOG_DIR/xcodebuild-test.log)"
+# The tests record timings (large-pdf-timing.txt); other jobs may share this Mac, so log the load around them.
+echo "load before the tests: $(uptime)"
 status=0
 run_tests || status=$?
 # A launch refused by the simulator before any test ran ("Application failed preflight checks") is an
@@ -63,6 +75,7 @@ if (( status != 0 )) && grep -q "Application failed preflight checks" "$LOG_DIR/
   run_tests || status=$?
 fi
 LOG="$LOG_DIR/xcodebuild-test.log"
+echo "load after the tests: $(uptime)"
 
 grep -E "^Test Case .*(passed|failed|skipped)|^Test Suite '(PDFAnchorKitTests|PDFSpikeHarnessUITests)\.xctest' (passed|failed)|Executed [0-9]+ tests?|\*\* TEST|error: -\[|warning: " "$LOG" \
   | grep -v "appintentsmetadataprocessor" || true
@@ -105,6 +118,55 @@ echo "== Thread Sanitizer summary: $tsan_passed of $tsan_expected passed, $tsan_
 if (( tsan_status != 0 || tsan_reports > 0 || tsan_passed != tsan_expected )); then
   echo "FAIL: Thread Sanitizer run of OverlayConcurrencyTests"
   exit 1
+fi
+
+# Plan 9.4 across an OS update: the anchors captured on iOS 26.5 restored by the iOS 27.0 runtime's PDFKit.
+CROSS_LOG="$LOG_DIR/xcodebuild-cross-os.log"
+echo "== cross-OS restore: CrossOSRestoreTests on $SYLVIA_SIM_RUNTIME_LATEST (log: $CROSS_LOG)"
+xcrun simctl shutdown "$UDID" >/dev/null 2>&1 || true
+LATEST_UDID="$(sylvia_sim_udid "$SIM_NAME" "$SYLVIA_SIM_DEVICE_TYPE" "$SYLVIA_SIM_RUNTIME_LATEST")"
+echo "$SIM_NAME $LATEST_UDID ($SYLVIA_SIM_DEVICE_TYPE, $SYLVIA_SIM_RUNTIME_LATEST)"
+sylvia_sim_boot "$LATEST_UDID"
+cross_status=0
+(cd "$SPIKE" && \
+  TEST_RUNNER_SYLVIA_G01_PDF_EVIDENCE_DIR="$EVIDENCE_DIR" \
+  xcodebuild test \
+    -project G01PDF.xcodeproj \
+    -scheme PDFSpikeHarness \
+    -destination "id=$LATEST_UDID" \
+    -derivedDataPath .build/DerivedData \
+    -disableAutomaticPackageResolution \
+    -only-testing:PDFAnchorKitTests/CrossOSRestoreTests) >"$CROSS_LOG" 2>&1 || cross_status=$?
+xcrun simctl shutdown "$LATEST_UDID" >/dev/null 2>&1 || true
+grep -E "^Test Case .*(passed|failed|skipped)|error: -\[|\*\* TEST" "$CROSS_LOG" || true
+cross_passed="$(grep -cE "^Test Case .* passed" "$CROSS_LOG" || true)"
+cross_bad="$(grep -cE "^Test Case .* (failed|skipped)" "$CROSS_LOG" || true)"
+cross_expected="$(grep -cE "^\s+func test[A-Za-z0-9_]*\(\)" "$SPIKE/Tests/Unit/CrossOSRestoreTests.swift" || true)"
+echo "== cross-OS summary: $cross_passed of $cross_expected passed, $cross_bad failed or skipped, xcodebuild exit $cross_status"
+if (( cross_status != 0 || cross_passed != cross_expected || cross_bad > 0 )); then
+  echo "FAIL: CrossOSRestoreTests on $SYLVIA_SIM_RUNTIME_LATEST"
+  exit 1
+fi
+
+# The page text of every page of every bundled fixture, as each runtime's PDFKit extracts it
+# (CrossOSRestoreTests.testRecordPageTextOfEveryFixturePage). Compared line by line, without each file's first line
+# (which names the runtime). A difference is reported, not failed: the extractor ships with the OS and may change,
+# which is why anchors carry page text digests and relocate (ADR-0005).
+echo "== page text of every fixture page: iOS 26.5 and iOS 27.0 compared"
+shopt -s nullglob
+digest_files=("$EVIDENCE_DIR"/page-text-digests-*.txt)
+shopt -u nullglob
+if (( ${#digest_files[@]} != 2 )); then
+  echo "FAIL: expected one page-text digest file per runtime in $EVIDENCE_DIR, found ${#digest_files[@]}"
+  exit 1
+fi
+first_list="$(tail -n +2 "${digest_files[0]}")"
+second_list="$(tail -n +2 "${digest_files[1]}")"
+if [[ "$first_list" == "$second_list" ]]; then
+  echo "identical: $(basename "${digest_files[0]}") and $(basename "${digest_files[1]}"), $(printf '%s\n' "$first_list" | grep -c ' page [0-9]*: ') pages, every line equal ($(printf '%s\n' "$first_list" | tail -n 1))"
+else
+  echo "DIFFERENT: $(basename "${digest_files[0]}") and $(basename "${digest_files[1]}") differ (reported, not a failure):"
+  diff <(printf '%s\n' "$first_list") <(printf '%s\n' "$second_list") || true
 fi
 echo "evidence written to $EVIDENCE_DIR"
 echo "PASS"

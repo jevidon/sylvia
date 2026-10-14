@@ -13,6 +13,10 @@ public enum AnchorCaptureError: Error, Equatable, Sendable {
     case pageNotInDocument
     /// The page text PDFKit returns now differs from the stored extraction (the extraction cache is stale).
     case extractionMismatch(pageIndex: Int)
+    /// The anchor's stored ranges, rebuilt into a selection the way `PDFAnchorResolver` rebuilds a stored anchor, would
+    /// not give back the quotation the selection shows, scalar for scalar (or a range would not give back its
+    /// segment's text). Sylvia never stores an anchor that cannot give back its own quotation (plan 2.2 I-05).
+    case quotationMismatch
     case offsetConversion(OffsetConversionError)
     case geometry(GeometryError)
 }
@@ -42,15 +46,16 @@ public enum PDFAnchorBuilder {
             let count = selection.numberOfTextRanges(on: page)
             guard count > 0 else { continue }
             for i in 0..<count {
-                let range = selection.range(at: i, on: page)
-                guard range.location != NSNotFound, range.length > 0 else { continue }
+                let reported = selection.range(at: i, on: page)
+                guard reported.location != NSNotFound, reported.length > 0 else { continue }
+                let range = withoutTrailingLineBreaks(reported, on: page)
                 let segment = try makeSegment(utf16Range: range, pageIndex: pageIndex, page: page, source: source, extraction: extraction)
                 segments.append(segment)
                 utf16Ranges.append(PDFAnchor.UTF16Range(pageIndex: pageIndex, location: range.location, length: range.length))
             }
         }
         guard !segments.isEmpty else { throw .emptySelection }
-        return PDFAnchor(
+        let anchor = PDFAnchor(
             assetID: assetID,
             assetSHA256: source.sha256,
             exactText: exact,
@@ -58,6 +63,14 @@ public enum PDFAnchorBuilder {
             extraction: extraction.version,
             readerLocator: PDFAnchor.ReaderLocator(adapter: "pdfkit", utf16Ranges: utf16Ranges)
         )
+        // The stored ranges must give back exactly the quotation when the anchor is restored. PDFKit composes a
+        // selection's text itself, and not with one fixed separator: in the shapes `ComposedSelectionTests` checks,
+        // pieces on one page come out next to each other with nothing between them, a piece that ends at a line's end
+        // keeps that line break when another piece follows on its page, and pages are joined with "\n". So the check is
+        // the restore itself: the same extraction, each stored range rebuilt into a selection on its page and combined
+        // in document order exactly as `PDFAnchorResolver` does it, must give back each segment's text and `exact`.
+        guard PDFAnchorResolver.resolveExactly(anchor, in: source, extraction: extraction) != nil else { throw .quotationMismatch }
+        return anchor
     }
 
     /// An anchor for a known scalar range of a page's extracted text (used for search hits and tests).
@@ -79,6 +92,29 @@ public enum PDFAnchorBuilder {
             throw .pageNotInDocument
         }
         return try capture(selection: selection, in: source, extraction: extraction, assetID: assetID)
+    }
+
+    /// PDFKit reports a selection that ends with a line's last character with a range that also covers the line
+    /// break after it, although the selection's text stops before the break. `LineEndSelectionTests` asserts this on
+    /// iOS 26.5 for a range to a line's end, the last word, the whole line, a drag ending 6 pt past the line's last
+    /// character and two lines ending at a line's end, on three pages (labels-multipage.pdf page index 3, the first
+    /// left-column line of two-column.pdf and the /Rotate 90 page of rotated.pdf), and for every line but the last of
+    /// text-layout.pdf's rotated-text page; `ComposedSelectionTests` for the end of a selection across two pages and
+    /// for pieces of a composed selection. Stored as reported, the range would quote "water\n" for a selection of
+    /// "water", and the anchor would never restore. Trailing line breaks are dropped while PDFKit gives the same text
+    /// without them; a break that changes the text is kept (and the restore check in `capture` then decides).
+    static func withoutTrailingLineBreaks(_ range: NSRange, on page: PDFPage) -> NSRange {
+        guard let pageText = page.string, let reported = page.selection(for: range)?.string else { return range }
+        let units = pageText as NSString
+        var trimmed = range
+        while trimmed.length > 1, NSMaxRange(trimmed) <= units.length {
+            let last = units.character(at: NSMaxRange(trimmed) - 1)
+            guard last == 0x0A || last == 0x0D else { break } // "\n" or "\r"
+            let shorter = NSRange(location: trimmed.location, length: trimmed.length - 1)
+            guard let shorterText = page.selection(for: shorter)?.string, UnicodeOffsets.scalarsEqual(shorterText, reported) else { break }
+            trimmed = shorter
+        }
+        return trimmed
     }
 
     static func makeSegment(

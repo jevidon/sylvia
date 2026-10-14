@@ -156,6 +156,35 @@ func grayscale(_ image: CGImage) -> CGImage? {
     return ctx.makeImage()
 }
 
+/// The build Mac's load averages over 1, 5 and 15 minutes, as `uptime` prints them. A simulator process runs on the
+/// Mac's own kernel, so `getloadavg` returns the host's load; timings taken under load are indicative only.
+func hostLoadAverages() -> String {
+    var loads = [Double](repeating: 0, count: 3)
+    guard getloadavg(&loads, 3) == 3 else { return "unavailable" }
+    return loads.map { String(format: "%.2f", $0) }.joined(separator: " ")
+}
+
+/// What the app is showing over its windows, to check that an action from a PDF presented nothing: the type of every
+/// view controller presented in any window of any connected scene (a print sheet, an activity sheet, an alert), and
+/// whether the shared print controller was given anything to print.
+@MainActor
+func presentedUI() -> [String] {
+    var out = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).flatMap { window in
+        var chain: [String] = []
+        var presented = window.rootViewController?.presentedViewController
+        while let controller = presented {
+            chain.append(String(describing: type(of: controller)))
+            presented = controller.presentedViewController
+        }
+        return chain
+    }
+    let printer = UIPrintInteractionController.shared
+    if printer.printingItem != nil || printer.printingItems != nil || printer.printPageRenderer != nil || printer.printFormatter != nil {
+        out.append("UIPrintInteractionController has a print job")
+    }
+    return out
+}
+
 @MainActor
 func spinRunLoop(seconds: TimeInterval) {
     RunLoop.main.run(until: Date().addingTimeInterval(seconds))

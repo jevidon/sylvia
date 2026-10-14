@@ -3,7 +3,8 @@
 
 Standard library only (no PDF library is installed on the build Mac). Every byte is a
 function of this file: no timestamps, fixed document IDs, no compression (zlib output can
-differ between zlib builds), integer-only numbers. Running it twice gives identical files;
+differ between zlib builds), integer numbers except a few fixed decimal strings written as
+text (the diagonal text matrix in text-layout.pdf). Running it twice gives identical files;
 `--check` verifies the committed fixtures match.
 
 All text is original generated prose written for these fixtures (no third-party text).
@@ -27,6 +28,21 @@ Fixtures (see Spikes/G01-PDF/README.md for the full description):
   actions-nonurl.pdf           links with non-URL actions: /Named NextPage, LastPage, Find, GoToPage, Print;
                                /GoToR; /ResetForm (with one text field); /JavaScript and /SubmitForm aimed at
                                the canary scheme; 3 pages
+  actions-chained.pdf          /Next chains (dictionary, array with a Launch and a JavaScript action, a
+                               two-action cycle) after GoTo, NextPage, https and canary links; links without /A
+                               whose /AA holds U, D+U, U+D, D, or U+E; a link whose /AA declares every annotation
+                               trigger; a merged text field whose /AA declares every annotation and field trigger;
+                               a field with a separate widget whose field /AA holds K, F, V, C, D, U, Fo, Bl; a
+                               field whose separate widget's /AA holds only U; page /AA /O (a GoTo to page
+                               index 2, chained) and /C; catalog /OpenAction (a GoTo to page index 2, chained),
+                               document /AA close, save and print triggers, an outline (URI, GoTo + /Next,
+                               JavaScript child, destination only) and a JavaScript name tree with /Kids and /Next;
+                               every URI and JavaScript action aims at the canary scheme except link D's https
+                               URI; the other actions are GoTo and Named actions inside the file and a /Launch of
+                               /bin/sh; 3 pages
+  text-layout.pdf              lines drawn with rotated text matrices (upward, downward, upside down, 30 degrees)
+                               on an unrotated page; two columns drawn in a scrambled stream order; one column
+                               drawn from the bottom line up; 3 pages
 """
 
 import argparse
@@ -703,6 +719,225 @@ def actions_nonurl_doc():
                            info_title="Sylvia G0.1 PDF fixture: non-URL actions")
 
 
+ANNOTATION_TRIGGERS = ("E", "X", "D", "U", "Fo", "Bl", "PO", "PC", "PV", "PI")  # ISO 32000-1 table 194
+FIELD_TRIGGERS = ("K", "F", "V", "C")  # ISO 32000-1 table 196
+TRIGGER_NAMES = {"E": "enter", "X": "exit", "D": "mouse-down", "U": "mouse-up", "Fo": "focus", "Bl": "blur",
+                 "PO": "page-open", "PC": "page-close", "PV": "page-visible", "PI": "page-invisible",
+                 "K": "keystroke", "F": "format", "V": "validate", "C": "calculate"}
+
+
+def actions_chained_doc():
+    """Hostile action structures beyond a single /A. Every URI and JavaScript action aims at the canary scheme except
+    link D's https URI; the other actions are GoTo and Named actions inside the file and a /Launch of /bin/sh.
+    Shapes: /Next chains (dictionary, array with a Launch and a JavaScript action, two-action cycle) after GoTo, named
+    and URI actions; links without /A whose /AA holds mouse-up only, mouse-down and mouse-up in both orders,
+    mouse-down only, or mouse-up and mouse-enter; a link whose /AA declares every annotation trigger; a text field
+    merged with its widget whose /AA declares every annotation and field trigger; a field whose own dictionary (not
+    merged with its widget) holds the field triggers plus mouse-down, mouse-up, focus and blur; a field whose separate
+    widget holds only mouse-up; a canary link with a /Next canary; page /AA /O (a GoTo to page index 2 with a /Next
+    canary) and /C; the catalog /OpenAction (a GoTo to page index 2 with a /Next canary), the document /AA close, save
+    and print triggers, a document outline (a URI item, a GoTo item with a /Next canary and a JavaScript child, a
+    destination-only item) and a document JavaScript name tree with /Kids and a /Next canary. The open action and the
+    page-open trigger go to page index 2 so that running either would show as a page change while page 0 is shown;
+    PDFKit ignores /Next, so a canary after a GoTo alone could not show it."""
+    shared = {}
+
+    def uri(path):
+        return {"S": Name("URI"), "URI": PStr(CANARY + "://" + path)}
+
+    def js(path):
+        return {"S": Name("JavaScript"), "JS": PStr("app.launchURL('" + CANARY + "://" + path + "', true);")}
+
+    def field_triggers(prefix, keys):
+        # Annotation (widget) triggers as URI actions; field triggers (keystroke, format, validate, calculate) as
+        # JavaScript, the only action type a viewer runs for them.
+        return {k: (js if k in FIELD_TRIGGERS else uri)(prefix + TRIGGER_NAMES[k]) for k in keys}
+
+    def pages(pdf, parent, fonts):
+        shared.update(fonts)
+        p1 = pdf.reserve()
+        p2 = pdf.reserve()
+        p0 = pdf.reserve()
+        shared["p0"] = p0
+        shared["p1"] = p1
+        shared["p2"] = p2
+
+        def goto(page):
+            return {"S": Name("GoTo"), "D": [page, Name("XYZ"), 0, 792, 0]}
+
+        # Link G: a two-action cycle through indirect objects (GoTo -> URI -> the same GoTo ...).
+        cycle_goto = pdf.reserve()
+        cycle_uri = pdf.add(dict(uri("next-cycle"), Next=cycle_goto))
+        pdf.set(cycle_goto, dict(goto(p1), Next=cycle_uri))
+        every_trigger = {key: uri("aa-" + key.lower()) for key in ANNOTATION_TRIGGERS}
+        rows = [
+            ("Link A goes to page two, then /Next asks for the canary.", {"A": dict(goto(p1), Next=uri("next-after-goto"))}),
+            ("Link B is NextPage, then /Next asks for the canary.",
+             {"A": {"S": Name("Named"), "N": Name("NextPage"), "Next": uri("next-after-named")}}),
+            ("Link C goes to page two, then /Next [URI, Launch, JavaScript].",
+             {"A": dict(goto(p1), Next=[uri("next-array"), {"S": Name("Launch"), "F": PStr("/bin/sh")},
+                                        js("next-array-javascript")])}),
+            ("Link D is an https link, then /Next asks for the canary.",
+             {"A": {"S": Name("URI"), "URI": PStr("https://example.invalid/chained"), "Next": uri("next-after-uri")}}),
+            ("Link E has no /A; its /AA mouse-up action asks for the canary.", {"AA": {"U": uri("aa-mouse-up-only")}}),
+            ("Link F goes to page three; its /AA declares every trigger.", {"A": goto(p2), "AA": every_trigger}),
+            ("Link G goes to page two through a /Next cycle.", {"A": cycle_goto}),
+            # Links H to K: no /A, and /AA shapes around mouse-up (the dictionaries keep this written order).
+            ("Link H has no /A; its /AA has mouse-down, then mouse-up.",
+             {"AA": {"D": uri("aa-down-up-d"), "U": uri("aa-down-up-u")}}),
+            ("Link I has no /A; its /AA has mouse-up, then mouse-down.",
+             {"AA": {"U": uri("aa-up-down-u"), "D": uri("aa-up-down-d")}}),
+            ("Link J has no /A; its /AA has only a mouse-down action.", {"AA": {"D": uri("aa-down-only")}}),
+            ("Link K has no /A; its /AA has mouse-up and mouse-enter.",
+             {"AA": {"U": uri("aa-up-enter-u"), "E": uri("aa-up-enter-e")}}),
+            ("Link L asks for the canary, then /Next asks for it again.", {"A": dict(uri("uri-first"), Next=uri("uri-next"))}),
+        ]
+        c = page_header("Chained and additional actions")
+        annots = []
+        for i, (label, keys) in enumerate(rows):
+            y = 700 - 28 * i
+            c += text_line("F1", FONT_SIZE, 72, y, label)
+            annot = {"Type": Name("Annot"), "Subtype": Name("Link"), "Rect": [68, y - 6, 420, y + 14], "Border": [0, 0, 1]}
+            annot.update(keys)
+            annots.append(pdf.add(annot))
+
+        def widget_rect(y):
+            return [140, y - 6, 420, y + 14]
+
+        # Field one: a text field merged with its widget; its /AA declares every annotation and field trigger.
+        c += text_line("F1", FONT_SIZE, 72, 350, "Field one:")
+        field_one = pdf.add({"Type": Name("Annot"), "Subtype": Name("Widget"), "FT": Name("Tx"), "T": PStr("note"),
+                             "V": PStr("Typed"), "Rect": widget_rect(350), "F": 4, "DA": PStr("/F1 11 Tf 0 g"),
+                             "AA": field_triggers("field-", ANNOTATION_TRIGGERS + FIELD_TRIGGERS)})
+        annots.append(field_one)
+        # Field two: the field dictionary is separate from its widget. The field's own /AA holds the field triggers
+        # and, where a viewer should not look for them, mouse-down, mouse-up, focus and blur; the widget has none.
+        c += text_line("F1", FONT_SIZE, 72, 322, "Field two:")
+        field_two = pdf.reserve()
+        widget_two = pdf.add({"Type": Name("Annot"), "Subtype": Name("Widget"), "Parent": field_two,
+                              "Rect": widget_rect(322), "F": 4, "DA": PStr("/F1 11 Tf 0 g")})
+        pdf.set(field_two, {"FT": Name("Tx"), "T": PStr("second"), "V": PStr("Second"), "Kids": [widget_two],
+                            "AA": field_triggers("second-field-", FIELD_TRIGGERS + ("D", "U", "Fo", "Bl"))})
+        annots.append(widget_two)
+        # Field three: separate field and widget; only the widget has an /AA, and it holds only mouse-up.
+        c += text_line("F1", FONT_SIZE, 72, 294, "Field three:")
+        field_three = pdf.reserve()
+        widget_three = pdf.add({"Type": Name("Annot"), "Subtype": Name("Widget"), "Parent": field_three,
+                                "Rect": widget_rect(294), "F": 4, "DA": PStr("/F1 11 Tf 0 g"),
+                                "AA": {"U": uri("third-field-mouse-up")}})
+        pdf.set(field_three, {"FT": Name("Tx"), "T": PStr("third"), "V": PStr("Third"), "Kids": [widget_three]})
+        annots.append(widget_three)
+        shared["fields"] = [field_one, field_two, field_three]
+        # Page 0's open trigger goes to page index 2: if a viewer ran it whenever page 0 is shown, the page would change.
+        pdf.set(p0, {"Type": Name("Page"), "Parent": parent, "Resources": {"Font": fonts},
+                     "Contents": pdf.add(Stream({}, c)), "Annots": annots,
+                     "AA": {"O": dict(goto(p2), Next=uri("page-open-next")), "C": uri("page-close")}})
+        for ref, n in ((p1, "two"), (p2, "three")):
+            body = page_header("Chained actions page " + n) + text_line("F1", FONT_SIZE, 72, 700, "Page %s of three." % n)
+            pdf.set(ref, {"Type": Name("Page"), "Parent": parent, "Resources": {"Font": fonts},
+                          "Contents": pdf.add(Stream({}, body))})
+        return [p0, p1, p2]
+
+    def catalog(pdf):
+        p0, p1, p2 = shared["p0"], shared["p1"], shared["p2"]
+        # Document outline: a URI item; a GoTo item with a /Next canary and a JavaScript child; a destination-only item.
+        outlines = pdf.reserve()
+        item0, item1, item10, item2 = pdf.reserve(), pdf.reserve(), pdf.reserve(), pdf.reserve()
+        pdf.set(item0, {"Title": PStr("Outline item: canary URI"), "Parent": outlines, "Next": item1,
+                        "A": uri("outline-uri")})
+        pdf.set(item1, {"Title": PStr("Outline item: page two, then /Next canary"), "Parent": outlines, "Prev": item0,
+                        "Next": item2, "First": item10, "Last": item10, "Count": 1,
+                        "A": {"S": Name("GoTo"), "D": [p1, Name("Fit")], "Next": uri("outline-next")}})
+        pdf.set(item10, {"Title": PStr("Outline child: JavaScript"), "Parent": item1, "A": js("outline-child-javascript")})
+        pdf.set(item2, {"Title": PStr("Outline item: destination only"), "Parent": outlines, "Prev": item1,
+                        "Dest": [p0, Name("Fit")]})
+        pdf.set(outlines, {"Type": Name("Outlines"), "First": item0, "Last": item2, "Count": 3})
+        # Document JavaScript name tree: a root with /Kids and one leaf of two entries, the first chained by /Next.
+        script_a = pdf.add(dict(js("javascript-tree"), Next=uri("javascript-tree-next")))
+        script_b = pdf.add(js("javascript-tree-second"))
+        leaf = pdf.add({"Limits": [PStr("a"), PStr("b")], "Names": [PStr("a"), script_a, PStr("b"), script_b]})
+        field_one, field_two, _ = shared["fields"]
+        return {
+            # Goes to page index 2: if a viewer ran the open action, the file would open there instead of page 0.
+            "OpenAction": {"S": Name("GoTo"), "D": [p2, Name("Fit")], "Next": uri("open-action-next")},
+            # Document triggers: will close, will save, did save, will print, did print.
+            "AA": {"WC": uri("doc-will-close"), "WS": uri("doc-will-save"), "DS": uri("doc-did-save"),
+                   "WP": uri("doc-will-print"), "DP": uri("doc-did-print")},
+            "Names": {"JavaScript": {"Kids": [leaf]}},
+            "Outlines": outlines,
+            # /CO lists the fields that have a calculate action, so their /AA /C applies.
+            "AcroForm": {"Fields": shared["fields"], "CO": [field_one, field_two], "NeedAppearances": True,
+                         "DR": {"Font": {"F1": shared["F1"]}}, "DA": PStr("/F1 11 Tf 0 g")},
+        }
+
+    return simple_document("actions-chained", pages, catalog_extra=catalog,
+                           info_title="Sylvia G0.1 PDF fixture: chained and additional actions")
+
+
+def matrix_line(font, size, matrix, data):
+    """One line drawn with its own text matrix (Tm): `matrix` is six numbers or fixed decimal strings."""
+    numbers = " ".join(str(v) for v in matrix)
+    return b"BT /" + font.encode("ascii") + (" %d Tf %s Tm " % (size, numbers)).encode("ascii") + lit(data) + b" Tj ET\n"
+
+
+# Text matrices on an unrotated page (ISO 32000-1 9.4.2): [a b c d e f] maps text space x to user space (a, b) and
+# text space y (the glyphs' up direction) to (c, d), so the next line (text space -y) lies in direction (-c, -d).
+UPWARD = (0, 1, -1, 0)           # reads from the bottom of the page up; the next line is to the right
+DOWNWARD = (0, -1, 1, 0)         # reads from the top down; the next line is to the left
+UPSIDE_DOWN = (-1, 0, 0, -1)     # reads right to left, glyphs upside down; the next line is above
+DIAGONAL = ("0.866", "0.5", "-0.5", "0.866")  # 30 degrees counterclockwise (cos 30 = 0.866 to three places)
+
+ROTATED_TEXT_LINES = [
+    # (matrix, origin x, origin y, text)
+    (UPWARD, 120, 200, "Upward line one reads from the bottom of the page."),
+    (UPWARD, 135, 200, "Upward line two sits to the right of line one."),
+    (DOWNWARD, 520, 700, "Downward line one reads from the top of the page."),
+    (DOWNWARD, 505, 700, "Downward line two sits to the left of line one."),
+    (UPSIDE_DOWN, 450, 300, "Upside-down line one runs right to left."),
+    (UPSIDE_DOWN, 450, 315, "Upside-down line two sits above line one."),
+    (DIAGONAL, 180, 420, "Diagonal line one climbs at thirty degrees."),
+    (DIAGONAL, "187.5", 407, "Diagonal line two climbs below it."),
+]
+
+SCRAMBLED_LEFT = ["Left one: the first line of the left column.", "Left two: the second line of the left column.",
+                  "Left three: the third line of the left column.", "Left four: the last line of the left column."]
+SCRAMBLED_RIGHT = ["Right one: the first line of the right column.", "Right two: the second line of the right column.",
+                   "Right three: the third line of the right column.", "Right four: the last line of the right column."]
+BOTTOM_UP = ["Bottom-up one: this is the first line in reading order.",
+             "Bottom-up two: this is the second line in reading order.",
+             "Bottom-up three: this is the third line in reading order.",
+             "Bottom-up four: this is the fourth line in reading order."]
+
+
+def text_layout_doc():
+    """Text layouts the other fixtures do not have: lines drawn with rotated text matrices on an unrotated page, two
+    columns whose content stream draws the lines in a scrambled order, and one column drawn from the bottom line up."""
+    def pages(pdf, parent, fonts):
+        c = page_header("Rotated text matrices")
+        c += text_line("F1", FONT_SIZE, 72, 740, "Horizontal reference line at the top.")
+        for matrix, x, y, text in ROTATED_TEXT_LINES:
+            c += matrix_line("F1", FONT_SIZE, tuple(matrix) + (x, y), text)
+        p0 = add_page(pdf, parent, c, fonts=fonts)
+
+        def left(i):
+            return text_line("F1", 10, 72, 700 - 15 * i, SCRAMBLED_LEFT[i])
+
+        def right(i):
+            return text_line("F1", 10, 324, 700 - 15 * i, SCRAMBLED_RIGHT[i])
+
+        # Reading order is the left column, then the right; the stream draws neither in order, and the heading last.
+        scrambled = [right(1), left(0), right(3), left(2), right(0), left(1), right(2), left(3)]
+        c1 = page_header("Scrambled column order") + b"".join(scrambled)
+        c1 += text_line("F2", 13, 72, 730, "Scrambled order heading drawn last")
+        p1 = add_page(pdf, parent, c1, fonts=fonts)
+        c2 = page_header("Bottom-up stream order")
+        c2 += b"".join(text_line("F1", FONT_SIZE, 72, 700 - 15 * i, BOTTOM_UP[i]) for i in reversed(range(4)))
+        p2 = add_page(pdf, parent, c2, fonts=fonts)
+        return [p0, p1, p2]
+
+    return simple_document("text-layout", pages, info_title="Sylvia G0.1 PDF fixture: text layout")
+
+
 def large_doc(page_count):
     def pages(pdf, parent, fonts):
         kids = []
@@ -730,6 +965,8 @@ def committed_fixtures():
         ("truncated.pdf", labels[: len(labels) * 55 // 100]),
         ("actions.pdf", actions_doc()),
         ("actions-nonurl.pdf", actions_nonurl_doc()),
+        ("actions-chained.pdf", actions_chained_doc()),
+        ("text-layout.pdf", text_layout_doc()),
     ]
 
 

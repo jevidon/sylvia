@@ -13,6 +13,7 @@ final class LargePDFTimingTests: XCTestCase {
         }
         let url = URL(fileURLWithPath: path)
         XCTAssertTrue(FileManager.default.fileExists(atPath: path), "run Scripts/fixtures/generate-g01-pdf-large.sh first")
+        let loadBefore = hostLoadAverages()
 
         func ms(_ start: ContinuousClock.Instant) -> Double {
             let d = ContinuousClock.now - start
@@ -82,8 +83,10 @@ final class LargePDFTimingTests: XCTestCase {
             return "\(name): median \(String(format: "%.1f", s[s.count / 2])) ms, max \(String(format: "%.1f", s.last!)) ms, runs \(s.map { String(format: "%.1f", $0) })"
         }
         let size = (try? FileManager.default.attributesOfItem(atPath: path)[.size] as? Int) ?? 0
+        let loadAfter = hostLoadAverages()
         Evidence.write("large-pdf-timing.txt", """
             Large PDF timing, \(Evidence.environmentLabel). SIMULATOR ON THE BUILD MAC; NOT A DEVICE RESULT.
+            build Mac load averages (1, 5, 15 min, from getloadavg, which reads the Mac's kernel): \(loadBefore) before, \(loadAfter) after; other jobs share the Mac, so these timings are indicative only
             file: generated/g01-pdf/large-1000.pdf, \(pageCount) pages, \(size) bytes (Scripts/fixtures/generate-g01-pdf-large.sh)
             \(summary("open (sha256 + structure check + PDFKit parse)", openMs))
             \(summary("first page offscreen render at 2x", firstRenderMs))

@@ -34,12 +34,20 @@ final class ReaderViewController: UIViewController {
     private let selectionInfoLabel = UILabel()
     private let selectionFramesLabel = UILabel()
     private let pdfViewFrameLabel = UILabel()
+    private let lineEndProbeLabel = UILabel()
+    private let fieldValuesLabel = UILabel()
     private let timingLabel = UILabel()
 
     private var source: PDFSourceDocument?
+    /// True while the open file is one of the bundled generated fixtures. Form field values are published for UI tests
+    /// only then, never for a file opened from Files.
+    private var isBundledFixture = false
     private var extraction: DocumentExtraction?
     private var anchors: [PDFAnchor] = []
     private var linkLog: [String] = []
+    /// The page Show or Zoom scrolled to, or the -startPage page. The UI-test geometry is published for it rather
+    /// than for `PDFView.currentPage`, which can be a neighbouring page when the target sits near a page edge.
+    private var revealedPage: PDFPage?
     private let store: HighlightStore?
 
     init(options: HarnessOptions) {
@@ -75,7 +83,8 @@ final class ReaderViewController: UIViewController {
         // Geometry published for UI tests (window coordinates, points). Present but visually negligible.
         for (label, id) in [(linkFramesLabel, "linkFrames"), (overlayFramesLabel, "overlayFrames"), (probePointLabel, "probePoint"),
                             (selectionInfoLabel, "selectionInfo"), (selectionFramesLabel, "selectionFrames"),
-                            (pdfViewFrameLabel, "pdfViewFrame")] {
+                            (pdfViewFrameLabel, "pdfViewFrame"), (lineEndProbeLabel, "lineEndProbePoint"),
+                            (fieldValuesLabel, "fieldValues")] {
             label.accessibilityIdentifier = id
             label.font = .systemFont(ofSize: 1)
             label.textColor = .clear
@@ -85,7 +94,7 @@ final class ReaderViewController: UIViewController {
         }
         let stack = UIStackView(arrangedSubviews: [pageLabel, statusLabel, timingLabel, linkLogLabel, openedLabel, linkFramesLabel,
                                                    overlayFramesLabel, probePointLabel, selectionInfoLabel, selectionFramesLabel,
-                                                   pdfViewFrameLabel])
+                                                   pdfViewFrameLabel, lineEndProbeLabel, fieldValuesLabel])
         stack.axis = .vertical
         stack.spacing = 2
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -111,8 +120,8 @@ final class ReaderViewController: UIViewController {
         let reveal = UIBarButtonItem(title: "Show", style: .plain, target: self, action: #selector(revealTapped))
         reveal.accessibilityLabel = "Show first highlight"
         reveal.accessibilityIdentifier = "revealButton"
-        let fixtures = ["labels-multipage.pdf", "rotated.pdf", "two-column.pdf", "mixed-scanned.pdf", "unicode.pdf",
-                        "actions.pdf", "actions-nonurl.pdf", "encrypted-user-password.pdf", "encrypted-owner-only-nocopy.pdf",
+        let fixtures = ["labels-multipage.pdf", "rotated.pdf", "two-column.pdf", "mixed-scanned.pdf", "unicode.pdf", "text-layout.pdf",
+                        "actions.pdf", "actions-nonurl.pdf", "actions-chained.pdf", "encrypted-user-password.pdf", "encrypted-owner-only-nocopy.pdf",
                         "truncated.pdf"]
         let fromFiles = UIAction(title: "Open from Files…") { [weak self] _ in self?.pickFromFiles() }
         let openItem = UIBarButtonItem(title: "Open", image: nil, primaryAction: nil, menu: UIMenu(children: fixtures.map { name in
@@ -146,7 +155,7 @@ final class ReaderViewController: UIViewController {
             statusLabel.text = "Fixture \(name) is missing"
             return
         }
-        open(url: url, name: name, reset: reset)
+        open(url: url, name: name, reset: reset, bundled: true)
     }
 
     /// Device open-time check: a PDF chosen in Files is copied into the harness (as Sylvia copies imports) and
@@ -157,8 +166,10 @@ final class ReaderViewController: UIViewController {
         present(picker, animated: true)
     }
 
-    private func open(url: URL, name: String, reset: Bool) {
+    private func open(url: URL, name: String, reset: Bool, bundled: Bool) {
         title = name
+        isBundledFixture = bundled
+        revealedPage = nil
         source = nil
         extraction = nil
         anchors = []
@@ -188,9 +199,12 @@ final class ReaderViewController: UIViewController {
         OverlayDrawLog.shared.reset()
         let displayStarted = ContinuousClock.now
         pdfView.document = opened.document
-        let startIndex = (name == options.fixture ? options.seedRange?.page : nil) ?? 0
+        let startIndex = name == options.fixture ? (options.seedRange?.page ?? options.startPage) : 0
         if let page = opened.page(at: startIndex) {
             pdfView.layoutIfNeeded()
+            // -startPage: publish the UI-test geometry for that page even when PDFView reports a neighbour as current
+            // (the last page cannot scroll to the top of the view).
+            if name == options.fixture, options.seedRange == nil, options.startPage != 0 { revealedPage = page }
             showTop(of: page)
             // PDFView settles its scale after the first layout pass; pin the top of the page again afterwards.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in self?.showTop(of: page) }
@@ -251,33 +265,55 @@ final class ReaderViewController: UIViewController {
 
     private func seedHighlight(_ seed: (page: Int, start: Int, end: Int), source: PDFSourceDocument, extraction: DocumentExtraction) {
         do {
-            let anchor = try PDFAnchorBuilder.anchor(forScalarRange: ScalarRange(start: seed.start, end: seed.end),
+            var anchor = try PDFAnchorBuilder.anchor(forScalarRange: ScalarRange(start: seed.start, end: seed.end),
                                                      onPage: seed.page, in: source, extraction: extraction)
+            if options.simulateExtractionDrift { anchor = Self.simulatingExtractionDrift(anchor) }
             try store?.append(HighlightRecord(anchor: anchor))
         } catch {
             statusLabel.text = "Seed failed: \(error)"
         }
     }
 
-    /// Re-anchors every stored record against the opened file and draws the ones that resolve.
+    /// Re-anchors every stored record against the opened file (`HighlightRestorer`), draws the exact and relocated
+    /// ones, and writes a relocated record's new location back to the store so it restores exactly next time.
     private func restoreHighlights() {
         guard let source, let extraction, let store else { return }
         let records = (try? store.load(assetSHA256: source.sha256)) ?? []
-        var exact = 0, relocated = 0, review = 0, missing = 0
-        var drawable: [PDFAnchor] = []
-        for record in records {
-            switch PDFAnchorResolver.resolve(record.anchor, in: source, extraction: extraction) {
-            case .exact: exact += 1; drawable.append(record.anchor)
-            case .relocated: relocated += 1
-            case .needsReview: review += 1
-            case .notFound, .differentAsset: missing += 1
+        let outcome = HighlightRestorer.restore(records, in: source, extraction: extraction)
+        var relocatedNote = ""
+        if outcome.needsSave {
+            do {
+                try store.save(outcome.records, assetSHA256: source.sha256)
+                relocatedNote = " (new location saved)"
+            } catch {
+                relocatedNote = " (new location not saved)"
             }
         }
-        anchors = drawable
-        HighlightOverlay.apply(drawable, to: source.document)
-        statusLabel.text = "Highlights: \(records.count) stored, \(exact) restored exactly"
-            + (relocated > 0 ? ", \(relocated) relocated" : "") + (review > 0 ? ", \(review) location needs review" : "")
-            + (missing > 0 ? ", \(missing) not found" : "")
+        anchors = outcome.drawable
+        HighlightOverlay.apply(anchors, to: source.document)
+        statusLabel.text = "Highlights: \(records.count) stored, \(outcome.exact) restored exactly"
+            + (outcome.relocated > 0 ? ", \(outcome.relocated) relocated\(relocatedNote)" : "")
+            + (outcome.relocationNotRebuilt > 0 ? ", \(outcome.relocationNotRebuilt) relocated but not redrawn" : "")
+            + (outcome.needsReview > 0 ? ", \(outcome.needsReview) location needs review" : "")
+            + (outcome.notFound > 0 ? ", \(outcome.notFound) not found" : "")
+    }
+
+    /// UI-test stand-in for a record written before the page text changed (an OS update changing PDFKit's extractor,
+    /// or a rebuilt extraction cache): every segment's page-text digest no longer matches, its scalar range points
+    /// 5 scalars later, and its stored line rectangles are 0.05 of the page lower. Exact restore fails; the text and
+    /// its context are unchanged, so the record relocates. Drawing the stale rectangles would put the overlay in the
+    /// wrong place, which the UI test checks for.
+    static func simulatingExtractionDrift(_ anchor: PDFAnchor) -> PDFAnchor {
+        var drifted = anchor
+        for i in drifted.segments.indices {
+            drifted.segments[i].pageTextSHA256 = String(repeating: "0", count: 64)
+            drifted.segments[i].textRange.start += 5
+            drifted.segments[i].textRange.end += 5
+            drifted.segments[i].lineRects = drifted.segments[i].lineRects.map {
+                NormalizedRect(x: $0.x, y: $0.y - 0.05, width: $0.width, height: $0.height)
+            }
+        }
+        return drifted
     }
 
     // MARK: Highlighting
@@ -341,6 +377,7 @@ final class ReaderViewController: UIViewController {
               let page = source.page(at: segment.pageIndex) as? OverlayPage,
               let first = page.highlightRects.first
         else { return }
+        revealedPage = page
         pdfView.go(to: page.highlightRects.reduce(first) { $0.union($1) }, on: page)
         publishGeometry()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in self?.publishGeometry() }
@@ -407,7 +444,7 @@ final class ReaderViewController: UIViewController {
 
     /// Publishes link and highlight-underline rectangles of the current page in window coordinates for UI tests.
     private func publishGeometry() {
-        guard let page = pdfView.currentPage else { return }
+        guard let page = revealedPage ?? pdfView.currentPage else { return }
         func windowRect(_ pageRect: CGRect) -> CGRect {
             pdfView.convert(pdfView.convert(pageRect, from: page), to: nil)
         }
@@ -416,6 +453,19 @@ final class ReaderViewController: UIViewController {
         // A point on the first body line of the generated fixtures (page space x 200, y 703), for long-press tests.
         let probe = pdfView.convert(pdfView.convert(CGPoint(x: 200, y: 703), from: page), to: nil)
         Self.publish(probePointLabel, String(format: "%.1f,%.1f", probe.x, probe.y))
+        // A point on the last character of that line, so a long press selects the line's last word (a selection that
+        // ends at a line break: LineEndSelectionTests). Only the point is published, never the text.
+        if let line = page.selectionForLine(at: CGPoint(x: 200, y: 703)), !line.bounds(for: page).isEmpty {
+            let box = line.bounds(for: page)
+            let end = pdfView.convert(pdfView.convert(CGPoint(x: box.maxX - 2, y: box.midY), from: page), to: nil)
+            Self.publish(lineEndProbeLabel, String(format: "%.1f,%.1f", end.x, end.y))
+        } else {
+            Self.publish(lineEndProbeLabel, "")
+        }
+        // Text form field values on this page, for UI tests that type into a field ("name=value;..."). Bundled
+        // generated fixtures only: a file chosen in Files may hold a person's form entries.
+        let fields = isBundledFixture ? page.annotations.filter { $0.widgetFieldType == .text } : []
+        Self.publish(fieldValuesLabel, fields.map { "\($0.fieldName ?? "?")=\($0.widgetStringValue ?? "")" }.joined(separator: ";"))
         // The PDF view's frame in window points, then the affine map from the current page's user space to window
         // points (a,b,c,d,tx,ty), so UI tests can aim a touch at any page point on a rotated or zoomed page.
         let origin = pdfView.convert(pdfView.convert(CGPoint.zero, from: page), to: nil)
@@ -436,6 +486,6 @@ final class ReaderViewController: UIViewController {
 extension ReaderViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
-        open(url: url, name: url.lastPathComponent, reset: false)
+        open(url: url, name: url.lastPathComponent, reset: false, bundled: false)
     }
 }

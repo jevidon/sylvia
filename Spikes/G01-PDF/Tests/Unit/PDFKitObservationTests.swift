@@ -9,9 +9,13 @@ import XCTest
 final class PDFKitObservationTests: XCTestCase {
     static let fixtures = ["labels-multipage.pdf", "rotated.pdf", "two-column.pdf", "mixed-scanned.pdf", "unicode.pdf",
                            "encrypted-user-password.pdf", "encrypted-owner-only-nocopy.pdf", "truncated.pdf", "actions.pdf",
-                           "actions-nonurl.pdf"]
+                           "actions-nonurl.pdf", "actions-chained.pdf", "text-layout.pdf"]
 
     func testRecordPDFKitBehaviourForEveryFixture() throws {
+        // The list above is every committed fixture: the PDFs bundled from Spikes/G01-PDF/Fixtures.
+        let bundled = try FileManager.default.contentsOfDirectory(atPath: Fixture.url("rotated.pdf").deletingLastPathComponent().path)
+            .filter { $0.hasSuffix(".pdf") }.sorted()
+        XCTAssertEqual(bundled, Self.fixtures.sorted(), "every bundled fixture is observed")
         var out = ["PDFKit observations, \(Evidence.environmentLabel)", ""]
         var opened = 0
         for name in Self.fixtures {

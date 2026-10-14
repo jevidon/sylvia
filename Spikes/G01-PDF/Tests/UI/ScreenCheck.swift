@@ -78,8 +78,10 @@ class ScreenCheckTestCase: XCTestCase {
     /// Checks each published highlight line on screen; returns a report line per line. A line that runs past the
     /// PDF view (zoomed in) is checked where it is inside the view; one outside the view is listed and skipped. At
     /// least `minimumChecked` lines must be checked. With `expectOverlay: false` (a control) every checked line must
-    /// instead show no underline and mostly white paper where the fill would be.
-    func checkOverlayOnScreen(_ app: XCUIApplication, name: String, minimumChecked: Int = 1, expectOverlay: Bool = true) -> [String] {
+    /// instead show no underline and mostly white paper where the fill would be. With `saveImage: false` the screen
+    /// capture is only attached to the test result, not written to the evidence directory.
+    func checkOverlayOnScreen(_ app: XCUIApplication, name: String, minimumChecked: Int = 1, expectOverlay: Bool = true,
+                              saveImage: Bool = true) -> [String] {
         let lines = Harness.rects(app, "overlayFrames")
         XCTAssertFalse(lines.isEmpty, "no highlight lines published for the current page")
         Thread.sleep(forTimeInterval: 1.5) // let PDFView finish rendering its tiles
@@ -94,9 +96,7 @@ class ScreenCheckTestCase: XCTestCase {
         let appFrame = app.frame
         guard let image = uprightScreenImage(shot, appFrame: appFrame, note: &report) else { return report }
         // Saved upright (as the person sees it), not in the screenshot's raw sensor orientation.
-        if let png = UIImage(cgImage: image).pngData(), png.count < 2_000_000 {
-            try? png.write(to: Harness.evidenceDirectory.appendingPathComponent("ui-\(name).png"))
-        }
+        if saveImage { Harness.writeEvidencePNG("ui-\(name).png", UIImage(cgImage: image)) }
         report.append("PDF view frame (window points) \(viewFrame.integral)")
         var checked = 0
         for line in settled {
@@ -124,6 +124,8 @@ class ScreenCheckTestCase: XCTestCase {
             let paperShare = share(fillPixels, near: RGB(r: 255, g: 255, b: 255), tolerance: 4)
             let uShare = max(underlineShare, underlineShareRotated)
             report.append("underline \(u.integral): \(Int(uShare * 100)) % of pixels within 24 of \(Self.ochre.hex); fill \(f.integral): \(Int(fillShare * 100)) % within 12 of \(Self.ochreTint.hex), \(Int(paperShare * 100)) % white paper")
+            // Also in the test log, so a failed check still shows its measurement.
+            print("[screen-check \(name)] overlay frames \(settled); \(report.last ?? "")")
             if expectOverlay {
                 XCTAssertGreaterThanOrEqual(uShare, 0.2, "underline band on screen is not ochre (\(name))")
                 XCTAssertGreaterThanOrEqual(fillShare, 0.3, "fill band on screen is not ochre.tint (\(name))")

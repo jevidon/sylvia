@@ -38,7 +38,10 @@ final class NonURLActionTests: XCTestCase {
 
         var report = ["actions-nonurl.pdf: PDFView.perform(link action) with LinkInterceptor installed, starting on page index 0 each time, "
                       + "\(Evidence.environmentLabel)"]
-        var outcomes: [String: (page: Int, decisions: [LinkDecision], policy: LinkDecision)] = [:]
+        var outcomes: [String: (page: Int, decisions: [LinkDecision], policy: LinkDecision, fieldBefore: String, fieldAfter: String,
+                                presented: [String])] = [:]
+        let initialField = field.widgetStringValue
+        XCTAssertEqual(presentedUI(), [], "nothing is presented before the first action")
         for (label, link) in zip(Self.labels, links) {
             let action = try XCTUnwrap(link.action, label)
             view.go(to: page0)
@@ -51,10 +54,12 @@ final class NonURLActionTests: XCTestCase {
             let pageAfter = view.currentPage.map { source.index(of: $0) } ?? -1
             let decisions = Array(interceptor.decisions.dropFirst(decisionsBefore))
             let policy = LinkPolicy.decide(action: action, in: source.document)
-            outcomes[label] = (pageAfter, decisions, policy)
+            let fieldAfter = field.widgetStringValue ?? "nil"
+            let presented = presentedUI()
+            outcomes[label] = (pageAfter, decisions, policy, fieldBefore, fieldAfter, presented)
             report.append("\(label): PDFKit presents \(type(of: action)) type \(action.type)\((action as? PDFActionNamed).map { " name \(LinkPolicy.name(of: $0.name))" } ?? ""); "
                           + "page index after: \(pageAfter); delegate decisions: \(decisions); policy: \(policy); "
-                          + "form field \"\(fieldBefore)\" -> \"\(field.widgetStringValue ?? "nil")\"")
+                          + "form field \"\(fieldBefore)\" -> \"\(fieldAfter)\"; presented: \(presented.isEmpty ? "nothing" : presented.joined(separator: ", "))")
         }
         spinRunLoop(seconds: 2)
         let opened = URLOpenRecorder.shared.received.map(\.absoluteString)
@@ -78,5 +83,68 @@ final class NonURLActionTests: XCTestCase {
         for label in ["C Find", "D GoToPage", "E Print", "G ResetForm", "H JavaScript", "I SubmitForm"] {
             XCTAssertEqual(outcomes[label]?.page, 0, label)
         }
+        // Named Find and GoToPage reach Sylvia's delegate, which records them as blocked and does nothing else.
+        XCTAssertEqual(outcomes["C Find"]?.decisions, [.blocked(reason: "named action Find is not supported")])
+        XCTAssertEqual(outcomes["D GoToPage"]?.decisions, [.blocked(reason: "named action GoToPage is not supported")])
+        // PDFView performs NextPage, LastPage and ResetForm itself, and Print, JavaScript and SubmitForm do nothing:
+        // none of them reaches the delegate.
+        for label in ["A NextPage", "B LastPage", "E Print", "G ResetForm", "H JavaScript", "I SubmitForm"] {
+            XCTAssertEqual(outcomes[label]?.decisions, [], "\(label) must not reach the delegate")
+        }
+        // ResetForm changes the in-memory field value from its /V to its /DV; no other action touches the field.
+        XCTAssertEqual(initialField, "Filled in", "the fixture's field starts at its /V value")
+        for label in ["A NextPage", "B LastPage", "C Find", "D GoToPage", "E Print", "F GoToR"] {
+            XCTAssertEqual(outcomes[label]?.fieldBefore, "Filled in", label)
+            XCTAssertEqual(outcomes[label]?.fieldAfter, "Filled in", "\(label) must not change the field")
+        }
+        XCTAssertEqual(outcomes["G ResetForm"]?.fieldBefore, "Filled in")
+        XCTAssertEqual(outcomes["G ResetForm"]?.fieldAfter, "Default", "ResetForm resets the field to its /DV in memory")
+        // H and I run after the reset, so the field holds "Default" before and after each of them.
+        for label in ["H JavaScript", "I SubmitForm"] {
+            XCTAssertEqual(outcomes[label]?.fieldBefore, "Default", label)
+            XCTAssertEqual(outcomes[label]?.fieldAfter, "Default", "\(label) must not change the field")
+        }
+        // No action presents anything: no print sheet for Print, no find or page-number UI for Find and GoToPage.
+        for label in Self.labels {
+            XCTAssertEqual(outcomes[label]?.presented, [], "\(label) must not present anything")
+        }
+        // Print, JavaScript and SubmitForm do nothing at all: no page change, no delegate call, no field change, nothing
+        // presented and no URL (all asserted above). The policy states the same outcome for each.
+        XCTAssertEqual(outcomes["E Print"]?.policy, .blocked(reason: "named action Print is not supported"))
+        XCTAssertEqual(outcomes["H JavaScript"]?.policy, .blocked(reason: "action type JavaScript is not supported"))
+        XCTAssertEqual(outcomes["I SubmitForm"]?.policy, .blocked(reason: "action type SubmitForm is not supported"))
+        XCTAssertEqual(outcomes["G ResetForm"]?.policy, .performedByPDFView("form reset (in memory)"))
+    }
+
+    /// Control for the "nothing presented" assertions here and in `ChainedActionTests`: `presentedUI()` does report a
+    /// view controller presented over a window of the app and a print job handed to the shared print controller, and
+    /// reports nothing again once they are gone. Without this, an empty result could mean a detector that never sees
+    /// anything.
+    func testControlPresentedUIDetectorSeesAnAlertAndAPrintJob() throws {
+        var lines = ["presentedUI() control, \(Evidence.environmentLabel)"]
+        let baseline = presentedUI()
+        lines.append("baseline: \(baseline)")
+        XCTAssertEqual(baseline, [], "nothing is presented before the control")
+
+        let window = makeHostWindow()
+        defer { window.isHidden = true }
+        let alert = UIAlertController(title: "Control", message: nil, preferredStyle: .alert)
+        window.rootViewController?.present(alert, animated: false)
+        XCTAssertTrue(waitUntil(timeout: 5) { presentedUI() == ["UIAlertController"] }, "\(presentedUI())")
+        lines.append("with a UIAlertController presented over a window of the app: \(presentedUI())")
+        alert.dismiss(animated: false)
+        XCTAssertTrue(waitUntil(timeout: 5) { presentedUI().isEmpty }, "\(presentedUI())")
+        lines.append("after dismissing it: \(presentedUI())")
+
+        let printer = UIPrintInteractionController.shared
+        printer.printingItem = Fixture.url("actions-nonurl.pdf")
+        let withPrintJob = presentedUI()
+        lines.append("with UIPrintInteractionController.shared.printingItem set to a PDF: \(withPrintJob)")
+        XCTAssertEqual(withPrintJob, ["UIPrintInteractionController has a print job"])
+        printer.printingItem = nil
+        let cleared = presentedUI()
+        lines.append("after clearing the print job: \(cleared)")
+        XCTAssertEqual(cleared, [])
+        Evidence.write("presented-ui-control.txt", lines.joined(separator: "\n") + "\n")
     }
 }

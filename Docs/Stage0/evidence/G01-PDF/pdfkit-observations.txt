@@ -1,4 +1,4 @@
-PDFKit observations, simulator iPhone18,3 (Sylvia-M0-g01-pdf), iOS 26.5 (23F77)
+PDFKit observations, simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77)
 
 == labels-multipage.pdf (6272 bytes, sha256 6ffa266bf32eea6c9bc2984d351bc55d19bd948c65714a4e6d2b9ab41d8138d1)
 pages 8; isEncrypted false; isLocked false; allowsCopying true; allowsContentAccessibility true
@@ -97,6 +97,39 @@ page 1: label 2; rotation 0; mediaBox (0.0, 0.0, 612.0, 792.0); cropBox (0.0, 0.
   string: Non-URL actions page two\nPage two of three.
 page 2: label 3; rotation 0; mediaBox (0.0, 0.0, 612.0, 792.0); cropBox (0.0, 0.0, 612.0, 792.0); characters 47
   string: Non-URL actions page three\nPage three of three.
+
+== actions-chained.pdf (12952 bytes, sha256 21f8480692ca81003190b7fd496acf9255fcd9e4a73b1950daafd1c9cc3f89b4)
+pages 3; isEncrypted false; isLocked false; allowsCopying true; allowsContentAccessibility true
+page 0: label 1; rotation 0; mediaBox (0.0, 0.0, 612.0, 792.0); cropBox (0.0, 0.0, 612.0, 792.0); characters 747
+  string: Chained and additional actions\nLink A goes to page two, then /Next asks for the canary.\nLink B is NextPage, then /Next asks for the canary.\nLink C goes to page two, then /Next [URI, Launch, JavaScript].\nLink D is an https link, then /Next asks for the canary.\nLink E has no /A; its /AA mouse-up action asks for the canary.\nLink F goes to page three; its /AA declares every trigger.\nLink G goes to page two through a /Next cycle.\nLink H has no /A; its /AA has mouse-down, then mouse-up.\nLink I has no /A; its /AA has mouse-up, then mouse-down.\nLink J has no /A; its /AA has only a mouse-down action.\nLink K has no /A; its /AA has mouse-up and mouse-enter.\nLink L asks for the canary, then /Next asks for it again.\nField one:\nField two:\nField three:
+  annotation Link bounds (68.0, 694.0, 352.0, 20.0) action PDFActionGoTo GoTo Action - Go to page 2
+  annotation Link bounds (68.0, 666.0, 352.0, 20.0) action PDFActionNamed Named Action - Go to next page
+  annotation Link bounds (68.0, 638.0, 352.0, 20.0) action PDFActionGoTo GoTo Action - Go to page 2
+  annotation Link bounds (68.0, 610.0, 352.0, 20.0) action PDFActionURL URL Action - https://example.invalid/chained
+  annotation Link bounds (68.0, 582.0, 352.0, 20.0) action PDFActionURL URL Action - sylvia-g01-canary://aa-mouse-up-only
+  annotation Link bounds (68.0, 554.0, 352.0, 20.0) action PDFActionGoTo GoTo Action - Go to page 3
+  annotation Link bounds (68.0, 526.0, 352.0, 20.0) action PDFActionGoTo GoTo Action - Go to page 2
+  annotation Link bounds (68.0, 498.0, 352.0, 20.0) action nil
+  annotation Link bounds (68.0, 470.0, 352.0, 20.0) action nil
+  annotation Link bounds (68.0, 442.0, 352.0, 20.0) action nil
+  annotation Link bounds (68.0, 414.0, 352.0, 20.0) action PDFActionURL URL Action - sylvia-g01-canary://aa-up-enter-u
+  annotation Link bounds (68.0, 386.0, 352.0, 20.0) action PDFActionURL URL Action - sylvia-g01-canary://uri-first
+  annotation Widget bounds (140.0, 344.0, 280.0, 20.0) action nil
+  annotation Widget bounds (140.0, 316.0, 280.0, 20.0) action nil
+  annotation Widget bounds (140.0, 288.0, 280.0, 20.0) action PDFActionURL URL Action - sylvia-g01-canary://third-field-mouse-up
+page 1: label 2; rotation 0; mediaBox (0.0, 0.0, 612.0, 792.0); cropBox (0.0, 0.0, 612.0, 792.0); characters 43
+  string: Chained actions page two\nPage two of three.
+page 2: label 3; rotation 0; mediaBox (0.0, 0.0, 612.0, 792.0); cropBox (0.0, 0.0, 612.0, 792.0); characters 47
+  string: Chained actions page three\nPage three of three.
+
+== text-layout.pdf (3363 bytes, sha256 cf2d5a1fa176f2cfc33ad43db210434f342d987c236f1bfa8fb3e56e37266153)
+pages 3; isEncrypted false; isLocked false; allowsCopying true; allowsContentAccessibility true
+page 0: label 1; rotation 0; mediaBox (0.0, 0.0, 612.0, 792.0); cropBox (0.0, 0.0, 612.0, 792.0); characters 417
+  string: Rotated text matrices\nHorizontal reference line at the top.\nDiagonal line one climbs at thirty degrees.\nDiagonal line two climbs below it.\nUpward line one reads from the bottom of the page.\nUpward line two sits to the right of line one.\nUpside-down line one runs right to left.\nUpside-down line two sits above line one.\nDownward line two sits to the left of line one.\nDownward line one reads from the top of the page.
+page 1: label 2; rotation 0; mediaBox (0.0, 0.0, 612.0, 792.0); cropBox (0.0, 0.0, 612.0, 792.0); characters 431
+  string: Scrambled column order\nScrambled order heading drawn last\nLeft one: the first line of the left column.\nLeft two: the second line of the left column.\nLeft three: the third line of the left column.\nLeft four: the last line of the left column.\nRight one: the first line of the right column.\nRight two: the second line of the right column.\nRight three: the third line of the right column.\nRight four: the last line of the right column.
+page 2: label 3; rotation 0; mediaBox (0.0, 0.0, 612.0, 792.0); cropBox (0.0, 0.0, 612.0, 792.0); characters 250
+  string: Bottom-up stream order\nBottom-up one: this is the first line in reading order.Bottom-up two: this is the second line in reading order.\nBottom-up three: this is the third line in reading order.\nBottom-up four: this is the fourth line in reading order.
 
 == hit testing on labels-multipage.pdf page 3 (third body line: baseline y = 670, text from x = 72 to about x = 262)
 point (150.0, 668.0): characterIndex 189, its line box (133.75400000000002, 667.47021484375, 3.0579999999999927, 11.0); drag from (200, 703) ends "stops at the"

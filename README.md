@@ -2,7 +2,9 @@
 
 **Your library of thought.**
 
-Sylvia is a native reading and listening app in development for iPhone and iPad. It brings books, highlights, audio moments, notes and questions into one lasting, searchable record—so what you learn stays with you, even after you remove the original files.
+Sylvia is a reading, listening and knowledge system in development, with a long-term vision of working across all major operating systems. It brings books, highlights, audio moments, notes and questions into one lasting, searchable record—so what you learn stays with you, even after you remove the original files.
+
+The full vision combines mobile, desktop and web clients with a **Docker-containerized service** that powers library hosting, content ingestion and background processing. Native iPhone/iPad development is the first step toward that broader system.
 
 ## Why Sylvia
 
@@ -13,6 +15,14 @@ What we're building:
 - **Keep the source close.** Connect each saved thought to its work, edition, chapter, page or timestamp, with a way back when the source is available.
 - **Ask questions in context.** Explore a passage with an optional AI provider you choose. Keep the question, answer and supporting evidence together, with generated explanations clearly distinguished from quotations.
 - **Own your library.** Read and listen offline without a mandatory account or server. Export your retained knowledge, and choose what context you share with AI.
+
+## The long-term vision
+
+**Your library across operating systems.** The goal is support across iOS/iPadOS, Android, macOS, Windows and Linux, with a web reader for browser access. Books and the knowledge you retain from them should remain portable as you move between devices and platforms.
+
+**A Docker service to power the system.** A self-hostable, always-on service will provide shared infrastructure for the clients: hosting a large media library, collecting files and saved articles, refreshing feeds, indexing content and running background processing. It will deliver content to connected clients while the clients retain their own offline reading, listening and capture experience.
+
+Local-first remains a core principle: the Docker service powers the connected system, while standalone use on one device remains possible without running a server.
 
 ## Design samples
 
@@ -32,7 +42,7 @@ Concept designs in **Marginalia**, Sylvia's visual language: warm paper, readabl
 
 **First: native iOS V1.** EPUB/PDF reading, local audiobook playback, durable capture, optional contextual AI, a permanent reading and listening record, and a lightweight Mac companion for importing your files. English and DRM-free content come first.
 
-**Later:** saved articles and feeds, a web reader, broader capture options and an optional self-hosted hub. These are separate roadmap workstreams after V1.
+**Beyond V1:** build out the Docker service, web reader and clients for additional operating systems, alongside saved articles, feeds and broader capture options. These long-term goals follow the first native release.
 
 ## Project status
 

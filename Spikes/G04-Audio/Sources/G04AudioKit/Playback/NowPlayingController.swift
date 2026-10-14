@@ -15,6 +15,8 @@ import MediaPlayer
 /// untouched. Nothing loaded: `.noActionableNowPlayingItem`.
 @MainActor
 public final class NowPlayingController {
+    /// The default skip interval. The skip commands use the intervals of the service (`PlaybackService.skipBackwardSeconds`,
+    /// `skipForwardSeconds`), which a listener can change (plan 10.1; review R6-02).
     public static let skipInterval: Double = PlaybackService.skipSeconds
     public static let supportedRates: [NSNumber] = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3]
     /// Commands that start or stop playback (also during a preview).
@@ -60,6 +62,9 @@ public final class NowPlayingController {
         /// A capture preview is playing: the fields describe the preview, not the book.
         public var isPreview: Bool
         public var enabledCommands: Set<String>
+        /// The preferred intervals advertised for the skip commands (the current skip intervals of the service).
+        public var skipBackwardSeconds: Double
+        public var skipForwardSeconds: Double
     }
 
     private let service: PlaybackService
@@ -93,8 +98,7 @@ public final class NowPlayingController {
         add(center.playCommand, "play") { _ in .play }
         add(center.pauseCommand, "pause") { _ in .pause }
         add(center.togglePlayPauseCommand, "togglePlayPause") { _ in .togglePlayPause }
-        center.skipForwardCommand.preferredIntervals = [NSNumber(value: Self.skipInterval)]
-        center.skipBackwardCommand.preferredIntervals = [NSNumber(value: Self.skipInterval)]
+        applySkipIntervals()
         add(center.skipForwardCommand, "skipForward") { _ in .skipForward }
         add(center.skipBackwardCommand, "skipBackward") { _ in .skipBackward }
         center.changePlaybackRateCommand.supportedPlaybackRates = Self.supportedRates
@@ -118,6 +122,13 @@ public final class NowPlayingController {
             unused.isEnabled = false
         }
         return registeredCommands
+    }
+
+    /// Advertises the skip intervals of the service as the preferred intervals of the skip commands (what the Lock
+    /// Screen and Control Center show on their skip buttons; plan 10.1 configurable skip intervals, review R6-02).
+    private func applySkipIntervals() {
+        center.skipBackwardCommand.preferredIntervals = [NSNumber(value: service.skipBackwardSeconds)]
+        center.skipForwardCommand.preferredIntervals = [NSNumber(value: service.skipForwardSeconds)]
     }
 
     /// Quick-capture prototype: the bookmark feedback command. Where (if anywhere) current iOS shows it is not
@@ -229,9 +240,9 @@ public final class NowPlayingController {
             service.setRate(r)
             return .success
         case .skipForward:
-            startSeek { await $0.skip(bySeconds: Self.skipInterval) }
+            startSeek { await $0.skipForward() }
         case .skipBackward:
-            startSeek { await $0.skip(bySeconds: -Self.skipInterval) }
+            startSeek { await $0.skipBackward() }
         case let .changePosition(s):
             startSeek { await $0.seek(toGlobalMs: Int64((s * 1000).rounded())) }
         case .nextChapter:
@@ -265,14 +276,16 @@ public final class NowPlayingController {
             return Snapshot(title: titleProvider(), durationSeconds: progress?.durationSeconds ?? 0,
                             elapsedSeconds: progress?.elapsedSeconds ?? 0, rate: playing ? 1 : 0, defaultRate: 1,
                             chapterCount: nil, chapterNumber: nil, isPlaying: playing, isPreview: true,
-                            enabledCommands: Set(Self.transportCommands))
+                            enabledCommands: Set(Self.transportCommands),
+                            skipBackwardSeconds: service.skipBackwardSeconds, skipForwardSeconds: service.skipForwardSeconds)
         }
         let playing = service.status == .playing
         return Snapshot(title: titleProvider(), durationSeconds: Double(timeline.durationMs) / 1000,
                         elapsedSeconds: Double(service.currentGlobalMs) / 1000, rate: playing ? Double(service.rate) : 0,
                         defaultRate: Double(service.rate), chapterCount: service.chapters.count,
                         chapterNumber: service.currentChapterIndex, isPlaying: playing, isPreview: false,
-                        enabledCommands: Set(Self.transportCommands + Self.navigationCommands))
+                        enabledCommands: Set(Self.transportCommands + Self.navigationCommands),
+                        skipBackwardSeconds: service.skipBackwardSeconds, skipForwardSeconds: service.skipForwardSeconds)
     }
 
     /// Publishes Now Playing information for the current state and enables the registered commands that apply to it.
@@ -296,6 +309,8 @@ public final class NowPlayingController {
         if let c = snap.chapterNumber { info[MPNowPlayingInfoPropertyChapterNumber] = c }
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
         MPNowPlayingInfoCenter.default().playbackState = snap.isPlaying ? .playing : .paused
+        // The skip commands advertise the current intervals of the listener (they can change between updates).
+        applySkipIntervals()
         // Only commands this controller registered are switched; during a preview the navigation commands are off,
         // so the system shows them unavailable.
         for name in registeredCommands where Self.transportCommands.contains(name) || Self.navigationCommands.contains(name) {

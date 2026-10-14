@@ -8,7 +8,8 @@ struct HarnessApp: App {
 
     init() {
         // Installed at process launch, including a background launch to perform CaptureMomentIntent.
-        QuickCaptureBridge.handler = { origin in HarnessModel.shared.quickCapture(origin: origin) }
+        // A quick-capture surface: it captures only a moment heard in this process (review R6-01).
+        QuickCaptureBridge.handler = { origin in HarnessModel.shared.quickCapture(origin: origin, entry: .surface) }
         HarnessShortcuts.updateAppShortcutParameters()
     }
 
@@ -61,13 +62,13 @@ struct HarnessView: View {
                         }
                     }
                     HStack {
-                        Button("-15") { Task { await model.playback.skip(bySeconds: -15) } }
+                        Button("-\(Int(model.playback.skipBackwardSeconds))") { Task { await model.playback.skipBackward() } }
                         // During a preview play/pause stops the preview (as the remote commands do; review R4-03).
                         Button(model.playback.mode == .preview ? "Stop preview" : model.playback.isPlayingOrStarting ? "Pause" : "Play") {
                             model.playback.togglePlayPause()
                             model.nowPlaying.update()
                         }
-                        Button("+15") { Task { await model.playback.skip(bySeconds: 15) } }
+                        Button("+\(Int(model.playback.skipForwardSeconds))") { Task { await model.playback.skipForward() } }
                         Button("Prev ch") { Task { await model.playback.previousChapter() } }
                         Button("Next ch") { Task { await model.playback.nextChapter() } }
                     }.buttonStyle(.bordered)
@@ -76,7 +77,7 @@ struct HarnessView: View {
                     }.pickerStyle(.segmented)
                     // Each tap is its own capture (its own idempotency key; review R3-04).
                     Button("Capture the last 30 seconds") {
-                        _ = model.quickCapture(origin: "player", idempotencyKey: QuickCaptureCoordinator.requestKey(origin: "player"))
+                        _ = model.quickCapture(origin: "player", entry: .player, idempotencyKey: QuickCaptureCoordinator.requestKey(origin: "player"))
                     }
                     Button("Bookmark") { Task { await model.bookmark() } }
                     // Quiet (1 % volume) by default so automated runs stay quiet; a person turns full volume on for
@@ -86,6 +87,12 @@ struct HarnessView: View {
                     }
                     Button(model.bookmarkCommandEnabled ? "Disable remote bookmark command" : "Enable remote bookmark command") { model.toggleBookmarkCommand() }
                     if let m = model.lastMessage { Text(m).font(.footnote) }
+                    // The number of capture records in the store and the newest one (review R6-06): the Captures list
+                    // below is lazy, so its visible rows are not a count; the quick-capture UI tests read this line.
+                    Text("captures=\(model.records.count) newest=\(model.records.first?.origin ?? "none")")
+                        .font(.caption2)
+                        .accessibilityIdentifier("g04-captures-summary")
+                    if let warning = model.incompleteEditionText { Text(warning).font(.footnote) }
                 }
                 Section("Captures") {
                     ForEach(model.records) { r in
@@ -102,6 +109,23 @@ struct HarnessView: View {
                         }
                     }
                 }
+                // Device checklist step 17 (plan 10.1; review R6-02).
+                Section("Playback settings") {
+                    Button("Skip \(Int(model.playback.skipBackwardSeconds)) s back, \(Int(model.playback.skipForwardSeconds)) s ahead (change)") {
+                        model.toggleSkipIntervals()
+                    }
+                    HStack {
+                        Button("Sleep 1 min") { model.setSleepTimer(.after(seconds: 60)) }
+                        Button("Sleep at chapter end") { model.setSleepTimer(.endOfChapter) }
+                        Button("Sleep off") { model.setSleepTimer(nil) }
+                    }.buttonStyle(.bordered)
+                    TimelineView(.periodic(from: .now, by: 1)) { _ in
+                        Text(sleepText(model.playback)).monospacedDigit()
+                    }
+                    Button(model.playback.resumeRewind == nil ? "Rewind after a pause: off (turn on: 10 s after 1 min)" : "Rewind after a pause: 10 s after 1 min (turn off)") {
+                        model.toggleResumeRewind()
+                    }
+                }
                 if let id = selected {
                     Section("Range (global ms)") {
                         TextField("Start ms", text: $startText).keyboardType(.numberPad)
@@ -115,6 +139,14 @@ struct HarnessView: View {
                 }
             }
             .navigationTitle("G0.4 audio harness")
+        }
+    }
+
+    private func sleepText(_ p: PlaybackService) -> String {
+        switch p.sleepTimer {
+        case .none: "sleep timer off"
+        case .after: "sleep timer: \(Int((p.sleepRemainingSeconds ?? 0).rounded())) s of playback left"
+        case .endOfChapter: "sleep timer: stops at \(format(p.sleepStopGlobalMs ?? 0))"
         }
     }
 

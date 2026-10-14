@@ -798,7 +798,8 @@ extension RealAV {
             let coordinator = QuickCaptureCoordinator(playback: p.service, captures: captures)
             for i in 0..<40 {
                 await p.service.seek(toGlobalMs: 31_000 + Int64(i) * 13_000)
-                guard case .saved = coordinator.captureNow(origin: "budget") else { Issue.record("capture \(i) not saved"); continue }
+                // The in-player path: the anchor write is what this budget measures (the book is positioned, not played).
+                guard case .saved = coordinator.captureNow(origin: "budget", entry: .player) else { Issue.record("capture \(i) not saved"); continue }
             }
 
             p.stop()

@@ -1,10 +1,10 @@
 # Rate and pitch on tone-1khz-60s.m4a (post-effects tap). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
 algorithm	rate	media_advance_per_wall_s	tap_rate_hz	measured_tone_hz
 TimeDomain	0.5	0.500	44100	999.8
-TimeDomain	1.0	1.000	44100	1000.1
+TimeDomain	1.0	1.000	44100	999.9
 TimeDomain	2.0	2.000	44100	999.8
 TimeDomain	3.0	3.000	44100	999.9
-Varispeed	0.5	0.500	44100	499.9
+Varispeed	0.5	0.500	44100	500.0
 Varispeed	1.0	1.000	44100	999.9
 Varispeed	2.0	2.000	44100	1999.9
 Varispeed	3.0	3.000	44100	3000.0

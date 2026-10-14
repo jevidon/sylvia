@@ -83,14 +83,14 @@ targets:
         basedOnDependencyAnalysis: false
         script: |
           # Simulator runs read the fixtures from the host cache; a physical device cannot, so device builds copy
-          # them into the test bundle (about 8.6 GB with the 3- and 10-hour files of every format). Run the three
-          # generate scripts first. The CI device build (G04_SKIP_DEVICE_FIXTURES=YES) builds without copying them.
+          # them into the test bundle (about 8.7 GB with the 3- and 10-hour files of every format and the stereo files). Run
+          # the four generate scripts first. The CI device build (G04_SKIP_DEVICE_FIXTURES=YES) builds without copying them.
           if [ "$PLATFORM_NAME" != "iphoneos" ]; then exit 0; fi
           if [ "${G04_SKIP_DEVICE_FIXTURES:-NO}" = "YES" ]; then echo "device fixtures not bundled (compile and signing check)"; exit 0; fi
           SRC="${SYLVIA_FIXTURE_CACHE:-$HOME/Library/Caches/SylviaFixtures}"
           DST="$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/G04Fixtures"
-          if [ ! -f "$SRC/generated/g04-audio/.stamp" ] || [ ! -f "$SRC/generated/g04-audio/long-formats/.stamp" ] || [ ! -f "$SRC/generated/g04-audio/probes/.stamp" ]; then
-            echo "error: g04 fixtures missing; run Scripts/fixtures/fetch.sh, Scripts/fixtures/generate-g04-audio-fixtures.sh, Scripts/fixtures/generate-g04-audio-long-formats.sh and Scripts/fixtures/generate-g04-audio-probes.sh"; exit 1
+          if [ ! -f "$SRC/generated/g04-audio/.stamp" ] || [ ! -f "$SRC/generated/g04-audio/long-formats/.stamp" ] || [ ! -f "$SRC/generated/g04-audio/probes/.stamp" ] || [ ! -f "$SRC/generated/g04-audio/stereo/.stamp" ]; then
+            echo "error: g04 fixtures missing; run Scripts/fixtures/fetch.sh, Scripts/fixtures/generate-g04-audio-fixtures.sh, Scripts/fixtures/generate-g04-audio-long-formats.sh, Scripts/fixtures/generate-g04-audio-probes.sh and Scripts/fixtures/generate-g04-audio-stereo.sh"; exit 1
           fi
           mkdir -p "$DST/generated" "$DST/downloads"
           rsync -a --delete --exclude '.tmp-*' "$SRC/generated/g04-audio" "$DST/generated/"

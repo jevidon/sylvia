@@ -118,6 +118,7 @@ final class HarnessModel {
         for (i, m) in members.enumerated() {
             log.write("member", "index=\(i) duration_ms=\(m.durationMs) timing=\(m.timing.rawValue)")
         }
+        if let warning = incompleteEditionText { log.write("edition-incomplete", warning) }
         refresh()
         // Captures an earlier process left pending (terminated or crashed before the export result): export them now
         // so none stays "Moment saved · preserving audio" with nothing running (review R1-05).
@@ -210,9 +211,13 @@ final class HarnessModel {
 
     /// The in-player capture button and every quick-capture surface end here. The in-player button passes a key per
     /// tap; the intent and the bookmark command pass none, so the coordinator's repeat window applies to them.
-    func quickCapture(origin: String, idempotencyKey: String? = nil) -> QuickCaptureReply {
+    /// `entry`: `.player` for the in-player button, `.surface` for the intent and the bookmark command, which capture only
+    /// a moment heard in this process (review R6-01).
+    func quickCapture(origin: String, entry: QuickCaptureCoordinator.Entry, idempotencyKey: String? = nil) -> QuickCaptureReply {
         let wasPlaying = playback.status == .playing
-        let outcome = coordinator.captureNow(origin: origin, idempotencyKey: idempotencyKey)
+        let loaded = playback.timeline != nil
+        let played = playback.hasPlayedSinceLoad
+        let outcome = coordinator.captureNow(origin: origin, entry: entry, idempotencyKey: idempotencyKey)
         refresh()
         let app = UIApplication.shared
         var detail = "origin=\(origin) process=\(Bundle.main.bundleIdentifier ?? "-") app_state=\(app.applicationState.rawValue) protectedDataAvailable=\(app.isProtectedDataAvailable) was_playing=\(wasPlaying)"
@@ -230,7 +235,8 @@ final class HarnessModel {
             lastMessage = reason
             detail += " result=not_saved reason=\(reason)"
         case .nothingPlaying:
-            detail += " result=nothing_to_capture"
+            // loaded= says on which side of the start-up race a cold-launched intent arrived (the answer is the same).
+            detail += " result=nothing_to_capture loaded=\(loaded) played_since_load=\(played)"
         }
         log.write("capture", detail)
         return Self.reply(outcome)
@@ -311,11 +317,56 @@ final class HarnessModel {
             bookmarkCommandEnabled = false
         } else {
             nowPlaying.enableBookmarkCapture { [weak self] in
-                self?.quickCapture(origin: "remote-bookmark-command").acknowledged ?? false
+                self?.quickCapture(origin: "remote-bookmark-command", entry: .surface).acknowledged ?? false
             }
             bookmarkCommandEnabled = true
         }
         log.write("bookmark-command", "enabled=\(bookmarkCommandEnabled)")
+    }
+
+    // MARK: Playback settings (plan 10.1; review R6-02; device checklist step 17)
+
+    /// Switches the skip intervals between 15 s both ways (the default) and 10 s back / 30 s forward, so the device
+    /// run can check that the Lock Screen and Control Center skip buttons follow the setting.
+    func toggleSkipIntervals() {
+        let isDefault = playback.skipBackwardSeconds == PlaybackService.skipSeconds && playback.skipForwardSeconds == PlaybackService.skipSeconds
+        if isDefault {
+            playback.setSkipIntervals(backward: 10, forward: 30)
+        } else {
+            playback.setSkipIntervals(backward: PlaybackService.skipSeconds, forward: PlaybackService.skipSeconds)
+        }
+        nowPlaying.update()
+        log.write("settings", "skip_backward_s=\(Int(playback.skipBackwardSeconds)) skip_forward_s=\(Int(playback.skipForwardSeconds))")
+    }
+
+    func setSleepTimer(_ timer: PlaybackService.SleepTimer?) {
+        playback.setSleepTimer(timer)
+        let detail: String
+        switch timer {
+        case .none: detail = "set=off"
+        case let .after(seconds): detail = "set=after_\(Int(seconds))s"
+        case .endOfChapter: detail = "set=end_of_chapter stop_ms=\(playback.sleepStopGlobalMs ?? -1)"
+        }
+        log.write("sleep-timer", "\(detail) position_ms=\(playback.currentGlobalMs)")
+    }
+
+    /// The rewind after a long pause with values for a quick device check (after a pause of at least 1 minute, 10 s
+    /// back). The product default is a product-owner decision (ADR-0006).
+    static let checklistResumeRewind = PlaybackService.ResumeRewind(afterPauseSeconds: 60, rewindSeconds: 10)
+
+    func toggleResumeRewind() {
+        playback.setResumeRewind(playback.resumeRewind == nil ? Self.checklistResumeRewind : nil)
+        let detail = playback.resumeRewind.map { "resume_rewind=after_\(Int($0.afterPauseSeconds))s_back_\(Int($0.rewindSeconds))s" } ?? "resume_rewind=off"
+        log.write("settings", detail)
+    }
+
+    /// The incomplete-edition warning (plan 10.1): the members that cannot play here and why (no file names).
+    var incompleteEditionText: String? {
+        guard playback.isEditionIncomplete, let timeline = playback.timeline else { return nil }
+        let members = playback.unavailableMemberIndices.map { i in
+            "\(i + 1) \(playback.unavailableMembers[timeline.members[i].assetID]?.rawValue ?? "-")"
+        }
+        return "\(SpikePhrases.phrase(ProposedVocabularyKey.audioEditionIncomplete)) members \(members.joined(separator: ", "))"
     }
 }
 

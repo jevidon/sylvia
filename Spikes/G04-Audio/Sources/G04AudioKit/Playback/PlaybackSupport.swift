@@ -1,9 +1,16 @@
 import Foundation
 
-/// Monotonic time source, injectable so checkpoint and listening-time rules are unit-testable.
+/// Time sources, injectable so checkpoint, listening-time, sleep-timer and resume-rewind rules are unit-testable.
 public protocol PlaybackClock: Sendable {
     /// Seconds on a monotonic clock.
     func now() -> TimeInterval
+    /// Wall-clock seconds since 1970. Only for what must survive a relaunch: when main playback stopped, so a later
+    /// launch knows how long the book has been paused (rewind after a long pause, plan 10.1).
+    func wallTime() -> TimeInterval
+}
+
+extension PlaybackClock {
+    public func wallTime() -> TimeInterval { Date().timeIntervalSince1970 }
 }
 
 public struct SystemPlaybackClock: PlaybackClock {
@@ -17,6 +24,10 @@ public enum CheckpointReason: String, Codable, Sendable {
     case periodic, pause, seek, interruption, routeChange, itemChange, lifecycle, previewStart, reorder, blocked
     /// Another edition was loaded: the outgoing edition's last position (review R5-02).
     case editionChange
+    /// The sleep timer paused main playback (plan 10.1; review R6-02).
+    case sleepTimer
+    /// Main playback resumed a little earlier after a long pause (plan 10.1; review R6-02): the rewind's seek.
+    case resumeRewind
 }
 
 /// The persisted playback state of one edition. `last` and `furthest` are separate (plan 10.1); listening time
@@ -30,6 +41,9 @@ public struct PlaybackCheckpoint: Codable, Equatable, Sendable {
     public var furthestGlobalMs: Int64
     public var listenedMs: Int64
     public var reason: CheckpointReason
+    /// Wall-clock time of the write, in milliseconds since 1970, so a relaunch knows since when the book has been
+    /// paused (rewind after a long pause, plan 10.1). Nil in a checkpoint written before the field existed.
+    public var savedAtUnixMs: Int64? = nil
 }
 
 @MainActor

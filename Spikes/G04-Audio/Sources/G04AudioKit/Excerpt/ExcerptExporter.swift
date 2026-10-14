@@ -45,8 +45,9 @@ public protocol ExcerptExporting: Sendable {
     func export(_ segments: [SourceSegment], to url: URL) async throws -> ExportedExcerpt
 }
 
-/// Decodes each source range with AVAssetReader (sample-accurate trim by presentation timestamp), concatenates the
-/// ranges in order, and encodes AAC-LC 64 kb/s mono 44.1 kHz into an .m4a through AVAudioFile (ExtAudioFile).
+/// Decodes each source range with AVAssetReader (sample-accurate trim by presentation timestamp; a stereo source is
+/// averaged to mono, `PCMDecoder`), concatenates the ranges in order, and encodes AAC-LC 64 kb/s mono 44.1 kHz into an
+/// .m4a through AVAudioFile (ExtAudioFile).
 /// The file is written under a temporary name, given its protection class, synced and renamed, so a crash never
 /// leaves a half excerpt that looks complete. Memory is bounded by the 120-second excerpt limit (about 21 MB of
 /// Float32 at most).

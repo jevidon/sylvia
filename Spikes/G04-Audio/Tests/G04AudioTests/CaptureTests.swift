@@ -355,7 +355,9 @@ struct CaptureTests {
         // A proposed key has no phrase of its own: the harness shows the key.
         #expect(SpikePhrases.phrase(ProposedVocabularyKey.audioNothingToCapture) == "[audio.nothing_to_capture]")
         #expect(SpikePhrases.phrase(ProposedVocabularyKey.audioMomentNotSaved) == "[audio.moment_not_saved]")
-        #expect(Set(ProposedVocabularyKey.allCases.map(\.rawValue)) == ["audio.nothing_to_capture", "audio.moment_not_saved"])
+        #expect(SpikePhrases.phrase(ProposedVocabularyKey.audioEditionIncomplete) == "[audio.edition_incomplete]")
+        #expect(Set(ProposedVocabularyKey.allCases.map(\.rawValue)) == ["audio.nothing_to_capture", "audio.moment_not_saved",
+                                                                       "audio.edition_incomplete"])
         let states: [ExcerptState] = [.notRequested, .pending, .failed(reason: "x", attempts: 1)]
         let base = CaptureRecord(id: UUID(), idempotencyKey: "", kind: .audio, editionID: UUID(), timelineRevision: 1, point: nil,
                                  ranges: [], note: nil, excerpt: .pending, createdAtMs: 0, updatedAtMs: 0, origin: "t")

@@ -45,13 +45,19 @@ struct QuickCaptureTests {
         let edition: TestEdition
     }
 
-    func rig(load: Bool = true, exporter: any ExcerptExporting = ScriptedExporter(), clock: ManualClock = ManualClock()) async throws -> Rig {
+    func rig(load: Bool = true, played: Bool = true, exporter: any ExcerptExporting = ScriptedExporter(), clock: ManualClock = ManualClock()) async throws -> Rig {
         let edition = try TestEdition()
         let engine = FakeEngine(durations: edition.engineDurations)
         let playback = PlaybackService(engine: engine, previewPlayer: FakePreview(), session: SpySession(), positions: InMemoryPositionStore(), clock: ManualClock(), fileExists: { _ in true })
         if load {
             await playback.load(timeline: edition.timeline, resolveFile: edition.resolver)
             await playback.seek(toGlobalMs: 75_000)
+            if played {
+                // The listener heard the book in this process (play, then pause at the same place), as a quick-capture
+                // surface requires (review R6-01).
+                playback.play()
+                playback.pause()
+            }
         }
         let store = OrderedStore(try temporaryStore())
         let captures = CaptureService(store: store, exporter: exporter, resolveSource: edition.resolver)
@@ -63,7 +69,7 @@ struct QuickCaptureTests {
     func install(_ rig: Rig) {
         let store = rig.store
         QuickCaptureBridge.handler = { origin in
-            let outcome = rig.coordinator.captureNow(origin: origin)
+            let outcome = rig.coordinator.captureNow(origin: origin, entry: .surface)
             let reply = HarnessModel.reply(outcome)
             store.note("reply:\(reply.acknowledged)")
             return reply
@@ -103,7 +109,7 @@ struct QuickCaptureTests {
 
     @Test func intentReplyUsesTheVocabularyPhrase() async throws {
         let r = try await rig()
-        let outcome = r.coordinator.captureNow(origin: "test")
+        let outcome = r.coordinator.captureNow(origin: "test", entry: .surface)
         let reply = HarnessModel.reply(outcome)
         #expect(reply == QuickCaptureReply(acknowledged: true, message: "Moment saved · preserving audio"))
     }
@@ -143,6 +149,68 @@ struct QuickCaptureTests {
         #expect(records.count == 2)
         #expect(Set(records.map(\.origin)) == ["intent.control@\(process)", "intent@\(process)"])
         for record in records { await r.coordinator.waitForExport(record.id) }
+    }
+
+    /// Review R6-01: a process the system launches to perform the intent (the harness force-quit, device checklist
+    /// step 12) restores the book paused while the intent arrives. Whichever comes first, the answer is the same:
+    /// nothing to capture, nothing written, no acknowledgement, because the book has not played in this process. The
+    /// in-player button still captures at the position the player shows, and once the book has played here the intent
+    /// captures, also after a pause.
+    @Test func aColdLaunchHasNothingToCaptureWhicheverWayTheStartupRaceGoes() async throws {
+        let edition = try TestEdition()
+        let clock = ManualClock()
+        let engine = FakeEngine(durations: edition.engineDurations)
+        let positions = InMemoryPositionStore()
+        // The checkpoint an earlier process left: the book at 75 s (member 2 at 15 s).
+        let point = AudioPoint(assetID: edition.ids[1], ms: 15_000)
+        try positions.save(PlaybackCheckpoint(editionID: edition.timeline.editionID, timelineRevision: 1, last: point, lastGlobalMs: 75_000,
+                                              furthest: point, furthestGlobalMs: 75_000, listenedMs: 75_000, reason: .pause))
+        let playback = PlaybackService(engine: engine, previewPlayer: FakePreview(), session: SpySession(), positions: positions,
+                                       clock: clock, fileExists: { _ in true })
+        let store = OrderedStore(try temporaryStore())
+        let captures = CaptureService(store: store, exporter: ScriptedExporter(), resolveSource: edition.resolver)
+        let coordinator = QuickCaptureCoordinator(playback: playback, captures: captures, clock: clock)
+        QuickCaptureBridge.handler = { origin in HarnessModel.reply(coordinator.captureNow(origin: origin, entry: .surface)) }
+        defer { QuickCaptureBridge.handler = nil }
+        func intentIsRefusedWithNothingToCapture(_ when: String) async {
+            do {
+                _ = try await CaptureMomentIntent(surface: .control).perform()
+                Issue.record("the intent was acknowledged \(when)")
+            } catch let e as QuickCaptureIntentError {
+                guard case let .notSaved(message) = e else { Issue.record("wrong error \(e) \(when)"); return }
+                #expect(message == "[audio.nothing_to_capture]", "\(when)")
+            } catch {
+                Issue.record("unexpected error \(error) \(when)")
+            }
+        }
+        // 1. The intent arrives before the restore has started.
+        await intentIsRefusedWithNothingToCapture("before the restore")
+        // 2. While the restore opens the member.
+        engine.holdsOpening = true
+        let loading = Task { await playback.load(timeline: edition.timeline, resolveFile: edition.resolver) }
+        for _ in 0..<10_000 where !engine.isOpening { await Task.yield() }
+        #expect(playback.isPreparing)
+        await intentIsRefusedWithNothingToCapture("while the restore opens the member")
+        // 3. After the restore: loaded at its checkpoint, paused, not played in this process.
+        engine.finishOpening(.ready)
+        await loading.value
+        #expect(playback.status == .paused && playback.currentGlobalMs == 75_000 && !playback.hasPlayedSinceLoad)
+        await intentIsRefusedWithNothingToCapture("after the restore")
+        #expect(try store.inner.all().isEmpty)
+        // The in-player button captures at the position the player shows (device checklist step 15.3).
+        let tap = coordinator.captureNow(origin: "player", entry: .player, idempotencyKey: QuickCaptureCoordinator.requestKey(origin: "player"))
+        guard case let .saved(tapped) = tap else { Issue.record("the in-player capture was not saved: \(tap)"); return }
+        #expect(tapped.ranges.first == AudioRange(assetID: edition.ids[0], startMs: 45_000, endMs: 60_000))
+        // Once the listener has played the book here, the intent captures, also after a pause.
+        playback.play()
+        engine.run(4, clock: clock)
+        playback.pause()
+        #expect(playback.hasPlayedSinceLoad)
+        _ = try await CaptureMomentIntent(surface: .control).perform()
+        let records = try store.inner.all()
+        #expect(records.count == 2)
+        #expect(records.contains { $0.origin.hasPrefix("intent.control@") })
+        for record in records { await coordinator.waitForExport(record.id) }
     }
 
     @Test func intentFailsWhenNothingIsLoaded() async throws {
@@ -185,7 +253,7 @@ struct QuickCaptureTests {
         let clock = ManualClock()
         let r = try await rig(clock: clock)
         func capture(_ origin: String) throws -> CaptureRecord {
-            guard case let .saved(record) = r.coordinator.captureNow(origin: origin) else {
+            guard case let .saved(record) = r.coordinator.captureNow(origin: origin, entry: .surface) else {
                 throw ExportError.emptyOutput
             }
             return record
@@ -215,7 +283,7 @@ struct QuickCaptureTests {
         let clock = ManualClock()
         let r = try await rig(clock: clock)
         func tap(_ key: String) throws -> CaptureRecord {
-            guard case let .saved(record) = r.coordinator.captureNow(origin: "player", idempotencyKey: key) else {
+            guard case let .saved(record) = r.coordinator.captureNow(origin: "player", entry: .player, idempotencyKey: key) else {
                 throw ExportError.emptyOutput
             }
             return record
@@ -264,7 +332,7 @@ struct QuickCaptureTests {
         #expect(!nowPlaying.isEnabled("bookmark"))
         let store = r.store
         nowPlaying.enableBookmarkCapture {
-            let reply = HarnessModel.reply(r.coordinator.captureNow(origin: "remote-bookmark-command"))
+            let reply = HarnessModel.reply(r.coordinator.captureNow(origin: "remote-bookmark-command", entry: .surface))
             store.note("reply:\(reply.acknowledged)")
             return reply.acknowledged
         }
@@ -291,7 +359,7 @@ struct QuickCaptureTests {
         let nowPlaying = NowPlayingController(service: r.playback)
         defer { nowPlaying.unregister() }
         nowPlaying.register()
-        nowPlaying.enableBookmarkCapture { HarnessModel.reply(r.coordinator.captureNow(origin: "remote-bookmark-command")).acknowledged }
+        nowPlaying.enableBookmarkCapture { HarnessModel.reply(r.coordinator.captureNow(origin: "remote-bookmark-command", entry: .surface)).acknowledged }
         r.store.failWrites = true
         #expect(nowPlaying.performBookmark() == .commandFailed)
         #expect(try r.store.inner.all().isEmpty)

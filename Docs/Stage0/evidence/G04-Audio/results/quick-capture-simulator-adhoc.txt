@@ -1,5 +1,5 @@
-# Quick capture through the system on the simulator (unlocked): Sylvia-M0-g04-audio (0230F6A4-8CBB-41E2-A9AD-C4E8284A1EEB) (Booted) 
-# Started 2026-10-13T05:52:39Z. Harness signing: adhoc. The harness's capture log line names the process that performed CaptureMomentIntent.
+# Quick capture through the system on the simulator (unlocked): Sylvia-M0-minors-g04-audio (E8630656-D6CD-4CD8-9EE6-1005724B0746) (Booted) 
+# Started 2026-10-13T23:59:54Z. Harness signing: adhoc. The harness's capture log line names the process that performed CaptureMomentIntent.
 ## Harness code signature (as installed)
   Signature=adhoc
   TeamIdentifier=not set
@@ -10,72 +10,150 @@
 ## 1. URL scheme: openurl shortcuts://run-shortcut?name=Capture%20moment (exit 0)
 capture lines after the URL: 0
 log:
-  2026-10-13 18:52:45.951 Df CoreSimulatorBridge[53446:1e248ca] Opening URL (shortcuts://run-shortcut?name=Capture%20moment) with com.apple.shortcuts
+  2026-10-14 13:00:00.418 Df CoreSimulatorBridge[81105:21299bc] Opening URL (shortcuts://run-shortcut?name=Capture%20moment) with com.apple.shortcuts
 ## 2. UI test: open the Shortcuts app and tap the App Shortcut tile 'Capture moment' while the harness plays
 xcodebuild exit 0
-  g04-quick-capture-ui harness_captures_before=0
+  g04-quick-capture-ui harness_captures_before=0 newest=none
+  g04-quick-capture-ui tapped=Capture moment at=2026-10-14T00:00:27.408Z
   g04-quick-capture-ui shortcuts_texts_after_tap=["Unable to run App Shortcut", "All Shortcuts", "Files", "G04 Audio", "Scan Document", "Capture moment"]
   g04-quick-capture-ui shortcuts_alert=["Vertical scroll bar, 2 pages", "Horizontal scroll bar, 1 page", "Vertical scroll bar, 1 page", "Horizontal scroll bar, 1 page", "Unable to run App Shortcut", "OK"]
-  g04-quick-capture-ui harness_captures_after=0 origins=[]
-  Test Case '-[G04QuickCaptureUITests.QuickCaptureThroughShortcutsUITests testAppShortcutTileInShortcutsRunsTheCaptureIntent]' passed (25.640 seconds).
+  g04-quick-capture-ui harness_captures_after=0 newest=none
+  Test Case '-[G04QuickCaptureUITests.QuickCaptureThroughShortcutsUITests testAppShortcutTileInShortcutsRunsTheCaptureIntent]' passed (27.577 seconds).
 linkd, Shortcuts and harness log about the App Shortcut:
-  2026-10-13 18:53:00.269 Shortcuts: Reloading App Shortcuts with reason: Initial reload
-  2026-10-13 18:53:00.269 Shortcuts: appintents:fetch all app shortcuts
-  2026-10-13 18:53:00.778 Shortcuts: appintents:fetch all app shortcuts
-  2026-10-13 18:53:01.709 Shortcuts: appintents:fetch all app shortcuts
-  2026-10-13 18:53:10.469 linkd: [FBSSystemService][0xe37] Sending request to open "com.jevidon.sylvia.spike.g04audio" with action(s): <UILinkConnectionAction: 0xd34e000b>
-  2026-10-13 18:53:10.472 G04AudioHarness: [(FBSceneManager):sceneID:com.jevidon.sylvia.spike.g04audio-default] Received action(s) in scene-update: <UILinkConnectionAction: 0xd34e000b>
-  2026-10-13 18:53:10.477 linkd: Failed to generate bundleIdentity: -Not a platform binary, checking teamId... -Unable to get teamId from com.jevidon.sylvia.spike.g04audio PID [14235]
-  2026-10-13 18:53:10.477 linkd: Rejecting invalid client due to requiresValidBundle: <NSXPCConnection: 0x1048b9d60> connection from pid 14235 on mach service named com.apple.linkd.autoShortcut
-  2026-10-13 18:53:10.478 G04AudioHarness: Attempted to fetch Auto Shortcuts, but couldn't find the AppShortcutsProvider
-  2026-10-13 18:53:10.478 linkd: Operation `<LNFetchActionForAutoShortcutPhraseOperation: 0x1048461c0, identifier: 62F5A2D5-16A5-40F7-BBCA-09E1E1CEB6D8>` error Error Domain=LNActionForAutoShortcutPhraseFetchError Code=1 "Couldn't find AppShortcutsProvider." UserInfo={NSLocalizedDescription=Couldn't find AppShortcutsProvider.}
-  2026-10-13 18:53:10.478 linkd: Registry error: Error Domain=LNActionForAutoShortcutPhraseFetchError Code=1 "Couldn't find AppShortcutsProvider." UserInfo={NSLocalizedDescription=Couldn't find AppShortcutsProvider.}
-  2026-10-13 18:53:10.478 Shortcuts: Unable to run App Shortcut: Error Domain=LNActionForAutoShortcutPhraseFetchError Code=1 "Couldn't find AppShortcutsProvider." UserInfo={NSLocalizedDescription=Couldn't find AppShortcutsProvider.}
+  2026-10-14 13:00:16.807 Shortcuts: Reloading App Shortcuts with reason: Initial reload
+  2026-10-14 13:00:16.807 Shortcuts: appintents:fetch all app shortcuts
+  2026-10-14 13:00:17.249 Shortcuts: appintents:fetch all app shortcuts
+  2026-10-14 13:00:17.787 Shortcuts: appintents:fetch all app shortcuts
+  2026-10-14 13:00:26.949 linkd: [FBSSystemService][0x8928] Sending request to open "com.jevidon.sylvia.spike.g04audio" with action(s): <UILinkConnectionAction: 0x13d170000>
+  2026-10-14 13:00:26.954 G04AudioHarness: [(FBSceneManager):sceneID:com.jevidon.sylvia.spike.g04audio-default] Received action(s) in scene-update: <UILinkConnectionAction: 0x13d170000>
+  2026-10-14 13:00:26.960 linkd: Failed to generate bundleIdentity: -Not a platform binary, checking teamId... -Unable to get teamId from com.jevidon.sylvia.spike.g04audio PID [10130]
+  2026-10-14 13:00:26.960 linkd: Rejecting invalid client due to requiresValidBundle: <NSXPCConnection: 0x1020ba120> connection from pid 10130 on mach service named com.apple.linkd.autoShortcut
+  2026-10-14 13:00:26.960 G04AudioHarness: Attempted to fetch Auto Shortcuts, but couldn't find the AppShortcutsProvider
+  2026-10-14 13:00:26.961 linkd: Operation `<LNFetchActionForAutoShortcutPhraseOperation: 0x10232a0a0, identifier: B9B0DF1B-8AF4-4637-B865-738B398910BF>` error Error Domain=LNActionForAutoShortcutPhraseFetchError Code=1 "Couldn't find AppShortcutsProvider." UserInfo={NSLocalizedDescription=Couldn't find AppShortcutsProvider.}
+  2026-10-14 13:00:26.961 linkd: Registry error: Error Domain=LNActionForAutoShortcutPhraseFetchError Code=1 "Couldn't find AppShortcutsProvider." UserInfo={NSLocalizedDescription=Couldn't find AppShortcutsProvider.}
+  2026-10-14 13:00:26.962 Shortcuts: Unable to run App Shortcut: Error Domain=LNActionForAutoShortcutPhraseFetchError Code=1 "Couldn't find AppShortcutsProvider." UserInfo={NSLocalizedDescription=Couldn't find AppShortcutsProvider.}
 harness log lines during the UI test:
-  2026-10-13T05:52:57.354Z launch process=com.jevidon.sylvia.spike.g04audio state=1 protectedDataAvailable=true
-  2026-10-13T05:52:57.354Z output volume=0.01 preview_volume=0.01 reason=toggle_or_launch_argument
-  2026-10-13T05:52:57.648Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=39000 furthest_ms=39000
-  2026-10-13T05:52:57.648Z member index=0 duration_ms=137535 timing=estimatedCBR
-  2026-10-13T05:52:57.648Z member index=1 duration_ms=162299 timing=estimatedCBR
-  2026-10-13T05:52:57.648Z member index=2 duration_ms=150047 timing=estimatedCBR
-  2026-10-13T05:52:57.648Z member index=3 duration_ms=120137 timing=estimatedCBR
-  2026-10-13T05:52:57.657Z autoplay status=playing position_ms=39000
+  2026-10-14T00:00:12.861Z launch process=com.jevidon.sylvia.spike.g04audio state=1 protectedDataAvailable=true
+  2026-10-14T00:00:12.862Z output volume=0.01 preview_volume=0.01 reason=toggle_or_launch_argument
+  2026-10-14T00:00:13.129Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=39000 furthest_ms=39000
+  2026-10-14T00:00:13.129Z member index=0 duration_ms=137535 timing=estimatedCBR
+  2026-10-14T00:00:13.129Z member index=1 duration_ms=162299 timing=estimatedCBR
+  2026-10-14T00:00:13.129Z member index=2 duration_ms=150047 timing=estimatedCBR
+  2026-10-14T00:00:13.129Z member index=3 duration_ms=120137 timing=estimatedCBR
+  2026-10-14T00:00:13.139Z autoplay status=playing position_ms=39000
 capture lines: 0
 result: the system did not perform the intent; no capture was made
 requirement: none for this build (recorded result)
+capture records: 0 before, 0 after; 0 saved capture(s) in the harness log (consistent)
 ## 3. UI test: add the control 'Capture the last 30 seconds' to Control Center and press it while the harness plays
 xcodebuild exit 0
-  g04-quick-capture-control-ui harness_captures_before=0
-  g04-quick-capture-control-ui removed_earlier_copies=1
+  g04-quick-capture-control-ui harness_captures_before=0 newest=none
+  g04-quick-capture-control-ui removed_earlier_copies=0
   <unknown>:0: warning: -[G04QuickCaptureUITests.QuickCaptureThroughControlCenterUITests testControlInControlCenterRunsTheCaptureIntent] : Programming error: a caseDisplayRepresentations entry for AppEnum case "to-0.0" was not found. This case will be ignored.
-  g04-quick-capture-control-ui pressed=com.jevidon.sylvia.spike.g04audio.capture at=2026-10-13T05:53:55Z
-  g04-quick-capture-control-ui harness_captures_after=1 origins=["intent@com.jevidon.sylvia.spike.g04audio"]
-  Test Case '-[G04QuickCaptureUITests.QuickCaptureThroughControlCenterUITests testControlInControlCenterRunsTheCaptureIntent]' passed (39.073 seconds).
+  g04-quick-capture-control-ui pressed=com.jevidon.sylvia.spike.g04audio.capture at=2026-10-14T00:01:10.452Z
+  g04-quick-capture-control-ui harness_captures_after=1 newest=intent@com.jevidon.sylvia.spike.g04audio
+  Test Case '-[G04QuickCaptureUITests.QuickCaptureThroughControlCenterUITests testControlInControlCenterRunsTheCaptureIntent]' passed (37.488 seconds).
 chronod (performs the control's action) and the App Intents runtime in the harness:
-  2026-10-13 18:53:26.698 G04CaptureControl: Error getting intentMetadata from CaptureMomentIntent: AppIntents.AppManager.Error.unableToExtractStaticMetadata, treating hasShowOutputAction as false
-  2026-10-13 18:53:26.701 G04CaptureControl: Failed to fetch metadata for CaptureMomentIntent
-  2026-10-13 18:53:54.988 chronod: [<extensionIdentity: com.jevidon.sylvia.spike.g04audio::com.jevidon.sylvia.spike.g04audio.capturecontrol; kind: com.jevidon.sylvia.spike.g04audio.capture>]: Performing control action with the intent
-  2026-10-13 18:53:54.990 chronod: Starting to run action: <LNAction: 0x10a083f60, identifier: CaptureMomentIntent, mangledTypeName: 15G04AudioHarness19CaptureMomentIntentV, openAppWhenRun: NO, outputFlags: 4, outputType: (null), systemProtocols: <LNSystemProtocol: 0x10b22de20, typeName: AudioStartingAction>, parameters: ( "<LNParameter: 0x10b22da20, identifier: surface, value: (Enumeration) <redacted>>" ), url: (null), explicitAuthenticationPolicy: 0
-  2026-10-13 18:53:54.992 chronod: [FBSSystemService][0xc5d9] Sending request to open "com.jevidon.sylvia.spike.g04audio" with action(s): <UILinkConnectionAction: 0xd14b0013>
-  2026-10-13 18:53:55.078 G04AudioHarness: Programming error: a caseDisplayRepresentations entry for AppEnum case "to-0.0" was not found. This case will be ignored.
-  2026-10-13 18:53:55.079 G04AudioHarness: Prepared surface to CaptureSurface(nil))
-  2026-10-13 18:53:55.086 G04AudioHarness: [PerformAction <<N:FBA8F54650F7>>] Invoking CaptureMomentIntent.perform()
-  2026-10-13 18:53:55.134 G04CaptureControl: Failed to fetch metadata for CaptureMomentIntent
+  2026-10-14 13:00:57.127 G04CaptureControl: Error getting intentMetadata from CaptureMomentIntent: AppIntents.AppManager.Error.unableToExtractStaticMetadata, treating hasShowOutputAction as false
+  2026-10-14 13:00:57.130 G04CaptureControl: Failed to fetch metadata for CaptureMomentIntent
+  2026-10-14 13:00:59.081 G04CaptureControl: Failed to fetch metadata for CaptureMomentIntent
+  2026-10-14 13:01:09.490 chronod: [<extensionIdentity: com.jevidon.sylvia.spike.g04audio::com.jevidon.sylvia.spike.g04audio.capturecontrol; kind: com.jevidon.sylvia.spike.g04audio.capture>]: Performing control action with the intent
+  2026-10-14 13:01:09.493 chronod: Starting to run action: <LNAction: 0x107364840, identifier: CaptureMomentIntent, mangledTypeName: 15G04AudioHarness19CaptureMomentIntentV, openAppWhenRun: NO, outputFlags: 4, outputType: (null), systemProtocols: <LNSystemProtocol: 0x107086580, typeName: AudioStartingAction>, parameters: ( "<LNParameter: 0x107087de0, identifier: surface, value: (Enumeration) <redacted>>" ), url: (null), explicitAuthenticationPolicy: 0
+  2026-10-14 13:01:09.497 chronod: [FBSSystemService][0x76c] Sending request to open "com.jevidon.sylvia.spike.g04audio" with action(s): <UILinkConnectionAction: 0x13cf30006>
+  2026-10-14 13:01:09.572 G04AudioHarness: Programming error: a caseDisplayRepresentations entry for AppEnum case "to-0.0" was not found. This case will be ignored.
+  2026-10-14 13:01:09.574 G04AudioHarness: Prepared surface to CaptureSurface(nil))
+  2026-10-14 13:01:09.579 G04AudioHarness: [PerformAction <<N:9286F21616E9>>] Invoking CaptureMomentIntent.perform()
+  2026-10-14 13:01:09.624 G04CaptureControl: Failed to fetch metadata for CaptureMomentIntent
 harness log lines during the UI test:
-  2026-10-13T05:53:27.154Z launch process=com.jevidon.sylvia.spike.g04audio state=1 protectedDataAvailable=true
-  2026-10-13T05:53:27.154Z output volume=0.01 preview_volume=0.01 reason=toggle_or_launch_argument
-  2026-10-13T05:53:27.417Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=60728 furthest_ms=60728
-  2026-10-13T05:53:27.417Z member index=0 duration_ms=137535 timing=estimatedCBR
-  2026-10-13T05:53:27.417Z member index=1 duration_ms=162299 timing=estimatedCBR
-  2026-10-13T05:53:27.417Z member index=2 duration_ms=150047 timing=estimatedCBR
-  2026-10-13T05:53:27.417Z member index=3 duration_ms=120137 timing=estimatedCBR
-  2026-10-13T05:53:27.428Z autoplay status=playing position_ms=60728
-  2026-10-13T05:53:55.126Z capture origin=intent@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 protectedDataAvailable=true was_playing=true result=saved id=5601B297-EEA5-48BD-9CE2-F256A393804E ranges=58344-88344 record_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
-  2026-10-13T05:53:55.214Z export id=5601B297-EEA5-48BD-9CE2-F256A393804E status=Audio excerpt saved excerpt_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+  2026-10-14T00:00:46.130Z launch process=com.jevidon.sylvia.spike.g04audio state=1 protectedDataAvailable=true
+  2026-10-14T00:00:46.130Z output volume=0.01 preview_volume=0.01 reason=toggle_or_launch_argument
+  2026-10-14T00:00:46.390Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=61616 furthest_ms=61616
+  2026-10-14T00:00:46.390Z member index=0 duration_ms=137535 timing=estimatedCBR
+  2026-10-14T00:00:46.390Z member index=1 duration_ms=162299 timing=estimatedCBR
+  2026-10-14T00:00:46.390Z member index=2 duration_ms=150047 timing=estimatedCBR
+  2026-10-14T00:00:46.390Z member index=3 duration_ms=120137 timing=estimatedCBR
+  2026-10-14T00:00:46.400Z autoplay status=playing position_ms=61616
+  2026-10-14T00:01:09.584Z capture origin=intent@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 protectedDataAvailable=true was_playing=true result=saved id=D959EFA2-B4DE-4A32-A98F-1E722062CB05 ranges=54720-84720 record_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+  2026-10-14T00:01:09.666Z export id=D959EFA2-B4DE-4A32-A98F-1E722062CB05 status=Audio excerpt saved excerpt_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
 capture lines: 1
   origin=intent@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 was_playing=true result=saved record_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
-  export id=5601B297-EEA5-48BD-9CE2-F256A393804E status=Audio excerpt saved excerpt_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+  export id=D959EFA2-B4DE-4A32-A98F-1E722062CB05 status=Audio excerpt saved excerpt_protection=NSURLFileProtectionCompleteUntilFirstUserAuthentication
 requirement: met (process=com.jevidon.sylvia.spike.g04audio, result=saved, Audio excerpt saved)
-screenshots: quick-capture-simulator-adhoc-harness-after-tap.png quick-capture-simulator-adhoc-shortcuts-after-tap.png quick-capture-simulator-adhoc-shortcuts-library.png quick-capture-simulator-adhoc-harness-after-control.png quick-capture-simulator-adhoc-control-center-after-press.png quick-capture-simulator-adhoc-control-gallery.png
-harness output: 3 launches, 3 output lines, expected volume=0.01 preview_volume=0.01
+capture records: 0 before, 1 after; 1 saved capture(s) in the harness log (consistent)
+## 4. UI test: press the control while the harness is not running (review R6-01; device checklist step 12)
+xcodebuild exit 0
+  g04-quick-capture-control-ui cold_captures_before=1 newest=intent@com.jevidon.sylvia.spike.g04audio
+  g04-quick-capture-control-ui cold_pressed=com.jevidon.sylvia.spike.g04audio.capture at=2026-10-14T00:01:40.149Z
+  g04-quick-capture-control-ui harness_state_after_cold_press=runningBackground
+  g04-quick-capture-control-ui cold_captures_after=1 newest=intent@com.jevidon.sylvia.spike.g04audio
+  Test Case '-[G04QuickCaptureUITests.QuickCaptureThroughControlCenterUITests testControlPressedWhileTheHarnessIsNotRunningCapturesNothing]' passed (29.423 seconds).
+chronod and the App Intents runtime in the harness:
+  2026-10-14 13:01:25.401 G04CaptureControl: Error getting intentMetadata from CaptureMomentIntent: AppIntents.AppManager.Error.unableToExtractStaticMetadata, treating hasShowOutputAction as false
+  2026-10-14 13:01:25.403 G04CaptureControl: Failed to fetch metadata for CaptureMomentIntent
+  2026-10-14 13:01:39.183 chronod: [<extensionIdentity: com.jevidon.sylvia.spike.g04audio::com.jevidon.sylvia.spike.g04audio.capturecontrol; kind: com.jevidon.sylvia.spike.g04audio.capture>]: Performing control action with the intent
+  2026-10-14 13:01:39.184 chronod: Starting to run action: <LNAction: 0x107364420, identifier: CaptureMomentIntent, mangledTypeName: 15G04AudioHarness19CaptureMomentIntentV, openAppWhenRun: NO, outputFlags: 4, outputType: (null), systemProtocols: <LNSystemProtocol: 0x1073b14a0, typeName: AudioStartingAction>, parameters: ( "<LNParameter: 0x1073b0960, identifier: surface, value: (Enumeration) <redacted>>" ), url: (null), explicitAuthenticationPolicy: 0
+  2026-10-14 13:01:39.186 chronod: [FBSSystemService][0x4b32] Sending request to open "com.jevidon.sylvia.spike.g04audio" with action(s): <UILinkConnectionAction: 0x13cf30007>
+  2026-10-14 13:01:39.865 G04AudioHarness: Programming error: a caseDisplayRepresentations entry for AppEnum case "to-0.0" was not found. This case will be ignored.
+  2026-10-14 13:01:39.866 G04AudioHarness: Prepared surface to CaptureSurface(nil))
+  2026-10-14 13:01:39.873 G04AudioHarness: [PerformAction <<N:B7C6D2EAD39C>>] Invoking CaptureMomentIntent.perform()
+  2026-10-14 13:01:39.908 G04CaptureControl: Failed to fetch metadata for CaptureMomentIntent
+harness log lines during the UI test:
+  2026-10-14T00:01:27.852Z launch process=com.jevidon.sylvia.spike.g04audio state=1 protectedDataAvailable=true
+  2026-10-14T00:01:27.853Z output volume=0.01 preview_volume=0.01 reason=toggle_or_launch_argument
+  2026-10-14T00:01:28.119Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=92230 furthest_ms=92230
+  2026-10-14T00:01:28.120Z member index=0 duration_ms=137535 timing=estimatedCBR
+  2026-10-14T00:01:28.120Z member index=1 duration_ms=162299 timing=estimatedCBR
+  2026-10-14T00:01:28.120Z member index=2 duration_ms=150047 timing=estimatedCBR
+  2026-10-14T00:01:28.120Z member index=3 duration_ms=120137 timing=estimatedCBR
+  2026-10-14T00:01:39.686Z launch process=com.jevidon.sylvia.spike.g04audio state=2 protectedDataAvailable=true
+  2026-10-14T00:01:39.686Z output volume=0.01 preview_volume=0.01 reason=default
+  2026-10-14T00:01:39.873Z capture origin=intent@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 protectedDataAvailable=true was_playing=false result=nothing_to_capture loaded=true played_since_load=false
+  2026-10-14T00:01:39.876Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=92230 furthest_ms=92230
+  2026-10-14T00:01:39.876Z member index=0 duration_ms=137535 timing=estimatedCBR
+  2026-10-14T00:01:39.876Z member index=1 duration_ms=162299 timing=estimatedCBR
+  2026-10-14T00:01:39.876Z member index=2 duration_ms=150047 timing=estimatedCBR
+  2026-10-14T00:01:39.876Z member index=3 duration_ms=120137 timing=estimatedCBR
+  2026-10-14T00:01:50.553Z launch process=com.jevidon.sylvia.spike.g04audio state=1 protectedDataAvailable=true
+  2026-10-14T00:01:50.553Z output volume=0.01 preview_volume=0.01 reason=toggle_or_launch_argument
+  2026-10-14T00:01:50.814Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=92230 furthest_ms=92230
+  2026-10-14T00:01:50.814Z member index=0 duration_ms=137535 timing=estimatedCBR
+  2026-10-14T00:01:50.814Z member index=1 duration_ms=162299 timing=estimatedCBR
+  2026-10-14T00:01:50.814Z member index=2 duration_ms=150047 timing=estimatedCBR
+  2026-10-14T00:01:50.814Z member index=3 duration_ms=120137 timing=estimatedCBR
+capture lines: 1 (1 with result=nothing_to_capture)
+  origin=intent@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 was_playing=false result=nothing_to_capture loaded=true played_since_load=false
+requirement: met (result=nothing_to_capture, nothing saved)
+capture records: 1 before, 1 after; 0 saved capture(s) in the harness log (consistent)
+## 5. UI test: press the control while the harness runs its restored book, not played since launch (review R6-01)
+xcodebuild exit 0
+  g04-quick-capture-control-ui restored_captures_before=1 newest=intent@com.jevidon.sylvia.spike.g04audio
+  <unknown>:0: warning: -[G04QuickCaptureUITests.QuickCaptureThroughControlCenterUITests testControlPressedWhileTheRestoredBookHasNotPlayedCapturesNothing] : Programming error: a caseDisplayRepresentations entry for AppEnum case "to-0.0" was not found. This case will be ignored.
+  g04-quick-capture-control-ui restored_pressed=com.jevidon.sylvia.spike.g04audio.capture at=2026-10-14T00:02:09.434Z
+  g04-quick-capture-control-ui restored_captures_after=1 newest=intent@com.jevidon.sylvia.spike.g04audio
+  Test Case '-[G04QuickCaptureUITests.QuickCaptureThroughControlCenterUITests testControlPressedWhileTheRestoredBookHasNotPlayedCapturesNothing]' passed (21.632 seconds).
+chronod and the App Intents runtime in the harness:
+  2026-10-14 13:01:58.282 G04CaptureControl: Error getting intentMetadata from CaptureMomentIntent: AppIntents.AppManager.Error.unableToExtractStaticMetadata, treating hasShowOutputAction as false
+  2026-10-14 13:01:58.284 G04CaptureControl: Failed to fetch metadata for CaptureMomentIntent
+  2026-10-14 13:02:08.466 chronod: [<extensionIdentity: com.jevidon.sylvia.spike.g04audio::com.jevidon.sylvia.spike.g04audio.capturecontrol; kind: com.jevidon.sylvia.spike.g04audio.capture>]: Performing control action with the intent
+  2026-10-14 13:02:08.467 chronod: Starting to run action: <LNAction: 0x107365680, identifier: CaptureMomentIntent, mangledTypeName: 15G04AudioHarness19CaptureMomentIntentV, openAppWhenRun: NO, outputFlags: 4, outputType: (null), systemProtocols: <LNSystemProtocol: 0x1071d8a80, typeName: AudioStartingAction>, parameters: ( "<LNParameter: 0x1071d8b60, identifier: surface, value: (Enumeration) <redacted>>" ), url: (null), explicitAuthenticationPolicy: 0
+  2026-10-14 13:02:08.469 chronod: [FBSSystemService][0x7271] Sending request to open "com.jevidon.sylvia.spike.g04audio" with action(s): <UILinkConnectionAction: 0x13cf30008>
+  2026-10-14 13:02:08.544 G04AudioHarness: Programming error: a caseDisplayRepresentations entry for AppEnum case "to-0.0" was not found. This case will be ignored.
+  2026-10-14 13:02:08.546 G04AudioHarness: Prepared surface to CaptureSurface(nil))
+  2026-10-14 13:02:08.552 G04AudioHarness: [PerformAction <<N:DAC798945998>>] Invoking CaptureMomentIntent.perform()
+  2026-10-14 13:02:08.573 G04CaptureControl: Failed to fetch metadata for CaptureMomentIntent
+harness log lines during the UI test:
+  2026-10-14T00:01:58.671Z launch process=com.jevidon.sylvia.spike.g04audio state=1 protectedDataAvailable=true
+  2026-10-14T00:01:58.671Z output volume=0.01 preview_volume=0.01 reason=toggle_or_launch_argument
+  2026-10-14T00:01:58.931Z loaded edition=G04Book (4 files) members=4 duration_ms=570018 position_ms=92230 furthest_ms=92230
+  2026-10-14T00:01:58.931Z member index=0 duration_ms=137535 timing=estimatedCBR
+  2026-10-14T00:01:58.931Z member index=1 duration_ms=162299 timing=estimatedCBR
+  2026-10-14T00:01:58.931Z member index=2 duration_ms=150047 timing=estimatedCBR
+  2026-10-14T00:01:58.931Z member index=3 duration_ms=120137 timing=estimatedCBR
+  2026-10-14T00:02:08.548Z capture origin=intent@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 protectedDataAvailable=true was_playing=false result=nothing_to_capture loaded=true played_since_load=false
+capture lines: 1 (1 with result=nothing_to_capture)
+  origin=intent@com.jevidon.sylvia.spike.g04audio process=com.jevidon.sylvia.spike.g04audio app_state=2 was_playing=false result=nothing_to_capture loaded=true played_since_load=false
+requirement: met (result=nothing_to_capture, nothing saved)
+capture records: 1 before, 1 after; 0 saved capture(s) in the harness log (consistent)
+screenshots: quick-capture-simulator-adhoc-harness-after-tap.png quick-capture-simulator-adhoc-shortcuts-after-tap.png quick-capture-simulator-adhoc-shortcuts-library.png quick-capture-simulator-adhoc-harness-after-control.png quick-capture-simulator-adhoc-control-center-after-press.png quick-capture-simulator-adhoc-control-gallery.png quick-capture-simulator-adhoc-control-center-after-cold-press.png
+harness output: 7 launches, 7 output lines, expected volume=0.01 preview_volume=0.01
 requirements for a adhoc build: all met

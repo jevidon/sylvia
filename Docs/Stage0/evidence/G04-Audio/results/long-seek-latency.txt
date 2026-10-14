@@ -1,4 +1,4 @@
-# Seek-to-audio latency (play() to first tap buffer at the target). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 19.83 34.40 38.74 (1, 5, 15 min), 4 simulators booted on the host when the test run started
+# Seek-to-audio latency (play() to first tap buffer at the target). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 7.40 11.04 10.68 (1, 5, 15 min), 1 simulators booted on the host when the test run started
 # Each probe opens a fresh copy of the file (a new file, so no state AVFoundation keeps per file is reused);
 # whether the copy's data is in the host page cache is not controlled. prepare_s = AVPlayerItem creation to readyToPlay.
 file	precise	prepare_s	point_s	seek_call_s	seek_to_audio_s	start_offset_ms	steady_clock_error_ms
@@ -6,15 +6,15 @@ long-aac-10h.m4b	true	0.0	12345.6	0.0	0.1	0.0	0.0
 long-aac-10h.m4b	true	0.0	29876.5	0.0	0.0	69.7	0.0
 long-aac-10h.m4b	false	0.1	12345.6	0.0	0.1	0.0	0.0
 long-aac-10h.m4b	false	0.1	29876.5	0.0	0.0	69.7	0.0
-long-mp3-cbr-10h.mp3	true	0.0	12345.6	0.0	3.7	-13.1	-13.1
-long-mp3-cbr-10h.mp3	true	0.0	29876.5	0.0	5.4	56.6	-13.1
+long-mp3-cbr-10h.mp3	true	0.0	12345.6	0.0	3.6	-13.1	-13.1
+long-mp3-cbr-10h.mp3	true	0.0	29876.5	0.0	4.8	56.6	-13.1
 long-mp3-cbr-10h.mp3	false	0.0	12345.6	0.0	0.1	-13.1	-13.1
 long-mp3-cbr-10h.mp3	false	0.0	29876.5	0.0	0.0	56.6	-13.1
-long-mp3-vbr-10h.mp3	true	0.0	12345.6	0.0	3.3	-13.1	-13.1
-long-mp3-vbr-10h.mp3	true	0.0	29876.5	0.0	4.6	56.6	-13.1
-long-mp3-vbr-10h.mp3	false	0.0	12345.6	0.0	0.1	-1528.2	-1528.2
-long-mp3-vbr-10h.mp3	false	0.0	29876.5	0.0	0.0	14058.2	13988.6
-precise_mp3_seek_to_audio_s=3.7,5.4,3.3,4.6
+long-mp3-vbr-10h.mp3	true	0.1	12345.6	0.0	3.2	-13.1	-13.1
+long-mp3-vbr-10h.mp3	true	0.1	29876.5	0.0	4.2	56.6	-13.1
+long-mp3-vbr-10h.mp3	false	0.1	12345.6	0.0	0.1	-1528.2	-1528.2
+long-mp3-vbr-10h.mp3	false	0.1	29876.5	0.0	0.0	14058.2	13988.6
+precise_mp3_seek_to_audio_s=3.6,4.8,3.2,4.2
 max_abs_start_offset_ms_estimated_cbr_mp3=56.6
 abs_start_offset_ms_estimated_vbr_mp3=1528.2,14058.2
 abs_start_offset_ms_precise_vbr_mp3=13.1,56.6

@@ -1,0 +1,42 @@
+# Mutation check of review R6-01, re-run in round 6's second fix pass. Host Mac (macOS 26.6.2 (25G83), Apple M5 Max), Xcode 27.0
+# (27A266a), simulator Sylvia-M0-minors-g04-audio (iPhone 17, iOS 26.5), 2026-10-13T22:26:14Z to 2026-10-13T22:26:39Z:
+# commit dc741df (Spikes/ unchanged since e7a87a2) plus one temporary change, reverted at once (the file was then
+# byte-identical to the commit: cmp). Script: a copy of the file, the change, the two runs below, the copy restored.
+# The change switched the rule off in Spikes/G04-Audio/Sources/G04AudioKit/Capture/QuickCaptureCoordinator.swift (diff, line 68):
+#   68c68
+#   <         if entry == .surface, !playback.hasPlayedSinceLoad { return .nothingPlaying }
+#   ---
+#   >         // MUTATION if entry == .surface, !playback.hasPlayedSinceLoad { return .nothingPlaying }
+# Commands: xcodebuild build-for-testing (scheme G04AudioHarness, -disableAutomaticPackageResolution), then
+#   xcodebuild test-without-building -only-testing:G04AudioTests/QuickCaptureTests on that simulator; once with the change,
+#   once after restoring the file.
+# Expected: aColdLaunchHasNothingToCaptureWhicheverWayTheStartupRaceGoes fails where the intent arrives while the restore opens
+# the member and after the restore (the book loaded but not played), the two places where the earlier rule ("nothing loaded")
+# acknowledged a capture; before the restore (nothing loaded) both rules refuse. Line 178 is the intent's acknowledgement
+# (Issue.record "the intent was acknowledged ..."), recorded twice; lines 199 and 211 follow from the two saved captures.
+## With the rule switched off (xcodebuild exit 65): the failure lines and the summary
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+✘ Test aColdLaunchHasNothingToCaptureWhicheverWayTheStartupRaceGoes() recorded an issue at QuickCaptureTests.swift:178:29: Issue recorded
+↳ the intent was acknowledged while the restore opens the member
+✘ Test aColdLaunchHasNothingToCaptureWhicheverWayTheStartupRaceGoes() recorded an issue at QuickCaptureTests.swift:178:29: Issue recorded
+↳ the intent was acknowledged after the restore
+✘ Test aColdLaunchHasNothingToCaptureWhicheverWayTheStartupRaceGoes() recorded an issue at QuickCaptureTests.swift:199:9: Expectation failed: try store.inner.all().isEmpty
+↳ try store.inner.all().isEmpty → <not evaluated>
+✘ Test aColdLaunchHasNothingToCaptureWhicheverWayTheStartupRaceGoes() recorded an issue at QuickCaptureTests.swift:211:9: Expectation failed: records.count == 2
+↳ records.count == 2 → false
+↳   records.count → 3
+✘ Test aColdLaunchHasNothingToCaptureWhicheverWayTheStartupRaceGoes() failed with 4 issues.
+↳ /// Review R6-01: a process the system launches to perform the intent (the harness force-quit, device checklist
+↳ /// step 12) restores the book paused while the intent arrives. Whichever comes first, the answer is the same:
+↳ /// nothing to capture, nothing written, no acknowledgement, because the book has not played in this process. The
+↳ /// in-player button still captures at the position the player shows, and once the book has played here the intent
+↳ /// captures, also after a pause.
+✘ Suite "Quick capture (App Intent and bookmark command; T25)" failed with 4 issues.
+↳ /// Quick-capture prototypes (ADR-0007; T25): the App Intent behind the Control Center / Lock Screen control, the
+↳ /// Action button and App Shortcuts, and the MPRemoteCommandCenter bookmark command. These run in the harness
+↳ /// app's process (the hosted test process). What the system does with them on a locked device is a device item.
+✘ Test run with 14 tests in 1 suite failed with 4 issues.
+## With the file restored (xcodebuild exit 0)
+✔ Suite "Quick capture (App Intent and bookmark command; T25)" passed.
+✔ Test run with 14 tests in 1 suite passed.

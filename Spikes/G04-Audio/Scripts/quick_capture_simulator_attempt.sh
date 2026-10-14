@@ -15,6 +15,10 @@
 #   signed  re-signed with the host's Apple Development identity (team A4KBDX665Z), as on a device. Required: the App
 #           Shortcut run saves origin=intent@<app> process=<app> result=saved, the control's press saves
 #           origin=intent.control@<app> process=<app> result=saved, each followed by "Audio excerpt saved".
+#   both    the control pressed when nothing has been heard (review R6-01): with the harness not running, the system
+#           launches it and the intent answers result=nothing_to_capture; with the harness running its restored book,
+#           not played since launch, the same; no record in either. And in every phase the capture records the UI test
+#           counted change by exactly the number of captures the harness logged as saved (review R6-06).
 #
 # Steps:
 # 1. Installs the harness (the script prints its code signature) with the four-file MP3 book.
@@ -22,15 +26,24 @@
 #    that name, not an App Shortcut, so it is expected to fail; the attempt and its result are recorded.
 # 3. UI test QuickCaptureThroughShortcutsUITests: the harness plays (-g04AutoPlay YES), the test opens the Shortcuts
 #    app and taps the harness's App Shortcut tile "Capture moment", as a person would.
-# 4. UI test QuickCaptureThroughControlCenterUITests: the harness plays, the test opens Control Center, removes any
-#    copy of the control an earlier run left, adds "Capture the last 30 seconds" from the controls gallery, reopens
-#    Control Center and presses the control, as a person would.
-# 5. For each, reports every `capture` and `export` line the harness logged meanwhile (`origin` and `process` name the
+# 4. UI test QuickCaptureThroughControlCenterUITests/testControlInControlCenterRunsTheCaptureIntent: the harness plays,
+#    the test opens Control Center, removes any copy of the control an earlier run left, adds "Capture the last 30
+#    seconds" from the controls gallery, reopens Control Center and presses the control, as a person would.
+# 5. .../testControlPressedWhileTheHarnessIsNotRunningCapturesNothing (review R6-01; device checklist step 12): the
+#    harness is terminated and the placed control pressed. The system launches the harness to perform the intent; its
+#    restored book has not played in that process, so the intent must answer result=nothing_to_capture and write no
+#    record, whether the restore finished before the intent arrived or not.
+# 6. .../testControlPressedWhileTheRestoredBookHasNotPlayedCapturesNothing (review R6-01): the same press with the
+#    harness running its restored book, never played since launch: result=nothing_to_capture, no record.
+# 7. For each, reports every `capture` and `export` line the harness logged meanwhile (`origin` and `process` name the
 #    entry point and the process that performed the intent), what the system logged about running the intent (linkd,
-#    chronod, and the App Intents runtime in the harness), and the UI tests' screenshots (<output>-*.png).
+#    chronod, and the App Intents runtime in the harness), and the UI tests' screenshots (<output>-*.png), and checks that
+#    the number of capture records the UI test read before and after changed by exactly the number of captures the
+#    harness logged as saved (review R6-06: the tests had counted the visible rows of a lazy list).
 # The harness plays at 1 % volume unless SYLVIA_AUDIBLE_PLAYBACK=1 (every launch passes -g04AudiblePlayback NO, which
-# overrides the harness's persisted full-volume toggle; the UI tests do the same); the script fails if the harness log
-# says otherwise. Nothing here says anything about a locked device, the Lock Screen placement or the Action button
+# overrides the harness's persisted full-volume toggle; the UI tests do the same; the harness the system launches in
+# phase 5 gets no argument, logs the quiet default and plays nothing); the script fails if the harness log says
+# otherwise. Nothing here says anything about a locked device, the Lock Screen placement or the Action button
 # (device checklist steps 9-13).
 # Exits non-zero if the harness cannot be installed, a UI test fails (harness not playing, tile or control not found),
 # a required result is missing, or a launch did not log the quiet volume.
@@ -166,6 +179,48 @@ check_phase() {  # <phase name> <first log line> <required origin regex, or "" w
   fi
 }
 
+# Review R6-06: the capture records the UI test counted before and after the press (the harness line
+# `captures=<n> newest=<origin>`) must change by exactly the number of distinct captures the harness logged as saved.
+check_counts() {  # <phase name> <UI test log> <before key> <after key> <first harness log line>
+  local name="$1" log="$2" bkey="$3" akey="$4" from="$5" before after saved
+  before="$(grep -oE "$bkey=[0-9]+" "$log" | tail -1 | cut -d= -f2)"
+  after="$(grep -oE "$akey=[0-9]+" "$log" | tail -1 | cut -d= -f2)"
+  saved="$(since "$from" | grep ' capture ' | grep -oE ' result=saved id=[^ ]+' | sort -u | grep -c . || true)"
+  if [[ -z "$before" || -z "$after" ]]; then
+    problems+=("$name: the UI test printed no capture-record counts")
+    echo "capture records: not printed by the UI test"
+  elif (( after - before != saved )); then
+    problems+=("$name: the UI test read $before then $after capture records, but the harness logged $saved saved capture(s)")
+    echo "capture records: FAILED ($before before, $after after; $saved saved capture(s) in the harness log)"
+  else
+    echo "capture records: $before before, $after after; $saved saved capture(s) in the harness log (consistent)"
+  fi
+}
+
+# Review R6-01: a press when nothing has been heard in the harness process saves nothing. Every capture line of the
+# phase must say result=nothing_to_capture (with loaded= and played_since_load=); with <required> yes, there must be one.
+check_nothing() {  # <phase name> <first harness log line> <required: yes|no>
+  local name="$1" from="$2" required="$3" captures n nothing
+  captures="$(since "$from" | grep ' capture ' || true)"
+  n=$(grep -c . <<<"$captures" || true)
+  nothing=$(grep -c ' result=nothing_to_capture ' <<<"$captures" || true)
+  echo "capture lines: $n ($nothing with result=nothing_to_capture)"
+  if (( n > 0 )); then
+    grep -oE 'origin=[^ ]+ process=[^ ]+ app_state=[0-9]+|was_playing=[a-z]+|result=[a-z_]+|loaded=[a-z]+|played_since_load=[a-z]+' <<<"$captures" | paste -sd ' ' - | sed 's/^/  /'
+  fi
+  if (( n != nothing )); then
+    problems+=("$name: a capture line says something other than result=nothing_to_capture")
+    echo "requirement: FAILED (every capture line result=nothing_to_capture, nothing saved)"
+  elif [[ "$required" == "yes" ]] && (( nothing == 0 )); then
+    problems+=("$name: the intent was not performed (no capture line)")
+    echo "requirement: FAILED (the intent performed in the harness, answering result=nothing_to_capture)"
+  elif (( nothing == 0 )); then
+    echo "requirement: met (nothing saved; the intent left no capture line: the system did not launch the harness to perform it)"
+  else
+    echo "requirement: met (result=nothing_to_capture, nothing saved)"
+  fi
+}
+
 # 3. App Shortcut tile in the Shortcuts app.
 start2=$(lines)
 t2="$(date '+%Y-%m-%d %H:%M:%S')"
@@ -184,6 +239,7 @@ run_ui_test QuickCaptureThroughShortcutsUITests shortcuts; ui_rc=$?
   else
     check_phase "App Shortcut ($SIGNING)" "$start2" "" no
   fi
+  check_counts "App Shortcut ($SIGNING)" "$WORK/shortcuts.log" harness_captures_before harness_captures_after "$start2"
 } >> "$OUT"
 xcrun simctl terminate "$UDID" "$BUNDLE" >/dev/null 2>&1
 xcrun simctl terminate "$UDID" com.apple.shortcuts >/dev/null 2>&1
@@ -191,7 +247,7 @@ xcrun simctl terminate "$UDID" com.apple.shortcuts >/dev/null 2>&1
 # 4. The control in Control Center.
 start3=$(lines)
 t3="$(date '+%Y-%m-%d %H:%M:%S')"
-run_ui_test QuickCaptureThroughControlCenterUITests control; cc_rc=$?
+run_ui_test QuickCaptureThroughControlCenterUITests/testControlInControlCenterRunsTheCaptureIntent control; cc_rc=$?
 {
   echo "## 3. UI test: add the control 'Capture the last 30 seconds' to Control Center and press it while the harness plays"
   echo "xcodebuild exit $cc_rc"
@@ -207,16 +263,57 @@ run_ui_test QuickCaptureThroughControlCenterUITests control; cc_rc=$?
   else
     check_phase "Control ($SIGNING)" "$start3" "" yes
   fi
+  check_counts "Control ($SIGNING)" "$WORK/control.log" harness_captures_before harness_captures_after "$start3"
+} >> "$OUT"
+xcrun simctl terminate "$UDID" "$BUNDLE" >/dev/null 2>&1
+xcrun simctl terminate "$UDID" com.apple.shortcuts >/dev/null 2>&1
+
+# The system and harness log lines about running the control intent (phases 4 and 5).
+CONTROL_LOG='(process == "chronod" AND (eventMessage CONTAINS "Performing control action" OR eventMessage CONTAINS "Starting to run action" OR eventMessage CONTAINS "UILinkConnectionAction")) OR (process == "G04AudioHarness" AND (eventMessage CONTAINS "Prepared surface" OR eventMessage CONTAINS "caseDisplayRepresentations" OR eventMessage CONTAINS "Invoking CaptureMomentIntent")) OR (process == "G04CaptureControl" AND eventMessage CONTAINS[c] "intent")'
+
+# 5. The control pressed while the harness is not running (review R6-01; device checklist step 12).
+start4=$(lines)
+t4="$(date '+%Y-%m-%d %H:%M:%S')"
+run_ui_test QuickCaptureThroughControlCenterUITests/testControlPressedWhileTheHarnessIsNotRunningCapturesNothing cold; cold_rc=$?
+{
+  echo "## 4. UI test: press the control while the harness is not running (review R6-01; device checklist step 12)"
+  echo "xcodebuild exit $cold_rc"
+  grep -E 'g04-quick-capture-control-ui|(error|warning): -\[|Test Case .*(passed|failed)' "$WORK/cold.log" | sed 's/^/  /'
+  echo "chronod and the App Intents runtime in the harness:"
+  syslog_since "$t4" "$CONTROL_LOG" 12
+  echo "harness log lines during the UI test:"
+  since "$start4" | grep -E ' (launch|output|loaded|member|autoplay|capture|export) ' | sed 's/^/  /'
+  check_nothing "Control, harness not running ($SIGNING)" "$start4" yes
+  check_counts "Control, harness not running ($SIGNING)" "$WORK/cold.log" cold_captures_before cold_captures_after "$start4"
+} >> "$OUT"
+xcrun simctl terminate "$UDID" "$BUNDLE" >/dev/null 2>&1
+
+# 6. The control pressed while the harness runs its restored book, not played since launch (review R6-01).
+start5=$(lines)
+t5="$(date '+%Y-%m-%d %H:%M:%S')"
+run_ui_test QuickCaptureThroughControlCenterUITests/testControlPressedWhileTheRestoredBookHasNotPlayedCapturesNothing restored; restored_rc=$?
+{
+  echo "## 5. UI test: press the control while the harness runs its restored book, not played since launch (review R6-01)"
+  echo "xcodebuild exit $restored_rc"
+  grep -E 'g04-quick-capture-control-ui|(error|warning): -\[|Test Case .*(passed|failed)' "$WORK/restored.log" | sed 's/^/  /'
+  echo "chronod and the App Intents runtime in the harness:"
+  syslog_since "$t5" "$CONTROL_LOG" 12
+  echo "harness log lines during the UI test:"
+  since "$start5" | grep -E ' (launch|output|loaded|member|autoplay|capture|export) ' | sed 's/^/  /'
+  check_nothing "Control, restored book not played ($SIGNING)" "$start5" yes
+  check_counts "Control, restored book not played ($SIGNING)" "$WORK/restored.log" restored_captures_before restored_captures_after "$start5"
   echo "screenshots: ${shots[*]:-none}"
 } >> "$OUT"
 xcrun simctl terminate "$UDID" "$BUNDLE" >/dev/null 2>&1
 xcrun simctl terminate "$UDID" com.apple.shortcuts >/dev/null 2>&1
 
-# Every harness launch in this script (from $start: the URL attempt and both UI tests) must have logged the expected
-# output volume (1 % unless SYLVIA_AUDIBLE_PLAYBACK=1).
+# Every harness launch in this script (from $start: the URL attempt and the UI tests) must have logged the expected
+# output volume (1 % unless SYLVIA_AUDIBLE_PLAYBACK=1). A harness the system launches to perform the intent (phase 4)
+# has no launch argument: it logs the quiet volume with reason=default and plays nothing, so such a line is accepted
+# in every mode.
 outputs="$(since "$start" | grep ' output ' || true)"
 launches="$(since "$start" | grep -c ' launch ' || true)"
-bad="$(grep -v "volume=$WANT_VOLUME preview_volume=$WANT_VOLUME " <<<"$outputs" | grep . || true)"
+bad="$(grep -v "volume=$WANT_VOLUME preview_volume=$WANT_VOLUME " <<<"$outputs" | grep -v ' reason=default$' | grep . || true)"
 echo "harness output: $launches launches, $(grep -c . <<<"$outputs") output lines, expected volume=$WANT_VOLUME preview_volume=$WANT_VOLUME" >> "$OUT"
 if (( ${#problems[@]} == 0 )); then
   echo "requirements for a $SIGNING build: all met" >> "$OUT"

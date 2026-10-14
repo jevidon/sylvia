@@ -1,3 +1,4 @@
+import Accelerate
 import AVFoundation
 import Foundation
 
@@ -29,10 +30,39 @@ public enum PCMDecoderError: Error, Sendable {
 /// Float32 at a fixed analysis rate. Samples before the requested start are trimmed by presentation timestamp, so
 /// `reportedStart` is the decoder's own claim about where the returned audio begins. Whether that claim is true is
 /// what the timing tests measure by cross-correlation against the PCM masters.
+///
+/// Mono from a stereo source is the average of the two channels, (L + R) / 2 (review R6-05): never louder than the
+/// louder channel, so never above full scale, and speech that is the same in both channels keeps its level. A source
+/// the system reports with one channel (mono, and HE-AAC v2, whose core is one channel plus parametric stereo) is
+/// decoded to one channel, at unity (measured: 1.000 for mono files, 0.993 for the HE-AAC v2 fixture); a source with
+/// more channels is decoded to two (the system downmix for more than two) and averaged. Asking AVAssetReader for one
+/// channel from a stereo source gives an equal-power sum instead, (L + R) x 0.707 (`StereoChannelTests`), which raises
+/// speech that is the same in both channels by 3 dB, above full scale for a source mastered within 3 dB of it.
 public enum PCMDecoder {
     public static let analysisRate: Double = 44_100
 
-    public static func outputSettings(rate: Double) -> [String: any Sendable] {
+    /// The number of channels the first format description of the track states (1 when it states none).
+    static func channelCount(_ track: AVAssetTrack) async -> Int {
+        guard let desc = try? await track.load(.formatDescriptions).first,
+              let asbd = CMAudioFormatDescriptionGetStreamBasicDescription(desc)?.pointee else { return 1 }
+        return max(1, Int(asbd.mChannelsPerFrame))
+    }
+
+    /// The average of the two channels of interleaved stereo samples.
+    static func averageOfTwoChannels(_ interleaved: [Float]) -> [Float] {
+        let n = interleaved.count / 2
+        guard n > 0 else { return [] }
+        var out = [Float](repeating: 0, count: n)
+        var half: Float = 0.5
+        interleaved.withUnsafeBufferPointer { p in
+            out.withUnsafeMutableBufferPointer { o in
+                vDSP_vasm(p.baseAddress!, 2, p.baseAddress! + 1, 2, &half, o.baseAddress!, 1, vDSP_Length(n))
+            }
+        }
+        return out
+    }
+
+    public static func outputSettings(rate: Double, channels: Int = 1) -> [String: any Sendable] {
         [
             AVFormatIDKey: kAudioFormatLinearPCM,
             AVLinearPCMBitDepthKey: 32,
@@ -40,7 +70,7 @@ public enum PCMDecoder {
             AVLinearPCMIsNonInterleaved: false,
             AVLinearPCMIsBigEndianKey: false,
             AVSampleRateKey: rate,
-            AVNumberOfChannelsKey: 1,
+            AVNumberOfChannelsKey: channels,
         ]
     }
 
@@ -63,7 +93,9 @@ public enum PCMDecoder {
         } else if start > 0 {
             reader.timeRange = CMTimeRange(start: startTime, end: .positiveInfinity)
         }
-        let output = AVAssetReaderTrackOutput(track: track, outputSettings: outputSettings(rate: rate))
+        // Two or more channels are decoded to two and averaged; one channel is decoded as one (see the type).
+        let channels = await channelCount(track) >= 2 ? 2 : 1
+        let output = AVAssetReaderTrackOutput(track: track, outputSettings: outputSettings(rate: rate, channels: channels))
         output.alwaysCopiesSampleData = false
         guard reader.canAdd(output) else { throw PCMDecoderError.cannotRead("cannot add output") }
         reader.add(output)
@@ -75,7 +107,7 @@ public enum PCMDecoder {
         var reportedStart: Double?
         while let buffer = output.copyNextSampleBuffer() {
             let pts = CMSampleBufferGetPresentationTimeStamp(buffer).seconds
-            var chunk = floats(buffer)
+            var chunk = channels == 2 ? averageOfTwoChannels(floats(buffer)) : floats(buffer)
             if reportedStart == nil {
                 // Trim samples the decoder delivered before the requested start (by its own timestamps).
                 let early = Int(((start - pts) * rate).rounded())

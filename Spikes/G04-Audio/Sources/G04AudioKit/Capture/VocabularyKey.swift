@@ -19,12 +19,17 @@ public enum VocabularyKey: String, CaseIterable, Codable, Sendable {
 /// A key this spike needs that the plan's vocabulary does not have yet. It is a proposal for the design package
 /// owner (G0.6), listed in the G0.4 report; the harness shows the key itself, not an invented phrase.
 public enum ProposedVocabularyKey: String, CaseIterable, Codable, Sendable {
-    /// A quick-capture surface was used while nothing is loaded in the player: nothing was written.
+    /// A quick-capture surface was used with no moment to capture: nothing is loaded in the player, or the loaded book
+    /// has not played in this process (review R6-01). Nothing was written.
     case audioNothingToCapture = "audio.nothing_to_capture"
     /// The durable write of a moment (an audio capture or a bookmark, which have no text) failed: nothing was saved.
     /// `save.failed` ("Not saved · your text is still here") is the note editor's phrase and would be untrue here
     /// (review R2-04).
     case audioMomentNotSaved = "audio.moment_not_saved"
+    /// Some members of the loaded edition cannot play on this device (not on this device, a missing file, or a file
+    /// that does not decode): plan 10.1 asks for an incomplete-edition warning, and the vocabulary has no phrase for
+    /// it (review R6-02). Each such member can say where it is with the existing `file.not_on_device` key.
+    case audioEditionIncomplete = "audio.edition_incomplete"
 }
 
 /// Harness-only phrase lookup: the exact plan 4.4.6 phrases for the keys above. Product targets resolve keys

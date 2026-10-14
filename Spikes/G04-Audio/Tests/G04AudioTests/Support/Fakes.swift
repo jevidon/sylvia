@@ -1,11 +1,15 @@
 import Foundation
 @testable import G04AudioKit
 
-/// A clock the test moves by hand.
+/// A clock the test moves by hand. Its wall clock moves with it (a fixed date plus the same seconds), so a test can
+/// make a pause long (rewind after a long pause) and two services can share one clock across a simulated relaunch.
 final class ManualClock: PlaybackClock, @unchecked Sendable {
     private let lock = NSLock()
     private var t: TimeInterval = 1_000
+    /// 2026-10-01T00:00:00Z, minus the monotonic start.
+    static let wallOffset: TimeInterval = 1_790_812_800 - 1_000
     func now() -> TimeInterval { lock.withLock { t } }
+    func wallTime() -> TimeInterval { lock.withLock { t + Self.wallOffset } }
     func advance(_ dt: TimeInterval) { lock.withLock { t += dt } }
 }
 

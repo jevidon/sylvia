@@ -1,46 +1,46 @@
 # Remux at import (ImportRemuxer: the compressed packets copied unchanged, no decode; FLAC and Opus into .m4a, MP3 into .caf)
 # of the files whose open or first deep seek is slow, then the remuxed copy opened and resumed cold like the originals.
-# Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 4.96 8.04 19.86 (1, 5, 15 min), 4 simulators booted on the host when the test run started
-remux	long-formats/long-flac-10h.flac	into m4a	source flac/44100/1	remux_s=15.711	bytes=969718367 (source 968229905)	sample_buffers=17584	source_ready_precise_s=28.907	remuxed_ready_precise_s=0.012	duration_ms=36744672 (source 36744647, diff 25)	chapters=0 (source 17; the importer keeps the source's)	load_1m=5.0,17.9,14.9
+# Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 5.08 6.17 7.90 (1, 5, 15 min), 1 simulators booted on the host when the test run started
+remux	long-formats/long-flac-10h.flac	into m4a	source flac/44100/1	remux_s=12.976	bytes=969718367 (source 968229905)	sample_buffers=17584	source_ready_precise_s=31.156	remuxed_ready_precise_s=0.013	duration_ms=36744672 (source 36744647, diff 25)	chapters=0 (source 17; the importer keeps the source's)	load_1m=5.1,5.1,5.1
 decoder_seek	long-formats/long-flac-10h.flac	t=3601.3	remuxed_error_ms=0.0 (peak 1.000)	source_error_ms=0.0 (peak 1.000)	max_abs_sample_difference=0.000000 over 176400 samples
 decoder_seek	long-formats/long-flac-10h.flac	t=36344.0	remuxed_error_ms=-0.0 (peak 1.000)	source_error_ms=-0.0 (peak 1.000)	max_abs_sample_difference=0.000000 over 176400 samples
-cold_resume_remuxed	long-formats/long-flac-10h.flac	depth_h=0.33	load_s=0.033	play_to_audio_s=0.094	load_plus_play_s=0.127	content_error_ms=0.0
-cold_resume_remuxed	long-formats/long-flac-10h.flac	depth_h=10.10	load_s=0.042	play_to_audio_s=0.095	load_plus_play_s=0.137	content_error_ms=0.0
-export_remuxed	long-formats/long-flac-10h.flac	end_h=10.10	export_s=0.106	start_error_ms=-0.0	end_error_ms=-0.0
-remux	long-formats/long-opus-10h.ogg	into m4a	source opus/48000/1	remux_s=19.692	bytes=150301346 (source 145634993)	sample_buffers=18192	source_ready_precise_s=1.171	remuxed_ready_precise_s=0.013	duration_ms=36744647 (source 36744647, diff 0)	chapters=0 (source 17; the importer keeps the source's)	load_1m=11.5,10.4,9.9
+cold_resume_remuxed	long-formats/long-flac-10h.flac	depth_h=0.33	load_s=0.035	play_to_audio_s=0.094	load_plus_play_s=0.129	content_error_ms=0.0
+cold_resume_remuxed	long-formats/long-flac-10h.flac	depth_h=10.10	load_s=0.046	play_to_audio_s=0.095	load_plus_play_s=0.141	content_error_ms=0.0
+export_remuxed	long-formats/long-flac-10h.flac	end_h=10.10	export_s=0.104	start_error_ms=-0.0	end_error_ms=-0.0
+remux	long-formats/long-opus-10h.ogg	into m4a	source opus/48000/1	remux_s=19.621	bytes=150301346 (source 145634993)	sample_buffers=18192	source_ready_precise_s=1.387	remuxed_ready_precise_s=0.013	duration_ms=36744647 (source 36744647, diff 0)	chapters=0 (source 17; the importer keeps the source's)	load_1m=4.4,5.2,5.2
 decoder_seek	long-formats/long-opus-10h.ogg	t=3601.3	remuxed_error_ms=0.0 (peak 0.985)	source_error_ms=0.0 (peak 0.985)	max_abs_sample_difference=0.000000 over 176356 samples
 decoder_seek	long-formats/long-opus-10h.ogg	t=36343.9	remuxed_error_ms=0.1 (peak 0.970)	source_error_ms=0.1 (peak 0.970)	max_abs_sample_difference=0.000000 over 176355 samples
-cold_resume_remuxed	long-formats/long-opus-10h.ogg	depth_h=0.33	load_s=0.034	play_to_audio_s=0.085	load_plus_play_s=0.119	content_error_ms=0.0
-cold_resume_remuxed	long-formats/long-opus-10h.ogg	depth_h=10.10	load_s=0.046	play_to_audio_s=0.091	load_plus_play_s=0.137	content_error_ms=0.1
-export_remuxed	long-formats/long-opus-10h.ogg	end_h=10.10	export_s=0.138	start_error_ms=0.1	end_error_ms=-0.9
-remux	long-formats/long-flac-3h.flac	into m4a	source flac/44100/1	remux_s=3.220	bytes=285164199 (source 284731653)	sample_buffers=5173	source_ready_precise_s=8.046	remuxed_ready_precise_s=0.013	duration_ms=10807275 (source 10807249, diff 26)	chapters=0 (source 5; the importer keeps the source's)	load_1m=9.8,9.2,9.1
+cold_resume_remuxed	long-formats/long-opus-10h.ogg	depth_h=0.33	load_s=0.035	play_to_audio_s=0.090	load_plus_play_s=0.126	content_error_ms=0.0
+cold_resume_remuxed	long-formats/long-opus-10h.ogg	depth_h=10.10	load_s=0.056	play_to_audio_s=0.086	load_plus_play_s=0.142	content_error_ms=0.1
+export_remuxed	long-formats/long-opus-10h.ogg	end_h=10.10	export_s=0.135	start_error_ms=0.1	end_error_ms=-1.0
+remux	long-formats/long-flac-3h.flac	into m4a	source flac/44100/1	remux_s=3.615	bytes=285164199 (source 284731653)	sample_buffers=5173	source_ready_precise_s=8.944	remuxed_ready_precise_s=0.013	duration_ms=10807275 (source 10807249, diff 26)	chapters=0 (source 5; the importer keeps the source's)	load_1m=5.1,5.1,5.4
 decoder_seek	long-formats/long-flac-3h.flac	t=3601.3	remuxed_error_ms=0.0 (peak 1.000)	source_error_ms=0.0 (peak 1.000)	max_abs_sample_difference=0.000000 over 176400 samples
 decoder_seek	long-formats/long-flac-3h.flac	t=10406.6	remuxed_error_ms=-0.0 (peak 1.000)	source_error_ms=-0.0 (peak 1.000)	max_abs_sample_difference=0.000000 over 176400 samples
-cold_resume_remuxed	long-formats/long-flac-3h.flac	depth_h=0.33	load_s=0.033	play_to_audio_s=0.097	load_plus_play_s=0.131	content_error_ms=0.0
-cold_resume_remuxed	long-formats/long-flac-3h.flac	depth_h=2.89	load_s=0.056	play_to_audio_s=0.102	load_plus_play_s=0.159	content_error_ms=-0.0
-export_remuxed	long-formats/long-flac-3h.flac	end_h=2.89	export_s=0.102	start_error_ms=0.0	end_error_ms=0.0
-remux	long-formats/long-opus-3h.ogg	into m4a	source opus/48000/1	remux_s=5.599	bytes=44207610 (source 42834682)	sample_buffers=5352	source_ready_precise_s=0.489	remuxed_ready_precise_s=0.018	duration_ms=10807249 (source 10807249, diff 0)	chapters=0 (source 5; the importer keeps the source's)	load_1m=8.3,8.2,8.4
+cold_resume_remuxed	long-formats/long-flac-3h.flac	depth_h=0.33	load_s=0.033	play_to_audio_s=0.103	load_plus_play_s=0.136	content_error_ms=0.0
+cold_resume_remuxed	long-formats/long-flac-3h.flac	depth_h=2.89	load_s=0.056	play_to_audio_s=0.096	load_plus_play_s=0.151	content_error_ms=-0.0
+export_remuxed	long-formats/long-flac-3h.flac	end_h=2.89	export_s=0.100	start_error_ms=0.0	end_error_ms=0.0
+remux	long-formats/long-opus-3h.ogg	into m4a	source opus/48000/1	remux_s=6.009	bytes=44207610 (source 42834682)	sample_buffers=5352	source_ready_precise_s=0.531	remuxed_ready_precise_s=0.013	duration_ms=10807249 (source 10807249, diff 0)	chapters=0 (source 5; the importer keeps the source's)	load_1m=5.0,4.7,4.7
 decoder_seek	long-formats/long-opus-3h.ogg	t=3601.3	remuxed_error_ms=0.0 (peak 0.985)	source_error_ms=0.0 (peak 0.985)	max_abs_sample_difference=0.000000 over 176356 samples
 decoder_seek	long-formats/long-opus-3h.ogg	t=10406.5	remuxed_error_ms=0.1 (peak 0.976)	source_error_ms=0.1 (peak 0.976)	max_abs_sample_difference=0.000000 over 176355 samples
-cold_resume_remuxed	long-formats/long-opus-3h.ogg	depth_h=0.33	load_s=0.032	play_to_audio_s=0.087	load_plus_play_s=0.119	content_error_ms=0.0
-cold_resume_remuxed	long-formats/long-opus-3h.ogg	depth_h=2.89	load_s=0.055	play_to_audio_s=0.093	load_plus_play_s=0.148	content_error_ms=0.0
-export_remuxed	long-formats/long-opus-3h.ogg	end_h=2.89	export_s=0.139	start_error_ms=0.0	end_error_ms=-1.0
-remux	long-mp3-cbr-10h.mp3	into caf	source .mp3/44100/1	remux_s=1.040	bytes=296795257 (source 293957609)	sample_buffers=18269	source_ready_precise_s=0.012	remuxed_ready_precise_s=0.025	duration_ms=36744673 (source 36744673, diff 0)	chapters=0 (source 0; the importer keeps the source's)	load_1m=8.4,8.4,8.4
+cold_resume_remuxed	long-formats/long-opus-3h.ogg	depth_h=0.33	load_s=0.035	play_to_audio_s=0.091	load_plus_play_s=0.126	content_error_ms=0.0
+cold_resume_remuxed	long-formats/long-opus-3h.ogg	depth_h=2.89	load_s=0.045	play_to_audio_s=0.092	load_plus_play_s=0.137	content_error_ms=0.0
+export_remuxed	long-formats/long-opus-3h.ogg	end_h=2.89	export_s=0.138	start_error_ms=0.0	end_error_ms=-1.0
+remux	long-mp3-cbr-10h.mp3	into caf	source .mp3/44100/1	remux_s=0.661	bytes=296795257 (source 293957609)	sample_buffers=18269	source_ready_precise_s=0.013	remuxed_ready_precise_s=0.018	duration_ms=36744673 (source 36744673, diff 0)	chapters=0 (source 0; the importer keeps the source's)	load_1m=4.7,4.7,4.7
 decoder_seek	long-mp3-cbr-10h.mp3	t=3601.3	remuxed_error_ms=-13.1 (peak 0.996)	source_error_ms=-13.1 (peak 0.996)	max_abs_sample_difference=0.000000 over 176400 samples
 decoder_seek	long-mp3-cbr-10h.mp3	t=36344.0	remuxed_error_ms=-13.1 (peak 0.995)	source_error_ms=-13.1 (peak 0.995)	max_abs_sample_difference=0.000000 over 176400 samples
-cold_resume_remuxed	long-mp3-cbr-10h.mp3	depth_h=0.33	load_s=0.023	play_to_audio_s=0.103	load_plus_play_s=0.126	content_error_ms=-13.1
-cold_resume_remuxed	long-mp3-cbr-10h.mp3	depth_h=10.10	load_s=0.056	play_to_audio_s=0.102	load_plus_play_s=0.159	content_error_ms=-13.1
-export_remuxed	long-mp3-cbr-10h.mp3	end_h=10.10	export_s=0.102	start_error_ms=-13.1	end_error_ms=-13.1
-remux	long-mp3-vbr-10h.mp3	into caf	source .mp3/44100/1	remux_s=0.935	bytes=261673213 (source 258900276)	sample_buffers=18269	source_ready_precise_s=0.013	remuxed_ready_precise_s=0.024	duration_ms=36744673 (source 36744673, diff 0)	chapters=0 (source 0; the importer keeps the source's)	load_1m=8.7,8.7,8.7
+cold_resume_remuxed	long-mp3-cbr-10h.mp3	depth_h=0.33	load_s=0.035	play_to_audio_s=0.099	load_plus_play_s=0.134	content_error_ms=-13.1
+cold_resume_remuxed	long-mp3-cbr-10h.mp3	depth_h=10.10	load_s=0.058	play_to_audio_s=0.105	load_plus_play_s=0.163	content_error_ms=-13.1
+export_remuxed	long-mp3-cbr-10h.mp3	end_h=10.10	export_s=0.105	start_error_ms=-13.1	end_error_ms=-13.1
+remux	long-mp3-vbr-10h.mp3	into caf	source .mp3/44100/1	remux_s=0.683	bytes=261673213 (source 258900276)	sample_buffers=18269	source_ready_precise_s=0.013	remuxed_ready_precise_s=0.018	duration_ms=36744673 (source 36744673, diff 0)	chapters=0 (source 0; the importer keeps the source's)	load_1m=4.8,4.8,4.8
 decoder_seek	long-mp3-vbr-10h.mp3	t=3601.3	remuxed_error_ms=-13.1 (peak 0.996)	source_error_ms=-13.1 (peak 0.996)	max_abs_sample_difference=0.000000 over 176400 samples
 decoder_seek	long-mp3-vbr-10h.mp3	t=36344.0	remuxed_error_ms=-13.1 (peak 0.997)	source_error_ms=-13.1 (peak 0.997)	max_abs_sample_difference=0.000000 over 176400 samples
-cold_resume_remuxed	long-mp3-vbr-10h.mp3	depth_h=0.33	load_s=0.033	play_to_audio_s=0.102	load_plus_play_s=0.134	content_error_ms=-13.1
-cold_resume_remuxed	long-mp3-vbr-10h.mp3	depth_h=10.10	load_s=0.054	play_to_audio_s=0.094	load_plus_play_s=0.148	content_error_ms=-13.1
-export_remuxed	long-mp3-vbr-10h.mp3	end_h=10.10	export_s=0.103	start_error_ms=-13.1	end_error_ms=-13.1
-remux	long-formats/long-mp3-vbr-noxing-10h.mp3	into caf	source .mp3/44100/1	remux_s=0.784	bytes=261673213 (source 258900094)	sample_buffers=18269	source_ready_precise_s=8.508	remuxed_ready_precise_s=0.025	duration_ms=36744673 (source 36744673, diff 0)	chapters=0 (source 0; the importer keeps the source's)	load_1m=8.4,8.4,8.0
+cold_resume_remuxed	long-mp3-vbr-10h.mp3	depth_h=0.33	load_s=0.035	play_to_audio_s=0.103	load_plus_play_s=0.139	content_error_ms=-13.1
+cold_resume_remuxed	long-mp3-vbr-10h.mp3	depth_h=10.10	load_s=0.046	play_to_audio_s=0.097	load_plus_play_s=0.143	content_error_ms=-13.1
+export_remuxed	long-mp3-vbr-10h.mp3	end_h=10.10	export_s=0.098	start_error_ms=-13.1	end_error_ms=-13.1
+remux	long-formats/long-mp3-vbr-noxing-10h.mp3	into caf	source .mp3/44100/1	remux_s=0.551	bytes=261673213 (source 258900094)	sample_buffers=18269	source_ready_precise_s=8.872	remuxed_ready_precise_s=0.019	duration_ms=36744673 (source 36744673, diff 0)	chapters=0 (source 0; the importer keeps the source's)	load_1m=5.1,5.1,4.9
 decoder_seek	long-formats/long-mp3-vbr-noxing-10h.mp3	t=3601.3	remuxed_error_ms=-13.1 (peak 0.996)	source_error_ms=-13.1 (peak 0.996)	max_abs_sample_difference=0.000000 over 176400 samples
 decoder_seek	long-formats/long-mp3-vbr-noxing-10h.mp3	t=36344.0	remuxed_error_ms=-13.1 (peak 0.997)	source_error_ms=-13.1 (peak 0.997)	max_abs_sample_difference=0.000000 over 176400 samples
-cold_resume_remuxed	long-formats/long-mp3-vbr-noxing-10h.mp3	depth_h=0.33	load_s=0.032	play_to_audio_s=0.104	load_plus_play_s=0.136	content_error_ms=-13.1
-cold_resume_remuxed	long-formats/long-mp3-vbr-noxing-10h.mp3	depth_h=10.10	load_s=0.045	play_to_audio_s=0.103	load_plus_play_s=0.148	content_error_ms=-13.1
-export_remuxed	long-formats/long-mp3-vbr-noxing-10h.mp3	end_h=10.10	export_s=0.101	start_error_ms=-13.1	end_error_ms=-13.1
-# at the end: host load averages 8.29 9.30 17.54 (1, 5, 15 min), 4 simulators booted on the host when the test run started
+cold_resume_remuxed	long-formats/long-mp3-vbr-noxing-10h.mp3	depth_h=0.33	load_s=0.035	play_to_audio_s=0.095	load_plus_play_s=0.130	content_error_ms=-13.1
+cold_resume_remuxed	long-formats/long-mp3-vbr-noxing-10h.mp3	depth_h=10.10	load_s=0.046	play_to_audio_s=0.095	load_plus_play_s=0.141	content_error_ms=-13.1
+export_remuxed	long-formats/long-mp3-vbr-noxing-10h.mp3	end_h=10.10	export_s=0.097	start_error_ms=-13.1	end_error_ms=-13.1
+# at the end: host load averages 5.39 5.50 7.09 (1, 5, 15 min), 1 simulators booted on the host when the test run started

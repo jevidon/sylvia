@@ -1,31 +1,31 @@
-# Decoder windows (AVAssetReader time range, the excerpt export's path) with estimated and precise timing. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 8.29 9.30 17.54 (1, 5, 15 min), 4 simulators booted on the host when the test run started
+# Decoder windows (AVAssetReader time range, the excerpt export's path) with estimated and precise timing. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 5.39 5.50 7.09 (1, 5, 15 min), 1 simulators booted on the host when the test run started
 # error = true content position (cross-correlation with the master) minus the requested position (ms); sample_diff = the largest absolute
 # difference between the estimated and the precise decode of the same window (0 = the same samples); decode_s = wall time of the decode
 # (estimated on a fresh copy of the file, cold; precise on the fixture itself, which earlier tests may have opened)
 kind	file	point_s	estimated_error_ms	estimated_peak	precise_error_ms	precise_peak	sample_diff	estimated_decode_s	precise_decode_s
-proved-cbr	fmt-mp3-cbr.mp3	37.30	-13.1	1.000	-13.1	1.000	0.000000	0.012	0.010
-proved-cbr	fmt-mp3-cbr.mp3	151.70	-13.1	1.000	-13.1	1.000	0.000000	0.011	0.010
-proved-cbr	fmt-mp3-cbr.mp3	333.30	-13.1	0.998	-13.1	0.998	0.000000	0.012	0.013
-proved-cbr	fmt-mp3-cbr.mp3	587.20	-13.1	0.984	-13.1	0.984	0.000000	0.012	0.016
-proved-cbr	fmt-mp3-chap.mp3	37.30	-13.1	1.000	-13.1	1.000	0.000000	0.012	0.010
-proved-cbr	fmt-mp3-chap.mp3	333.30	-13.1	0.998	-13.1	0.998	0.000000	0.011	0.013
-proved-cbr	fmt-mp3-chap.mp3	587.20	-13.1	0.984	-13.1	0.984	0.000000	0.012	0.014
-proved-cbr	variant: cbr-no-info-tag.mp3	37.30	-13.1	1.000	-13.1	1.000	0.000000	0.010	0.015
-proved-cbr	variant: cbr-no-info-tag.mp3	333.30	-13.1	0.998	-13.1	0.998	0.000000	0.012	0.015
-proved-cbr	variant: cbr-no-info-tag.mp3	587.20	-13.1	0.984	-13.1	0.984	0.000000	0.012	0.016
-proved-cbr	fmt-librivox-mp3-22k.mp3	37.30	-0.0	1.000	-0.0	1.000	0.000000	0.012	0.010
-proved-cbr	fmt-librivox-mp3-22k.mp3	333.30	-0.0	1.000	-0.0	1.000	0.000000	0.012	0.012
-proved-cbr	fmt-librivox-mp3-22k.mp3	900.50	-0.0	1.000	-0.0	1.000	0.000000	0.012	0.017
-proved-cbr	fmt-librivox-mp3-22k.mp3	1300.25	-0.1	0.995	-0.1	0.995	0.000000	0.012	0.022
-proved-cbr	multi/Part 1.mp3	20.50	-13.1	0.998	-13.1	0.998	0.000000	0.012	0.009
-proved-cbr	multi/Part 1.mp3	100.25	-13.1	1.000	-13.1	1.000	0.000000	0.011	0.010
-proved-cbr	multi/Part 1.mp3	150.00	-13.1	0.999	-13.1	0.999	0.000000	0.011	0.010
-proved-cbr	long-mp3-cbr-10h.mp3	3601.30	-13.1	0.996	-13.1	0.996	0.000000	0.012	0.053
-proved-cbr	long-mp3-cbr-10h.mp3	12345.60	-13.1	0.980	-13.1	0.980	0.000000	0.011	0.129
-proved-cbr	long-mp3-cbr-10h.mp3	18000.70	-13.1	1.000	-13.1	1.000	0.000000	0.012	0.199
-proved-cbr	long-mp3-cbr-10h.mp3	29876.50	-13.1	0.995	-13.1	0.995	0.000000	0.011	0.312
-proved-cbr	long-mp3-cbr-10h.mp3	34170.00	-13.1	0.997	-13.1	0.997	0.000000	0.012	0.360
-proved-cbr	long-mp3-cbr-10h.mp3	36700.90	-13.1	0.993	-13.1	0.993	0.000000	0.011	0.374
+proved-cbr	fmt-mp3-cbr.mp3	37.30	-13.1	1.000	-13.1	1.000	0.000000	0.009	0.008
+proved-cbr	fmt-mp3-cbr.mp3	151.70	-13.1	1.000	-13.1	1.000	0.000000	0.010	0.009
+proved-cbr	fmt-mp3-cbr.mp3	333.30	-13.1	0.998	-13.1	0.998	0.000000	0.010	0.011
+proved-cbr	fmt-mp3-cbr.mp3	587.20	-13.1	0.984	-13.1	0.984	0.000000	0.010	0.013
+proved-cbr	fmt-mp3-chap.mp3	37.30	-13.1	1.000	-13.1	1.000	0.000000	0.008	0.008
+proved-cbr	fmt-mp3-chap.mp3	333.30	-13.1	0.998	-13.1	0.998	0.000000	0.008	0.010
+proved-cbr	fmt-mp3-chap.mp3	587.20	-13.1	0.984	-13.1	0.984	0.000000	0.009	0.012
+proved-cbr	variant: cbr-no-info-tag.mp3	37.30	-13.1	1.000	-13.1	1.000	0.000000	0.010	0.013
+proved-cbr	variant: cbr-no-info-tag.mp3	333.30	-13.1	0.998	-13.1	0.998	0.000000	0.010	0.013
+proved-cbr	variant: cbr-no-info-tag.mp3	587.20	-13.1	0.984	-13.1	0.984	0.000000	0.010	0.013
+proved-cbr	fmt-librivox-mp3-22k.mp3	37.30	-0.0	1.000	-0.0	1.000	0.000000	0.011	0.008
+proved-cbr	fmt-librivox-mp3-22k.mp3	333.30	-0.0	1.000	-0.0	1.000	0.000000	0.010	0.010
+proved-cbr	fmt-librivox-mp3-22k.mp3	900.50	-0.0	1.000	-0.0	1.000	0.000000	0.009	0.015
+proved-cbr	fmt-librivox-mp3-22k.mp3	1300.25	-0.1	0.995	-0.1	0.995	0.000000	0.009	0.018
+proved-cbr	multi/Part 1.mp3	20.50	-13.1	0.998	-13.1	0.998	0.000000	0.009	0.008
+proved-cbr	multi/Part 1.mp3	100.25	-13.1	1.000	-13.1	1.000	0.000000	0.010	0.008
+proved-cbr	multi/Part 1.mp3	150.00	-13.1	0.999	-13.1	0.999	0.000000	0.008	0.009
+proved-cbr	long-mp3-cbr-10h.mp3	3601.30	-13.1	0.996	-13.1	0.996	0.000000	0.008	0.035
+proved-cbr	long-mp3-cbr-10h.mp3	12345.60	-13.1	0.980	-13.1	0.980	0.000000	0.008	0.100
+proved-cbr	long-mp3-cbr-10h.mp3	18000.70	-13.1	1.000	-13.1	1.000	0.000000	0.009	0.144
+proved-cbr	long-mp3-cbr-10h.mp3	29876.50	-13.1	0.995	-13.1	0.995	0.000000	0.010	0.231
+proved-cbr	long-mp3-cbr-10h.mp3	34170.00	-13.1	0.997	-13.1	0.997	0.000000	0.009	0.266
+proved-cbr	long-mp3-cbr-10h.mp3	36700.90	-13.1	0.993	-13.1	0.993	0.000000	0.008	0.286
 # proved-CBR windows: n=23, |estimated - precise| max 0.0 ms
 kind	file	point_s	estimated_error_ms(decoder, or 'not found within ±radius')	peak	radius_s	metadata
 estimated-not-chosen	fmt-mp3-vbr-xing.mp3	151.70	169.8	0.999	30	-
@@ -43,8 +43,8 @@ estimated-not-chosen	long-formats/long-flac-10h.flac	3601.30	not found within ±
 estimated-not-chosen	long-formats/long-flac-10h.flac	18000.70	not found within ±150 s	0.153	150	STREAMINFO,SEEKTABLE(3675 points),VORBIS_COMMENT,PADDING
 estimated-not-chosen	long-formats/long-flac-10h.flac	34170.00	not found within ±150 s	0.316	150	STREAMINFO,SEEKTABLE(3675 points),VORBIS_COMMENT,PADDING
 kind	file	point_s	seek_to_audio_s	start_offset_ms(player, or 'not found')	steady_peak
-estimated-not-chosen-player	long-formats/long-flac-3h.flac	3601.30	0.097	not found within ±150 s	0.213
-estimated-not-chosen-player	long-formats/long-flac-3h.flac	9000.50	0.018	not found within ±150 s	0.129
+estimated-not-chosen-player	long-formats/long-flac-3h.flac	3601.30	0.102	not found within ±150 s	0.213
+estimated-not-chosen-player	long-formats/long-flac-3h.flac	9000.50	0.015	not found within ±150 s	0.129
 estimated-not-chosen-player	long-formats/long-flac-10h.flac	18000.70	0.098	not found within ±150 s	0.106
-estimated-not-chosen-player	long-formats/long-flac-10h.flac	34170.00	0.018	not found within ±150 s	0.209
-# at the end: host load averages 10.03 9.55 17.29 (1, 5, 15 min), 4 simulators booted on the host when the test run started
+estimated-not-chosen-player	long-formats/long-flac-10h.flac	34170.00	0.011	not found within ±150 s	0.085
+# at the end: host load averages 6.54 5.79 7.15 (1, 5, 15 min), 1 simulators booted on the host when the test run started

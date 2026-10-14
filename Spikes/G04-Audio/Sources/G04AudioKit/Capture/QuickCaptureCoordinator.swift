@@ -6,9 +6,23 @@ import Foundation
 /// acknowledge "Moment saved · preserving audio" truthfully; the excerpt is preserved afterwards (plan 10.2).
 @MainActor
 public final class QuickCaptureCoordinator {
+    /// Where a capture request comes from, which decides what counts as a moment to capture (review R6-01).
+    public enum Entry: Equatable, Sendable {
+        /// The labelled Capture button in the player: the listener sees the book and its position, so it captures the
+        /// preceding 30 seconds there whether or not the book has played since it was loaded.
+        case player
+        /// A quick-capture surface outside the player (the App Intent behind the control, the Action button, an App
+        /// Shortcut or Siri; the remote bookmark command). It captures only a moment heard in this process: main
+        /// playback has played since the edition was loaded (it plays now, or was paused after playing). A process the
+        /// system launched to perform the intent restores the book paused and has played nothing, so it has nothing to
+        /// capture, whether the restore finished before the intent arrived or not: the answer never depends on that race.
+        case surface
+    }
+
     public enum Outcome: Equatable, Sendable {
         case saved(CaptureRecord)
-        /// Nothing is loaded, so there is no moment to capture. Nothing was written.
+        /// No moment to capture: nothing is loaded, or (for a quick-capture surface) the loaded book has not played in
+        /// this process. Nothing was written.
         case nothingPlaying
         /// The durable write failed. Nothing is acknowledged.
         case notSaved(String)
@@ -47,8 +61,11 @@ public final class QuickCaptureCoordinator {
     /// only after the save. `origin` records the surface and process. The excerpt export starts afterwards.
     /// `idempotencyKey`: a caller that has a request identity passes it (the in-player button: one per tap, from
     /// `requestKey(origin:)`; a re-sent request: the same key again); otherwise the repeat window applies.
-    public func captureNow(origin: String, note: String? = nil, idempotencyKey: String? = nil) -> Outcome {
+    /// `entry`: the in-player button (`.player`) or a quick-capture surface (`.surface`), which captures only a moment
+    /// heard in this process (review R6-01).
+    public func captureNow(origin: String, entry: Entry, note: String? = nil, idempotencyKey: String? = nil) -> Outcome {
         guard let timeline = playback.timeline else { return .nothingPlaying }
+        if entry == .surface, !playback.hasPlayedSinceLoad { return .nothingPlaying }
         let position = playback.currentGlobalMs
         let now = clock.now()
         let key: String

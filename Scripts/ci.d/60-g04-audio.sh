@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # G0.4 audio spike (plan 10, 21.1; ADR-0006, ADR-0007): fixtures (including 3- and 10-hour files of every
-# provisional format), project generation, a signed device build for testing (team A4KBDX665Z, automatic signing;
+# provisional format, and stereo files with distinct channels), project generation, a signed device build for testing (team A4KBDX665Z, automatic signing;
 # unsigned when the host has no Apple Development identity), every automated test on this job's own simulator, a
 # process-kill trial of the harness app, an ffmpeg decode of exported excerpts, and the quick-capture intent run through
 # the system from the Shortcuts app (App Shortcut) and from Control Center (the control), as UI tests.
@@ -19,7 +19,7 @@
 #   G04_KEEP_SIM=1    leave this job's simulator booted when the drop-in exits (local debugging). By default the drop-in
 #                     shuts down the simulator it booted, on success or failure (review R4-04: simulators left booted
 #                     load the shared Mac and distort other jobs' timing measurements).
-#   G04_DEVICE_FIXTURES=1  also build the device test bundle with the fixtures bundled (about 8.6 GB copied into the
+#   G04_DEVICE_FIXTURES=1  also build the device test bundle with the fixtures bundled (about 8.7 GB copied into the
 #                     derived data), the configuration device checklist step 1 installs, and verify its signature and
 #                     contents (device-build-fixtures.txt). Off by default: it needs the disk space and several minutes.
 #   SYLVIA_AUDIBLE_PLAYBACK=1  play at full volume. Without it every test, probe and harness launch plays at 1 %
@@ -31,12 +31,14 @@
 # Exits non-zero when fixture generation, generation, a build, any test, the process-kill trial, the portability
 # check or a quick-capture UI test fails, when a quick-capture result the G0.4 report relies on is missing (the control's
 # press performed and saved in the app's process; with the team-signed build also the App Shortcut run, and the
-# control's surface in the origin; review R5-06), or when a result table is missing. A missing fixture is a test
-# failure, never a skip.
+# control's surface in the origin; review R5-06; and the control pressed when nothing has been heard, with the harness
+# not running and with its restored book not played, answering nothing_to_capture with no record; review R6-01), when
+# the capture records a UI test counted disagree with the captures the harness logged (review R6-06), or when a result
+# table is missing. A missing fixture is a test failure, never a skip.
 # On exit, success or failure, it shuts down the simulator it booted (unless G04_KEEP_SIM=1). A full run takes about
 # 90 minutes on the M5 Max (the two-hour-of-media soak alone is 40 minutes; the codec matrix, the 10-hour files of
 # every format and the cold-resume sweeps most of the rest; longer when the host is loaded), plus about 2 minutes with
-# G04_DEVICE_FIXTURES=1 and about 30 minutes the first time for the fixtures (about 8.4 GB).
+# G04_DEVICE_FIXTURES=1 and about 30 minutes the first time for the fixtures (about 8.5 GB).
 set -euo pipefail
 source "$(cd "$(dirname "$0")/../lib" && pwd)/env.sh"
 source "$SYLVIA_ROOT/Scripts/lib/sim.sh"
@@ -71,7 +73,7 @@ EXPECTED_TABLES=(
   preview-load-edition.txt
   preview.txt process-kill-relaunch.txt audio-output.txt quick-capture-simulator-adhoc.txt quick-capture-simulator-signed.txt rate-pitch.txt
   real-engine-boundary.txt real-engine-error-states.txt real-engine-relaunch.txt real-engine-seek-rate.txt soak.txt
-  t23-source-removal.txt
+  stereo-channels.tsv t23-source-removal.txt
 )
 if [[ "${G04_DEVICE_FIXTURES:-0}" == "1" ]]; then EXPECTED_TABLES+=(device-build-fixtures.txt); fi
 
@@ -115,10 +117,11 @@ if [[ -n "$direct" ]]; then
 fi
 echo "every test player is created through TestAudio"
 
-step "fixtures (Scripts/fixtures/generate-g04-audio-fixtures.sh, generate-g04-audio-long-formats.sh and generate-g04-audio-probes.sh; idempotent)"
+step "fixtures (Scripts/fixtures/generate-g04-audio-fixtures.sh, generate-g04-audio-long-formats.sh, generate-g04-audio-probes.sh and generate-g04-audio-stereo.sh; idempotent)"
 "$SYLVIA_ROOT/Scripts/fixtures/generate-g04-audio-fixtures.sh" | tail -n 3
 "$SYLVIA_ROOT/Scripts/fixtures/generate-g04-audio-long-formats.sh" | tail -n 3
 "$SYLVIA_ROOT/Scripts/fixtures/generate-g04-audio-probes.sh" | tail -n 3
+"$SYLVIA_ROOT/Scripts/fixtures/generate-g04-audio-stereo.sh" | tail -n 3
 
 step "generate the Xcode project"
 sylvia_generate "$SPIKE"
@@ -184,7 +187,7 @@ cat "$SIGNING"
 if [[ "${G04_DEVICE_FIXTURES:-0}" == "1" ]]; then
   # The configuration device checklist step 1 installs: the test bundle with every fixture inside (the post-build
   # script copies them), signed (gate gap of review round 4: the step above skips the copy).
-  step "device build for testing with the fixtures bundled (G04_DEVICE_FIXTURES=1; about 8.6 GB)"
+  step "device build for testing with the fixtures bundled (G04_DEVICE_FIXTURES=1; about 8.7 GB)"
   FIXTURED="$RESULTS/device-build-fixtures.txt"
   security find-identity -v -p codesigning | grep -q '"Apple Development: ' \
     || { echo "error: G04_DEVICE_FIXTURES=1 needs an Apple Development identity on this host"; exit 1; }
@@ -201,10 +204,11 @@ if [[ "${G04_DEVICE_FIXTURES:-0}" == "1" ]]; then
   # Every file of both fixture manifests is in the bundle with the manifest's SHA-256.
   checked=0
   for manifest in "$SYLVIA_FIXTURE_CACHE/generated/g04-audio/manifest.tsv" "$SYLVIA_FIXTURE_CACHE/generated/g04-audio/long-formats/manifest.tsv" \
-                  "$SYLVIA_FIXTURE_CACHE/generated/g04-audio/probes/manifest.tsv"; do
+                  "$SYLVIA_FIXTURE_CACHE/generated/g04-audio/probes/manifest.tsv" "$SYLVIA_FIXTURE_CACHE/generated/g04-audio/stereo/manifest.tsv"; do
     base="$BUNDLED"
     [[ "$manifest" == */long-formats/manifest.tsv ]] && base="$BUNDLED/long-formats"
     [[ "$manifest" == */probes/manifest.tsv ]] && base="$BUNDLED/probes"
+    [[ "$manifest" == */stereo/manifest.tsv ]] && base="$BUNDLED/stereo"
     while IFS=$'\t' read -r f sha _; do
       [[ -z "$f" || "$f" == \#* ]] && continue
       got="$(shasum -a 256 "$base/$f" | awk '{print $1}')"

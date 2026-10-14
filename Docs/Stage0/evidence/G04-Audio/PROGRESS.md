@@ -1,14 +1,18 @@
 # G0.4 audio: progress (for the next agent)
 
-**State: review rounds 1 to 5 fixed; complete for Stage 0 on the simulator; device run pending.** Report
+**State: review rounds 1 to 6 fixed (round 6 in two passes, the second re-checking the first); complete for Stage 0
+on the simulator; device run and product-owner decisions PO-1 to PO-6 pending.** Report
 `Docs/Stage0/G04-Audio.md`, ADR-0006, ADR-0007, device checklist `Docs/Stage0/device-checklists/G04-Audio.md`.
 
-Branch `m0-g04-audio`. Simulator `Sylvia-M0-g04-audio` (iPhone 17, iOS 26.5). The CI drop-in
+Branches: `m0-g04-audio` (rounds 1 to 5; merged into `m0-integrate` on 14 October 2026), then
+`m0-int-minors-g04-audio` from the integration commit `471b143` (round 6, in two passes; see below). Simulators:
+`Sylvia-M0-g04-audio` (rounds 1 to 5), `Sylvia-M0-minors-g04-audio` (round 6; erased before each clean run, deleted at
+the end of the second pass). Both iPhone 17, iOS 26.5. The CI drop-in
 `Scripts/ci.d/60-g04-audio.sh` does everything (fixtures, generate, signed device build, simulator build, tests,
 process-kill trial, ffmpeg portability, the quick-capture App Shortcut through the Shortcuts app and the control
 through Control Center) and fails on any test failure, build warning, missing result table or missing quick-capture
 result; `G04_SKIP_REALAV=1` runs only the fast unit suites;
-`G04_DEVICE_FIXTURES=1` also builds and verifies the 8.6 GB device bundle with the fixtures; it samples the host's
+`G04_DEVICE_FIXTURES=1` also builds and verifies the 8.7 GB device bundle with the fixtures; it samples the host's
 load every 30 s (`host-load.tsv`) and shuts its simulator down on exit (`G04_KEEP_SIM=1` keeps it). Tests write
 TSV/TXT results to `$G04_RESULTS_DIR` (relative paths are taken from the repository root). Every test, probe and
 harness launch plays at 1 % volume unless `SYLVIA_AUDIBLE_PLAYBACK=1` (the Mac's speakers are shared; see "Quiet runs"
@@ -16,11 +20,13 @@ below).
 
 ## Verified
 
-- Clean CI run from deleted DerivedData after the round-5 fixes (quiet output, with `G04_DEVICE_FIXTURES=1`): see
-  the header of `ci-clean-run.log` (commit, times, exit codes, host load at the start and end); result tables in
-  `results/`. `Scripts/ci.sh contracts` in the same log. After the run only documents, evidence and one comment line in `Spikes/G04-Audio/project.yml` changed. The clean
-  runs of rounds 4 and 3 have their tables at commits `5d85b1f` and `943d5e7`; a targeted round-4 budget run under
-  heavier load is `budgets-round4-targeted-run.txt`.
+- Final clean CI run of round 6 (second pass) from deleted DerivedData on an erased simulator (quiet output, with
+  `G04_DEVICE_FIXTURES=1`): see the header of `ci-clean-run.log` (commit, times, exit codes, host load at the start
+  and end); result tables in `results/`. `Scripts/fixtures/fetch.sh` before it and `Scripts/ci.sh contracts` after it,
+  in the same log. After the run only documents and evidence changed (`git diff <commit under test> -- Spikes Scripts`
+  is empty). Earlier clean runs keep their logs or tables in git: round 6's first pass at `eb7db57`, round 5 at
+  `471b143`, round 4 at `5d85b1f`, round 3 at `943d5e7`; a targeted round-4 budget run under heavier load is
+  `budgets-round4-targeted-run.txt`.
 
 ## Quiet runs (product-owner request, round 3)
 
@@ -31,8 +37,44 @@ below).
   the process-kill trial and the quick-capture script pass `-g04AudiblePlayback NO` and fail unless every launch
   logged `volume=0.01`. The engines default to full volume (`AudioOutputTests`).
 - Not `isMuted`: a muted AVPlayer rendered a different signal after the time-pitch stage at 2x and 3x (1 kHz tone
-  measured about 665 and 351 Hz), which broke `rateAndPitch`; 1 % (accepted by the product owner) and volume 0 did
+  measured 665-684 Hz at 2x and 332-351 Hz at 3x over the clean runs of rounds 4 to 6), which broke `rateAndPitch`;
+  1 % (accepted by the product owner) and volume 0 did
   not (`audio-output.txt`, `MutedRenderingTests`).
+
+## Review round 6 (all findings R6-01 to R6-06 addressed; on the integration branch)
+
+Two passes on `m0-int-minors-g04-audio`. The first made the fixes below and a clean run (of commit `e7a87a2`; its log
+and tables at `eb7db57`), then stopped when its session's sign-in expired, before the documents were reconciled with
+that run. The second pass treated that work as unreviewed: it reviewed every change since `471b143` (code, tests,
+scripts and documents), re-ran the R6-01 mutation check (`mutation-check-r6-01.txt`), regenerated the stereo fixtures
+twice into a scratch fixture cache (`fixture-generation-stereo.log`: identical to each other, to the shared cache and to
+the first pass's digests), put the report's findings in order, corrected the fixture and bundle sizes in the drop-in's
+comments and the checklist, made the final clean run (`ci-clean-run.log`, tables in `results/`) and reconciled the
+report, both ADRs, the checklist and this file with it (the first pass had left several report rows, among them 11, 21,
+23 and 33, and ADR-0006 with round 5's numbers).
+
+- R6-01: a quick-capture surface (the intent behind the control, the App Shortcut, Siri; the bookmark command)
+  captures only a moment heard in the app process (`PlaybackService.hasPlayedSinceLoad`;
+  `QuickCaptureCoordinator.captureNow(origin:entry:)` with `.surface`; the in-player button passes `.player`). A harness
+  the system launches for the intent answers `result=nothing_to_capture` whichever way its start-up race goes (the log
+  line adds `loaded=` and `played_since_load=`). Unit test `QuickCaptureTests.aColdLaunchHasNothingToCapture...` (before,
+  during and after the restore); two more UI phases press the control with the harness not running and with its restored
+  book not played (`quick_capture_simulator_attempt.sh` sections 4 and 5, required); device checklist step 12 rewritten.
+- R6-02: plan 10.1 controls in `PlaybackService`, decided in ADR-0006 decisions 18-21: skip intervals (advertised as the
+  remote commands' preferred intervals), sleep timer (duration or end of chapter; keeps the session), rewind after a long
+  pause (measured across a relaunch from `PlaybackCheckpoint.savedAtUnixMs`), incomplete-edition warning
+  (`unavailableMembers`, proposed key `audio.edition_incomplete`). `PlaybackControlsTests`; harness Playback settings
+  section; device checklist steps 7.4 and 17.
+- R6-03: the report has a "Shared-file requests" table with every request and its outcome after integration; this file's
+  "Next" section points at it.
+- R6-04: the report and ADR-0006 open with the product-owner decisions PO-1 to PO-6 (ADR-0007 holds PO-6).
+- R6-05: `Scripts/fixtures/generate-g04-audio-stereo.sh` (300 s master with different speech in each channel, encodes
+  in every provisional two-channel format, a same-speech-in-both-channels FLAC) and `StereoChannelTests`
+  (`stereo-channels.tsv`). Finding: the system two-to-one conversion the export used is an equal-power sum (0.707 per
+  channel), which raises speech that is the same in both channels by 3 dB (gain 1.414); `PCMDecoder` now averages the
+  two channels (gain 0.998, peak ratio 0.991). HE-AAC v2 does not keep two different channels apart (parametric).
+- R6-06: the harness shows `captures=<n> newest=<origin>` (the record count; the Captures list is lazy); the UI tests read
+  it, and the script fails when the change disagrees with the saved captures in the harness log.
 
 ## Review round 5 (all findings R5-01 to R5-08 addressed)
 
@@ -141,9 +183,12 @@ below).
 
 ## Next (outside this workstream)
 
-- Serialized device run: checklist steps 1-16.
-- Integration: shared changes listed in the workstream result (LICENSES entry for the generated fixtures, ffmpeg in
-  ADR-0002, vocabulary keys `audio.nothing_to_capture` and `audio.moment_not_saved`).
+- Serialized device run: checklist steps 1-17.
+- Product owner: decisions PO-1 to PO-6 (top of the report).
+- Shared files: every request this gate made and what became of it is the report's "Shared-file requests" table (the
+  outcomes of rounds 1 to 5 are the M0 integration log's rows 25-31; round 6 adds rows 6-11: the stereo fixtures in
+  `Fixtures/LICENSES.md` and ADR-0002, the vocabulary key `audio.edition_incomplete`, the binary-file count, ADR-0006's
+  status in the ADR index, and the review-6 finding IDs in the integration log).
 
 ## Known problems / findings
 
@@ -151,16 +196,18 @@ below).
 - Cold resume in an MP3 on precise timing (VBR, or CBR without the per-file mode) takes about 1 s per hour of depth
   into the file, more under host load, and misses the 1.5 s budget beyond about 1.0-1.8 h into the file (0.41-1.52 h
   in the round-4 review's run at load averages of 60-148).
-- Opening a native FLAC, an MP3 without a header or an Ogg Opus file scans it (about 2.8-3.4, 0.8-1.0 and
-  0.09-0.16 s per hour of file over three runs): long files of those formats miss the budget at every depth (Ogg
-  Opus at 10 h at the edge). MPEG-4, CAF and WAV are fast at every depth. The import remux (ADR-0006 decision 17)
+- Opening a native FLAC, an MP3 without a header or an Ogg Opus file scans it (about 2.7-3.4, 0.8-1.0 and
+  0.09-0.16 s per hour of file over six runs): long files of those formats miss the budget at every depth (Ogg
+  Opus at 10 h at the edge: 66 of 84 trials within the budget over seven runs, one of six `.ogg` trials over it in
+  the final run of round 6). MPEG-4, CAF and WAV are fast at every depth. The import remux (ADR-0006 decision 17)
   removes both costs for the files that stay precise; it needs product-owner approval.
 - Where the process had just read a whole MP3 (the import's frame scan) before its first precise seek, the seek was
-  fast (0.18-0.35 s at 5-10 h instead of several seconds); not measured as a mitigation.
+  fast (0.16-0.35 s at 5-10 h instead of several seconds); not measured as a mitigation.
 - Export time from a cold deep MP3 and the remux time vary several-fold between runs (cause not isolated).
 - The analysis tap processes whole buffers past a preview's end (363-775 ms of digital silence, depending on the
   sample rate); the per-format preview test judges the end by the audible content, not by that overrun.
-- One intermittent player stall in a VBR MP3 without Xing header (`intermittent-player-stall.txt`), not reproduced.
+- One intermittent player stall in a VBR MP3 without Xing header (`intermittent-player-stall.txt`), not reproduced
+  (1 in 14 codec-matrix runs, rounds 2 to 6).
 - Quick capture on the simulator needs a team-signed build for full evidence: the ad-hoc build refuses the App Shortcut
   and loses the control's `surface` parameter (the control's intent still runs in the app process and saves).
 - Open times of native FLAC, MP3 without a header and Ogg Opus grow with the host's load as well as with the file's

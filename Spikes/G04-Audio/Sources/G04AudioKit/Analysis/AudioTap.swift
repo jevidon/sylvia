@@ -12,6 +12,8 @@ public final class AudioTapCollector: @unchecked Sendable {
         public var sourceStart: Double
         /// Mono samples (channels averaged).
         public var samples: [Float]
+        /// Each channel, in order, when the collector keeps them (`keepsChannels`; review R6-05); empty otherwise.
+        public var channels: [[Float]] = []
         /// Host uptime when the tap processed this chunk.
         public var uptime: TimeInterval
     }
@@ -20,8 +22,12 @@ public final class AudioTapCollector: @unchecked Sendable {
     private var chunks: [Chunk] = []
     private var format = AudioStreamBasicDescription()
     private var recording = true
+    private let keepsChannels: Bool
 
-    public init() {}
+    /// `keepsChannels`: also keep every channel separately (the stereo tests check which source each channel plays).
+    public init(keepsChannels: Bool = false) {
+        self.keepsChannels = keepsChannels
+    }
 
     public var sampleRate: Double { lock.withLock { format.mSampleRate } }
 
@@ -42,11 +48,13 @@ public final class AudioTapCollector: @unchecked Sendable {
         let nonInterleaved = format.mFormatFlags & kAudioFormatFlagIsNonInterleaved != 0
         guard isFloat, format.mBitsPerChannel == 32 else { return }
         var mono = [Float](repeating: 0, count: frames)
+        var perChannel: [[Float]] = []
         if nonInterleaved {
             let n = abl.count
             for buffer in abl {
                 guard let data = buffer.mData?.assumingMemoryBound(to: Float.self) else { continue }
                 for i in 0..<frames { mono[i] += data[i] / Float(n) }
+                if keepsChannels { perChannel.append(Array(UnsafeBufferPointer(start: data, count: frames))) }
             }
         } else if let buffer = abl.first, let data = buffer.mData?.assumingMemoryBound(to: Float.self) {
             let ch = Int(buffer.mNumberChannels)
@@ -55,8 +63,9 @@ public final class AudioTapCollector: @unchecked Sendable {
                 for c in 0..<ch { s += data[i * ch + c] }
                 mono[i] = s / Float(ch)
             }
+            if keepsChannels { perChannel = (0..<ch).map { c in (0..<frames).map { data[$0 * ch + c] } } }
         }
-        chunks.append(Chunk(sourceStart: start.seconds, samples: mono, uptime: uptime))
+        chunks.append(Chunk(sourceStart: start.seconds, samples: mono, channels: perChannel, uptime: uptime))
     }
 
     /// Concatenates the chunks recorded since the last reset, starting at the first one, as long as each next

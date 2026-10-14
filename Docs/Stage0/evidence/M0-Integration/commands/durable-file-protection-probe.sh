@@ -12,6 +12,7 @@ mkdir -p "$out"
 echo "# command: Docs/Stage0/evidence/M0-Integration/commands/durable-file-protection-probe.sh"
 echo "# date: $(date -u +%Y-%m-%dT%H:%M:%SZ); commit $(git rev-parse --short HEAD) (plus uncommitted: $(git status --porcelain -- Spikes/G04-Audio | wc -l | tr -d ' ') G0.4 files)"
 echo "# host: macOS $(sw_vers -productVersion) ($(sw_vers -buildVersion)); $(xcrun swiftc --version 2>&1 | head -1)"
+cp Docs/Stage0/evidence/M0-Integration/commands/durable-file-protection-probe.swift "$out/main.swift"  # top-level code needs main.swift
 xcrun swiftc -swift-version 6 -o "$out/probe" Spikes/G04-Audio/Sources/G04AudioKit/Persistence/DurableFile.swift \
-  Docs/Stage0/evidence/M0-Integration/commands/durable-file-protection-probe.swift || exit 1
+  "$out/main.swift" || exit 1
 "$out/probe" "$out/out"

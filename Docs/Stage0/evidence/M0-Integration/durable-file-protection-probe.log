@@ -1,0 +1,8 @@
+# command: Docs/Stage0/evidence/M0-Integration/commands/durable-file-protection-probe.sh
+# date: 2026-10-14T17:28:28Z; commit 038145a (plus uncommitted: 0 G0.4 files)
+# host: macOS 26.6.2 (25G83); swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+A complete: write ok, read back NSURLFileProtectionComplete
+B completeUnlessOpen: write ok, read back NSURLFileProtectionCompleteUnlessOpen
+C completeUntilFirstUserAuthentication: write ok, read back NSURLFileProtectionCompleteUntilFirstUserAuthentication
+unmapped class: refused (protection(path: "sub", expected: "class A, B or C", actual: "SylviaTestUnknownProtectionClass")); directory created: false
+RESULT: PASS

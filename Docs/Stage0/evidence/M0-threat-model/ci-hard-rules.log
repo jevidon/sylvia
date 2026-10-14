@@ -1,0 +1,80 @@
+# command: rm -rf .build/ci-logs && Scripts/ci.sh hard-rules
+# commit: bbe46c1f27f76f95c94d4ba5ab66b8a7985bf34c
+# date: 2026-10-12T18:54:01Z
+# exit status of Scripts/ci.sh: 1
+
+## Scripts/ci.sh output
+==> 13-hard-rules
+    FAIL (4s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5ce13c9e-6bf-6/.build/ci-logs/13-hard-rules.log
+    | ok: git work tree: no matched credential value is printed (only length and first four characters)
+    | ok: git work tree: ignored files are not listed
+    | ok: an allowlist entry that matches nothing is reported STALE and fails the audit
+    | ok: allowlisting a never-allowlistable rule is refused
+    | ok: a clean tree passes with no finding
+    | 
+    | self-test: PASS (0 failure(s))
+    | 
+    | --- repository audit (Scripts/audit-hard-rules.sh)
+    | root: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5ce13c9e-6bf-6
+    | file list: git (git ls-files --cached --others --exclude-standard)
+    | files scanned: 1925 (814 binary, skipped for text rules); not scanned (hold the patterns): Scripts/audit-hard-rules.sh, Scripts/ci.d/13-hard-rules.sh
+    | allowlist: 11 entries
+    | FINDING file-protection-none Spikes/G05-Recovery/Sources/SylviaRecovery/FileProtection.swift:61: default: return .noFileProtection
+    | | Rule | Findings | Allowed |
+    | | --- | --- | --- |
+    | | ats-arbitrary-loads | 0 | 0 |
+    | | ats-exception | 0 | 14 |
+    | | trust-override | 0 | 4 |
+    | | weak-tls | 0 | 0 |
+    | | file-protection-none | 1 | 3 |
+    | | keychain-accessible-always | 0 | 0 |
+    | | key-like-string | 0 | 10 |
+    | | private-key-block | 0 | 0 |
+    | | generic-secret | 0 | 19 |
+    | | secret-file | 0 | 0 |
+    | | todo-in-product | 0 | 0 |
+    | 
+    | result: FAIL (1 finding(s), 50 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+    | FAIL: the repository audit reported findings (exit 1); see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5ce13c9e-6bf-6/.build/ci-logs/hard-rules/audit-repository.log
+FAILED: 13-hard-rules
+
+## .build/ci-logs/13-hard-rules.log (the drop-in's own log)
+environment: host (macOS 26.6.2 25G83), Python 3.9.6
+commit: bbe46c1f27f76f95c94d4ba5ab66b8a7985bf34c
+
+--- self-test (Scripts/audit-hard-rules.sh self-test)
+ok: git work tree: exactly the 22 planted lines are findings
+ok: git work tree: the audit fails when there are findings
+ok: git work tree: an allowlisted probe plist is reported as allowed, not as a finding
+ok: git work tree: the two canary keys are allowed as canaries under both credential rules (4 of 4)
+ok: git work tree: the binary file is skipped and the Spikes/, test-target and Markdown lookalikes are not findings
+ok: git work tree: no matched credential value is printed (only length and first four characters)
+ok: git work tree: ignored files are not listed
+ok: an allowlist entry that matches nothing is reported STALE and fails the audit
+ok: allowlisting a never-allowlistable rule is refused
+ok: a clean tree passes with no finding
+
+self-test: PASS (0 failure(s))
+
+--- repository audit (Scripts/audit-hard-rules.sh)
+root: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5ce13c9e-6bf-6
+file list: git (git ls-files --cached --others --exclude-standard)
+files scanned: 1925 (814 binary, skipped for text rules); not scanned (hold the patterns): Scripts/audit-hard-rules.sh, Scripts/ci.d/13-hard-rules.sh
+allowlist: 11 entries
+FINDING file-protection-none Spikes/G05-Recovery/Sources/SylviaRecovery/FileProtection.swift:61: default: return .noFileProtection
+| Rule | Findings | Allowed |
+| --- | --- | --- |
+| ats-arbitrary-loads | 0 | 0 |
+| ats-exception | 0 | 14 |
+| trust-override | 0 | 4 |
+| weak-tls | 0 | 0 |
+| file-protection-none | 1 | 3 |
+| keychain-accessible-always | 0 | 0 |
+| key-like-string | 0 | 10 |
+| private-key-block | 0 | 0 |
+| generic-secret | 0 | 19 |
+| secret-file | 0 | 0 |
+| todo-in-product | 0 | 0 |
+
+result: FAIL (1 finding(s), 50 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+FAIL: the repository audit reported findings (exit 1); see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5ce13c9e-6bf-6/.build/ci-logs/hard-rules/audit-repository.log

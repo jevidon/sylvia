@@ -1,0 +1,12 @@
+# Host probe: setResourceValue(_:forKey: .fileProtectionKey) given a FileProtectionType vs a URLFileProtection
+# date: 2026-10-12T17:41:59Z
+# host: macOS 26.6.2 (25G83), Apple M5 Max
+# compiler: swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+# command: xcrun swiftc -swift-version 6 -o .build/scratch/protprobe/probe Docs/Stage0/evidence/M0-threat-model/protection-key-probe.swift && .build/scratch/protprobe/probe .build/scratch/protprobe/out
+FileProtectionType.completeUntilFirstUserAuthentication.rawValue = NSFileProtectionCompleteUntilFirstUserAuthentication
+URLFileProtection.completeUntilFirstUserAuthentication.rawValue  = NSURLFileProtectionCompleteUntilFirstUserAuthentication
+FileProtectionType.completeUnlessOpen.rawValue = NSFileProtectionCompleteUnlessOpen
+URLFileProtection.completeUnlessOpen.rawValue  = NSURLFileProtectionCompleteUnlessOpen
+FileProtectionType.completeUnlessOpen: before=NSURLFileProtectionCompleteUntilFirstUserAuthentication setResourceValue=ok after=NSURLFileProtectionCompleteUntilFirstUserAuthentication
+URLFileProtection.completeUnlessOpen: before=NSURLFileProtectionCompleteUntilFirstUserAuthentication setResourceValue=ok after=NSURLFileProtectionCompleteUnlessOpen
+FileProtectionType.completeUntilFirstUserAuthentication: before=NSURLFileProtectionCompleteUntilFirstUserAuthentication setResourceValue=ok after=NSURLFileProtectionCompleteUntilFirstUserAuthentication

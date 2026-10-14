@@ -2,13 +2,13 @@
 
 Status of every step: **pending** (not run). Stage 0 agents did not use the physical iPhone; this checklist is for the serialized device run. Nothing here may be inferred from the simulator results.
 
-**Device:** iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24), Developer Mode on (ADR-0001). Repeat steps 1, 3, 9-13 and 15 on the iPhone 12-class baseline when one is available (it has no Action button: skip step 11 there).
+**Device:** iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24), Developer Mode on (ADR-0001). Repeat steps 1, 3, 8-13 and 15 on the iPhone 12-class baseline when one is available (it has no Action button: skip step 11 there); ADR-0007's open item asks for steps 8-13 there.
 
 **Accessories:** wired or Bluetooth headphones (step 4), a second phone to place a call (step 5), a Bluetooth speaker or headset (step 6).
 
 ## Setup
 
-1. On the build Mac, from the repository root (branch `m0` once this gate's round-6 work on `m0-int-minors-g04-audio` is merged into it, or that branch itself; `m0-g04-audio` lacks round 6's stereo fixtures, quick-capture rule and playback controls, so the steps below fail or test older behaviour there):
+1. On the build Mac, from the repository root (the M0 integration branch, `m0-integrate`, which holds this gate's round-6 work since M0 assembly, or `m0` once it is merged; record `git rev-parse HEAD`; `m0-g04-audio` lacks round 6's stereo fixtures, quick-capture rule and playback controls, so the steps below fail or test older behaviour there):
 
    ```sh
    source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh
@@ -19,9 +19,12 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
    Scripts/fixtures/generate-g04-audio-stereo.sh
    sylvia_generate Spikes/G04-Audio
    xcrun devicectl list devices          # note the device identifier: <device-id>
+   # Use the Identifier only when it is the device's UDID (copy the identifier alone); if devicectl shows an ECID or a
+   # CoreDevice identifier instead, take the UDID from Xcode > Window > Devices and Simulators > the device > Identifier:
+   # xcodebuild -destination id= needs the UDID.
    ```
 
-2. Signing: the project uses automatic signing with team `A4KBDX665Z`. Every `xcodebuild` command below adds `-allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z`. (The CI drop-in already builds the test bundle for a generic iOS device with automatic signing on the build Mac and checks every product's signature, `results/device-build-signing.txt`; what remains for the device is installing and running it.)
+2. Signing: the project uses automatic signing with team `A4KBDX665Z`. Every `xcodebuild` command below adds `-allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z`. The second flag registers a device the team has not registered; it takes effect only with the first. (The CI drop-in already builds the test bundle for a generic iOS device with automatic signing on the build Mac and checks every product's signature, `results/device-build-signing.txt`; what remains for the device is installing and running it.)
 3. Device test builds copy the fixtures into the test bundle (about 8.7 GB: the PCM masters, the 10-minute matrix files, the 3- and 10-hour files of every provisional format, the 60 s container probes, the 300 s stereo files and the LibriVox M4B; `du -sh ~/Library/Caches/SylviaFixtures/generated/g04-audio` shows the exact size of the generated part). The phone needs at least 15 GB free; allow for the install time over the cable or network. The CI drop-in builds and signs this exact configuration on the build Mac when run with `G04_DEVICE_FIXTURES=1` and checks every bundled file against the fixture manifests' SHA-256 (`results/device-build-fixtures.txt`); what remains for the device is installing and running it.
 4. Sound. The spike's tests and harness play **quietly, at 1 % volume**, unless asked otherwise (product-owner request: the build Mac's speakers are shared). The volume is applied after everything the tests measure, so the automated results are the same at 1 % (`results/audio-output.txt`). Full volume is needed only where a step says **listen**:
    - harness: tap **"Full volume (now quiet, 1 %)"** in the Player section (step 2.4). The button then reads "Quiet playback (now full volume)", the log gets `output volume=1.0 preview_volume=1.0 reason=toggle`, and the setting is kept across launches until you tap it again. A launch with `SYLVIA_AUDIBLE_PLAYBACK=1` in its environment is at full volume too (`xcrun devicectl device process launch ... --environment-variables '{"SYLVIA_AUDIBLE_PLAYBACK":"1"}'`; check the option name with `--help`).
@@ -31,7 +34,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 ## Recording
 
 - Save every console output and pulled file as plain text under `Docs/Stage0/evidence/G04-Audio/device/`, with the step number in the file name (for example `device/step-01-tests.log`, `device/step-03-harness.log`). Screenshots: PNG under 2 MB.
-- In `Docs/Stage0/G04-Audio.md`, change the step's rows from pending-device to passed or failed, with the date, device model and iOS build.
+- In `Docs/Stage0/G04-Audio.md`, change the step's rows from pending-device to passed-device or failed, with the date, device model and iOS build.
 - Never edit an expected result to match what happened. A different result is a failure, recorded as one, with what happened instead.
 - The harness log is `Documents/g04-harness.log` in the app container. Pull it with:
 
@@ -50,10 +53,10 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
    ```sh
    xcodebuild test -project Spikes/G04-Audio/G04Audio.xcodeproj -scheme G04AudioHarness \
      -destination "id=<device-id>" -derivedDataPath Spikes/G04-Audio/.build/DerivedData \
-     -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z 2>&1 | tee step-01-tests.log
+     -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z 2>&1 | tee step-01-tests.log
    ```
 
-   On the simulator the tests took about 78-82 minutes in the clean runs of rounds 4 to 6: the soak test alone plays two hours of media at 3x for 40 minutes, and the 3- and 10-hour files of every format and the cold-resume sweeps take most of the rest. The device may differ. Keep the phone unlocked, on a charger, with auto-lock set to Never for this step. The tests play at 1 % volume (Setup 4); nothing in this step needs listening.
+   On the simulator the tests took about 78-82 minutes in the clean runs of rounds 4 to 6: the soak test alone plays two hours of media at 3x for 40 minutes, and the 3- and 10-hour files of every format and the cold-resume sweeps take most of the rest. The device may differ. Keep the phone unlocked, on the cable, with auto-lock set to Never for this step. (Low Power Mode sets Auto-Lock to 30 seconds: the Low Power Mode run of 1.4 is made as 1.4 says.) The tests play at 1 % volume (Setup 4); nothing in this step needs listening.
 2. On a device the tests write every result table to `Documents/G04Results/` in the test host's (the harness app's) container (`Results.write`; the console copies printed between `=== <name> ===` lines can be interleaved with system log lines, so do not extract them from the log). Pull the tables:
 
    ```sh
@@ -91,7 +94,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
    - `audio-output.txt`: the `test (quiet)` rows show `player_volume` 0.01, `peak_over_reference` between 0.9 and 1.1 and `measured_tone_hz` within 20 Hz of 1000 at 1x-3x on both taps (the 1 % volume changes nothing the tests measure); record the `muted` rows (in round 6's final clean run on the simulator the muted player's post-effects tone measured 665 Hz at 2x and 332 Hz at 3x, 684 and 351 Hz in rounds 4 and 5: which is why the tests are quiet rather than muted).
    - `audio-session.txt`: the last line reads `after a user pause: setActive(false, notifyOthersOnDeactivation) calls=1 error=none ...`.
    - The test "Seek latency in 10-hour files" passes with one known issue (10-hour MP3 with precise timing is slow to start after a seek). If instead it reports that the known issue was **not** recorded, the device meets the 1.5 s budget there: record that as a finding (it changes ADR-0006), not as a failure of the device.
-4. Run it twice more with the phone on a charger and not in Low Power Mode, and once in Low Power Mode. Record the budget lines of each run.
+4. Run it twice more with the phone on the cable and not in Low Power Mode, logging to `step-01-run2.log` and `step-01-run3.log`; after each run pull `budgets.txt`, `long-seek-latency.txt`, `codec-matrix.tsv` and `codec-matrix-detail.tsv` as in 1.2 into `step-01-run2/` and `step-01-run3/`. Then run the budget suite alone once in Low Power Mode on battery: the 1.1 command with `-only-testing:G04AudioTests/RealAV/BudgetTests` added, logging to `step-01-low-power.log`, then pull `budgets.txt` as in 1.2 into `step-01-low-power/`. For it, unplug the cable, keep the phone on the Mac's Wi-Fi, turn on Low Power Mode and check that `xcrun devicectl list devices` still lists the phone as available (the install over Wi-Fi takes much longer). Low Power Mode sets Auto-Lock to 30 seconds, so stay with the phone and touch the clock in the status bar at least every 20 s until the run ends; if it locks part way, run it again. Start fully charged and check after the run that Low Power Mode stayed on (iOS turns it off once charging reaches 80 %: https://support.apple.com/en-us/101604). Record the budget lines of each run with its power state and the battery level at start and end.
 5. Release build of the budget and preview measurements (plan 19.1). The `@testable` imports need `ENABLE_TESTABILITY=YES`; a separate derived-data folder keeps the Debug products of 1.1:
 
    ```sh
@@ -99,7 +102,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
      -destination "id=<device-id>" -derivedDataPath Spikes/G04-Audio/.build/DerivedData-release \
      -only-testing:G04AudioTests/RealAV/BudgetTests -only-testing:G04AudioTests/RealAV/RealPreviewTests \
      -only-testing:G04AudioTests/RealAV/LongFormatTests -only-testing:G04AudioTests/RealAV/PerFileTimingTests \
-     -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z 2>&1 | tee step-01-5-release.log
+     -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z 2>&1 | tee step-01-5-release.log
    ```
 
    Pull `budgets.txt`, `preview.txt`, `preview-end-formats.tsv`, `preview-interruption.txt`, `preview-load-edition.txt`, the four `long-formats-*.tsv`, `mp3-cbr-detection.tsv` and the two `estimated-timing-*.tsv` as in 1.2, into `Docs/Stage0/evidence/G04-Audio/device/step-01-release/`. Expected: the four suites pass; the environment line of each table (as in 1.2) contains `device iPhone18,1, iOS` and `Release build`; the same expectations as in 1.3 for these tables. Record the budget lines next to the Debug ones of 1.1 and 1.4. (In round 2 this command, then with the budget and preview suites only and the simulator as destination, was run on the build Mac: `Docs/Stage0/evidence/G04-Audio/release-build-simulator.txt`; the long-format and per-file timing suites were not built in Release on the simulator.)
@@ -110,10 +113,10 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 
    ```sh
    xcodebuild build -project Spikes/G04-Audio/G04Audio.xcodeproj -scheme G04AudioHarness -configuration Release \
-     -destination "id=<device-id>" -derivedDataPath Spikes/G04-Audio/.build/DerivedData-release \
-     -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z
+     -destination "id=<device-id>" -derivedDataPath Spikes/G04-Audio/.build/DerivedData-release-app \
+     -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z
    xcrun devicectl device install app --device <device-id> \
-     Spikes/G04-Audio/.build/DerivedData-release/Build/Products/Release-iphoneos/G04AudioHarness.app
+     Spikes/G04-Audio/.build/DerivedData-release-app/Build/Products/Release-iphoneos/G04AudioHarness.app
    xcrun devicectl device process launch --device <device-id> com.jevidon.sylvia.spike.g04audio
    ```
 2. Copy the real LibriVox M4B (4 h 47 m) into the harness's book folder, then force-quit and relaunch the harness:
@@ -240,13 +243,13 @@ A quick-capture surface captures only a moment heard in the harness process: mai
 
 1. At full volume (step 2.4; the toggle sets the preview player too), make five captures at different places, edit two of them with the numeric controls to 5-10 s, and preview each, **listening**.
 2. Expected: each preview starts at the start of the excerpt and stops at its end with no audible extra speech (more than about half a second). On the simulator the player's own end time was within a few milliseconds of the intended end and everything the analysis tap processed past the end was silence (`preview.txt`, `preview-end-formats.tsv`). Record pass or fail per preview.
-3. Make one capture across a member boundary of a multi-file book (copy the four `multi/*.mp3` fixtures into `Documents/G04Book` instead of the M4B, relaunch, seek to 2:20 and capture), then preview it immediately while it still reads "Moment saved · preserving audio" (the pending source ranges play back to back), and again after "Audio excerpt saved". Expected: the log's four `member` lines after the relaunch read `timing=estimatedCBR` (the import proves these MP3 files constant bit rate and opens them with estimated timing; ADR-0006 decision 2), and both previews play the end of the first file straight into the start of the next, with no gap or repeat you can hear.
+3. Make one capture across a member boundary of a multi-file book (replace the book folder with a folder holding only the four `multi/*.mp3` fixtures: `xcrun devicectl device copy to --device <device-id> --domain-type appDataContainer --domain-identifier com.jevidon.sylvia.spike.g04audio --source <a folder holding only those four files> --destination Documents/G04Book --remove-existing-content true`; relaunch and check that the Player title reads `G04Book (4 files)` (if not, set the folder with Xcode's Download Container and Replace Container); seek to 2:20 and capture), then preview it immediately while it still reads "Moment saved · preserving audio" (the pending source ranges play back to back), and again after "Audio excerpt saved". Expected: the log's four `member` lines after the relaunch read `timing=estimatedCBR` (the import proves these MP3 files constant bit rate and opens them with estimated timing; ADR-0006 decision 2), and both previews play the end of the first file straight into the start of the next, with no gap or repeat you can hear.
 
 ## 15. Importing, capturing and exporting never interrupt another app's audio (plan 10.1)
 
 The simulator showed only that the harness leaves the shared audio session alone (`audio-session.txt`: the category is unchanged and the harness activates the session 0 times before `play()`). Whether AVFoundation activates a session on its own during loading, seeking or export can only be heard on the device.
 
-1. Check that the harness is at full volume (step 2.4), so that when it does play you hear it. Force-quit the harness. Start music in the Music app (or another audio app) through the speaker or headphones.
+1. Put the M4B back alone first (the command of step 14.3 with a folder holding only `MeditationsMarcusAurelius_librivox.m4b`; after a relaunch the title reads `G04Book (1 files)`). Check that the harness is at full volume (step 2.4), so that when it does play you hear it. Force-quit the harness. Start music in the Music app (or another audio app) through the speaker or headphones.
 2. Copy a new audio file into the harness's book folder (as in step 2, for example `multi/Part 3.mp3`), then launch the harness from the Home Screen. It inspects the book's files, loads the edition and seeks to its saved position.
 3. In the harness, without pressing Play or Preview (both play audio by design), tap "Capture the last 30 seconds" twice; each capture exports an excerpt. (Each tap of the in-player button is its own capture, even two quick taps at the same position: the 2 s repeat window applies only to the quick-capture intent and the bookmark command; ADR-0007 decision 2.)
 4. Wait until both captures read "Audio excerpt saved". Pull the harness log.
@@ -258,11 +261,13 @@ The simulator showed only that the harness leaves the shared audio session alone
 
 The simulator trial killed the harness with SIGKILL from the host (`process-kill-relaunch.txt`); this is the device equivalent.
 
-1. With the LibriVox M4B in the book folder (step 2), force-quit the harness, then launch it so that it starts playing by itself and logs the player's position every 0.5 s:
+1. With the LibriVox M4B alone in the book folder (put it back as in step 15.1 if step 15 added a file; the title reads `G04Book (1 files)`), force-quit the harness, then launch it so that it starts playing by itself and logs the player's position every 0.5 s:
 
    ```sh
-   xcrun devicectl device process launch --device <device-id> com.jevidon.sylvia.spike.g04audio -g04AutoPlay YES
+   xcrun devicectl device process launch --device <device-id> com.jevidon.sylvia.spike.g04audio -- -g04AutoPlay YES
    ```
+
+   The `--` passes what follows to the app: without it devicectl reads `-g04AutoPlay` as its own options and stops with "The value 'YES' is invalid for '-t <seconds>'". The harness logs an `autoplay` line and then a `position` line every 0.5 s; if it does not start playing by itself, record the step as blocked rather than tapping Play (a tapped Play logs no `position` lines).
 
 2. After at least 30 s of playback, with the harness still in front, kill it with SIGKILL (no lifecycle event reaches it, as in a crash). `process launch` prints the process identifier; check the exact options with `xcrun devicectl device process signal --help` if they differ:
 

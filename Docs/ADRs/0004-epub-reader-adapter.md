@@ -29,6 +29,8 @@ readium/swift-toolkit **3.11.0** (exact), products **ReadiumShared**, **ReadiumS
 
 The license inventory at the M0 gate (ADR-0014) should take this table.
 
+Readium's resources also ship OpenDyslexic 2.001 (CC BY 3.0 and Bitstream), Accessible DfA and iA Writer Duospace (OFL) fonts, and minified scripts that bundle Hypothesis and npm code; marmelroy/Zip 2.1.2 carries CVE-2023-39135 (path traversal in `Zip.unzipFile`, no fixed release) in an API Readium does not call, and CI's import rule keeps `Zip` and Minizip out of product code (two routes around that rule are still open: ADR-0014, review round 4, R4-01 and R4-02). Licenses, advisories and the decisions they need are in ADR-0014 and `Docs/Licenses/third-party-inventory.md` (added at M0 assembly, 14 October 2026, as ADR-0014 requested).
+
 ### 2. The `ReaderSession` contract
 
 The reading screen is written against a reader-neutral protocol (spike source: `Spikes/G01-EPUB/Adapter/ReaderSession.swift`). Readium types never cross it.

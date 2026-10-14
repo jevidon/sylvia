@@ -3,8 +3,8 @@
 Everything here is **pending**. None of it has been run; nothing in it is inferred from the simulator results in `Docs/Stage0/G01-EPUB.md`.
 
 - **Harness:** `Spikes/G01-EPUB` (app `EPUBHarness`, bundle id `com.jevidon.sylvia.spike.epub`, display name "Sylvia EPUB Spike"). Without launch arguments it lists every bundled fixture; tap one to open it.
-- **Devices:** the iPhone 17 Pro (iPhone18,1, iOS 26.7) recorded in ADR-0001 for every step. Repeat steps 1, 6 and 11 on the iPhone 12-class baseline and an iPad once they are available (ADR-0001 open item).
-- **Where to record:** create `Docs/Stage0/evidence/G01-EPUB/device/` and write one `step-NN.md` per step with: date, tester, device model and identifier, iOS version and build, harness commit (`git rev-parse HEAD`), build configuration, the result (**pass** or **fail**), what was seen, and screenshots or screen recordings (under 2 MB each; PNG or MP4). Then change the step's status in the table of `Docs/Stage0/G01-EPUB.md` from pending-device or pending-human to passed-device or failed, with the link.
+- **Devices:** the iPhone 17 Pro (iPhone18,1, iOS 26.7) recorded in ADR-0001 for every step. Repeat steps 1, 6, 11 and 12 on the iPhone 12-class baseline, and steps 1, 6 and 11 on an iPad, once they are available (ADR-0001 open item; report open question 8).
+- **Where to record:** create `Docs/Stage0/evidence/G01-EPUB/device/` and write one `step-NN.md` per step with: date, tester, device model and identifier, iOS version and build, harness commit (`git rev-parse HEAD`), build configuration, the result (**passed-device** or **failed**), what was seen, and screenshots or screen recordings (under 2 MB each; PNG or MP4). Then change the step's status in the table of `Docs/Stage0/G01-EPUB.md` from pending-device or pending-human to passed-device or failed, with the link.
 
 ## Install the harness on the device
 
@@ -14,11 +14,15 @@ From a clone of the branch, with the phone unlocked, paired and in Developer Mod
 source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh
 sylvia_generate Spikes/G01-EPUB
 xcrun devicectl list devices          # note the iPhone 17 Pro's identifier
+# Use the Identifier only when it is the device's UDID (copy the identifier alone); if devicectl shows an ECID or a
+# CoreDevice identifier instead, take the UDID from Xcode > Window > Devices and Simulators > the device > Identifier:
+# xcodebuild -destination id= needs the UDID (runbook correction C1).
 DEVICE_ID=<identifier from the list>
 # Release build of the app, for every step except 11:
 xcodebuild build -project Spikes/G01-EPUB/G01EPUB.xcodeproj -scheme EPUBHarness -configuration Release \
   -destination "id=$DEVICE_ID" -derivedDataPath Spikes/G01-EPUB/.build/DerivedData-device \
-  -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z
+  -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z
+# The second flag registers a device the team has not registered; it takes effect only with the first (C45).
 xcrun devicectl device install app --device "$DEVICE_ID" \
   Spikes/G01-EPUB/.build/DerivedData-device/Build/Products/Release-iphoneos/EPUBHarness.app
 ```
@@ -27,7 +31,7 @@ Launch the app from the Home Screen (not from Xcode), so no debugger is attached
 
 ## Steps
 
-1. **Finger selection and the selection menu.** Open `se-meditations.epub`, go forward to Book I (page 3 or 4). Long-press the word "governor" in "From my governor, to be neither of the green nor of the blue party", drag the end handle to "fights" at the end of that sentence. **Expected:** the edit menu shows Highlight, Note, Look Up and Ask (and may show system items such as Copy). Tap **Highlight**. The status line at the bottom reads "Saved"; the passage is drawn with a light ochre fill and a darker ochre underline on every line; the selection disappears. Tap **Saved** at the top: the row reads "Quote: From my governor, … gladiators' fights" with the exact text you selected, nothing cut off. Record a screenshot of the highlight and of the Saved row.
+1. **Finger selection and the selection menu.** Open `se-meditations.epub`, go forward to Book I (page 3 or 4). Long-press the word "From" at the start of "From my governor, to be neither of the green nor of the blue party" (or long-press "governor" and drag the start handle back to "From"), then drag the end handle to "fights", just before the semicolon. **Expected:** the edit menu shows Highlight, Note, Look Up and Ask (and may show system items such as Copy). Tap **Highlight**. The status line at the bottom reads "Saved"; the passage is drawn with a light ochre fill and a darker ochre underline on every line; the selection disappears. Tap **Saved** at the top: the row reads "Quote: From my governor, … gladiators’ fights" (with the book's typographic apostrophe, U+2019) with the exact text you selected, nothing cut off. Record a screenshot of the highlight and of the Saved row.
 
 2. **Selection across an element boundary by finger.** In Book I, select from "From my mother," through "piety and beneficence" (the selection crosses the small superscript note number 3). Tap **Note**, type "test note", tap **Save**. **Expected:** the alert's message shows the selected text including the "3"; after saving, "Saved" appears and the Saved list shows "Quote: From my mother,3 piety and beneficence" and "Your note: test note". Record whether the handles could be placed on both sides of the superscript without jumping.
 
@@ -43,7 +47,7 @@ Launch the app from the Home Screen (not from Xcode), so no debugger is attached
 
 8. **Rotation and relaunch.** After step 1, rotate the phone to landscape and back. **Expected:** the ochre highlight stays on exactly the same words in both orientations (it may move to another page; use the page-turn gesture to find it). Force-quit the harness from the app switcher, reopen it, open `se-meditations.epub` again and go to Book I. **Expected:** the highlight is drawn on the same words. (The harness reopens at the start of the book when launched from the fixture list; the saved locator restore is automated on the simulator only.)
 
-9. **Reader settings by eye.** Use **A+** and **A−**, **Theme** and **Face**. **Expected:** size changes visibly in 2 pt steps between 14 and 28 pt; Theme switches between Paper (light ground, dark ink) and Night (dark ground, light ink) with the highlight fill and underline visible in both; Face cycles Literata → system serif (New York) → system sans (SF Pro) → the publisher's own font. Human judgment: Literata renders as Literata (compare with the specimen in `Docs/Design/`), with correct italics in Book I headings. Record screenshots of each face.
+9. **Reader settings by eye.** Use **A+** and **A−**, **Theme** and **Face**. **Expected:** size changes visibly in 2 pt steps between 14 and 28 pt; Theme switches between Paper (light ground, dark ink) and Night (dark ground, light ink) with the highlight fill and underline visible in both; Face cycles Literata → system serif (New York) → system sans (SF Pro) → the publisher's own font. Human judgment: Literata renders as Literata (compare with `Docs/Design/images/Main.png`, the design language sheet with the type roles, and `Reader.png` and `ReaderDark.png`, or the design catalog's Type page), with correct italics in Book I headings. Record screenshots of each face.
 
 10. **Highlight without color (plan 4.4.8).** Settings > Accessibility > Display & Text Size > Color Filters > Grayscale on. Look at the highlight from step 1 in Paper and Night. **Expected (human judgment):** the underline still distinguishes the highlight from plain text in both themes. Record screenshots and the reviewer's name. Turn the filter off afterwards.
 
@@ -52,7 +56,7 @@ Launch the app from the Home Screen (not from Xcode), so no debugger is attached
     ```sh
     xcodebuild test -project Spikes/G01-EPUB/G01EPUB.xcodeproj -scheme EPUBHarness -configuration Debug \
       -destination "id=$DEVICE_ID" -derivedDataPath Spikes/G01-EPUB/.build/DerivedData-device-debug \
-      -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z \
+      -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z \
       -only-testing:EPUBHarnessTests 2>&1 | tee device-tests.log
     ```
 

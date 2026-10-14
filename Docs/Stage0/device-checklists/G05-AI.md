@@ -2,9 +2,9 @@
 
 Steps that need a physical iPhone, a real network, a real model server, provider keys or a person. None of them has been run. Each is **pending** in `Docs/Stage0/G05-AI.md` until someone runs it and records the result here. Never copy a simulator result into this file.
 
-**Recording.** For every step write the date, the person, the device model and iOS version (Settings › General › About), and paste or attach the output named in the step under `Docs/Stage0/evidence/G05-AI/device/` (plain text or a screenshot under 2 MB, with keys, IP addresses beyond the first two octets and personal data removed). Then mark the step passed or failed below and update the report row.
+**Recording.** For every step write the date, the person, the device model and iOS version (Settings › General › About), and paste or attach the output named in the step under `Docs/Stage0/evidence/G05-AI/device/` (plain text or a screenshot under 2 MB, with keys, IP addresses beyond the first two octets and personal data removed). Then mark the step passed-device or failed below and update the report row. Name the files `step-NN-<what>.log` for command output and `step-NN-<what>.txt` for the lines you record (steps 3-9).
 
-**Setup for steps 1-4.** On the Mac, in a checkout of branch `m0` (or the G0.5 branch before integration):
+**Setup for steps 1-4.** On the Mac, in a checkout of the M0 integration branch (`m0-integrate`, or `m0` once it is merged; record `git rev-parse HEAD`):
 
 ```sh
 source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh
@@ -12,18 +12,20 @@ sylvia_generate Spikes/G05-AI/ATSProbe
 DEVICE=<device id from `xcrun devicectl list devices`>
 ```
 
-The probe project is signed ad hoc for the simulator; for a device add `DEVELOPMENT_TEAM=$SYLVIA_TEAM_ID CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY="Apple Development" -allowProvisioningUpdates` to each `xcodebuild` command. The phone must be unlocked, on Wi-Fi, with Developer Mode on. Steps 1, 3 and 4 talk only to the phone's own addresses and to one reserved documentation address (192.0.2.1, which no host uses); step 2 also needs a Mac on the same Wi-Fi network.
+Use the Identifier only when it is the device's UDID (copy the identifier alone); if devicectl shows an ECID or a CoreDevice identifier instead, take the UDID from Xcode > Window > Devices and Simulators > the device > Identifier: `xcodebuild -destination id=` needs the UDID.
+
+The probe project is signed ad hoc for the simulator; for a device add `DEVELOPMENT_TEAM=$SYLVIA_TEAM_ID CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY="Apple Development" -allowProvisioningUpdates -allowProvisioningDeviceRegistration` to each `xcodebuild` command (the second flag registers a device the team has not registered; it takes effect only with the first). The phone must be unlocked, on Wi-Fi, with Developer Mode on. Steps 1, 3 and 4 talk only to the phone's own addresses and to one reserved documentation address (192.0.2.1, which no host uses); step 2 also needs a Mac on the same Wi-Fi network.
 
 ## 1. App Transport Security on the minimum supported OS
 
 Plan 14.3 allows a cleartext exception for a local model server only if the minimum OS's ATS behaviour passes testing. The iOS 26.5 simulator let cleartext HTTP to a private IP literal through ATS even with no exception (see the report), which contradicts Apple's documentation for iOS 17 and later, so the device result decides the policy.
 
-1. Run, on an iPhone with iOS 26.0-26.x if available (record the exact version; iOS 26.7 is the device on hand):
+1. Run on the iPhone 17 Pro (iOS 26.7) and, if the oldest supported iPhone has an earlier iOS 26.x, on it too, before it is ever updated (iOS cannot be downgraded, so the earliest 26.x on hand is the closest to the minimum, iOS 26.0, that can be tested); record each exact version and build:
    ```sh
    cd Spikes/G05-AI/ATSProbe
    xcodebuild test -project G05ATSProbe.xcodeproj -scheme G05ATSProbe -destination "id=$DEVICE" \
-     -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution <signing flags> | tee ats-device.log
-   grep -E "ATS-PROBE|✘|✔ Test run" ats-device.log
+     -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution <signing flags> 2>&1 | tee ../../../Docs/Stage0/evidence/G05-AI/device/step-01-ats.log
+   grep -E "ATS-PROBE|✘|✔ Test run" ../../../Docs/Stage0/evidence/G05-AI/device/step-01-ats.log
    ```
    The scheme also runs the suspension UI test; its result belongs to step 4.
 2. On first launch of each probe app iOS may ask for Local Network access. Allow it, then run the command again (record that the prompt appeared).
@@ -34,6 +36,8 @@ Plan 14.3 allows a cleartext exception for a local model server only if the mini
    - `plainHTTPToAnotherDeviceOnTheLAN` is skipped here (it runs in step 2).
    - The `ATS-PROBE` lines show the result for the private IP, the public IP and `localhost` in each variant.
 4. **Record:** the three `ATS-PROBE variant=… private-ip=…` lines, the three `public-ip=192.0.2.1 … ats-blocked=…` lines, the three `localhost=` lines, and the final `✔`/`✘` summary. If the default variant does *not* block the private IP on the device either, record it: the report's ATS finding then holds on the device as well and ADR-0011 must say that Sylvia's own `EndpointPolicy` is the only cleartext gate. If the `NSAllowsLocalNetworking` variant lets the public IP through ATS (`ats-blocked=false`), record that too: shipping that key would then leave public cleartext to `EndpointPolicy` alone.
+
+   A run on a later 26.x than 26.0 stands for the minimum OS of plan 14.3 only by the product owner's and the security reviewer's recorded decision (runbook decision D-9); otherwise ADR-0011 records an exception.
 5. **Decision this feeds:** which Info.plist key the app ships (`NSAllowsLocalNetworking` alone, or CIDR `NSExceptionDomains` entries). ADR-0011 proposes `NSAllowsLocalNetworking` and never `NSAllowsArbitraryLoads`.
 
 ## 2. Local Network permission denied is classified, not "AI failed"
@@ -49,11 +53,11 @@ Local Network privacy governs connections to *other* devices on the network; a l
    ```sh
    TEST_RUNNER_G05_LAN_TARGET=<mac-wifi-ip>:8765 TEST_RUNNER_G05_EXPECT_LOCAL_NETWORK=allowed \
    xcodebuild test -project G05ATSProbe.xcodeproj -scheme G05ATSProbe -destination "id=$DEVICE" \
-     -only-testing:ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnotherDeviceOnTheLAN \
-     -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution <signing flags> | tee lan-allowed.log
+     '-only-testing:ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnotherDeviceOnTheLAN()' \
+     -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution <signing flags> 2>&1 | tee ../../../Docs/Stage0/evidence/G05-AI/device/step-02-lan-allowed.log
    ```
    **Expected:** the test passes, its `ATS-PROBE … lan-target=… expect=allowed result=success("http 200")` line is printed, and the Mac's server logs one `GET /`. If the test reports *skipped*, the variables did not reach the app: add them to the scheme's Test action (Arguments › Environment Variables) as `G05_LAN_TARGET` and `G05_EXPECT_LOCAL_NETWORK` and run again.
-3. Turn Local Network access **off** for "ATS local" and run the same command with `TEST_RUNNER_G05_EXPECT_LOCAL_NETWORK=denied` (log to `lan-denied.log`).
+3. Turn Local Network access **off** for "ATS local" and run the same command with `TEST_RUNNER_G05_EXPECT_LOCAL_NETWORK=denied` (log to `../../../Docs/Stage0/evidence/G05-AI/device/step-02-lan-denied.log`). The test name ends in `()`, quoted for zsh: without the parentheses the filter selects no test and xcodebuild still reports success (`Docs/Stage0/evidence/M0-runbook/only-testing-ids.log`).
    **Expected:** the test passes and its line ends `classified=local_network_permission_denied` (the message "Sylvia isn't allowed to reach devices on your local network …"), and the Mac's server logs nothing new. Host tests prove this mapping only with a fake path inspector, so this step is the evidence that the real iOS error carries the network path the classifier reads.
 4. **Record:** both `ATS-PROBE` lines and the test results. If the denied run shows any other `classified=` value (for example `offline`), record the URLError code: the classifier must be changed before M5 and this step has failed.
 5. Turn Local Network access back on and stop the server (Ctrl-C), then delete `/tmp/g05-lan-target`.
@@ -98,7 +102,7 @@ The spike exercised the generic adapter only against its own in-process fake ser
      swift test --filter LiveProviderTests 2>&1 | grep -E "LIVE-COMPAT|✔|✘|➜"
    ```
    The same test was dry-run in CI against Sylvia's own loopback fake server (`Scripts/live-tests-dry-run.sh`); that proves the test code, not any real server.
-3. **Expected:** `openAICompatibleEndpointPassesTheConnectionTestAndStreams` passes; the `LIVE-COMPAT` line reads "Connected to <ip> · local · <model>. Test reply received as a stream."; the `LIVE-COMPAT-ANSWER` line shows `max-output=1024 finish=complete streamed=true`, `unresolved=0` and no `<think>` text in the answer start (step 6 explains `citations=0` and `finish=outputLimit`).
+3. **Expected:** (The run ends "✔ Test run with 4 tests in 1 suite passed" even when a test is skipped for missing variables: the step passes only if the named test has its own `✔ Test <name>() passed` line, never `➜ Test <name>() skipped`.) `openAICompatibleEndpointPassesTheConnectionTestAndStreams` passes; the `LIVE-COMPAT` line reads "Connected to <ip> · local · <model>. Test reply received as a stream."; the `LIVE-COMPAT-ANSWER` line shows `max-output=1024 finish=complete streamed=true`, `unresolved=0` and no `<think>` text in the answer start (step 6 explains `citations=0` and `finish=outputLimit`).
 4. Also try by editing the variable: the base URL without `/v1` (expected failure message: "doesn't answer this kind of request at this address … many servers expect it to end in /v1"), a wrong model id (expected: "doesn't offer the model you entered"), the server stopped (expected: "didn't accept the connection").
 5. **Record:** the `LIVE-COMPAT` and `LIVE-COMPAT-ANSWER` lines and test results for each try, and the server name and version.
 
@@ -116,7 +120,7 @@ SYLVIA_LIVE_PROVIDER_TESTS=1 SYLVIA_LIVE_ANTHROPIC_MODEL=<model> swift test --fi
 unset ANTHROPIC_API_KEY
 ```
 
-**Expected:** `openAIResponsesStreamsAGroundedAnswer` and `anthropicMessagesStreamsAGroundedAnswer` pass. The test asserts what the adapter guarantees: the answer arrived as a stream of several deltas, finished `complete`, is not empty, contains no `<think>` text, and every citation in it resolves to the one supplied passage `c1`. Its `LIVE-OPENAI` / `LIVE-ANTHROPIC` line shows `max-output=` (the output limit sent), `finish=complete streamed=true`, the number of text events, `citations=` and `unresolved=0`, whether reasoning was withheld, and the start of the answer.
+**Expected:** `openAIResponsesStreamsAGroundedAnswer` and `anthropicMessagesStreamsAGroundedAnswer` pass. (The run ends "✔ Test run with 4 tests in 1 suite passed" even when a test is skipped for missing variables: the step passes only if the named test has its own `✔ Test <name>() passed` line, never `➜ Test <name>() skipped`.) The test asserts what the adapter guarantees: the answer arrived as a stream of several deltas, finished `complete`, is not empty, contains no `<think>` text, and every citation in it resolves to the one supplied passage `c1`. Its `LIVE-OPENAI` / `LIVE-ANTHROPIC` line shows `max-output=` (the output limit sent), `finish=complete streamed=true`, the number of text events, `citations=` and `unresolved=0`, whether reasoning was withheld, and the start of the answer.
 
 **Output limit.** The grounded request uses the output limit a real question gets: 1,024 tokens by default, or `SYLVIA_LIVE_MAX_OUTPUT_TOKENS=<n>` added to the command (the maximum output set in provider settings). A model that reasons before answering can spend that whole budget before any answer text. Then the line reads `finish=outputLimit`, a second line says `finish=outputLimit at max-output=… set SYLVIA_LIVE_MAX_OUTPUT_TOKENS higher and run again`, and the test fails on `finish == .complete`. That is a configuration result, not an adapter failure: run again with `SYLVIA_LIVE_MAX_OUTPUT_TOKENS=4096` (or more for a model that reasons at length) and record both runs, with the limit at which the model answered. It tells the product owner which maximum output that model needs (report F14, F18). A `finish=outputLimit` with `characters=` above zero means the answer itself was cut off at the limit; record it the same way.
 
@@ -133,13 +137,13 @@ unset ANTHROPIC_API_KEY
    unset SYLVIA_LIVE_TRANSCRIPTION_API_KEY
    ```
    Set `SYLVIA_LIVE_TRANSCRIPTION_TIMESTAMPS=1` only for a model that accepts `verbose_json` with `timestamp_granularities[]` (OpenAI documents this for `whisper-1` only). Run once without it and, for such a model, once with it.
-2. **Expected:** `transcriptionEndpointTranscribesTheFixtureClip` passes: the capability test succeeds, the transcript is not empty and carries the machine-transcription label, and with timestamps requested there is at least one segment and every segment lies within the 150-second clip. The `LIVE-TRANSCRIPTION` line shows the host, model, `timestamps-requested=`, the segment count, `discarded-segments=` (segments with unusable timing that were dropped; expected 0) and the start of the transcript, which should begin with the LibriVox section introduction.
+2. **Expected:** (The run ends "✔ Test run with 4 tests in 1 suite passed" even when a test is skipped for missing variables: the step passes only if the named test has its own `✔ Test <name>() passed` line, never `➜ Test <name>() skipped`.) `transcriptionEndpointTranscribesTheFixtureClip` passes: the capability test succeeds, the transcript is not empty and carries the machine-transcription label, and with timestamps requested there is at least one segment and every segment lies within the 150-second clip. The `LIVE-TRANSCRIPTION` line shows the host, model, `timestamps-requested=`, the segment count, `discarded-segments=` (segments with unusable timing that were dropped; expected 0) and the start of the transcript, which should begin with the LibriVox section introduction.
 3. **Record:** each `LIVE-TRANSCRIPTION` line, the endpoint kind and model. A non-zero `discarded-segments` is a finding to record with the endpoint.
 
 ## 8. Hermes or another gateway
 
 1. Confirm with the gateway's operator that the route is text-only with no tools or side effects (plan 14.1). Then run step 5's command with `SYLVIA_LIVE_COMPAT_BASE_URL` set to the gateway's OpenAI-compatible base (https unless it is a local IP literal) and `SYLVIA_LIVE_COMPAT_API_KEY` if it needs a key.
-2. **Expected:** the test passes; the `LIVE-COMPAT` line reads "Connected to {host} · user-managed · {model}" for any name or non-private address (Sylvia cannot see where a gateway forwards requests). The connection test is the route's conformance check: if the route answers with a tool call, the test fails at the connection step with "{host} answered the test by asking to run a tool. Sylvia never runs tools, so it can't use this route. Configure a text-only route or model for this endpoint." and nothing is executed; record that as a gateway configuration finding (the route is not usable). A refusal, a filtered reply or "reached the output limit … before any reply text" also fails the connection step with its own message; record the message.
+2. **Expected:** (The run ends "✔ Test run with 4 tests in 1 suite passed" even when a test is skipped for missing variables: the step passes only if the named test has its own `✔ Test <name>() passed` line, never `➜ Test <name>() skipped`.) The test passes; the `LIVE-COMPAT` line reads "Connected to {host} · user-managed · {model}" for any name or non-private address (Sylvia cannot see where a gateway forwards requests). The connection test is the route's conformance check: if the route answers with a tool call, the test fails at the connection step with "{host} answered the test by asking to run a tool. Sylvia never runs tools, so it can't use this route. Configure a text-only route or model for this endpoint." and nothing is executed; record that as a gateway configuration finding (the route is not usable). A refusal, a filtered reply or "reached the output limit … before any reply text" also fails the connection step with its own message; record the message.
 3. If the gateway routes to a model that reasons before answering and the connection step reports the output limit, the configuration needs a larger maximum output; record it as a finding, then run again with `SYLVIA_LIVE_MAX_OUTPUT_TOKENS=4096` (the live test uses the configured maximum output for both the connection step and the grounded answer, 1,024 tokens by default; step 6 explains `finish=outputLimit`).
 4. If the gateway answers any request with a 5xx status, the failure message reads "… reported a server or gateway error (HTTP {status}). The request may or may not have been processed, so Sylvia won't send it again without asking." (a gateway is user-managed, so no 5xx from it is resent automatically). Record the status and message.
 5. **Record:** the `LIVE-COMPAT` line and the test results.

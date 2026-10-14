@@ -6,15 +6,15 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 
 **Setup:**
 
-- On the build Mac, check out the branch and run `Scripts/fixtures/fetch.sh`. No fixtures are needed beyond the committed ones.
-- Find the device ID with `xcrun devicectl list devices`.
+- On the build Mac, check out the M0 integration branch (`m0-integrate`, or `m0` once it is merged; record `git rev-parse HEAD`) and run `Scripts/fixtures/fetch.sh`. No fixtures are needed beyond the committed ones.
+- Find the device ID with `xcrun devicectl list devices`. Use the Identifier only when it is the device's UDID (copy the identifier alone); if devicectl shows an ECID or a CoreDevice identifier instead, take the UDID from Xcode > Window > Devices and Simulators > the device > Identifier: `xcodebuild -destination id=` needs the UDID.
 - All commands run from `Spikes/G05-Recovery` with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
-- Test runs need signing for the device: add `-allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z`.
+- Test runs need signing for the device: add `-allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z` (the second flag registers a device the team has not registered; it takes effect only with the first).
 
 **Recording:**
 
 - Save every console output as plain text under `Docs/Stage0/evidence/G05-Recovery/device/` with the step number in the file name, for example `device/step-1-tests.log`.
-- In `Docs/Stage0/G05-Recovery.md`, change the step's row from pending to passed or failed, with the date, device model and iOS build.
+- In `Docs/Stage0/G05-Recovery.md`, change the step's row from pending-device to passed-device or failed, with the date, device model and iOS build.
 - Never edit an expected result to match what happened. A different result is a failure, recorded as one.
 
 ## 1. Test suite on the device (T45, T46, T47, T35 on device; protection readback, including the non-default class)
@@ -23,7 +23,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 
    ```sh
    xcodebuild test -scheme G05Recovery-Package -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
-     -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z 2>&1 | tee step-1-tests.log
+     -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z 2>&1 | tee step-1-tests.log
    ```
 
 2. Expected:
@@ -42,8 +42,9 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 ## 2. Capture save latency on the device (plan 19.2)
 
 1. Step 1's log already contains `capture save latency synchronous=FULL fullfsync=ON: n=400 p50=… p95=… p99=… max=…`.
-2. Run step 1 two more times with the phone on a charger and not in Low Power Mode, and once in Low Power Mode. Save each log.
-3. Expected: p95 at most 200 ms in every run. Record all four p95 values. A p95 above 200 ms is a failure of the proposed budget and must be reported, not retried away.
+2. Run step 1 two more times with the phone on the cable and not in Low Power Mode (`step-2-run2.log`, `step-2-run3.log`), and once in Low Power Mode on battery (`step-2-low-power.log`): unplug the cable, keep the phone on the Mac's Wi-Fi, check that `xcrun devicectl list devices` still lists it as available, start fully charged, turn on Low Power Mode, keep the phone unlocked by touching the clock in the status bar at least every 20 s until the run ends (Low Power Mode sets Auto-Lock to 30 seconds; if it locks part way, run it again), and check after the run that Low Power Mode stayed on (iOS turns it off once charging reaches 80 %: https://support.apple.com/en-us/101604).
+3. Expected: p95 at most 200 ms in every run. Record all six p95 values (with step 4), each with its configuration and power state. A p95 above 200 ms is a failure of the proposed budget and must be reported, not retried away.
+4. Release build of the latency test (plan 19.1). From `Spikes/G05-Recovery`: `xcodebuild test -scheme G05Recovery-Package -configuration Release ENABLE_TESTABILITY=YES -destination "id=<device UDID>" -derivedDataPath .build/DerivedData-release -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z '-only-testing:SylviaRecoveryTests/DurabilityTests/latency()' 2>&1 | tee step-2-release.log`, once on the cable and once in Low Power Mode on battery as in 2.2 (`step-2-release-low-power.log`). **Expected:** `✔ Test run with 1 test in 1 suite passed` and p95 at most 200 ms in both.
 
 ## 3. Writes continue while the phone is locked after first unlock (T50)
 
@@ -54,7 +55,7 @@ This runs `DeviceLockProbeTests.lockedWrites`. The probe saves a capture to a cl
    ```sh
    TEST_RUNNER_SYLVIA_DEVICE_LOCK_PROBE=1 TEST_RUNNER_SYLVIA_DEVICE_LOCK_PROBE_SECONDS=120 \
    xcodebuild test -scheme G05Recovery-Package -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
-     -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z \
+     -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z \
      -only-testing:SylviaRecoveryTests/DeviceLockProbeTests 2>&1 | tee step-3-lock-probe.log
    ```
 
@@ -75,19 +76,19 @@ Every other test deletes its library when it ends. This step uses `DevicePersist
    ```sh
    TEST_RUNNER_SYLVIA_DEVICE_PERSIST_PROBE=write \
    xcodebuild test -scheme G05Recovery-Package -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
-     -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z \
+     -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z \
      -only-testing:SylviaRecoveryTests/DevicePersistenceProbeTests 2>&1 | tee step-4-write.log
    ```
 
    Expected: the test passes, and the log has `T50 persistence probe write: library at …/Application Support/Sylvia with 20 captures and … journal entries, knowledge sha256 …; canary sha256 …; classes …`, where every listed item (`Sylvia`, `Library`, `library.sqlite`, `library.sqlite-wal` and `library.sqlite-shm` when listed, `installation.json`, `t50-canary.bin`, `t50-expected.json`) is `NSFileProtectionCompleteUntilFirstUserAuthentication`. Any other class, or `none reported`, is a failure. (The probe's code was checked on the simulator, `Docs/Stage0/evidence/G05-Recovery/simulator-persist-probe-smoke.log`; that run is not T50 evidence.)
 2. Restart the phone (hold the side and volume buttons, slide to power off, then power on). Do **not** unlock it. Wait at least 60 s.
-3. Observation only, not a pass criterion: run `xcrun devicectl device info files --device <device-id> --domain-type appDataContainer --domain-identifier <test runner bundle ID>` (the bundle ID is in step 4.1's log) and save the output as `step-4-before-unlock.txt`. `devicectl` generally cannot reach a phone that has not been unlocked since boot whatever the files' class, so its result says nothing about Sylvia's protection.
+3. Observation only, not a pass criterion: run `xcrun devicectl device info files --device <device-id> --domain-type appDataContainer --domain-identifier <test runner bundle ID>` (find the test runner's bundle ID before the restart with `xcrun devicectl device info apps --device <device-id>`; the probe's log prints its library's path, not that ID; if no test runner is listed, record that and skip this observation) and save the output as `step-4-before-unlock.txt`. `devicectl` generally cannot reach a phone that has not been unlocked since boot whatever the files' class, so its result says nothing about Sylvia's protection.
 4. Unlock the phone. Verify the library:
 
    ```sh
    TEST_RUNNER_SYLVIA_DEVICE_PERSIST_PROBE=verify \
    xcodebuild test -scheme G05Recovery-Package -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
-     -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z \
+     -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z \
      -only-testing:SylviaRecoveryTests/DevicePersistenceProbeTests 2>&1 | tee step-4-verify.log
    ```
 

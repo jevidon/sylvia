@@ -10,7 +10,7 @@ Stage 0 report for the AI half of gate G0.5 (plan Section 21.1): each provider d
 
 ## Results
 
-Status values: passed-host, passed-simulator, partial, pending-device, pending-human, not-applicable. Every package test that passed on the host also passed on the simulator in the same CI run (250 of 250 reported, the 4 live tests skipped in both; `ci-clean-run.log`, review round 7 clean run), so rows marked passed-host also hold on the iOS 26.5 simulator unless they say otherwise. The seven reviews (round 1, 11 findings; round 2, 6 findings; round 3, 7 findings; round 4, 7 findings; round 5, 3 findings; round 6, 4 minor findings; round 7, 4 findings: 1 blocker, 1 major, 2 minor) and what changed are summarised under "Review round 1" to "Review round 7" below. The round 6 and round 7 findings were fixed after the M0 integration, on branch `m0-int-minors-g05-ai` from the integration commit `b354dc7`.
+Status values: passed-host, passed-simulator, passed-device, failed, partial, pending-device, pending-human, not-applicable. Every package test that passed on the host also passed on the simulator in the same CI run (250 of 250 reported, the 4 live tests skipped in both; `ci-clean-run.log`, review round 7 clean run), so rows marked passed-host also hold on the iOS 26.5 simulator unless they say otherwise. The seven reviews (round 1, 11 findings; round 2, 6 findings; round 3, 7 findings; round 4, 7 findings; round 5, 3 findings; round 6, 4 minor findings; round 7, 4 findings: 1 blocker, 1 major, 2 minor) and what changed are summarised under "Review round 1" to "Review round 7" below. The round 6 and round 7 findings were fixed after the M0 integration, on branch `m0-int-minors-g05-ai` from the integration commit `b354dc7`.
 
 ### Gate G0.5 (AI part)
 
@@ -59,7 +59,7 @@ Status values: passed-host, passed-simulator, partial, pending-device, pending-h
 | S2 | Keychain store: round trip, `WhenUnlockedThisDeviceOnly`, not synchronizable, provider reads the key only from the Keychain, a key stored for one origin only | passed-simulator | `KeychainStoreTests` in `simulator-ats-keychain-probe.log` (hosted in each probe app; `aKeyIsStoredForOneOriginOnly` added in round 4) |
 | S3 | ATS behaviour for cleartext to loopback, `localhost`, a private IP literal, a public IP literal (192.0.2.1, TEST-NET-1) and a qualified name, with no ATS keys, `NSAllowsLocalNetworking`, and CIDR exceptions | passed-simulator | `simulator-ats-keychain-probe.log` and finding F1: the private IP literal is not blocked by ATS on the simulator in any variant; the public IP literal is blocked in all three, including `NSAllowsLocalNetworking` |
 | S4 | Suspension during streaming leaves "Interrupted · partial answer" and no resend | passed-simulator | `SuspensionUITests` in `simulator-ats-keychain-probe.log`: the probe app streams from its in-app fake server through the real adapter and coordinator; the test presses Home mid-stream, waits 5 s and returns; the status and the record on disk read "Interrupted · partial answer" with the partial text, the scene-phase handler logged the stop, and the server received the question once with nothing resent |
-| D1 | ATS behaviour on a device with the minimum OS | pending-device | checklist step 1 |
+| D1 | ATS behaviour on a device with the minimum OS (iOS 26.0, or the earliest 26.x on hand with the decision of checklist step 1) | pending-device | checklist step 1 |
 | D2 | Local Network permission denial classified as such on a device | pending-device | checklist step 2 (a load to another device on the network, run once with access allowed and once denied) |
 | D3 | Keychain item unreadable while locked, readable after unlock, and an item saved before a restart readable after it | pending-device | checklist step 3 (timed lock probe; separate save-only and read-only actions for the restart) |
 | D4 | Suspension during streaming on a device | pending-device | checklist step 4 (the same probe and UI test as row S4, on the phone) |
@@ -69,6 +69,7 @@ Status values: passed-host, passed-simulator, partial, pending-device, pending-h
 | P4 | A real transcription endpoint | pending-human | checklist step 7; test written and dry-run |
 | P5 | Human review of answer support (plan 20.3) | pending-human | checklist step 9.1; belongs with the 100-question set at M5 |
 | P6 | Security review of keys, cleartext rule, redirects, redaction | pending-human | checklist step 9.3; agent-reviewed, human sign-off pending |
+| P7 | Wording of disclosure, failure and outcome messages | pending-human | checklist step 9.2 |
 
 ### Evidence files
 

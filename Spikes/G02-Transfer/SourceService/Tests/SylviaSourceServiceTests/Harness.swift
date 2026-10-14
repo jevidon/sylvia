@@ -217,9 +217,14 @@ final class EventLog: Sendable {
     func count(where predicate: (TransferEngine.Event) -> Bool) -> Int { all.filter(predicate).count }
 }
 
-/// Evidence output for the CI drop-in: Docs/Stage0/evidence/G02-Transfer/<name>.
+/// Evidence output: the folder named by G02_EVIDENCE_DIR when it is set (the CI drop-in sets it, by default to
+/// .build/ci-results/g02-transfer, so a routine run does not rewrite committed evidence), else
+/// Docs/Stage0/evidence/G02-Transfer/<name>.
 enum Evidence {
     static let directory: URL = {
+        if let override = ProcessInfo.processInfo.environment["G02_EVIDENCE_DIR"], override.isEmpty == false {
+            return URL(fileURLWithPath: override, isDirectory: true)
+        }
         var url = URL(fileURLWithPath: #filePath)
         for _ in 0..<6 { url.deleteLastPathComponent() }
         return url.appendingPathComponent("Docs/Stage0/evidence/G02-Transfer")

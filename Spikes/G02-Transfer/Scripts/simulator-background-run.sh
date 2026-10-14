@@ -8,7 +8,7 @@
 # for every device that pairs so the device-inbox test finds it; FAULTY: one corrupted
 # part and Connection: close; SLOW: 4 MiB parts at about 4 MiB/s) and plain-HTTP controls for the ATS probe,
 # then runs G02TransferHostedTests/BackgroundSessionTests and ATSProbeTests. Each test writes its own log under
-# Docs/Stage0/evidence/G02-Transfer/{simulator,ats}/; LOG gets the run summary and each source's request log.
+# $G02_EVIDENCE_DIR (default Docs/Stage0/evidence/G02-Transfer)/{simulator,ats}/; LOG gets the run summary and each source's request log.
 # Environment: simulator (the named device) talking to the host's sources; the simulator shares the Mac's
 # network stack, so this is not Wi-Fi between two devices.
 set -euo pipefail
@@ -22,7 +22,7 @@ name="${2:-Sylvia-M0-g02-transfer}"
 only=("${@:3}")
 [[ ${#only[@]} -gt 0 ]] || only=(-only-testing:G02TransferHostedTests/BackgroundSessionTests -only-testing:G02TransferHostedTests/ATSProbeTests)
 spike="$SYLVIA_ROOT/Spikes/G02-Transfer"
-evidence="$SYLVIA_ROOT/Docs/Stage0/evidence/G02-Transfer"
+evidence="${G02_EVIDENCE_DIR:-$SYLVIA_ROOT/Docs/Stage0/evidence/G02-Transfer}"
 work="$SYLVIA_ROOT/.build/scratch/g02-bg-run"
 udid="$(sylvia_sim_udid "$name")"
 sylvia_sim_boot "$udid"

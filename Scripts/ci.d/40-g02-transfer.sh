@@ -4,7 +4,16 @@
 #
 #   Scripts/ci.sh g02-transfer        (or run this file directly)
 #
-# Steps, each logged to Docs/Stage0/evidence/G02-Transfer/ci/<step>.log:
+# Results. Every step logs to <results>/ci/<step>.log, and the tests and runs write their evidence under <results>/,
+# where <results> is $G02_EVIDENCE_DIR, by default .build/ci-results/g02-transfer, so a routine run does not rewrite
+# the committed evidence (M0 verification finding R1-01). To refresh the committed evidence, run
+#   G02_EVIDENCE_DIR="$PWD/Docs/Stage0/evidence/G02-Transfer" Scripts/ci.sh g02-transfer
+# G02_LOOPBACK_ONLY=1 binds every test server to loopback only (M0 verification finding R1-02; the agents' network
+# rule): cli-lan, cli-tailscale-ip, cli-tailscale-magicdns and simulator-ats-device-recipe are listed as not run,
+# and the simulator runs get no LAN, .local, Tailscale or MagicDNS address form, so such a run is not evidence for
+# the address-form rows. The Bonjour test still registers its service with mDNSResponder.
+#
+# Steps:
 #   contracts             Scripts/ci.d/10-contracts.sh: schemas, fixtures and the OpenAPI document         [host]
 #   fixtures-check        the contract fixture generator reproduces the committed fixtures exactly
 #   trust-guards          no ATS key in the harness (ATS keys only in the probe variants Config/ATSVariant-*.plist,
@@ -57,9 +66,13 @@ source "$SYLVIA_ROOT/Scripts/lib/sim.sh"
 source "$SYLVIA_ROOT/Scripts/lib/xcodegen.sh"
 
 spike="$SYLVIA_ROOT/Spikes/G02-Transfer"
-evidence="$SYLVIA_ROOT/Docs/Stage0/evidence/G02-Transfer"
+evidence="${G02_EVIDENCE_DIR:-$SYLVIA_ROOT/.build/ci-results/g02-transfer}"
+mkdir -p "$evidence"
+evidence="$(cd "$evidence" && pwd)"
+export G02_EVIDENCE_DIR="$evidence"
 logs="$evidence/ci"
 mkdir -p "$logs"
+loopback_only="${G02_LOOPBACK_ONLY:-0}"
 simulator="${SYLVIA_G02_SIMULATOR:-Sylvia-M0-g02-transfer}"
 failed=()
 not_run=()
@@ -68,6 +81,7 @@ echo "G0.2 transfer CI drop-in, $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 echo "host: macOS $(sw_vers -productVersion) ($(sw_vers -buildVersion)), $(sysctl -n machdep.cpu.brand_string)"
 echo "xcode: $(xcodebuild -version | tr '\n' ' ')"
 sylvia_check_xcode || true
+echo "results: ${evidence#"$SYLVIA_ROOT"/}; loopback only: $([[ "$loopback_only" == 1 ]] && echo yes || echo no)"
 echo "swift: $(xcrun swift --version 2>&1 | head -1)"
 
 run_step() {
@@ -317,8 +331,11 @@ run_step large-5gib step_large
 run_step cli-loopback-ipv4 step_cli cli-run-loopback-ipv4.log --client-host 127.0.0.1
 run_step cli-loopback-ipv6 step_cli cli-run-loopback-ipv6.log --client-host ::1 ::1
 
+loopback_reason="G02_LOOPBACK_ONLY=1: every test server binds to loopback only"
 lan="$(ipconfig getifaddr en0 2>/dev/null || true)"
-if [[ -n "$lan" ]]; then
+if [[ "$loopback_only" == 1 ]]; then
+  not_run_step cli-lan "$loopback_reason"
+elif [[ -n "$lan" ]]; then
   run_step cli-lan step_cli cli-run-lan.log --client-host "$lan" "$lan"
 else
   not_run_step cli-lan "en0 has no IPv4 address"
@@ -333,12 +350,16 @@ if [[ -n "$tailscale_ip" && -x "$tailscale_cli" ]]; then
   magicdns="$("$tailscale_cli" status --json 2>/dev/null \
     | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin).get("Self",{}).get("DNSName","").rstrip("."))' 2>/dev/null || true)"
 fi
-if [[ -n "$tailscale_ip" ]]; then
+if [[ "$loopback_only" == 1 ]]; then
+  not_run_step cli-tailscale-ip "$loopback_reason"
+elif [[ -n "$tailscale_ip" ]]; then
   run_step cli-tailscale-ip step_cli cli-run-tailscale-ip.log --client-host "$tailscale_ip" "$tailscale_ip"
 else
   not_run_step cli-tailscale-ip "no Tailscale (100.64.0.0/10) address on a utun interface"
 fi
-if [[ -n "$magicdns" ]]; then
+if [[ "$loopback_only" == 1 ]]; then
+  not_run_step cli-tailscale-magicdns "$loopback_reason"
+elif [[ -n "$magicdns" ]]; then
   # The tailnet name identifies the owner's tailnet; it is replaced in the log.
   tailnet="${magicdns#*.}"
   run_step cli-tailscale-magicdns step_cli cli-run-tailscale-magicdns.log \
@@ -372,7 +393,11 @@ run_step simulator step_simulator
 run_step simulator-pairing step_simulator_pairing
 run_step simulator-background step_simulator_background
 run_step simulator-pairing-entry step_simulator_pairing_entry
-run_step simulator-ats-device-recipe step_simulator_ats_device_recipe
+if [[ "$loopback_only" == 1 ]]; then
+  not_run_step simulator-ats-device-recipe "$loopback_reason (the device recipe probes the LAN address)"
+else
+  run_step simulator-ats-device-recipe step_simulator_ats_device_recipe
+fi
 run_step simulator-relaunch step_simulator_relaunch
 
 echo

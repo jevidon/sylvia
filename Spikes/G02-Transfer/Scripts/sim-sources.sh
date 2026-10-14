@@ -3,6 +3,7 @@
 #
 #   g02_build_test_source            build sylvia-test-source; sets G02_TEST_SOURCE
 #   g02_network_facts                sets G02_LAN_IP, G02_TAILSCALE_IP, G02_MAGICDNS, G02_TAILNET, G02_LOCAL_HOSTNAME
+#                                    (all empty when G02_LOOPBACK_ONLY=1)
 #   g02_start_source NAME WORK FILES-SPEC -- [sylvia-test-source options]
 #                                    FILES-SPEC is "dest=source,dest=source" (copied with clonefile); waits for
 #                                    WORK/NAME/ready.json; codes in WORK/NAME/codes (mode 0600); output WORK/NAME/out.log
@@ -31,6 +32,10 @@ g02_network_facts() {
     G02_MAGICDNS="$("$cli" status --json 2>/dev/null \
       | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin).get("Self",{}).get("DNSName","").rstrip("."))' 2>/dev/null || true)"
     [[ -n "$G02_MAGICDNS" ]] && G02_TAILNET="${G02_MAGICDNS#*.}"
+  fi
+  # G02_LOOPBACK_ONLY=1: no LAN, .local, Tailscale or MagicDNS address form, so every server binds to loopback only.
+  if [[ "${G02_LOOPBACK_ONLY:-0}" == 1 ]]; then
+    G02_LAN_IP=""; G02_LOCAL_HOSTNAME=""; G02_TAILSCALE_IP=""; G02_MAGICDNS=""; G02_TAILNET=""
   fi
 }
 

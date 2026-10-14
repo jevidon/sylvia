@@ -18,6 +18,11 @@ import SylviaTransferCore
 /// plus G02_EVIDENCE_DIR (where each test writes its log), G02_LAN_IP, G02_LOCAL_HOSTNAME,
 /// G02_TAILSCALE_IP, G02_MAGICDNS and G02_CLEARTEXT (JSON: host -> port of plain HTTP servers).
 /// The simulator shares the Mac's file system and network stack, so host paths and host loopback work.
+///
+/// A phone has neither, so the ATS probe can also run on a device (Scripts/device-ats-probe.sh, checklist step 23):
+/// G02_<NAME>_READY_JSON and G02_CLEARTEXT_JSON carry the same JSON inline instead of a host path, and
+/// G02_DEVICE_RUN=1 leaves out the loopback forms (on a phone they are the phone itself) and makes the probe print
+/// its log to the test output instead of writing a host file.
 enum SimEnvironment {
     static let values = ProcessInfo.processInfo.environment
 
@@ -33,11 +38,26 @@ enum SimEnvironment {
         var roots: [String]
     }
 
-    static var isConfigured: Bool { values["G02_MAIN_READY"] != nil }
+    static var isConfigured: Bool { values["G02_MAIN_READY"] != nil || values["G02_MAIN_READY_JSON"] != nil }
+
+    /// True when run on a phone by Scripts/device-ats-probe.sh: no host paths, no host loopback.
+    static var isDeviceRun: Bool { values["G02_DEVICE_RUN"] == "1" }
 
     static func source(_ name: String) throws -> SourceInfo {
+        if let inline = values["G02_\(name)_READY_JSON"] {
+            return try JSONDecoder().decode(SourceInfo.self, from: Data(inline.utf8))
+        }
         let path = try #require(values["G02_\(name)_READY"], "G02_\(name)_READY not set")
         return try JSONDecoder().decode(SourceInfo.self, from: Data(contentsOf: URL(fileURLWithPath: path)))
+    }
+
+    /// Plain-HTTP control servers (host -> port) for the ATS probe, inline or from a host file.
+    static func cleartextServers() throws -> [String: Int] {
+        if let inline = values["G02_CLEARTEXT_JSON"] {
+            return try JSONDecoder().decode([String: Int].self, from: Data(inline.utf8))
+        }
+        let path = try #require(values["G02_CLEARTEXT"], "G02_CLEARTEXT not set")
+        return try JSONDecoder().decode([String: Int].self, from: Data(contentsOf: URL(fileURLWithPath: path)))
     }
 
     static func codesFile(_ name: String) throws -> String { try #require(values["G02_\(name)_CODES"]) }

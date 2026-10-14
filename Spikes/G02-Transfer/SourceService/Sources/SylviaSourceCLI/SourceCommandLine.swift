@@ -12,7 +12,9 @@ import SylviaTransferCore
 /// Stage 0 harness, not the companion app: no UI, no start-at-login, no privileged helper.
 ///
 /// The pairing code is printed to the terminal because showing it is how it reaches the phone; this
-/// program never writes it (or any token) to a file or log.
+/// program never writes it (or any token) to a file or log. Standard output can be redirected by whoever starts
+/// it, so the code and link lines start with "pairing code:" and "pairing link:" for redaction, and the optional
+/// QR code (`--qr`) is drawn only on the controlling terminal.
 public enum SourceCommandLine {
     static let usage = """
         usage: sylvia-source --root DIR [--root DIR ...] [options]
@@ -29,6 +31,9 @@ public enum SourceCommandLine {
           --ephemeral-identity    keep the TLS key in memory only (scripted runs); default stores it in the Keychain
           --invitation-minutes N  invitation lifetime (default 10)
           --part-size-mib N       default part size (default 16; 1 to 64)
+          --qr                    also draw each pairing link as a QR code, on this terminal only (/dev/tty; never on
+                                  standard output, so redirected output and logs never hold it); needs a terminal
+                                  at least 90 columns wide, more with more addresses (the source prints the width)
 
         commands on stdin:
           invite                  print a new single-use pairing code
@@ -118,7 +123,7 @@ public enum SourceCommandLine {
             try await writeInvitations(service, count: options.test.invitations, to: codeFile)
             console.say("pairing codes written: \(options.test.invitations) (single use, not printed)")
         } else {
-            await printInvitation(service, console)
+            await printInvitation(service, console, qr: options.qr)
         }
         if let readyFile = options.test.readyFile {
             let ready: [String: Any] = [
@@ -170,7 +175,7 @@ public enum SourceCommandLine {
             guard let command = words.first else { continue }
             switch (command, words.count) {
             case ("invite", 1):
-                await printInvitation(service, console)
+                await printInvitation(service, console, qr: options.qr)
             case ("items", 1):
                 let page = try await service.library.catalog(after: nil, limit: TransferProtocol.maximumPageLimit)
                 for item in page.items {
@@ -239,14 +244,38 @@ public enum SourceCommandLine {
             atPath: url.path, contents: Data((lines.joined(separator: "\n") + "\n").utf8), attributes: [.posixPermissions: 0o600])
     }
 
-    static func printInvitation(_ service: SourceService, _ console: Console) async {
+    static func printInvitation(_ service: SourceService, _ console: Console, qr: Bool) async {
         let payload = await service.issueInvitation()
         do {
+            let link = try payload.link()
             console.say("pairing code: \(try payload.code())")
-            console.say("pairing link: \(try payload.link())")
+            console.say("pairing link: \(link)")
             console.say("invitation expires: \(RFC3339.format(payload.expiresAt)) (single use)")
+            if qr { drawQRCode(link, console) }
         } catch {
             console.say("error: could not encode the invitation")
+        }
+    }
+
+    /// `--qr`: the pairing link as a QR code on the controlling terminal only. It holds the invitation secret,
+    /// so it never goes to standard output, which may be redirected into a file or a log.
+    static func drawQRCode(_ link: String, _ console: Console) {
+        let lines: [String]
+        let columns: Int
+        do {
+            lines = try PairingQRCode.terminalLines(for: link)
+            columns = try PairingQRCode.columns(for: link)
+        } catch {
+            console.say("qr: not drawn (\(error)); paste the code instead")
+            return
+        }
+        let text = "pairing QR code (the link above; scan it with the Sylvia app's own scanner, not the Camera app):\n"
+            + lines.joined(separator: "\n") + "\n"
+            + "the QR code needs \(columns) terminal columns; if it looks broken, widen the terminal and type invite for a new one\n"
+        if console.writeToTerminal(text) {
+            console.say("qr: drawn on the terminal only (not in this output)")
+        } else {
+            console.say("qr: not drawn: no controlling terminal (the QR code is never written to standard output)")
         }
     }
 
@@ -275,6 +304,7 @@ struct Options {
     var ephemeralIdentity = false
     var invitationMinutes = 10
     var partSizeMiB = 16
+    var qr = false
     var test = TestOptions()
 
     struct ParseError: Error, CustomStringConvertible {
@@ -314,6 +344,7 @@ struct Options {
             case "--part-size-mib":
                 guard let mib = Int(try value()), (1...64).contains(mib) else { throw ParseError(description: "--part-size-mib must be 1 to 64") }
                 options.partSizeMiB = mib
+            case "--qr": options.qr = true
             case "--help", "-h":
                 print(SourceCommandLine.usage + (allowTestOptions ? SourceCommandLine.testUsage : ""))
                 exit(0)
@@ -500,6 +531,27 @@ final class Console: PairingApprover {
     func say(_ line: String) {
         output.withLock { _ in
             FileHandle.standardOutput.write(Data((line + "\n").utf8))
+        }
+    }
+
+    /// Writes to the controlling terminal (`/dev/tty`), bypassing standard output and any redirection of it.
+    /// False when the process has no controlling terminal.
+    func writeToTerminal(_ text: String) -> Bool {
+        output.withLock { _ in
+            let descriptor = open("/dev/tty", O_WRONLY | O_NOCTTY | O_CLOEXEC)
+            guard descriptor >= 0 else { return false }
+            defer { close(descriptor) }
+            let bytes = Array(text.utf8)
+            var written = 0
+            while written < bytes.count {
+                let result = bytes[written...].withUnsafeBytes { Darwin.write(descriptor, $0.baseAddress, $0.count) }
+                if result < 0 {
+                    if errno == EINTR { continue }
+                    return false
+                }
+                written += result
+            }
+            return true
         }
     }
 

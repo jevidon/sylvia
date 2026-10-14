@@ -1,38 +1,38 @@
-environment: simulator Sylvia-M0-g02-transfer (2AC43275-3F2E-4815-B2DE-C4E87F95881D), runtime com.apple.CoreSimulator.SimRuntime.iOS-26-5, device type com.apple.CoreSimulator.SimDeviceType.iPhone-17;
+environment: simulator Sylvia-M0-minors-g02-transfer (14A94E34-A628-4CBD-9A37-89CED5ED550E), runtime com.apple.CoreSimulator.SimRuntime.iOS-26-5, device type com.apple.CoreSimulator.SimDeviceType.iPhone-17;
   sylvia-source on the host (macOS 26.6.2), bound to 127.0.0.1; file MeditationsMarcusAurelius_librivox.m4b from the fixture cache (sha256 3feaaa3ad093d56b5aed7e3a15e29f53c0c0e94d3a23fea2339190599a327bf6)
 source> Sylvia source (G0.2 spike), protocol 1.0
-source> source id: c6e36678-db93-40fd-8022-c3818c57d7cb
+source> source id: 6574492e-f462-4aea-a5b0-f8a33b6d3447
 source> source name: Simulator run Mac
-source> fingerprint: 567C 0BAF D850 61C0 4DCE 3C3A 6C10 AFE5 709F 9F45 AB0F 3732 2E72 7084 BFD3 5895
+source> fingerprint: 18DC F84D CB87 3557 E2A0 2A73 A1D8 9F9F A7C6 8081 C4EF A72B D6D1 3FA5 F14D 5F4E
 source> identity key: memory only (--ephemeral-identity)
-source> listening: 127.0.0.1:54733
-source> endpoints in pairing payload: 127.0.0.1:54733
+source> listening: 127.0.0.1:55228
+source> endpoints in pairing payload: 127.0.0.1:55228
 source> shared folders: 1
 source> pairing code: [pairing code redacted]
 source> pairing link: [pairing code redacted]
-source> invitation expires: 2026-10-12T03:14:19Z (single use)
+source> invitation expires: 2026-10-12T21:14:55Z (single use)
 source> ready
-script> xcodebuild test -only-testing:G02TransferHostedTests/SimulatorTransferTests (destination id=2AC43275-3F2E-4815-B2DE-C4E87F95881D)
-source> pairing request from "iOS Simulator" (device 5d881755-8ed8-46a0-a1e1-49dc68772710, address 127.0.0.1)
-source> compare with the fingerprint shown on the phone: 567C 0BAF D850 61C0 4DCE 3C3A 6C10 AFE5 709F 9F45 AB0F 3732 2E72 7084 BFD3 5895
+script> xcodebuild test -only-testing:G02TransferHostedTests/SimulatorTransferTests (destination id=14A94E34-A628-4CBD-9A37-89CED5ED550E)
+source> pairing request from "iOS Simulator" (device 2463b6e8-4176-40e7-8f55-8e0c010c74b6, address 127.0.0.1)
+source> compare with the fingerprint shown on the phone: 18DC F84D CB87 3557 E2A0 2A73 A1D8 9F9F A7C6 8081 C4EF A72B D6D1 3FA5 F14D 5F4E
 source> approve? [y/N]
 script> y
-source> approved 5d881755-8ed8-46a0-a1e1-49dc68772710
+source> approved 2463b6e8-4176-40e7-8f55-8e0c010c74b6
 G02-SIM: simulator: iOS Version 26.5 (Build 23F77), hosted test in G02TransferHarness
-G02-SIM: endpoints: 127.0.0.1:54733
-G02-SIM: pinned fingerprint: 567C 0BAF D850 61C0 4DCE 3C3A 6C10 AFE5 709F 9F45 AB0F 3732 2E72 7084 BFD3 5895
+G02-SIM: endpoints: 127.0.0.1:55228
+G02-SIM: pinned fingerprint: 18DC F84D CB87 3557 E2A0 2A73 A1D8 9F9F A7C6 8081 C4EF A72B D6D1 3FA5 F14D 5F4E
 G02-SIM: wrong pin: pairing refused with pinMismatch before any request
-G02-SIM: paired as 5d881755-8ed8-46a0-a1e1-49dc68772710; token stored in the Keychain (after first unlock, this device only) and read back
+G02-SIM: paired as 2463b6e8-4176-40e7-8f55-8e0c010c74b6; token stored in the Keychain (after first unlock, this device only) and read back
 G02-SIM: capabilities: protocol 1.0, default part size 16777216 bytes
 G02-SIM: downloaded "meditations-librivox": 138201538 bytes in 9 verified parts; full SHA-256 3feaaa3ad093d56b5aed7e3a15e29f53c0c0e94d3a23fea2339190599a327bf6 matches the original
 G02-SIM: receipt downloaded_to_phone acknowledged; self-revocation made the token fail with 401
 G02-SIM: negotiated TLS and ALPN per request: tls_protocol_version_t(rawValue: 772) http/1.1
-✔ Test pairsPinsStoresTheTokenAndDownloadsVerifiedBytes() passed after 0.693 seconds.
-✔ Suite "Simulator to Mac source: pinned pairing and verified download" passed after 0.694 seconds.
-✔ Test run with 1 test in 1 suite passed after 0.694 seconds.
+✔ Test pairsPinsStoresTheTokenAndDownloadsVerifiedBytes() passed after 0.838 seconds.
+✔ Suite "Simulator to Mac source: pinned pairing and verified download" passed after 0.839 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.839 seconds.
 ** TEST SUCCEEDED **
 script> devices
-source> device 5d881755-8ed8-46a0-a1e1-49dc68772710 revoked iOS Simulator
+source> device 2463b6e8-4176-40e7-8f55-8e0c010c74b6 revoked iOS Simulator
 source> end
 script> quit
 source> stopped

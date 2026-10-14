@@ -10,6 +10,8 @@
 #   trust-guards          no ATS key in the harness (ATS keys only in the probe variants Config/ATSVariant-*.plist,
 #                         NSAllowsArbitraryLoads nowhere), no server-trust credential outside the pinned
 #                         answer, no TLS minimum below 1.2 in the spike                              [host]
+#   package-locks         the XcodeGen projects' committed Package.resolved (iOS, MacIdentityProbe) pin exactly what
+#                         their local package's lock pins (TransferKit, SourceService)              [host]
 #   host-transferkit      swift test, Spikes/G02-Transfer/TransferKit (protocol core, client, background
 #                         client: planner, descriptors, importer)                                  [host]
 #   host-sourceservice    swift test, Spikes/G02-Transfer/SourceService, all suites but the 5 GiB,
@@ -21,6 +23,13 @@
 #   cli-*                 scripted runs of sylvia-source with sylvia-fetch: loopback IPv4 and IPv6
 #                         always; the LAN (en0) and Tailscale addresses and MagicDNS name when this
 #                         Mac has them (a step that cannot run says so and why, and is listed)     [host]
+#   cli-qr                sylvia-source --qr draws the pairing QR code on its controlling terminal only: on a
+#                         pseudo-terminal with standard output redirected, the drawing is on the terminal and not
+#                         in the output; without a controlling terminal it is not drawn at all (round 3 gate gap;
+#                         the drawing itself is decoded by PairingQRCodeTests in host-sourceservice)  [host]
+#   cli-logging-recipe    the device checklist's logging-source command line (tee to the terminal, redacting sed
+#                         into source.log) on a pseudo-terminal: the person sees the code, fingerprint and prompt
+#                         and answers it; source.log has the request log and no code, link or QR (finding R3-03) [host]
 #   mac-identity-signed   the Mac identity store in a signed probe app (team A4KBDX665Z): key in the data
 #                         protection keychain, after first unlock, this device only; NOT RUN (listed) when
 #                         this Mac cannot sign for the team                                          [host]
@@ -35,6 +44,8 @@
 #   simulator-pairing-entry  XCUITest pairs by pasting the code, by opening a sylvia:// link, and with the
 #                         address replaced before pairing by another Mac's (refused on the pin, nothing
 #                         sent); the source logs are checked                                        [simulator]
+#   simulator-ats-device-recipe  Scripts/device-ats-probe.sh (device checklist step 23) run against the simulator:
+#                         the ATS probe with inline inputs and no loopback forms, as on a phone (finding R3-06) [simulator]
 #   simulator-relaunch    part 2: XCUITest terminates the app mid-transfer and relaunches it, with
 #                         keep-alive and with Connection: close; event logs checked for refetches  [simulator]
 #
@@ -137,6 +148,39 @@ step_guards() {
   echo "ok: no TLS minimum below 1.2"
 }
 
+# The two XcodeGen projects resolve their local packages themselves, so each commits its own lock (ADR-0002); it must
+# pin exactly what its package's lock pins (one version per package across the repository; M0 integration open item:
+# without a lock the probe's transitive packages followed swift-nio's version ranges).
+step_package_locks() {
+  echo "environment: host; static comparison of the committed Package.resolved files"
+  /usr/bin/python3 -I - "$spike" <<'PY'
+import json, os, sys
+
+spike = sys.argv[1]
+pairs = [("MacIdentityProbe/Package.resolved", "SourceService/Package.resolved"), ("iOS/Package.resolved", "TransferKit/Package.resolved")]
+
+
+def pins(path):
+    with open(os.path.join(spike, path)) as handle:
+        data = json.load(handle)
+    return {pin["identity"]: (pin["location"], pin["state"].get("revision"), pin["state"].get("version")) for pin in data["pins"]}
+
+
+failed = False
+for project, package in pairs:
+    mine, theirs = pins(project), pins(package)
+    if mine == theirs:
+        print("ok: %s pins exactly what %s pins: %s" % (project, package, ", ".join("%s %s" % (k, v[2]) for k, v in sorted(mine.items()))))
+    else:
+        failed = True
+        print("MISMATCH: %s does not pin what %s pins" % (project, package))
+        for name in sorted(set(mine) | set(theirs)):
+            if mine.get(name) != theirs.get(name):
+                print("  %s: %s vs %s" % (name, mine.get(name), theirs.get(name)))
+sys.exit(1 if failed else 0)
+PY
+}
+
 step_host_transferkit() {
   echo "environment: host (macOS $(sw_vers -productVersion)), swift test"
   checked_swift_test "$logs/host-transferkit" TransferKit
@@ -180,22 +224,57 @@ step_large() {
   file="$("$SYLVIA_ROOT/Scripts/fixtures/generate-g02-transfer-large.sh" --print-path)"
   sha="$(awk -F'"' '/^readonly EXPECTED_SHA256=/ {print $2}' "$SYLVIA_ROOT/Scripts/fixtures/generate-g02-transfer-large.sh")"
   [[ -n "$sha" ]] || { echo "could not read the pinned digest"; return 1; }
+  # The tests write their own logs, also when an expectation fails; logs from an earlier run must never be taken for
+  # this run's, and a failing run's logs are kept here (round 3: the first clean run's were overwritten and lost).
+  local name status=0
+  rm -f "$evidence/faults/large-5GiB-transfer.log" "$evidence/faults/large-5GiB-background-client.log"
+  echo "load before: $(uptime)"
   SYLVIA_G02_LARGE_FILE="$file" SYLVIA_G02_LARGE_SHA256="$sha" \
-    checked_swift_test "$logs/large-5gib" SourceService --filter LargeTransferTests || return 1
+    checked_swift_test "$logs/large-5gib" SourceService --filter LargeTransferTests || status=1
+  echo "load after: $(uptime)"
+  for name in large-5GiB-transfer large-5GiB-background-client; do
+    echo "--- faults/$name.log (written by the test in this run)"
+    cat "$evidence/faults/$name.log" 2>/dev/null || echo "(not written)"
+  done
+  (( status == 0 )) || return 1
   grep -q 'fiveGiBTransferSurvivesInterruptionsWithBoundedMemory() passed' "$logs/large-5gib.log" \
     || { echo "CHECK FAILED: the 5 GiB test did not run and pass"; return 1; }
   grep -q 'fiveGiBThroughTheBackgroundClientWithARelaunch() passed' "$logs/large-5gib.log" \
     || { echo "CHECK FAILED: the 5 GiB background-client test did not run and pass"; return 1; }
-  echo "--- faults/large-5GiB-transfer.log (written by the test)"
-  cat "$evidence/faults/large-5GiB-transfer.log"
-  echo "--- faults/large-5GiB-background-client.log (written by the test)"
-  cat "$evidence/faults/large-5GiB-background-client.log"
 }
 
 step_cli() {
   local out="$1"; shift
   "$spike/Scripts/scripted-cli-run.sh" "$evidence/$out" "$@" || { cat "$evidence/$out"; return 1; }
   cat "$evidence/$out"
+}
+
+step_cli_qr() {
+  echo "environment: host (macOS $(sw_vers -productVersion)); sylvia-source built from this checkout"
+  local package="$spike/SourceService" bin
+  xcrun swift build --package-path "$package" --product sylvia-source || return 1
+  bin="$(xcrun swift build --package-path "$package" --show-bin-path)/sylvia-source"
+  /usr/bin/python3 "$spike/Scripts/qr-terminal-check.py" "$bin" "$SYLVIA_ROOT/.build/scratch/g02-qr-check" "$evidence/cli-qr-terminal.log" || return 1
+}
+
+step_cli_logging_recipe() {
+  echo "environment: host (macOS $(sw_vers -productVersion)); sylvia-test-source and sylvia-fetch built from this checkout"
+  local package="$spike/SourceService" bin
+  xcrun swift build --package-path "$package" --product sylvia-test-source || return 1
+  xcrun swift build --package-path "$package" --product sylvia-fetch || return 1
+  bin="$(xcrun swift build --package-path "$package" --show-bin-path)"
+  /usr/bin/python3 "$spike/Scripts/logging-source-recipe-check.py" "$bin/sylvia-test-source" "$bin/sylvia-fetch" \
+    "$SYLVIA_ROOT/.build/scratch/g02-recipe-check" "$evidence/cli-logging-source-recipe.log" || return 1
+}
+
+step_simulator_ats_device_recipe() {
+  local udid
+  udid="$(sylvia_sim_udid "$simulator")"
+  sylvia_sim_boot "$udid"
+  echo "environment: simulator $simulator ($udid); the device recipe of checklist step 23, variant none"
+  "$spike/Scripts/device-ats-probe.sh" "$evidence/ats/device-recipe-on-simulator.log" none "id=$udid" \
+    || { cat "$evidence/ats/device-recipe-on-simulator.log"; return 1; }
+  cat "$evidence/ats/device-recipe-on-simulator.log"
 }
 
 step_simulator() {
@@ -229,6 +308,7 @@ step_simulator_relaunch() {
 run_step contracts "$SYLVIA_ROOT/Scripts/ci.d/10-contracts.sh"
 run_step fixtures-check step_fixtures
 run_step trust-guards step_guards
+run_step package-locks step_package_locks
 run_step host-transferkit step_host_transferkit
 run_step host-sourceservice step_host_sourceservice
 run_step captured-payloads step_captured
@@ -267,6 +347,9 @@ else
   not_run_step cli-tailscale-magicdns "no MagicDNS name (Tailscale CLI not found or not logged in)"
 fi
 
+run_step cli-qr step_cli_qr
+run_step cli-logging-recipe step_cli_logging_recipe
+
 # The Mac identity key from a signed app (data protection keychain). Needs code signing for the team on this
 # Mac; when the account cannot sign (for example an unaccepted Program License Agreement), the step is listed
 # as not run with that reason, and the report keeps the criterion pending.
@@ -289,6 +372,7 @@ run_step simulator step_simulator
 run_step simulator-pairing step_simulator_pairing
 run_step simulator-background step_simulator_background
 run_step simulator-pairing-entry step_simulator_pairing_entry
+run_step simulator-ats-device-recipe step_simulator_ats_device_recipe
 run_step simulator-relaunch step_simulator_relaunch
 
 echo

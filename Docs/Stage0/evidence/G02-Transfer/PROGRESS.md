@@ -181,3 +181,51 @@ Findings R2-01 to R2-06 and the reviewer's gate gaps; details in the report (fin
   sylvia-test-source; host and simulator tests.
 - Test races found in repeat runs and fixed: wait for a stopped coordinator to go quiet; wait for the part 3
   request instead of "3 verified, 1 outstanding". Then the final clean run (`ci-clean-run.log`).
+
+## Round 3 review fixes (13 October 2026, NZDT)
+
+Branch `m0-int-minors-g02-transfer`, from the integration commit `b354dc7`. Findings R3-01 to R3-06 and the
+reviewer's gate gaps; details in the report (findings 21, 22) and the ADRs.
+
+First agent (WIP commits `ece6965` to `ce8e41c`; it was stopped and restarted):
+- R3-01: free space read before reconcile takes the lock, `spaceShortfallLocked` per job before its launch
+  requests; host test `relaunchWithTooLittleSpacePausesBeforeAnyRequest` failed on the round 2 code
+  (`review/round3-before-fix.log`).
+- Gate gap: `--qr` draws the pairing link as a QR code on `/dev/tty` only (`PairingQRCode`, Vision decode test,
+  `qr-terminal-check.py` in CI step `cli-qr`).
+- R3-03: the checklist's "logging source" command line (tee to the terminal, redacting sed into `source.log`),
+  checked on a pseudo-terminal by `logging-source-recipe-check.py` (CI step `cli-logging-recipe`).
+- R3-06: `device-ats-probe.sh` runs `ATSProbeTests` on a phone with inline inputs (CI step
+  `simulator-ats-device-recipe` tries it on the simulator); checklist steps 10 (R3-02), 22 (R3-04) and 23 (R3-06);
+  ADR-0009 and report wording (R3-04, R3-05, R3-06).
+- Its first clean run failed the 5 GiB background-client test's 1 s budget at a load average of about 130
+  (`review/round3-first-clean-run-failed.log`); three re-runs passed (`review/round3-5gib-repeat.log`).
+
+Second agent (re-checked all of the above as unreviewed; the code changes held):
+- Found and fixed: ADR-0008 had no round 3 change (it still said the QR code is not drawn, that the four-task
+  window bounds the token copies, and stated the ATS conclusions without "simulator"); the QR test called eight
+  71-character endpoints "the largest payload the protocol allows" (a link at the protocol's limits, eight
+  253-character names, is valid but does not fit a QR code; the test now shows it is refused); report finding 22
+  cited a check time and a commit time from a test log the re-runs had overwritten (removed); "one part per
+  outstanding task" for the reservation, which is one part per window slot; checklist step 19's column figure.
+- Added: `import_ms` on the `imported` event, the job state the slowest poll returned and the load averages in the
+  5 GiB logs, and the CI step now deletes old 5 GiB logs first and prints them even when a test fails, so a failing
+  run's diagnosis is kept.
+- M0 integration open item: `MacIdentityProbe/Package.resolved` and `iOS/Package.resolved` committed (each pins
+  exactly what `SourceService`'s and `TransferKit`'s lock pin; Xcode kept them unchanged when resolving), checked
+  by the new CI step `package-locks` (`package-locks.log`).
+- Final clean run at `41b93e7` (build products deleted, simulator `Sylvia-M0-minors-g02-transfer` recreated):
+  `ci-clean-run.log`, contracts pass, 21 of the drop-in's 22 steps pass, `mac-identity-signed` not run (Xcode:
+  "No Accounts"). Load average 132 at the start. Only documents and evidence summaries changed after it.
+- Development 5 GiB run kept as `review/round3-5gib-dev-run.log` (full-file check 29 s as the load rose to 67).
+
+## Status (round 3 complete)
+
+All six round 3 findings are closed in code or documents, or have device or human steps (report finding 21).
+Still pending: the device run of the checklist (steps 1 to 23, signing first), the security review (step 12), the
+Tailscale ATS decision, the signed identity probe (step 20), and the product owner's decision on a bound across
+jobs (open question 3).
+
+Shared files this round needs changed by their owners (not edited here): ADR-0014's note that the two G0.2 Xcode
+projects have no committed lock, and its open item for `MacIdentityProbe` (both now commit locks, `package-locks.log`);
+the matching G0.2 open item in `Docs/Stage0/integration-log.md` section 6.

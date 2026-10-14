@@ -1,35 +1,35 @@
 host (macOS), in-process source, 1 MiB parts, asset 6295777 bytes
 request POST /v1/pair range=- -> 200
-request GET /v1/items/135b726f-ad1e-49c8-b4c7-a6df760ed8d5/manifest range=- -> 200
-request GET /v1/assets/936566eb-48af-43d8-865a-e1bbfb98ed43/content range=bytes=0-1048575 -> 206
-request GET /v1/assets/936566eb-48af-43d8-865a-e1bbfb98ed43/content range=bytes=1048576-2097151 -> 206
-request GET /v1/assets/936566eb-48af-43d8-865a-e1bbfb98ed43/content range=bytes=2097152-3145727 -> 206
-request GET /v1/assets/936566eb-48af-43d8-865a-e1bbfb98ed43/content range=bytes=3145728-4194303 -> 206
-request GET /v1/assets/936566eb-48af-43d8-865a-e1bbfb98ed43/content range=bytes=4194304-5242879 -> 412
-request GET /v1/items/135b726f-ad1e-49c8-b4c7-a6df760ed8d5/manifest range=- -> 200
-request GET /v1/assets/936566eb-48af-43d8-865a-e1bbfb98ed43/content range=bytes=1048576-2097151 -> 206
-request GET /v1/assets/936566eb-48af-43d8-865a-e1bbfb98ed43/content range=bytes=4194304-5242879 -> 206
-request GET /v1/assets/936566eb-48af-43d8-865a-e1bbfb98ed43/content range=bytes=5242880-6291455 -> 206
-request GET /v1/assets/936566eb-48af-43d8-865a-e1bbfb98ed43/content range=bytes=6291456-6295776 -> 206
-event manifestFetched(itemVersionID: "ad0ab7e5-e1aa-4af6-accb-a2a88af7cf6f")
-event partRequested(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 0, attempt: 1)
-event partVerified(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 0)
-event partRequested(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 1, attempt: 1)
-event partVerified(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 1)
-event partRequested(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 2, attempt: 1)
-event partVerified(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 2)
-event partRequested(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 3, attempt: 1)
-event partVerified(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 3)
-event partRequested(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 4, attempt: 1)
-event partFailed(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 4, failure: SylviaTransferCore.PartFailure.preconditionFailed)
-event manifestFetched(itemVersionID: "b08a2075-f36b-498f-971c-c267600d1c27")
-event versionChanged(from: "ad0ab7e5-e1aa-4af6-accb-a2a88af7cf6f", to: "b08a2075-f36b-498f-971c-c267600d1c27", keptParts: 3, discardedParts: 1)
-event partRequested(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 1, attempt: 1)
-event partVerified(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 1)
-event partRequested(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 4, attempt: 1)
-event partVerified(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 4)
-event partRequested(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 5, attempt: 1)
-event partVerified(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 5)
-event partRequested(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 6, attempt: 1)
-event partVerified(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43", index: 6)
-event assetFinalized(assetID: "936566eb-48af-43d8-865a-e1bbfb98ed43")
+request GET /v1/items/a7567e21-f646-49d0-9f2c-656b7399131e/manifest range=- -> 200
+request GET /v1/assets/a1c30aa5-f2fc-4627-b3be-bf75b87d0e83/content range=bytes=0-1048575 -> 206
+request GET /v1/assets/a1c30aa5-f2fc-4627-b3be-bf75b87d0e83/content range=bytes=1048576-2097151 -> 206
+request GET /v1/assets/a1c30aa5-f2fc-4627-b3be-bf75b87d0e83/content range=bytes=2097152-3145727 -> 206
+request GET /v1/assets/a1c30aa5-f2fc-4627-b3be-bf75b87d0e83/content range=bytes=3145728-4194303 -> 206
+request GET /v1/assets/a1c30aa5-f2fc-4627-b3be-bf75b87d0e83/content range=bytes=4194304-5242879 -> 412
+request GET /v1/items/a7567e21-f646-49d0-9f2c-656b7399131e/manifest range=- -> 200
+request GET /v1/assets/a1c30aa5-f2fc-4627-b3be-bf75b87d0e83/content range=bytes=1048576-2097151 -> 206
+request GET /v1/assets/a1c30aa5-f2fc-4627-b3be-bf75b87d0e83/content range=bytes=4194304-5242879 -> 206
+request GET /v1/assets/a1c30aa5-f2fc-4627-b3be-bf75b87d0e83/content range=bytes=5242880-6291455 -> 206
+request GET /v1/assets/a1c30aa5-f2fc-4627-b3be-bf75b87d0e83/content range=bytes=6291456-6295776 -> 206
+event manifestFetched(itemVersionID: "2dd6b4ee-b0f6-49bc-8a5f-6bbe8a3584a7")
+event partRequested(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 0, attempt: 1)
+event partVerified(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 0)
+event partRequested(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 1, attempt: 1)
+event partVerified(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 1)
+event partRequested(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 2, attempt: 1)
+event partVerified(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 2)
+event partRequested(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 3, attempt: 1)
+event partVerified(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 3)
+event partRequested(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 4, attempt: 1)
+event partFailed(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 4, failure: SylviaTransferCore.PartFailure.preconditionFailed)
+event manifestFetched(itemVersionID: "3d7e1dde-161b-4b30-a27d-d991eb6f09a4")
+event versionChanged(from: "2dd6b4ee-b0f6-49bc-8a5f-6bbe8a3584a7", to: "3d7e1dde-161b-4b30-a27d-d991eb6f09a4", keptParts: 3, discardedParts: 1)
+event partRequested(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 1, attempt: 1)
+event partVerified(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 1)
+event partRequested(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 4, attempt: 1)
+event partVerified(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 4)
+event partRequested(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 5, attempt: 1)
+event partVerified(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 5)
+event partRequested(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 6, attempt: 1)
+event partVerified(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83", index: 6)
+event assetFinalized(assetID: "a1c30aa5-f2fc-4627-b3be-bf75b87d0e83")

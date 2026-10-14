@@ -1,33 +1,33 @@
 host (macOS), in-process source, 1 MiB parts, asset 6295777 bytes
 preparation delayed 1.5 s after the clone; the source answers 503 preparing after 0.3 s
 request POST /v1/pair range=- -> 200
-request GET /v1/items/7a43980f-27a5-4a96-9e49-8716fd716b6c/manifest range=- -> 503
-request GET /v1/items/7a43980f-27a5-4a96-9e49-8716fd716b6c/manifest range=- -> 503
-request GET /v1/items/7a43980f-27a5-4a96-9e49-8716fd716b6c/manifest range=- -> 503
-request GET /v1/items/7a43980f-27a5-4a96-9e49-8716fd716b6c/manifest range=- -> 200
-request GET /v1/assets/26a4bcdc-fe32-4600-b9fd-0852da2a6774/content range=bytes=0-1048575 -> 206
-request GET /v1/assets/26a4bcdc-fe32-4600-b9fd-0852da2a6774/content range=bytes=1048576-2097151 -> 206
-request GET /v1/assets/26a4bcdc-fe32-4600-b9fd-0852da2a6774/content range=bytes=2097152-3145727 -> 206
-request GET /v1/assets/26a4bcdc-fe32-4600-b9fd-0852da2a6774/content range=bytes=3145728-4194303 -> 206
-request GET /v1/assets/26a4bcdc-fe32-4600-b9fd-0852da2a6774/content range=bytes=4194304-5242879 -> 206
-request GET /v1/assets/26a4bcdc-fe32-4600-b9fd-0852da2a6774/content range=bytes=5242880-6291455 -> 206
-request GET /v1/assets/26a4bcdc-fe32-4600-b9fd-0852da2a6774/content range=bytes=6291456-6295776 -> 206
+request GET /v1/items/454ce5fa-d1ea-4e7a-88fd-235d4b6a178f/manifest range=- -> 503
+request GET /v1/items/454ce5fa-d1ea-4e7a-88fd-235d4b6a178f/manifest range=- -> 503
+request GET /v1/items/454ce5fa-d1ea-4e7a-88fd-235d4b6a178f/manifest range=- -> 503
+request GET /v1/items/454ce5fa-d1ea-4e7a-88fd-235d4b6a178f/manifest range=- -> 200
+request GET /v1/assets/e3183244-4686-4b70-be45-02baf513e00f/content range=bytes=0-1048575 -> 206
+request GET /v1/assets/e3183244-4686-4b70-be45-02baf513e00f/content range=bytes=1048576-2097151 -> 206
+request GET /v1/assets/e3183244-4686-4b70-be45-02baf513e00f/content range=bytes=2097152-3145727 -> 206
+request GET /v1/assets/e3183244-4686-4b70-be45-02baf513e00f/content range=bytes=3145728-4194303 -> 206
+request GET /v1/assets/e3183244-4686-4b70-be45-02baf513e00f/content range=bytes=4194304-5242879 -> 206
+request GET /v1/assets/e3183244-4686-4b70-be45-02baf513e00f/content range=bytes=5242880-6291455 -> 206
+request GET /v1/assets/e3183244-4686-4b70-be45-02baf513e00f/content range=bytes=6291456-6295776 -> 206
 event sourcePreparing
 event sourcePreparing
 event sourcePreparing
-event manifestFetched(itemVersionID: "321f62b4-9a76-4ffe-a673-123e022da5c5")
-event partRequested(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 0, attempt: 1)
-event partRequested(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 1, attempt: 1)
-event partVerified(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 0)
-event partRequested(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 2, attempt: 1)
-event partVerified(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 1)
-event partRequested(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 3, attempt: 1)
-event partVerified(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 2)
-event partRequested(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 4, attempt: 1)
-event partVerified(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 3)
-event partRequested(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 5, attempt: 1)
-event partVerified(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 4)
-event partRequested(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 6, attempt: 1)
-event partVerified(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 5)
-event partVerified(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774", index: 6)
-event assetFinalized(assetID: "26a4bcdc-fe32-4600-b9fd-0852da2a6774")
+event manifestFetched(itemVersionID: "789a9b51-52de-4e8d-94da-9448f8401b1c")
+event partRequested(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 0, attempt: 1)
+event partRequested(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 1, attempt: 1)
+event partVerified(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 0)
+event partRequested(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 2, attempt: 1)
+event partVerified(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 1)
+event partRequested(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 3, attempt: 1)
+event partVerified(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 2)
+event partRequested(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 4, attempt: 1)
+event partVerified(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 3)
+event partRequested(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 5, attempt: 1)
+event partVerified(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 4)
+event partRequested(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 6, attempt: 1)
+event partVerified(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 5)
+event partVerified(assetID: "e3183244-4686-4b70-be45-02baf513e00f", index: 6)
+event assetFinalized(assetID: "e3183244-4686-4b70-be45-02baf513e00f")

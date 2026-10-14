@@ -5,7 +5,8 @@ import SylviaTransferClient
 import SylviaTransferCore
 
 /// What App Transport Security does to the transfer client's connections (plan 14.3, ADR-0008), on the
-/// simulator. Runs in the harness (no NSAppTransportSecurity key) and in the ATS probe variants
+/// simulator (simulator-background-run.sh) and on a phone (device-ats-probe.sh, checklist step 23; the loopback
+/// forms are left out there). Runs in the harness (no NSAppTransportSecurity key) and in the ATS probe variants
 /// (Config/ATSVariant-*.plist, G02TransferATSVariant); the Info.plist key `G02ATSVariant` names the variant.
 ///
 /// For each address form, three requests to the MAIN source or a control server on the same address:
@@ -26,10 +27,28 @@ struct ATSProbeTests {
 
     static var variant: String { Bundle.main.object(forInfoDictionaryKey: "G02ATSVariant") as? String ?? "none" }
 
+    /// "simulator" or "device" (the probe also runs on a phone: Scripts/device-ats-probe.sh, checklist step 23).
+    static var environmentLabel: String {
+        #if targetEnvironment(simulator)
+        "simulator"
+        #else
+        "device (\(deviceModel))"
+        #endif
+    }
+
+    static var deviceModel: String {
+        var info = utsname()
+        uname(&info)
+        return withUnsafeBytes(of: info.machine) { String(decoding: $0.prefix { $0 != 0 }, as: UTF8.self) }
+    }
+
     static func forms() -> [Form] {
         let env = SimEnvironment.values
-        var forms = [Form(label: "IPv4 loopback", host: "127.0.0.1", tailnet: false), Form(label: "IPv6 loopback", host: "::1", tailnet: false),
-                     Form(label: "unqualified name", host: "localhost", tailnet: false)]
+        // On a phone the loopback forms reach the phone itself, not the Mac: a device run leaves them out.
+        var forms = SimEnvironment.isDeviceRun ? [] : [
+            Form(label: "IPv4 loopback", host: "127.0.0.1", tailnet: false), Form(label: "IPv6 loopback", host: "::1", tailnet: false),
+            Form(label: "unqualified name", host: "localhost", tailnet: false),
+        ]
         if let value = env["G02_LAN_IP"], !value.isEmpty { forms.append(Form(label: "LAN IPv4", host: value, tailnet: false)) }
         if let value = env["G02_LOCAL_HOSTNAME"], !value.isEmpty { forms.append(Form(label: ".local name", host: value, tailnet: false)) }
         if let value = env["G02_TAILSCALE_IP"], !value.isEmpty { forms.append(Form(label: "Tailscale IPv4 (100.64/10)", host: value, tailnet: true)) }
@@ -56,13 +75,14 @@ struct ATSProbeTests {
     @Test func pinnedHTTPSAndCleartextByAddressForm() async throws {
         let info = try SimEnvironment.source("MAIN")
         let pin = try SPKIPin(hex: info.fingerprint.replacingOccurrences(of: " ", with: "").lowercased())
-        let cleartextPath = try #require(SimEnvironment.values["G02_CLEARTEXT"])
-        let cleartext = try JSONDecoder().decode([String: Int].self, from: Data(contentsOf: URL(fileURLWithPath: cleartextPath)))
+        let cleartext = try SimEnvironment.cleartextServers()
         let ats = Bundle.main.object(forInfoDictionaryKey: "NSAppTransportSecurity")
         let variant = Self.variant
         if variant == "none" { #expect(ats == nil, "the harness itself must not declare any ATS key") }
+        let forms = Self.forms()
+        #expect(!forms.isEmpty, "no address form to probe (a device run needs G02_LAN_IP)")
         var lines = [
-            "environment: simulator (\(ProcessInfo.processInfo.operatingSystemVersionString)), hosted test in \(Bundle.main.bundleIdentifier ?? "?")",
+            "environment: \(Self.environmentLabel) (\(ProcessInfo.processInfo.operatingSystemVersionString)), hosted test in \(Bundle.main.bundleIdentifier ?? "?")",
             "ATS variant: \(variant); Info.plist NSAppTransportSecurity: \(ats.map { "\($0)".replacingOccurrences(of: "\n", with: " ") } ?? "absent (ATS defaults)")",
             "pinned HTTPS = GET /v1/capabilities on the MAIN source (self-signed P-256 certificate whose name is not the host), trust answered only by the SPKI pin",
             "foreground = ephemeral URLSession data task; background = URLSessionConfiguration.background download task",
@@ -75,7 +95,7 @@ struct ATSProbeTests {
         let plain = URLSession(configuration: .ephemeral)
         defer { plain.invalidateAndCancel() }
         var results: [(Form, Outcome, Outcome, String)] = []
-        for form in Self.forms() {
+        for form in forms {
             let endpoint = PairingPayload.Endpoint(host: form.host, port: info.port)
             let url = try #require(URL(string: "https://\(endpoint.urlHost):\(info.port)/v1/capabilities"))
             let fg = await foreground.fetch(url)
@@ -96,7 +116,10 @@ struct ATSProbeTests {
             lines.append("  pinned HTTPS, background: \(bg.summary)")
             lines.append("  cleartext HTTP:           \(clear)")
         }
-        if let directory = SimEnvironment.evidenceDirectory {
+        if SimEnvironment.isDeviceRun {
+            // No host file system on a phone: the log goes to the test output, where device-ats-probe.sh collects it.
+            for line in lines { print("G02-ATS-PROBE \(line)") }
+        } else if let directory = SimEnvironment.evidenceDirectory {
             try? FileManager.default.createDirectory(at: directory.appendingPathComponent("ats"), withIntermediateDirectories: true)
             try? Data((lines.joined(separator: "\n") + "\n").utf8).write(to: directory.appendingPathComponent("ats/ats-probe-\(variant).log"))
         }

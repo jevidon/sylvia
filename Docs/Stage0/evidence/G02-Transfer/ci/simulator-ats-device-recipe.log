@@ -1,0 +1,47 @@
+environment: simulator Sylvia-M0-minors-g02-transfer (14A94E34-A628-4CBD-9A37-89CED5ED550E); the device recipe of checklist step 23, variant none
+G0.2 ATS probe through Scripts/device-ats-probe.sh, 2026-10-12T21:07:05Z
+destination: id=14A94E34-A628-4CBD-9A37-89CED5ED550E; variant: none; Mac: macOS 26.6.2 (25G83); uptime: 10:07  up 9 days, 20:17, 1 user, load averages: 84.00 85.17 65.50
+address forms: LAN 192.168.20.104, .local M5-Max-MBP.local; Tailscale not included, MagicDNS not included
+source: sylvia-test-source (ephemeral identity; no pairing in this run); cleartext controls: {"192.168.20.104": 56125, "M5-Max-MBP.local": 56125}
+
+--- the probe's log (printed by the test on the destination)
+environment: simulator (Version 26.5 (Build 23F77)), hosted test in com.jevidon.sylvia.spike.transfer
+ATS variant: none; Info.plist NSAppTransportSecurity: absent (ATS defaults)
+pinned HTTPS = GET /v1/capabilities on the MAIN source (self-signed P-256 certificate whose name is not the host), trust answered only by the SPKI pin
+foreground = ephemeral URLSession data task; background = URLSessionConfiguration.background download task
+cleartext control = GET http://<host>:<port>/ on a plain Python server bound to the same address
+
+LAN IPv4 [192.168.20.104]
+  pinned HTTPS, foreground: HTTP 200; challenges: server_trust=matched
+  pinned HTTPS, background: HTTP 200; challenges: server_trust=matched
+  cleartext HTTP:           loaded (HTTP 200)
+.local name [M5-Max-MBP.local]
+  pinned HTTPS, foreground: HTTP 200; challenges: server_trust=matched
+  pinned HTTPS, background: HTTP 200; challenges: server_trust=matched
+  cleartext HTTP:           loaded (HTTP 200)
+
+--- test result (xcodebuild exit status 0; full output: .build/scratch/g02-device-ats-none/xcodebuild.log)
+✔ Test pinnedHTTPSAndCleartextByAddressForm() passed after 0.096 seconds.
+✔ Suite "Simulator: App Transport Security probe (14.3)" passed after 0.096 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.096 seconds.
+** TEST SUCCEEDED **
+
+--- source output (requests carry IDs and ranges only)
+MAIN> TEST SOURCE: fault injection and test hooks active (auto-approve, codes to file); not a production configuration
+MAIN> Sylvia source (G0.2 spike), protocol 1.0
+MAIN> source id: 0ffb3c83-941f-4091-9061-1252ba4a894e
+MAIN> source name: G02 MAIN source
+MAIN> fingerprint: B030 5DDB 66EE C3EF AB4A 47AB FA2D EF3B A6F5 EEE3 BC88 43BE 85A4 0941 FF73 7B4A
+MAIN> identity key: memory only (--ephemeral-identity)
+MAIN> listening: 192.168.20.104:56124
+MAIN> endpoints in pairing payload: 192.168.20.104:56124 M5-Max-MBP.local:56124
+MAIN> shared folders: 1
+MAIN> pairing codes written: 1 (single use, not printed)
+MAIN> ready
+MAIN> connections 2026-10-12T21:07:17.551Z accepted=2 decrypted_bytes=474
+MAIN> request 2026-10-12T21:07:17.551Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:07:17.551Z GET /v1/capabilities range=- -> 200
+MAIN> connections 2026-10-12T21:07:17.763Z accepted=4 decrypted_bytes=952
+MAIN> request 2026-10-12T21:07:17.764Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:07:17.764Z GET /v1/capabilities range=- -> 200
+RESULT: PASS (every form behaved as on the simulator)

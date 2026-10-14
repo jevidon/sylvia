@@ -1,0 +1,7 @@
+environment: host (macOS Version 26.6.2 (Build 25G83)); PairingQRCodeTests (swift test)
+PairingQRCode draws the pairing link with half blocks, black on white; the drawing is read back into modules, rendered at 8 px per module and decoded with Vision (DetectBarcodesRequest, .qr)
+invitation of the in-process source (one loopback endpoint): link 581 characters; symbol 81x81 modules (level L); terminal 89 columns x 45 lines; quiet zone 4 modules; drawing read back equals the symbol: true; Vision decoded the drawing to exactly the link: true
+four endpoints (LAN, .local, Tailscale, MagicDNS): link 779 characters; symbol 93x93 modules (level L); terminal 101 columns x 51 lines; quiet zone 4 modules; drawing read back equals the symbol: true; Vision decoded the drawing to exactly the link: true
+eight endpoints with 71-character names and a 64-character source name: link 1635 characters; symbol 133x133 modules (level L); terminal 141 columns x 71 lines; quiet zone 4 modules; drawing read back equals the symbol: true; Vision decoded the drawing to exactly the link: true
+a payload at the protocol's limits (eight endpoints with 253-character names, a 64-character ASCII source name, a 64-byte secret): link 3633 characters, a valid pairing link (limit 4096) but more than the 2953 bytes a QR code holds at level L: refused with tooLong, so the source prints the code and link and "qr: not drawn (tooLong); paste the code instead"
+3,000 characters (beyond QR capacity at level L): refused with tooLong

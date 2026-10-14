@@ -1,0 +1,118 @@
+review finding R3-01: BackgroundClientHostTests.relaunchWithTooLittleSpacePausesBeforeAnyRequest run against the pre-fix coordinator
+(BackgroundTransferCoordinator.swift as at b354dc7, the commit the round 3 review read; the test is from this round)
+environment: host (macOS 26.6.2, Apple M5 Max); run 2026-10-12T17:33:28Z; uptime:  6:33  up 9 days, 16:43, 1 user, load averages: 15.18 33.52 36.34
+command: xcrun swift test --package-path Spikes/G02-Transfer/SourceService --filter relaunchWithTooLittleSpace
+expected: FAIL (the launch requested part 3 although free space was below the reservation, and paused only after it arrived)
+
+Building for debugging...
+Build complete! (10.50 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Background client on the host (15.4, 15.5, T38-T41)" started.
+◇ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() started.
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() recorded an issue at BackgroundClientRound3Tests.swift:61:9: Expectation failed: summary.enqueued == 0
+↳ the launch requested 1 part(s) without the space for them
+↳ summary.enqueued == 0 → false
+↳   summary.enqueued → 1
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() recorded an issue at BackgroundClientRound3Tests.swift:62:9: Expectation failed: summary.blocked[jobID] == PauseReason.insufficientSpace.rawValue
+↳ summary.blocked[jobID] == PauseReason.insufficientSpace.rawValue → false
+↳   summary.blocked[jobID] → nil
+↳   PauseReason.insufficientSpace.rawValue → "insufficient_space"
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() recorded an issue at BackgroundClientRound3Tests.swift:64:9: Expectation failed: paused.job.state == .paused
+↳ paused.job.state == .paused → false
+↳   paused.job.state → .downloading
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() recorded an issue at BackgroundClientRound3Tests.swift:65:9: Expectation failed: paused.job.pauseReason == .insufficientSpace
+↳ paused.job.pauseReason == .insufficientSpace → false
+↳   paused.job.pauseReason → nil
+↳     some → .insufficientSpace
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() recorded an issue at BackgroundClientRound3Tests.swift:67:9: Expectation failed: paused.outstandingTasks == 0
+↳ paused.outstandingTasks == 0 → false
+↳   paused.outstandingTasks → 1
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() recorded an issue at BackgroundClientRound3Tests.swift:70:9: Expectation failed: requestsAfterRelaunch == 0
+↳ the relaunch sent 1 request(s) although the phone was full
+↳ requestsAfterRelaunch == 0 → false
+↳   requestsAfterRelaunch → 1
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() recorded an issue at BackgroundClientRound3Tests.swift:72:9: Expectation failed: !events.contains { $0.event == "part_requested" }
+↳ !events.contains { $0.event == "part_requested" } → <not evaluated>
+↳   events.contains { $0.event == "part_requested" } → <not evaluated>
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() recorded an issue at BackgroundClientRound3Tests.swift:75:9: Expectation failed: reconciliation.fields["blocked_\(jobID)"] == PauseReason.insufficientSpace.rawValue
+↳ reconciliation.fields["blocked_\(jobID)"] == PauseReason.insufficientSpace.rawValue → false
+↳   reconciliation.fields["blocked_\(jobID)"] → nil
+↳   PauseReason.insufficientSpace.rawValue → "insufficient_space"
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() recorded an issue at BackgroundClientRound3Tests.swift:76:9: Expectation failed: reconciliation.fields["enqueued"] == "0"
+↳ reconciliation.fields["enqueued"] == "0" → false
+↳   reconciliation.fields["enqueued"] → "1"
+↳     some → "1"
+↳     some → "0"
+✘ Test relaunchWithTooLittleSpacePausesBeforeAnyRequest() failed after 2.819 seconds with 9 issues.
+↳ /// Review finding R3-01. Launch reconciliation runs at every launch, including each background relaunch for
+↳ /// session events, and requests the missing parts itself. It used to do so without the plan 15.4 reservation
+↳ /// that every other request passes. A relaunch on a phone with too little free space must pause the job with
+↳ /// insufficient_space and send no request; after space is freed, resume fetches only the missing parts.
+✘ Suite "Background client on the host (15.4, 15.5, T38-T41)" failed after 2.820 seconds with 9 issues.
+↳ /// The iOS background-download coordinator, run on the host against the in-process source (G0.2 part 2).
+↳ ///
+↳ /// Environment: host (macOS). The coordinator uses its `.inProcess` session kind: the same download
+↳ /// tasks, task descriptions, pinned task-level trust answer, synchronous move, verified-only journal,
+↳ /// assembly and importer as the background session, but tasks end with the process. The real background
+↳ /// session (tasks that outlive the app, relaunch) is exercised on the simulator by the iOS harness.
+✘ Test run with 1 test in 1 suite failed after 2.820 seconds with 9 issues.
+Note: Some test targets reported failures:
+  - SylviaSourceServiceTests (Swift Testing)
+exit 1
+
+--- background-host/relaunch-low-space.log as the test wrote it in this before-fix run (source requests and client events)
+environment: host (macOS), in-process source on 127.0.0.1, real TLS, 1 MiB parts; coordinator session kind: in-process download tasks
+relaunch (as for background session events) after 3 verified parts, with free space reported as 2 MiB (less than the 3150049 bytes still to arrive plus one part per outstanding task)
+result: launch_reconciliation enqueued=1, blocked=none; space_check_failed required_bytes=3150049 available_bytes=2097152; 1 request(s) after the relaunch
+then free space restored and resume: imported once; parts verified before the relaunch requested once in total
+source request POST /v1/pair range=- -> 200
+source request GET /v1/items/<item>/manifest range=- -> 200
+source request GET /v1/assets/bece8d34-9df7-4eba-8572-b8d5fccbb009/content range=bytes=0-1048575 -> 206
+source request GET /v1/assets/bece8d34-9df7-4eba-8572-b8d5fccbb009/content range=bytes=1048576-2097151 -> 206
+source request GET /v1/assets/bece8d34-9df7-4eba-8572-b8d5fccbb009/content range=bytes=2097152-3145727 -> 206
+source request GET /v1/assets/bece8d34-9df7-4eba-8572-b8d5fccbb009/content range=bytes=3145728-4194303 -> 206
+source request GET /v1/assets/bece8d34-9df7-4eba-8572-b8d5fccbb009/content range=bytes=3145728-4194303 -> 206
+source request GET /v1/assets/bece8d34-9df7-4eba-8572-b8d5fccbb009/content range=bytes=4194304-5242879 -> 206
+source request GET /v1/assets/bece8d34-9df7-4eba-8572-b8d5fccbb009/content range=bytes=5242880-6291455 -> 206
+source request GET /v1/assets/bece8d34-9df7-4eba-8572-b8d5fccbb009/content range=bytes=6291456-6295776 -> 206
+client event staging_checked jobs=0 milliseconds=0 rehashed=true verified_bytes=0
+client event coordinator_start app_state=host_test jobs=0 protected_data_available=not_reported session=in_process
+client event launch_reconciliation adopted=0 app_state=host_test completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
+client event job_created bytes=6295777 item=7c22cb57-386f-40c0-a138-9396560fb1ae job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 parts=7 queue_entry=none version=f0b9e8f8-2911-4d9b-9601-b9f37144d9cb
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:0 port=51693
+client event trust_challenge app_state=host_test host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 level=task method=NSURLAuthenticationMethodServerTrust part=bece8d34-9df7-4eba-8572-b8d5fccbb009:0 port=51693 result=matched
+client event task_metrics attempt=1 fetch_type=1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:0 protocol=http/1.1 reused_connection=false tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=3 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:0
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:1 port=51693
+client event task_metrics attempt=1 fetch_type=1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:1 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=2 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:1
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:2 port=51693
+client event task_metrics attempt=1 fetch_type=1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:2 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=2 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:2
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:3 port=51693
+client event task_metrics attempt=1 fetch_type=1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:3 protocol=http/1.1 reused_connection=true tls=772
+client event part_failed app_state=host_test attempt=1 failure=transport("NSURLErrorDomain -999") job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:3
+client event staging_checked jobs=1 milliseconds=5 rehashed=true verified_bytes=3145728
+client event coordinator_start app_state=background_relaunch jobs=1 protected_data_available=not_reported session=in_process
+client event part_requested app_state=background_relaunch attempt=2 host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:3 port=51693
+client event launch_reconciliation adopted=0 app_state=background_relaunch completed_before_reconciliation=0 discarded_parts=0 enqueued=1 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=3 outstanding_tasks=0 refreshes=0
+client event trust_challenge app_state=background_relaunch host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 level=task method=NSURLAuthenticationMethodServerTrust part=bece8d34-9df7-4eba-8572-b8d5fccbb009:3 port=51693 result=matched
+client event task_metrics attempt=2 fetch_type=1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:3 protocol=http/1.1 reused_connection=false tls=772
+client event part_verified app_state=background_relaunch attempt=2 commit_ms=2 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:3
+client event space_check_failed available_bytes=2097152 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 required_bytes=3150049
+client event paused app_state=background_relaunch job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 reason=insufficient_space verified_parts=4
+client event resumed job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1
+client event part_requested app_state=background_relaunch attempt=1 host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:4 port=51693
+client event task_metrics attempt=1 fetch_type=1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:4 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=background_relaunch attempt=1 commit_ms=2 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:4
+client event part_requested app_state=background_relaunch attempt=1 host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:5 port=51693
+client event task_metrics attempt=1 fetch_type=1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:5 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=background_relaunch attempt=1 commit_ms=2 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:5
+client event part_requested app_state=background_relaunch attempt=1 host=127.0.0.1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:6 port=51693
+client event task_metrics attempt=1 fetch_type=1 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:6 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=background_relaunch attempt=1 commit_ms=2 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 part=bece8d34-9df7-4eba-8572-b8d5fccbb009:6
+client event assembly_started app_state=background_relaunch job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1
+client event assembly_verified app_state=background_relaunch assets=1 bytes=6295777 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 milliseconds=267
+client event imported completions=1 duplicate_requests=0 import=e0062b67-94e5-4192-ac55-4f62e729cb06 job=c9c1ea7d-1aa5-40cc-bf40-c38c6d7ae3a1 version=f0b9e8f8-2911-4d9b-9601-b9f37144d9cb

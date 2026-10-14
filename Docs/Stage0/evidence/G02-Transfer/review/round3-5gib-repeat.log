@@ -1,0 +1,30 @@
+=== run 1: 2026-10-12T18:20:46Z; uptime:  7:20  up 9 days, 17:31, 1 user, load averages: 13.26 18.75 56.40
+✔ Test fiveGiBTransferSurvivesInterruptionsWithBoundedMemory() passed after 19.004 seconds.
+✔ Test fiveGiBThroughTheBackgroundClientWithARelaunch() passed after 26.336 seconds.
+✔ Suite "5 GiB transfer with interruptions and bounded memory (T38)" passed after 45.341 seconds.
+✔ Test run with 2 tests in 1 suite passed after 45.341 seconds.
+relaunch: start() took 1.38 s; staging check re-hashed 2734686208 bytes in 1333 ms (1956 MiB/s)
+jobViews() polled 195 times during start(); slowest call 2.259 ms (asserted < 250 ms: the re-hash runs outside the lock)
+final full-file SHA-256 (assembly) took 2297 ms on the assembly queue; jobViews() polled 361 times while the job showed "assembling", slowest of those 13.695 ms (asserted < 250 ms: the check runs outside the lock)
+jobViews() polled 1177 times from the relaunch to the import; slowest call 71.800 ms (asserted < 1 s). Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the 157 parts verified after the relaunch: median 14, max 48 (report finding 20)
+uptime after:  7:21  up 9 days, 17:32, 1 user, load averages: 69.11 31.99 58.87
+=== run 2: 2026-10-12T18:21:37Z; uptime:  7:21  up 9 days, 17:32, 1 user, load averages: 69.11 31.99 58.87
+✔ Test fiveGiBTransferSurvivesInterruptionsWithBoundedMemory() passed after 19.097 seconds.
+✔ Test fiveGiBThroughTheBackgroundClientWithARelaunch() passed after 30.264 seconds.
+✔ Suite "5 GiB transfer with interruptions and bounded memory (T38)" passed after 49.362 seconds.
+✔ Test run with 2 tests in 1 suite passed after 49.362 seconds.
+relaunch: start() took 1.39 s; staging check re-hashed 2734686208 bytes in 1354 ms (1926 MiB/s)
+jobViews() polled 227 times during start(); slowest call 3.633 ms (asserted < 250 ms: the re-hash runs outside the lock)
+final full-file SHA-256 (assembly) took 6764 ms on the assembly queue; jobViews() polled 1077 times while the job showed "assembling", slowest of those 4.078 ms (asserted < 250 ms: the check runs outside the lock)
+jobViews() polled 1899 times from the relaunch to the import; slowest call 42.942 ms (asserted < 1 s). Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the 157 parts verified after the relaunch: median 16, max 35 (report finding 20)
+uptime after:  7:22  up 9 days, 17:33, 1 user, load averages: 85.86 45.33 62.30
+=== run 3: 2026-10-12T18:22:33Z; uptime:  7:22  up 9 days, 17:33, 1 user, load averages: 85.86 45.33 62.30
+✔ Test fiveGiBTransferSurvivesInterruptionsWithBoundedMemory() passed after 16.675 seconds.
+✔ Test fiveGiBThroughTheBackgroundClientWithARelaunch() passed after 16.586 seconds.
+✔ Suite "5 GiB transfer with interruptions and bounded memory (T38)" passed after 33.262 seconds.
+✔ Test run with 2 tests in 1 suite passed after 33.262 seconds.
+relaunch: start() took 1.06 s; staging check re-hashed 2768240640 bytes in 1048 ms (2519 MiB/s)
+jobViews() polled 177 times during start(); slowest call 0.280 ms (asserted < 250 ms: the re-hash runs outside the lock)
+final full-file SHA-256 (assembly) took 2331 ms on the assembly queue; jobViews() polled 372 times while the job showed "assembling", slowest of those 4.732 ms (asserted < 250 ms: the check runs outside the lock)
+jobViews() polled 846 times from the relaunch to the import; slowest call 22.660 ms (asserted < 1 s). Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the 155 parts verified after the relaunch: median 11, max 16 (report finding 20)
+uptime after:  7:23  up 9 days, 17:33, 1 user, load averages: 59.52 43.47 60.95

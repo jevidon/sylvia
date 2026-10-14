@@ -1,0 +1,47 @@
+G0.2 package locks for the two XcodeGen projects (M0 integration open item; round 3). Environment: host (macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a )
+
+1. Locks committed: Spikes/G02-Transfer/MacIdentityProbe/Package.resolved = a copy of SourceService/Package.resolved;
+   Spikes/G02-Transfer/iOS/Package.resolved = a copy of TransferKit/Package.resolved (each project resolves its local package itself).
+
+2. Xcode keeps them (sylvia_generate <dir>; the lock seeded into <project>.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+   Package.resolved; xcodebuild -resolvePackageDependencies -project <project> -scheme <scheme> -derivedDataPath
+   <dir>/.build/DerivedData-lock; then diff against the seed):
+   G02MacIdentityProbe (scheme G02MacIdentityProbe):
+     started: 2026-10-12T20:50:12Z; uptime:  9:50  up 9 days, 20 hrs, 1 user, load averages: 9.90 19.19 29.39
+     resolved source packages: swift-nio-ssl, swift-certificates, swift-nio, swift-asn1, swift-atomics, swift-crypto, swift-collections, swift-system, SylviaTransferKit, SylviaSourceService
+     exit 0
+     identical to the seed
+     finished: 2026-10-12T20:50:35Z
+   G02Transfer (scheme G02TransferHarness):
+     started: 2026-10-12T20:50:43Z; uptime:  9:50  up 9 days, 20:01, 1 user, load averages: 55.68 28.71 32.44
+     resolved source packages: SylviaTransferKit, swift-asn1
+     exit 0
+     identical to the seed
+     finished: 2026-10-12T20:50:45Z
+
+3. The clean run (ci-clean-run.log) built both projects with -disableAutomaticPackageResolution from the committed locks:
+   MacIdentityProbe (mac-identity-signed step; it then stopped at code signing, as before):
+     Resolved source packages:
+       swift-nio-ssl: https://github.com/apple/swift-nio-ssl.git @ 2.37.5
+       swift-nio: https://github.com/apple/swift-nio.git @ 2.103.0
+       swift-asn1: https://github.com/apple/swift-asn1.git @ 1.7.3
+       SylviaSourceService: Spikes/G02-Transfer/SourceService
+       swift-certificates: https://github.com/apple/swift-certificates.git @ 1.21.0
+       swift-collections: https://github.com/apple/swift-collections.git @ 1.7.1
+       swift-atomics: https://github.com/apple/swift-atomics.git @ 1.3.1
+       swift-system: https://github.com/apple/swift-system.git @ 1.8.1
+       SylviaTransferKit: Spikes/G02-Transfer/TransferKit @ local
+       swift-crypto: https://github.com/apple/swift-crypto.git @ 5.0.0
+     
+   iOS (every simulator step; one build log shown):
+     Resolved source packages:
+       swift-asn1: https://github.com/apple/swift-asn1.git @ 1.7.3
+       SylviaTransferKit: Spikes/G02-Transfer/TransferKit
+     
+
+4. After the clean run, the locks Xcode used are byte-identical to the committed ones (2026-10-12T21:32:26Z):
+   Spikes/G02-Transfer/MacIdentityProbe: unchanged
+   Spikes/G02-Transfer/iOS: unchanged
+
+5. CI step package-locks (ci/package-locks.log) compares the pins on every run; a changed pin fails it (tried on a copy
+   with swift-collections 1.7.2 in the probe's lock: MISMATCH, exit 1).

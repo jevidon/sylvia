@@ -3,8 +3,8 @@ host (macOS): hostile request corpus against the in-process source
 /v1/assets/%2e%2e/content -> 400 invalid_request
 /v1/items/ABCDEF00-0000-4000-8000-00000000000A/manifest -> 400 invalid_id
 /v1/items/walden.epub/manifest -> 400 invalid_id
-/v1/assets/21b6eed8-5c7e-4f6e-a766-b157abd55550/content -> 404 not_found
-/v1/items/5ce72c99-a1f5-4443-adff-b4700454c8d0/manifest -> 404 not_found
+/v1/assets/0a0b14b5-c98a-41e1-9799-6517265d4d66/content -> 404 not_found
+/v1/items/d9656797-236b-4210-a3e3-e09ae90fc06e/manifest -> 404 not_found
 /v1//catalog -> 400 invalid_request
 /v2/catalog -> 400 unsupported_protocol_version
 /capabilities -> 404 not_found

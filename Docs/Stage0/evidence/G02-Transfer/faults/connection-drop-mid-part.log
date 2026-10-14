@@ -1,29 +1,29 @@
 host (macOS), in-process source, 1 MiB parts, asset 6295777 bytes
 request POST /v1/pair range=- -> 200
-request GET /v1/items/44ff83ed-ee52-4e70-bccf-f51ffc6d1b6d/manifest range=- -> 200
-request GET /v1/assets/b2080a28-74c5-47c7-896a-56ccc60c74ee/content range=bytes=1048576-2097151 -> 206
-request GET /v1/assets/b2080a28-74c5-47c7-896a-56ccc60c74ee/content range=bytes=0-1048575 -> 206
-request GET /v1/assets/b2080a28-74c5-47c7-896a-56ccc60c74ee/content range=bytes=2097152-3145727 -> 206 fault=dropAfter(bytes: 300000)
-request GET /v1/assets/b2080a28-74c5-47c7-896a-56ccc60c74ee/content range=bytes=3145728-4194303 -> 206
-request GET /v1/assets/b2080a28-74c5-47c7-896a-56ccc60c74ee/content range=bytes=4194304-5242879 -> 206
-request GET /v1/assets/b2080a28-74c5-47c7-896a-56ccc60c74ee/content range=bytes=5242880-6291455 -> 206
-request GET /v1/assets/b2080a28-74c5-47c7-896a-56ccc60c74ee/content range=bytes=6291456-6295776 -> 206
-request GET /v1/assets/b2080a28-74c5-47c7-896a-56ccc60c74ee/content range=bytes=2097152-3145727 -> 206
-event manifestFetched(itemVersionID: "fe5aa397-a3e1-475b-85f3-ccb6e459268f")
-event partRequested(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 0, attempt: 1)
-event partRequested(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 1, attempt: 1)
-event partVerified(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 1)
-event partRequested(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 2, attempt: 1)
-event partVerified(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 0)
-event partRequested(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 3, attempt: 1)
-event partFailed(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 2, failure: SylviaTransferCore.PartFailure.transport("NSURLErrorDomain -1005"))
-event partRequested(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 4, attempt: 1)
-event partVerified(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 3)
-event partRequested(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 5, attempt: 1)
-event partVerified(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 4)
-event partRequested(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 6, attempt: 1)
-event partVerified(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 5)
-event partRequested(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 2, attempt: 2)
-event partVerified(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 6)
-event partVerified(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee", index: 2)
-event assetFinalized(assetID: "b2080a28-74c5-47c7-896a-56ccc60c74ee")
+request GET /v1/items/317b5705-4de7-4a64-940f-af53f7ae2bc4/manifest range=- -> 200
+request GET /v1/assets/5d7474a3-16c4-42c5-bb07-7e06f30d4b60/content range=bytes=0-1048575 -> 206
+request GET /v1/assets/5d7474a3-16c4-42c5-bb07-7e06f30d4b60/content range=bytes=1048576-2097151 -> 206
+request GET /v1/assets/5d7474a3-16c4-42c5-bb07-7e06f30d4b60/content range=bytes=2097152-3145727 -> 206 fault=dropAfter(bytes: 300000)
+request GET /v1/assets/5d7474a3-16c4-42c5-bb07-7e06f30d4b60/content range=bytes=3145728-4194303 -> 206
+request GET /v1/assets/5d7474a3-16c4-42c5-bb07-7e06f30d4b60/content range=bytes=4194304-5242879 -> 206
+request GET /v1/assets/5d7474a3-16c4-42c5-bb07-7e06f30d4b60/content range=bytes=5242880-6291455 -> 206
+request GET /v1/assets/5d7474a3-16c4-42c5-bb07-7e06f30d4b60/content range=bytes=6291456-6295776 -> 206
+request GET /v1/assets/5d7474a3-16c4-42c5-bb07-7e06f30d4b60/content range=bytes=2097152-3145727 -> 206
+event manifestFetched(itemVersionID: "252b9239-ecee-4bdf-8d8e-f078afdc1290")
+event partRequested(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 0, attempt: 1)
+event partRequested(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 1, attempt: 1)
+event partVerified(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 0)
+event partRequested(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 2, attempt: 1)
+event partVerified(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 1)
+event partRequested(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 3, attempt: 1)
+event partFailed(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 2, failure: SylviaTransferCore.PartFailure.transport("NSURLErrorDomain -1005"))
+event partRequested(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 4, attempt: 1)
+event partVerified(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 3)
+event partRequested(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 5, attempt: 1)
+event partVerified(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 4)
+event partRequested(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 6, attempt: 1)
+event partVerified(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 5)
+event partRequested(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 2, attempt: 2)
+event partVerified(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 6)
+event partVerified(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60", index: 2)
+event assetFinalized(assetID: "5d7474a3-16c4-42c5-bb07-7e06f30d4b60")

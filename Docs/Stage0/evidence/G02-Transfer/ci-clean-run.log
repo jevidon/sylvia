@@ -1,58 +1,69 @@
-clean state: removing .build/ci-logs .build/DerivedData .build/scratch/g02-bg-run .build/scratch/g02-ios .build/scratch/g02-relaunch-run .build/scratch/g02-entry-run .build/scratch/g02-identity-probe Spikes/G02-Transfer/SourceService/.build Spikes/G02-Transfer/TransferKit/.build Spikes/G02-Transfer/iOS/.build Spikes/G02-Transfer/iOS/G02Transfer.xcodeproj Spikes/G02-Transfer/MacIdentityProbe/.build Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj
-git: ca1d5dd619a7bf97c29e4477fd204440845b485b (0 uncommitted paths in tracked files)
-started: 2026-10-12T03:01:28Z
-command: Scripts/ci.sh contracts g02-transfer
+clean state: removing .build/ci-logs .build/DerivedData .build/scratch/g02-bg-run .build/scratch/g02-ios .build/scratch/g02-relaunch-run .build/scratch/g02-entry-run .build/scratch/g02-identity-probe .build/scratch/g02-sim-run .build/scratch/g02-qr-check .build/scratch/g02-recipe-check .build/scratch/g02-device-ats-none Spikes/G02-Transfer/SourceService/.build Spikes/G02-Transfer/TransferKit/.build Spikes/G02-Transfer/iOS/.build Spikes/G02-Transfer/iOS/G02Transfer.xcodeproj Spikes/G02-Transfer/MacIdentityProbe/.build Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj
+git: 41b93e7a84d8b4767baf079ef3dfb563b48334c1 (0 uncommitted paths in tracked files)
+simulator: Sylvia-M0-minors-g02-transfer (14A94E34-A628-4CBD-9A37-89CED5ED550E, created by this job for this run; iPhone 17, iOS 26.5)
+load at start:  9:59  up 9 days, 20:10, 1 user, load averages: 131.69 47.24 38.72
+started: 2026-10-12T20:59:54Z
+command: SYLVIA_G02_SIMULATOR=Sylvia-M0-minors-g02-transfer Scripts/ci.sh contracts g02-transfer
 ==> 10-contracts
-    pass (0s)
+    pass (3s)
 ==> 40-g02-transfer
-    pass (461s)
+    pass (635s)
 all 2 steps passed
 
 --- Scripts/ci.d/10-contracts.sh output (.build/ci-logs/10-contracts.log)
-schemas: 9  fixtures: 60  openapi: 1  instances: 0
+schemas: 15  fixtures: 188  openapi: 1  instances: 1
 
 --- Scripts/ci.d/40-g02-transfer.sh output (.build/ci-logs/40-g02-transfer.log)
-G0.2 transfer CI drop-in, 2026-10-12T03:01:28Z
+G0.2 transfer CI drop-in, 2026-10-12T20:59:58Z
 host: macOS 26.6.2 (25G83), Apple M5 Max
 xcode: Xcode 27.0 Build version 27A266a 
 swift: swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
 == contracts
-   pass (0 s) - Docs/Stage0/evidence/G02-Transfer/ci/contracts.log
+   pass (3 s) - Docs/Stage0/evidence/G02-Transfer/ci/contracts.log
 == fixtures-check
-   pass (0 s) - Docs/Stage0/evidence/G02-Transfer/ci/fixtures-check.log
+   pass (1 s) - Docs/Stage0/evidence/G02-Transfer/ci/fixtures-check.log
 == trust-guards
    pass (0 s) - Docs/Stage0/evidence/G02-Transfer/ci/trust-guards.log
+== package-locks
+   pass (1 s) - Docs/Stage0/evidence/G02-Transfer/ci/package-locks.log
 == host-transferkit
-   pass (12 s) - Docs/Stage0/evidence/G02-Transfer/ci/host-transferkit.log
+   pass (18 s) - Docs/Stage0/evidence/G02-Transfer/ci/host-transferkit.log
 == host-sourceservice
-   pass (67 s) - Docs/Stage0/evidence/G02-Transfer/ci/host-sourceservice.log
+   pass (109 s) - Docs/Stage0/evidence/G02-Transfer/ci/host-sourceservice.log
 == captured-payloads
    pass (0 s) - Docs/Stage0/evidence/G02-Transfer/ci/captured-payloads.log
 == large-5gib
-   pass (35 s) - Docs/Stage0/evidence/G02-Transfer/ci/large-5gib.log
+   pass (42 s) - Docs/Stage0/evidence/G02-Transfer/ci/large-5gib.log
 == cli-loopback-ipv4
-   pass (7 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-loopback-ipv4.log
+   pass (13 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-loopback-ipv4.log
 == cli-loopback-ipv6
-   pass (4 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-loopback-ipv6.log
+   pass (5 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-loopback-ipv6.log
 == cli-lan
    pass (4 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-lan.log
 == cli-tailscale-ip
    pass (5 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-tailscale-ip.log
 == cli-tailscale-magicdns
    pass (4 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-tailscale-magicdns.log
+== cli-qr
+   pass (4 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-qr.log
+== cli-logging-recipe
+   pass (7 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-logging-recipe.log
 == mac-identity-signed
    NOT RUN: code signing for team A4KBDX665Z is unavailable on this Mac (Docs/Stage0/evidence/G02-Transfer/keychain-identity-signed.log)
 == simulator
-   pass (23 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator.log
+   pass (65 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator.log
 == simulator-pairing
-   pass (7 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-pairing.log
+   pass (10 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-pairing.log
 == simulator-background
-   pass (40 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-background.log
+   pass (47 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-background.log
 == simulator-pairing-entry
-   pass (53 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-pairing-entry.log
+   pass (75 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-pairing-entry.log
+== simulator-ats-device-recipe
+   pass (16 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-ats-device-recipe.log
 == simulator-relaunch
-   pass (193 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-relaunch.log
+   pass (195 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-relaunch.log
 
 not run on this Mac (see each log for the reason): mac-identity-signed
 all G0.2 transfer steps passed
-finished: 2026-10-12T03:09:09Z, exit 0
+load at end: 10:10  up 9 days, 20:21, 1 user, load averages: 25.67 62.76 60.57
+finished: 2026-10-12T21:10:33Z, exit 0

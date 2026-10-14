@@ -2,44 +2,44 @@ environment: host (macOS), in-process source on 127.0.0.1, real TLS, 1 MiB parts
 fault: ignoreRange on the first response for part 3
 source request POST /v1/pair range=- -> 200
 source request GET /v1/items/<item>/manifest range=- -> 200
-source request GET /v1/assets/d2a28bbe-87dc-48b4-b555-678e65f0b46f/content range=bytes=0-1048575 -> 206
-source request GET /v1/assets/d2a28bbe-87dc-48b4-b555-678e65f0b46f/content range=bytes=2097152-3145727 -> 206
-source request GET /v1/assets/d2a28bbe-87dc-48b4-b555-678e65f0b46f/content range=bytes=3145728-4194303 -> 200 fault=ignoreRange
-source request GET /v1/assets/d2a28bbe-87dc-48b4-b555-678e65f0b46f/content range=bytes=1048576-2097151 -> 206
-source request GET /v1/assets/d2a28bbe-87dc-48b4-b555-678e65f0b46f/content range=bytes=4194304-5242879 -> 206
-source request GET /v1/assets/d2a28bbe-87dc-48b4-b555-678e65f0b46f/content range=bytes=5242880-6291455 -> 206
-source request GET /v1/assets/d2a28bbe-87dc-48b4-b555-678e65f0b46f/content range=bytes=6291456-6295776 -> 206
-source request GET /v1/assets/d2a28bbe-87dc-48b4-b555-678e65f0b46f/content range=bytes=3145728-4194303 -> 206
+source request GET /v1/assets/7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e/content range=bytes=0-1048575 -> 206
+source request GET /v1/assets/7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e/content range=bytes=2097152-3145727 -> 206
+source request GET /v1/assets/7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e/content range=bytes=1048576-2097151 -> 206
+source request GET /v1/assets/7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e/content range=bytes=3145728-4194303 -> 200 fault=ignoreRange
+source request GET /v1/assets/7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e/content range=bytes=4194304-5242879 -> 206
+source request GET /v1/assets/7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e/content range=bytes=5242880-6291455 -> 206
+source request GET /v1/assets/7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e/content range=bytes=6291456-6295776 -> 206
+source request GET /v1/assets/7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e/content range=bytes=3145728-4194303 -> 206
 client event staging_checked jobs=0 milliseconds=0 rehashed=true verified_bytes=0
 client event coordinator_start app_state=host_test jobs=0 protected_data_available=not_reported session=in_process
 client event launch_reconciliation adopted=0 app_state=host_test completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
-client event job_created bytes=6295777 item=c17500d3-70ab-4471-b850-47bc972d1769 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 parts=7 queue_entry=none version=a4f52ab8-789d-4a7f-9031-a94ecbca9a0d
-client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:0 port=65101
-client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:1 port=65101
-client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:2 port=65101
-client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:3 port=65101
-client event trust_challenge app_state=host_test host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 level=task method=NSURLAuthenticationMethodServerTrust part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:0 port=65101 result=matched
-client event task_metrics attempt=1 fetch_type=1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:0 protocol=http/1.1 reused_connection=false tls=772
-client event trust_challenge app_state=host_test host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 level=task method=NSURLAuthenticationMethodServerTrust part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:1 port=65101 result=matched
-client event part_verified app_state=host_test attempt=1 commit_ms=3 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:0
-client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:4 port=65101
-client event task_metrics attempt=1 fetch_type=1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:2 protocol=http/1.1 reused_connection=true tls=772
-client event task_metrics attempt=1 fetch_type=1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:1 protocol=http/1.1 reused_connection=false tls=772
-client event task_metrics attempt=1 fetch_type=1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:3 protocol=http/1.1 reused_connection=true tls=772
-client event task_metrics attempt=1 fetch_type=1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:4 protocol=http/1.1 reused_connection=true tls=772
-client event part_verified app_state=host_test attempt=1 commit_ms=11 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:2
-client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:5 port=65101
-client event part_verified app_state=host_test attempt=1 commit_ms=10 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:1
-client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:6 port=65101
-client event part_failed app_state=host_test attempt=1 failure=bodyLengthMismatch(expected: 1048576, received: 6295777) job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:3
-client event part_requested app_state=host_test attempt=2 host=127.0.0.1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:3 port=65101
-client event task_metrics attempt=1 fetch_type=1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:5 protocol=http/1.1 reused_connection=true tls=772
-client event task_metrics attempt=1 fetch_type=1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:6 protocol=http/1.1 reused_connection=true tls=772
-client event task_metrics attempt=2 fetch_type=1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:3 protocol=http/1.1 reused_connection=true tls=772
-client event part_verified app_state=host_test attempt=1 commit_ms=11 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:4
-client event part_verified app_state=host_test attempt=1 commit_ms=1 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:6
-client event part_verified app_state=host_test attempt=1 commit_ms=7 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:5
-client event part_verified app_state=host_test attempt=2 commit_ms=3 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 part=d2a28bbe-87dc-48b4-b555-678e65f0b46f:3
-client event assembly_started app_state=host_test job=78ef3a02-1075-487c-bf7f-e7416e5e5464
-client event assembly_verified app_state=host_test assets=1 bytes=6295777 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 milliseconds=4
-client event imported completions=1 duplicate_requests=0 import=5625cf8c-1552-4307-8922-602816608643 job=78ef3a02-1075-487c-bf7f-e7416e5e5464 version=a4f52ab8-789d-4a7f-9031-a94ecbca9a0d
+client event job_created bytes=6295777 item=2f240d6f-a068-4964-9bdf-48be4eb9fcd9 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 parts=7 queue_entry=none version=45720f4d-f9d6-41fe-8ddc-3f384e86043e
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:0 port=64202
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:1 port=64202
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:2 port=64202
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:3 port=64202
+client event trust_challenge app_state=host_test host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 level=task method=NSURLAuthenticationMethodServerTrust part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:0 port=64202 result=matched
+client event trust_challenge app_state=host_test host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 level=task method=NSURLAuthenticationMethodServerTrust part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:1 port=64202 result=matched
+client event task_metrics attempt=1 fetch_type=1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:0 protocol=http/1.1 reused_connection=false tls=772
+client event task_metrics attempt=1 fetch_type=1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:2 protocol=http/1.1 reused_connection=true tls=772
+client event task_metrics attempt=1 fetch_type=1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:1 protocol=http/1.1 reused_connection=false tls=772
+client event task_metrics attempt=1 fetch_type=1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:3 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=12 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:0
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:4 port=64202
+client event part_verified app_state=host_test attempt=1 commit_ms=19 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:2
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:5 port=64202
+client event task_metrics attempt=1 fetch_type=1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:4 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=2 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:1
+client event part_requested app_state=host_test attempt=1 host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:6 port=64202
+client event part_failed app_state=host_test attempt=1 failure=bodyLengthMismatch(expected: 1048576, received: 6295777) job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:3
+client event part_requested app_state=host_test attempt=2 host=127.0.0.1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:3 port=64202
+client event task_metrics attempt=1 fetch_type=1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:5 protocol=http/1.1 reused_connection=true tls=772
+client event task_metrics attempt=1 fetch_type=1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:6 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=4 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:4
+client event task_metrics attempt=2 fetch_type=1 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:3 protocol=http/1.1 reused_connection=true tls=772
+client event part_verified app_state=host_test attempt=1 commit_ms=2 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:6
+client event part_verified app_state=host_test attempt=1 commit_ms=2 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:5
+client event part_verified app_state=host_test attempt=2 commit_ms=2 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 part=7dd5ff33-75f3-44e8-a4b7-1f8846fa5c5e:3
+client event assembly_started app_state=host_test job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565
+client event assembly_verified app_state=host_test assets=1 bytes=6295777 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 milliseconds=9
+client event imported completions=1 duplicate_requests=0 import=32e79e05-136d-4f2d-b2c0-6af908515738 import_ms=4 job=b5ea64b7-7173-4176-ae7e-e9b3cbec1565 version=45720f4d-f9d6-41fe-8ddc-3f384e86043e

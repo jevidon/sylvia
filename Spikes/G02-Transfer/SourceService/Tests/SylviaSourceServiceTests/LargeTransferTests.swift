@@ -20,6 +20,14 @@ struct LargeTransferTests {
     static let filePath = ProcessInfo.processInfo.environment["SYLVIA_G02_LARGE_FILE"]
     static let expectedSHA256 = ProcessInfo.processInfo.environment["SYLVIA_G02_LARGE_SHA256"]
 
+    /// The 1, 5 and 15 minute load averages, written next to the timings: other jobs may share this Mac, and
+    /// timings taken under that load are indicative only.
+    static func loadAverages() -> String {
+        var loads = [Double](repeating: 0, count: 3)
+        guard getloadavg(&loads, 3) == 3 else { return "unknown" }
+        return String(format: "%.2f %.2f %.2f", loads[0], loads[1], loads[2])
+    }
+
     @Test(.enabled(if: filePath != nil, "set SYLVIA_G02_LARGE_FILE; Scripts/ci.d/40-g02-transfer.sh does"))
     func fiveGiBTransferSurvivesInterruptionsWithBoundedMemory() async throws {
         let source = URL(fileURLWithPath: try #require(Self.filePath))
@@ -61,6 +69,7 @@ struct LargeTransferTests {
         sampler.start()
         let clock = ContinuousClock()
         let started = clock.now
+        let loadAtStart = Self.loadAverages()
         var interruptions: [(afterVerified: Int, verifiedIndexes: Set<Int>, requestsSoFar: [Int64: Int])] = []
         var outcome: TransferEngine.Outcome?
         // Two client restarts: the engine is cancelled after 100 and after 220 verified parts (counted
@@ -137,6 +146,7 @@ struct LargeTransferTests {
             "parts verified before each interruption and fetched again afterwards: 0 (asserted)",
             "result: ready; handed-off file re-hashed independently: \(rehash == expected ? "matches" : "MISMATCH")",
             String(format: "elapsed: %.1f s (%.0f MiB/s including server preparation and three full-file hashes)", seconds, Double(length) / 1_048_576 / seconds),
+            "load averages (1, 5, 15 min): \(loadAtStart) at the start, \(Self.loadAverages()) at the end (timings under parallel load are indicative only)",
             "memory (proc_pid_rusage, whole test process: source + client):",
             "  phys_footprint before: \(baseline.physFootprint / 1_048_576) MiB; peak sampled every 50 ms during transfer: \(peak.physFootprint / 1_048_576) MiB; after: \(final.physFootprint / 1_048_576) MiB",
             "  growth at peak: \(growth / 1_048_576) MiB (bound asserted: < \(bound / 1_048_576) MiB)",
@@ -177,6 +187,7 @@ struct LargeTransferTests {
         sampler.start()
         let clock = ContinuousClock()
         let started = clock.now
+        let loadAtStart = Self.loadAverages()
 
         func waitFor(_ coordinator: BackgroundTransferCoordinator, _ jobID: String, seconds: Int, _ done: (BackgroundTransferCoordinator.JobView) -> Bool) async throws -> BackgroundTransferCoordinator.JobView {
             let deadline = clock.now + .seconds(seconds)
@@ -229,10 +240,11 @@ struct LargeTransferTests {
         // (with the check under the lock, "assembling" was never even visible: it was set and hashed in one hold).
         // While the job shows "assembling", the background-events completion is handed in as for a background
         // relaunch, and must be called only after the check has published its result. The slowest poll over the
-        // whole rest of the transfer is reported too: part commits still hold the lock (report finding 20).
+        // whole rest of the transfer is reported too: part commits and the import's file work still hold the lock
+        // (report findings 20, 22); the log says what the slowest call returned, which tells which of them it waited for.
         let finishing = Mutex((
             running: true, slowest: Duration.zero, slowestDuringAssembly: Duration.zero, inAssembly: false, polls: 0,
-            assemblingPolls: 0, handedCompletion: false))
+            assemblingPolls: 0, handedCompletion: false, slowestReturned: "no call"))
         let completedAfterAssembly = Mutex(false)
         let finishingPoller = Thread {
             while finishing.withLock({ $0.running }) {
@@ -241,7 +253,13 @@ struct LargeTransferTests {
                 let took = ContinuousClock.now - before
                 let assembling = views.first?.job.state == .assembling
                 let handIn = finishing.withLock { state -> Bool in
-                    state.slowest = max(state.slowest, took)
+                    if took > state.slowest {
+                        state.slowest = took
+                        state.slowestReturned = views.first.map { view in
+                            "the job \(view.job.state.rawValue)"
+                                + (view.totalParts > 0 ? " with \(view.verifiedParts) of \(view.totalParts) parts verified" : "")
+                        } ?? "no job"
+                    }
                     state.polls += 1
                     // A poll that started after "assembling" was seen and before the next state was seen.
                     if state.inAssembly { state.slowestDuringAssembly = max(state.slowestDuringAssembly, took) }
@@ -275,6 +293,7 @@ struct LargeTransferTests {
             "jobViews() waited \(finish.slowestDuringAssembly) while the job was assembling: the full-file check held the lock")
         #expect(finish.slowest < .seconds(1), "jobViews() waited \(finish.slowest) after the relaunch")
         let commitTimes = finalEvents.filter { $0.event == "part_verified" }.compactMap { Int($0.fields["commit_ms"] ?? "") }.sorted()
+        let importMilliseconds = finalEvents.first { $0.event == "imported" }?.fields["import_ms"] ?? "not logged"
         #expect(finish.handedCompletion && completedAfterAssembly.withLock { $0 }, "the background-events completion was not called")
         #expect(heldCompletion.map { $0 > assemblyVerified } == true, "the completion was called before the full-file check published its result")
         let elapsed = clock.now - started
@@ -312,11 +331,13 @@ struct LargeTransferTests {
             String(format: "final full-file SHA-256 (assembly) took %d ms on the assembly queue; jobViews() polled %d times while the job showed "
                    + "\"assembling\", slowest of those %.3f ms (asserted < 250 ms: the check runs outside the lock)",
                    assemblyMilliseconds, finish.assemblingPolls, seconds(finish.slowestDuringAssembly) * 1000),
-            String(format: "jobViews() polled %d times from the relaunch to the import; slowest call %.3f ms (asserted < 1 s). Part commits "
-                   + "(16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the %d parts verified after the relaunch: "
-                   + "median %d, max %d (report finding 20)",
-                   finish.polls, seconds(finish.slowest) * 1000, commitTimes.count,
-                   commitTimes.isEmpty ? -1 : commitTimes[commitTimes.count / 2], commitTimes.last ?? -1),
+            String(format: "jobViews() polled %d times from the relaunch to the import; slowest call %.3f ms (asserted < 1 s), which returned ",
+                   finish.polls, seconds(finish.slowest) * 1000)
+                + "\(finish.slowestReturned). "
+                + String(format: "Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the %d parts verified after "
+                   + "the relaunch: median %d, max %d (report finding 20); ",
+                   commitTimes.count, commitTimes.isEmpty ? -1 : commitTimes[commitTimes.count / 2], commitTimes.last ?? -1)
+                + "the import's file work held it for \(importMilliseconds) ms (import_ms; report finding 22)",
             "background-events completion handed in while the job showed \"assembling\": "
                 + (heldCompletion.map { $0 > assemblyVerified } == true && completedAfterAssembly.withLock({ $0 })
                     ? "held, then called after assembly_verified" : "NOT held until assembly_verified"),
@@ -325,6 +346,7 @@ struct LargeTransferTests {
                 + "parts verified before the relaunch requested again: \(verifiedRefetched) (asserted 0)",
             "result: imported once (completions \(record.completions)); imported asset digest from the verified assembly: \(record.assets.first?.sha256 == expected ? "matches" : "MISMATCH")",
             String(format: "elapsed: %.1f s", seconds(elapsed)),
+            "load averages (1, 5, 15 min): \(loadAtStart) at the start, \(Self.loadAverages()) at the end (timings under parallel load are indicative only)",
             "memory (proc_pid_rusage, whole test process): phys_footprint before \(baseline.physFootprint / 1_048_576) MiB, "
                 + "peak \(peak.physFootprint / 1_048_576) MiB, growth \(growth / 1_048_576) MiB (asserted < \(bound / 1_048_576) MiB)",
         ]

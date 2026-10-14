@@ -1,26 +1,26 @@
 host (macOS), in-process source, 1 MiB parts, asset 6295777 bytes
 request POST /v1/pair range=- -> 200
-request GET /v1/items/61db2161-1d16-4b49-b270-67248cc52b0c/manifest range=- -> 200
-request GET /v1/assets/144503a7-7cdb-484b-816f-34cb84994a62/content range=bytes=0-1048575 -> 206
-request GET /v1/assets/144503a7-7cdb-484b-816f-34cb84994a62/content range=bytes=1048576-2097151 -> 206
-request GET /v1/assets/144503a7-7cdb-484b-816f-34cb84994a62/content range=bytes=2097152-3145727 -> 206
-request GET /v1/assets/144503a7-7cdb-484b-816f-34cb84994a62/content range=bytes=3145728-4194303 -> 206
-request GET /v1/assets/144503a7-7cdb-484b-816f-34cb84994a62/content range=bytes=4194304-5242879 -> 206
-request GET /v1/assets/144503a7-7cdb-484b-816f-34cb84994a62/content range=bytes=5242880-6291455 -> 206
-request GET /v1/assets/144503a7-7cdb-484b-816f-34cb84994a62/content range=bytes=6291456-6295776 -> 206
-event manifestFetched(itemVersionID: "affe7b3b-e80b-4d25-abab-bc09abe6b3bd")
-event partRequested(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 0, attempt: 1)
-event partRequested(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 1, attempt: 1)
-event partVerified(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 0)
-event partRequested(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 2, attempt: 1)
-event partVerified(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 1)
-event partRequested(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 3, attempt: 1)
-event partVerified(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 2)
-event partRequested(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 4, attempt: 1)
-event partVerified(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 3)
-event partRequested(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 5, attempt: 1)
-event partVerified(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 4)
-event partRequested(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 6, attempt: 1)
-event partVerified(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 5)
-event partVerified(assetID: "144503a7-7cdb-484b-816f-34cb84994a62", index: 6)
+request GET /v1/items/592187e0-ef9c-4414-9e82-a92ea178da63/manifest range=- -> 200
+request GET /v1/assets/06717826-b313-44da-a599-a274824f8e74/content range=bytes=0-1048575 -> 206
+request GET /v1/assets/06717826-b313-44da-a599-a274824f8e74/content range=bytes=1048576-2097151 -> 206
+request GET /v1/assets/06717826-b313-44da-a599-a274824f8e74/content range=bytes=2097152-3145727 -> 206
+request GET /v1/assets/06717826-b313-44da-a599-a274824f8e74/content range=bytes=3145728-4194303 -> 206
+request GET /v1/assets/06717826-b313-44da-a599-a274824f8e74/content range=bytes=4194304-5242879 -> 206
+request GET /v1/assets/06717826-b313-44da-a599-a274824f8e74/content range=bytes=5242880-6291455 -> 206
+request GET /v1/assets/06717826-b313-44da-a599-a274824f8e74/content range=bytes=6291456-6295776 -> 206
+event manifestFetched(itemVersionID: "24d2e8ee-b239-4db2-a6b0-e2afb8c0e083")
+event partRequested(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 0, attempt: 1)
+event partRequested(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 1, attempt: 1)
+event partVerified(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 0)
+event partRequested(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 2, attempt: 1)
+event partVerified(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 1)
+event partRequested(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 3, attempt: 1)
+event partVerified(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 2)
+event partRequested(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 4, attempt: 1)
+event partVerified(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 3)
+event partRequested(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 5, attempt: 1)
+event partVerified(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 4)
+event partRequested(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 6, attempt: 1)
+event partVerified(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 5)
+event partVerified(assetID: "06717826-b313-44da-a599-a274824f8e74", index: 6)
 event paused(SylviaTransferCore.PauseReason.finalDigestMismatch)

@@ -5,7 +5,9 @@ import SylviaTransferClient
 import SylviaTransferCore
 
 /// Downloads transfer jobs with URLSession download tasks, normally in a background session, so the
-/// system keeps fetching parts while Sylvia is suspended or not running (plan 6.4, 15.4, 15.5).
+/// system can keep fetching the parts it was given while Sylvia is suspended or not running, when iOS schedules
+/// them (plan 6.4, 15.4, 15.5, I-10; on the simulator, tasks created during a background relaunch waited for the
+/// next launch: report finding 4).
 ///
 /// - Each part is one download task: a single `Range`, `If-Match` with the manifest's strong ETag,
 ///   `Accept-Encoding: identity` and the per-device token in `Authorization: Bearer`. The task
@@ -74,9 +76,12 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
         public var completedBeforeReconciliation: Int
         public var adopted: Int
         public var cancelled: [String: Int]
+        /// Parts the launch requested; a job paused by the space reservation requests none (R3-01).
         public var enqueued: Int
         public var keptVerifiedParts: Int
         public var discardedParts: Int
+        /// Jobs paused at launch, by job ID: the planner's blocks (credentials, manifest) and
+        /// `insufficient_space` when the plan 15.4 reservation failed before the launch's requests.
         public var blocked: [String: String]
         public var finalized: Int
         public var importsRetried: Int
@@ -157,8 +162,10 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
         var completedBeforeReconciliation: Set<Int> = []
         /// Jobs whose full-file check runs on the assembly queue (outside this lock; review finding R2-04).
         var assembling: Set<String> = []
-        /// The background-events completion handler, held back while an assembly runs, so the system does not
-        /// suspend the app in the middle of the full-file check.
+        /// The background-events completion handler, held back while an assembly runs, so the app does not tell
+        /// the system it is done before the full-file check has published. This does not extend the time iOS gives
+        /// a background relaunch: the system may still suspend the app earlier, and the next launch then repeats
+        /// the check from the journal (review finding R3-04).
         var completionAfterAssembly: (@Sendable () -> Void)?
         /// Jobs paused as `source_unreachable` whose cause is being checked against local network privacy.
         var probingLocalNetwork: Set<String> = []
@@ -303,7 +310,11 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
         let tasks = await session.allTasks
         let downloads = tasks.compactMap { $0 as? URLSessionDownloadTask }
         let listed = downloads + extra.filter { task in !downloads.contains { $0.taskIdentifier == task.taskIdentifier } }
-        return reconcile(tasks: listed, foreign: tasks.filter { !($0 is URLSessionDownloadTask) }, kept: kept, discarded: discarded)
+        // Read before reconcile takes the lock (see availableSpace): the plan 15.4 reservation runs before the
+        // launch's own part requests too, as before every other request (review finding R3-01).
+        let available = availableSpace()
+        return reconcile(
+            tasks: listed, foreign: tasks.filter { !($0 is URLSessionDownloadTask) }, kept: kept, discarded: discarded, available: available)
     }
 
     private func deferLaunch(_ reason: String) -> ReconciliationSummary {
@@ -356,7 +367,9 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
         return URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
     }
 
-    private func reconcile(tasks listed: [URLSessionDownloadTask], foreign: [URLSessionTask], kept: Int, discarded: Int) -> ReconciliationSummary {
+    private func reconcile(
+        tasks listed: [URLSessionDownloadTask], foreign: [URLSessionTask], kept: Int, discarded: Int, available: Int64?
+    ) -> ReconciliationSummary {
         for task in foreign { task.cancel() }
         let summary: ReconciliationSummary = state.withLock { state in
             // Completed while `allTasks` was answering: already handled by didCompleteWithError, not outstanding.
@@ -385,8 +398,19 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
                 state.runtimes[descriptor.jobID]?.tasks[identifier] = task
             }
             for (jobID, reason) in plan.block { pauseLocked(&state, jobID: jobID, reason: reason, event: "blocked_at_launch") }
+            // Plan 15.4 reservation before these requests, as in topUpLocked (review finding R3-01: launch
+            // reconciliation, which runs at every background relaunch, used to request parts without it). A job
+            // without the space pauses with insufficient_space instead; its adopted tasks are cancelled with it,
+            // as for any pause, and its verified parts are kept.
+            var blocked = plan.block.mapValues(\.rawValue)
+            var enqueued = 0
             for (jobID, parts) in plan.enqueue {
+                if spaceShortfallLocked(&state, jobID: jobID, available: available) != nil {
+                    blocked[jobID] = PauseReason.insufficientSpace.rawValue
+                    continue
+                }
                 for part in parts { enqueueLocked(&state, jobID: jobID, key: part) }
+                enqueued += parts.count
             }
             for jobID in plan.finalize { finalizeLocked(&state, jobID: jobID) }
             for jobID in plan.importReady { importLocked(&state, jobID: jobID) }
@@ -394,8 +418,8 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
                 time: Date(), jobs: snapshots.count, outstandingTasks: tasks.count + foreign.count,
                 completedBeforeReconciliation: alreadyCompleted, adopted: plan.adoptedCount,
                 cancelled: cancelled.merging(foreign.isEmpty ? [:] : ["non_download_task": foreign.count], uniquingKeysWith: +),
-                enqueued: plan.enqueuedCount, keptVerifiedParts: kept, discardedParts: discarded,
-                blocked: plan.block.mapValues(\.rawValue), finalized: plan.finalize.count, importsRetried: plan.importReady.count,
+                enqueued: enqueued, keptVerifiedParts: kept, discardedParts: discarded,
+                blocked: blocked, finalized: plan.finalize.count, importsRetried: plan.importReady.count,
                 refreshes: plan.refresh.count)
             state.lastReconciliation = summary
             return summary
@@ -506,10 +530,11 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
     }
 
     /// Plan 15.4 disk reservation: the bytes still to arrive (staging files are sparse and parts are
-    /// written in place; assembly and import are renames, so there is no assembly copy) plus one part per
-    /// outstanding task (the system's download file before it is copied into staging). When the volume has
-    /// less, the job pauses with `insufficient_space` before any request; returns the missing bytes then.
-    /// `available` comes from `availableSpace()`, read before the lock was taken.
+    /// written in place; assembly and import are renames, so there is no assembly copy) plus one part for each
+    /// task the window allows (`Options.window`; the system's download file of each outstanding task before it is
+    /// copied into staging). When the volume has less, the job pauses with `insufficient_space` before any
+    /// request; returns the missing bytes then. `available` comes from `availableSpace()`, read before the lock
+    /// was taken.
     private func spaceShortfallLocked(_ state: inout State, jobID: String, available: Int64?) -> Int64? {
         guard let runtime = state.runtimes[jobID] else { return nil }
         guard let available else { return nil }  // unknown: the write path still pauses on ENOSPC
@@ -879,8 +904,9 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
         let (completion, waiting) = state.withLock { state -> ((@Sendable () -> Void)?, Bool) in
             let completion = state.backgroundCompletion
             state.backgroundCompletion = nil
-            // A full-file check started by these events runs outside the lock; hold the completion until it
-            // has published its result, so the system does not suspend the app half way through (R2-04).
+            // A full-file check started by these events runs outside the lock; hold the completion until it has
+            // published its result (R2-04), so the app does not report its events handled early. Holding it does
+            // not buy time: iOS may suspend the app before the check ends, and the next launch repeats it (R3-04).
             if let completion, !state.assembling.isEmpty {
                 let earlier = state.completionAfterAssembly
                 state.completionAfterAssembly = { earlier?(); completion() }
@@ -1174,6 +1200,10 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
             return .init(assetID: asset.assetID, url: store.verifiedURL, sha256: asset.sha256, length: asset.length)
         }
         guard assets.count == runtime.manifest.assets.count else { return }
+        // The import's file work (ledger writes, renames, job record, staging deletion) runs with the lock held,
+        // like a part commit; its duration is logged (`import_ms`) because the transfer screen waits for it (report
+        // finding 22).
+        let importStarted = ContinuousClock.now
         do {
             let outcome = try importer.importVerified(
                 jobID: jobID, itemID: job.itemID, itemVersionID: job.itemVersionID, assets: assets)
@@ -1191,9 +1221,11 @@ public final class BackgroundTransferCoordinator: NSObject, URLSessionDownloadDe
             saveLocked(&state, job)
             state.runtimes[jobID] = nil
             jobStore.deleteStaging(jobID)
+            let importTook = ContinuousClock.now - importStarted
             log.record(firstImport ? "imported" : "import_already_recorded", [
                 "job": jobID, "import": record.importID, "version": record.itemVersionID,
                 "completions": String(record.completions), "duplicate_requests": String(record.duplicateRequests),
+                "import_ms": String(importTook.components.seconds * 1000 + importTook.components.attoseconds / 1_000_000_000_000_000),
             ])
             let coordinator = self
             Task { await coordinator.sendReceipts(jobID: jobID) }

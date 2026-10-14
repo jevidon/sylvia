@@ -47,8 +47,8 @@ public struct RestoreResult: Sendable {
 /// `prepare` never touches the active library: it validates the bundle, copies it into
 /// `RestoreWork/<id>/Library`, re-verifies digests on the copies, opens the database defensively,
 /// requires its schema to equal this build's schema for its migrations, checks integrity, foreign
-/// keys, the row values the schema does not constrain (`RowCheck`: effective dates, the journal
-/// sequence), counts and the excluded-media list, runs supported migrations, marks original media
+/// keys, the row values the schema does not constrain (`RowCheck`: effective dates, note revisions,
+/// the INTEGER range, the journal sequence), counts and the excluded-media list, runs supported migrations, marks original media
 /// unavailable, and repeats the schema, integrity, foreign-key, row and count checks after that last
 /// write. `commit` then
 /// swaps directories with two same-volume renames recorded in `restore-intent.json`, keeping the

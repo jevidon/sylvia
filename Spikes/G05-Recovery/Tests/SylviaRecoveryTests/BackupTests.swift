@@ -488,6 +488,64 @@ struct RestoreTests {
             try damageDatabase(b, "INSERT INTO sqlite_sequence (name, seq) VALUES ('work', 5)")
         }, matches: invalidRows("sqlite_sequence has an entry for 'work'"))
 
+        // Review round 3: a sign is not a digit (Swift's Int(String) accepts "+019").
+        try expectRejected("effective-date-plus-sign-year", fixture, damage: { b in
+            try damageDatabase(b, "UPDATE ledger_event SET effective_date = '+019', effective_date_precision = 'year'")
+        }, matches: invalidRows("ledger_event.effective_date"))
+
+        try expectRejected("effective-date-plus-sign-day", fixture, damage: { b in
+            try damageDatabase(b, "UPDATE consumption_run SET started_date = '2019-+1-+5', started_date_precision = 'day'")
+        }, matches: invalidRows("consumption_run.started_date"))
+
+        // Review round 3: a note's revisions must be exactly 1...current_revision, because
+        // `reviseNote` inserts current_revision + 1 (stale: every later edit fails on the key;
+        // Int64.max: the + 1 would overflow; dangling: the note has no current text).
+        let noteWithRevisions = "(SELECT note_id FROM note_revision GROUP BY note_id HAVING count(*) >= 2 ORDER BY note_id LIMIT 1)"
+        try expectRejected("note-current-revision-stale", fixture, damage: { b in
+            try damageDatabase(b, "UPDATE note SET current_revision = 1 WHERE id = \(noteWithRevisions)")
+        }, matches: invalidRows("current_revision 1 but"))
+
+        try expectRejected("note-current-revision-int64-max", fixture, damage: { b in
+            try damageDatabase(b, "UPDATE note SET current_revision = 9223372036854775807 WHERE id = \(noteWithRevisions)")
+        }, matches: invalidRows("current_revision 9223372036854775807 but"))
+
+        try expectRejected("note-current-revision-dangling", fixture, damage: { b in
+            try damageDatabase(b, "UPDATE note SET current_revision = 77 WHERE id = \(noteWithRevisions)")
+        }, matches: invalidRows("current_revision 77 but"))
+
+        try expectRejected("note-revisions-not-from-one", fixture, damage: { b in
+            try damageDatabase(b, "DELETE FROM note_revision WHERE revision = 1 AND note_id = \(noteWithRevisions)")
+            try rewriteManifest(b) { $0.counts["note_revision"]! -= 1 }
+        }, matches: invalidRows("revisions must be exactly 1...current_revision"))
+
+        // Review round 3: every INTEGER stays within ±(2^53 - 1), so the JSON export can always run
+        // and no counter the app increments can overflow.
+        try expectRejected("work-metadata-revision-2-pow-53", fixture, damage: { b in
+            try damageDatabase(b, "UPDATE work SET metadata_revision = 9007199254740992")
+        }, matches: invalidRows("work.metadata_revision"))
+
+        try expectRejected("edition-asset-timeline-revision-int64-max", fixture, damage: { b in
+            try damageDatabase(b, "UPDATE edition_asset SET timeline_revision = 9223372036854775807")
+        }, matches: invalidRows("edition_asset.timeline_revision"))
+
+        try expectRejected("work-created-at-int64-min", fixture, damage: { b in
+            try damageDatabase(b, "UPDATE work SET created_at_ms = -9223372036854775807 - 1")
+        }, matches: invalidRows("work.created_at_ms"))
+
+        // Review round 4 (finding F12): GRDB reads TEXT as a C string, so a stored NUL hides the rest
+        // of the text and invalid UTF-8 is replaced; the app would show, edit and export other text
+        // than is stored. Every TEXT value must be valid UTF-8 without a NUL.
+        try expectRejected("text-with-nul", fixture, damage: { b in
+            try damageDatabase(b, """
+                UPDATE note_revision SET body = CAST(CAST(body AS BLOB) || X'00' || CAST('hidden after a NUL' AS BLOB) AS TEXT)
+                WHERE rowid = (SELECT min(rowid) FROM note_revision)
+                """)
+        }, matches: invalidRows("note_revision.body"))
+
+        try expectRejected("text-invalid-utf8", fixture, damage: { b in
+            try damageDatabase(b, "UPDATE capture SET quoted_text = CAST(X'73617574FF6572696E67' AS TEXT) WHERE kind = 'word'")
+        }, matches: invalidRows("capture.quoted_text"))
+
         // Cover thumbnails follow the same rules as excerpt blobs.
         try expectRejected("unreferenced-cover", fixture, damage: { b in
             let data = Data("not a referenced cover".utf8)

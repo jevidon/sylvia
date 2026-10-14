@@ -91,9 +91,12 @@ public enum SchemaCheck {
 }
 
 /// Row values in a database Sylvia did not create that its schema does not constrain but the app
-/// relies on (plan 17.4 "fail safely on ... malicious archives"). Everything else in a row is
-/// validated only by the schema's `STRICT` types and `CHECK` constraints, `foreign_key_check` and
-/// `integrity_check`.
+/// relies on (plan 17.4 "fail safely on ... malicious archives"): effective dates against their
+/// precision, each note's revisions against its `current_revision`, every INTEGER within
+/// ±(2^53 - 1), `sqlite_sequence` against the ChangeJournal, and every TEXT value valid UTF-8
+/// without a NUL character. Everything else in a row is validated only by the schema's `STRICT`
+/// types and `CHECK` constraints, `foreign_key_check` and `integrity_check`; any further invariant
+/// the app relies on must be added here.
 public enum RowCheck {
     /// Every user-effective date column with its precision column (plan 7.3). The schema checks the
     /// precision value and that both are null together; the date text itself is checked here (and
@@ -129,8 +132,94 @@ public enum RowCheck {
                 if out.count >= limit { return out }
             }
         }
+        out += try noteRevisionProblems(db, limit: limit)
+        out += try integerRangeProblems(db, limit: limit)
         out += try sequenceProblems(db)
+        out += try textProblems(db, limit: limit)
         return Array(out.prefix(limit))
+    }
+
+    /// GRDB 7.11.1 binds a Swift `String` as a C string (`sqlite3_bind_text` with length -1, so a
+    /// value is cut off at its first NUL) and decodes TEXT with `String(cString:)` (everything after
+    /// a NUL is dropped and invalid UTF-8 is replaced). The app therefore never stores text with a
+    /// NUL (`LibraryStore.insert` refuses it) or invalid UTF-8 (Swift strings are always valid), and
+    /// a stored value holding either would be shown, edited, exported and compared as different
+    /// text from what is stored (finding F12; review round 4 found the content digest blind to it).
+    /// Every TEXT value of every library table must be valid UTF-8 with no NUL; one problem is
+    /// reported per column.
+    static func textProblems(_ db: Database, limit: Int) throws -> [String] {
+        var out: [String] = []
+        let present = try LibraryChecks.existingTables(db)
+        for table in LibrarySchema.tables.map(\.name) where present.contains(table) {
+            for column in try db.columns(in: table) where column.type.uppercased() == "TEXT" {
+                let sql = """
+                    SELECT rowid AS r, CAST(\(column.name) AS BLOB) AS b FROM \(table)
+                    WHERE typeof(\(column.name)) = 'text' ORDER BY rowid
+                    """
+                let rows = try Row.fetchCursor(db, sql: sql)
+                while let row = try rows.next() {
+                    let bytes: Data = row["b"]
+                    let problem: String? = bytes.contains(0) ? "contains a NUL character"
+                        : String(validating: bytes, as: UTF8.self) == nil ? "is not valid UTF-8" : nil
+                    if let problem {
+                        out.append("\(table).\(column.name) rowid \(row["r"] as Int64): text \(problem)")
+                        break
+                    }
+                }
+                if out.count >= limit { return out }
+            }
+        }
+        return out
+    }
+
+    /// Largest magnitude an INTEGER value may have: below 2^53, so the portable JSON export (which
+    /// refuses anything larger, because JSON readers lose precision there) can always export the
+    /// library, and every counter the app increments (`note.current_revision`, `capture.revision`,
+    /// `work.metadata_revision`, `edition_asset.timeline_revision`, the ChangeJournal sequence) stays
+    /// far from `Int64.max`, so `current + 1` cannot overflow. Real values are far smaller:
+    /// millisecond timestamps reach 2^53 in the year 287,396, and byte counts at 8 PiB.
+    public static let integerMagnitudeLimit: Int64 = (1 << 53) - 1
+
+    /// A note's text is its revision `current_revision` (plan 7.3), and `reviseNote` inserts
+    /// `current_revision + 1`. Every note must therefore have revisions numbered exactly
+    /// 1...current_revision. A stale pointer would make every later edit of the note fail on the
+    /// revision key, and a dangling one would leave the note without current text (review round 3).
+    static func noteRevisionProblems(_ db: Database, limit: Int) throws -> [String] {
+        let sql = """
+            SELECT n.rowid AS note_rowid, n.current_revision AS current, count(r.revision) AS revisions,
+                   min(r.revision) AS lowest, max(r.revision) AS highest
+            FROM note n LEFT JOIN note_revision r ON r.note_id = n.id
+            GROUP BY n.id
+            HAVING revisions = 0 OR lowest <> 1 OR highest <> n.current_revision OR revisions <> n.current_revision
+            ORDER BY n.rowid
+            LIMIT \(limit)
+            """
+        return try Row.fetchAll(db, sql: sql).map { row in
+            let revisions: Int64 = row["revisions"]
+            let shown = revisions == 0 ? "no revisions"
+                : "\(revisions) revisions numbered \(row["lowest"] as Int64)...\(row["highest"] as Int64)"
+            return "note rowid \(row["note_rowid"] as Int64): current_revision \(row["current"] as Int64) but \(shown); revisions must be exactly 1...current_revision"
+        }
+    }
+
+    /// Every INTEGER column of every library table holds values within `integerMagnitudeLimit`.
+    static func integerRangeProblems(_ db: Database, limit: Int) throws -> [String] {
+        var out: [String] = []
+        let present = try LibraryChecks.existingTables(db)
+        for table in LibrarySchema.tables.map(\.name) where present.contains(table) {
+            for column in try db.columns(in: table) where column.type.uppercased() == "INTEGER" {
+                let sql = """
+                    SELECT rowid AS r, \(column.name) AS v FROM \(table)
+                    WHERE \(column.name) > \(integerMagnitudeLimit) OR \(column.name) < -\(integerMagnitudeLimit)
+                    ORDER BY rowid LIMIT 1
+                    """
+                if let row = try Row.fetchOne(db, sql: sql) {
+                    out.append("\(table).\(column.name) rowid \(row["r"] as Int64): \(row["v"] as Int64) is outside ±(2^53 - 1)")
+                    if out.count >= limit { return out }
+                }
+            }
+        }
+        return out
     }
 
     /// `sqlite_sequence` may hold only the ChangeJournal's entry: an integer equal to its highest

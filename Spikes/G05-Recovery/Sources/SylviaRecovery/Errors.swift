@@ -15,6 +15,12 @@ public enum StoreError: Error, Equatable, CustomStringConvertible {
     /// snapshot back). This open finished putting the pre-migration snapshot back; the library is
     /// complete and readable, and the next open retries `pending`.
     case migrationInterrupted(pending: [String])
+    /// A failed migration's put-back is pending (its intent is on disk) and could not be finished at
+    /// this open, for example because the disk is still full. The library was not opened; the intent
+    /// stays, so the next open resumes the put-back from the step that failed. `reason` is the
+    /// underlying error. While the pre-migration snapshot exists it holds the whole library, and the
+    /// recovery screen can offer read-only access to it meanwhile.
+    case migrationPutBackPending(reason: String)
     /// `Library/library.sqlite` is missing from an installation that already had a library (its
     /// installation record exists, or `Recovery/` holds copies). No empty library was created; the
     /// copies in `Recovery/` are listed for the recovery screen.
@@ -40,6 +46,8 @@ public enum StoreError: Error, Equatable, CustomStringConvertible {
             return "post-migration check failed: \(why); restored from snapshot: \(restored)"
         case .migrationInterrupted(let pending):
             return "migration (\(pending.joined(separator: ", "))) was interrupted; the pre-migration snapshot was put back and the next open retries it"
+        case .migrationPutBackPending(let why):
+            return "putting the pre-migration snapshot back could not finish (\(why)); the library was not opened and the put-back intent was kept, so the next open resumes it"
         case .libraryMissing(let items):
             return "the library database is missing; no empty library was created; recovery copies: \(items.isEmpty ? "none" : items.joined(separator: ", "))"
         case .simulatedCrash(let step): return "simulated crash after \(step)"

@@ -25,7 +25,8 @@ public enum PortableExport {
                     switch value.storage {
                     case .null: object[column] = NSNull()
                     case .int64(let v):
-                        guard abs(v) < (1 << 53) else { throw StoreError.invalid("\(table).\(column) exceeds 2^53") }
+                        // Compared without `abs`, which traps on Int64.min.
+                        guard v < (1 << 53) && v > -(1 << 53) else { throw StoreError.invalid("\(table).\(column) exceeds 2^53") }
                         object[column] = NSNumber(value: v)
                     case .double(let v): object[column] = NSNumber(value: v)
                     case .string(let s): object[column] = s

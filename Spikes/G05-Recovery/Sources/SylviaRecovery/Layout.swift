@@ -16,9 +16,14 @@ import Foundation
 ///     Blobs/excerpts/<sha256>.<ext>   retained excerpt audio (permanent knowledge)
 ///     Blobs/covers/<sha256>.<ext>     canonical cover thumbnails (kept with the knowledge)
 ///     Media/<asset-id>/<file>          original media (user-managed, removable)
-///   Staging/                   in-progress writes, renamed into place when complete
+///   Staging/                   staging class (plan 17.1), excluded from device backup. Shared:
+///                              intake keeps its durable import journal and staged jobs here
+///                              (ADR-0010: journal.json, Staged/, Rejected/, Abandoned/,
+///                              Extracting/), and this layer never touches anything in it except:
+///     Persistence/             this layer's own in-progress writes, renamed into place when
+///                              complete; abandoned ones are removed at every open (StagingCleanup)
 ///   Recovery/                  pre-migration snapshots, failed-<id>/ files a put-back replaced,
-///                              and pre-restore library copies
+///                              and pre-restore library copies (kept per RecoveryRetention)
 ///   RestoreWork/<uuid>/Library  temporary library built and validated before a restore swap
 ///   restore-intent.json        written before the restore swap; reconciled on next launch
 /// ```
@@ -46,7 +51,16 @@ public struct LibraryLayout: Sendable, Hashable {
     public var excerptBlobsDirectory: URL { blobsDirectory.appending(path: "excerpts", directoryHint: .isDirectory) }
     public var coverBlobsDirectory: URL { blobsDirectory.appending(path: "covers", directoryHint: .isDirectory) }
     public var mediaDirectory: URL { libraryDirectory.appending(path: "Media", directoryHint: .isDirectory) }
-    public var stagingDirectory: URL { root.appending(path: "Staging", directoryHint: .isDirectory) }
+    /// `Staging/`: the installation's staging-class directory, shared with intake (ADR-0010 keeps
+    /// its import journal and staged jobs here, some of them the only copy of an item the user was
+    /// told was received). This layer creates it and excludes it from device backup, and never
+    /// writes or removes anything in it outside `stagingDirectory`.
+    public var sharedStagingDirectory: URL { root.appending(path: "Staging", directoryHint: .isDirectory) }
+    /// `Staging/Persistence/`: this layer's own temporary files (durable writes' temp files,
+    /// snapshots being taken, media copies being imported, a put-back's staged copy), each renamed
+    /// into place or removed by the operation that wrote it. Nothing else writes here, so an entry
+    /// found at open was abandoned by a crash or an error (`StagingCleanup`).
+    public var stagingDirectory: URL { sharedStagingDirectory.appending(path: "Persistence", directoryHint: .isDirectory) }
     public var recoveryDirectory: URL { root.appending(path: "Recovery", directoryHint: .isDirectory) }
     public var restoreWorkDirectory: URL { root.appending(path: "RestoreWork", directoryHint: .isDirectory) }
     public var restoreIntentURL: URL { root.appending(path: "restore-intent.json", directoryHint: .notDirectory) }
@@ -55,6 +69,12 @@ public struct LibraryLayout: Sendable, Hashable {
     /// Directories every installation needs, created with the protection class.
     public var managedDirectories: [URL] {
         [root, libraryDirectory, blobsDirectory, excerptBlobsDirectory, coverBlobsDirectory, mediaDirectory,
-         stagingDirectory, recoveryDirectory, restoreWorkDirectory]
+         sharedStagingDirectory, stagingDirectory, recoveryDirectory, restoreWorkDirectory]
+    }
+
+    /// Local safety nets that duplicate the library or hold in-progress copies: excluded from
+    /// device backup (plan 17.1, 17.5). The library itself stays backup-eligible.
+    public var backupExcludedDirectories: [URL] {
+        [sharedStagingDirectory, stagingDirectory, recoveryDirectory, restoreWorkDirectory]
     }
 }

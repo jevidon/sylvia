@@ -105,8 +105,15 @@ public enum SaveOutcome: Sendable, Equatable {
 // MARK: - Repository
 
 extension LibraryStore {
-    /// Inserts a row from a column dictionary.
+    /// Inserts a row from a column dictionary. Text containing U+0000 is refused before anything is
+    /// written: GRDB binds a `String` as a C string, so SQLite would store it cut off at the NUL and
+    /// the caller would say "Saved" for text that was not saved exactly (finding F12; I-03, I-05).
     static func insert(_ db: Database, _ table: String, _ values: [String: (any DatabaseValueConvertible)?]) throws {
+        for (column, value) in values.sorted(by: { $0.key < $1.key }) {
+            if let text = value as? String, text.utf8.contains(0) {
+                throw ValidationError.textContainsNUL(column: "\(table).\(column)")
+            }
+        }
         let columns = values.keys.sorted()
         let sql = "INSERT INTO \(table) (\(columns.joined(separator: ", "))) VALUES (\(columns.map { _ in "?" }.joined(separator: ", ")))"
         try db.execute(sql: sql, arguments: StatementArguments(columns.map { values[$0]! }))
@@ -200,6 +207,11 @@ extension LibraryStore {
             }
             guard current == expectedRevision else {
                 throw StoreError.staleRevision(noteID: noteID, expected: expectedRevision, current: current)
+            }
+            // RowCheck keeps restored values below 2^53; this guard keeps any other bad value an
+            // error rather than an overflow trap.
+            guard current < RowCheck.integerMagnitudeLimit else {
+                throw StoreError.invalid("note \(noteID): current_revision \(current) is out of range")
             }
             let now = clock.nowMillis()
             let next = current + 1

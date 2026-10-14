@@ -35,7 +35,7 @@ PASS count note_revision — before 9, after 9
 PASS count retained_excerpt — before 1, after 1
 PASS count ledger_event — before 9, after 9
 PASS every knowledge row restored byte-for-byte (works, editions, anchors, notes and revisions, ledger, rating, recommendations, captures, excerpts, conversations, context evidence)
-PASS restored dump digest equals source — 8041708959636f30b8d9940f723eb44e47a404259c8611a2e00bda28d23669bf
+PASS restored dump digest equals source — c4fc4c48dae9b83756f9565ab4e1a82027c99d5205130f9cf9b4a6473ef626fb
 PASS retained excerpt audio restored with its digest
 PASS canonical cover thumbnails restored with their digests and edition references (plan 17.3) — med-epub=jpg digest ok; walden-epub=png digest ok
 PASS missing originals resolve as unavailable records, not errors — med-audio-1=not on this device · from mac_source; med-audio-2=not on this device · from mac_source; med-epub=record only; med-pdf=record only; walden-audio=not on this device · from mac_source; walden-epub=record only

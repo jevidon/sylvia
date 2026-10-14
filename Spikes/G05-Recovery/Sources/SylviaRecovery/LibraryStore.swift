@@ -22,6 +22,10 @@ public struct OpenReport: Sendable {
     public var appliedBefore: [String] = []
     public var appliedNow: [String] = []
     public var recoverySnapshot: URL?
+    /// True when the guarded migration reused an existing snapshot of the same pre-state.
+    public var recoverySnapshotReused = false
+    /// What the `Recovery/` retention rule removed after a successful guarded migration.
+    public var recoveryPrune: RecoveryRetention.PruneReport?
     /// Protection class each SQLite file reported *before* `LibraryStore` set it explicitly, to show
     /// whether SQLite-created files inherit the directory's class.
     public var protectionBeforeExplicitSet: [String: String] = [:]
@@ -139,7 +143,7 @@ public final class LibraryStore: Sendable {
         // Staging, recovery copies and restore work are local safety nets that duplicate the
         // library; keep them out of device backups. The library itself stays backup-eligible
         // (plan 17.5: unique user knowledge).
-        for directory in [layout.stagingDirectory, layout.recoveryDirectory, layout.restoreWorkDirectory] {
+        for directory in layout.backupExcludedDirectories {
             var url = directory
             var values = URLResourceValues()
             values.isExcludedFromBackup = true
@@ -237,10 +241,18 @@ enum MigrationSafety {
                 throw StoreError.insufficientSpace(required: required, available: available)
             }
             let id = EntityID.make()
-            let name = "pre-migration-\(options.clock.nowMillis())-\(id.prefix(8)).sqlite"
-            let url = layout.recoveryDirectory.appending(path: name, directoryHint: .notDirectory)
-            try Snapshot.take(from: pool, to: url, staging: layout.stagingDirectory, protector: options.protector)
-            report.recoverySnapshot = url
+            // A retry from the same pre-state (for example after a failed migration was put back)
+            // reuses that snapshot instead of adding another copy of the library (RecoveryRetention).
+            let name: String
+            if let existing = try RecoveryRetention.reusableSnapshot(matching: pool, layout: layout) {
+                name = existing
+                report.recoverySnapshotReused = true
+            } else {
+                name = "pre-migration-\(options.clock.nowMillis())-\(id.prefix(8)).sqlite"
+                try Snapshot.take(from: pool, to: layout.recoveryDirectory.appending(path: name, directoryHint: .notDirectory),
+                                  staging: layout.stagingDirectory, protector: options.protector)
+            }
+            report.recoverySnapshot = layout.recoveryDirectory.appending(path: name, directoryHint: .notDirectory)
             let record = PutBackIntent(id: id, snapshot: "Recovery/\(name)", pending: pending.map(\.identifier))
             try MigrationPutBack.writeIntent(record, layout: layout, protector: options.protector)
             intent = record
@@ -280,15 +292,20 @@ enum MigrationSafety {
             } catch let error as StoreError where error.isSimulatedCrash {
                 throw error
             } catch {
+                // Only a flush after the intent's removal failed: the snapshot is back in place.
+                guard MigrationPutBack.intentPending(layout) else { throw failure }
                 // The intent is still in place, so the next open finishes the put-back before SQLite
                 // can open anything: the library is never used as it is now.
                 throw failure.puttingBackFailed(String(describing: error))
             }
             throw failure
         }
-        if intent != nil {
+        if let intent {
             try hooks.completed(.migrationChecked)
             try MigrationPutBack.removeIntent(layout)
+            // Succeeded: keep only this migration's snapshot; earlier snapshots and failed copies go.
+            report.recoveryPrune = RecoveryRetention.prune(layout, keepSnapshot: String(intent.snapshot.dropFirst("Recovery/".count)),
+                                                           keepFailed: nil)
         }
         report.appliedNow = try pool.read { try LibrarySchema.applied($0) }
     }

@@ -46,8 +46,12 @@ public struct GoldenCorpus: Sendable {
     public var covers: [String: (sha256: String, fileExtension: String)] = [:]
 
     /// Text deliberately mixing combining marks, emoji with modifiers, right-to-left script, CJK and
-    /// Markdown metacharacters, so any normalization or escaping bug changes bytes.
-    public static let unicodeQuote = "We ought to do good to others as simply as \"a horse runs\" — e\u{301}te\u{301} 👩🏽‍🔬 שָׁלוֹם 東京 *not emphasis* | pipe\nSecond line."
+    /// Markdown metacharacters, so any normalization or escaping bug changes bytes. It opens with
+    /// George Long's translation of *Meditations* V.6 (1862, public domain), verbatim from the
+    /// Standard Ebooks text in `Fixtures/epub/se-meditations.epub` up to "come and see"; the test
+    /// characters after the dash were written for the corpus (`FIXTURES.md`). Review round 4 found
+    /// that the earlier opening was a popular modern paraphrase of V.6 with no recorded source.
+    public static let unicodeQuote = "As a horse when he has run, a dog when he has tracked the game, a bee when it has made the honey, so a man when he has done a good act, does not call out for others to come and see — e\u{301}te\u{301} 👩🏽‍🔬 שָׁלוֹם 東京 *not emphasis* | pipe\nSecond line."
 
     /// Builds the corpus in `store`, importing generated media from `sourceDirectory` (the stand-in
     /// for a Mac source or Files location, deleted by the drill).
@@ -223,7 +227,7 @@ public struct GoldenCorpus: Sendable {
                                       sourceKind: "local_epub", editionIdentifiers: ["se": "marcus-aurelius/meditations/george-long"])
         let quote = unicodeQuote
         c.quotes["epub-quote"] = quote
-        let epubLocator = #"{"href":"text/book-5.xhtml","locations":{"progression":0.4271,"position":118},"text":{"before":"Book V. ","highlight":"We ought to do good…","after":" Next."},"type":"application/xhtml+xml"}"#
+        let epubLocator = #"{"href":"text/book-5.xhtml","locations":{"progression":0.4271,"position":118},"text":{"before":"Book V. ","highlight":"As a horse when he has run…","after":" Next."},"type":"application/xhtml+xml"}"#
         let epubCapture = try store.saveCapture(CaptureCommand(
             workID: c.works["meditations"]!, editionID: c.editions["med-epub"]!, runID: runs["med-2"], kind: .quote,
             quotedText: quote, snapshot: medTitle,

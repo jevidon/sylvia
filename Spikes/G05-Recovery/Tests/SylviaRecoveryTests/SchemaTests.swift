@@ -94,6 +94,13 @@ struct SchemaTests {
         #expect(throws: ValidationError.self) { try EffectiveDate("2019-13", precision: .month) }
         #expect(throws: ValidationError.self) { try EffectiveDate("2019-02-30", precision: .day) }
         #expect(throws: ValidationError.self) { try EffectiveDate("2019-02", precision: .year) }
+        // Only ASCII digits: Swift's Int(String) also accepts a sign, which must not pass (review round 3).
+        for (value, precision) in [("+019", EffectiveDate.Precision.year), ("-019", .year), ("2019-+1", .month),
+                                   ("2019-+1-+5", .day), ("2019-01-+5", .day), ("２０１９", .year), ("2019-0١", .month)] {
+            #expect(!EffectiveDate.isValid(value, precision: precision), "\(value) accepted as \(precision)")
+            #expect(throws: ValidationError.self, "\(value)") { try EffectiveDate(value, precision: precision) }
+        }
+        #expect(EffectiveDate.isValid("0019", precision: .year) && EffectiveDate.isValid("2019-01-05", precision: .day))
         #expect(try EffectiveDate.month(2026, 9).value == "2026-09")
         #expect(try EffectiveDate.day(2024, 2, 29).value == "2024-02-29")
 
@@ -206,5 +213,73 @@ struct SchemaTests {
         #expect(try store.reviseNote(note, expectedRevision: 3, body: "fresh") == 4)
         let bodies = try store.pool.read { try String.fetchAll($0, sql: "SELECT body FROM note_revision WHERE note_id = ? ORDER BY revision", arguments: [note]) }
         #expect(bodies.count == 4 && bodies.first == "First thought." && bodies.last == "fresh")
+        #expect(try store.pool.read { try RowCheck.problems($0) }.isEmpty)
+
+        // A pointer RowCheck would reject (review round 3) is an error at edit time, never an overflow trap.
+        try store.pool.write { try $0.execute(sql: "UPDATE note SET current_revision = 9223372036854775807 WHERE id = ?", arguments: [note]) }
+        #expect(throws: StoreError.invalid("note \(note): current_revision 9223372036854775807 is out of range")) {
+            try store.reviseNote(note, expectedRevision: Int.max, body: "overflow")
+        }
+        let problems = try store.pool.read { try RowCheck.problems($0) }
+        #expect(problems.contains { $0.contains("current_revision 9223372036854775807 but 4 revisions numbered 1...4") }, "\(problems)")
+        #expect(problems.contains { $0.contains("note.current_revision") && $0.contains("outside") }, "\(problems)")
+    }
+
+    /// Finding F12 (found while fixing review round 4's content-digest finding): GRDB 7.11.1 binds a
+    /// `String` as a C string and decodes TEXT with `String(cString:)`, so text holding U+0000 is cut
+    /// off at the NUL when written and when read. The store refuses such text before writing, and
+    /// RowCheck refuses a database that holds it (or invalid UTF-8), so "Saved" never stands for
+    /// text that was not stored exactly (I-03, I-05).
+    @Test("finding F12: GRDB writes and reads TEXT as C strings, so text with U+0000 is refused before saving and by RowCheck")
+    func nulTextIsRefused() throws {
+        // GRDB's behaviour, on a scratch in-memory database.
+        let queue = try DatabaseQueue()
+        try queue.write { (db: Database) throws in
+            try db.execute(sql: "CREATE TABLE t(id INTEGER PRIMARY KEY, x TEXT) STRICT")
+            try db.execute(sql: "INSERT INTO t VALUES (1, ?)", arguments: ["before\u{0}after"])
+            try db.execute(sql: "INSERT INTO t VALUES (2, CAST(X'6265666F7265006166746572' AS TEXT))")
+        }
+        let (storedHex, readBack, storedLength) = try queue.read { (db: Database) throws in
+            (try String.fetchOne(db, sql: "SELECT hex(CAST(x AS BLOB)) FROM t WHERE id = 1") ?? "",
+             try String.fetchOne(db, sql: "SELECT x FROM t WHERE id = 2") ?? "",
+             try Int.fetchOne(db, sql: "SELECT length(CAST(x AS BLOB)) FROM t WHERE id = 2") ?? -1)
+        }
+        #expect(storedHex == "6265666F7265", "binding \"before\\0after\" stored \(storedHex)")
+        #expect(storedLength == 12 && readBack == "before", "reading 12 stored bytes gave \(readBack.debugDescription)")
+        evidence("GRDB 7.11.1 binds \"before\\u{0}after\" as \(storedHex) (\"before\": cut off at the NUL) and reads the stored 12 bytes 6265666F7265006166746572 as \(readBack.debugDescription)")
+
+        // The store refuses such text before anything is written.
+        let scratch = try Scratch()
+        let layout = scratch.layout()
+        try CrashDrill.seed(layout, durability: .acknowledgedSaves)
+        let store = try LibraryStore.open(layout)
+        defer { try? store.close() }
+        let journalBefore = try store.pool.read { try Int.fetchOne($0, sql: "SELECT count(*) FROM change_journal") }
+        var command = CrashDrill.command(1)
+        command.quotedText = "a quote\u{0}with a NUL"
+        #expect(throws: ValidationError.textContainsNUL(column: "capture.quoted_text")) { try store.saveCapture(command) }
+        command = CrashDrill.command(2)
+        command.comment = "a comment\u{0}with a NUL"
+        #expect(throws: ValidationError.textContainsNUL(column: "note_revision.body")) { try store.saveCapture(command) }
+        #expect(throws: ValidationError.textContainsNUL(column: "note_revision.body")) {
+            try store.addNote(workID: CrashDrill.seedWorkID, body: "a note\u{0}with a NUL")
+        }
+        try store.pool.read { (db: Database) throws in
+            #expect(try Int.fetchOne(db, sql: "SELECT count(*) FROM capture") == 0)
+            #expect(try Int.fetchOne(db, sql: "SELECT count(*) FROM note") == 0)
+            #expect(try Int.fetchOne(db, sql: "SELECT count(*) FROM change_journal") == journalBefore)
+        }
+        // Text the app can write (any valid Unicode without U+0000) saves exactly, and RowCheck
+        // passes; a stored NUL or invalid UTF-8 (only a crafted database can hold them) fails it.
+        try store.saveCapture(CrashDrill.command(3))
+        #expect(try store.pool.read { try RowCheck.problems($0) }.isEmpty)
+        try store.pool.write { (db: Database) throws in
+            try db.execute(sql: "UPDATE note_revision SET body = CAST(CAST(body AS BLOB) || X'00' || CAST('hidden' AS BLOB) AS TEXT)")
+            try db.execute(sql: "UPDATE capture SET quoted_text = CAST(X'61FF62' AS TEXT)")
+        }
+        let problems = try store.pool.read { try RowCheck.problems($0) }
+        #expect(problems.contains { $0.contains("note_revision.body") && $0.contains("NUL") }, "\(problems)")
+        #expect(problems.contains { $0.contains("capture.quoted_text") && $0.contains("not valid UTF-8") }, "\(problems)")
+        evidence("text with U+0000 refused before writing (capture quote, comment, note), nothing written; RowCheck on a library holding a NUL and invalid UTF-8: \(problems.filter { $0.contains("text") })")
     }
 }

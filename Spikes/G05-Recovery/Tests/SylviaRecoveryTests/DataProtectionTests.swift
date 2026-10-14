@@ -265,7 +265,7 @@ struct DataProtectionTests {
         }
     }
 
-    @Test("staging, recovery and restore work are excluded from device backup; the library is not")
+    @Test("staging (Staging/ and Staging/Persistence/), recovery and restore work are excluded from device backup; the library is not")
     func backupExclusion() throws {
         let scratch = try Scratch()
         let store = try LibraryStore.open(scratch.layout())
@@ -273,7 +273,10 @@ struct DataProtectionTests {
         func excluded(_ url: URL) throws -> Bool { try url.resourceValues(forKeys: [.isExcludedFromBackupKey]).isExcludedFromBackup ?? false }
         #expect(try !excluded(store.layout.libraryDirectory))
         #expect(try !excluded(store.layout.databaseURL))
-        for url in [store.layout.stagingDirectory, store.layout.recoveryDirectory, store.layout.restoreWorkDirectory] {
+        let layout = store.layout
+        #expect(layout.backupExcludedDirectories == [layout.sharedStagingDirectory, layout.stagingDirectory,
+                                                     layout.recoveryDirectory, layout.restoreWorkDirectory])
+        for url in layout.backupExcludedDirectories {
             #expect(try excluded(url), "\(url.lastPathComponent)")
         }
     }

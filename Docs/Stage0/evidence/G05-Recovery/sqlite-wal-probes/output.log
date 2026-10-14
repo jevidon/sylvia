@@ -1,0 +1,12 @@
+# SQLite WAL probes (host observations; not part of the CI drop-in)
+# run 2026-10-12T21:45:05Z on host 26.6.2 (25G83), swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+# load: 10:45  up 9 days, 20:55, 1 user, load averages: 41.57 37.95 31.88
+
+# command: xcrun swiftc -O Docs/Stage0/evidence/G05-Recovery/sqlite-wal-probes/persistent-wal.swift -o <bin> && <bin> <empty scratch directory>
+sqlite 3.51.0; SQLITE_FCNTL_PERSIST_WAL default=1
+open, after a write: probe.sqlite-wal=true probe.sqlite-shm=true
+after closing the only connection: probe.sqlite-wal=true probe.sqlite-shm=true
+
+# command: xcrun swiftc -O Docs/Stage0/evidence/G05-Recovery/sqlite-wal-probes/mispaired-wal.swift -o <bin> && <bin> <empty scratch directory>
+b.sqlite read alone: original
+b.sqlite read with a.sqlite's -wal beside it: only in a.sqlite-wal

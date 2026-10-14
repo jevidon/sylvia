@@ -77,7 +77,10 @@ public struct EffectiveDate: Sendable, Hashable, Codable {
         let widths = [4, 2, 2]
         var numbers: [Int] = []
         for (index, part) in parts.enumerated() {
-            guard part.count == widths[index], part.allSatisfy(\.isASCII), let n = Int(part) else { return false }
+            // ASCII digits only, checked byte by byte before `Int(_:)`, which would also accept a
+            // leading "+" (or "-") and so let "+019" or "2019-+1" through the width check.
+            guard part.utf8.count == widths[index], part.utf8.allSatisfy({ (48...57).contains($0) }),
+                  let n = Int(part) else { return false }
             numbers.append(n)
         }
         if numbers.count >= 2, !(1...12).contains(numbers[1]) { return false }
@@ -98,6 +101,9 @@ public enum ValidationError: Error, Equatable, CustomStringConvertible {
     case invalidDigest(String)
     case invalidIdentifier(String)
     case emptyCapture
+    /// The text for `column` (`table.column`) contains U+0000, which SQLite would store cut off at
+    /// that character (GRDB binds text as a C string); nothing was written.
+    case textContainsNUL(column: String)
 
     public var description: String {
         switch self {
@@ -106,6 +112,8 @@ public enum ValidationError: Error, Equatable, CustomStringConvertible {
         case .invalidDigest(let v): return "not a lowercase hex SHA-256 digest: \(v)"
         case .invalidIdentifier(let v): return "not a lowercase UUID: \(v)"
         case .emptyCapture: return "a capture needs at least one anchor"
+        case .textContainsNUL(let column):
+            return "the text for \(column) contains U+0000, which would be stored cut off at that character; nothing was saved"
         }
     }
 }

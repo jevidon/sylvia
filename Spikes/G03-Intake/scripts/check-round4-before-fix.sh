@@ -51,8 +51,8 @@ failures=0
 # run_tests <label> <swift test filter>: the tests must fail against the reverted code.
 run_tests() {
   local label="$1" filter="$2" status=0
-  (cd "$copy" && swift build --build-tests 2>&1 | grep -E 'error:' | grep -v checkouts) && { echo "  build failed"; exit 1; }
-  (cd "$copy" && swift test --skip-build --filter "$filter") > "$work/$label.log" 2>&1 || status=$?
+  (cd "$copy" && swift build --force-resolved-versions --build-tests 2>&1 | grep -E 'error:' | grep -v checkouts) && { echo "  build failed"; exit 1; }
+  (cd "$copy" && swift test --force-resolved-versions --skip-build --filter "$filter") > "$work/$label.log" 2>&1 || status=$?
   grep -E '^(✘|✔) Test |recorded an issue|^[A-Za-z].*: .*(after|bytes|refused|accepted|received|apart)|Test run with' "$work/$label.log" \
     | grep -v -E '^◇' | cut -c1-400 | sed 's/^/  /' || true
   if (( status != 0 )); then

@@ -23,7 +23,7 @@ echo "G0.3 PackWriter time against the number of entries"
 echo "date: $(date -u +%Y-%m-%dT%H:%M:%SZ); commit $(git -C "$SYLVIA_ROOT" rev-parse --short HEAD 2>/dev/null || echo unknown)"
 echo "host: $(sw_vers -productName) $(sw_vers -productVersion) ($(sw_vers -buildVersion)), $(sysctl -n machdep.cpu.brand_string); $(xcodebuild -version | tr '\n' ' ')"
 echo "load before: $(uptime)"
-(cd "$kit" && swift build --configuration release --product sylviapack-tool 2>&1 | tail -1)
+(cd "$kit" && swift build --force-resolved-versions --configuration release --product sylviapack-tool 2>&1 | tail -1)
 tool="$kit/.build/release/sylviapack-tool"
 for bytes in 20 512; do
   for files in 1000 2000 4000 9998; do

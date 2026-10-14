@@ -410,7 +410,7 @@ def main(only: list[str]) -> int:
         try:
             path.write_text(mutated, encoding="utf-8")
             try:
-                run = subprocess.run(["swift", "test", "--filter", test], cwd=SPIKE, capture_output=True, text=True, timeout=600)
+                run = subprocess.run(["swift", "test", "--force-resolved-versions", "--filter", test], cwd=SPIKE, capture_output=True, text=True, timeout=600)
                 output, returncode = run.stdout + run.stderr, run.returncode
             except subprocess.TimeoutExpired as expired:
                 # A hang is not a caught mutation: only a failing expectation counts.

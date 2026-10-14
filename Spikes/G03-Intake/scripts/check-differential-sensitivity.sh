@@ -68,7 +68,7 @@ PY
 }
 
 build_tool() {
-  (cd "$1" && swift build --configuration release --product sylviapack-tool 2>&1 | tail -1)
+  (cd "$1" && swift build --force-resolved-versions --configuration release --product sylviapack-tool 2>&1 | tail -1)
 }
 
 failures=0

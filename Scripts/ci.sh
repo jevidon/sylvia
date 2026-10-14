@@ -28,6 +28,8 @@ for step in "$SYLVIA_ROOT"/Scripts/ci.d/*.sh; do
   start=$SECONDS
   if "$step" >"$LOG_DIR/$name.log" 2>&1; then
     echo "    pass ($((SECONDS - start))s)"
+    # A passing drop-in's warnings are shown too, not only kept in its log (ADR-0014, review R3-05).
+    grep -E "^WARN " "$LOG_DIR/$name.log" | sed "s/^/    | /"
   else
     echo "    FAIL ($((SECONDS - start))s) - see $LOG_DIR/$name.log"
     tail -n 30 "$LOG_DIR/$name.log" | sed 's/^/    | /'

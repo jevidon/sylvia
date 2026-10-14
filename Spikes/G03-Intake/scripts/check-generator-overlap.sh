@@ -41,7 +41,7 @@ mkdir -p "$private/downloads"
 mp3="meditationsofmarcusaurelius_01_aurelius_64kb.mp3"
 if [[ -f "$shared/downloads/$mp3" ]]; then cp -c "$shared/downloads/$mp3" "$private/downloads/$mp3"; fi
 export SYLVIA_FIXTURE_CACHE="$private"
-(cd "$SYLVIA_ROOT/Spikes/G03-Intake/IntakeKit" && swift build --configuration release --product sylviapack-tool 2>&1 | tail -1)
+(cd "$SYLVIA_ROOT/Spikes/G03-Intake/IntakeKit" && swift build --force-resolved-versions --configuration release --product sylviapack-tool 2>&1 | tail -1)
 
 # Watcher: records every (path, size) state it sees; violations are a missing file after it appeared, or a size
 # other than the final one.

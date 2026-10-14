@@ -53,12 +53,17 @@ public struct FileProtector: Sendable {
 
     public static let library = FileProtector()
 
+    /// The `Data.WritingOptions` that create a file with the class. Only classes A, B and C have
+    /// one; any other class is refused before anything is written, never mapped to an unprotected
+    /// write (ADR-0015 TM-F1).
     public var writingOptions: Data.WritingOptions {
-        switch protection {
-        case .complete: return .completeFileProtection
-        case .completeUnlessOpen: return .completeFileProtectionUnlessOpen
-        case .completeUntilFirstUserAuthentication: return .completeFileProtectionUntilFirstUserAuthentication
-        default: return .noFileProtection
+        get throws {
+            switch protection {
+            case .complete: return .completeFileProtection
+            case .completeUnlessOpen: return .completeFileProtectionUnlessOpen
+            case .completeUntilFirstUserAuthentication: return .completeFileProtectionUntilFirstUserAuthentication
+            default: throw ProtectionError.unsupportedClass(protection.rawValue)
+            }
         }
     }
 
@@ -89,12 +94,18 @@ public struct FileProtector: Sendable {
     }
 
     /// Writes `data` with the protection class. `atomic` uses Foundation's same-directory temp file
-    /// and rename.
+    /// and rename. A file whose class does not read back is removed, so no unprotected bytes stay
+    /// on disk (ADR-0015 TM-F1).
     public func write(_ data: Data, to url: URL, atomic: Bool = true) throws {
-        var options = writingOptions
+        var options = try writingOptions
         if atomic { options.insert(.atomic) }
         try data.write(to: url, options: options)
-        try verify(url)
+        do {
+            try verify(url)
+        } catch {
+            try? FileManager.default.removeItem(at: url)
+            throw error
+        }
     }
 
     /// Copies the regular file at `source` into a new file at `destination` that is created with
@@ -114,7 +125,7 @@ public struct FileProtector: Sendable {
         guard (info.st_mode & S_IFMT) == S_IFREG else {
             throw FileSystemError.posix("copy", "\(source.lastPathComponent) is not a regular file", EINVAL)
         }
-        var options = writingOptions
+        var options = try writingOptions
         options.insert(.withoutOverwriting)
         try Data().write(to: destination, options: options)
         do {
@@ -163,6 +174,7 @@ public enum ProtectionError: Error, Equatable, CustomStringConvertible {
     case notADirectory(String)
     case cannotApply(String, String)
     case mismatch(String, expected: String, actual: String)
+    case unsupportedClass(String)
 
     public var description: String {
         switch self {
@@ -170,6 +182,7 @@ public enum ProtectionError: Error, Equatable, CustomStringConvertible {
         case .cannotApply(let name, let why): return "protection: cannot apply class to \(name): \(why)"
         case .mismatch(let name, let expected, let actual):
             return "protection: \(name) has \(actual), expected \(expected)"
+        case .unsupportedClass(let value): return "protection: \(value) has no protected writing option; nothing was written"
         }
     }
 }

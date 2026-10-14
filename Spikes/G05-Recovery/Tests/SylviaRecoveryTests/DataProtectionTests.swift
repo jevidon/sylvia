@@ -265,6 +265,26 @@ struct DataProtectionTests {
         }
     }
 
+    @Test("a class without a protected writing option is refused before anything is written (ADR-0015 TM-F1)")
+    func unsupportedClassRefused() throws {
+        let scratch = try Scratch()
+        let source = scratch.url.appending(path: "source.bin")
+        let payload = Data("payload".utf8)
+        try payload.write(to: source)
+        // Classes other than A, B and C (iOS 17's class for files closed while the user is inactive,
+        // and a class this SDK does not know) used to map to an unprotected write.
+        for value in ["NSFileProtectionCompleteWhenUserInactive", "SylviaTestUnknownProtectionClass"] {
+            let protector = FileProtector(protection: FileProtectionType(rawValue: value))
+            let target = scratch.url.appending(path: "target-\(value).bin")
+            #expect(throws: ProtectionError.unsupportedClass(value)) { try protector.write(payload, to: target) }
+            #expect(!FileManager.default.fileExists(atPath: target.path), "write left \(target.lastPathComponent)")
+            let copied = scratch.url.appending(path: "copied-\(value).bin")
+            #expect(throws: ProtectionError.unsupportedClass(value)) { try protector.copyFile(from: source, to: copied) }
+            #expect(!FileManager.default.fileExists(atPath: copied.path), "copy left \(copied.lastPathComponent)")
+        }
+        evidence("TM-F1: classes other than A, B and C are refused by write and copyFile and leave no file")
+    }
+
     @Test("staging (Staging/ and Staging/Persistence/), recovery and restore work are excluded from device backup; the library is not")
     func backupExclusion() throws {
         let scratch = try Scratch()

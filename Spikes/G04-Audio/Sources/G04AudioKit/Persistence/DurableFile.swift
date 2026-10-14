@@ -6,6 +6,8 @@ public enum DurableFileError: Error, Equatable, Sendable {
     case write(path: String, errno: Int32)
     case sync(path: String, errno: Int32)
     case rename(errno: Int32)
+    /// The file does not carry the requested protection class, or the class has no mapping (ADR-0015 TM-F2).
+    case protection(path: String, expected: String, actual: String)
 }
 
 /// Durable writes for the spike's small stores: write a temporary file, F_FULLFSYNC it, rename it over the target
@@ -20,14 +22,51 @@ public enum DurableFile {
 
     /// Creates `url` (and any missing parent) with the protection class, so files created inside it start with it.
     public static func createDirectory(_ url: URL, protection: FileProtectionType = lockedCaptureProtection) throws {
+        _ = try urlFileProtection(protection, for: url) // an unmapped class is refused before anything is created
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true,
                                                 attributes: [.protectionKey: protection])
     }
 
-    /// Sets the protection class of an existing file (the iOS Simulator ignores it: it logs "ignoring unsupported
-    /// value" and reads back class C whatever was set, so only a device shows the class).
+    /// Sets the protection class of an existing file and reads it back (ADR-0015 TM-F2). The file protection resource
+    /// key takes a URLFileProtection: a FileProtectionType passed there is accepted without error and ignored (shown on
+    /// the host, Docs/Stage0/evidence/M0-threat-model/protection-key-probe.log), so the class is mapped explicitly, and
+    /// a class with no mapping is an error, never a weaker class. The iOS Simulator ignores file protection (it logs
+    /// "ignoring unsupported value" and reads back class C whatever was set), so only a device shows the class; a
+    /// readback that names another class is an error everywhere.
     public static func applyProtection(_ protection: FileProtectionType, to url: URL) throws {
-        try (url as NSURL).setResourceValue(protection, forKey: .fileProtectionKey)
+        let wanted = try urlFileProtection(protection, for: url)
+        var values = URLResourceValues()
+        values.fileProtection = wanted
+        var item = url
+        try item.setResourceValues(values)
+        // A fresh URL, so the readback is not a cached resource value.
+        let fresh = URL(fileURLWithPath: url.path)
+        let actual = try fresh.resourceValues(forKeys: [.fileProtectionKey]).fileProtection
+        guard actual == wanted || (actual == nil && platformIgnoresProtection) else {
+            throw DurableFileError.protection(path: url.lastPathComponent, expected: wanted.rawValue,
+                                              actual: actual?.rawValue ?? "none reported")
+        }
+    }
+
+    /// The resource value for a class: A, B and C only (ADR-0015 TM-F2).
+    static func urlFileProtection(_ protection: FileProtectionType, for url: URL) throws -> URLFileProtection {
+        switch protection {
+        case .complete: return .complete
+        case .completeUnlessOpen: return .completeUnlessOpen
+        case .completeUntilFirstUserAuthentication: return .completeUntilFirstUserAuthentication
+        default:
+            throw DurableFileError.protection(path: url.lastPathComponent, expected: "class A, B or C",
+                                              actual: protection.rawValue)
+        }
+    }
+
+    /// True only in the iOS Simulator, which may report no class at all.
+    static var platformIgnoresProtection: Bool {
+        #if targetEnvironment(simulator)
+        return true
+        #else
+        return false
+        #endif
     }
 
     public static func write(_ data: Data, to url: URL, protection: FileProtectionType = lockedCaptureProtection) throws {

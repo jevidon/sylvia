@@ -1,0 +1,371 @@
+Xcode specifications read (/Applications/Xcode.app/Contents/Developer):
+  SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/XCBSpecifications.ideplugin/Contents/Resources/Clang.xcspec
+  SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/XCBSpecifications.ideplugin/Contents/Resources/CoreBuildSystem.xcspec
+  SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/XCBSpecifications.ideplugin/Contents/Resources/Ld.xcspec
+  SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/XCBSpecifications.ideplugin/Contents/Resources/Libtool.xcspec
+  SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/XCBSpecifications.ideplugin/Contents/Resources/Swift.xcspec
+
+177 settings; for each: the specifications that define it, its type, the flag or arguments it maps to, and the check
+ALL_OTHER_LIBTOOLFLAGS                           flags (only the allowed flags may appear)
+    Libtool StringList ->  
+ALTERNATE_LINKER_PATH                            tool or input replacement (rejected)
+    Ld Path
+BUILD_DIR                                        text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+BUILD_ROOT                                       text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+BUILT_PRODUCTS_DIR                               text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+BUNDLE_LOADER                                    binary (judged as a path)
+    CoreBuildSystem Path; CoreBuildSystem Path; Ld Path -> -bundle_loader
+CC                                               tool or input replacement (rejected)
+    CoreBuildSystem Path
+CLANG_ALTERNATE_LINKER                           tool or input replacement (rejected)
+    Ld String -> {
+CLANG_ALTERNATE_LINKER_PATH                      tool or input replacement (rejected)
+    Ld String -> {
+CLANG_ANALYZER_DEFINES                           text (read for transitive header names and Spikes/ paths only)
+    Clang String -> ("$(value)
+CLANG_ANALYZER_EXEC                              tool or input replacement (rejected)
+    Clang Path
+CLANG_ANALYZER_OTHER_CHECKERS                    text (read for transitive header names and Spikes/ paths only)
+    Clang StringList -> ( "-Xclang", "-analyzer-checker", "-Xclang", "$(value)
+CLANG_ANALYZER_OTHER_FLAGS                       flags (only the allowed flags may appear)
+    Clang StringList -> ( "-Xclang", "$(value)
+CLANG_ANALYZER_OUTPUT_DIR                        text (read for transitive header names and Spikes/ paths only)
+    Clang Path
+CLANG_BOUNDS_SAFETY_BRINGUP_MISSING_CHECKS_OPT_OUTS text (read for transitive header names and Spikes/ paths only)
+    Clang String -> {
+CLANG_COHORT_ARCHS                               text (read for transitive header names and Spikes/ paths only)
+    Clang StringList -> -target-arch-variant
+CLANG_INDEX_STORE_PATH                           text (read for transitive header names and Spikes/ paths only)
+    Clang Path
+CLANG_LD_DYLIB_INSTALL_NAME                      text (read for transitive header names and Spikes/ paths only)
+    Ld String -> -install_name
+CLANG_MACRO_BACKTRACE_LIMIT                      text (read for transitive header names and Spikes/ paths only)
+    Clang String -> -fmacro-backtrace-limit=
+CLANG_MODULES_BUILD_SESSION_FILE                 text (read for transitive header names and Spikes/ paths only)
+    Clang String -> {
+CLANG_MODULES_IGNORE_MACROS                      text (read for transitive header names and Spikes/ paths only)
+    Clang StringList -> ( "-fmodules-ignore-macro=$(value)
+CLANG_MODULES_PRUNE_AFTER                        text (read for transitive header names and Spikes/ paths only)
+    Clang String -> {
+CLANG_MODULES_PRUNE_INTERVAL                     text (read for transitive header names and Spikes/ paths only)
+    Clang String -> {
+CLANG_MODULE_CACHE_PATH                          text (read for transitive header names and Spikes/ paths only)
+    Clang Path -> {; Swift Path -> -module-cache-path
+CLANG_OPTIMIZATION_PROFILE_FILE                  text (read for transitive header names and Spikes/ paths only)
+    Clang Path
+CLANG_OTHER_PREFIX_MAPPINGS                      tool or input replacement (rejected)
+    Clang StringList -> ( "-fdepscan-prefix-map=$(value)
+CLANG_RESOURCE_DIR                               tool or input replacement (rejected)
+    Swift Path -> {
+CLANG_RESOURCE_DIR_CLANG                         tool or input replacement (rejected)
+    Ld Path -> {
+CLANG_RESOURCE_DIR_SWIFTC                        tool or input replacement (rejected)
+    Ld Path -> {
+CLANG_SYSROOT_LINKER_INPUT                       tool or input replacement (rejected)
+    Ld Path -> -isysroot
+CLANG_SYSTEM_FRAMEWORK_SEARCH_PATHS              library or framework search directory (judged as a path)
+    Ld PathList -> -iframework
+CLANG_TARGET_TRIPLE_ARCHS                        text (read for transitive header names and Spikes/ paths only)
+    Clang StringList -> ( "-target", "$(value)
+CLANG_TARGET_TRIPLE_VARIANTS                     text (read for transitive header names and Spikes/ paths only)
+    Clang StringList -> -target-variant
+CLANG_TOOLCHAIN_FLAGS                            flags (only the allowed flags may appear)
+    Clang StringList -> -fmessage-length= ( "$(value)
+CLANG__INPUT_FILE_LIST_PATH__                    tool or input replacement (rejected)
+    Ld Path -> -filelist
+CLASS_FILE_DIR                                   text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+CODESIZE_PROFILE_OUTPUT_DIR                      text (read for transitive header names and Spikes/ paths only)
+    Swift Path
+CODE_SIGN_ENTITLEMENTS                           text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+CONFIGURATION_BUILD_DIR                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+CONFIGURATION_TEMP_DIR                           text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+CPP_HEADERMAP_FILE                               tool or input replacement (rejected)
+    Clang Path
+CPP_HEADERMAP_FILE_FOR_ALL_NON_FRAMEWORK_TARGET_HEADERS tool or input replacement (rejected)
+    Clang Path
+CPP_HEADERMAP_FILE_FOR_ALL_TARGET_HEADERS        tool or input replacement (rejected)
+    Clang Path
+CPP_HEADERMAP_FILE_FOR_GENERATED_FILES           tool or input replacement (rejected)
+    Clang Path
+CPP_HEADERMAP_FILE_FOR_OWN_TARGET_HEADERS        tool or input replacement (rejected)
+    Clang Path
+CPP_HEADERMAP_FILE_FOR_PROJECT_FILES             tool or input replacement (rejected)
+    Clang Path
+CPP_HEADERMAP_PRODUCT_HEADERS_VFS_FILE           tool or input replacement (rejected)
+    Clang Path
+CPP_HEADER_SYMLINKS_DIR                          text (read for transitive header names and Spikes/ paths only)
+    Clang Path
+DERIVED_FILE_DIR                                 text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+DERIVED_SOURCES_DIR                              text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+DSTROOT                                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+DWARF_DSYM_FOLDER_PATH                           text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path
+EXPORTED_SYMBOLS_FILE                            text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path; Ld Path -> -exported_symbols_list; Libtool Path -> -exported_symbols_list
+FILE_LIST                                        tool or input replacement (rejected)
+    CoreBuildSystem Path
+FRAMEWORK_SEARCH_PATHS                           library or framework search directory (judged as a path)
+    CoreBuildSystem PathOrderedSet; CoreBuildSystem PathOrderedSet; Ld PathOrderedSet; Swift PathOrderedSet; Swift PathOrderedSet -> -F; Swift PathOrderedSet -> -F
+FULL_PRODUCT_NAME                                text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+GCC_PREFIX_HEADER                                header file (must be a tracked product file; read as product code)
+    Clang Path
+GCC_PREPROCESSOR_DEFINITIONS                     definition (a transitive-only header or module name fails)
+    Clang StringList -> ( "-D$(value)
+GCC_PRODUCT_TYPE_PREPROCESSOR_DEFINITIONS        definition (a transitive-only header or module name fails)
+    Clang StringList -> ( "-D$(value)
+HEADER_SEARCH_PATHS                              search directory (judged as a path)
+    CoreBuildSystem PathList; CoreBuildSystem PathList
+HOME                                             text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+INFOPLIST_FILE                                   text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path
+INIT_ROUTINE                                     text (read for transitive header names and Spikes/ paths only)
+    Ld String -> -init
+INSTALL_DIR                                      text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+INSTALL_PATH                                     text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path
+INSTALL_ROOT                                     text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+JAVA_APP_STUB                                    text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+JAVA_COMPILER                                    text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+JAVA_FRAMEWORK_JARS                              text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem PathList
+JAVA_FRAMEWORK_RESOURCES_DIRS                    text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem PathList
+JAVA_SOURCE_SUBDIR                               text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+LD_ADDITIONAL_DEPLOYMENT_TARGET_FLAGS            flags (only the allowed flags may appear)
+    Ld StringList -> "$(value)"
+LD_CLIENT_NAME                                   text (read for transitive header names and Spikes/ paths only)
+    Ld String -> {
+LD_COHORT_ARCHS                                  text (read for transitive header names and Spikes/ paths only)
+    Ld StringList -> -target-arch-variant
+LD_DEPENDENCY_INFO_FILE                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path; Ld Path -> {
+LD_DYLIB_ALLOWABLE_CLIENTS                       text (read for transitive header names and Spikes/ paths only)
+    Ld StringList -> ( "-Xlinker", "-allowable_client", "-Xlinker", "$(value)
+LD_ENTRY_POINT                                   text (read for transitive header names and Spikes/ paths only)
+    Ld String -> {
+LD_ENVIRONMENT                                   tool or input replacement (rejected)
+    Ld StringList -> ( "-Xlinker", "-dyld_env", "-Xlinker", "$(value)
+LD_FINAL_OUTPUT_FILE                             text (read for transitive header names and Spikes/ paths only)
+    Ld Path -> {
+LD_LTO_OBJECT_FILE                               text (read for transitive header names and Spikes/ paths only)
+    Ld Path -> {
+LD_MAP_FILE_PATH                                 text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path; Ld Path
+LD_RUNPATH_SEARCH_PATHS                          text (read for transitive header names and Spikes/ paths only)
+    Ld StringList -> ( "-Xlinker", "-rpath", "-Xlinker", "$(value)
+LD_SDK_IMPORTS_FILE                              text (read for transitive header names and Spikes/ paths only)
+    Ld Path
+LD_TARGET_TRIPLE_ARCHS                           text (read for transitive header names and Spikes/ paths only)
+    Ld StringList -> ( "-target", "$(value)
+LD_TARGET_TRIPLE_VARIANTS                        text (read for transitive header names and Spikes/ paths only)
+    Ld StringList -> -target-variant
+LIBRARY_SEARCH_PATHS                             library or framework search directory (judged as a path)
+    CoreBuildSystem PathList; CoreBuildSystem PathList; Ld PathList; Libtool PathList -> -L
+LIBTOOL                                          tool or input replacement (rejected)
+    Libtool Path
+LIBTOOL_ARCH                                     text (read for transitive header names and Spikes/ paths only)
+    Libtool String -> -arch_only
+LIBTOOL_COHORT_ARCHS                             text (read for transitive header names and Spikes/ paths only)
+    Libtool StringList -> -arch_variant
+LIBTOOL_DEPENDENCY_INFO_FILE                     text (read for transitive header names and Spikes/ paths only)
+    Libtool Path
+LOCALIZABLE_CONTENT_DIR                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+LOCROOT                                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+LOCSYMROOT                                       text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+MODULE_CACHE_DIR                                 text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+OBJECT_FILE_DIR                                  text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+OBJROOT                                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+ORDER_FILE                                       text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path; Ld Path -> {
+OTHER_SWIFT_ABI_CHECKER_FLAGS                    flags (only the allowed flags may appear)
+    Swift StringList -> ( "$(value); Swift StringList -> ( "$(value)
+OTHER_SWIFT_FLAGS                                flags (only the allowed flags may appear)
+    Swift StringList -> ( "$(value)
+PATH_PREFIXES_EXCLUDED_FROM_HEADER_DEPENDENCIES  text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem PathList
+PER_ARCH_MODULE_FILE_DIR                         text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+PRECOMP_DESTINATION_DIR                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path
+PRELINK_DEPENDENCY_INFO_FILE                     text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path
+PRIVATE_HEADERS_FOLDER_PATH                      text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path
+PRODUCT_TYPE_FRAMEWORK_SEARCH_PATHS              library or framework search directory (judged as a path)
+    Ld PathList
+PRODUCT_TYPE_LIBRARY_SEARCH_PATHS                library or framework search directory (judged as a path)
+    Ld PathList
+PROJECT_DERIVED_FILE_DIR                         text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+PROJECT_DIR                                      text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+PROJECT_TEMP_DIR                                 text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+PROJECT_TEMP_ROOT                                text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+PUBLIC_HEADERS_FOLDER_PATH                       text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path
+PWD                                              text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+REEXPORTED_FRAMEWORK_NAMES                       linked by name (must come from an SDK or the inventory)
+    Ld StringList -> ( "-Xlinker", "-reexport_framework", "-Xlinker", "$(value)
+REEXPORTED_LIBRARY_INSTALL_NAMES                 text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem PathList
+REEXPORTED_LIBRARY_NAMES                         linked by name (must come from an SDK or the inventory)
+    Ld StringList -> ( "-Xlinker", "-reexport-l$(value)
+REEXPORTED_LIBRARY_PATHS                         binary (judged as a path)
+    CoreBuildSystem PathList; Ld PathList -> ( "-Xlinker", "-reexport_library", "-Xlinker", "$(value)
+REZ_SEARCH_PATHS                                 text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem PathList; CoreBuildSystem PathList
+SDKROOT                                          SDK (rejected unless an SDK name)
+    Clang Path -> -isysroot; CoreBuildSystem Path; CoreBuildSystem Path; Libtool Path -> -syslibroot; Swift Path -> -sdk; Swift Path -> -sdk; Swift Path -> -sdk
+SHARED_DERIVED_FILE_DIR                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+SHARED_PRECOMPS_DIR                              text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path
+SHELL                                            text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+SOURCE_ROOT                                      text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+SRCROOT                                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+STRINGSDATA_DIR                                  text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+STRINGSDATA_ROOT                                 text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+SWIFTC_ALTERNATE_LINKER                          tool or input replacement (rejected)
+    Ld String -> {
+SWIFTC_ALTERNATE_LINKER_PATH                     tool or input replacement (rejected)
+    Ld String -> {
+SWIFTC_LD_DYLIB_INSTALL_NAME                     text (read for transitive header names and Spikes/ paths only)
+    Ld String -> {
+SWIFTC_SDKROOT_LINKER_INPUT                      tool or input replacement (rejected)
+    Ld Path -> -sdk
+SWIFTC_SYSROOT_LINKER_INPUT                      tool or input replacement (rejected)
+    Ld Path -> -sysroot
+SWIFTC_SYSTEM_FRAMEWORK_SEARCH_PATHS             library or framework search directory (judged as a path)
+    Ld PathList -> -Fsystem
+SWIFTC__INPUT_FILE_LIST_PATH__                   tool or input replacement (rejected)
+    Ld Path -> {
+SWIFT_ACTIVE_COMPILATION_CONDITIONS              definition (a transitive-only header or module name fails)
+    Swift StringList -> ( "-D$(value)
+SWIFT_ADDITIONAL_LINKER_ARGS_OUTPUT_PATH         text (read for transitive header names and Spikes/ paths only)
+    Swift Path
+SWIFT_AUTOLINK_EXTRACT_OUTPUT_PATH               text (read for transitive header names and Spikes/ paths only)
+    Swift Path
+SWIFT_CLANG_CXX_LANGUAGE_STANDARD                text (read for transitive header names and Spikes/ paths only)
+    Swift String -> {
+SWIFT_CLANG_CXX_STANDARD_LIBRARY_HARDENING       text (read for transitive header names and Spikes/ paths only)
+    Swift String -> {
+SWIFT_COHORT_ARCHS                               text (read for transitive header names and Spikes/ paths only)
+    Swift StringList -> -target-arch-variant
+SWIFT_EXEC                                       tool or input replacement (rejected)
+    Swift Path
+SWIFT_INCLUDE_PATHS                              search directory (judged as a path)
+    Swift PathList
+SWIFT_INDEX_STORE_PATH                           text (read for transitive header names and Spikes/ paths only)
+    Swift Path
+SWIFT_IR_OUTPUT_DIR                              text (read for transitive header names and Spikes/ paths only)
+    Swift Path
+SWIFT_LIBRARY_PATH                               tool or input replacement (rejected)
+    Swift Path
+SWIFT_MODULE_ALIASES                             module alias (a transitive-only module fails)
+    Swift StringList -> -module-alias
+SWIFT_MODULE_NAME                                text (read for transitive header names and Spikes/ paths only)
+    Swift String -> ( "-module-name", "$(value); Swift String -> ( "-module", "$(value); Swift String -> ( "-module", "$(value)
+SWIFT_OPT_RECORD_OUTPUT_DIR                      text (read for transitive header names and Spikes/ paths only)
+    Swift Path
+SWIFT_OTHER_PREFIX_MAPPINGS                      tool or input replacement (rejected)
+    Swift StringList -> ( "-scanner-prefix-map", "$(value)
+SWIFT_OVERLOAD_PREBUILT_MODULE_CACHE_PATH        search directory (judged as a path)
+    Swift Path -> {
+SWIFT_RESOURCE_DIR                               tool or input replacement (rejected)
+    Ld Path -> {; Swift Path -> -resource-dir
+SWIFT_RESPONSE_FILE_PATH                         tool or input replacement (rejected)
+    Swift Path -> {
+SWIFT_SIL_OUTPUT_DIR                             text (read for transitive header names and Spikes/ paths only)
+    Swift Path
+SWIFT_SKIP_AUTOLINKING_FRAMEWORKS                text (read for transitive header names and Spikes/ paths only)
+    Swift StringList -> ( "-Xfrontend", "-disable-autolink-framework", "-Xfrontend", "$(value)
+SWIFT_SKIP_AUTOLINKING_LIBRARIES                 text (read for transitive header names and Spikes/ paths only)
+    Swift StringList -> ( "-Xfrontend", "-disable-autolink-library", "-Xfrontend", "$(value)
+SWIFT_SYSTEM_INCLUDE_PATHS                       search directory (judged as a path)
+    Swift PathList; Swift PathList -> -Isystem; Swift PathList -> -Isystem
+SWIFT_TARGET_TRIPLE                              text (read for transitive header names and Spikes/ paths only)
+    Swift String -> -target; Swift String -> -target; Swift String -> -target
+SWIFT_TARGET_TRIPLE_VARIANTS                     text (read for transitive header names and Spikes/ paths only)
+    Swift StringList -> -target-variant
+SWIFT_TOOLCHAIN_FLAGS                            flags (only the allowed flags may appear)
+    Swift StringList -> ( "$(value)
+SWIFT_WARNINGS_AS_ERRORS_GROUPS                  text (read for transitive header names and Spikes/ paths only)
+    Swift StringList -> -Werror
+SWIFT_WARNINGS_AS_WARNINGS_GROUPS                text (read for transitive header names and Spikes/ paths only)
+    Swift StringList -> -Wwarning
+SYMROOT                                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+SYSROOT                                          tool or input replacement (rejected)
+    Swift Path -> -sysroot
+SYSTEM_FRAMEWORK_SEARCH_PATHS                    library or framework search directory (judged as a path)
+    CoreBuildSystem PathList; Ld PathList; Swift PathList -> -Fsystem; Swift PathList -> -Fsystem
+SYSTEM_HEADER_SEARCH_PATHS                       search directory (judged as a path)
+    CoreBuildSystem PathList
+TARGET_BUILD_DIR                                 text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+TARGET_BUILD_SUBPATH                             text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+TARGET_TEMP_DIR                                  text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+TEMP_DIR                                         text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+TEMP_FILES_DIR                                   text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+TEMP_FILE_DIR                                    text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+TEMP_ROOT                                        text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+TEMP_SANDBOX_DIR                                 text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+UNEXPORTED_SYMBOLS_FILE                          text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path; CoreBuildSystem Path; Ld Path -> -unexported_symbols_list; Libtool Path -> -unexported_symbols_list
+UNINSTALLED_PRODUCTS_DIR                         text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+USER_HEADER_SEARCH_PATHS                         search directory (judged as a path)
+    CoreBuildSystem PathList; CoreBuildSystem PathList
+VERSIONS_FOLDER_PATH                             text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+XCODE_DEVELOPER_DIR_PATH                         text (read for transitive header names and Spikes/ paths only)
+    CoreBuildSystem Path
+__INPUT_FILE_LIST_PATH__                         tool or input replacement (rejected)
+    Ld Path; Libtool Path -> -filelist
+
+by treatment: SDK 1, binary 2, definition 3, flags 7, header file 1, library or framework search directory 7, linked by name 2, module alias 1, search directory 6, text 114, tool or input replacement 33
+
+the settings the check lists by name that the listing above leaves out (no command-line mapping in those five specifications: the build system applies them itself), and where each is defined among all the specifications:
+  GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS Clang StringList
+  MODULEMAP_FILE                               CoreBuildSystem String
+  MODULEMAP_PRIVATE_FILE                       CoreBuildSystem String
+  PREFIX_HEADER                                NativeBuildSystem Path
+  SWIFT_OBJC_BRIDGING_HEADER                   Swift String

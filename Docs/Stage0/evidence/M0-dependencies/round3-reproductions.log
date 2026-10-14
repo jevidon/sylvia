@@ -1,0 +1,119 @@
+round 3 reproductions 2026-10-14T02:04:12Z at commit cfc5dea3d616b477733d76e1d3ab0d215d513f20; reviewed commit e38124785c5eca712122ce8e87191350c8cb3015
+host: macOS 26.6.2 (25G83); Xcode 27.0 Build version 27A266a ; swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+load: 15:04  up 11 days,  1:14, 1 user, load averages: 7.64 7.58 9.17
+
+### The unchanged tree
+ok    the committed tree passes: dependency lock check: 0 failure(s), 0 warning(s)
+
+### R3-01, the routes the review found: -import-module, -include, and bridging or prefix headers or search paths into package checkouts
+ok    SylviaDesign imports Zip into every file with -Xfrontend -import-module (unsafeFlags) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Package.swift: imports Zip into every source file of the target (-import-module Zip, with no import in any file), a module of marmelroy/Zip, which product code may use only through the package that brings it
+        FAIL flag Packages/Design/Package.swift: passes '-import-module', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judge
+ok    the design catalog app imports Zip into every file with -import-module (OTHER_SWIFT_FLAGS) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: imports Zip into every source file of the target (-import-module Zip, with no import in any file), a module of marmelroy/Zip, which product code may use only through the package that brings it
+        FAIL flag Apps/DesignCatalog/project.yml: passes '-import-module', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judg
+ok    the design catalog app force-includes Minizip's unzip.h (OTHER_CFLAGS -include) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: names unzip.h, a public header of marmelroy/Zip, in a value of the manifest ('-include unzip.h'), which product code may reach only through the package that brings it (found in the raw text: a mention coun
+        FAIL outside-product Apps/DesignCatalog/project.yml: names 'unzip.h', which resolves to Apps/DesignCatalog/unzip.h: that is not a file tracked by git, so it can hold only build products, package checkouts or generated files, which the product rules cannot read
+ok    SylviaDesign force-includes unzip.h through -Xcc -include (unsafeFlags) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Package.swift: names unzip.h, a public header of marmelroy/Zip, in a value of the manifest ('unzip.h'), which product code may reach only through the package that brings it (found in the raw text: a mention counts too)
+        FAIL outside-product Packages/Design/Package.swift: names 'unzip.h', which resolves to Packages/Design/Sources/SylviaDesign/unzip.h: that is not a file tracked by git, so it can hold only build products, package checkouts or generated files, which the product 
+        FAIL outside-product Packages/Design/Package.swift: names 'unzip.h', which resolves to Packages/Design/unzip.h: that is not a file tracked by git, so it can hold only build products, package checkouts or generated files, which the product rules cannot read
+ok    the app takes unzip.h from the package checkouts beside the build products as its bridging header -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: names unzip.h, a public header of marmelroy/Zip, in a value of the manifest ('$(BUILD_DIR)/../../SourcePackages/checkouts/Zip/Zip/minizip/include/unzip.h'), which product code may reach only through the pa
+        FAIL outside-product Apps/DesignCatalog/project.yml: names '$(BUILD_DIR)/../../SourcePackages/checkouts/Zip/Zip/minizip/include/unzip.h', which leaves the build-product, SDK or toolchain directory it starts from, or reaches package checkouts: code outside Apps
+ok    the app takes zip.h from the package checkouts as its prefix header -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: names zip.h, a public header of marmelroy/Zip, in a value of the manifest ('$(BUILD_DIR)/../../SourcePackages/checkouts/Zip/Zip/minizip/include/zip.h'), which product code may reach only through the packag
+        FAIL outside-product Apps/DesignCatalog/project.yml: names '$(BUILD_DIR)/../../SourcePackages/checkouts/Zip/Zip/minizip/include/zip.h', which leaves the build-product, SDK or toolchain directory it starts from, or reaches package checkouts: code outside Apps/ 
+ok    the app searches Minizip's headers in the package checkouts through $(BUILD_DIR)/.. -> 1 x outside-product (reviewed check: missed)
+        FAIL outside-product Apps/DesignCatalog/project.yml: names '$(BUILD_DIR)/../../SourcePackages/checkouts/Zip/Zip/minizip/include', which leaves the build-product, SDK or toolchain directory it starts from, or reaches package checkouts: code outside Apps/ and Pa
+ok    the app searches Swift modules in the package checkouts through $(BUILD_DIR)/.. -> 1 x outside-product (reviewed check: missed)
+        FAIL outside-product Apps/DesignCatalog/project.yml: names '$(BUILD_DIR)/../../SourcePackages/checkouts/Zip/Zip/minizip', which leaves the build-product, SDK or toolchain directory it starts from, or reaches package checkouts: code outside Apps/ and Packages/ 
+ok    SylviaDesign searches a package checkout under its own .build for headers -> 1 x outside-product (reviewed check: missed)
+        FAIL outside-product Packages/Design/Package.swift: names '../../.build/checkouts/Zip/Zip/minizip/include', which resolves to Packages/Design/.build/checkouts/Zip/Zip/minizip/include (a build or package-checkout directory): nothing there is tracked by git, so 
+
+### R3-01, further routes the same rules close
+ok    the app aliases Zip with the SWIFT_MODULE_ALIASES setting -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: aliases Zip (Archive=Zip), a module of marmelroy/Zip, which product code may use only through the package that brings it
+ok    per-file compilerFlags force-include unzip.h -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: names unzip.h, a public header of marmelroy/Zip, in a value of the manifest ('unzip.h'), which product code may reach only through the package that brings it (found in the raw text: a mention counts too)
+        FAIL outside-product Apps/DesignCatalog/project.yml: names 'unzip.h', which resolves to Apps/DesignCatalog/unzip.h: that is not a file tracked by git, so it can hold only build products, package checkouts or generated files, which the product rules cannot read
+ok    WARNING_CFLAGS passes -Wp,-include,unzip.h to the preprocessor -> 1 x flag (reviewed check: missed)
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: names unzip.h, a public header of marmelroy/Zip, in a value of the manifest ('-Wall -Wp,-include,unzip.h'), which product code may reach only through the package that brings it (found in the raw text: a me
+        FAIL flag Apps/DesignCatalog/project.yml: passes '-Wp,-include,unzip.h', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot b
+ok    a definition names unzip.h and a C file includes it through the macro -> 2 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: names unzip.h, a public header of marmelroy/Zip, in a value of the manifest ('HDR=<unzip.h>'), which product code may reach only through the package that brings it (found in the raw text: a mention counts 
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: names unzip.h, a public header of marmelroy/Zip, in a preprocessor definition ('HDR=<unzip.h>'), which product code may reach only through the package that brings it (found in the raw text: a mention count
+ok    MODULEMAP_FILE names a module map called Archive.txt that wraps unzip.h -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Apps/DesignCatalog/Support/Archive.txt:2: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment that names it counts)
+        FAIL outside-product Apps/DesignCatalog/Support/Archive.txt:2: names 'unzip.h', which resolves to Apps/DesignCatalog/Support/unzip.h: nothing there is tracked by git, so it can hold only build products, package checkouts or generated files, which the product r
+ok    a header in SylviaDesignTests includes unzip.h (headers are product code wherever they sit) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Tests/SylviaDesignTests/zipshim.h:1: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a comment or literal t
+ok    a SylviaDesign package target takes its sources from a package checkout under .build -> 1 x outside-product (reviewed check: missed)
+        FAIL outside-product Packages/Design/Package.swift: names 'Packages/Design/.build/checkouts/Zip/Zip', which resolves to Packages/Design/.build/checkouts/Zip/Zip (a build or package-checkout directory): nothing there is tracked by git, so it can hold only build
+ok    the app replaces the C compiler (CC) -> 1 x outside-product (reviewed check: missed)
+        FAIL outside-product Apps/DesignCatalog/project.yml: sets CC = /opt/homebrew/opt/llvm/bin/clang: it replaces a compiler, linker, SDK or toolchain input, or takes flags from outside the manifests, so what the target is built with cannot be judged
+ok    SylviaDesign passes a VFS overlay (-vfsoverlay) -> 2 x flag (reviewed check: missed)
+        FAIL flag Packages/Design/Package.swift: passes '-vfsoverlay', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judged. 
+        FAIL flag Packages/Design/Package.swift: passes 'overlay.yaml', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judged.
+
+### R3-04: an Xcode project force-added to the index, with its own package reference (the check reads the index)
+ok    Apps/DesignCatalog/DesignCatalog.xcodeproj is committed with a branch requirement on marmelroy/Zip -> 1 x xcode-project (reviewed check: missed)
+        FAIL xcode-project Apps/DesignCatalog/DesignCatalog.xcodeproj: is a committed Xcode project (1 tracked file(s)): ADR-0002 commits only project.yml, and the package references, requirements, build settings and lock inside it are not checked. Remove it from the 
+
+### Allowed: changes the rules must not report
+ok    the app passes only flags product targets may pass -> dependency lock check: 0 failure(s), 0 warning(s)
+ok    the catalog's unit-test target passes -import-module Zip and -include unzip.h (tests never ship) -> dependency lock check: 0 failure(s), 0 warning(s)
+ok    the app searches the build products directory for modules -> dependency lock check: 0 failure(s), 0 warning(s)
+
+### A limit ADR-0014 section 3 lists: not reported
+ok    a build script assembles unzip.h's name from pieces (paths build scripts compute) -> not reported, as ADR-0014 section 3 states (dependency lock check: 0 failure(s), 0 warning(s))
+
+### The routes are real: each compiles against a stand-in module with no import or include in the source, and calls into it
+ok    stand-in Swift module BModule built (swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1))
+ok    compiles: -import-module: a Swift file with no import calls into the module (xcrun swiftc -typecheck -parse-as-library -swift-version 6 -I mod -Xfrontend -import-module -Xfrontend BModule use1.swift)
+ok    compiles: -module-alias: import Archive loads BModule (xcrun swiftc -typecheck -parse-as-library -swift-version 6 -I mod -module-alias Archive=BModule use2.swift)
+ok    compiles: -include: a C file with no include calls the header's function (xcrun clang -fsyntax-only -Werror=implicit-function-declaration -I inc -include bmodule.h use3.c)
+ok    compiles: a bridging header (-import-objc-header): a Swift file with no import calls the C function (xcrun swiftc -typecheck -parse-as-library -swift-version 6 -import-objc-header inc/bmodule.h use4.swift)
+ok    compiles: a definition carries the header name into #include HDR (xcrun clang -fsyntax-only -Werror=implicit-function-declaration -I inc -DHDR=<bmodule.h> use5.c)
+ok    compiles: a module map called Archive.txt, named by -fmodule-map-file=, makes @import Archive work (xcrun clang -fsyntax-only -fmodules -fmodules-cache-path=mcache -fmodule-map-file=inc/Archive.txt use6.m)
+
+### R3-05: what a passing Scripts/ci.sh run shows when the tools virtualenv holds a pip below the advisory floor
+python3 on PATH (what bootstrap.sh runs): /opt/homebrew/bin/python3 -> Python 3.14.6; its ensurepip bundles pip 26.1.2
+python3 -m venv: pip 26.1.2 from /Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-1/.build/scratch/round3-20261014T020412Z-99152/fresh-venv/lib/python3.14/site-packages/pip (python 3.14)
+copied from the shared virtualenv, pip excluded: 20 distributions
+
+Scripts/ci.sh dependency-lock at HEAD, SYLVIA_TOOLS_VENV set to this virtualenv; the whole console output:
+exit status 0 (25 s)
+    | ==> 12-dependency-lock
+    |     pass (25s)
+    | all 1 steps passed
+the console shows no warning (review R3-05 reproduced)
+the drop-in's log, .build/ci-logs/12-dependency-lock.log, ends with:
+    | ok    acknowledgements draft: matches the inventory (235350 characters)
+    | WARN toolchain virtualenv: pip 26.1.2 is below 26.2.0, the first release outside every advisory the inventory records for it (GHSA-qwm4-qh6w-59xr (CVE-2026-13346, PYSEC-2026-3721: doubly-encoded package URLs from an index can install files outside the target directory) affects every pip before 26.2.
+    | dependency lock check: 0 failure(s), 1 warning(s) (the WARN lines above do not fail the check)
+
+the same run in a copy of the tree whose Scripts/ci.sh has the change ADR-0014 requests (print a passing drop-in's WARN lines):
+the change, as a diff of Scripts/ci.sh:
+    30a31
+    >     grep -E "^WARN " "$LOG_DIR/$name.log" | sed "s/^/    | /"
+exit status 0; the whole console output:
+    | ==> 12-dependency-lock
+    |     pass (33s)
+    |     | WARN toolchain virtualenv: pip 26.1.2 is below 26.2.0, the first release outside every advisory the inventory records for it (GHSA-qwm4-qh6w-59xr (CVE-2026-13346, PYSEC-2026-3721: doubly-encoded package URLs from an index can install files outside the target directory) affects every pip before 26.2.0; every other pip advisory OSV lists is fixed at or before 26.1.2 (advisories-search.log, the any-version query)); nothing in the repository pins pip; add pip==26.2.1 to Scripts/tools/requirements.txt (bootstrap.sh's `pip install -r` then installs it in every new virtualenv), and move this entry to packages, where the version is checked exactly
+    | all 1 steps passed
+ok    with the requested change the console shows the warning
+
+### R3-02: the fixes the advisory verdicts rely on are in the pinned revisions (package checkouts from resolve-locks.sh)
+ok    swift-crypto 5.0.0 has the fix for GHSA-8q93-f6xh-4f6f (CVE-2026-43823): 47d3869a (47d3869a 2026-07-16 Merge commit from fork) is an ancestor of the pinned a9d1d5ab8951ada40cafff8c8e2b551dfde4f390
+ok    swift-nio-ssl 2.37.5 follows 2.37.2, the patched release of GHSA-xfxg-9975-pc2j (CVE-2026-43820): 2.37.2 (d930168b 2026-07-15 Merge commit from fork) is an ancestor of the pinned 322f3c2a4a21df31c84ca416bf65ee5e9059e440
+ok    swift-nio 2.103.0 follows 2.101.0, the patched release of GHSA-qcc5-f287-vgmq (CVE-2026-43678): 2.101.0 (77b84ac2c 2026-06-03 [NIOFileSystem] Fallback to rename when `renameat2` is not available ) is an ancestor of the pinned 21de5f08c1a166a6dd293d0e587ad977bf8dac5d
+ok    swift-nio 2.103.0 follows 2.100.0, the patched release of four other swift-nio advisories: 2.100.0 (57c0a08a3 2026-05-20 Speed up the tests (#3601)) is an ancestor of the pinned 21de5f08c1a166a6dd293d0e587ad977bf8dac5d
+the 47d3869a commit message names the flaw it fixes:
+    * Fix double-free when RSA key init from bytes fails
+    
+    Motivation:
+
+round 3 reproductions finished 2026-10-14T02:09:33Z; failures: 0
+load: 15:09  up 11 days,  1:20, 1 user, load averages: 7.40 7.98 8.91

@@ -1,0 +1,108 @@
+resolve-locks started 2026-10-14T01:43:36Z at commit cfc5dea3d616b477733d76e1d3ab0d215d513f20
+host: macOS 26.6.2 (25G83), Apple M5 Max
+toolchain: Xcode 27.0 Build version 27A266a ; swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1); xcodegen Version: 2.46.0
+load: 14:43  up 11 days, 54 mins, 1 user, load averages: 8.58 14.41 15.95
+
+### Xcode projects
+
+== Apps/DesignCatalog
+resolve: ok (1 s; scheme DesignCatalog)
+lock: unchanged after resolution (4 pins)
+  resolved:   swift-custom-dump: https://github.com/pointfreeco/swift-custom-dump @ 1.7.3
+  resolved:   swift-snapshot-testing: https://github.com/pointfreeco/swift-snapshot-testing @ 1.19.6
+  resolved:   swift-syntax: https://github.com/swiftlang/swift-syntax @ 604.0.0
+  resolved:   swift-issue-reporting: https://github.com/pointfreeco/swift-issue-reporting @ 2.1.1
+
+== Spikes/G01-EPUB
+resolve: ok (1 s; scheme EPUBHarness)
+lock: unchanged after resolution (9 pins)
+  resolved:   ReadiumZIPFoundation: https://github.com/readium/ZIPFoundation.git @ 3.0.1
+  resolved:   Readium: https://github.com/readium/swift-toolkit.git @ 3.11.0
+  resolved:   SQLite.swift: https://github.com/stephencelis/SQLite.swift.git @ 0.16.0
+  resolved:   CryptoSwift: https://github.com/krzyzanowskim/CryptoSwift.git @ 1.10.0
+  resolved:   ReadiumFuzi: https://github.com/readium/Fuzi.git @ 4.0.1
+  resolved:   Zip: https://github.com/marmelroy/Zip.git @ 2.1.2
+  resolved:   GCDWebServer: https://github.com/readium/GCDWebServer.git @ 4.0.1
+  resolved:   DifferenceKit: https://github.com/ra1028/DifferenceKit.git @ 1.3.0
+  resolved:   SwiftSoup: https://github.com/scinfu/SwiftSoup.git @ 2.13.9
+
+== Spikes/G01-PDF
+resolve: ok (1 s; scheme PDFSpikeHarness)
+no committed lock, and Xcode wrote none into the generated project; remote packages resolved: 0 (listed below)
+
+== Spikes/G02-Transfer/MacIdentityProbe
+resolve: ok (1 s; scheme G02MacIdentityProbe)
+no committed lock, and Xcode wrote none into the generated project; remote packages resolved: 8 (listed below)
+  resolved:   swift-asn1: https://github.com/apple/swift-asn1.git @ 1.7.3
+  resolved:   swift-collections: https://github.com/apple/swift-collections.git @ 1.7.1
+  resolved:   swift-crypto: https://github.com/apple/swift-crypto.git @ 5.0.0
+  resolved:   swift-certificates: https://github.com/apple/swift-certificates.git @ 1.21.0
+  resolved:   swift-atomics: https://github.com/apple/swift-atomics.git @ 1.3.1
+  resolved:   swift-nio: https://github.com/apple/swift-nio.git @ 2.103.0
+  resolved:   SylviaTransferKit: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-1/Spikes/G02-Transfer/TransferKit @ local
+  resolved:   swift-nio-ssl: https://github.com/apple/swift-nio-ssl.git @ 2.37.5
+  resolved:   swift-system: https://github.com/apple/swift-system.git @ 1.8.1
+
+== Spikes/G02-Transfer/iOS
+resolve: ok (1 s; scheme G02TransferATSVariant)
+no committed lock, and Xcode wrote none into the generated project; remote packages resolved: 1 (listed below)
+  resolved:   swift-asn1: https://github.com/apple/swift-asn1.git @ 1.7.3
+
+== Spikes/G03-Intake/App
+resolve: ok (0 s; scheme IntakeHarness)
+lock: unchanged after resolution (1 pins)
+  resolved:   ReadiumZIPFoundation: https://github.com/readium/ZIPFoundation.git @ 3.0.1
+
+== Spikes/G05-AI/ATSProbe
+resolve: ok (0 s; scheme G05ATSProbe)
+lock: unchanged after resolution (1 pins)
+  resolved:   GRDB: https://github.com/groue/GRDB.swift.git @ 7.11.1
+
+### Swift packages
+
+== Packages/Design
+resolve: ok (1 s)
+lock: unchanged (4 pins)
+
+== Spikes/G01-EPUB/Core
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G02-Transfer/SourceService
+resolve: ok (1 s)
+lock: unchanged (8 pins)
+
+== Spikes/G02-Transfer/TransferKit
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G03-Intake/IntakeKit
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G03-Intake/ZipEval/Common
+resolve: ok (0 s)
+no committed lock and none written (no remote package dependencies)
+
+== Spikes/G03-Intake/ZipEval/Readium
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G03-Intake/ZipEval/Upstream
+resolve: ok (1 s)
+lock: unchanged (1 pins)
+
+== Spikes/G05-AI
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+== Spikes/G05-Recovery
+resolve: ok (0 s)
+lock: unchanged (1 pins)
+
+### Spikes/G03-Intake/ZipEval/IdentityProbe (expected resolver refusal)
+refused as ADR-0010 records:
+  error: Dependencies could not be resolved because root depends on 'zipfoundation' 0.9.20.
+
+resolve-locks finished 2026-10-14T01:43:46Z; failures: 0
+load: 14:43  up 11 days, 54 mins, 1 user, load averages: 8.34 14.17 15.85

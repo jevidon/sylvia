@@ -35,10 +35,9 @@ public enum DurableFile {
     /// readback that names another class is an error everywhere.
     public static func applyProtection(_ protection: FileProtectionType, to url: URL) throws {
         let wanted = try urlFileProtection(protection, for: url)
-        var values = URLResourceValues()
-        values.fileProtection = wanted
-        var item = url
-        try item.setResourceValues(values)
+        // URLResourceValues.fileProtection is get-only, so the class is set through NSURL with the URLFileProtection
+        // value (the form the host probe showed takes effect).
+        try (url as NSURL).setResourceValue(wanted, forKey: .fileProtectionKey)
         // A fresh URL, so the readback is not a cached resource value.
         let fresh = URL(fileURLWithPath: url.path)
         let actual = try fresh.resourceValues(forKeys: [.fileProtectionKey]).fileProtection

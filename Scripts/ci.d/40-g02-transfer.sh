@@ -9,9 +9,10 @@
 # the committed evidence (M0 verification finding R1-01). To refresh the committed evidence, run
 #   G02_EVIDENCE_DIR="$PWD/Docs/Stage0/evidence/G02-Transfer" Scripts/ci.sh g02-transfer
 # G02_LOOPBACK_ONLY=1 binds every test server to loopback only (M0 verification finding R1-02; the agents' network
-# rule): cli-lan, cli-tailscale-ip, cli-tailscale-magicdns and simulator-ats-device-recipe are listed as not run,
+# rule): cli-lan, cli-tailscale-ip, cli-tailscale-magicdns, simulator-ats-device-recipe and the Bonjour browse test of
+# simulator-background (a loopback-only source's Bonjour registration is local to the Mac) are listed as not run,
 # and the simulator runs get no LAN, .local, Tailscale or MagicDNS address form, so such a run is not evidence for
-# the address-form rows. The Bonjour test still registers its service with mDNSResponder.
+# the address-form rows or the Bonjour browse row (the gate's own runs, made with the LAN, are).
 #
 # Steps:
 #   contracts             Scripts/ci.d/10-contracts.sh: schemas, fixtures and the OpenAPI document         [host]
@@ -392,6 +393,11 @@ esac
 run_step simulator step_simulator
 run_step simulator-pairing step_simulator_pairing
 run_step simulator-background step_simulator_background
+if [[ "$loopback_only" == 1 ]]; then
+  # simulator-background-run.sh leaves the Bonjour browse test out: a loopback-only source advertises to this Mac only.
+  echo "   NOT RUN within simulator-background: bonjourBrowseFindsResolvesAndPinsTheSource ($loopback_reason; the Bonjour registration is then local to this Mac, which the simulator does not browse)"
+  not_run+=("simulator-bonjour-browse")
+fi
 run_step simulator-pairing-entry step_simulator_pairing_entry
 if [[ "$loopback_only" == 1 ]]; then
   not_run_step simulator-ats-device-recipe "$loopback_reason (the device recipe probes the LAN address)"

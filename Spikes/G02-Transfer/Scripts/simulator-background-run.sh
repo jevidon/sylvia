@@ -20,7 +20,11 @@ source "$SYLVIA_ROOT/Spikes/G02-Transfer/Scripts/sim-sources.sh"
 log="$1"
 name="${2:-Sylvia-M0-g02-transfer}"
 only=("${@:3}")
-[[ ${#only[@]} -gt 0 ]] || only=(-only-testing:G02TransferHostedTests/BackgroundSessionTests -only-testing:G02TransferHostedTests/ATSProbeTests)
+default_selection=0
+if [[ ${#only[@]} -eq 0 ]]; then
+  only=(-only-testing:G02TransferHostedTests/BackgroundSessionTests -only-testing:G02TransferHostedTests/ATSProbeTests)
+  default_selection=1
+fi
 spike="$SYLVIA_ROOT/Spikes/G02-Transfer"
 evidence="${G02_EVIDENCE_DIR:-$SYLVIA_ROOT/Docs/Stage0/evidence/G02-Transfer}"
 work="$SYLVIA_ROOT/.build/scratch/g02-bg-run"
@@ -97,6 +101,15 @@ check_run() {
   if grep -Eq '➜ Test .* skipped|✘' "$out"; then return 1; fi
 }
 
+# G02_LOOPBACK_ONLY=1 (an agent's run): MAIN binds loopback only, so BonjourAdvertiser registers the service local to
+# this Mac (kDNSServiceInterfaceIndexLocalOnly), which the simulator's NWBrowser does not see: the browse test finds
+# nothing in 20 s at any load (M0 assembly, integration log section 7). It is left out and listed as not run, like the
+# LAN and Tailscale steps; without G02_LOOPBACK_ONLY it runs as before. The test itself is unchanged.
+bonjour_test='G02TransferHostedTests/BackgroundSessionTests/bonjourBrowseFindsResolvesAndPinsTheSource()'
+if [[ "${G02_LOOPBACK_ONLY:-0}" == 1 && "$default_selection" == 1 ]]; then
+  only+=("-skip-testing:$bonjour_test")
+  note "NOT RUN: $bonjour_test (G02_LOOPBACK_ONLY=1: the source's Bonjour registration is local to this Mac, which the simulator's browser does not see)"
+fi
 note "script> xcodebuild test -scheme G02TransferHarness ${only[*]} (destination id=$udid)"
 test_status=0
 run_tests "$work/xcodebuild.log" -scheme G02TransferHarness -derivedDataPath "$spike/iOS/.build/DerivedData" "${only[@]}" || test_status=$?

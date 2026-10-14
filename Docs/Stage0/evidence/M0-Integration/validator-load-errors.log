@@ -1,0 +1,8 @@
+# command: Docs/Stage0/evidence/M0-Integration/commands/validator-load-errors.sh; 2026-10-14T17:28:01Z; commit bf4b211
+== unchanged copy
+schemas: 17  fixtures: 644  openapi: 1  instances: 1
+exit 0
+== copy with a Latin-1 fixture and a 5,000-digit integer
+error: fixtures/error.v1/valid/huge-integer.json: cannot be read as UTF-8 JSON: Exceeds the limit (4300 digits) for integer string conversion: value has 5000 digits; use sys.set_int_max_str_digits() t
+error: fixtures/error.v1/valid/latin1.json: cannot be read as UTF-8 JSON: 'utf-8' codec can't decode byte 0xe9 in position 35: invalid continuation byte
+exit 1; traceback lines: 0

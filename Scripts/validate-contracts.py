@@ -157,6 +157,11 @@ def load_json(path: Path, root: Path, errors: list[str]):
     except json.JSONDecodeError as exc:
         errors.append(f"{rel(path, root)}: invalid JSON: {exc}")
         return None
+    except ValueError as exc:
+        # Not UTF-8 (UnicodeDecodeError), or an integer longer than Python's conversion limit: an error line, not a
+        # traceback (G0.3 report, requests to the validator's owner, item c).
+        errors.append(f"{rel(path, root)}: cannot be read as UTF-8 JSON: {first_line(exc)}")
+        return None
 
 
 def describe(error) -> str:

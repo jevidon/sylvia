@@ -1,0 +1,130 @@
+# G0.4 audio spike (plan 10, 21.1). Stage 0 harness: evidence code, never shipped (ADR-0002).
+#   source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh; sylvia_generate Spikes/G04-Audio
+name: G04Audio
+options:
+  bundleIdPrefix: com.jevidon.sylvia.spike
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY: YES
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    DEVELOPMENT_TEAM: A4KBDX665Z
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: "0.1"
+targets:
+  G04AudioKit:
+    type: framework
+    platform: iOS
+    sources: [Sources/G04AudioKit]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g04audio.kit
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+  G04AudioHarness:
+    type: application
+    platform: iOS
+    sources:
+      - Sources/Harness
+      - Sources/Shared
+      - path: ../../Fixtures/audio
+        buildPhase: resources
+    dependencies:
+      - target: G04AudioKit
+      - target: G04CaptureControl
+    info:
+      path: Sources/Harness/Info.plist
+      properties:
+        CFBundleDisplayName: G04 Audio
+        UIBackgroundModes: [audio]
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g04audio
+  G04CaptureControl:
+    type: app-extension
+    platform: iOS
+    sources: [Sources/CaptureControl, Sources/Shared]
+    info:
+      path: Sources/CaptureControl/Info.plist
+      properties:
+        CFBundleDisplayName: G04 Capture
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g04audio.capturecontrol
+  G04AudioTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests/G04AudioTests]
+    dependencies:
+      - target: G04AudioKit
+      - target: G04AudioHarness
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g04audio.tests
+        GENERATE_INFOPLIST_FILE: YES
+    postBuildScripts:
+      - name: Bundle fixtures for device runs
+        basedOnDependencyAnalysis: false
+        script: |
+          # Simulator runs read the fixtures from the host cache; a physical device cannot, so device builds copy
+          # them into the test bundle (about 8.7 GB with the 3- and 10-hour files of every format and the stereo files). Run
+          # the four generate scripts first. The CI device build (G04_SKIP_DEVICE_FIXTURES=YES) builds without copying them.
+          if [ "$PLATFORM_NAME" != "iphoneos" ]; then exit 0; fi
+          if [ "${G04_SKIP_DEVICE_FIXTURES:-NO}" = "YES" ]; then echo "device fixtures not bundled (compile and signing check)"; exit 0; fi
+          SRC="${SYLVIA_FIXTURE_CACHE:-$HOME/Library/Caches/SylviaFixtures}"
+          DST="$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/G04Fixtures"
+          if [ ! -f "$SRC/generated/g04-audio/.stamp" ] || [ ! -f "$SRC/generated/g04-audio/long-formats/.stamp" ] || [ ! -f "$SRC/generated/g04-audio/probes/.stamp" ] || [ ! -f "$SRC/generated/g04-audio/stereo/.stamp" ]; then
+            echo "error: g04 fixtures missing; run Scripts/fixtures/fetch.sh, Scripts/fixtures/generate-g04-audio-fixtures.sh, Scripts/fixtures/generate-g04-audio-long-formats.sh, Scripts/fixtures/generate-g04-audio-probes.sh and Scripts/fixtures/generate-g04-audio-stereo.sh"; exit 1
+          fi
+          mkdir -p "$DST/generated" "$DST/downloads"
+          rsync -a --delete --exclude '.tmp-*' "$SRC/generated/g04-audio" "$DST/generated/"
+          rsync -a "$SRC/downloads/MeditationsMarcusAurelius_librivox.m4b" "$DST/downloads/"
+  G04QuickCaptureUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [Tests/G04QuickCaptureUITests]
+    dependencies:
+      - target: G04AudioHarness
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g04audio.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: G04AudioHarness
+schemes:
+  G04AudioHarness:
+    build:
+      targets:
+        G04AudioHarness: all
+        G04AudioTests: [test]
+    test:
+      config: Debug
+      targets:
+        - G04AudioTests
+      gatherCoverageData: false
+  # Simulator only (CI step "quick capture through the system"): runs the App Shortcut from the Shortcuts app and the control from Control Center.
+  G04QuickCaptureUI:
+    build:
+      targets:
+        G04AudioHarness: all
+        G04QuickCaptureUITests: [test]
+    test:
+      config: Debug
+      targets:
+        - G04QuickCaptureUITests
+      gatherCoverageData: false

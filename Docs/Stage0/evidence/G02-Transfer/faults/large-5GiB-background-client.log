@@ -1,0 +1,14 @@
+environment: host (macOS Version 26.6.2 (Build 25G83)), in-process source on 127.0.0.1, real TLS; background client with its in-process session kind (download tasks, same delegate code as the background session)
+file: generate-g02-transfer-large.sh output, 5368709120 bytes, sha256 d2383fe38d8033b62ef9e6222756369fab813d2c64b2bce41e86ad9494af16d9; 320 parts of 16777216 bytes; window 4 tasks, 2 connections
+first coordinator invalidated after 161 verified parts (tasks in flight cancelled)
+relaunch: start() took 1.58 s; staging check re-hashed 2701131776 bytes in 1556 ms (1656 MiB/s)
+jobViews() polled 239 times during start(); slowest call 0.412 ms (asserted < 250 ms: the re-hash runs outside the lock)
+reconciliation: kept 161 verified parts, enqueued 4, discarded 0
+final full-file SHA-256 (assembly) took 2261 ms on the assembly queue; jobViews() polled 361 times while the job showed "assembling", slowest of those 1.385 ms (asserted < 250 ms: the check runs outside the lock)
+jobViews() polled 838 times from the relaunch to the import; slowest call 26.984 ms (asserted < 1 s), which returned the job downloading with 304 of 320 parts verified. Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the 159 parts verified after the relaunch: median 11, max 19 (report finding 20); the import's file work held it for 4 ms (import_ms; report finding 22)
+background-events completion handed in while the job showed "assembling": held, then called after assembly_verified
+content requests: 322 for 320 parts, no fault injected; parts requested more than once: 2 (a request in flight when the first coordinator stopped is made again); parts verified before the relaunch requested again: 0 (asserted 0)
+result: imported once (completions 1); imported asset digest from the verified assembly: matches
+elapsed: 17.3 s
+load averages (1, 5, 15 min): 108.50 94.38 61.32 at the start, 92.47 91.49 60.86 at the end (timings under parallel load are indicative only)
+memory (proc_pid_rusage, whole test process): phys_footprint before 131 MiB, peak 142 MiB, growth 10 MiB (asserted < 256 MiB)

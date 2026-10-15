@@ -1,0 +1,26 @@
+# G0.3: one late import of a 4 GiB handoff (unexplained, not reproduced)
+environment: simulator, iPhone 17, iOS 26.5 (Sylvia-M0-g03-intake), 2026-10-06
+build: working tree between commits b91a8ff and 0464ef6 (64-bit share size fix in place; scan timing NOT yet logged)
+command: xcodebuild test-without-building ... -only-testing:IntakeHarnessUITests/ShareSheetUITests/testExtensionMemoryDoesNotGrowWithFileSize
+
+What happened: the extension received the full 4,294,967,297 bytes and showed "Received", but the harness's job count
+did not rise within the test's 120 s wait, and the test case took 335 s in all. Inspecting the simulator containers
+afterwards: the App Group inbox was empty, the handoff was in Staging/Staged, and the journal's job for it had
+createdAt 2026-10-06T02:11:18Z, about 5 minutes after the 4 GiB share file was created (15:06 local = 02:06Z).
+The bytes were intact and imported once; nothing was imported early or twice. Why the scan ran late is unknown:
+that build did not log when scans were requested or how long they ran.
+
+After this run the harness logs every scan (trigger, request time, wait, duration). In every later run (one by
+hand, two CI trials and the clean CI run) every share was imported by the "after share" scan. In the clean run
+(sim-app-tests.log) that scan was requested 0.70-0.76 s after Done was tapped, started without waiting, and ran
+1.5 s for the 4 GiB + 1 handoff and 2.9 s for the 8 GiB + 1 handoff. Kept as an open item in the G0.3 report.
+
+Lines from that run's xcodebuild output (.build/scratch/ui-5.log, not committed):
+G03-EVIDENCE share 4294967297 bytes: extension Extension footprint: start 25413696 bytes, peak 47548648 bytes
+G03-EVIDENCE share 4294967297 bytes: Footprint MiB by MiB copied: 1:27 1025:31 2049:44 3073:45
+G03-EVIDENCE share 4294967297 bytes: extension reports '1 item(s), 4294967297 bytes. Open Sylvia to finish importing.'
+ShareSheetUITests.swift:84: error: XCTAssertEqual failed: ("XCTWaiterResult(rawValue: 2)") is not equal to ("XCTWaiterResult(rawValue: 1)") - not imported: jobs=2 staged=2 review=0 share=2
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testExtensionMemoryDoesNotGrowWithFileSize]' failed (334.986 seconds).
+
+Journal read from the simulator after the run (state, createdAt, bytes):
+[('staged', '2026-10-06T02:05:50Z', 67108864), ('staged', '2026-10-06T02:06:02Z', 1073741824), ('staged', '2026-10-06T02:11:18Z', 4294967297)]

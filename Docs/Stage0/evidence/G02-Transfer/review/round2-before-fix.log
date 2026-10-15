@@ -1,0 +1,25 @@
+environment: host (macOS 26.6.2), swift test --filter 'lockedAfterFirstUnlock|systemDownloadThatCannotBeStored' (SourceService), 2026-10-12T00:53:59Z
+code: commit 7e776f4 with two temporary edits restoring the round 1 behavior in BackgroundTransferCoordinator.swift:
+  (1) start() defers with protected_data_unavailable whenever protectedDataAvailable reports false (R2-01);
+  (2) didCompleteWithError classifies every task error other than a cancel as a transport failure (R2-02).
+Both edits were reverted after this run; the same tests pass on the fixed code (ci/host-sourceservice.log).
+Note: with (2) the case cannot-create-low-space still ends insufficient_space, because the reservation that
+now runs before each request (also part of the R2-02 fix, not reverted) catches the low space after the failure.
+---
+✘ Test lockedAfterFirstUnlockStillStartsReconcilesAndRequestsParts() recorded an issue at BackgroundClientReviewTests.swift:59:9: Expectation failed: summary.deferredReason == nil
+✘ Test lockedAfterFirstUnlockStillStartsReconcilesAndRequestsParts() recorded an issue at BackgroundClientReviewTests.swift:60:9: Expectation failed: summary.keptVerifiedParts == 3
+✘ Test lockedAfterFirstUnlockStillStartsReconcilesAndRequestsParts() recorded an issue at BackgroundClientReviewTests.swift:61:9: Expectation failed: summary.enqueued == 1
+✘ Test lockedAfterFirstUnlockStillStartsReconcilesAndRequestsParts() recorded an issue at BackgroundClientHostTests.swift:59:21: Issue recorded
+✘ Test lockedAfterFirstUnlockStillStartsReconcilesAndRequestsParts() recorded an issue at BackgroundClientHostTests.swift:60:20: Expectation failed: view
+✘ Test lockedAfterFirstUnlockStillStartsReconcilesAndRequestsParts() failed after 30.655 seconds with 5 issues.
+✘ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) recorded an issue with 1 argument shape → "enospc-underlying" at BackgroundClientReviewTests.swift:121:13: Expectation failed: paused.job.pauseReason == .insufficientSpace
+✘ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) recorded an issue with 1 argument shape → "enospc-underlying" at BackgroundClientReviewTests.swift:122:13: Expectation failed: failures == ["localStorageFull"]
+✘ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) recorded an issue with 1 argument shape → "enospc-underlying" at BackgroundClientReviewTests.swift:123:13: Expectation failed: partRequests == 1
+✘ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) recorded an issue with 1 argument shape → "enospc-underlying" at BackgroundClientReviewTests.swift:126:9: Expectation failed: paused.job.pauseReason != .sourceUnreachable
+✘ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) recorded an issue with 1 argument shape → "cannot-create-low-space" at BackgroundClientReviewTests.swift:122:13: Expectation failed: failures == ["localStorageFull"]
+✘ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) recorded an issue with 1 argument shape → "cannot-write-space-left" at BackgroundClientReviewTests.swift:116:13: Expectation failed: paused.job.pauseReason == .storageUnavailable
+✘ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) recorded an issue with 1 argument shape → "cannot-write-space-left" at BackgroundClientReviewTests.swift:117:13: Expectation failed: failures.count == options.maxAttemptsPerPart && failures.allSatisfy { $0 == "localWriteFailed(\"system_download\")" }
+✘ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) recorded an issue with 1 argument shape → "cannot-write-space-left" at BackgroundClientReviewTests.swift:126:9: Expectation failed: paused.job.pauseReason != .sourceUnreachable
+✘ Test systemDownloadThatCannotBeStoredIsLocalStorageNotNetwork(_:) with 3 test cases failed after 0.499 seconds with 8 issues.
+✘ Suite "Background client on the host (15.4, 15.5, T38-T41)" failed after 31.155 seconds with 13 issues.
+✘ Test run with 2 tests in 1 suite failed after 31.155 seconds with 13 issues.

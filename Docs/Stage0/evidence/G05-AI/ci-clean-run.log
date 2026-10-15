@@ -1,0 +1,234 @@
+# G0.5 AI clean CI run: Scripts/ci.sh contracts g05-ai (drop-ins 10-contracts.sh and 70-g05-ai.sh), full output
+# clean state: Spikes/G05-AI/.build (including DerivedData), Spikes/G05-AI/.swiftpm, Spikes/G05-AI/ATSProbe/.build and the generated
+#   G05ATSProbe.xcodeproj deleted before the run (GRDB 7.11.1 resolved again, project regenerated, everything rebuilt)
+# command: SYLVIA_G05_SIM_NAME=Sylvia-M0-minors-g05-ai Scripts/ci.sh contracts g05-ai (wrapped by .build/scratch/clean-ci.sh, which deletes the build products first and records uptime)
+# environment: host macOS 26.6.2 (25G83), arm64; simulator Sylvia-M0-minors-g05-ai (created by the run, deleted afterwards), com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5
+# commit: run at 48a75c8 (review round 7 fixes; Swift sources and tests as at b7fadb1, the commit of the mutation run; log filed 2026-10-12T23:11Z); later commits change only documents and evidence
+# load: other agents were building on this Mac (uptime lines below); no timing budget is claimed from this run
+# no test plays audio (the transcription tests upload the committed clip's bytes to a fake server; nothing is played)
+
+## Scripts/ci.sh console
+# uptime at start: 12:08  up 9 days, 22:18, 1 user, load averages: 31.75 20.73 21.03
+# commit: 48a75c8 (working tree: 0 changed paths)
+# clean: removed Spikes/G05-AI/.build, .swiftpm, ATSProbe/.build, ATSProbe/G05ATSProbe.xcodeproj, .build/ci-logs
+==> 10-contracts
+    pass (1s)
+==> 70-g05-ai
+    pass (140s)
+all 2 steps passed
+ci exit=0
+# uptime at end: 12:10  up 9 days, 22:21, 1 user, load averages: 65.71 39.61 28.51
+
+## .build/ci-logs/10-contracts.log
+schemas: 15  fixtures: 188  openapi: 1  instances: 1
+
+## .build/ci-logs/70-g05-ai.log
+toolchain: Xcode 27.0 Build version 27A266a 
+swift: swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+== host: test doubles stay out of the library targets (they live in G05TestSupport)
+no test doubles in SylviaAI or SylviaContext
+== host: build (warnings in Spikes/G05-AI code fail the step)
+warning: 'grdb.swift': skipping cache due to an error: The file “maintenance.lock” doesn’t exist.
+Build complete! (17.14 sec)
+== host: swift test (exporting contract instances to /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-13/Spikes/G05-AI/.build/g05-ci/contract-export)
+EVAL-SUMMARY
+id	category	scope	evidence	unresolved	quotes	limitations	gate
+eval-001	passage_explanation	selected_passage	1	c2	exact		deterministic
+eval-002	passage_explanation	passage_and_nearby	4		exact,unsupported		deterministic
+eval-003	absent_information	work_search	7		unsupported		deterministic
+eval-004	absent_information	work_search	7	c42	unsupported		deterministic
+eval-005	contradictory_text	selected_thoughts	2		exact		deterministic
+eval-006	misleading_title	work_search	6				deterministic
+eval-007	spoiler_boundary	work_search	6				deterministic
+eval-008	spoiler_boundary	work_search	7				deterministic
+eval-009	spoiler_boundary	work_search	0	c1		no_enforceable_position	deterministic
+eval-010	prompt_injection	selected_thoughts	1	c9			deterministic
+eval-011	prompt_injection	selected_passage	1	c99			deterministic
+eval-012	audio_without_transcript	selected_thoughts	1		unsupported	audio_passage_unavailable	structural
+eval-013	companion_edition_mismatch	selected_thoughts	1		unsupported	audio_passage_unavailable	structural
+eval-014	after_media_removal	selected_passage	1		exact		deterministic
+eval-015	passage_explanation	work_search	7		exact		deterministic
+✔ Test run with 50 tests in 7 suites passed after 1.498 seconds.
+✔ Test run with 196 tests in 14 suites passed after 2.266 seconds.
+➜ Test openAICompatibleEndpointPassesTheConnectionTestAndStreams() skipped: "live OpenAI-compatible endpoint test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_COMPAT_BASE_URL and SYLVIA_LIVE_COMPAT_MODEL"
+➜ Test anthropicMessagesStreamsAGroundedAnswer() skipped: "live Anthropic Messages smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, ANTHROPIC_API_KEY and SYLVIA_LIVE_ANTHROPIC_MODEL"
+➜ Test transcriptionEndpointTranscribesTheFixtureClip() skipped: "live transcription test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_TRANSCRIPTION_BASE_URL and SYLVIA_LIVE_TRANSCRIPTION_MODEL"
+➜ Test openAIResponsesStreamsAGroundedAnswer() skipped: "live OpenAI Responses smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, OPENAI_API_KEY and SYLVIA_LIVE_OPENAI_MODEL"
+✔ Test run with 4 tests in 1 suite passed after 0.001 seconds.
+host: 250 tests reported
+test scratch: nothing left behind in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-13/Spikes/G05-AI/.build/g05-ci/test-scratch
+== host: live-test dry run against a loopback fake server
+fake OpenAI-compatible server on 127.0.0.1:60290 (loopback only)
+fake-server POST /v1/chat/completions
+fake-server POST /v1/audio/transcriptions
+fake-server POST /v1/chat/completions
+fake-server POST /v1/audio/transcriptions
+➜ Test openAIResponsesStreamsAGroundedAnswer() skipped: "live OpenAI Responses smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, OPENAI_API_KEY and SYLVIA_LIVE_OPENAI_MODEL"
+➜ Test anthropicMessagesStreamsAGroundedAnswer() skipped: "live Anthropic Messages smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, ANTHROPIC_API_KEY and SYLVIA_LIVE_ANTHROPIC_MODEL"
+LIVE-COMPAT Connected to 127.0.0.1 · local · fake-model. Test reply received as a stream. reported-model=fake-model streamed=true
+LIVE-COMPAT-ANSWER model=fake-model max-output=1024 finish=complete streamed=true text-events=2 characters=41 citations=1 unresolved=0 reasoning-omitted=false refusal=false start=It describes living deliberately [c1]. OK
+✔ Test openAICompatibleEndpointPassesTheConnectionTestAndStreams() passed after 0.015 seconds.
+LIVE-TRANSCRIPTION host=127.0.0.1 model=fake-speech timestamps-requested=false segments=0 discarded-segments=0 last-segment-end-ms=-1 start=Fake transcript from a loopback test server.
+✔ Test transcriptionEndpointTranscribesTheFixtureClip() passed after 0.016 seconds.
+✔ Suite "Live provider smoke tests" passed after 0.016 seconds.
+✔ Test run with 4 tests in 1 suite passed after 0.016 seconds.
+== contract instances produced by Swift
+ok   context-pack.passage-and-nearby.json
+ok   context-pack.selected-passage.json
+ok   context-pack.selected-thoughts-audio-unavailable.json
+ok   context-pack.selected-thoughts-restricted.json
+ok   context-pack.selected-thoughts.json
+ok   context-pack.work-search-no-position.json
+ok   context-pack.work-search-restricted.json
+ok   context-pack.work-search-truncated.json
+ok   provider-config.anthropic-hosted.json
+ok   provider-config.gateway-declared-hosted.json
+ok   provider-config.local-generic-http.json
+ok   provider-config.openai-hosted.json
+ok   provider-config.transcription-timestamps.json
+validated 13 exported instances against the schemas, 0 failed
+self-test ok: accepts a thought on this work within the boundary
+self-test ok: rejects evidence after the boundary
+self-test ok: rejects turn with unknown position
+self-test ok: rejects duplicate citation ID
+self-test ok: rejects stale digest
+self-test ok: rejects turn sent to another destination
+self-test ok: rejects thought on this work after the boundary
+self-test ok: rejects thought on this work without a position
+self-test ok: rejects thought positioned in another edition
+self-test ok: rejects turn that used another edition
+self-test ok: the schema rejects an included answer with a citation marker
+ok   export context-pack.passage-and-nearby.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.selected-passage.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.selected-thoughts-audio-unavailable.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.selected-thoughts-restricted.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.selected-thoughts.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.work-search-no-position.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   export context-pack.work-search-restricted.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 1 included turn(s) from this destination
+ok   export context-pack.work-search-truncated.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture passage-and-nearby.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture selected-passage.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture selected-thoughts-audio-unavailable.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture selected-thoughts-restricted.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture selected-thoughts.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture work-search-no-position.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+ok   fixture work-search-restricted.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 1 included turn(s) from this destination
+ok   fixture work-search-truncated.json: citation IDs unique, digests match the canonical serialization, spoiler boundary holds, 0 included turn(s) from this destination
+checked the code-checked ContextPack rules on 16 packs, 0 failed
+self-test ok: rejects a key bound to another origin (base URL moved to another host)
+self-test ok: rejects a key bound to another origin (base URL moved to another port)
+ok   export provider-config.anthropic-hosted.json: key bound to https://api.anthropic.com, the origin of base_url
+ok   export provider-config.gateway-declared-hosted.json: key bound to https://gateway.example.com, the origin of base_url
+ok   export provider-config.local-generic-http.json: no key
+ok   export provider-config.openai-hosted.json: key bound to https://api.openai.com, the origin of base_url
+ok   export provider-config.transcription-timestamps.json: key bound to https://speech.example.com, the origin of base_url
+ok   fixture anthropic-hosted.json: key bound to https://api.anthropic.com, the origin of base_url
+ok   fixture gateway-declared-hosted.json: key bound to https://gateway.example.com, the origin of base_url
+ok   fixture local-generic-http.json: no key
+ok   fixture openai-hosted.json: key bound to https://api.openai.com, the origin of base_url
+ok   fixture transcription-timestamps.json: key bound to https://speech.example.com, the origin of base_url
+checked the code-checked ProviderConfig rule on 10 configurations, 0 failed
+== contracts (schemas and committed fixtures)
+schemas: 15  fixtures: 188  openapi: 1  instances: 1
+== contracts: why each invalid G0.5 fixture fails (each must fail only for its named rule)
+context-pack.v1/invalid/bad-citation-id.json: 1 error(s)
+    rule properties/evidence/items/properties/citation_id/pattern at /evidence/0/citation_id: 'source-1' does not match '^c[1-9][0-9]{0,3}$'
+context-pack.v1/invalid/coverage-label-mismatch.json: 1 error(s)
+    rule allOf/N/then/properties/coverage_label/const at /coverage_label: 'Excerpt only' was expected
+context-pack.v1/invalid/empty-evidence-text.json: 1 error(s)
+    rule properties/evidence/items/properties/text/minLength at /evidence/0/text: '' should be non-empty
+context-pack.v1/invalid/empty-pack-without-stated-limitation.json: 1 error(s)
+    rule allOf/N/then/anyOf at /: {'budget': {'context_limit_source': 'default_unknown_model', 'context_limit_tokens': 8192, 'estimated': True, 'estimator': {'kind': 'heuristic', 'name': 'utf8-b
+context-pack.v1/invalid/heuristic-estimate-not-labelled.json: 1 error(s)
+    rule properties/budget/then/properties/estimated/const at /budget/estimated: True was expected
+context-pack.v1/invalid/history-answer-with-citation-marker.json: 1 error(s)
+    rule properties/history/properties/included_turns/items/properties/answer/not at /history/included_turns/0/answer: 'A new doctor in Middlemarch [c1].' should not be valid under {'pattern': '\\[\\s*[cC][0-9]{1,4}(\\s*[,;]\\s*[cC][0-9]{1,4})*\\s*\\]'}
+context-pack.v1/invalid/history-excluded-without-reason.json: 1 error(s)
+    rule properties/history/then/required at /history: 'exclusion_reason' is a required property
+context-pack.v1/invalid/history-turn-without-edition.json: 1 error(s)
+    rule properties/history/properties/included_turns/items/then/required at /history/included_turns/0: 'edition_id' is a required property
+context-pack.v1/invalid/history-turn-without-shared-scopes.json: 1 error(s)
+    rule properties/history/properties/included_turns/items/required at /history/included_turns/0: 'shared_scopes' is a required property
+context-pack.v1/invalid/missing-question.json: 1 error(s)
+    rule required at /: 'question' is a required property
+context-pack.v1/invalid/no-passages-coverage-with-evidence.json: 1 error(s)
+    rule allOf/N/then/properties/evidence/maxItems at /evidence: [{'citation_id': 'c1', 'edition_id': '413513ED-46EE-42D2-8AE7-5FDE25810753', 'estimated_tokens': 638, 'evidence_id': '2174AFE4-5A91-43AB-AF5C-03DD04D0A0BA', 'lo
+context-pack.v1/invalid/note-without-capture-id.json: 1 error(s)
+    rule properties/evidence/items/allOf/N/then/required at /evidence/1: 'capture_id' is a required property
+context-pack.v1/invalid/position-without-edition.json: 1 error(s)
+    rule properties/evidence/items/dependentRequired at /evidence/0: 'edition_id' is a dependency of 'position'
+context-pack.v1/invalid/retrieved-evidence-without-score.json: 1 error(s)
+    rule properties/evidence/items/allOf/N/then/required at /evidence/0: 'retrieval' is a required property
+context-pack.v1/invalid/scope-label-whole-book-for-selection.json: 1 error(s)
+    rule allOf/N/then/properties/scope_label/const at /scope_label: 'Selected passage' was expected
+context-pack.v1/invalid/secret-field-in-endpoint.json: 1 error(s)
+    rule properties/endpoint/propertyNames/not at /endpoint: 'api_key' should not be valid under {'pattern': '(?i)^(api[_-]?key|apikey|key|secret|client[_-]?secret|password|passwd|token|access[_-]?token|auth[_-]?token|bea
+context-pack.v1/invalid/spoiler-enabled-without-max-ordinal.json: 1 error(s)
+    rule properties/spoiler_boundary/allOf/N/then/required at /spoiler_boundary: 'max_ordinal' is a required property
+context-pack.v1/invalid/truncated-without-disclosure.json: 1 error(s)
+    rule properties/truncation/then/required at /truncation: 'disclosure' is a required property
+context-pack.v1/invalid/unknown-limitation-code.json: 1 error(s)
+    rule properties/limitations/items/properties/code/enum at /limitations/0/code: 'model_should_explain' is not one of ['no_enforceable_position', 'no_searchable_terms', 'no_matching_passages', 'all_excluded_by_boundary', 'audio_passage_unava
+context-pack.v1/invalid/whole-work-with-spoiler-boundary.json: 1 error(s)
+    rule allOf/N/then/properties/spoiler_boundary/properties/enabled/const at /spoiler_boundary/enabled: False was expected
+context-pack.v1/invalid/work-search-claims-excerpt-coverage.json: 1 error(s)
+    rule allOf/N/then/properties/coverage/enum at /coverage: 'excerpt_only' is not one of ['retrieved_passages', 'no_passages']
+provider-config.v1/invalid/api-key-field.json: 1 error(s)
+    rule propertyNames/not at /: 'api_key' should not be valid under {'pattern': '(?i)^(api[_-]?key|apikey|key|secret|client[_-]?secret|password|passwd|token|access[_-]?token|auth[_-]?token|bea
+provider-config.v1/invalid/credential-ref-with-value.json: 1 error(s)
+    rule properties/credential_ref/additionalProperties at /credential_ref: Additional properties are not allowed ('value' was unexpected)
+provider-config.v1/invalid/credential-ref-without-origin.json: 1 error(s)
+    rule properties/credential_ref/required at /credential_ref: 'origin' is a required property
+provider-config.v1/invalid/doubled-version-in-base-url.json: 1 error(s)
+    rule properties/base_url/not at /base_url: 'https://gateway.example.com/api/v1/v1' should not be valid under {'pattern': '/$|/v([0-9]+)/v\\1(/|$)|/(chat/completions|responses|messages|audio/transcription
+provider-config.v1/invalid/endpoint-path-in-base-url.json: 1 error(s)
+    rule properties/base_url/not at /base_url: 'https://gateway.example.com/api/v1/chat/completions' should not be valid under {'pattern': '/$|/v([0-9]+)/v\\1(/|$)|/(chat/completions|responses|messages|audio
+provider-config.v1/invalid/first-party-over-http.json: 2 error(s)
+    rule allOf/N/then/properties/provider_kind/enum at /provider_kind: 'openai_responses' is not one of ['openai_compatible_chat', 'openai_compatible_transcription']
+    rule allOf/N/then/properties/base_url/pattern at /base_url: 'http://192.168.1.20:1234/v1' does not match '^https://'
+provider-config.v1/invalid/http-local-declared-hosted.json: 1 error(s)
+    rule allOf/N/then/properties/privacy_classification/const at /privacy_classification: 'local' was expected
+provider-config.v1/invalid/http-to-a-public-name.json: 1 error(s)
+    rule allOf/N/then/properties/base_url/pattern at /base_url: 'http://gateway.example.com/v1' does not match '^http://(127\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|172\\.(1[6-9]|2[0-
+provider-config.v1/invalid/http-to-dot-local-name.json: 1 error(s)
+    rule allOf/N/then/properties/base_url/pattern at /base_url: 'http://studio.local:1234/v1' does not match '^http://(127\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|172\\.(1[6-9]|2[0-9]
+provider-config.v1/invalid/http-without-opt-in.json: 1 error(s)
+    rule allOf/N/then/properties/allow_insecure_local_http/const at /allow_insecure_local_http: True was expected
+provider-config.v1/invalid/query-in-base-url.json: 1 error(s)
+    rule properties/base_url/pattern at /base_url: 'https://gateway.example.com/api/v1?key=abc' does not match '^https?://[^/?#@\\s]+(/[^?#\\s]*)?$'
+provider-config.v1/invalid/unknown-provider-kind.json: 1 error(s)
+    rule properties/provider_kind/enum at /provider_kind: 'openai_assistants' is not one of ['openai_responses', 'anthropic_messages', 'openai_compatible_chat', 'openai_compatible_transcription']
+checked 33 invalid fixtures: each fails only for its named rule
+== contracts: committed G0.5 fixtures regenerate byte for byte from the Swift export
+wrote 8 + 21 context-pack and 5 + 12 provider-config fixtures
+fixtures reproduce: context-pack.v1 and provider-config.v1 identical to a fresh export
+== simulator: Sylvia-M0-minors-g05-ai
+    Sylvia-M0-minors-g05-ai (A1B034D2-66B5-413F-AA5C-DA7A5F276EC1) (Booted) 
+== simulator: package tests
+✔ Test run with 50 tests in 7 suites passed after 1.168 seconds.
+✔ Test run with 196 tests in 14 suites passed after 2.599 seconds.
+​➜ Test openAIResponsesStreamsAGroundedAnswer() skipped: "live OpenAI Responses smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, OPENAI_API_KEY and SYLVIA_LIVE_OPENAI_MODEL"
+​​​​➜ Test openAICompatibleEndpointPassesTheConnectionTestAndStreams() skipped: "live OpenAI-compatible endpoint test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_COMPAT_BASE_URL and SYLVIA_LIVE_COMPAT_MODEL"
+➜ Test transcriptionEndpointTranscribesTheFixtureClip() skipped: "live transcription test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_TRANSCRIPTION_BASE_URL and SYLVIA_LIVE_TRANSCRIPTION_MODEL"
+➜ Test anthropicMessagesStreamsAGroundedAnswer() skipped: "live Anthropic Messages smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, ANTHROPIC_API_KEY and SYLVIA_LIVE_ANTHROPIC_MODEL"
+✔ Test run with 4 tests in 1 suite passed after 0.001 seconds.
+** TEST SUCCEEDED **
+simulator package: 250 tests reported
+== simulator: ATS and Keychain probe
+ATS-PROBE variant=default private-ip=192.168.x.x result=URLError -1004 classified=host_unreachable
+ATS-PROBE variant=default public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true
+ATS-PROBE variant=default localhost=success(200)
+✔ Test run with 13 tests in 2 suites passed after 0.057 seconds.
+ATS-PROBE variant=local_networking private-ip=192.168.x.x result=URLError -1004 classified=host_unreachable
+ATS-PROBE variant=local_networking public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true
+ATS-PROBE variant=local_networking localhost=success(200)
+✔ Test run with 13 tests in 2 suites passed after 0.062 seconds.
+ATS-PROBE variant=cidr_exception private-ip=192.168.x.x result=URLError -1004 classified=host_unreachable
+ATS-PROBE variant=cidr_exception public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true
+ATS-PROBE variant=cidr_exception localhost=success(200)
+✔ Test run with 13 tests in 2 suites passed after 0.057 seconds.
+SUSPENSION-PROBE before-home=25 after-return=50 status=interrupted · Interrupted · partial answer stored interrupted · Interrupted · partial answer · 50 characters requests 1 question sent 1 times
+Test Case '-[ProbeDefaultATSUITests.SuspensionUITests testLeavingTheForegroundMidStreamLeavesAnInterruptedPartialAnswer]' passed (13.151 seconds).
+** TEST SUCCEEDED **
+simulator probe: 39 tests reported
+G0.5 AI: all steps passed

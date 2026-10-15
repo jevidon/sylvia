@@ -1,0 +1,92 @@
+G0.2 transfer CI drop-in, 2026-10-14T15:53:33Z
+host: macOS 26.6.2 (25G83), Apple M5 Max
+xcode: Xcode 27.0 Build version 27A266a 
+results: .build/ci-results/g02-transfer; loopback only: yes
+swift: swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+== contracts
+   pass (1 s) - .build/ci-results/g02-transfer/ci/contracts.log
+== fixtures-check
+   pass (1 s) - .build/ci-results/g02-transfer/ci/fixtures-check.log
+== trust-guards
+   pass (0 s) - .build/ci-results/g02-transfer/ci/trust-guards.log
+== package-locks
+   pass (0 s) - .build/ci-results/g02-transfer/ci/package-locks.log
+== host-transferkit
+   pass (11 s) - .build/ci-results/g02-transfer/ci/host-transferkit.log
+== host-sourceservice
+   pass (60 s) - .build/ci-results/g02-transfer/ci/host-sourceservice.log
+== captured-payloads
+   pass (0 s) - .build/ci-results/g02-transfer/ci/captured-payloads.log
+== large-5gib
+   pass (35 s) - .build/ci-results/g02-transfer/ci/large-5gib.log
+== cli-loopback-ipv4
+   pass (8 s) - .build/ci-results/g02-transfer/ci/cli-loopback-ipv4.log
+== cli-loopback-ipv6
+   pass (4 s) - .build/ci-results/g02-transfer/ci/cli-loopback-ipv6.log
+== cli-lan
+   NOT RUN: G02_LOOPBACK_ONLY=1: every test server binds to loopback only
+== cli-tailscale-ip
+   NOT RUN: G02_LOOPBACK_ONLY=1: every test server binds to loopback only
+== cli-tailscale-magicdns
+   NOT RUN: G02_LOOPBACK_ONLY=1: every test server binds to loopback only
+== cli-qr
+   pass (2 s) - .build/ci-results/g02-transfer/ci/cli-qr.log
+== cli-logging-recipe
+   pass (5 s) - .build/ci-results/g02-transfer/ci/cli-logging-recipe.log
+== mac-identity-signed
+   NOT RUN: code signing for team A4KBDX665Z is unavailable on this Mac (.build/ci-results/g02-transfer/keychain-identity-signed.log)
+== simulator
+   pass (31 s) - .build/ci-results/g02-transfer/ci/simulator.log
+== simulator-pairing
+   pass (7 s) - .build/ci-results/g02-transfer/ci/simulator-pairing.log
+== simulator-background
+   FAIL (56 s) - .build/ci-results/g02-transfer/ci/simulator-background.log
+   | SLOW> shared folders: 1
+   | SLOW> pairing codes written: 3 (single use, not printed)
+   | SLOW> ready
+   | SLOW> auto-approved pairing request from "Simulator background mutation" (device 420b1ffe-bbb7-4388-b58c-4111bf2f1cf6, address 127.0.0.1)
+   | SLOW> connections 2026-10-14T15:56:37.183Z accepted=5 decrypted_bytes=2169
+   | SLOW> request 2026-10-14T15:56:37.183Z POST /v1/pair range=- -> 200
+   | SLOW> request 2026-10-14T15:56:37.183Z GET /v1/catalog range=- -> 200
+   | SLOW> request 2026-10-14T15:56:37.183Z GET /v1/items/55188e96-8790-431e-a5ad-9417cd68a6e2/manifest range=- -> 200
+   | SLOW> request 2026-10-14T15:56:37.183Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=0-4194303 -> 206
+   | SLOW> request 2026-10-14T15:56:37.183Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=8388608-12582911 -> 206
+   | SLOW> connections 2026-10-14T15:56:38.436Z accepted=6 decrypted_bytes=5208
+   | SLOW> request 2026-10-14T15:56:38.436Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=12582912-16777215 -> 412
+   | SLOW> request 2026-10-14T15:56:38.436Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=4194304-8388607 -> 412
+   | SLOW> request 2026-10-14T15:56:38.436Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=20971520-25165823 -> 412
+   | SLOW> request 2026-10-14T15:56:38.436Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=16777216-20971519 -> 412
+   | SLOW> request 2026-10-14T15:56:38.436Z GET /v1/items/55188e96-8790-431e-a5ad-9417cd68a6e2/manifest range=- -> 200
+   | SLOW> request 2026-10-14T15:56:38.436Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=12582912-16777215 -> 206
+   | SLOW> request 2026-10-14T15:56:38.436Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=4194304-8388607 -> 206
+   | SLOW> connections 2026-10-14T15:56:39.482Z accepted=6 decrypted_bytes=6100
+   | SLOW> request 2026-10-14T15:56:39.482Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=20971520-25165823 -> 206
+   | SLOW> request 2026-10-14T15:56:39.482Z GET /v1/assets/264c42dc-cf26-4b9d-91bf-414d18459f45/content range=bytes=16777216-20971519 -> 206
+   | SLOW> connections 2026-10-14T15:56:40.527Z accepted=8 decrypted_bytes=7391
+   | SLOW> request 2026-10-14T15:56:40.527Z POST /v1/receipts range=- -> 200
+   | SLOW> request 2026-10-14T15:56:40.527Z POST /v1/receipts range=- -> 200
+   | SLOW> auto-approved pairing request from "Simulator background revoke" (device b2d01b98-4970-436f-b0b8-aa599790982d, address 127.0.0.1)
+   | SLOW> connections 2026-10-14T15:56:40.736Z accepted=12 decrypted_bytes=9558
+   | SLOW> request 2026-10-14T15:56:40.736Z POST /v1/pair range=- -> 200
+   | SLOW> request 2026-10-14T15:56:40.736Z GET /v1/catalog range=- -> 200
+   | SLOW> request 2026-10-14T15:56:40.736Z GET /v1/items/96230ef3-4933-4848-8dc2-480d4c7c43a2/manifest range=- -> 200
+   | SLOW> request 2026-10-14T15:56:40.736Z GET /v1/assets/e9399a2d-5eaa-418c-9da1-9f08e6ebe9d0/content range=bytes=0-4194303 -> 206
+   | SLOW> request 2026-10-14T15:56:40.736Z GET /v1/assets/e9399a2d-5eaa-418c-9da1-9f08e6ebe9d0/content range=bytes=8388608-12582911 -> 206
+   | SLOW> connections 2026-10-14T15:56:41.782Z accepted=13 decrypted_bytes=10831
+   | SLOW> request 2026-10-14T15:56:41.782Z GET /v1/assets/e9399a2d-5eaa-418c-9da1-9f08e6ebe9d0/content range=bytes=4194304-8388607 -> 206
+   | SLOW> request 2026-10-14T15:56:41.782Z GET /v1/assets/e9399a2d-5eaa-418c-9da1-9f08e6ebe9d0/content range=bytes=12582912-16777215 -> 206
+   | SLOW> request 2026-10-14T15:56:41.782Z DELETE /v1/pairings/b2d01b98-4970-436f-b0b8-aa599790982d range=- -> 204
+   | SLOW> connections 2026-10-14T15:56:42.830Z accepted=13 decrypted_bytes=11723
+   | SLOW> request 2026-10-14T15:56:42.831Z GET /v1/assets/e9399a2d-5eaa-418c-9da1-9f08e6ebe9d0/content range=bytes=16777216-20971519 -> 401
+   | SLOW> request 2026-10-14T15:56:42.831Z GET /v1/assets/e9399a2d-5eaa-418c-9da1-9f08e6ebe9d0/content range=bytes=20971520-25165823 -> 401
+   | after the run: no process started by this run is still running (pgrep over /Users/jevidon/Git/sylvia/.claude/worktrees/wf_84f4e4ba-f4a-1/.build/scratch/g02-bg-run/ found none)
+   | FAIL: harness tests failed or did not run (status 65; full log: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_84f4e4ba-f4a-1/.build/scratch/g02-bg-run/xcodebuild.log)
+== simulator-pairing-entry
+   pass (53 s) - .build/ci-results/g02-transfer/ci/simulator-pairing-entry.log
+== simulator-ats-device-recipe
+   NOT RUN: G02_LOOPBACK_ONLY=1: every test server binds to loopback only (the device recipe probes the LAN address)
+== simulator-relaunch
+   pass (192 s) - .build/ci-results/g02-transfer/ci/simulator-relaunch.log
+
+not run on this Mac (see each log for the reason): cli-lan cli-tailscale-ip cli-tailscale-magicdns mac-identity-signed simulator-ats-device-recipe
+FAILED: simulator-background

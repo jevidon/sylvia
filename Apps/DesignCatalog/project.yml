@@ -1,0 +1,83 @@
+# Sylvia design catalog (G0.6 part 3; ADR-0013 Section 11). Generate with
+#   source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh; sylvia_generate Apps/DesignCatalog
+# A product UI target in every sense: it passes Scripts/lint-design.py with no exemptions and takes
+# every color, type role, glyph and status phrase from Packages/Design.
+name: DesignCatalog
+options:
+  bundleIdPrefix: com.jevidon.sylvia
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY: YES
+    DEVELOPMENT_TEAM: A4KBDX665Z
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+packages:
+  SylviaDesign:
+    path: ../../Packages/Design
+targets:
+  DesignCatalog:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+    dependencies:
+      - package: SylviaDesign
+        product: SylviaDesign
+      - package: SylviaDesign
+        product: SylviaDesignGallery
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.designcatalog
+        PRODUCT_NAME: DesignCatalog
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Sylvia Catalog
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+  DesignCatalogTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: DesignCatalog
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.designcatalog.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/DesignCatalog.app/DesignCatalog"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+  DesignCatalogUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: UITests
+    dependencies:
+      - target: DesignCatalog
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.designcatalog.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: DesignCatalog
+schemes:
+  DesignCatalog:
+    build:
+      targets:
+        DesignCatalog: all
+        DesignCatalogTests: [test]
+        DesignCatalogUITests: [test]
+    test:
+      targets:
+        - DesignCatalogTests
+        - DesignCatalogUITests

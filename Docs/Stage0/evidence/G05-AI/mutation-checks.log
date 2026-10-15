@@ -1,0 +1,224 @@
+# environment: host: macOS 26.6.2 (25G83), arm64
+# toolchain: Xcode 27.0 Build version 27A266a 
+# command: cd Spikes/G05-AI && python3 Scripts/mutation-checks.py (all 77; run through .build/scratch/mut.sh, which records the commit and uptime)
+# commit: full run at b7fadb1 (review round 7 fixes); the Swift sources and tests are unchanged after it (later commits change only documents and evidence)
+# host load: other agents were building on this Mac (uptime below); mutation results are pass/fail, not timings
+
+# uptime at start: 12:03  up 9 days, 22:14, 1 user, load averages: 18.33 18.94 21.28
+# commit: b7fadb1 (working tree: 0 changed paths)
+mutation                                                   test                                                           result
+M1 second send of one record is not refused                concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce          caught
+    ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:1046:9: Expectation failed: afterSecond == "second send ended"
+    ✘ Test concurrentSendsOfOneRecordPutTheQuestionOnTheWireOnce() recorded an issue at LifecycleTests.swift:1052:9: Expectation failed: completed.count == 1
+M2 stop while the sending record is written is ignored     stopWhileTheSendingRecordIsBeingWrittenSendsNothing            caught
+    ✘ Test stopWhileTheSendingRecordIsBeingWrittenSendsNothing() recorded an issue at LifecycleTests.swift:998:9: Expectation failed: provider.requests.isEmpty
+    ✘ Test stopWhileTheSendingRecordIsBeingWrittenSendsNothing() recorded an issue at LifecycleTests.swift:1000:9: Expectation failed: record.failure?.acceptance == .notSent
+M3 uncertain generation retried automatically              uncertainFailureWithoutOutputIsNotRetried                      caught
+    ✘ Test uncertainFailureWithoutOutputIsNotRetried() recorded an issue at LifecycleTests.swift:440:9: Expectation failed: h.provider.requests.count == 1
+    ✘ Test uncertainFailureWithoutOutputIsNotRetried() recorded an issue at LifecycleTests.swift:441:9: Expectation failed: h.sleeper.sleeps.isEmpty
+M4 Anthropic thinking_delta emitted as answer text         thinkingBlocksAreNeverAnswerText                               caught
+    ✘ Test thinkingBlocksAreNeverAnswerText() recorded an issue at DialectStreamTests.swift:353:9: Expectation failed: outcome.text == "The greatest common divisor is **21**."
+    ✘ Test thinkingBlocksAreNeverAnswerText() recorded an issue at DialectStreamTests.swift:354:9: Expectation failed: !outcome.text.contains("SECRET")
+M5 cross-origin redirect followed                          crossOriginRedirectIsBlockedAndTheKeyNeverReachesTheTarget     caught
+    ✘ Test crossOriginRedirectIsBlockedAndTheKeyNeverReachesTheTarget() recorded an issue at NetworkPolicyTests.swift:111:9: Expectation failed: outcome.error?.kind == .redirectBlocked
+    ✘ Test crossOriginRedirectIsBlockedAndTheKeyNeverReachesTheTarget() recorded an issue at NetworkPolicyTests.swift:112:9: Expectation failed: outcome.error?.detail == "http://127.0.0.1:\(target.port)"
+M6 provider error bodies not scrubbed                      authenticationFailureWithKeyEchoedByServerIsScrubbed           caught
+    ✘ Test authenticationFailureWithKeyEchoedByServerIsScrubbed() recorded an issue at ConnectionClassificationTests.swift:287:31: Expectation failed: !"\(error) \(error.detail ?? "") \(error.providerCode
+    ✘ Test authenticationFailureWithKeyEchoedByServerIsScrubbed() recorded an issue at ConnectionClassificationTests.swift:289:13: Expectation failed: !(error.detail ?? "").contains(String(Canary.apiKey.p
+M7 spoiler boundary not applied in the FTS5 query          restrictedWorkSearchContainsNothingAfterThePosition            caught
+    ✘ Test restrictedWorkSearchContainsNothingAfterThePosition() recorded an issue at ContextPackBuilderTests.swift:310:6: Caught error: .spoilerBoundaryViolated(["c1 ends at paragraph 3050, after the bou
+M8 any citation ID resolves                                citationsResolveOnlyAgainstThePackAllowlist                    caught
+    ✘ Test citationsResolveOnlyAgainstThePackAllowlist() recorded an issue at GroundingTests.swift:38:9: Expectation failed: resolved.citations.map(\.isResolved) == [true, true, true, false]
+    ✘ Test citationsResolveOnlyAgainstThePackAllowlist() recorded an issue at GroundingTests.swift:40:9: Expectation failed: resolved.unresolved.map(\.id) == ["c99"]
+M9 one-word ellipsis fragments accepted as exact           fragmentsStitchedWithEllipsesAreNotExact                       caught
+    ✘ Test fragmentsStitchedWithEllipsesAreNotExact() recorded an issue at GroundingTests.swift:109:9: Expectation failed: checks[0].verdict != .exact(citationID: "c1")
+    ✘ Test fragmentsStitchedWithEllipsesAreNotExact() recorded an issue at GroundingTests.swift:110:9: Expectation failed: checks[1].verdict != .exact(citationID: "c1")
+M10 send-time consent check skipped for a draft            draftSentWithoutPrepareNeedsConsentAndSendsNothing             caught
+    ✘ Test draftSentWithoutPrepareNeedsConsentAndSendsNothing() recorded an issue at LifecycleTests.swift:97:15: Expectation failed: an error was expected but none was thrown and "AskRecord(id: A2F3CD9C-5
+    ✘ Test draftSentWithoutPrepareNeedsConsentAndSendsNothing() recorded an issue at LifecycleTests.swift:98:9: Expectation failed: h.provider.requests.isEmpty
+M11 pack and configuration destinations not compared       packWhoseEndpointDiffersFromTheConfigurationIsRefused          caught
+    ✘ Test packWhoseEndpointDiffersFromTheConfigurationIsRefused() recorded an issue at LifecycleTests.swift:140:15: Expectation failed: an error was expected but none was thrown and "AskRecord(id: 8545A0
+    ✘ Test packWhoseEndpointDiffersFromTheConfigurationIsRefused() recorded an issue at LifecycleTests.swift:141:9: Expectation failed: try await h.store.all().isEmpty
+M12 coordinator stores a pack that breaks its boundary     packWithTextAfterItsOwnSpoilerBoundaryIsNeverStored            caught
+    ✘ Test packWithTextAfterItsOwnSpoilerBoundaryIsNeverStored() recorded an issue at LifecycleTests.swift:169:15: Expectation failed: an error was expected but none was thrown and "AskRecord(id: 6570AA4C
+    ✘ Test packWithTextAfterItsOwnSpoilerBoundaryIsNeverStored() recorded an issue at LifecycleTests.swift:170:9: Expectation failed: try await h.store.all().isEmpty
+M13 selection after the confirmed position accepted        selectionAfterTheConfirmedPositionIsRefused                    caught
+    ✘ Test selectionAfterTheConfirmedPositionIsRefused(scope:) recorded an issue with 1 argument scope → .passageAndNearby at ContextPackBuilderTests.swift:634:9: Expectation failed: expected error ".sele
+    ✘ Test selectionAfterTheConfirmedPositionIsRefused(scope:) recorded an issue with 1 argument scope → .workSearch at ContextPackBuilderTests.swift:634:9: Expectation failed: expected error ".selectionA
+M14 adjacent chunk not checked against the boundary        adjacentChunkNeverCrossesAMidChapterBoundary                   caught
+    ✘ Test adjacentChunkNeverCrossesAMidChapterBoundary() recorded an issue at ContextPackBuilderTests.swift:657:6: Caught error: .spoilerBoundaryViolated(["c3 ends at paragraph 5, after the boundary 2"])
+M15 no statement when no position is set                   noEnforceablePositionMeansNoRetrievalRatherThanAFalsePromise   caught
+    ✘ Test noEnforceablePositionMeansNoRetrievalRatherThanAFalsePromise() recorded an issue at ContextPackBuilderTests.swift:614:9: Expectation failed: pack.limitations.map(\.code) == [.noEnforceablePosit
+    ✘ Test noEnforceablePositionMeansNoRetrievalRatherThanAFalsePromise() recorded an issue at ContextPackBuilderTests.swift:615:9: Expectation failed: pack.limitations[0].disclosure.contains("no reading 
+M16 time-based checkpoint removed                          slowOutputIsCheckpointedByTimeNotOnlyByLength                  caught
+    ✘ Test slowOutputIsCheckpointedByTimeNotOnlyByLength() recorded an issue at LifecycleTests.swift:225:9: Expectation failed: afterInterval.withLock { $0 } == "Slow trickle"
+    ✘ Test slowOutputIsCheckpointedByTimeNotOnlyByLength() recorded an issue at LifecycleTests.swift:226:9: Expectation failed: record.checkpointCount >= 1
+M17 output size cap ignored                                outputBeyondTheCapIsStoppedAndLabelledPartial                  caught
+    ✘ Test outputBeyondTheCapIsStoppedAndLabelledPartial() recorded an issue at LifecycleTests.swift:240:9: Expectation failed: record.failure?.kind == .responseSizeLimit
+    ✘ Test outputBeyondTheCapIsStoppedAndLabelledPartial() recorded an issue at LifecycleTests.swift:242:9: Expectation failed: record.answerText == line
+M18 request wall-clock watchdog removed                    silentStreamIsEndedByTheWallClockLimit                         caught
+    ✘ Test silentStreamIsEndedByTheWallClockLimit() recorded an issue at LifecycleTests.swift:1616:9: Expectation failed: record.failure?.kind == .responseTimeLimit
+M19 tool call then [DONE] without finish_reason is complete toolCallWithoutAToolFinishReasonIsNeverComplete                caught
+    ✘ Test toolCallWithoutAToolFinishReasonIsNeverComplete() recorded an issue at DialectStreamTests.swift:129:13: Expectation failed: outcome.finish == .toolCallRejected
+    ✘ Test toolCallWithoutAToolFinishReasonIsNeverComplete() recorded an issue at DialectStreamTests.swift:129:13: Expectation failed: outcome.finish == .toolCallRejected
+M20 EndpointPolicy skipped on the speech path              cleartextToANonLocalAddressIsRefusedOnTheSpeechPath            caught
+    ✘ Test cleartextToANonLocalAddressIsRefusedOnTheSpeechPath(base:) recorded an issue with 1 argument base → "http://8.8.8.8/v1" at TranscriptionTests.swift:657:25: Issue recorded
+    ✘ Test cleartextToANonLocalAddressIsRefusedOnTheSpeechPath(base:) recorded an issue with 1 argument base → "http://localhost:8000/v1" at TranscriptionTests.swift:657:25: Issue recorded
+M21 single curly quotations not checked                    everyQuotationStyleIsChecked                                   caught
+    ✘ Test everyQuotationStyleIsChecked() recorded an issue at GroundingTests.swift:128:9: Expectation failed: checks.map(\.quote) == ["I went to the woods because I wished to live deliberately", "the woo
+    ✘ Test everyQuotationStyleIsChecked() recorded an issue at GroundingTests.swift:132:9: Expectation failed: checks.map(\.verdict) == [.exact(citationID: "c1"), .unsupported, .exact(citationID: "c1"), .
+M22 connection test passes any reply with a final event    toolCallOnlyRouteFailsTheTest                                  caught
+    ✘ Test toolCallOnlyRouteFailsTheTest() recorded an issue at ConnectionClassificationTests.swift:93:9: Expectation failed: report.outcome == .failedConformance(.toolCall)
+    ✘ Test toolCallOnlyRouteFailsTheTest() recorded an issue at ConnectionClassificationTests.swift:94:9: Expectation failed: report.userMessage == "127.0.0.1 answered the test by asking to run a tool. Sy
+M23 no reply text at the output limit passes               reasoningOnlyReplyAtTheOutputLimitFailsTheTest                 caught
+    ✘ Test reasoningOnlyReplyAtTheOutputLimitFailsTheTest() recorded an issue at ConnectionClassificationTests.swift:136:9: Expectation failed: report.outcome == .failedConformance(.outputLimitBeforeText(
+    ✘ Test reasoningOnlyReplyAtTheOutputLimitFailsTheTest() recorded an issue at ConnectionClassificationTests.swift:137:9: Expectation failed: report.userMessage.contains("reached the output limit (1024 
+M24 every 5xx treated as certainly not accepted            serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically caught
+    ✘ Test serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically(status:userManaged:) recorded an issue with 2 arguments status → 504, userManaged → false at LifecycleTests.swift:1419:9: Exp
+    ✘ Test serverErrorsWhoseAcceptanceIsUncertainAreNeverReplayedAutomatically(status:userManaged:) recorded an issue with 2 arguments status → 529, userManaged → true at LifecycleTests.swift:1419:9: Expe
+M25 Markdown block quotes not checked                      markdownBlockQuotesAreChecked                                  caught
+    ✘ Test markdownBlockQuotesAreChecked() recorded an issue at GroundingTests.swift:163:9: Expectation failed: checks.map(\.quote) == [
+    ✘ Test markdownBlockQuotesAreChecked() recorded an issue at GroundingTests.swift:170:9: Expectation failed: checks.map(\.citedID) == ["c1", "c1", "c1", "c1", nil]
+M26 earlier turn from another destination included         earlierAnswerBasedOnNotesNeverReachesANewDestination           caught
+    ✘ Test earlierAnswerBasedOnNotesNeverReachesANewDestination() recorded an issue at ConversationHistoryTests.swift:61:6: Caught error: .historyRuleViolated(["included turn 4655E547-ABEA-4E5F-BFD5-FF7C7
+M27 coordinator accepts a pack resending another destination's turn earlierAnswerBasedOnNotesNeverReachesANewDestination           caught
+    ✘ Test earlierAnswerBasedOnNotesNeverReachesANewDestination() recorded an issue at ConversationHistoryTests.swift:98:15: Expectation failed: an error was expected but none was thrown and "AskRecord(id
+M28 earlier turns' scopes left out of consent              earlierTurnsAreDisclosedAndCountTowardsConsent                 caught
+    ✘ Test earlierTurnsAreDisclosedAndCountTowardsConsent() recorded an issue at ConversationHistoryTests.swift:135:9: Expectation failed: fresh.scopes == [.savedThoughts, .sourceText]
+M29 earlier citation markers kept in the pack              earlierCitationIDsAreNeverResentOrResolvedAgainstTheNewPack    caught
+    ✘ Test earlierCitationIDsAreNeverResentOrResolvedAgainstTheNewPack() recorded an issue at ConversationHistoryTests.swift:152:6: Caught error: .historyRuleViolated(["included turn B60B2663-F7B5-4F84-89
+M30 earlier citation markers resent by the template        earlierCitationIDsAreNeverResentOrResolvedAgainstTheNewPack    caught
+    ✘ Test earlierCitationIDsAreNeverResentOrResolvedAgainstTheNewPack() recorded an issue at ConversationHistoryTests.swift:186:9: Expectation failed: !template.messages.contains { $0.role == .assistant 
+M31 normal end with no answer text stored as a complete answer replyWithNoAnswerTextIsNeverComplete                           caught
+    ✘ Test replyWithNoAnswerTextIsNeverComplete(label:sse:reasoning:) recorded an issue with 3 arguments label → "[DONE] only", sse → ["data: [DONE]\n\n"], reasoning → false at LifecycleTests.swift:1499:9
+    ✘ Test replyWithNoAnswerTextIsNeverComplete(label:sse:reasoning:) recorded an issue with 3 arguments label → "reasoning only", sse → ["data: {\"id\":\"x\",\"model\":\"local-model\",\"choices\":[{\"ind
+M32 text cut off by a content filter kept as complete      textCutOffByAFilterOrARefusalStopIsAPartialAnswer              caught
+    ✘ Test textCutOffByAFilterOrARefusalStopIsAPartialAnswer() recorded an issue at LifecycleTests.swift:1522:9: Expectation failed: first.state == .interrupted
+    ✘ Test textCutOffByAFilterOrARefusalStopIsAPartialAnswer() recorded an issue at LifecycleTests.swift:1525:9: Expectation failed: first.statusPhrase == "Interrupted · partial answer"
+M33 text before a refusal stop kept as complete            finishReasonsMapToHonestStates                                 caught
+    ✘ Test finishReasonsMapToHonestStates() recorded an issue at LifecycleTests.swift:1175:13: Expectation failed: record.state == state
+    ✘ Test finishReasonsMapToHonestStates() recorded an issue at LifecycleTests.swift:1177:13: Expectation failed: record.statusPhrase == status
+M34 every complete record reads "Complete"                 finalEventsWithoutAnswerTextAreNeverAnAnswer                   caught
+    ✘ Test finalEventsWithoutAnswerTextAreNeverAnAnswer() recorded an issue at LifecycleTests.swift:1226:13: Expectation failed: record.statusPhrase == item.status
+    ✘ Test finalEventsWithoutAnswerTextAreNeverAnAnswer() recorded an issue at LifecycleTests.swift:1227:13: Expectation failed: record.statusPhrase != "Complete" && record.statusPhrase != "Interrupted · 
+M35 whitespace alone counted as answer text                finalEventsWithoutAnswerTextAreNeverAnAnswer                   caught
+    ✘ Test finalEventsWithoutAnswerTextAreNeverAnAnswer() recorded an issue at LifecycleTests.swift:1224:13: Expectation failed: record.state == item.state
+    ✘ Test finalEventsWithoutAnswerTextAreNeverAnAnswer() recorded an issue at LifecycleTests.swift:1225:13: Expectation failed: record.outcome == item.outcome
+M36 audio disclosure says the question is sent             multipartUploadWithTimingAndProvenance                         caught
+    ✘ Test multipartUploadWithTimingAndProvenance() recorded an issue at TranscriptionTests.swift:100:9: Expectation failed: disclosure.lines == [
+M37 transcription queue kept only in memory                queuedClipSurvivesARelaunchAndIsSentOnlyUnderThePolicy         caught
+    ✘ Test queuedClipSurvivesARelaunchAndIsSentOnlyUnderThePolicy() recorded an issue at TranscriptionTests.swift:194:28: Expectation failed: await after.jobs[clip.clipID]
+M38 upload cut off by a relaunch not reported as possibly sent uploadCutOffByARelaunchIsNeverResentAutomatically              caught
+    ✘ Test uploadCutOffByARelaunchIsNeverResentAutomatically() recorded an issue at TranscriptionTests.swift:364:25: Issue recorded
+M39 audio consent not stored                               queuedClipSurvivesARelaunchAndIsSentOnlyUnderThePolicy         caught
+    ✘ Test queuedClipSurvivesARelaunchAndIsSentOnlyUnderThePolicy() recorded an issue at TranscriptionTests.swift:203:74: Issue recorded
+M40 audio consent not checked again at send time           queuedClipWithoutStoredConsentAsksBeforeSending                caught
+    ✘ Test queuedClipWithoutStoredConsentAsksBeforeSending() recorded an issue at TranscriptionTests.swift:401:97: Issue recorded
+M41 letter case ignored for an exact quotation             letterCaseIsSignificantForAnExactQuotation                     caught
+    ✘ Test letterCaseIsSignificantForAnExactQuotation() recorded an issue at GroundingTests.swift:221:9: Expectation failed: checks.map(\.label) == [
+    ✘ Test letterCaseIsSignificantForAnExactQuotation() recorded an issue at GroundingTests.swift:225:9: Expectation failed: checks[0].verdict == .paraphrase(closestCitationID: "c1", overlap: 1.0)
+M42 the quotation's first letter must match case too       letterCaseIsSignificantForAnExactQuotation                     caught
+    ✘ Test letterCaseIsSignificantForAnExactQuotation() recorded an issue at GroundingTests.swift:221:9: Expectation failed: checks.map(\.label) == [
+M43 a second request for a clip being sent uploads it again concurrentRequestsForOneClipUploadItOnce                       caught
+    ✘ Test concurrentRequestsForOneClipUploadItOnce() recorded an issue at TranscriptionTests.swift:443:9: Expectation failed: server.requests.count == 2
+    ✘ Test concurrentRequestsForOneClipUploadItOnce() recorded an issue at TranscriptionTests.swift:449:9: Expectation failed: server.requests.count == 2
+M44 a second request replaces a finished transcript        correctionSurvivesASecondRequestAndARelaunch                   caught
+    ✘ Test correctionSurvivesASecondRequestAndARelaunch() recorded an issue at TranscriptionTests.swift:470:9: Expectation failed: again.state == .complete(corrected)
+    ✘ Test correctionSurvivesASecondRequestAndARelaunch() recorded an issue at TranscriptionTests.swift:471:9: Expectation failed: server.requests.count == 1
+M45 uncertain transcription failure resent without confirmation uncertainTranscriptionFailureIsResentOnlyOnConfirmation        caught
+    ✘ Test uncertainTranscriptionFailureIsResentOnlyOnConfirmation() recorded an issue at TranscriptionTests.swift:506:15: Expectation failed: an error was expected but none was thrown and "TranscriptionJ
+    ✘ Test uncertainTranscriptionFailureIsResentOnlyOnConfirmation() recorded an issue at TranscriptionTests.swift:509:9: Expectation failed: server.requests.count == 1
+M46 uncertain transcription failure not marked for confirmation uncertainTranscriptionFailureIsResentOnlyOnConfirmation        caught
+    ✘ Test uncertainTranscriptionFailureIsResentOnlyOnConfirmation() recorded an issue at TranscriptionTests.swift:505:9: Expectation failed: needsConfirmation
+    ✘ Test uncertainTranscriptionFailureIsResentOnlyOnConfirmation() recorded an issue at TranscriptionTests.swift:506:15: Expectation failed: an error was expected but none was thrown and "TranscriptionJ
+M47 saved thoughts counted as passages from the book       disclosureCountsPassagesByHowTheyWereChosenAndThoughtsApart    caught
+    ✘ Test disclosureCountsPassagesByHowTheyWereChosenAndThoughtsApart() recorded an issue at ContextPackBuilderTests.swift:170:9: Expectation failed: try whatIsSent(mixed) == "What is sent: your question
+M48 retrieved passages described as selected               disclosureCountsPassagesByHowTheyWereChosenAndThoughtsApart    caught
+    ✘ Test disclosureCountsPassagesByHowTheyWereChosenAndThoughtsApart() recorded an issue at ContextPackBuilderTests.swift:179:9: Expectation failed: try whatIsSent(search) == "What is sent: your questio
+    ✘ Test disclosureCountsPassagesByHowTheyWereChosenAndThoughtsApart() recorded an issue at ContextPackBuilderTests.swift:184:9: Expectation failed: try whatIsSent(searchWithSelection)
+M49 a refusal with no text says its reply is shown         finalEventsWithoutAnswerTextAreNeverAnAnswer                   caught
+    ✘ Test finalEventsWithoutAnswerTextAreNeverAnAnswer() recorded an issue at LifecycleTests.swift:1226:13: Expectation failed: record.statusPhrase == item.status
+    ✘ Test finalEventsWithoutAnswerTextAreNeverAnAnswer() recorded an issue at LifecycleTests.swift:1239:13: Expectation failed: stored.statusPhrase == item.status
+M50 a failed record without a failure reads "Draft · not sent" failedStatesNeverFallBackToDraftNotSent                        caught
+    ✘ Test failedStatesNeverFallBackToDraftNotSent() recorded an issue at LifecycleTests.swift:1253:13: Expectation failed: record.statusPhrase == "No answer"
+    ✘ Test failedStatesNeverFallBackToDraftNotSent() recorded an issue at LifecycleTests.swift:1253:13: Expectation failed: record.statusPhrase == "No answer"
+M51 a thought on this work is stored without its place     restrictedThoughtsBeyondThePositionAreExcluded                 caught
+    ✘ Test restrictedThoughtsBeyondThePositionAreExcluded() recorded an issue at ContextPackBuilderTests.swift:360:6: Caught error: .spoilerBoundaryViolated(["c1 is from this work but has no position, so 
+M52 spoiler self-check skips items from this work without a position packWithALaterThoughtIsNeverStored                             caught
+    ✘ Test packWithALaterThoughtIsNeverStored() recorded an issue at LifecycleTests.swift:186:13: Expectation failed: pack.spoilerBoundaryViolations.count == 1
+    ✘ Test packWithALaterThoughtIsNeverStored() recorded an issue at LifecycleTests.swift:187:19: Expectation failed: an error was expected but none was thrown and "AskRecord(id: B8FA4D90-76CE-49F4-AA23-1
+M53 a key is sent to an origin it was not entered for      aStoredKeyNeverReachesAnotherOrigin                            caught
+    ✘ Test aStoredKeyNeverReachesAnotherOrigin() recorded an issue at CredentialSafetyTests.swift:157:9: Expectation failed: text.error == expected
+    ✘ Test aStoredKeyNeverReachesAnotherOrigin() recorded an issue at CredentialSafetyTests.swift:159:9: Expectation failed: report.outcome == .failed(expected)
+M54 createDraft overwrites an existing record (all three lookups removed) secondDraftForAnAnsweredRequestKeepsTheAnswer                  caught
+    ✘ Test secondDraftForAnAnsweredRequestKeepsTheAnswer() recorded an issue at LifecycleTests.swift:1071:9: Expectation failed: again.state == .complete
+    ✘ Test secondDraftForAnAnsweredRequestKeepsTheAnswer() recorded an issue at LifecycleTests.swift:1072:9: Expectation failed: again.answerText == "Answer [c1]."
+M55 the reconnect loop sends a clip that is no longer queued reconnectLoopSendsOnlyClipsStillQueued                         caught
+    ✘ Test reconnectLoopSendsOnlyClipsStillQueued(userSendStatus:) recorded an issue with 1 argument userSendStatus → 502 at TranscriptionTests.swift:299:9: Expectation failed: results.map(\.clip.clipID) 
+    ✘ Test reconnectLoopSendsOnlyClipsStillQueued(userSendStatus:) recorded an issue with 1 argument userSendStatus → 429 at TranscriptionTests.swift:299:9: Expectation failed: results.map(\.clip.clipID) 
+M56 a thought's ordinal is read in another edition         thoughtFromAnotherEditionHasNoPlaceInThisOne                   caught
+    ✘ Test thoughtFromAnotherEditionHasNoPlaceInThisOne() recorded an issue at ContextPackBuilderTests.swift:434:9: Expectation failed: restricted.evidence.map(\.text) == [thisEdition.text]
+    ✘ Test thoughtFromAnotherEditionHasNoPlaceInThisOne() recorded an issue at ContextPackBuilderTests.swift:437:9: Expectation failed: restricted.spoilerBoundary.excludedEvidenceCount == 1
+M57 spoiler self-check accepts a position in another edition spoilerSelfCheckRefusesAPositionInAnotherEdition               caught
+    ✘ Test spoilerSelfCheckRefusesAPositionInAnotherEdition() recorded an issue at ContextPackBuilderTests.swift:470:9: Expectation failed: foreignItem.spoilerBoundaryViolations == ["c1 has a position in 
+    ✘ Test spoilerSelfCheckRefusesAPositionInAnotherEdition() recorded an issue at ContextPackBuilderTests.swift:473:9: Expectation failed: noEdition.spoilerBoundaryViolations == ["c1 has a position in an
+M58 a turn counted in another edition enters a restricted pack earlierTurnsFromAnotherEditionAreExcluded                      caught
+    ✘ Test earlierTurnsFromAnotherEditionAreExcluded() recorded an issue at ContextPackBuilderTests.swift:483:6: Caught error: .spoilerBoundaryViolated(["included turn FB4A53A1-76CA-4CC9-98C0-A8861B3E82FD
+M59 a turn with an unknown place is reported as beyond the position earlierTurnsWithAnUnknownPlaceSayWhy                           caught
+    ✘ Test earlierTurnsWithAnUnknownPlaceSayWhy() recorded an issue at ContextPackBuilderTests.swift:535:13: Expectation failed: next.history.exclusionReason == Self.unknownPlaceReason
+    ✘ Test earlierTurnsWithAnUnknownPlaceSayWhy() recorded an issue at ContextPackBuilderTests.swift:535:13: Expectation failed: next.history.exclusionReason == Self.unknownPlaceReason
+M60 turns excluded with no position set are reported as beyond it earlierTurnsWithoutAPositionToCompareSayWhy                    caught
+    ✘ Test earlierTurnsWithoutAPositionToCompareSayWhy() recorded an issue at ContextPackBuilderTests.swift:577:9: Expectation failed: pack.history.exclusionReason == "\"Do not include later passages\" is
+M61 a confirmed position from another edition is applied   confirmedPositionFromAnotherEditionIsRefused                   caught
+    ✘ Test confirmedPositionFromAnotherEditionIsRefused(scope:) recorded an issue with 1 argument scope → .selectedPassage at ContextPackBuilderTests.swift:595:9: Expectation failed: an error was expected
+    ✘ Test confirmedPositionFromAnotherEditionIsRefused(scope:) recorded an issue with 1 argument scope → .workSearch at ContextPackBuilderTests.swift:595:9: Expectation failed: an error was expected but 
+M62 an offline confirmed resend keeps the earlier answer and failure confirmedResendWhileOfflineIsADraftOfTheResendOnly             caught
+    ✘ Test confirmedResendWhileOfflineIsADraftOfTheResendOnly(firstEnd:) recorded an issue with 1 argument firstEnd → "failed_retryable" at LifecycleTests.swift:492:9: Expectation failed: queued.outcome =
+    ✘ Test confirmedResendWhileOfflineIsADraftOfTheResendOnly(firstEnd:) recorded an issue with 1 argument firstEnd → "interrupted" at LifecycleTests.swift:491:9: Expectation failed: queued.answerText.isE
+M63 a resend that needs consent keeps the earlier answer and failure confirmedResendThatNeedsConsentIsADraftOfTheResendOnly         caught
+    ✘ Test confirmedResendThatNeedsConsentIsADraftOfTheResendOnly(_:) recorded an issue with 1 argument reason → model changed for another question at LifecycleTests.swift:579:13: Expectation failed: reco
+    ✘ Test confirmedResendThatNeedsConsentIsADraftOfTheResendOnly(_:) recorded an issue with 1 argument reason → model changed for another question at LifecycleTests.swift:582:13: Expectation failed: reco
+M64 an attempt stopped on the wire records no failure kind or acceptance confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded      caught
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → Cancel before any text at LifecycleTests.swift:698:9: Expectation failed: earlier.failur
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → suspension before any text at LifecycleTests.swift:698:9: Expectation failed: earlier.fa
+M65 a relaunch leaves the attempt that was on the wire open, with no ending confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded      caught
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → relaunch before any text at LifecycleTests.swift:697:9: Expectation failed: earlier.ende
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → relaunch after some text at LifecycleTests.swift:697:9: Expectation failed: earlier.ende
+M66 an answer that stopped without a final event shows no reason confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded      caught
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → stream ended without a final event at LifecycleTests.swift:693:13: Expectation failed: f
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → stream ended without a final event at LifecycleTests.swift:700:9: Expectation failed: ea
+M67 a stream without a final event leaves no ending on its attempt confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded      caught
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → stream ended without a final event at LifecycleTests.swift:698:9: Expectation failed: ea
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → stream ended without a final event at LifecycleTests.swift:699:9: Expectation failed: ea
+M68 an attempt does not record its outcome                 confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded      caught
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → relaunch after some text at LifecycleTests.swift:700:9: Expectation failed: earlier.outc
+    ✘ Test confirmedResendWhileOfflineKeepsHowTheEarlierAttemptEnded(_:) recorded an issue with 1 argument ending → Cancel after some text at LifecycleTests.swift:700:9: Expectation failed: earlier.outcom
+M69 an attempt does not record its usage                   confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord caught
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:742:9: Expectation failed: first.attempts.first?.usage == usage
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:756:13: Expectation failed: record.attempts.first?.usage == usage && record.attempts.
+M70 a resend drops the earlier attempt's refusal text      confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord caught
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:755:13: Expectation failed: record.attempts.first?.supersededRefusalText == "Declined
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:755:13: Expectation failed: record.attempts.first?.supersededRefusalText == "Declined
+M71 a resend shows the earlier attempt's usage as its own  confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord caught
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:751:13: Expectation failed: record.usage == nil
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:751:13: Expectation failed: record.usage == nil
+M72 a resend keeps the earlier attempt's reasoning flag    confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord caught
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:752:13: Expectation failed: !record.reasoningOmitted && !record.toolCallRejected
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:752:13: Expectation failed: !record.reasoningOmitted && !record.toolCallRejected
+M73 a resend keeps the earlier attempt's tool-call flag    confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord caught
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:752:13: Expectation failed: !record.reasoningOmitted && !record.toolCallRejected
+    ✘ Test confirmedResendClearsEverythingTheEarlierAttemptLeftOnTheRecord() recorded an issue at LifecycleTests.swift:752:13: Expectation failed: !record.reasoningOmitted && !record.toolCallRejected
+M74 a relaunch during a retry wait says the request may have reached the host relaunchWhileWaitingToRetryKeepsTheRefusedAttempt              caught
+    ✘ Test relaunchWhileWaitingToRetryKeepsTheRefusedAttempt(_:) recorded an issue with 1 argument acceptance → .notSent at LifecycleTests.swift:802:9: Expectation failed: reconciled.failure?.acceptance =
+    ✘ Test relaunchWhileWaitingToRetryKeepsTheRefusedAttempt(_:) recorded an issue with 1 argument acceptance → .rejected at LifecycleTests.swift:802:9: Expectation failed: reconciled.failure?.acceptance 
+M75 a relaunch overwrites the ending of an attempt that already ended relaunchWhileWaitingToRetryKeepsTheRefusedAttempt              caught
+    ✘ Test relaunchWhileWaitingToRetryKeepsTheRefusedAttempt(_:) recorded an issue with 1 argument acceptance → .rejected at LifecycleTests.swift:806:9: Expectation failed: reconciled.attempts == onDisk.a
+    ✘ Test relaunchWhileWaitingToRetryKeepsTheRefusedAttempt(_:) recorded an issue with 1 argument acceptance → .notSent at LifecycleTests.swift:806:9: Expectation failed: reconciled.attempts == onDisk.at
+M76 a stopped retry says the server refused an attempt that never reached it relaunchWhileWaitingToRetryKeepsTheRefusedAttempt              caught
+    ✘ Test relaunchWhileWaitingToRetryKeepsTheRefusedAttempt(_:) recorded an issue with 1 argument acceptance → .notSent at LifecycleTests.swift:803:9: Expectation failed: reconciled.statusPhrase == (refu
+M77 a retry stopped by the user names the wrong reason     stopDuringBackoffWaitTakesEffectAndSendsNothingMore            caught
+    ✘ Test stopDuringBackoffWaitTakesEffectAndSendsNothingMore(_:) recorded an issue with 1 argument acceptance → .notSent at LifecycleTests.swift:930:9: Expectation failed: record.statusPhrase == (accept
+77 of 77 mutations caught; sources restored
+mutation-checks exit=0
+# sources restored: 0 changed source paths after the run
+# uptime at end: 12:07  up 9 days, 22:18, 1 user, load averages: 27.10 18.79 20.37

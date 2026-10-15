@@ -1,0 +1,22 @@
+# Command: Docs/Stage0/evidence/M0-Integration/commands/g04-fixture-cache-check.sh; started 2026-10-13T16:19:54Z
+# Environment: host, macOS 26.6.2 (25G83), Apple M5 Max; ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers
+# Host load: 5:19  up 10 days, 15:30, 1 user, load averages: 6.22 7.32 7.09
+# Commit: 36b6b9e9a5891cbf99ab12e9ee684259d460a1f5
+== main: generated/g04-audio/manifest.tsv (under $SYLVIA_FIXTURE_CACHE)
+stamp: d881bb9e490e6623a1a09e7a33d3c08033f8a6e21414a61f111710362c0fc5f1|ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers|26.6.2 (25G83)
+files: 28 listed, 28 match their SHA-256 and size; 1189609084 bytes
+the cache manifest equals the manifest recorded in Docs/Stage0/evidence/G04-Audio/fixture-generation.log (file, SHA-256, bytes)
+== long-formats: generated/g04-audio/long-formats/manifest.tsv (under $SYLVIA_FIXTURE_CACHE)
+stamp: aa7a79a2e3fac2376b5ea3044c0d2505ec11dfbacdc04a3dc7f80a4beba39a39|ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers|26.6.2 (25G83)|6969710b9f600923d6f8ed3b238e4e2e11c6e4da06ef3341dc96a0c0aea1c6d4
+files: 13 listed, 13 match their SHA-256 and size; 7804065816 bytes
+the cache manifest equals the manifest recorded in Docs/Stage0/evidence/G04-Audio/fixture-generation-long-formats.log (file, SHA-256, bytes)
+== probes: generated/g04-audio/probes/manifest.tsv (under $SYLVIA_FIXTURE_CACHE)
+stamp: 847dfa9c9cc5ea5d0f1f3344fbaaf4f56658fcc7198ae1b383f7bd824cbd06e0|ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers|26.6.2 (25G83)|6c9f4ea868caad21105ab5a0db3be2d7661181b89d507f1e122e1b07b1427745
+files: 6 listed, 6 match their SHA-256 and size; 5279460 bytes
+the cache manifest equals the manifest recorded in Docs/Stage0/evidence/G04-Audio/fixture-generation-probes.log (file, SHA-256, bytes)
+all generated G0.4 fixtures: 47 files, 8998954360 bytes
+== downloads the G0.4 generators and tests read (Scripts/fixtures/manifest.tsv)
+ok meditationsofmarcusaurelius_01_aurelius_64kb.mp3 (10862777 bytes)
+ok meditationsofmarcusaurelius_02_aurelius_64kb.mp3 (6449944 bytes)
+ok MeditationsMarcusAurelius_librivox.m4b (138201538 bytes)
+# finished 2026-10-13T16:20:12Z; exit 0

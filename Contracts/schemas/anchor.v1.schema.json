@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:anchor:v1",
+  "title": "Anchor v1",
+  "description": "Where a capture sits in one edition's bytes (plan 7.5, 9.1-9.3, 10.1-10.2; ADR-0004, ADR-0005, ADR-0006, ADR-0016). A discriminated union on `kind`: `epub`, `pdf`, `text` (TXT and Markdown) and `audio`. Every anchor names its schema version, its Work and Edition, and the asset or assets and the SHA-256 of the bytes it was taken from; an anchor is exact only for those bytes. Each kind has a small portable part that any client can read and, where a reader produced one, the reader's own locator verbatim in `reader.locator`, which only the adapter named in `reader.adapter` interprets. Text offsets always state their unit and count Unicode scalars (`unicode_scalar`); native UTF-16 ranges appear only inside `reader.locator`. Optional fields are omitted when unknown, never written as null: a missing location stays missing and is never invented (a PDF without /PageLabels has no `page_label`). Compatibility: a reader accepts an anchor whose `kind` it does not know (any lowercase token), keeps it unchanged, never re-anchors, rewrites or draws it, and still shows the capture that holds it; a v1 writer emits only the four kinds above (`$defs/known_kind`). Readers tolerate unknown optional fields (Contracts/README.md). Each member of the top-level `allOf` has a `title`, which the checker uses to name the rule an invalid fixture breaks. Rules JSON Schema cannot express are checked in code by `Scripts/check-spike-anchors.py` (rule IDs in ADR-0016 section 5): U1 every string is a sequence of Unicode scalar values (no unpaired surrogate escape such as \\ud800); A1 every range has start < end; A2 a scalar range covers the text it locates: a PDF `text_range` has as many scalars as its segment's `text`, a text `text_range` as many as `exact_text`, and an EPUB `text_offsets` as many as `exact_text` after whitespace collapsing (see `$defs/epub`); A3 a PDF anchor's `exact_text` is its segments' texts joined with a single U+000A; A4 PDF segments are in document order (page index non-decreasing; on one page, ranges increasing and not overlapping); A5 an EPUB `segment.index` is below `segment.count`; A6 an audio anchor's ranges name distinct assets, every range after the first starts at 0 ms (a cross-file selection is a contiguous span of the timeline at capture time), and their total length is at most 120,000 ms (plan 10.2); A7 a PDF line rectangle lies within its page box: x + w <= 1 and y + h <= 1, with a tolerance of 0.000001 for the 6-decimal rounding of each component.",
+  "type": "object",
+  "required": ["schema_version", "kind", "work_id"],
+  "propertyNames": { "$ref": "#/$defs/not_secret_name" },
+  "properties": {
+    "schema_version": {
+      "description": "Version of this anchor format. A reader refuses a version it does not know. Appendix A.1 and the Stage 0 spikes called this field `version`.",
+      "const": 1
+    },
+    "kind": {
+      "description": "Discriminator. Known kinds: `$defs/known_kind`. Any other lowercase token is an anchor kind from a later writer, preserved unchanged and never resolved.",
+      "$ref": "#/$defs/kind_token"
+    },
+    "work_id": { "$ref": "#/$defs/uuid" },
+    "edition_id": {
+      "description": "The edition whose bytes the anchor locates. Required for every known kind: offsets, pages and timelines are edition-specific (plan 7.1, 7.5, 13.3; G0.5 AI finding F23).",
+      "$ref": "#/$defs/uuid"
+    }
+  },
+  "allOf": [
+    { "title": "epub", "if": { "required": ["kind"], "properties": { "kind": { "const": "epub" } } }, "then": { "$ref": "#/$defs/epub" } },
+    { "title": "pdf", "if": { "required": ["kind"], "properties": { "kind": { "const": "pdf" } } }, "then": { "$ref": "#/$defs/pdf" } },
+    { "title": "text", "if": { "required": ["kind"], "properties": { "kind": { "const": "text" } } }, "then": { "$ref": "#/$defs/text" } },
+    { "title": "audio", "if": { "required": ["kind"], "properties": { "kind": { "const": "audio" } } }, "then": { "$ref": "#/$defs/audio" } }
+  ],
+  "$defs": {
+    "uuid": {
+      "description": "Lowercase UUID generated on device (plan 7.3). Swift writers lowercase `uuidString`, which is uppercase.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "sha256": { "description": "Lowercase hex SHA-256.", "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "kind_token": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$" },
+    "known_kind": {
+      "description": "The anchor kinds a v1 writer emits.",
+      "enum": ["epub", "pdf", "text", "audio"]
+    },
+    "not_secret_name": {
+      "description": "No field may carry a credential (Contracts/README.md, Secrets). The same names as the context-pack contract's pattern, matched without regard to case, written out letter by letter because the `(?i)` flag that pattern uses is not ECMA-262, JSON Schema's regular-expression dialect, so a JavaScript validator cannot compile it (ADR-0016). Each letter's class holds exactly the characters Python's case-insensitive match accepts for it, so the dotted and dotless I (U+0130, U+0131), the Kelvin sign (U+212A) and the long s (U+017F) count too. The checker derives this form from the context-pack pattern on every CI run and compares.",
+      "not": { "pattern": "^([Aa][Pp][Iiİı][_-]?[KkK][Ee][Yy]|[Aa][Pp][Iiİı][KkK][Ee][Yy]|[KkK][Ee][Yy]|[Ssſ][Ee][Cc][Rr][Ee][Tt]|[Cc][Ll][Iiİı][Ee][Nn][Tt][_-]?[Ssſ][Ee][Cc][Rr][Ee][Tt]|[Pp][Aa][Ssſ][Ssſ][Ww][Oo][Rr][Dd]|[Pp][Aa][Ssſ][Ssſ][Ww][Dd]|[Tt][Oo][KkK][Ee][Nn]|[Aa][Cc][Cc][Ee][Ssſ][Ssſ][_-]?[Tt][Oo][KkK][Ee][Nn]|[Aa][Uu][Tt][Hh][_-]?[Tt][Oo][KkK][Ee][Nn]|[Bb][Ee][Aa][Rr][Ee][Rr]|[Aa][Uu][Tt][Hh][Oo][Rr][Iiİı][Zz][Aa][Tt][Iiİı][Oo][Nn]|[Xx][_-][Aa][Pp][Iiİı][_-][KkK][Ee][Yy]|[Cc][Rr][Ee][Dd][Ee][Nn][Tt][Iiİı][Aa][Ll]|[Cc][Rr][Ee][Dd][Ee][Nn][Tt][Iiİı][Aa][Ll][Ssſ])$" }
+    },
+    "int64_non_negative": { "type": "integer", "minimum": 0, "maximum": 9223372036854775807 },
+    "int64_positive": { "type": "integer", "minimum": 1, "maximum": 9223372036854775807 },
+    "unit_interval": { "type": "number", "minimum": 0, "maximum": 1 },
+    "media_type": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.+-]*/[a-z0-9][a-z0-9.+-]*$", "maxLength": 255 },
+    "scalar_range": {
+      "description": "Half-open range [start, end) in Unicode scalars (code-checked: start < end, rule A1).",
+      "type": "object",
+      "required": ["unit", "start", "end"],
+      "properties": {
+        "unit": { "const": "unicode_scalar" },
+        "start": { "$ref": "#/$defs/int64_non_negative" },
+        "end": { "$ref": "#/$defs/int64_positive" }
+      }
+    },
+    "context_text": {
+      "description": "Text before or after the located text, exactly as the reader or extraction returned it (raw whitespace kept). May be empty at the start or end of a resource, page or file.",
+      "type": "string"
+    },
+    "exact_text": {
+      "description": "The located text exactly as selected: never trimmed, collapsed, normalized or truncated (plan 9.1, I-05). Compared scalar for scalar, not by canonical equivalence.",
+      "type": "string",
+      "minLength": 1
+    },
+    "reader": {
+      "description": "The reader adapter's own locator, stored verbatim (plan 7.5). Adapter-opaque: other clients do not interpret `locator`; they use the portable fields.",
+      "type": "object",
+      "required": ["adapter", "locator"],
+      "properties": {
+        "adapter": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{0,63}$" },
+        "adapter_version": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "locator": { "type": "object" }
+      }
+    },
+    "normalized_rect": {
+      "description": "[x, y, w, h] as fractions of the page box, origin at its lower-left, y up, in the page's unrotated space (ADR-0005), 6 decimals. Within the box (code-checked: x + w <= 1 and y + h <= 1 within 0.000001, rule A7): a writer clamps a line box that reaches past the CropBox (the part outside is not displayed).",
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        { "$ref": "#/$defs/unit_interval" },
+        { "$ref": "#/$defs/unit_interval" },
+        { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+      ]
+    },
+    "epub": {
+      "description": "One anchor per EPUB resource (ADR-0004 section 3; G0.1 EPUB `anchor-samples.json`). A quotation that continues into the next resource is several anchors, one per resource, each with `segment`, because each resource has its own reader locator. Re-anchoring order: `reader.locator`, then `exact_text` with `prefix` and `suffix` inside `resource_href`, then `text_offsets` when its `extraction_version` matches (plan 7.5). Readium 3.11.0 copies `href` from the navigator's current location, so the adapter confirms the resource before writing (G0.1 EPUB finding F1) and re-anchoring treats `resource_href` as fallible. `progression`, `total_progression` and `position` are display and coarse-fallback values that change with layout; `position` is Readium's synthetic position and is never shown as a page number (plan 7.5).",
+      "required": ["edition_id", "asset_id", "asset_sha256", "resource_href", "resource_media_type", "exact_text", "prefix", "suffix", "reader"],
+      "properties": {
+        "asset_id": { "$ref": "#/$defs/uuid" },
+        "asset_sha256": { "description": "SHA-256 of the EPUB file's bytes. A different digest is a different asset: same-asset rules no longer apply.", "$ref": "#/$defs/sha256" },
+        "resource_href": { "description": "The resource the text is in, relative to the publication root, as normalized by the reader.", "type": "string", "minLength": 1, "maxLength": 2048 },
+        "resource_media_type": { "description": "The resource's media type from the manifest, as the reader serves it (Readium's locator `type`).", "$ref": "#/$defs/media_type" },
+        "exact_text": { "description": "The selected text as the reader returned it (Readium: `window.getSelection().toString()`, the rendered text).", "$ref": "#/$defs/exact_text" },
+        "prefix": { "description": "Text before the selection as the reader returned it (Readium: up to about 200 UTF-16 code units of raw DOM text).", "$ref": "#/$defs/context_text" },
+        "suffix": { "description": "Text after the selection, as for `prefix`.", "$ref": "#/$defs/context_text" },
+        "text_offsets": {
+          "description": "Where the selection sits in Sylvia's own extraction of `resource_href`: block `block_index`, half-open range [start, end) in Unicode scalars of that block's text. The rendered selection and the extraction can differ in whitespace, so the adapter (G0.1 `CaptureBuilder.offsets`) looks for `exact_text` with its whitespace collapsed (each maximal run of Unicode White_Space characters replaced by one U+0020, leading and trailing ones removed), choosing among several occurrences by the prefix; the range covers that collapsed text (rule A2). Omitted when the selection spans extraction blocks or is ambiguous there (G0.1 EPUB finding F10); the locator and the text with its context still anchor it.",
+          "type": "object",
+          "required": ["unit", "basis", "extraction_version", "block_index", "start", "end"],
+          "properties": {
+            "unit": { "const": "unicode_scalar" },
+            "basis": { "const": "sylvia-extraction" },
+            "extraction_version": { "type": "string", "minLength": 1, "maxLength": 256 },
+            "block_index": { "$ref": "#/$defs/int64_non_negative" },
+            "start": { "$ref": "#/$defs/int64_non_negative" },
+            "end": { "$ref": "#/$defs/int64_positive" }
+          }
+        },
+        "progression": { "description": "Readium's progression in the resource of the page shown at capture time (not the selection's own position). Omitted when the adapter had to correct the resource.", "$ref": "#/$defs/unit_interval" },
+        "total_progression": { "description": "Progression in the publication of the page shown at capture time. Display only.", "$ref": "#/$defs/unit_interval" },
+        "position": { "description": "Readium's synthetic position (about 1,024 characters each). Never shown as a page number.", "type": "integer", "minimum": 1 },
+        "segment": {
+          "description": "Present when one quotation is stored as several anchors: this anchor's place among them (code-checked: index < count, rule A5; in a capture, rule C3).",
+          "type": "object",
+          "required": ["index", "count"],
+          "properties": {
+            "index": { "type": "integer", "minimum": 0 },
+            "count": { "type": "integer", "minimum": 2, "maximum": 1000 }
+          }
+        },
+        "reader": {
+          "description": "`adapter` names the reader (G0.1: `readium-swift`), `adapter_version` its release (G0.1: `3.11.0`), `locator` Readium's Locator JSON verbatim. `adapter` and `locator` are required by `$defs/reader`; an EPUB anchor also requires `adapter_version`, because Readium's locator format changes between releases.",
+          "$ref": "#/$defs/reader",
+          "required": ["adapter_version"]
+        }
+      }
+    },
+    "pdf": {
+      "description": "One anchor per selection, with one segment per contiguous text range per page in document order (ADR-0005; G0.1 PDF `anchor-samples.json`). Re-anchoring order: same digests and the stored range rebuilt into identical text; otherwise the segment text with its exact prefix and suffix found exactly once in the same asset; several matches or bare-text matches give \"Location needs review\"; a different asset digest is never relocated automatically (plan 7.5).",
+      "required": ["edition_id", "asset_id", "asset_sha256", "exact_text", "extraction", "segments", "reader"],
+      "properties": {
+        "asset_id": { "$ref": "#/$defs/uuid" },
+        "asset_sha256": { "description": "SHA-256 of the PDF file's bytes.", "$ref": "#/$defs/sha256" },
+        "exact_text": { "description": "The quotation exactly as selected: the segments' texts joined with a single U+000A (ADR-0005; code-checked, rule A3).", "$ref": "#/$defs/exact_text" },
+        "extraction": {
+          "description": "Which text extraction `text_range` indexes. PDFKit's extractor ships with the OS, so the platform build is part of it.",
+          "type": "object",
+          "required": ["extractor", "adapter_version", "platform"],
+          "properties": {
+            "extractor": { "description": "G0.1: `pdfkit.PDFPage.string`.", "type": "string", "minLength": 1, "maxLength": 128 },
+            "adapter_version": { "type": "integer", "minimum": 1 },
+            "platform": { "description": "OS name, version and build, for example `iOS 26.5 (23F77)`.", "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        },
+        "segments": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "required": ["page_index", "page_rotation", "page_box", "text", "text_range", "prefix", "suffix", "line_rects", "page_text_sha256"],
+            "properties": {
+              "page_index": { "description": "Zero-based physical page index.", "type": "integer", "minimum": 0 },
+              "page_label": { "description": "The printed label from the file's /PageLabels. Omitted when the file supplies none: Sylvia never stores a label PDFKit invents (\"1\", \"2\", ...).", "type": "string", "minLength": 1, "maxLength": 256 },
+              "page_rotation": { "description": "Effective /Rotate (inherited), clockwise for display.", "enum": [0, 90, 180, 270] },
+              "page_box": {
+                "description": "The box the rectangles are normalized to, in PDF user-space points.",
+                "type": "object",
+                "required": ["name", "rect"],
+                "properties": {
+                  "name": { "const": "crop" },
+                  "rect": {
+                    "description": "[x, y, width, height] of the CropBox.",
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "prefixItems": [
+                      { "type": "number" },
+                      { "type": "number" },
+                      { "type": "number", "exclusiveMinimum": 0 },
+                      { "type": "number", "exclusiveMinimum": 0 }
+                    ]
+                  }
+                }
+              },
+              "text": { "description": "This segment's text, equal to the page text at `text_range`.", "$ref": "#/$defs/exact_text" },
+              "text_range": { "description": "Half-open range into the page's extracted text (`extraction`).", "$ref": "#/$defs/scalar_range" },
+              "prefix": { "description": "Page text before the segment (the G0.1 builder stores up to 32 scalars; the length is the writer's choice).", "$ref": "#/$defs/context_text" },
+              "suffix": { "description": "Page text after the segment, as for `prefix`.", "$ref": "#/$defs/context_text" },
+              "line_rects": {
+                "description": "One rectangle per selected line. A client draws a stored rect on a page shown rotated by R clockwise, normalized to the displayed page with origin top-left, as: R=0 (x, 1-y-h, w, h); R=90 (y, x, h, w); R=180 (1-x-w, y, w, h); R=270 (1-y-h, 1-x-w, h, w) (ADR-0005).",
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 10000,
+                "items": { "$ref": "#/$defs/normalized_rect" }
+              },
+              "page_text_sha256": { "description": "SHA-256 of the page text's UTF-8 bytes; a mismatch means the extraction changed and `text_range` is not trusted.", "$ref": "#/$defs/sha256" }
+            }
+          }
+        },
+        "reader": {
+          "description": "`adapter` names the reader (G0.1: `pdfkit`), `locator` holds PDFKit's native ranges (G0.1: `{\"utf16_ranges\": [{\"page_index\", \"location\", \"length\"}]}`).",
+          "$ref": "#/$defs/reader"
+        }
+      }
+    },
+    "text": {
+      "description": "A selection in a TXT or Markdown file (plan 9.3, 7.5). Offsets index the decoded source text that Sylvia retains (for Markdown the source, not the rendered output), so a renderer change never moves a quote. `exact_text` is that source text at `text_range`, so any client can check it against the retained bytes without a renderer (rule A2). For Markdown it therefore keeps the markup inside the selection: a selection made in the rendered view is stored as the source span the reader maps it to, for example `for *absolute freedom* and wildness` with its asterisks, never as the rendered words alone, whose length would not match the range; how the reader maps a rendered selection to a source span is the adapter's (its locator stays in `reader`). Designed from plan 9.3 and the EPUB and PDF anchors: no Stage 0 spike produced a text anchor (ADR-0016).",
+      "required": ["edition_id", "asset_id", "asset_sha256", "media_type", "exact_text", "prefix", "suffix", "text_range", "source_text"],
+      "properties": {
+        "asset_id": { "$ref": "#/$defs/uuid" },
+        "asset_sha256": { "description": "SHA-256 of the file's original bytes.", "$ref": "#/$defs/sha256" },
+        "media_type": { "enum": ["text/plain", "text/markdown"] },
+        "exact_text": { "description": "The decoded source text at `text_range`, exactly; for Markdown with its markup (rule A2).", "$ref": "#/$defs/exact_text" },
+        "prefix": { "$ref": "#/$defs/context_text" },
+        "suffix": { "$ref": "#/$defs/context_text" },
+        "text_range": { "description": "Half-open range into the decoded source text.", "$ref": "#/$defs/scalar_range" },
+        "source_text": {
+          "description": "The decoded text `text_range` indexes: `extraction_version` names the decoder and its settings, `text_sha256` is the SHA-256 of that text's UTF-8 bytes, so a changed decoding is detected before the range is trusted.",
+          "type": "object",
+          "required": ["extraction_version", "text_sha256"],
+          "properties": {
+            "extraction_version": { "type": "string", "minLength": 1, "maxLength": 256 },
+            "text_sha256": { "$ref": "#/$defs/sha256" }
+          }
+        },
+        "reader": { "$ref": "#/$defs/reader" }
+      }
+    },
+    "audio": {
+      "description": "An audio selection in asset-local integer milliseconds (plan 7.5, 10.1-10.2; ADR-0006 decision 11). A selection that crosses files is several ordered ranges, each bound to its member asset and that asset's digest; nothing here depends on the order of an edition's members, so a reorder never rewrites a stored anchor. The digest is the imported asset of record's: a derived playback copy (ADR-0006 decision 17, an import remux) has the same timing and does not change it. `timeline_revision` is the edition timeline revision the user saw at capture time, for display only.",
+      "required": ["edition_id", "ranges", "timeline_revision"],
+      "properties": {
+        "timeline_revision": { "type": "integer", "minimum": 1 },
+        "ranges": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1000,
+          "items": {
+            "description": "Half-open range [start_ms, end_ms) in one asset (code-checked: start_ms < end_ms, rule A1).",
+            "type": "object",
+            "required": ["asset_id", "asset_sha256", "start_ms", "end_ms"],
+            "properties": {
+              "asset_id": { "$ref": "#/$defs/uuid" },
+              "asset_sha256": { "$ref": "#/$defs/sha256" },
+              "start_ms": { "$ref": "#/$defs/int64_non_negative" },
+              "end_ms": { "$ref": "#/$defs/int64_positive" }
+            }
+          }
+        }
+      },
+      "not": { "anyOf": [{ "required": ["asset_id"] }, { "required": ["asset_sha256"] }] }
+    }
+  }
+}

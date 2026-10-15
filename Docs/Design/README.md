@@ -22,7 +22,7 @@ Principles, color tokens in light and dark, the marker set, type roles, shape an
 <tr>
 <td align="center"><img src="images/Inbox.png" alt="Inbox with transfer states" width="250"><br><sub>Inbox with transfer states</sub></td>
 <td align="center"><img src="images/InboxRowsA.png" alt="Inbox row layout option A" width="250"><br><sub>Inbox rows, option A</sub></td>
-<td align="center"><img src="images/InboxRowsB.png" alt="Inbox row layout option B" width="250"><br><sub>Inbox rows, option B</sub></td>
+<td align="center"><img src="images/InboxRowsB.png" alt="Inbox row layout option B" width="250"><br><sub>Inbox rows, option B (chosen)</sub></td>
 </tr>
 <tr>
 <td align="center"><img src="images/PairMac.png" alt="Connect a Mac" width="250"><br><sub>Connect a Mac</sub></td>
@@ -102,7 +102,7 @@ What to check without color:
 | Library with mini-player | `canvas/Library.dc.html` | 4.1, 4.4.7 |
 | Work detail | `canvas/WorkDetail.dc.html` | 4.1, 12 |
 | Inbox with transfer states | `canvas/Inbox.dc.html` | 4.1, 8.2, 15.5 |
-| Inbox row-layout options A and B | `canvas/InboxRowsA.dc.html`, `canvas/InboxRowsB.dc.html` | 4.1 |
+| Inbox row-layout options A and B (B chosen 6 October 2026; A kept for reference) | `canvas/InboxRowsA.dc.html`, `canvas/InboxRowsB.dc.html` | 4.1 |
 | Connect a Mac | `canvas/PairMac.dc.html` | 15.2 |
 | Storage and impact report | `canvas/Storage.dc.html` | 17.2 |
 | Reader with selection | `canvas/Reader.dc.html` | 9.1 |

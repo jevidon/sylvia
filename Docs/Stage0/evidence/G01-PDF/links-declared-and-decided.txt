@@ -1,0 +1,13 @@
+actions.pdf: declared actions (read from the file's dictionaries), simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77)
+  catalog /OpenAction: /URI sylvia-g01-canary://open-action
+  catalog /Names /JavaScript [0]: /JavaScript app.launchURL('sylvia-g01-canary://javascript', true);
+  page 0 /AA /O: /URI sylvia-g01-canary://page-open-action
+  page 0 annotation 0 /A: /URI sylvia-g01-canary://link-uri
+  page 0 annotation 1 /A: /URI https://example.invalid/track
+  page 0 annotation 2 /A: /Launch /bin/sh
+  page 0 annotation 3 /A: /GoTo 
+link annotations as PDFKit presents them -> Sylvia's decision:
+  PDFActionURL sylvia-g01-canary://link-uri -> blocked(reason: "scheme sylvia-g01-canary is not allowed")
+  PDFActionURL https://example.invalid/track -> askUserBeforeOpening(https://example.invalid/track)
+  PDFActionURL file:///Users/jevidon/Library/Developer/CoreSimulator/Devices/A73548FB-28F2-4816-BD87-3D71BD19F32F/data/Containers/Bundle/Application/98092729-D0F9-494E-911D-462B5A796C98/PDFSpikeHarness.app/PlugIns/PDFAnchorKitTests.xctest/Fixtures//bin/sh -> blocked(reason: "scheme file is not allowed")
+  PDFActionGoTo GoTo -> navigate(pageIndex: 1)

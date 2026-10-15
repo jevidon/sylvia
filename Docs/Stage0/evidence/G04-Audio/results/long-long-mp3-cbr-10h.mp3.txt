@@ -1,0 +1,11 @@
+# long-mp3-cbr-10h.mp3. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+playable=true codec=.mp3 precise_ms=36744673 estimated_ms=36744673 chapters=0 source=none inspect_s=0.2
+decoder_seek t=3601.3 error_ms=-13.1 peak=0.996
+decoder_seek t=18000.7 error_ms=-13.1 peak=1.000
+decoder_seek t=30123.4 error_ms=-13.1 peak=0.994
+decoder_seek t=36700.9 error_ms=-13.1 peak=0.993
+player_seek t=18000.7 start_offset_ms=-13.1 steady_clock_error_ms=-13.1 (peak 1.000) first_buffer_error_ms=-813.6 seek_s=0.000 start_latency_s=0.244 chunks=18000.7000+4096 18000.7929+4096 18000.8858+4096 18000.9786+4096 18001.0715+4096 18001.1644+4096
+player_seek t=36700.9 start_offset_ms=56.6 steady_clock_error_ms=-13.1 (peak 0.995) first_buffer_error_ms=-1000.0 seek_s=0.000 start_latency_s=0.174 chunks=18003.3006+4096 18003.3006+4096 36700.9000+4096 36700.9000+4096 36700.9697+4096 36701.0625+4096
+played_to_end=true
+export 36690.0-36720.0 start_error_ms=-13.1 end_error_ms=-13.1 peaks=0.993/0.987
+export 34573.196734693876-34603.196734693876 start_error_ms=-13.8 end_error_ms=-13.8 peaks=0.997/0.998

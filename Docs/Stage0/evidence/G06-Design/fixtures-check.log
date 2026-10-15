@@ -1,0 +1,15 @@
+ok   busy-state-exempted.json: one change at contrast/component_pairs; 1 error(s) all there: 'disabled' was expected
+ok   color-hex-without-hash.json: one change at color/ground/light; 1 error(s) all there: 'F4F2ED' does not match '^#[0-9A-F]{6}([0-9A-F]{2})?$'
+ok   large-text-boundary-lowered.json: one change at contrast/large_text_minimum_points; 1 error(s) all there: 10 is less than the minimum of 24
+ok   marker-label-not-uppercase.json: one change at marker/quote/label; 1 error(s) all there: 'Quote' does not match '^[A-Z][A-Z ]*$'
+ok   missing-marker-pending.json: one change at marker/pending; 1 error(s) all there: 'pending' is a required property
+ok   missing-type-role-micro.json: one change at type/micro; 1 error(s) all there: 'micro' is a required property
+ok   reading-without-user-range.json: one change at type/reading/user_range; 1 error(s) all there: 'user_range' is a required property
+ok   schema-version-2.json: one change at schema_version; 1 error(s) all there: 1 was expected
+ok   unknown-appearance-key.json: one change at color/ground/sepia; 1 error(s) all there: Additional properties are not allowed ('sepia' was unexpected)
+ok   unknown-kind-renders-as-quote.json: one change at capture_kind_mapping/unrecognized/marker; 1 error(s) all there: 'pending' was expected
+ok   vocabulary-exclamation-mark.json: one change at vocabulary/save.done; 1 error(s) all there: 'Saved!' does not match '^[^!]+$'
+ok   weakened-contrast-threshold.json: one change at contrast/minimum_ratio; 1 error(s) all there: 4 is less than the minimum of 4.5
+ok   marginalia-v1-export.json: valid
+ok   unknown-optional-top-level-field.json: valid
+design-token fixtures: 0 failure(s)

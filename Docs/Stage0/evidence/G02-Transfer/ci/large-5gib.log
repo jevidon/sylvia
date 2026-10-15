@@ -1,0 +1,53 @@
+environment: host (macOS 26.6.2); 5 GiB test in a process of its own
+present and verified: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g02-transfer/large-5GiB.bin
+load before: 10:02  up 9 days, 20:12, 1 user, load averages: 159.35 101.70 62.83
+Building for debugging...
+[Computing dependencies]
+[Using on-disk description]
+[1 / 5]
+[1 / 5] _NIODataStructures
+[2 / 4] SylviaSourceServiceTests-product
+Build complete! (1.58 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "5 GiB transfer with interruptions and bounded memory (T38)" started.
+◇ Test fiveGiBTransferSurvivesInterruptionsWithBoundedMemory() started.
+✔ Test fiveGiBTransferSurvivesInterruptionsWithBoundedMemory() passed after 15.897 seconds.
+◇ Test fiveGiBThroughTheBackgroundClientWithARelaunch() started.
+✔ Test fiveGiBThroughTheBackgroundClientWithARelaunch() passed after 17.583 seconds.
+✔ Suite "5 GiB transfer with interruptions and bounded memory (T38)" passed after 33.480 seconds.
+✔ Test run with 2 tests in 1 suite passed after 33.481 seconds.
+load after: 10:02  up 9 days, 20:13, 1 user, load averages: 92.47 91.49 60.86
+--- faults/large-5GiB-transfer.log (written by the test in this run)
+environment: host (macOS Version 26.6.2 (Build 25G83)), in-process source and client, TLS on 127.0.0.1
+file: generate-g02-transfer-large.sh output, 5368709120 bytes, sha256 d2383fe38d8033b62ef9e6222756369fab813d2c64b2bce41e86ad9494af16d9
+part size 16777216 bytes, 320 parts, engine concurrency 2
+faults: connection dropped after 5 MiB on first attempt of 8 parts [7, 47, 87, 127, 167, 207, 247, 287]; one byte flipped on first attempt of 3 parts [50, 147, 244]
+client restarts: 2 (engine cancelled after [100, 220] verified parts, new engine resumed from the journal)
+content requests: 333 for 320 parts; 13 parts fetched more than once; 13 extra requests
+  of which 11 for the 11 faulted parts and 2 for parts in flight when an engine was cancelled for a restart (that number depends on timing and varies between runs)
+parts verified before each interruption and fetched again afterwards: 0 (asserted)
+result: ready; handed-off file re-hashed independently: matches
+elapsed: 13.1 s (390 MiB/s including server preparation and three full-file hashes)
+load averages (1, 5, 15 min): 147.47 100.19 62.53 at the start, 117.42 95.87 61.64 at the end (timings under parallel load are indicative only)
+memory (proc_pid_rusage, whole test process: source + client):
+  phys_footprint before: 8 MiB; peak sampled every 50 ms during transfer: 123 MiB; after: 123 MiB
+  growth at peak: 115 MiB (bound asserted: < 256 MiB)
+  resident size peak sampled: 165 MiB
+  kernel lifetime maximum phys_footprint of the process: 123 MiB
+--- faults/large-5GiB-background-client.log (written by the test in this run)
+environment: host (macOS Version 26.6.2 (Build 25G83)), in-process source on 127.0.0.1, real TLS; background client with its in-process session kind (download tasks, same delegate code as the background session)
+file: generate-g02-transfer-large.sh output, 5368709120 bytes, sha256 d2383fe38d8033b62ef9e6222756369fab813d2c64b2bce41e86ad9494af16d9; 320 parts of 16777216 bytes; window 4 tasks, 2 connections
+first coordinator invalidated after 161 verified parts (tasks in flight cancelled)
+relaunch: start() took 1.58 s; staging check re-hashed 2701131776 bytes in 1556 ms (1656 MiB/s)
+jobViews() polled 239 times during start(); slowest call 0.412 ms (asserted < 250 ms: the re-hash runs outside the lock)
+reconciliation: kept 161 verified parts, enqueued 4, discarded 0
+final full-file SHA-256 (assembly) took 2261 ms on the assembly queue; jobViews() polled 361 times while the job showed "assembling", slowest of those 1.385 ms (asserted < 250 ms: the check runs outside the lock)
+jobViews() polled 838 times from the relaunch to the import; slowest call 26.984 ms (asserted < 1 s), which returned the job downloading with 304 of 320 parts verified. Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the 159 parts verified after the relaunch: median 11, max 19 (report finding 20); the import's file work held it for 4 ms (import_ms; report finding 22)
+background-events completion handed in while the job showed "assembling": held, then called after assembly_verified
+content requests: 322 for 320 parts, no fault injected; parts requested more than once: 2 (a request in flight when the first coordinator stopped is made again); parts verified before the relaunch requested again: 0 (asserted 0)
+result: imported once (completions 1); imported asset digest from the verified assembly: matches
+elapsed: 17.3 s
+load averages (1, 5, 15 min): 108.50 94.38 61.32 at the start, 92.47 91.49 60.86 at the end (timings under parallel load are indicative only)
+memory (proc_pid_rusage, whole test process): phys_footprint before 131 MiB, peak 142 MiB, growth 10 MiB (asserted < 256 MiB)

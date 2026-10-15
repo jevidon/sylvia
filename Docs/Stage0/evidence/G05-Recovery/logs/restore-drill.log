@@ -1,0 +1,52 @@
+restore drill (T35, J-06): environment host (macOS)
+corpus: 82 knowledge rows
+PASS corpus has every knowledge table populated
+PASS media removal leaves every knowledge row unchanged (T44)
+PASS no asset is on the device after removal — 0 on device
+PASS Media directory is empty after removal
+PASS export bundle validates
+PASS manifest lists every original as excluded media and does not claim completeness — 6 excluded, complete=false
+PASS manifest originating device is the source installation
+PASS bundle holds every canonical cover thumbnail after source deletion — 2 covers
+PASS secret canary absent from bundle — sk-SYLVIA-CA…
+PASS secret canary absent from bundle — pair-SYLVIA-…
+PASS no absolute installation path in bundle
+PASS fresh installation starts empty
+PASS restore without confirmation is refused
+PASS integrity_check ok after restore — ok
+PASS foreign_key_check clean after restore — 0 violations
+PASS count work — before 3, after 3
+PASS count contributor — before 4, after 4
+PASS count work_contributor — before 4, after 4
+PASS count edition — before 6, after 6
+PASS count asset — before 6, after 6
+PASS count edition_asset — before 6, after 6
+PASS count consumption_run — before 4, after 4
+PASS count rating — before 2, after 2
+PASS count recommendation_event — before 3, after 3
+PASS count capture — before 5, after 5
+PASS count capture_anchor — before 6, after 6
+PASS count conversation — before 1, after 1
+PASS count context_pack — before 1, after 1
+PASS count context_evidence — before 2, after 2
+PASS count message — before 3, after 3
+PASS count note — before 7, after 7
+PASS count note_revision — before 9, after 9
+PASS count retained_excerpt — before 1, after 1
+PASS count ledger_event — before 9, after 9
+PASS every knowledge row restored byte-for-byte (works, editions, anchors, notes and revisions, ledger, rating, recommendations, captures, excerpts, conversations, context evidence)
+PASS restored dump digest equals source — c4fc4c48dae9b83756f9565ab4e1a82027c99d5205130f9cf9b4a6473ef626fb
+PASS retained excerpt audio restored with its digest
+PASS canonical cover thumbnails restored with their digests and edition references (plan 17.3) — med-epub=jpg digest ok; walden-epub=png digest ok
+PASS missing originals resolve as unavailable records, not errors — med-audio-1=not on this device · from mac_source; med-audio-2=not on this device · from mac_source; med-epub=record only; med-pdf=record only; walden-audio=not on this device · from mac_source; walden-epub=record only
+PASS every anchor still binds to its asset digest
+PASS 64-bit asset size survives (5 GiB + 7) — 5368709127
+PASS Markdown export contains every quote exactly
+PASS Markdown export contains every current note — 6 notes
+PASS Markdown export contains every conversation message — 3 messages
+PASS Markdown export contains every context evidence text — 2 evidence items
+PASS portable JSON alone reproduces every knowledge row
+PASS restored installation keeps its own device identity
+PASS no retention leases carried over
+PASS restored database, WAL, SHM, excerpt and covers read back the library protection class — library.sqlite=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-wal=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-shm=NSFileProtectionCompleteUntilFirstUserAuthentication 7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3=NSFileProtectionCompleteUntilFirstUserAuthentication b4e50ad1784915f0625e46b6f8f63943879f93fb7878fd2342c94786b85d0ef2.jpg=NSFileProtectionCompleteUntilFirstUserAuthentication a533ac5b8b5700b1ba69957a3503cafd403f6d8437ee2a1a171b34b4d6abd13d.png=NSFileProtectionCompleteUntilFirstUserAuthentication
+RESULT: PASS (49 checks)

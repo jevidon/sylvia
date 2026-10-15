@@ -1,0 +1,39 @@
+# check: g05-ai-live-tests-skip
+# expected on this Mac (stated before the run): pass
+# note: G05-AI checklist steps 5-8 command shape: swift test --filter LiveProviderTests WITHOUT SYLVIA_LIVE_PROVIDER_TESTS (every live test must skip; nothing is sent anywhere).
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:54:21Z; load at start: 8.44 6.13 4.30
+# command (from the repository root):
+#   bash -c cd\ Spikes/G05-AI\ \&\&\ unset\ SYLVIA_LIVE_PROVIDER_TESTS\ OPENAI_API_KEY\ ANTHROPIC_API_KEY\ SYLVIA_LIVE_TRANSCRIPTION_API_KEY\ SYLVIA_LIVE_COMPAT_API_KEY\;\ exec\ xcrun\ swift\ test\ --filter\ LiveProviderTests 
+# finished: 2026-10-14T06:54:38Z after 17 s; exit status 0; load at end: 7.78 6.12 4.34
+--- result lines
+Build complete! (10.32 sec)
+✔ Test run with 4 tests in 1 suite passed after 0.001 seconds.
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+--- warning count: 0 (first 20 unique)
+--- last 15 lines of the output
+[325 / 337] SylviaContextTests-product
+[327 / 337] SylviaContextTests-product
+[331 / 337] SylviaAITests-product
+[333 / 337] SylviaAITests-product
+Build complete! (10.32 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Live provider smoke tests" started.
+➜ Test openAIResponsesStreamsAGroundedAnswer() skipped: "live OpenAI Responses smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, OPENAI_API_KEY and SYLVIA_LIVE_OPENAI_MODEL"
+➜ Test openAICompatibleEndpointPassesTheConnectionTestAndStreams() skipped: "live OpenAI-compatible endpoint test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_COMPAT_BASE_URL and SYLVIA_LIVE_COMPAT_MODEL"
+➜ Test anthropicMessagesStreamsAGroundedAnswer() skipped: "live Anthropic Messages smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, ANTHROPIC_API_KEY and SYLVIA_LIVE_ANTHROPIC_MODEL"
+➜ Test transcriptionEndpointTranscribesTheFixtureClip() skipped: "live transcription test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_TRANSCRIPTION_BASE_URL and SYLVIA_LIVE_TRANSCRIPTION_MODEL"
+✔ Suite "Live provider smoke tests" passed after 0.001 seconds.
+✔ Test run with 4 tests in 1 suite passed after 0.001 seconds.
+# result: pass; expected: pass; as expected: yes
+--- live test lines (skips and results)
+✔ Suite "Live provider smoke tests" passed after 0.001 seconds.
+✔ Test run with 4 tests in 1 suite passed after 0.001 seconds.
+➜ Test anthropicMessagesStreamsAGroundedAnswer() skipped: "live Anthropic Messages smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, ANTHROPIC_API_KEY and SYLVIA_LIVE_ANTHROPIC_MODEL"
+➜ Test openAICompatibleEndpointPassesTheConnectionTestAndStreams() skipped: "live OpenAI-compatible endpoint test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_COMPAT_BASE_URL and SYLVIA_LIVE_COMPAT_MODEL"
+➜ Test openAIResponsesStreamsAGroundedAnswer() skipped: "live OpenAI Responses smoke test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, OPENAI_API_KEY and SYLVIA_LIVE_OPENAI_MODEL"
+➜ Test transcriptionEndpointTranscribesTheFixtureClip() skipped: "live transcription test skipped: needs SYLVIA_LIVE_PROVIDER_TESTS=1, SYLVIA_LIVE_TRANSCRIPTION_BASE_URL and SYLVIA_LIVE_TRANSCRIPTION_MODEL"

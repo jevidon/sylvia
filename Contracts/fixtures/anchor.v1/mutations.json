@@ -1,0 +1,3075 @@
+[
+  {
+    "fixture": "invalid/missing-schema-version.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/schema_version"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "schema_version"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/newer-schema-version.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/schema_version",
+        "value": 2
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "const",
+        "instance_path": "/schema_version",
+        "schema_path": "properties/schema_version/const"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-kind.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/kind"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "kind"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/missing-work-id.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/work_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "required",
+        "property": "work_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/uppercase-work-id.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/work_id",
+        "value": "53603273-26DE-531B-A132-2BBD8D202727"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/work_id",
+        "schema_path": "properties/work_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/kind-uppercase.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/kind",
+        "value": "EPUB"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/kind",
+        "schema_path": "properties/kind/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/secret-field-name.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/token",
+        "value": "not-a-real-token"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "propertyNames/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-edition-id.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/edition_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[epub]/then/required",
+        "property": "edition_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-asset-id.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/asset_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[epub]/then/required",
+        "property": "asset_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-asset-sha256.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/asset_sha256"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[epub]/then/required",
+        "property": "asset_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-uppercase-asset-sha256.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/asset_sha256",
+        "value": "C2B77E9DAA37694B978F78F9AE2D801FD263BE533AF187E8B36B7DA28845E0C8"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/asset_sha256",
+        "schema_path": "allOf[epub]/then/properties/asset_sha256/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-resource-href.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/resource_href"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[epub]/then/required",
+        "property": "resource_href"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-resource-media-type.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/resource_media_type"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[epub]/then/required",
+        "property": "resource_media_type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-exact-text.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/exact_text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[epub]/then/required",
+        "property": "exact_text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-empty-exact-text.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/exact_text",
+        "value": ""
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minLength",
+        "instance_path": "/exact_text",
+        "schema_path": "allOf[epub]/then/properties/exact_text/minLength"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-prefix.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/prefix"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[epub]/then/required",
+        "property": "prefix"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-suffix.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/suffix"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[epub]/then/required",
+        "property": "suffix"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-reader.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/reader"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[epub]/then/required",
+        "property": "reader"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-reader-adapter.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/reader/adapter"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/reader",
+        "schema_path": "allOf[epub]/then/properties/reader/required",
+        "property": "adapter"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-reader-locator.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/reader/locator"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/reader",
+        "schema_path": "allOf[epub]/then/properties/reader/required",
+        "property": "locator"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-missing-reader-adapter-version.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/reader/adapter_version"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/reader",
+        "schema_path": "allOf[epub]/then/properties/reader/required",
+        "property": "adapter_version"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-in-utf16.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_offsets/unit",
+        "value": "utf16"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "const",
+        "instance_path": "/text_offsets/unit",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/properties/unit/const"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-without-unit.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_offsets/unit"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/text_offsets",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/required",
+        "property": "unit"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-without-extraction-version.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_offsets/extraction_version"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/text_offsets",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/required",
+        "property": "extraction_version"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-null-text-offsets.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_offsets",
+        "value": null
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/text_offsets",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-progression-above-one.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/progression",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "maximum",
+        "instance_path": "/progression",
+        "schema_path": "allOf[epub]/then/properties/progression/maximum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-position-zero.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/position",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/position",
+        "schema_path": "allOf[epub]/then/properties/position/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-segment-count-one.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/segment",
+        "value": {
+          "index": 0,
+          "count": 1
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/segment/count",
+        "schema_path": "allOf[epub]/then/properties/segment/properties/count/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-edition-id.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/edition_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[pdf]/then/required",
+        "property": "edition_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-asset-id.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/asset_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[pdf]/then/required",
+        "property": "asset_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-asset-sha256.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/asset_sha256"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[pdf]/then/required",
+        "property": "asset_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-exact-text.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/exact_text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[pdf]/then/required",
+        "property": "exact_text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-extraction-platform.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/extraction/platform"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/extraction",
+        "schema_path": "allOf[pdf]/then/properties/extraction/required",
+        "property": "platform"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-segments.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[pdf]/then/required",
+        "property": "segments"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-no-segments.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments",
+        "value": []
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/segments",
+        "schema_path": "allOf[pdf]/then/properties/segments/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-reader.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/reader"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[pdf]/then/required",
+        "property": "reader"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-missing-page-index.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/page_index"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/required",
+        "property": "page_index"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-negative-page-index.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_index",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/segments/0/page_index",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_index/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-null-page-label.json",
+    "base": "pdf-rotated-270-offset-cropbox-no-label.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/segments/0/page_label",
+        "value": null
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/page_label",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_label/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-empty-page-label.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_label",
+        "value": ""
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minLength",
+        "instance_path": "/segments/0/page_label",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_label/minLength"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-missing-page-rotation.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/page_rotation"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/required",
+        "property": "page_rotation"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-rotation-45.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_rotation",
+        "value": 45
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/segments/0/page_rotation",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_rotation/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-missing-page-box.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/page_box"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/required",
+        "property": "page_box"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-not-crop.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_box/name",
+        "value": "media"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "const",
+        "instance_path": "/segments/0/page_box/name",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/properties/name/const"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-missing-text.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/required",
+        "property": "text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-missing-text-range.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/text_range"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/required",
+        "property": "text_range"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-text-range-in-utf16.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/text_range/unit",
+        "value": "utf16"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "const",
+        "instance_path": "/segments/0/text_range/unit",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/text_range/properties/unit/const"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-text-range-without-unit.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/text_range/unit"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0/text_range",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/text_range/required",
+        "property": "unit"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-missing-prefix.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/prefix"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/required",
+        "property": "prefix"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-missing-suffix.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/suffix"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/required",
+        "property": "suffix"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-without-line-rects.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects",
+        "value": []
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/segments/0/line_rects",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-outside-page.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0/0",
+        "value": 1.2
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "maximum",
+        "instance_path": "/segments/0/line_rects/0/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/prefixItems/0/maximum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-zero-width.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0/2",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "exclusiveMinimum",
+        "instance_path": "/segments/0/line_rects/0/2",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/prefixItems/2/exclusiveMinimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-three-numbers.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/line_rects/0/3"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/segments/0/line_rects/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-page-text-sha256.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/page_text_sha256"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/required",
+        "property": "page_text_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-edition-id.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/edition_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text]/then/required",
+        "property": "edition_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-asset-id.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/asset_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text]/then/required",
+        "property": "asset_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-asset-sha256.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/asset_sha256"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text]/then/required",
+        "property": "asset_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-html-media-type.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/media_type",
+        "value": "text/html"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "enum",
+        "instance_path": "/media_type",
+        "schema_path": "allOf[text]/then/properties/media_type/enum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-exact-text.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/exact_text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text]/then/required",
+        "property": "exact_text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-prefix.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/prefix"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text]/then/required",
+        "property": "prefix"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-suffix.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/suffix"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text]/then/required",
+        "property": "suffix"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-text-range.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_range"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text]/then/required",
+        "property": "text_range"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-text-range-without-unit.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_range/unit"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/text_range",
+        "schema_path": "allOf[text]/then/properties/text_range/required",
+        "property": "unit"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-source-text.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/source_text"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text]/then/required",
+        "property": "source_text"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-source-text-digest.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/source_text/text_sha256"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/source_text",
+        "schema_path": "allOf[text]/then/properties/source_text/required",
+        "property": "text_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-missing-edition-id.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/edition_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[audio]/then/required",
+        "property": "edition_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-missing-timeline-revision.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/timeline_revision"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[audio]/then/required",
+        "property": "timeline_revision"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-no-ranges.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges",
+        "value": []
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/ranges",
+        "schema_path": "allOf[audio]/then/properties/ranges/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-range-missing-asset-id.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/ranges/1/asset_id"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/ranges/1",
+        "schema_path": "allOf[audio]/then/properties/ranges/items/required",
+        "property": "asset_id"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-range-missing-asset-sha256.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/ranges/1/asset_sha256"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/ranges/1",
+        "schema_path": "allOf[audio]/then/properties/ranges/items/required",
+        "property": "asset_sha256"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-range-missing-start.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/ranges/0/start_ms"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/ranges/0",
+        "schema_path": "allOf[audio]/then/properties/ranges/items/required",
+        "property": "start_ms"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-range-missing-end.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/ranges/0/end_ms"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/ranges/0",
+        "schema_path": "allOf[audio]/then/properties/ranges/items/required",
+        "property": "end_ms"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-negative-start.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges/0/start_ms",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/ranges/0/start_ms",
+        "schema_path": "allOf[audio]/then/properties/ranges/items/properties/start_ms/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-fractional-milliseconds.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges/1/end_ms",
+        "value": 9999.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/ranges/1/end_ms",
+        "schema_path": "allOf[audio]/then/properties/ranges/items/properties/end_ms/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-top-level-asset-id.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/asset_id",
+        "value": "00000000-0000-4000-8000-000000000401"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[audio]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-top-level-asset-sha256.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/asset_sha256",
+        "value": "2d1e16363bc6d43f9acbd52f91a029ee19eef27871791e820975eb4d2348a94a"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "not",
+        "instance_path": "",
+        "schema_path": "allOf[audio]/then/not"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/uppercase-edition-id.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/edition_id",
+        "value": "72C2260B-4F1B-52F7-A9E7-883BD8D80481"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/edition_id",
+        "schema_path": "properties/edition_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-uppercase-asset-id.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/asset_id",
+        "value": "6D154F6C-4092-5EAC-8FFC-3356C559A93E"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/asset_id",
+        "schema_path": "allOf[epub]/then/properties/asset_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-media-type-not-a-media-type.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/resource_media_type",
+        "value": "XHTML"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/resource_media_type",
+        "schema_path": "allOf[epub]/then/properties/resource_media_type/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-prefix-not-text.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/prefix",
+        "value": 42
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/prefix",
+        "schema_path": "allOf[epub]/then/properties/prefix/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-suffix-not-text.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/suffix",
+        "value": 42
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/suffix",
+        "schema_path": "allOf[epub]/then/properties/suffix/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-progression-below-zero.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/progression",
+        "value": -0.1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/progression",
+        "schema_path": "allOf[epub]/then/properties/progression/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-total-progression-above-one.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/total_progression",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "maximum",
+        "instance_path": "/total_progression",
+        "schema_path": "allOf[epub]/then/properties/total_progression/maximum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-reader-adapter-not-a-token.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/reader/adapter",
+        "value": "Readium Swift"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/reader/adapter",
+        "schema_path": "allOf[epub]/then/properties/reader/properties/adapter/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-segment-without-index.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/segment",
+        "value": {
+          "count": 2
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segment",
+        "schema_path": "allOf[epub]/then/properties/segment/required",
+        "property": "index"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-segment-without-count.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/segment",
+        "value": {
+          "index": 0
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segment",
+        "schema_path": "allOf[epub]/then/properties/segment/required",
+        "property": "count"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-segment-index-negative.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/segment",
+        "value": {
+          "index": -1,
+          "count": 2
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/segment/index",
+        "schema_path": "allOf[epub]/then/properties/segment/properties/index/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-without-basis.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_offsets/basis"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/text_offsets",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/required",
+        "property": "basis"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-other-basis.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_offsets/basis",
+        "value": "readium-dom"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "const",
+        "instance_path": "/text_offsets/basis",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/properties/basis/const"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-without-block-index.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_offsets/block_index"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/text_offsets",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/required",
+        "property": "block_index"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-negative-block-index.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_offsets/block_index",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/text_offsets/block_index",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/properties/block_index/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-without-start.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_offsets/start"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/text_offsets",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/required",
+        "property": "start"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-negative-start.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_offsets/start",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/text_offsets/start",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/properties/start/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-without-end.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_offsets/end"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/text_offsets",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/required",
+        "property": "end"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-text-offsets-end-zero.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_offsets/end",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/text_offsets/end",
+        "schema_path": "allOf[epub]/then/properties/text_offsets/properties/end/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-asset-id-not-a-uuid.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/asset_id",
+        "value": "labels.pdf"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/asset_id",
+        "schema_path": "allOf[pdf]/then/properties/asset_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-uppercase-asset-sha256.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/asset_sha256",
+        "value": "6FFA266BF32EEA6C9BC2984D351BC55D19BD948C65714A4E6D2B9AB41D8138D1"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/asset_sha256",
+        "schema_path": "allOf[pdf]/then/properties/asset_sha256/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-empty-exact-text.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/exact_text",
+        "value": ""
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minLength",
+        "instance_path": "/exact_text",
+        "schema_path": "allOf[pdf]/then/properties/exact_text/minLength"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-extraction.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/extraction"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[pdf]/then/required",
+        "property": "extraction"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-extraction-extractor.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/extraction/extractor"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/extraction",
+        "schema_path": "allOf[pdf]/then/properties/extraction/required",
+        "property": "extractor"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-missing-extraction-adapter-version.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/extraction/adapter_version"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/extraction",
+        "schema_path": "allOf[pdf]/then/properties/extraction/required",
+        "property": "adapter_version"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-extraction-adapter-version-zero.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/extraction/adapter_version",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/extraction/adapter_version",
+        "schema_path": "allOf[pdf]/then/properties/extraction/properties/adapter_version/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-reader-without-adapter.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/reader/adapter"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/reader",
+        "schema_path": "allOf[pdf]/then/properties/reader/required",
+        "property": "adapter"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-missing-line-rects.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/line_rects"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/required",
+        "property": "line_rects"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-empty-text.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/text",
+        "value": ""
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minLength",
+        "instance_path": "/segments/0/text",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/text/minLength"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-prefix-not-text.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/prefix",
+        "value": 42
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/prefix",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/prefix/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-segment-suffix-not-text.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/suffix",
+        "value": 42
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/suffix",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/suffix/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-uppercase-page-text-sha256.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_text_sha256",
+        "value": "A4746EE93C002A1122B57C8FB100A7A44D2D5700B22CD541F84AD01634E6D570"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/segments/0/page_text_sha256",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_text_sha256/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-without-name.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/page_box/name"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0/page_box",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/required",
+        "property": "name"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-without-rect.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/page_box/rect"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/segments/0/page_box",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/required",
+        "property": "rect"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-rect-three-numbers.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/segments/0/page_box/rect/3"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minItems",
+        "instance_path": "/segments/0/page_box/rect",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/properties/rect/minItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-rect-five-numbers.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/segments/0/page_box/rect/4",
+        "value": 1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "maxItems",
+        "instance_path": "/segments/0/page_box/rect",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/properties/rect/maxItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-x-not-a-number.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_box/rect/0",
+        "value": "0"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/page_box/rect/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/properties/rect/prefixItems/0/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-y-not-a-number.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_box/rect/1",
+        "value": "0"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/page_box/rect/1",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/properties/rect/prefixItems/1/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-zero-width.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_box/rect/2",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "exclusiveMinimum",
+        "instance_path": "/segments/0/page_box/rect/2",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/properties/rect/prefixItems/2/exclusiveMinimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-zero-height.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_box/rect/3",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "exclusiveMinimum",
+        "instance_path": "/segments/0/page_box/rect/3",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/properties/rect/prefixItems/3/exclusiveMinimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-below-the-page.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0/1",
+        "value": -0.1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/segments/0/line_rects/0/1",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/prefixItems/1/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-wider-than-the-page.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0/2",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "maximum",
+        "instance_path": "/segments/0/line_rects/0/2",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/prefixItems/2/maximum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-zero-height.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0/3",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "exclusiveMinimum",
+        "instance_path": "/segments/0/line_rects/0/3",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/prefixItems/3/exclusiveMinimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-taller-than-the-page.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0/3",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "maximum",
+        "instance_path": "/segments/0/line_rects/0/3",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/prefixItems/3/maximum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-five-numbers.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/segments/0/line_rects/0/4",
+        "value": 0.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "maxItems",
+        "instance_path": "/segments/0/line_rects/0",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/maxItems"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-uppercase-asset-id.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/asset_id",
+        "value": "2CE9B41E-2088-5FFF-AB18-BD2795F0D647"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/asset_id",
+        "schema_path": "allOf[text]/then/properties/asset_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-uppercase-asset-sha256.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/asset_sha256",
+        "value": "FF5769A05F8C85DABBC78F4932C9416F6477FE5811C77D67747F9FDE54FA70D8"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/asset_sha256",
+        "schema_path": "allOf[text]/then/properties/asset_sha256/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-missing-media-type.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/media_type"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[text]/then/required",
+        "property": "media_type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-empty-exact-text.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/exact_text",
+        "value": ""
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minLength",
+        "instance_path": "/exact_text",
+        "schema_path": "allOf[text]/then/properties/exact_text/minLength"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-prefix-not-text.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/prefix",
+        "value": 42
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/prefix",
+        "schema_path": "allOf[text]/then/properties/prefix/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-suffix-not-text.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/suffix",
+        "value": 42
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/suffix",
+        "schema_path": "allOf[text]/then/properties/suffix/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-text-range-without-start.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_range/start"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/text_range",
+        "schema_path": "allOf[text]/then/properties/text_range/required",
+        "property": "start"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-text-range-without-end.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/text_range/end"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/text_range",
+        "schema_path": "allOf[text]/then/properties/text_range/required",
+        "property": "end"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-text-range-negative-start.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_range/start",
+        "value": -1
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/text_range/start",
+        "schema_path": "allOf[text]/then/properties/text_range/properties/start/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-text-range-end-zero.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_range/end",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/text_range/end",
+        "schema_path": "allOf[text]/then/properties/text_range/properties/end/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-source-text-without-extraction-version.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/source_text/extraction_version"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/source_text",
+        "schema_path": "allOf[text]/then/properties/source_text/required",
+        "property": "extraction_version"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-uppercase-source-text-digest.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/source_text/text_sha256",
+        "value": "FF5769A05F8C85DABBC78F4932C9416F6477FE5811C77D67747F9FDE54FA70D8"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/source_text/text_sha256",
+        "schema_path": "allOf[text]/then/properties/source_text/properties/text_sha256/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/text-reader-without-locator.json",
+    "base": "text-markdown-with-reader-locator.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/reader/locator"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "/reader",
+        "schema_path": "allOf[text]/then/properties/reader/required",
+        "property": "locator"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-missing-ranges.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "remove",
+        "path": "/ranges"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "required",
+        "instance_path": "",
+        "schema_path": "allOf[audio]/then/required",
+        "property": "ranges"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-timeline-revision-zero.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/timeline_revision",
+        "value": 0
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "minimum",
+        "instance_path": "/timeline_revision",
+        "schema_path": "allOf[audio]/then/properties/timeline_revision/minimum"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-range-asset-id-not-a-uuid.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges/0/asset_id",
+        "value": "part-1"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/ranges/0/asset_id",
+        "schema_path": "allOf[audio]/then/properties/ranges/items/properties/asset_id/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-range-uppercase-asset-sha256.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges/0/asset_sha256",
+        "value": "2D1E16363BC6D43F9ACBD52F91A029EE19EEF27871791E820975EB4D2348A94A"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "pattern",
+        "instance_path": "/ranges/0/asset_sha256",
+        "schema_path": "allOf[audio]/then/properties/ranges/items/properties/asset_sha256/pattern"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-fractional-start-milliseconds.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges/0/start_ms",
+        "value": 142299.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/ranges/0/start_ms",
+        "schema_path": "allOf[audio]/then/properties/ranges/items/properties/start_ms/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/audio-fractional-timeline-revision.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/timeline_revision",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/timeline_revision",
+        "schema_path": "allOf[audio]/then/properties/timeline_revision/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-fractional-position.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/position",
+        "value": 5.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/position",
+        "schema_path": "allOf[epub]/then/properties/position/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-progression-not-a-number.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/progression",
+        "value": "0.041666666666666664"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/progression",
+        "schema_path": "allOf[epub]/then/properties/progression/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-segment-fractional-index.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/segment",
+        "value": {
+          "index": 0.5,
+          "count": 2
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segment/index",
+        "schema_path": "allOf[epub]/then/properties/segment/properties/index/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/epub-segment-fractional-count.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/segment",
+        "value": {
+          "index": 0,
+          "count": 2.5
+        }
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segment/count",
+        "schema_path": "allOf[epub]/then/properties/segment/properties/count/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-extraction-adapter-version-fractional.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/extraction/adapter_version",
+        "value": 1.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/extraction/adapter_version",
+        "schema_path": "allOf[pdf]/then/properties/extraction/properties/adapter_version/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-fractional-page-index.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_index",
+        "value": 3.5
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/page_index",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_index/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-width-not-a-number.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0/2",
+        "value": "0.1"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/line_rects/0/2",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/prefixItems/2/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-line-rect-height-not-a-number.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0/3",
+        "value": "0.01"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/line_rects/0/3",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/line_rects/items/prefixItems/3/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-width-not-a-number.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_box/rect/2",
+        "value": "612"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/page_box/rect/2",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/properties/rect/prefixItems/2/type"
+      }
+    ]
+  },
+  {
+    "fixture": "invalid/pdf-page-box-height-not-a-number.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/page_box/rect/3",
+        "value": "792"
+      }
+    ],
+    "expect": [
+      {
+        "keyword": "type",
+        "instance_path": "/segments/0/page_box/rect/3",
+        "schema_path": "allOf[pdf]/then/properties/segments/items/properties/page_box/properties/rect/prefixItems/3/type"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/u1-prefix-with-an-unpaired-surrogate.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/prefix",
+        "value": "Book\n\t\t\t\tI\n\t\t\t\n\t\t\tFrom my grandfather Verus1 I learned good morals and the government of my temper.\n\t\t\tFrom the reputation and remembrance of my father,2 modesty and a manly character.\n\t\t\t\ud800"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "U1"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a1-text-offsets-empty-range.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_offsets/start",
+        "value": 38
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A1"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a1-audio-range-ends-before-it-starts.json",
+    "base": "audio-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges/0/end_ms",
+        "value": 50000
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A1"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a2-epub-text-offsets-shorter-than-text.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_offsets/end",
+        "value": 37
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a2-epub-text-offsets-count-the-leading-space.json",
+    "base": "epub-selection-starting-at-a-space.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_offsets/start",
+        "value": 265
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a2-pdf-text-range-longer-than-text.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/1/text_range/end",
+        "value": 42
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a2-text-range-shorter-than-text.json",
+    "base": "text-plain.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/text_range/end",
+        "value": 99
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A2"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a3-pdf-exact-text-joined-with-space.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/exact_text",
+        "value": "leaves early, and in between it is careful, touching each stone as if it\nwere counting them. Body, physical page 5\nThe heron at the in"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A3"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a4-pdf-second-segment-on-an-earlier-page.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/1/page_index",
+        "value": 2
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A4"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a5-epub-segment-index-equals-count.json",
+    "base": "epub-first-of-two-resources.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segment/index",
+        "value": 2
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A5"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a6-audio-second-range-not-from-start.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges/1/start_ms",
+        "value": 500
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A6"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a6-audio-same-asset-twice.json",
+    "base": "audio-cross-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges/1",
+        "value": {
+          "asset_id": "00000000-0000-4000-8000-000000000401",
+          "asset_sha256": "2d1e16363bc6d43f9acbd52f91a029ee19eef27871791e820975eb4d2348a94a",
+          "start_ms": 0,
+          "end_ms": 1000
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A6"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a6-audio-longer-than-120-seconds.json",
+    "base": "audio-single-file.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/ranges/0/end_ms",
+        "value": 180001
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A6"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a7-pdf-line-rect-past-the-page-box.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0",
+        "value": [
+          0.9,
+          0.5,
+          0.5,
+          0.01
+        ]
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A7"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a7-pdf-line-rect-above-the-page-box.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/0/line_rects/0",
+        "value": [
+          0.1,
+          0.9,
+          0.5,
+          0.2
+        ]
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A7"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a4-pdf-segments-overlap-on-one-page.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/segments/1",
+        "value": {
+          "line_rects": [
+            [
+              0.117647,
+              0.956983,
+              0.154471,
+              0.011364
+            ],
+            [
+              0.117647,
+              0.880644,
+              0.150873,
+              0.013889
+            ]
+          ],
+          "page_box": {
+            "name": "crop",
+            "rect": [
+              0,
+              0,
+              612,
+              792
+            ]
+          },
+          "page_index": 3,
+          "page_label": "1",
+          "page_rotation": 0,
+          "page_text_sha256": "e74370171aa87ba797152e51507b01d3cecccc4eccd572f8d1b8230d48328557",
+          "prefix": "",
+          "suffix": "let waited without moving for th",
+          "text": "Body, physical page 5\nThe heron at the in",
+          "text_range": {
+            "unit": "unicode_scalar",
+            "start": 380,
+            "end": 421
+          }
+        }
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A4"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/u1-reader-locator-key-with-an-unpaired-surrogate.json",
+    "base": "epub-single-resource-across-noteref.json",
+    "ops": [
+      {
+        "op": "add",
+        "path": "/reader/locator/note\ud800",
+        "value": "x"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "U1"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a2-markdown-exact-text-without-its-markup.json",
+    "base": "text-markdown-with-reader-locator.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/exact_text",
+        "value": "for absolute freedom and wildness"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A2"
+      }
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+host (macOS 26.6.2, 25G83), 7 Oct 2026: determinism of Scripts/fixtures/generate-g02-transfer-large.sh
+
+1. Fresh generation into an empty cache (SYLVIA_FIXTURE_CACHE=<worktree>/.build/scratch/cache), OpenSSL 3.6.3 9 Jun 2026:
+   generated and verified: .../generated/g02-transfer/large-5GiB.bin (5368709120 bytes, sha256 d2383fe38d8033b62ef9e6222756369fab813d2c64b2bce41e86ad9494af16d9)
+
+2. Same keystream recomputed with the system LibreSSL, streamed to shasum without writing a file
+   (dd if=/dev/zero bs=1048576 count=5120 | /usr/bin/openssl enc -aes-128-ctr -nosalt -K 000102030405060708090a0b0c0d0e0f -iv 0...0 | shasum -a 256):
+   LibreSSL 3.3.6
+   d2383fe38d8033b62ef9e6222756369fab813d2c64b2bce41e86ad9494af16d9  -
+
+Both equal the digest pinned in the generator. The fresh copy was deleted afterwards; the CI drop-in uses the
+cache copy, which the generator re-verifies against the same pinned digest before every run.

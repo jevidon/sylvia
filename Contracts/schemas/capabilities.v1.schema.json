@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:capabilities:v1",
+  "title": "Source capabilities",
+  "description": "Body of GET /v1/capabilities (plan 15.3). Unauthenticated, so it carries only protocol compatibility and limits: no library titles, item counts, device names or user names. Part size is negotiated by the client choosing a value in [min_bytes, max_bytes] and passing it as the part_size query parameter of the manifest request.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "protocol_version",
+    "supported_major_versions",
+    "source_id",
+    "part_size",
+    "limits",
+    "auth_scheme",
+    "scopes",
+    "pin_algorithm"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "protocol_version": {
+      "type": "object",
+      "required": ["major", "minor"],
+      "properties": {
+        "major": { "type": "integer", "minimum": 1 },
+        "minor": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "supported_major_versions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "integer", "minimum": 1 }
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "part_size": {
+      "type": "object",
+      "required": ["default_bytes", "min_bytes", "max_bytes"],
+      "properties": {
+        "default_bytes": { "type": "integer", "minimum": 1048576, "maximum": 67108864, "multipleOf": 1048576 },
+        "min_bytes": { "type": "integer", "minimum": 1048576, "maximum": 67108864, "multipleOf": 1048576 },
+        "max_bytes": { "type": "integer", "minimum": 1048576, "maximum": 67108864, "multipleOf": 1048576 }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "required": [
+        "max_parts_per_asset",
+        "max_parts_per_manifest",
+        "max_assets_per_item",
+        "max_page_limit",
+        "max_request_body_bytes"
+      ],
+      "properties": {
+        "max_parts_per_asset": { "type": "integer", "minimum": 1 },
+        "max_parts_per_manifest": { "type": "integer", "minimum": 1 },
+        "max_assets_per_item": { "type": "integer", "minimum": 1 },
+        "max_page_limit": { "type": "integer", "minimum": 1 },
+        "max_request_body_bytes": { "type": "integer", "minimum": 1024 }
+      }
+    },
+    "auth_scheme": { "const": "bearer" },
+    "scopes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["catalog", "read", "download", "receipt"] }
+    },
+    "pin_algorithm": { "const": "spki-sha256" }
+  }
+}

@@ -1,0 +1,5 @@
+New highlight in a live PDFView (rotated.pdf page 1, /Rotate 90), simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77)
+1. highlightRects set (3 lines), no invalidation, 3 s: 0 draws of the page, 0 with the new highlight
+2. view.setNeedsDisplay(): 2 draws with the new highlight, 2 off the main thread; selection kept true, page kept true, scale kept true
+3. second change (2 lines) + setNeedsDisplay(): 2 draws with it; selection kept true
+4. comparison, document reset (document = nil, then the same document, go(to: page)): 8 draws with the current highlight; selection text unchanged true, scale unchanged false

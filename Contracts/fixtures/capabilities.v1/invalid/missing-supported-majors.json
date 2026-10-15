@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "protocol_version": {
+    "major": 1,
+    "minor": 0
+  },
+  "source_id": "5a1e0c3e-7d2b-4c1a-9f00-000000000001",
+  "part_size": {
+    "default_bytes": 16777216,
+    "min_bytes": 1048576,
+    "max_bytes": 67108864
+  },
+  "limits": {
+    "max_parts_per_asset": 16384,
+    "max_parts_per_manifest": 65536,
+    "max_assets_per_item": 4096,
+    "max_page_limit": 200,
+    "max_request_body_bytes": 65536
+  },
+  "auth_scheme": "bearer",
+  "scopes": [
+    "catalog",
+    "read",
+    "download",
+    "receipt"
+  ],
+  "pin_algorithm": "spki-sha256"
+}

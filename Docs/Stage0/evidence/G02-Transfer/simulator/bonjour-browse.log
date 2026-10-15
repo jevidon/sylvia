@@ -1,0 +1,10 @@
+environment: simulator (Version 26.5 (Build 23F77)), hosted test in G02TransferHarness;
+  client: SylviaBackgroundTransfer with URLSessionConfiguration.background("com.jevidon.sylvia.spike.transfer.test.bonjour.<uuid>")
+  source: sylvia-test-source on the host (see the run log for its options)
+NWBrowser bonjourWithTXTRecord(_sylvia-src._tcp) found "G02 MAIN source" with TXT sid = the paired source ID
+resolved over TCP to 192.168.20.104:55279; pinned GET /v1/capabilities through that address returned the paired source
+the simulator shows no local-network permission prompt; prompt and denial are device checklist steps
+2026-10-12T21:05:20.347Z staging_checked jobs=0 milliseconds=0 rehashed=true verified_bytes=0
+2026-10-12T21:05:20.347Z coordinator_start app_state=foreground jobs=0 protected_data_available=not_reported session=com.jevidon.sylvia.spike.transfer.test.bonjour.283bca29-c67b-4fc9-8cda-e79082d16fc3
+2026-10-12T21:05:20.351Z launch_reconciliation adopted=0 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
+2026-10-12T21:05:20.410Z endpoint_preferred host=192.168.20.104 port=55279 source=588a4335-c353-488d-965e-d13528e7d075

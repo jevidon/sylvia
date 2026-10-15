@@ -1,0 +1,49 @@
+# check: g01-pdf-release
+# expected on this Mac (stated before the run): pass
+# note: Runbook correction for G01-PDF step 10 (plan 19.1: timings from a Release build without a debugger): Release build of the harness.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:46:42Z; load at start: 7.24 3.10 2.37
+# command (from the repository root):
+#   xcodebuild build -project Spikes/G01-PDF/G01PDF.xcodeproj -scheme PDFSpikeHarness -configuration Release -destination generic/platform=iOS -derivedDataPath Spikes/G01-PDF/.build/DerivedData-device-release -disableAutomaticPackageResolution DEVELOPMENT_TEAM=A4KBDX665Z 
+# finished: 2026-10-14T06:46:48Z after 6 s; exit status 0; load at end: 6.82 3.08 2.36
+--- result lines
+** BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+Provisioning Profile: "iOS Team Provisioning Profile: *"
+Signing Identity:     "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+--- warning count: 2 (first 20 unique)
+2026-10-14 19:46:47.360 appintentsmetadataprocessor[92766:35836445] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:46:48.618 appintentsmetadataprocessor[92792:35836545] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+--- last 15 lines of the output
+    cd Spikes/G01-PDF
+    builtin-validationUtility Spikes/G01-PDF/.build/DerivedData-device-release/Build/Products/Release-iphoneos/PDFSpikeHarness.app -shallow-bundle -infoplist-subpath Info.plist
+
+Touch Spikes/G01-PDF/.build/DerivedData-device-release/Build/Products/Release-iphoneos/PDFSpikeHarness.app (in target 'PDFSpikeHarness' from project 'G01PDF')
+    cd Spikes/G01-PDF
+    /usr/bin/touch -c Spikes/G01-PDF/.build/DerivedData-device-release/Build/Products/Release-iphoneos/PDFSpikeHarness.app
+
+PruneExplicitPrecompiledModules Spikes/G01-PDF/.build/DerivedData-device-release/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G01-PDF/.build/DerivedData-device-release/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G01-PDF/.build/DerivedData-device-release/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+** BUILD SUCCEEDED **
+
+--- codesign checks of the products (in Spikes/G01-PDF/.build/DerivedData-device-release/Build/Products/Release-iphoneos)
+== PDFSpikeHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.pdf
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+== PDFSpikeHarness.app/Frameworks/PDFAnchorKit.framework: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.pdf.anchorkit
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+# result: pass; expected: pass; as expected: yes

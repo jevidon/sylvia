@@ -1,0 +1,429 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project DesignCatalog.xcodeproj -scheme DesignCatalog -destination id=A96453E6-11C3-4D76-B98C-4EB36D07FAAC -derivedDataPath /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-5/Apps/DesignCatalog/.build/DerivedData -disableAutomaticPackageResolution "-only-testing:DesignCatalogUITests/PadLayoutTests" "-only-testing:DesignCatalogUITests/AreaNavigationTests/testHardwareKeyboardSwitchesAreas"
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  swift-syntax: https://github.com/swiftlang/swift-syntax @ 604.0.0
+  swift-snapshot-testing: https://github.com/pointfreeco/swift-snapshot-testing @ 1.19.6
+  SylviaDesign: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-5/Packages/Design
+  swift-custom-dump: https://github.com/pointfreeco/swift-custom-dump @ 1.7.3
+  swift-issue-reporting: https://github.com/pointfreeco/swift-issue-reporting @ 2.1.1
+
+2026-10-13 11:45:43.705068+1300 DesignCatalogUITests-Runner[28329:27571424] [Default] Running tests...
+2026-10-13 11:45:43.725273+1300 DesignCatalogUITests-Runner[28329:27571424] [UIKit App Config] Update the Info.plist: Launch screens will soon be required.
+objc[28329]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x10a6c8310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x109b40398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-13 11:45:46.905.
+Test Suite 'DesignCatalogUITests.xctest' started at 2026-10-13 11:45:46.905.
+Test Suite 'AreaNavigationTests' started at 2026-10-13 11:45:46.905.
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testHardwareKeyboardSwitchesAreas]' started.
+    t =     0.00s Start Test at 2026-10-13 11:45:46.906
+    t =     0.10s Set Up
+    t =     0.10s Open com.jevidon.sylvia.designcatalog
+    t =     0.11s     Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:45:47.062 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:45:47.062 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     0.79s         Setting up automation session
+    t =     1.43s         Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     2.81s Waiting 20.0s for "layoutAudit.library" Any to exist
+    t =     3.90s     Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.library" Any`
+    t =     3.90s         Checking existence of `"layoutAudit.library" Any`
+    t =     3.98s Find the "layoutAudit.library" Any
+    t =     4.72s Find the "layoutAudit.library" Other
+    t =     4.76s Checking existence of `Button (First Match)`
+    t =     4.76s Find the Button (First Match)
+    t =     4.77s Type '⎋' key (XCUIKeyboardKeyEscape) with no modifiers
+    t =     4.77s     Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     4.77s     Find the Target Application 'com.jevidon.sylvia.designcatalog'
+    t =     4.79s     Check for interrupting elements affecting "Sylvia Catalog" Application
+    t =     4.82s         Wait for com.apple.springboard to idle
+    t =     4.87s     Synthesize event
+    t =     5.23s     Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     6.76s Checking existence of `Button (First Match)`
+    t =     6.76s Find the Button (First Match)
+    t =     6.77s Type '2' key with modifiers '⌘' (0x10)
+    t =     6.77s     Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     6.77s     Find the Target Application 'com.jevidon.sylvia.designcatalog'
+    t =     6.79s     Check for interrupting elements affecting "Sylvia Catalog" Application
+    t =     6.81s         Wait for com.apple.springboard to idle
+    t =     6.82s     Synthesize event
+    t =     7.16s     Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     7.25s Checking existence of `Button (First Match)`
+    t =     7.26s Find the Button (First Match)
+    t =     7.27s Find the Button (First Match)
+    t =     7.28s Find the Button (First Match)
+    t =     7.37s screenshot command-2-thoughts
+    t =     7.43s Type '3' key with modifiers '⌘' (0x10)
+    t =     7.43s     Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     7.43s     Find the Target Application 'com.jevidon.sylvia.designcatalog'
+    t =     7.47s     Check for interrupting elements affecting "Sylvia Catalog" Application
+    t =     7.50s         Wait for com.apple.springboard to idle
+    t =     7.86s     Synthesize event
+    t =     8.20s     Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     8.22s Checking existence of `Button (First Match)`
+    t =     8.22s Find the Button (First Match)
+    t =     8.23s Find the Button (First Match)
+    t =     8.24s Find the Button (First Match)
+    t =     8.33s screenshot command-3-inbox
+    t =     8.35s Type '1' key with modifiers '⌘' (0x10)
+    t =     8.35s     Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     8.36s     Find the Target Application 'com.jevidon.sylvia.designcatalog'
+    t =     8.38s     Check for interrupting elements affecting "Sylvia Catalog" Application
+    t =     8.40s         Wait for com.apple.springboard to idle
+    t =     8.41s     Synthesize event
+    t =     8.76s     Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     8.77s Checking existence of `Button (First Match)`
+    t =     8.78s Find the Button (First Match)
+    t =     8.79s Find the Button (First Match)
+    t =     8.80s Find the Button (First Match)
+    t =     8.88s screenshot command-1-library
+    t =     8.91s Terminate com.jevidon.sylvia.designcatalog:28374
+    t =    10.01s Tear Down
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testHardwareKeyboardSwitchesAreas]' passed (10.042 seconds).
+Test Suite 'AreaNavigationTests' passed at 2026-10-13 11:45:56.948.
+	 Executed 1 test, with 0 failures (0 unexpected) in 10.042 (10.042) seconds
+Test Suite 'PadLayoutTests' started at 2026-10-13 11:45:56.948.
+Test Case '-[DesignCatalogUITests.PadLayoutTests testRegularWidthLayout]' started.
+    t =     0.00s Start Test at 2026-10-13 11:45:56.949
+    t =     0.01s Set Up
+    t =     0.01s library (light)
+    t =     0.01s     Open com.jevidon.sylvia.designcatalog
+    t =     0.02s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:45:56.964 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:45:56.964 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     0.22s             Setting up automation session
+    t =     0.74s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =     2.04s     Waiting 20.0s for "layoutAudit.library" Any to exist
+    t =     3.12s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.library" Any`
+    t =     3.12s             Checking existence of `"layoutAudit.library" Any`
+    t =     3.17s     Find the "layoutAudit.library" Any
+    t =     3.89s     Find the "layoutAudit.library" Other
+    t =     3.92s     Waiting 10.0s for Any (First Match) to exist
+    t =     5.01s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =     5.01s             Checking existence of `Any (First Match)`
+    t =     5.02s     Waiting 10.0s for Any (First Match) to exist
+    t =     6.10s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =     6.10s             Checking existence of `Any (First Match)`
+    t =     6.11s     Waiting 10.0s for Any (First Match) to exist
+    t =     7.19s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =     7.19s             Checking existence of `Any (First Match)`
+    t =     7.20s     Waiting 10.0s for Any (First Match) to exist
+    t =     8.28s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =     8.28s             Checking existence of `Any (First Match)`
+    t =     8.30s     Checking existence of `Button (First Match)`
+    t =     8.31s     Find the Window (First Match)
+    t =     8.31s     Find the Button (First Match)
+    t =     8.32s     Find the "Library" Button
+    t =     8.42s     screenshot library
+    t =     8.44s     Terminate com.jevidon.sylvia.designcatalog:28459
+    t =     9.54s inbox (light)
+    t =     9.54s     Open com.jevidon.sylvia.designcatalog
+    t =     9.54s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:46:06.491 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:46:06.491 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     9.75s             Setting up automation session
+    t =    10.31s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    11.60s     Waiting 20.0s for "layoutAudit.inbox" Any to exist
+    t =    12.68s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.inbox" Any`
+    t =    12.68s             Checking existence of `"layoutAudit.inbox" Any`
+    t =    12.73s     Find the "layoutAudit.inbox" Any
+    t =    13.46s     Find the "layoutAudit.inbox" Other
+    t =    13.48s     Waiting 10.0s for Any (First Match) to exist
+    t =    14.55s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    14.55s             Checking existence of `Any (First Match)`
+    t =    14.59s     Waiting 10.0s for Any (First Match) to exist
+    t =    15.66s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    15.67s             Checking existence of `Any (First Match)`
+    t =    15.68s     Waiting 10.0s for Any (First Match) to exist
+    t =    16.74s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    16.74s             Checking existence of `Any (First Match)`
+    t =    16.78s     Checking existence of `Button (First Match)`
+    t =    16.79s     Find the Window (First Match)
+    t =    16.79s     Find the Button (First Match)
+    t =    16.81s     Find the "Library" Button
+    t =    16.89s     screenshot inbox
+    t =    16.92s     Terminate com.jevidon.sylvia.designcatalog:28588
+    t =    18.01s thoughts (light)
+    t =    18.01s     Open com.jevidon.sylvia.designcatalog
+    t =    18.01s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:46:14.959 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:46:14.959 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    18.22s             Setting up automation session
+    t =    18.72s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    20.09s     Waiting 20.0s for "layoutAudit.thoughts" Any to exist
+    t =    21.14s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.thoughts" Any`
+    t =    21.14s             Checking existence of `"layoutAudit.thoughts" Any`
+    t =    21.21s     Find the "layoutAudit.thoughts" Any
+    t =    21.95s     Find the "layoutAudit.thoughts" Other
+    t =    21.97s     Waiting 10.0s for Any (First Match) to exist
+    t =    23.05s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    23.05s             Checking existence of `Any (First Match)`
+    t =    23.08s     Waiting 10.0s for Any (First Match) to exist
+    t =    24.16s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    24.16s             Checking existence of `Any (First Match)`
+    t =    24.20s     Checking existence of `Button (First Match)`
+    t =    24.20s     Find the Window (First Match)
+    t =    24.21s     Find the Button (First Match)
+    t =    24.22s     Find the "Library" Button
+    t =    24.30s     screenshot thoughts
+    t =    24.33s     Terminate com.jevidon.sylvia.designcatalog:28833
+    t =    25.40s reader.selection (light)
+    t =    25.40s     Open com.jevidon.sylvia.designcatalog
+    t =    25.40s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:46:22.351 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:46:22.351 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    25.61s             Setting up automation session
+    t =    26.12s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    27.72s     Waiting 20.0s for "layoutAudit.reader" Any to exist
+    t =    28.77s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.reader" Any`
+    t =    28.77s             Checking existence of `"layoutAudit.reader" Any`
+    t =    28.85s     Find the "layoutAudit.reader" Any
+    t =    29.61s     Find the "layoutAudit.reader" Other
+    t =    29.66s     Waiting 10.0s for Any (First Match) to exist
+    t =    30.72s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    30.72s             Checking existence of `Any (First Match)`
+    t =    30.77s     Waiting 10.0s for Any (First Match) to exist
+    t =    31.84s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    31.84s             Checking existence of `Any (First Match)`
+    t =    31.87s     Waiting 10.0s for Any (First Match) to exist
+    t =    32.94s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    32.94s             Checking existence of `Any (First Match)`
+    t =    32.98s     Waiting 10.0s for Any (First Match) to exist
+    t =    34.04s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    34.04s             Checking existence of `Any (First Match)`
+    t =    34.16s     screenshot reader.selection
+    t =    34.20s     Terminate com.jevidon.sylvia.designcatalog:28873
+    t =    35.29s library (dark)
+    t =    35.29s     Open com.jevidon.sylvia.designcatalog
+    t =    35.29s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:46:32.241 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:46:32.241 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    35.50s             Setting up automation session
+    t =    36.01s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    37.33s     Waiting 20.0s for "layoutAudit.library" Any to exist
+    t =    38.40s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.library" Any`
+    t =    38.40s             Checking existence of `"layoutAudit.library" Any`
+    t =    38.45s     Find the "layoutAudit.library" Any
+    t =    39.19s     Find the "layoutAudit.library" Other
+    t =    39.21s     Waiting 10.0s for Any (First Match) to exist
+    t =    40.28s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    40.28s             Checking existence of `Any (First Match)`
+    t =    40.29s     Waiting 10.0s for Any (First Match) to exist
+    t =    41.35s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    41.35s             Checking existence of `Any (First Match)`
+    t =    41.36s     Waiting 10.0s for Any (First Match) to exist
+    t =    42.44s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    42.44s             Checking existence of `Any (First Match)`
+    t =    42.45s     Waiting 10.0s for Any (First Match) to exist
+    t =    43.51s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    43.51s             Checking existence of `Any (First Match)`
+    t =    43.53s     Checking existence of `Button (First Match)`
+    t =    43.54s     Find the Window (First Match)
+    t =    43.54s     Find the Button (First Match)
+    t =    43.55s     Find the "Library" Button
+    t =    43.64s     screenshot library
+    t =    43.67s     Terminate com.jevidon.sylvia.designcatalog:28948
+    t =    44.75s inbox (dark)
+    t =    44.75s     Open com.jevidon.sylvia.designcatalog
+    t =    44.75s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:46:41.696 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:46:41.696 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    44.96s             Setting up automation session
+    t =    45.46s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    46.74s     Waiting 20.0s for "layoutAudit.inbox" Any to exist
+    t =    47.80s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.inbox" Any`
+    t =    47.80s             Checking existence of `"layoutAudit.inbox" Any`
+    t =    47.85s     Find the "layoutAudit.inbox" Any
+    t =    48.58s     Find the "layoutAudit.inbox" Other
+    t =    48.60s     Waiting 10.0s for Any (First Match) to exist
+    t =    49.66s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    49.66s             Checking existence of `Any (First Match)`
+    t =    49.70s     Waiting 10.0s for Any (First Match) to exist
+    t =    50.75s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    50.75s             Checking existence of `Any (First Match)`
+    t =    50.76s     Waiting 10.0s for Any (First Match) to exist
+    t =    51.80s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    51.80s             Checking existence of `Any (First Match)`
+    t =    51.85s     Checking existence of `Button (First Match)`
+    t =    51.85s     Find the Window (First Match)
+    t =    51.86s     Find the Button (First Match)
+    t =    51.87s     Find the "Library" Button
+    t =    51.95s     screenshot inbox
+    t =    51.98s     Terminate com.jevidon.sylvia.designcatalog:29004
+    t =    53.06s thoughts (dark)
+    t =    53.06s     Open com.jevidon.sylvia.designcatalog
+    t =    53.06s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:46:50.008 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:46:50.008 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    53.27s             Setting up automation session
+    t =    53.77s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    55.15s     Waiting 20.0s for "layoutAudit.thoughts" Any to exist
+    t =    56.20s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.thoughts" Any`
+    t =    56.20s             Checking existence of `"layoutAudit.thoughts" Any`
+    t =    56.28s     Find the "layoutAudit.thoughts" Any
+    t =    57.01s     Find the "layoutAudit.thoughts" Other
+    t =    57.04s     Waiting 10.0s for Any (First Match) to exist
+    t =    58.08s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    58.08s             Checking existence of `Any (First Match)`
+    t =    58.12s     Waiting 10.0s for Any (First Match) to exist
+    t =    59.17s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    59.17s             Checking existence of `Any (First Match)`
+    t =    59.20s     Checking existence of `Button (First Match)`
+    t =    59.21s     Find the Window (First Match)
+    t =    59.21s     Find the Button (First Match)
+    t =    59.22s     Find the "Library" Button
+    t =    59.31s     screenshot thoughts
+    t =    59.34s     Terminate com.jevidon.sylvia.designcatalog:29105
+    t =    60.39s reader.selection (dark)
+    t =    60.39s     Open com.jevidon.sylvia.designcatalog
+    t =    60.39s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:46:57.343 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:46:57.343 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    60.60s             Setting up automation session
+    t =    61.10s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    62.58s     Waiting 20.0s for "layoutAudit.reader" Any to exist
+    t =    63.64s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.reader" Any`
+    t =    63.64s             Checking existence of `"layoutAudit.reader" Any`
+    t =    63.73s     Find the "layoutAudit.reader" Any
+    t =    64.48s     Find the "layoutAudit.reader" Other
+    t =    64.52s     Waiting 10.0s for Any (First Match) to exist
+    t =    65.60s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    65.60s             Checking existence of `Any (First Match)`
+    t =    65.65s     Waiting 10.0s for Any (First Match) to exist
+    t =    66.71s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    66.72s             Checking existence of `Any (First Match)`
+    t =    66.74s     Waiting 10.0s for Any (First Match) to exist
+    t =    67.80s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    67.80s             Checking existence of `Any (First Match)`
+    t =    67.85s     Waiting 10.0s for Any (First Match) to exist
+    t =    68.92s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    68.92s             Checking existence of `Any (First Match)`
+    t =    69.05s     screenshot reader.selection
+    t =    69.08s     Terminate com.jevidon.sylvia.designcatalog:29170
+    t =    70.15s library (ax5)
+    t =    70.15s     Open com.jevidon.sylvia.designcatalog
+    t =    70.15s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:47:07.099 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:47:07.099 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    70.36s             Setting up automation session
+    t =    70.86s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    72.16s     Waiting 20.0s for "layoutAudit.library" Any to exist
+    t =    73.23s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.library" Any`
+    t =    73.23s             Checking existence of `"layoutAudit.library" Any`
+    t =    73.28s     Find the "layoutAudit.library" Any
+    t =    74.01s     Find the "layoutAudit.library" Other
+    t =    74.03s     Waiting 10.0s for Any (First Match) to exist
+    t =    75.10s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    75.10s             Checking existence of `Any (First Match)`
+    t =    75.11s     Waiting 10.0s for Any (First Match) to exist
+    t =    76.16s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    76.17s             Checking existence of `Any (First Match)`
+    t =    76.18s     Waiting 10.0s for Any (First Match) to exist
+    t =    77.24s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    77.24s             Checking existence of `Any (First Match)`
+    t =    77.26s     Waiting 10.0s for Any (First Match) to exist
+    t =    78.33s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    78.33s             Checking existence of `Any (First Match)`
+    t =    78.35s     Checking existence of `Button (First Match)`
+    t =    78.36s     Find the Window (First Match)
+    t =    78.36s     Find the Button (First Match)
+    t =    78.37s     Find the "Library" Button
+    t =    78.46s     screenshot library
+    t =    78.49s     Terminate com.jevidon.sylvia.designcatalog:29274
+    t =    79.57s inbox (ax5)
+    t =    79.57s     Open com.jevidon.sylvia.designcatalog
+    t =    79.57s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:47:16.515 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:47:16.516 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    79.78s             Setting up automation session
+    t =    80.28s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    81.54s     Waiting 20.0s for "layoutAudit.inbox" Any to exist
+    t =    82.59s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.inbox" Any`
+    t =    82.59s             Checking existence of `"layoutAudit.inbox" Any`
+    t =    82.64s     Find the "layoutAudit.inbox" Any
+    t =    83.36s     Find the "layoutAudit.inbox" Other
+    t =    83.39s     Waiting 10.0s for Any (First Match) to exist
+    t =    84.45s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    84.45s             Checking existence of `Any (First Match)`
+    t =    84.49s     Waiting 10.0s for Any (First Match) to exist
+    t =    85.55s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    85.55s             Checking existence of `Any (First Match)`
+    t =    85.56s     Waiting 10.0s for Any (First Match) to exist
+    t =    86.61s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    86.61s             Checking existence of `Any (First Match)`
+    t =    86.66s     Checking existence of `Button (First Match)`
+    t =    86.67s     Find the Window (First Match)
+    t =    86.67s     Find the Button (First Match)
+    t =    86.68s     Find the "Library" Button
+    t =    86.77s     screenshot inbox
+    t =    86.80s     Terminate com.jevidon.sylvia.designcatalog:29356
+    t =    87.88s thoughts (ax5)
+    t =    87.88s     Open com.jevidon.sylvia.designcatalog
+    t =    87.88s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:47:24.829 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:47:24.829 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    88.09s             Setting up automation session
+    t =    88.59s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    90.13s     Waiting 20.0s for "layoutAudit.thoughts" Any to exist
+    t =    91.20s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.thoughts" Any`
+    t =    91.20s             Checking existence of `"layoutAudit.thoughts" Any`
+    t =    91.28s     Find the "layoutAudit.thoughts" Any
+    t =    92.00s     Find the "layoutAudit.thoughts" Other
+    t =    92.03s     Waiting 10.0s for Any (First Match) to exist
+    t =    93.09s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    93.09s             Checking existence of `Any (First Match)`
+    t =    93.13s     Waiting 10.0s for Any (First Match) to exist
+    t =    94.19s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    94.19s             Checking existence of `Any (First Match)`
+    t =    94.22s     Checking existence of `Button (First Match)`
+    t =    94.23s     Find the Window (First Match)
+    t =    94.23s     Find the Button (First Match)
+    t =    94.24s     Find the "Library" Button
+    t =    94.33s     screenshot thoughts
+    t =    94.36s     Terminate com.jevidon.sylvia.designcatalog:29444
+    t =    95.43s reader.selection (ax5)
+    t =    95.43s     Open com.jevidon.sylvia.designcatalog
+    t =    95.43s         Launch com.jevidon.sylvia.designcatalog
+2026-10-13 11:47:32.382 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-13 11:47:32.382 xcodebuild[28184:27569754] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    95.65s             Setting up automation session
+    t =    96.12s             Wait for com.jevidon.sylvia.designcatalog to idle
+    t =    97.52s     Waiting 20.0s for "layoutAudit.reader" Any to exist
+    t =    98.59s         Checking `Expect predicate `existsNoRetry == 1` for object "layoutAudit.reader" Any`
+    t =    98.59s             Checking existence of `"layoutAudit.reader" Any`
+    t =    98.68s     Find the "layoutAudit.reader" Any
+    t =    99.42s     Find the "layoutAudit.reader" Other
+    t =    99.46s     Waiting 10.0s for Any (First Match) to exist
+    t =   100.53s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =   100.53s             Checking existence of `Any (First Match)`
+    t =   100.58s     Waiting 10.0s for Any (First Match) to exist
+    t =   101.65s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =   101.65s             Checking existence of `Any (First Match)`
+    t =   101.68s     Waiting 10.0s for Any (First Match) to exist
+    t =   102.75s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =   102.75s             Checking existence of `Any (First Match)`
+    t =   102.79s     Waiting 10.0s for Any (First Match) to exist
+    t =   103.85s         Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =   103.85s             Checking existence of `Any (First Match)`
+    t =   103.97s     screenshot reader.selection
+    t =   104.00s     Terminate com.jevidon.sylvia.designcatalog:29562
+    t =   105.09s Tear Down
+Test Case '-[DesignCatalogUITests.PadLayoutTests testRegularWidthLayout]' passed (105.213 seconds).
+Test Suite 'PadLayoutTests' passed at 2026-10-13 11:47:42.162.
+	 Executed 1 test, with 0 failures (0 unexpected) in 105.213 (105.213) seconds
+Test Suite 'DesignCatalogUITests.xctest' passed at 2026-10-13 11:47:42.162.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 115.254 (115.257) seconds
+Test Suite 'Selected tests' passed at 2026-10-13 11:47:42.162.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 115.254 (115.258) seconds
+2026-10-13 11:47:42.458 xcodebuild[28184:27569754] [MT] IDETestOperationsObserverDebug: 121.946 elapsed -- Testing started completed.
+2026-10-13 11:47:42.458 xcodebuild[28184:27569754] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-13 11:47:42.458 xcodebuild[28184:27569754] [MT] IDETestOperationsObserverDebug: 121.946 sec, +121.946 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-5/Apps/DesignCatalog/.build/DerivedData/Logs/Test/Test-DesignCatalog-2026.10.13_11-45-40-+1300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

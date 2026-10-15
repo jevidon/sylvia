@@ -1,0 +1,111 @@
+Fixtures/LICENSES.md: 117 lines; tracked files in the repository: 2021
+
+## 1. Stated SHA-256 values
+ok    generated/g01-pdf/large-1000.pdf (cache, not tracked): digest cfa95b03bc0b... pinned in ['Scripts/fixtures/generate-g01-pdf-large.sh']
+ok    generated/g02-transfer/large-5GiB.bin (cache, not tracked): digest d2383fe38d80... pinned in ['Scripts/fixtures/generate-g02-transfer-large.sh']
+ok    generated/g03-intake/large.sylviapack (cache, not tracked): digest 982562b020ea... pinned in ['Scripts/fixtures/generate-g03-intake-pack.sh']
+ok    Fixtures/epub/se-walden.epub: stated 6168a788b950..., actual 6168a788b950...
+ok    Fixtures/epub/se-meditations.epub: stated c2b77e9daa37..., actual c2b77e9daa37...
+ok    Fixtures/epub/se-middlemarch.epub: stated cc2f7d8113f5..., actual cc2f7d8113f5...
+ok    Fixtures/epub/pg-walden-epub2.epub: stated 657b0f7fcb60..., actual 657b0f7fcb60...
+ok    Fixtures/epub/pg-walden-epub3.epub: stated 0b7570005935..., actual 0b7570005935...
+ok    Fixtures/audio/meditations-01-first180s.mp3: stated 6a3b752cc744..., actual 6a3b752cc744...
+ok    Fixtures/audio/meditations-02-first150s.mp3: stated 4e27b8d12646..., actual 4e27b8d12646...
+ok    Spikes/G01-PDF/Fixtures/labels-multipage.pdf: stated 6ffa266bf32e..., actual 6ffa266bf32e...
+ok    Spikes/G01-PDF/Fixtures/rotated.pdf: stated 892a204ec897..., actual 892a204ec897...
+ok    Spikes/G01-PDF/Fixtures/two-column.pdf: stated 0ac65589469f..., actual 0ac65589469f...
+ok    Spikes/G01-PDF/Fixtures/mixed-scanned.pdf: stated 1fa0c32f1482..., actual 1fa0c32f1482...
+ok    Spikes/G01-PDF/Fixtures/unicode.pdf: stated 0d2182907c8b..., actual 0d2182907c8b...
+ok    Spikes/G01-PDF/Fixtures/encrypted-user-password.pdf: stated 6d7bef64f1e2..., actual 6d7bef64f1e2...
+ok    Spikes/G01-PDF/Fixtures/encrypted-owner-only-nocopy.pdf: stated 7119b57492bc..., actual 7119b57492bc...
+ok    Spikes/G01-PDF/Fixtures/truncated.pdf: stated 0fc3c7bece26..., actual 0fc3c7bece26...
+ok    Spikes/G01-PDF/Fixtures/actions.pdf: stated 9f17e4d7a929..., actual 9f17e4d7a929...
+ok    Spikes/G01-PDF/Fixtures/actions-nonurl.pdf: stated 3dcd59c68578..., actual 3dcd59c68578...
+ok    Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Fixtures/library-v1.sqlite: stated eae90f6809c0..., actual eae90f6809c0...
+ok    Packages/Design/Sources/SylviaDesign/Resources/Fonts/Literata-Variable.ttf: stated b41138c93731..., actual b41138c93731...
+ok    Packages/Design/Sources/SylviaDesign/Resources/Fonts/Literata-Italic-Variable.ttf: stated d483dfaeba9c..., actual d483dfaeba9c...
+
+## 2. G0.1 EPUB MANIFEST.tsv
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-adept-like.epub: size 5470 and SHA-256 c7ce92279cc1... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-bomb-lying.epub: size 205767 and SHA-256 1d9d1d312cfb... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-bomb.epub: size 205767 and SHA-256 158c9948a3fb... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-csp-bypass.epub: size 2509 and SHA-256 d7bd010cfb71... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-deep-nesting.epub: size 2234 and SHA-256 6982b755949c... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-encrypted-chapter.epub: size 5212 and SHA-256 53877e705a59... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-font-obfuscated.epub: size 3803 and SHA-256 fdb51174283e... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-form-navigation.epub: size 3692 and SHA-256 99c18b7c1810... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-hostile.epub: size 5910 and SHA-256 8e66f0533d88... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-lcp-like.epub: size 5625 and SHA-256 e1d316b9dab8... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-nesting-bypass.epub: size 2671 and SHA-256 3e1441b62902... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-nesting-limit.epub: size 2018 and SHA-256 fcc962362c68... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-nonhtml-active.epub: size 2462 and SHA-256 f12eaba6008e... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-symlink.epub: size 1752 and SHA-256 262595fe70e7... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-traversal.epub: size 2657 and SHA-256 b84b0d2ff3cf... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-truncated.epub: size 1299 and SHA-256 816e2f5327bc... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-unicode.epub: size 2362 and SHA-256 dada2710805d... as MANIFEST.tsv states
+ok    Spikes/G01-EPUB/Fixtures/generated: 17 tracked EPUBs, 17 manifest rows (LICENSES.md says 17)
+ok    the 17 EPUB names listed in LICENSES.md equal the tracked EPUBs (17 listed)
+ok    EPUB sizes 1299 to 205767 bytes (LICENSES.md: 1,299 to 205,767)
+
+## 3. Stated counts and sizes
+ok    Spikes/G01-PDF/Fixtures: 10 PDFs (LICENSES.md table lists 10)
+ok    G0.2 contract fixtures: 60 files (LICENSES.md: 60)
+ok    G0.2 semantic-invalid manifests: 14 (LICENSES.md: 14)
+ok    G0.2 certificates: 3 DER and 3 pins (LICENSES.md: p256, p384, rsa2048)
+ok    no private key files tracked (0 found)
+ok    import-handoff-manifest.v1: 3 valid, 17 invalid (LICENSES.md: 3, 17)
+ok    sylviapack-manifest.v1: 4 valid, 22 invalid (LICENSES.md: 4, 22)
+ok    backup-manifest.v1: 2 valid, 20 invalid (LICENSES.md: 2, 20)
+ok    context-pack.v1: 8 valid, 21 invalid (LICENSES.md: 8, 21)
+ok    provider-config.v1: 5 valid, 12 invalid (LICENSES.md: 5, 12)
+ok    design-tokens.v1: 2 valid, 12 invalid (LICENSES.md: 2, 12)
+ok    Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Fixtures/library-v1.sqlite: 352256 bytes (LICENSES.md: 352,256)
+ok    Spikes/G05-AI/Tests/SylviaContextTests/EvaluationSet/eval-set.v0.json: 15795 bytes (LICENSES.md: 15,795)
+ok    Contracts/design/marginalia.v1.json: 65683 bytes (LICENSES.md: 65,683)
+ok    snapshot references: 527 files, 37,703,582 bytes, largest 368,357 (LICENSES.md: 527, 37,703,582, 368,357)
+ok    Packages/Design/LintFixtures: 9 files (LICENSES.md: 9)
+
+## 4. Fixture-like files named in LICENSES.md, and the fetch manifest
+ok    Fixtures/audio/meditations-01-first180s.mp3: named in LICENSES.md
+ok    Fixtures/audio/meditations-02-first150s.mp3: named in LICENSES.md
+ok    Fixtures/epub/pg-walden-epub2.epub: named in LICENSES.md
+ok    Fixtures/epub/pg-walden-epub3.epub: named in LICENSES.md
+ok    Fixtures/epub/se-meditations.epub: named in LICENSES.md
+ok    Fixtures/epub/se-middlemarch.epub: named in LICENSES.md
+ok    Fixtures/epub/se-walden.epub: named in LICENSES.md
+ok    Packages/Design/Sources/SylviaDesign/Resources/Fonts/Literata-Italic-Variable.ttf: named in LICENSES.md
+ok    Packages/Design/Sources/SylviaDesign/Resources/Fonts/Literata-Variable.ttf: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-adept-like.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-bomb-lying.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-bomb.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-csp-bypass.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-deep-nesting.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-encrypted-chapter.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-font-obfuscated.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-form-navigation.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-hostile.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-lcp-like.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-nesting-bypass.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-nesting-limit.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-nonhtml-active.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-symlink.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-traversal.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-truncated.epub: named in LICENSES.md
+ok    Spikes/G01-EPUB/Fixtures/generated/g01-unicode.epub: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/actions-nonurl.pdf: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/actions.pdf: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/encrypted-owner-only-nocopy.pdf: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/encrypted-user-password.pdf: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/labels-multipage.pdf: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/mixed-scanned.pdf: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/rotated.pdf: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/truncated.pdf: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/two-column.pdf: named in LICENSES.md
+ok    Spikes/G01-PDF/Fixtures/unicode.pdf: named in LICENSES.md
+ok    Spikes/G02-Transfer/TransferKit/Tests/SylviaTransferCoreTests/Fixtures/certs/p256.der: named in LICENSES.md
+ok    Spikes/G02-Transfer/TransferKit/Tests/SylviaTransferCoreTests/Fixtures/certs/p384.der: named in LICENSES.md
+ok    Spikes/G02-Transfer/TransferKit/Tests/SylviaTransferCoreTests/Fixtures/certs/rsa2048.der: named in LICENSES.md
+ok    Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Fixtures/library-v1.sqlite: named in LICENSES.md
+ok    fetched-into-cache table ['MeditationsMarcusAurelius_librivox.m4b', 'meditationsofmarcusaurelius_01_aurelius_64kb.mp3', 'meditationsofmarcusaurelius_02_aurelius_64kb.mp3'] equals Scripts/fixtures/manifest.tsv ['MeditationsMarcusAurelius_librivox.m4b', 'meditationsofmarcusaurelius_01_aurelius_64kb.mp3', 'meditationsofmarcusaurelius_02_aurelius_64kb.mp3']
+
+checks failed: 0

@@ -1,0 +1,15 @@
+# Mutation check of DesignCatalogTests (simulator: Sylvia-M0-g06-design, iPhone 17, iOS 26.5), 2026-10-12
+# PrototypeModel.save() was temporarily changed to call draft.commitSucceeded before store.commit, rebuilt and
+# tested with: xcodebuild test-without-building -project DesignCatalog.xcodeproj -scheme DesignCatalog
+#   -only-testing:DesignCatalogTests/SaveOrderingTests/testSheetSaysSavedOnlyAfterTheWrite
+# The test must fail (it did, below); the change was then reverted and the suite passes again.
+
+Test Case '-[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite]' started.
+Apps/DesignCatalog/Tests/SaveOrderingTests.swift:63: error: -[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite] : XCTAssertEqual failed: ("saved(2026-10-11 20:43:42 +0000)") is not equal to ("saving")
+Apps/DesignCatalog/Tests/SaveOrderingTests.swift:65: error: -[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite] : XCTAssertFalse failed - the sheet cannot be dismissed while the text is unsaved
+Apps/DesignCatalog/Tests/SaveOrderingTests.swift:73: error: -[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite] : XCTAssertFalse failed - Saved appeared before the record was on disk
+Apps/DesignCatalog/Tests/SaveOrderingTests.swift:77: error: -[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite] : XCTAssertEqual failed: threw error "Error Domain=NSCocoaErrorDomain Code=260 "The file “PrototypeCaptures.json” couldn’t be opened because there is no such file." UserInfo={NSFilePath=/Users/jevidon/Library/Developer/CoreSimulator/Devices/5F2BC885-C36B-435E-B038-F1F140433E6A/data/Containers/Data/Application/5C773176-AC90-4B9F-A938-58EB313A281D/tmp/SaveOrderingTests-6D00FA74-A340-4B1E-B6D9-43495FC9ADAD/PrototypeCaptures.json, NSURL=file:///Users/jevidon/Library/Developer/CoreSimulator/Devices/5F2BC885-C36B-435E-B038-F1F140433E6A/data/Containers/Data/Application/5C773176-AC90-4B9F-A938-58EB313A281D/tmp/SaveOrderingTests-6D00FA74-A340-4B1E-B6D9-43495FC9ADAD/PrototypeCaptures.json, NSUnderlyingError=0x1082e0420 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Apps/DesignCatalog/Tests/SaveOrderingTests.swift:79: error: -[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("saved-text_quote")") - the thought is listed only after the write
+Test Case '-[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite]' failed (0.226 seconds).
+	 Executed 1 test, with 5 failures (1 unexpected) in 0.226 (0.227) seconds
+	 Executed 1 test, with 5 failures (1 unexpected) in 0.226 (0.228) seconds

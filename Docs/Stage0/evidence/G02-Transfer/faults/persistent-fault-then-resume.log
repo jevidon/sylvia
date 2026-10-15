@@ -1,0 +1,42 @@
+host (macOS), in-process source, 1 MiB parts, asset 6295777 bytes
+request POST /v1/pair range=- -> 200
+request GET /v1/items/06569e51-6c39-42d5-bd20-e0f01826f526/manifest range=- -> 200
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=0-1048575 -> 206
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=1048576-2097151 -> 206
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=2097152-3145727 -> 206
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=3145728-4194303 -> 206
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=4194304-5242879 -> 206
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=5242880-6291455 -> 206 fault=corruptByte(at: 10)
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=6291456-6295776 -> 206
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=5242880-6291455 -> 206 fault=corruptByte(at: 10)
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=5242880-6291455 -> 206 fault=corruptByte(at: 10)
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=5242880-6291455 -> 206 fault=corruptByte(at: 10)
+request GET /v1/items/06569e51-6c39-42d5-bd20-e0f01826f526/manifest range=- -> 200
+request GET /v1/assets/025836cb-08d5-41dd-af69-4304a2073066/content range=bytes=5242880-6291455 -> 206
+event manifestFetched(itemVersionID: "3ace9002-bca3-4dfc-85f4-c87e9df9c09e")
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 0, attempt: 1)
+event partVerified(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 0)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 1, attempt: 1)
+event partVerified(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 1)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 2, attempt: 1)
+event partVerified(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 2)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 3, attempt: 1)
+event partVerified(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 3)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 4, attempt: 1)
+event partVerified(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 4)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5, attempt: 1)
+event partFailed(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5, failure: SylviaTransferCore.PartFailure.digestMismatch)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 6, attempt: 1)
+event partVerified(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 6)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5, attempt: 2)
+event partFailed(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5, failure: SylviaTransferCore.PartFailure.digestMismatch)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5, attempt: 3)
+event partFailed(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5, failure: SylviaTransferCore.PartFailure.digestMismatch)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5, attempt: 4)
+event partFailed(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5, failure: SylviaTransferCore.PartFailure.digestMismatch)
+event paused(SylviaTransferCore.PauseReason.repeatedPartFailure)
+event manifestFetched(itemVersionID: "3ace9002-bca3-4dfc-85f4-c87e9df9c09e")
+event resumed(assetID: "025836cb-08d5-41dd-af69-4304a2073066", verifiedParts: 6)
+event partRequested(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5, attempt: 1)
+event partVerified(assetID: "025836cb-08d5-41dd-af69-4304a2073066", index: 5)
+event assetFinalized(assetID: "025836cb-08d5-41dd-af69-4304a2073066")

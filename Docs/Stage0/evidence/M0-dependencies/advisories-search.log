@@ -1,0 +1,312 @@
+advisory search 2026-10-14T01:45:00Z; raw responses in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-1/.build/scratch/run-all-20261014T014333Z/advisories
+GitHub API: authenticated with the gh CLI token (not shown)
+npm registry hypothesis@1.1763.0: status 200 (published package hypothesis 1.1763.0, repository git+https://github.com/hypothesis/client.git)
+GitHub repository advisories of hypothesis/client: status 200; 0 published
+
+## Workflow actions: the release each movable tag names today (GitHub tags API)
+actions/checkout@v4 -> commit 11d5960a326750d5838078e36cf38b85af677262 = release v4.4.0
+actions/upload-artifact@v4 -> commit ea165f8d65b6e75b540449e92b4886f43607fa02 = release v4.6.2
+
+## npm: 96 packages; positive controls: lodash@4.17.15 (expects GHSA-p6mc-m468-83gw)
+OSV control: lodash@4.17.15 returned GHSA-p6mc-m468-83gw
+OSV version queries: 96 packages; 0 with an advisory that affects the queried version
+OSV name queries (any version): 0 of 96 packages have advisories for some version
+GitHub control (reviewed): lodash@4.17.15 returned GHSA-p6mc-m468-83gw
+GitHub advisories (ecosystem npm, type reviewed, 97 packages in every spelling): 6 returned; 0 for these packages
+GitHub advisories (ecosystem npm, type malware, 96 packages in every spelling): 0 returned; 0 for these packages
+
+## SwiftURL: 23 packages; positive controls: github.com/marmelroy/Zip@2.1.2 (expects GHSA-g454-wj9r-jpg4); github.com/apple/swift-crypto@4.3.0 (expects GHSA-9m44-rr2w-ppp7)
+OSV control: github.com/marmelroy/Zip@2.1.2 returned GHSA-g454-wj9r-jpg4
+OSV control: github.com/apple/swift-crypto@4.3.0 returned GHSA-9m44-rr2w-ppp7
+OSV version queries: 23 packages; 1 with an advisory that affects the queried version
+  AFFECTS github.com/marmelroy/Zip@2.1.2: GHSA-g454-wj9r-jpg4 (aliases CVE-2023-39135); severity HIGH CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H; published 2023-08-31; Path traversal in Zip Swift
+      affected ranges: introduced 0 last_affected 2.1.2
+OSV name queries (any version): 6 of 23 packages have advisories for some version
+  github.com/apple/swift-asn1 (pinned 1.7.3): GHSA-w8xv-rwgf-4fwh (aliases CVE-2025-0343); severity LOW; published 2025-01-14; CVE-2025-0343: Swift ASN.1 can crash when parsing maliciously formed BER/DER; not 1.7.3 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.3.1
+  github.com/apple/swift-crypto (pinned 5.0.0): GHSA-9m44-rr2w-ppp7 (aliases CVE-2026-28815); severity HIGH CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:N/VA:H/SC:N/SI:N/SA:N; published 2026-04-03; Swift Crypto: X-Wing HPKE Decapsulation Accepts Malformed Ciphertext Length; not 5.0.0 (outside the affected range)
+      affected ranges: introduced 4.0.0 fixed 4.3.1
+  github.com/apple/swift-nio (pinned 2.103.0): GHSA-7fj7-39wj-c64f (aliases CVE-2022-3215); severity MODERATE CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N; published 2023-06-07; SwiftNIO vulnerable to Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting'); not 2.103.0 (outside the affected range)
+      affected ranges: introduced 2.41.0 fixed 2.42.0; introduced 2.39.0 fixed 2.39.1; introduced 0 fixed 2.29.1
+  github.com/apple/swift-nio (pinned 2.103.0): GHSA-cq87-8r7h-962v (aliases CVE-2026-28970); severity MODERATE CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:H/SA:N/E:U; published 2026-06-12; SwiftNIO: CRLF Injection in outbound HTTP request URI via NIOHTTPRequestHeadersValidator; not 2.103.0 (outside the affected range)
+      affected ranges: introduced 2.0.0 fixed 2.100.0
+  github.com/apple/swift-nio (pinned 2.103.0): GHSA-mgc4-wqv7-4pxm (aliases none); severity CRITICAL CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H; published 2023-05-18; SwiftNIO vulnerable to HTTP request smuggling using malformed Transfer-Encoding header; not 2.103.0 (outside the affected range)
+      affected ranges: introduced 1.0.0 fixed 1.14.2; introduced 2.0.0 fixed 2.13.1
+  github.com/apple/swift-nio (pinned 2.103.0): GHSA-r3rc-9hpw-54v9 (aliases CVE-2026-43671); severity HIGH CVSS:4.0/AV:N/AC:H/AT:P/PR:N/UI:N/VC:L/VI:H/VA:L/SC:N/SI:N/SA:N; published 2026-06-12; SwiftNIO: Out-of-bounds write via ByteBuffer index and length UInt32 overflow; not 2.103.0 (outside the affected range)
+      affected ranges: introduced 1.0.0 fixed 2.100.0
+  github.com/apple/swift-nio (pinned 2.103.0): GHSA-rj37-6j9x-74q6 (aliases CVE-2026-28980); severity HIGH CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N; published 2026-06-12; SwiftNIO NIOHTTP1:  HTTPDecoder accepts unbounded HTTP/1 header blocks, enabling remote DoS; not 2.103.0 (outside the affected range)
+      affected ranges: introduced 0 fixed 2.100.0
+  github.com/apple/swift-nio-ssl (pinned 2.37.5): GHSA-frg3-gpcx-968f (aliases CVE-2019-8849); severity CRITICAL CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H; published 2022-05-24; SwiftNIO SSL arbitrary code execution vulnerability; not 2.37.5 (outside the affected range)
+      affected ranges: introduced 2.0.0 fixed 2.4.1
+  github.com/marmelroy/Zip (pinned 2.1.2): GHSA-g454-wj9r-jpg4 (aliases CVE-2023-39135); severity HIGH CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H; published 2023-08-31; Path traversal in Zip Swift; AFFECTS the pinned version
+      affected ranges: introduced 0 last_affected 2.1.2
+  github.com/weichsel/ZIPFoundation (pinned 0.9.20): GHSA-c2cc-3569-6jh2 (aliases CVE-2023-39138); severity HIGH CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H; published 2023-08-31; Path traversal in ZIPFoundation; not 0.9.20 (outside the affected range)
+      affected ranges: introduced 0 fixed 0.9.18
+GitHub control (reviewed, asked alone): github.com/apple/swift-crypto@4.3.0 returned GHSA-9m44-rr2w-ppp7
+GitHub control (reviewed): github.com/marmelroy/Zip@2.1.2 returned GHSA-g454-wj9r-jpg4
+GitHub advisories (ecosystem swift, type reviewed, 23 packages in every spelling): 1 returned; 1 for these packages
+  AFFECTS: GHSA-g454-wj9r-jpg4 (CVE-2023-39135), high: Path traversal in Zip Swift; github.com/marmelroy/Zip <= 2.1.2 -> no patched version
+GitHub advisories (ecosystem swift, type malware, 23 packages in every spelling): 0 returned; 0 for these packages
+
+## PyPI: 22 packages; positive controls: pyyaml@5.3 (expects GHSA-8q59-q68h-6hv4)
+OSV control: pyyaml@5.3 returned GHSA-8q59-q68h-6hv4
+OSV version queries: 22 packages; 1 with an advisory that affects the queried version
+  AFFECTS pip@26.1.2 (in a fresh virtualenv): GHSA-qwm4-qh6w-59xr (aliases CVE-2026-13346, PYSEC-2026-3721); severity MODERATE CVSS:4.0/AV:N/AC:H/AT:P/PR:H/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-07-29; pip would incorrectly handle doubly-encoded package URLs from indexes
+      affected ranges: introduced 0 fixed 26.2.0
+  AFFECTS pip@26.1.2 (in a fresh virtualenv): PYSEC-2026-3721 (aliases CVE-2026-13346, GHSA-qwm4-qh6w-59xr); severity CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N; published 2026-07-29; pip would incorrectly handle doubly-encoded package URLs from indexes allowing for files to be installed to arbitrary locations on disk even when installing whe
+      affected ranges: introduced 0 fixed 26.2
+OSV name queries (any version): 6 of 22 packages have advisories for some version
+  pip (in a fresh virtualenv 26.1.2): GHSA-4gv5-qhvr-36vv (aliases CVE-2013-1888, PYSEC-2013-9); severity MODERATE CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N, CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2022-05-13; Improper Link Resolution Before File Access in pip; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.3
+  pip (in a fresh virtualenv 26.1.2): GHSA-4xh5-x5gv-qwph (aliases CVE-2025-8869, PYSEC-2026-1795); severity MODERATE CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2025-09-24; pip's fallback tar extraction doesn't check symbolic links point to extraction directory; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 25.3
+  pip (in a fresh virtualenv 26.1.2): GHSA-53mr-44pp-crf4 (aliases CVE-2014-8991, PYSEC-2014-11); severity MODERATE CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H, CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P; published 2022-05-13; pip lack of randomness in build directory; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 1.3 fixed 6.0
+  pip (in a fresh virtualenv 26.1.2): GHSA-58qw-9mgm-455v (aliases CVE-2026-3219, PYSEC-2026-2875); severity MODERATE CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N; published 2026-04-20; pip has an interpretation conflict due to handling both concatenated tar and ZIP files as ZIP files; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1
+  pip (in a fresh virtualenv 26.1.2): GHSA-5xp3-jfq3-5q8x (aliases CVE-2021-3572, PYSEC-2021-437); severity HIGH CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:N/I:H/A:N, CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2021-11-15; Improper Input Validation in pip; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 21.1
+  pip (in a fresh virtualenv 26.1.2): GHSA-6vgw-5pg2-w6jp (aliases CVE-2026-1703, PYSEC-2026-1796); severity LOW CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N; published 2026-02-02; pip Path Traversal vulnerability; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.0
+  pip (in a fresh virtualenv 26.1.2): GHSA-c5h8-cq4v-cvfm (aliases CVE-2013-5123, PYSEC-2019-160); severity HIGH CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N, CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2022-05-24; Improper Authentication in pip; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.5
+  pip (in a fresh virtualenv 26.1.2): GHSA-g3p5-fjj9-h8gj (aliases CVE-2013-1629, PYSEC-2013-8); severity HIGH CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H, CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N/E:P; published 2022-05-13; Improper Input Validation in pip; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.3
+  pip (in a fresh virtualenv 26.1.2): GHSA-gpvv-69j7-gwj8 (aliases CVE-2019-20916, PYSEC-2020-173); severity HIGH CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N, CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2021-06-09; Path Traversal in pip; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 19.2
+  pip (in a fresh virtualenv 26.1.2): GHSA-jp4c-xjxw-mgf9 (aliases CVE-2026-6357, PYSEC-2026-2876); severity MODERATE CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-04-27; pip Vulnerable to Inclusion of Functionality from Untrusted Control Sphere; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1
+  pip (in a fresh virtualenv 26.1.2): GHSA-mq26-g339-26xf (aliases CVE-2023-5752, PYSEC-2023-228); severity MODERATE CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N, CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2023-10-25; Command Injection in pip when used with Mercurial; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 23.3
+  pip (in a fresh virtualenv 26.1.2): GHSA-qwm4-qh6w-59xr (aliases CVE-2026-13346, PYSEC-2026-3721); severity MODERATE CVSS:4.0/AV:N/AC:H/AT:P/PR:H/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-07-29; pip would incorrectly handle doubly-encoded package URLs from indexes; AFFECTS 26.1.2
+      affected ranges: introduced 0 fixed 26.2.0
+  pip (in a fresh virtualenv 26.1.2): GHSA-wf93-45jw-7689 (aliases CVE-2026-8643, PYSEC-2026-196); severity MODERATE CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H, CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-06-01; pip: Path traversal in console_scripts/gui_scripts entry point names allows installing scripts outside of target directory; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1.2
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2013-8 (aliases CVE-2013-1629, GHSA-g3p5-fjj9-h8gj); severity not given; published 2013-08-06; pip before 1.3 uses HTTP to retrieve packages from the PyPI repository, and does not perform integrity checks on package contents, which allows man-in-the-middl; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.3
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2013-9 (aliases CVE-2013-1888, GHSA-4gv5-qhvr-36vv); severity not given; published 2013-08-17; pip before 1.3 allows local users to overwrite arbitrary files via a symlink attack on a file in the /tmp/pip-build temporary directory.; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.3
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2014-11 (aliases CVE-2014-8991, GHSA-53mr-44pp-crf4); severity not given; published 2014-11-24; pip 1.3 through 1.5.6 allows local users to cause a denial of service (prevention of package installation) by creating a /tmp/pip-build-* file for another user.; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 1.3 fixed 6.0
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2019-160 (aliases CVE-2013-5123, GHSA-c5h8-cq4v-cvfm); severity not given; published 2019-11-05; The mirroring support (-M, --use-mirrors) in Python Pip before 1.5 uses insecure DNS querying and authenticity checks which allows attackers to perform man-in-t; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.5
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2020-173 (aliases CVE-2019-20916, GHSA-gpvv-69j7-gwj8); severity not given; published 2020-09-04; The pip package before 19.2 for Python allows Directory Traversal when a URL is given in an install command, because a Content-Disposition header can have ../ i; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed a4c735b14a62f9cb864533808ac63936704f2ace; introduced 0 fixed 19.2
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2021-437 (aliases CVE-2021-3572, GHSA-5xp3-jfq3-5q8x); severity not given; published 2021-11-10; A flaw was found in python-pip in the way it handled Unicode separators in git references. A remote attacker could possibly use this issue to install a differen; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 21.1
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2023-228 (aliases CVE-2023-5752, GHSA-mq26-g339-26xf); severity CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N; published 2023-10-25; When installing a package from a Mercurial VCS URL  (ie "pip install ; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 23.3
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2026-1795 (aliases CVE-2025-8869, GHSA-4xh5-x5gv-qwph); severity CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-07-07; pip's fallback tar extraction doesn't check symbolic links point to extraction directory; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 25.3
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2026-1796 (aliases CVE-2026-1703, GHSA-6vgw-5pg2-w6jp); severity CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N; published 2026-07-07; pip Path Traversal vulnerability; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.0
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2026-196 (aliases CVE-2026-8643, GHSA-wf93-45jw-7689); severity CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N; published 2026-06-01; pip would treat console_scripts and gui_scripts as paths instead of file names without sanitizing the resolved absolute path to the installation directory, lead; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1.2
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2026-2875 (aliases CVE-2026-3219, GHSA-58qw-9mgm-455v); severity CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N; published 2026-07-13; pip has an interpretation conflict due to handling both concatenated tar and ZIP files as ZIP files; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2026-2876 (aliases CVE-2026-6357, GHSA-jp4c-xjxw-mgf9); severity CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-07-13; pip Vulnerable to Inclusion of Functionality from Untrusted Control Sphere; not 26.1.2 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1
+  pip (in a fresh virtualenv 26.1.2): PYSEC-2026-3721 (aliases CVE-2026-13346, GHSA-qwm4-qh6w-59xr); severity CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N; published 2026-07-29; pip would incorrectly handle doubly-encoded package URLs from indexes allowing for files to be installed to arbitrary locations on disk even when installing whe; AFFECTS 26.1.2
+      affected ranges: introduced 0 fixed 26.2
+  pip (pinned 26.2.1): GHSA-4gv5-qhvr-36vv (aliases CVE-2013-1888, PYSEC-2013-9); severity MODERATE CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N, CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2022-05-13; Improper Link Resolution Before File Access in pip; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.3
+  pip (pinned 26.2.1): GHSA-4xh5-x5gv-qwph (aliases CVE-2025-8869, PYSEC-2026-1795); severity MODERATE CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2025-09-24; pip's fallback tar extraction doesn't check symbolic links point to extraction directory; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 25.3
+  pip (pinned 26.2.1): GHSA-53mr-44pp-crf4 (aliases CVE-2014-8991, PYSEC-2014-11); severity MODERATE CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H, CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P; published 2022-05-13; pip lack of randomness in build directory; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 1.3 fixed 6.0
+  pip (pinned 26.2.1): GHSA-58qw-9mgm-455v (aliases CVE-2026-3219, PYSEC-2026-2875); severity MODERATE CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N; published 2026-04-20; pip has an interpretation conflict due to handling both concatenated tar and ZIP files as ZIP files; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1
+  pip (pinned 26.2.1): GHSA-5xp3-jfq3-5q8x (aliases CVE-2021-3572, PYSEC-2021-437); severity HIGH CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:N/I:H/A:N, CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2021-11-15; Improper Input Validation in pip; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 21.1
+  pip (pinned 26.2.1): GHSA-6vgw-5pg2-w6jp (aliases CVE-2026-1703, PYSEC-2026-1796); severity LOW CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N; published 2026-02-02; pip Path Traversal vulnerability; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.0
+  pip (pinned 26.2.1): GHSA-c5h8-cq4v-cvfm (aliases CVE-2013-5123, PYSEC-2019-160); severity HIGH CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N, CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2022-05-24; Improper Authentication in pip; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.5
+  pip (pinned 26.2.1): GHSA-g3p5-fjj9-h8gj (aliases CVE-2013-1629, PYSEC-2013-8); severity HIGH CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H, CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N/E:P; published 2022-05-13; Improper Input Validation in pip; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.3
+  pip (pinned 26.2.1): GHSA-gpvv-69j7-gwj8 (aliases CVE-2019-20916, PYSEC-2020-173); severity HIGH CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N, CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2021-06-09; Path Traversal in pip; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 19.2
+  pip (pinned 26.2.1): GHSA-jp4c-xjxw-mgf9 (aliases CVE-2026-6357, PYSEC-2026-2876); severity MODERATE CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-04-27; pip Vulnerable to Inclusion of Functionality from Untrusted Control Sphere; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1
+  pip (pinned 26.2.1): GHSA-mq26-g339-26xf (aliases CVE-2023-5752, PYSEC-2023-228); severity MODERATE CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N, CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2023-10-25; Command Injection in pip when used with Mercurial; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 23.3
+  pip (pinned 26.2.1): GHSA-qwm4-qh6w-59xr (aliases CVE-2026-13346, PYSEC-2026-3721); severity MODERATE CVSS:4.0/AV:N/AC:H/AT:P/PR:H/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-07-29; pip would incorrectly handle doubly-encoded package URLs from indexes; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.2.0
+  pip (pinned 26.2.1): GHSA-wf93-45jw-7689 (aliases CVE-2026-8643, PYSEC-2026-196); severity MODERATE CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H, CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-06-01; pip: Path traversal in console_scripts/gui_scripts entry point names allows installing scripts outside of target directory; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1.2
+  pip (pinned 26.2.1): PYSEC-2013-8 (aliases CVE-2013-1629, GHSA-g3p5-fjj9-h8gj); severity not given; published 2013-08-06; pip before 1.3 uses HTTP to retrieve packages from the PyPI repository, and does not perform integrity checks on package contents, which allows man-in-the-middl; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.3
+  pip (pinned 26.2.1): PYSEC-2013-9 (aliases CVE-2013-1888, GHSA-4gv5-qhvr-36vv); severity not given; published 2013-08-17; pip before 1.3 allows local users to overwrite arbitrary files via a symlink attack on a file in the /tmp/pip-build temporary directory.; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.3
+  pip (pinned 26.2.1): PYSEC-2014-11 (aliases CVE-2014-8991, GHSA-53mr-44pp-crf4); severity not given; published 2014-11-24; pip 1.3 through 1.5.6 allows local users to cause a denial of service (prevention of package installation) by creating a /tmp/pip-build-* file for another user.; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 1.3 fixed 6.0
+  pip (pinned 26.2.1): PYSEC-2019-160 (aliases CVE-2013-5123, GHSA-c5h8-cq4v-cvfm); severity not given; published 2019-11-05; The mirroring support (-M, --use-mirrors) in Python Pip before 1.5 uses insecure DNS querying and authenticity checks which allows attackers to perform man-in-t; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.5
+  pip (pinned 26.2.1): PYSEC-2020-173 (aliases CVE-2019-20916, GHSA-gpvv-69j7-gwj8); severity not given; published 2020-09-04; The pip package before 19.2 for Python allows Directory Traversal when a URL is given in an install command, because a Content-Disposition header can have ../ i; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed a4c735b14a62f9cb864533808ac63936704f2ace; introduced 0 fixed 19.2
+  pip (pinned 26.2.1): PYSEC-2021-437 (aliases CVE-2021-3572, GHSA-5xp3-jfq3-5q8x); severity not given; published 2021-11-10; A flaw was found in python-pip in the way it handled Unicode separators in git references. A remote attacker could possibly use this issue to install a differen; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 21.1
+  pip (pinned 26.2.1): PYSEC-2023-228 (aliases CVE-2023-5752, GHSA-mq26-g339-26xf); severity CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N; published 2023-10-25; When installing a package from a Mercurial VCS URL  (ie "pip install ; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 23.3
+  pip (pinned 26.2.1): PYSEC-2026-1795 (aliases CVE-2025-8869, GHSA-4xh5-x5gv-qwph); severity CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-07-07; pip's fallback tar extraction doesn't check symbolic links point to extraction directory; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 25.3
+  pip (pinned 26.2.1): PYSEC-2026-1796 (aliases CVE-2026-1703, GHSA-6vgw-5pg2-w6jp); severity CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N; published 2026-07-07; pip Path Traversal vulnerability; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.0
+  pip (pinned 26.2.1): PYSEC-2026-196 (aliases CVE-2026-8643, GHSA-wf93-45jw-7689); severity CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N; published 2026-06-01; pip would treat console_scripts and gui_scripts as paths instead of file names without sanitizing the resolved absolute path to the installation directory, lead; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1.2
+  pip (pinned 26.2.1): PYSEC-2026-2875 (aliases CVE-2026-3219, GHSA-58qw-9mgm-455v); severity CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N; published 2026-07-13; pip has an interpretation conflict due to handling both concatenated tar and ZIP files as ZIP files; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1
+  pip (pinned 26.2.1): PYSEC-2026-2876 (aliases CVE-2026-6357, GHSA-jp4c-xjxw-mgf9); severity CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N; published 2026-07-13; pip Vulnerable to Inclusion of Functionality from Untrusted Control Sphere; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.1
+  pip (pinned 26.2.1): PYSEC-2026-3721 (aliases CVE-2026-13346, GHSA-qwm4-qh6w-59xr); severity CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N; published 2026-07-29; pip would incorrectly handle doubly-encoded package URLs from indexes allowing for files to be installed to arbitrary locations on disk even when installing whe; not 26.2.1 (outside the affected range)
+      affected ranges: introduced 0 fixed 26.2
+  pydantic (pinned 2.13.5): GHSA-5jqp-qgf6-3pvh (aliases CVE-2021-29510, PYSEC-2021-47); severity MODERATE CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L, CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N; published 2021-05-13; Use of "infinity" as an input to datetime and date fields causes infinite loop in pydantic; not 2.13.5 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.6.2; introduced 1.8 fixed 1.8.2; introduced 1.7 fixed 1.7.4
+  pydantic (pinned 2.13.5): GHSA-mr82-8j83-vxmv (aliases CVE-2024-3772, PYSEC-2026-1812); severity MODERATE CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H; published 2024-04-15; Pydantic regular expression denial of service; not 2.13.5 (outside the affected range)
+      affected ranges: introduced 2.0.0 fixed 2.4.0; introduced 0 fixed 1.10.13
+  pydantic (pinned 2.13.5): PYSEC-2021-47 (aliases CVE-2021-29510, GHSA-5jqp-qgf6-3pvh); severity not given; published 2021-05-13; Pydantic is a data validation and settings management using Python type hinting. In affected versions passing either `'infinity'`, `'inf'` or `float('inf')` (or; not 2.13.5 (outside the affected range)
+      affected ranges: introduced 0 fixed 7e83fdd2563ffac081db7ecdf1affa65ef38c468; introduced 0 fixed 1.6.2 introduced 1.7 fixed 1.7.4 introduced 1.8 fixed 1.8.2
+  pydantic (pinned 2.13.5): PYSEC-2026-1812 (aliases CVE-2024-3772, GHSA-mr82-8j83-vxmv); severity CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H; published 2026-07-07; Pydantic regular expression denial of service; not 2.13.5 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.10.13 introduced 2.0.0 fixed 2.4.0
+  pydantic-settings (pinned 2.15.0): GHSA-4xgf-cpjx-pc3j (aliases CVE-2026-58203); severity MODERATE CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L; published 2026-06-19; pydantic-settings: NestedSecretsSettingsSource follows symlinks outside secrets_dir, enabling local file read and bypassing secrets_dir_max_size; not 2.15.0 (outside the affected range)
+      affected ranges: introduced 2.12.0 fixed 2.14.2
+  python-dotenv (pinned 1.2.4): GHSA-mf9w-mj56-hr94 (aliases CVE-2026-28684, PYSEC-2026-2270); severity MODERATE CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:N/I:H/A:H; published 2026-04-21; python-dotenv: Symlink following in set_key allows arbitrary file overwrite via cross-device rename fallback; not 1.2.4 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.2.2
+  python-dotenv (pinned 1.2.4): PYSEC-2026-2270 (aliases CVE-2026-28684, GHSA-mf9w-mj56-hr94); severity CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:N/I:H/A:H; published 2026-04-20; python-dotenv reads key-value pairs from a .env file and can set them as environment variables. Prior to version 1.2.2, `set_key()` and `unset_key()` in python-; not 1.2.4 (outside the affected range)
+      affected ranges: introduced 0 fixed 1.2.2
+  pyyaml (pinned 6.0.3): GHSA-3pqx-4fqf-j49f (aliases CVE-2019-20477, PYSEC-2020-176); severity CRITICAL CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H, CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N; published 2021-04-20; Deserialization of Untrusted Data in PyYAML; not 6.0.3 (outside the affected range)
+      affected ranges: introduced 5.1 fixed 5.2
+  pyyaml (pinned 6.0.3): GHSA-6757-jp84-gxfx (aliases CVE-2020-1747, PYSEC-2020-96); severity CRITICAL CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H, CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N; published 2021-04-20; Improper Input Validation in PyYAML; not 6.0.3 (outside the affected range)
+      affected ranges: introduced 5.1b7 fixed 5.3.1
+  pyyaml (pinned 6.0.3): GHSA-8q59-q68h-6hv4 (aliases CVE-2020-14343, PYSEC-2021-142); severity CRITICAL CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H, CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N; published 2021-03-25; Improper Input Validation in PyYAML; not 6.0.3 (outside the affected range)
+      affected ranges: introduced 0 fixed 5.4
+  pyyaml (pinned 6.0.3): GHSA-rprw-h62v-c2w7 (aliases CVE-2017-18342, PYSEC-2018-49); severity CRITICAL CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H; published 2019-01-04; PyYAML insecurely deserializes YAML strings leading to arbitrary code execution; not 6.0.3 (outside the affected range)
+      affected ranges: introduced 0 fixed 5.1
+  pyyaml (pinned 6.0.3): PYSEC-2018-49 (aliases CVE-2017-18342, GHSA-rprw-h62v-c2w7); severity not given; published 2018-06-27; In PyYAML before 5.1, the yaml.load() API could execute arbitrary code if used with untrusted data. The load() function has been deprecated in version 5.1 and t; not 6.0.3 (outside the affected range)
+      affected ranges: introduced 0 fixed 5.1
+  pyyaml (pinned 6.0.3): PYSEC-2020-176 (aliases CVE-2019-20477, GHSA-3pqx-4fqf-j49f); severity not given; published 2020-02-19; PyYAML 5.1 through 5.1.2 has insufficient restrictions on the load and load_all functions because of a class deserialization issue, e.g., Popen is a class in th; not 6.0.3 (outside the affected range)
+      affected ranges: introduced 5.1 fixed 5.2b1
+  pyyaml (pinned 6.0.3): PYSEC-2020-96 (aliases CVE-2020-1747, GHSA-6757-jp84-gxfx); severity not given; published 2020-03-24; A vulnerability was discovered in the PyYAML library in versions before 5.3.1, where it is susceptible to arbitrary code execution when it processes untrusted Y; not 6.0.3 (outside the affected range)
+      affected ranges: introduced 5.1 fixed 5.3.1
+  pyyaml (pinned 6.0.3): PYSEC-2021-142 (aliases CVE-2020-14343, GHSA-8q59-q68h-6hv4); severity not given; published 2021-02-09; A vulnerability was discovered in the PyYAML library in versions before 5.4, where it is susceptible to arbitrary code execution when it processes untrusted YAM; not 6.0.3 (outside the affected range)
+      affected ranges: introduced 0 fixed 5.4
+GitHub control (reviewed, asked alone): pyyaml@5.3 returned GHSA-8q59-q68h-6hv4
+GitHub advisories (ecosystem pip, type reviewed, 22 packages in every spelling): 1 returned; 1 for these packages
+  AFFECTS: GHSA-qwm4-qh6w-59xr (CVE-2026-13346), medium: pip would incorrectly handle doubly-encoded package URLs from indexes; pip < 26.2.0 -> 26.2.0
+GitHub advisories (ecosystem pip, type malware, 22 packages in every spelling): 0 returned; 0 for these packages
+
+## GitHub Actions: 2 packages; positive controls: actions/download-artifact@4.1.2 (expects GHSA-cxww-7g56-2vh6)
+OSV control: actions/download-artifact@4.1.2 did NOT return GHSA-cxww-7g56-2vh6
+OSV version queries are not used for this ecosystem (a control was not returned; for GitHub Actions, OSV evaluates no versions): each package must have no OSV advisory at any version
+OSV name queries (any version): 0 of 2 packages have advisories for some version
+OSV: no advisory for any version of any of the 2 packages, so none affects the pinned versions
+GitHub control (reviewed): actions/download-artifact@4.1.2 returned GHSA-cxww-7g56-2vh6
+GitHub advisories (ecosystem actions, type reviewed, 3 packages in every spelling): 1 returned; 0 for these packages
+GitHub advisories (ecosystem actions, type malware, 2 packages in every spelling): 0 returned; 0 for these packages
+
+## Published security advisories of each package repository, and of the upstreams of the forks (GitHub API)
+control: apple/swift-nio lists GHSA-r3rc-9hpw-54v9
+readium/swift-toolkit (readium/swift-toolkit 3.11.0): 0 published
+readium/ZIPFoundation (readium/ZIPFoundation 3.0.1): 0 published
+weichsel/ZIPFoundation (readium/ZIPFoundation 3.0.1, its upstream): 0 published
+readium/Fuzi (readium/Fuzi 4.0.1): 0 published
+cezheng/Fuzi (readium/Fuzi 4.0.1, its upstream): 0 published
+scinfu/SwiftSoup (scinfu/SwiftSoup 2.13.9): 0 published
+krzyzanowskim/CryptoSwift (krzyzanowskim/CryptoSwift 1.10.0): 0 published
+ra1028/DifferenceKit (ra1028/DifferenceKit 1.3.0): 0 published
+marmelroy/Zip (marmelroy/Zip 2.1.2): 0 published
+readium/GCDWebServer (readium/GCDWebServer 4.0.1): 0 published
+swisspol/GCDWebServer (readium/GCDWebServer 4.0.1, its upstream): 0 published
+stephencelis/SQLite.swift (stephencelis/SQLite.swift 0.16.0): 0 published
+groue/GRDB.swift (groue/GRDB.swift 7.11.1): 0 published
+pointfreeco/swift-snapshot-testing (pointfreeco/swift-snapshot-testing 1.19.6): 0 published
+pointfreeco/swift-custom-dump (pointfreeco/swift-custom-dump 1.7.3): 0 published
+pointfreeco/swift-issue-reporting (pointfreeco/swift-issue-reporting 2.1.1): 0 published
+swiftlang/swift-syntax (swiftlang/swift-syntax 604.0.0): 0 published
+apple/swift-nio (apple/swift-nio 2.103.0): 6 published
+  GHSA-qcc5-f287-vgmq (CVE-2026-43678, high, published 2026-07-09): swift-nio: <= 2.100.0, patched 2.101.0; range check: not 2.103.0
+      verdict: not swift-nio 2.103.0: 2.100.0 and earlier (CVE-2026-43678, a WebSocket frame length trap); fixed in 2.101.0, which the pin follows; NIOWebSocket is not linked
+  GHSA-r3rc-9hpw-54v9 (CVE-2026-43671, high, published 2026-05-21): swift-nio: <2.100.0, patched 2.100.0; range check: not 2.103.0
+      verdict: not swift-nio 2.103.0: before 2.100.0 (CVE-2026-43671)
+  GHSA-rj37-6j9x-74q6 (CVE-2026-28980, medium, published 2026-05-21): swift-nio: <2.100.0, patched 2.100.0; range check: not 2.103.0
+      verdict: not swift-nio 2.103.0: before 2.100.0 (CVE-2026-28980)
+  GHSA-cq87-8r7h-962v (CVE-2026-28970, medium, published 2026-05-21): swift-nio: <2.100.0, patched 2.100.0; range check: not 2.103.0
+      verdict: not swift-nio 2.103.0: before 2.100.0 (CVE-2026-28970)
+  GHSA-7fj7-39wj-c64f (CVE-2022-3215, medium, published 2022-09-27): swift-nio: <2.41.2, patched 2.42.0, 2.39.1, 2.29.1; range check: not 2.103.0
+      verdict: not swift-nio 2.103.0: before 2.41.2, 2.39.1 and 2.29.1 (CVE-2022-3215)
+  GHSA-mgc4-wqv7-4pxm (CVE-2019-15605, critical, published 2020-02-17): swift-nio: 1.0.0-1.14.1, 2.0.0-2.13.0, patched 1.14.2, 2.13.1, 2.14.0; range check: not 2.103.0
+      verdict: not swift-nio 2.103.0: 1.0.0 to 1.14.1 and 2.0.0 to 2.13.0 (the repository record names CVE-2019-15605, the Node.js CVE for the same flaw)
+apple/swift-nio-ssl (apple/swift-nio-ssl 2.37.5): 2 published
+  GHSA-xfxg-9975-pc2j (CVE-2026-43820, critical, published 2026-07-15): swift-nio-ssl: >= 2.18.0, <= 2.37.1, patched 2.37.2; range check: not 2.37.5
+      verdict: not swift-nio-ssl 2.37.5: 2.18.0 to 2.37.1 (CVE-2026-43820, an out-of-bounds read through a SAN that is not a string); fixed in 2.37.2, which the pin follows
+  GHSA-9556-94c5-c3j8 (CVE-2019-8849, medium, published 2019-11-25): swift-nio-ssl: 2.0.0<=2.4.0, patched 2.4.1; range check: not 2.37.5
+      verdict: not swift-nio-ssl 2.37.5: 2.0.0 to 2.4.0 (CVE-2019-8849)
+apple/swift-certificates (apple/swift-certificates 1.21.0): 0 published
+apple/swift-crypto (apple/swift-crypto 5.0.0): 2 published
+  GHSA-8q93-f6xh-4f6f (CVE-2026-43823, critical, published 2026-07-16): swift-crypto: >= 3.2.0, <= 4.5.0, patched 4.5.1; range check: not 5.0.0
+      verdict: not swift-crypto 5.0.0: 3.2.0 to 4.5.0 (CVE-2026-43823, a double free when an RSA public key fails to decode); the fix, commit 47d3869a, is in 5.0.0
+  GHSA-9m44-rr2w-ppp7 (CVE-2026-28815, medium, published 2026-04-01): swift-crypto: 4.0.0 - 4.3.0, patched 4.3.1; range check: not 5.0.0
+      verdict: not swift-crypto 5.0.0: 4.0.0 to 4.3.0 (CVE-2026-28815)
+apple/swift-asn1 (apple/swift-asn1 1.7.3): 1 published
+  GHSA-w8xv-rwgf-4fwh (CVE-2025-0343, low, published 2025-01-14): swift-asn1: < 1.3.0, patched 1.3.1; range check: not 1.7.3
+      verdict: not swift-asn1 1.7.3: before 1.3.0, fixed in 1.3.1 (CVE-2025-0343)
+apple/swift-atomics (apple/swift-atomics 1.3.1): 0 published
+apple/swift-collections (apple/swift-collections 1.7.1): 0 published
+apple/swift-system (apple/swift-system 1.8.1): 0 published
+weichsel/ZIPFoundation (weichsel/ZIPFoundation 0.9.20): 0 published
+
+## NVD keyword search for each package (paced to 5 requests in 30 seconds, as NVD asks)
+control: the keyword Zip Swift lists CVE-2023-39135
+NVD keyword 'readium': 1 CVEs
+  CVE-2023-24720: not readium/swift-toolkit: readium-js 0.32.0, a different project
+NVD keyword 'ZIPFoundation': 1 CVEs
+  CVE-2023-39138: not weichsel/ZIPFoundation 0.9.20 or the readium fork 3.0.1: ZIPFoundation 0.9.16, fixed in 0.9.18, which both contain
+NVD keyword 'Fuzi': 0 CVEs
+NVD keyword 'SwiftSoup': 0 CVEs
+NVD keyword 'CryptoSwift': 0 CVEs
+NVD keyword 'DifferenceKit': 0 CVEs
+NVD keyword 'marmelroy': 0 CVEs
+NVD keyword 'Zip Swift': 2 CVEs
+  CVE-2015-4641: not marmelroy/Zip: the SwiftKey keyboard on Samsung phones
+  CVE-2023-39135: APPLIES to marmelroy/Zip 2.1.2: path traversal in Zip.unzipFile, which no release fixes; linked but never called (ADR-0014 section 5)
+NVD keyword 'GCDWebServer': 1 CVEs
+  CVE-2019-14924: not readium/GCDWebServer 4.0.1 as used: GCDWebUploader before 3.5.3, outside the SwiftPM product and not linked; the fix is in the pinned history
+NVD keyword 'SQLite.swift': 0 CVEs
+NVD keyword 'GRDB': 2 CVEs
+  CVE-2008-0942: not GRDB: Aeries Browser Interface (Eagle Software)
+  CVE-2008-1549: not GRDB: Aeries Browser Interface (Eagle Software)
+NVD keyword 'pointfreeco': 0 CVEs
+NVD keyword 'swift-snapshot-testing': 0 CVEs
+NVD keyword 'swift-custom-dump': 0 CVEs
+NVD keyword 'swift-issue-reporting': 0 CVEs
+NVD keyword 'swift-syntax': 0 CVEs
+NVD keyword 'swift-nio': 9 CVEs
+  CVE-2022-24666: not a pinned package: swift-nio-http2
+  CVE-2022-24667: not a pinned package: swift-nio-http2
+  CVE-2022-24668: not a pinned package: swift-nio-http2
+  CVE-2022-0618: not a pinned package: swift-nio-http2
+  CVE-2026-28898: not a pinned package: swift-nio-http2
+  CVE-2026-43820: not swift-nio-ssl 2.37.5: 2.18.0 to 2.37.1 (CVE-2026-43820, an out-of-bounds read through a SAN that is not a string); fixed in 2.37.2, which the pin follows
+  CVE-2026-64785: not a pinned package: swift-nio-http2
+  CVE-2026-43678: not swift-nio 2.103.0: 2.100.0 and earlier (CVE-2026-43678, a WebSocket frame length trap); fixed in 2.101.0, which the pin follows; NIOWebSocket is not linked
+  CVE-2026-43798: not a pinned package: swift-nio-ssh
+NVD keyword 'SwiftNIO': 5 CVEs
+  CVE-2018-4281: not swift-nio 2.103.0: SwiftNIO before 1.8.0
+  CVE-2019-8849: not swift-nio-ssl 2.37.5: 2.0.0 to 2.4.0 (CVE-2019-8849)
+  CVE-2020-9840: not a pinned package: SwiftNIO Extras
+  CVE-2022-3252: not a pinned package: SwiftNIO Extras
+  CVE-2026-64785: not a pinned package: swift-nio-http2
+NVD keyword 'swift-nio-ssl': 1 CVEs
+  CVE-2026-43820: not swift-nio-ssl 2.37.5: 2.18.0 to 2.37.1 (CVE-2026-43820, an out-of-bounds read through a SAN that is not a string); fixed in 2.37.2, which the pin follows
+NVD keyword 'swift-crypto': 2 CVEs
+  CVE-2026-28815: not swift-crypto 5.0.0: 4.0.0 to 4.3.0 (CVE-2026-28815)
+  CVE-2026-43823: not swift-crypto 5.0.0: 3.2.0 to 4.5.0 (CVE-2026-43823, a double free when an RSA public key fails to decode); the fix, commit 47d3869a, is in 5.0.0
+NVD keyword 'swift-certificates': 0 CVEs
+NVD keyword 'swift-asn1': 0 CVEs
+NVD keyword 'Swift ASN.1': 1 CVEs
+  CVE-2025-0343: not swift-asn1 1.7.3: before 1.3.0, fixed in 1.3.1 (CVE-2025-0343)
+NVD keyword 'swift-atomics': 0 CVEs
+NVD keyword 'swift-collections': 0 CVEs
+NVD keyword 'swift-system': 0 CVEs
+
+finished 2026-10-14T01:49:23Z; failures: 0

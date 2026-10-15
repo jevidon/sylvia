@@ -1,0 +1,253 @@
+{
+  "budget": {
+    "context_limit_source": "default_unknown_model",
+    "context_limit_tokens": 8192,
+    "estimated": true,
+    "estimator": {
+      "kind": "heuristic",
+      "name": "utf8-bytes-div-3"
+    },
+    "evidence_budget_tokens": 5942,
+    "evidence_tokens": 4800,
+    "history_tokens": 30,
+    "output_reserve_tokens": 1024,
+    "question_tokens": 28,
+    "safety_margin_tokens": 819,
+    "system_tokens": 349
+  },
+  "conversation_id": "2CB079DD-E1F1-4695-8797-CF2BC815BBC7",
+  "coverage": "excerpt_only",
+  "coverage_label": "Excerpt only",
+  "created_at": "2026-10-10T00:00:00.123Z",
+  "endpoint": {
+    "base_path": "/v1",
+    "classification": "local",
+    "host": "127.0.0.1",
+    "model": "local-model",
+    "origin": "http://127.0.0.1:1234",
+    "provider_kind": "openai_compatible_chat"
+  },
+  "evidence": [
+    {
+      "citation_id": "c1",
+      "edition_id": "413513ED-46EE-42D2-8AE7-5FDE25810753",
+      "estimated_tokens": 638,
+      "evidence_id": "2174AFE4-5A91-43AB-AF5C-03DD04D0A0BA",
+      "location_label": "X",
+      "origin": "source_text",
+      "position": {
+        "first_ordinal": 524,
+        "last_ordinal": 530,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/chapter-10.xhtml"
+      },
+      "retrieval": {
+        "rank": 1,
+        "score": -2.5601926099199583
+      },
+      "role": "retrieved",
+      "source_quality": "extracted_text",
+      "text": "Already, as Miss Brooke passed out of the dining-room, opportunity was found for some interjectional “asides.”\n\n“A fine woman, Miss Brooke! an uncommonly fine woman, by God!” said Mr. Standish, the old lawyer, who had been so long concerned with the landed gentry that he had become landed himself, and used that oath in a deep-mouthed manner as a sort of armorial bearings, stamping the speech of a man who held a good position.\n\nMr. Bulstrode, the banker, seemed to be addressed, but that gentleman disliked coarseness and profanity, and merely bowed. The remark was taken up by Mr. Chichely, a middle-aged bachelor and coursing celebrity, who had a complexion something like an Easter egg, a few hairs carefully arranged, and a carriage implying the consciousness of a distinguished appearance.\n\n“Yes, but not my style of woman: I like a woman who lays herself out a little more to please us. There should be a little filigree about a woman﻿—something of the coquette. A man likes a sort of challenge. The more of a dead set she makes at you the better.”\n\n“There’s some truth in that,” said Mr. Standish, disposed to be genial. “And, by God, it’s usually the way with them. I suppose it answers some wise ends: Providence made them so, eh, Bulstrode?”\n\n“I should be disposed to refer coquetry to another source,” said Mr. Bulstrode. “I should rather refer it to the devil.”\n\n“Ay, to be sure, there should be a little devil in a woman,” said Mr. Chichely, whose study of the fair sex seemed to have been detrimental to his theology. “And I like them blond, with a certain gait, and a swan neck. Between ourselves, the mayor’s daughter is more to my taste than Miss Brooke or Miss Celia either. If I were a marrying man I should choose Miss Vincy before either of them.”",
+      "text_sha256": "13fbdf883d9ce7c20f4a1083a0cc35ed2e187359039043f965200171ab84f4d5",
+      "work_id": "6F6316F0-DFFF-4CA6-A758-C50B65E796B6"
+    },
+    {
+      "citation_id": "c2",
+      "edition_id": "413513ED-46EE-42D2-8AE7-5FDE25810753",
+      "estimated_tokens": 624,
+      "evidence_id": "A7B3D2A7-39B3-4405-B68B-A242366CB2C6",
+      "location_label": "X",
+      "origin": "source_text",
+      "position": {
+        "first_ordinal": 555,
+        "last_ordinal": 564,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/chapter-10.xhtml"
+      },
+      "retrieval": {
+        "rank": 2,
+        "score": -2.2752981419116676
+      },
+      "role": "retrieved",
+      "source_quality": "extracted_text",
+      "text": "“I am quite pleased with your protégé,” she said to Mr. Brooke before going away.\n\n“My protégé?﻿—dear me!﻿—who is that?” said Mr. Brooke.\n\n“This young Lydgate, the new doctor. He seems to me to understand his profession admirably.”\n\n“Oh, Lydgate! he is not my protégé, you know; only I knew an uncle of his who sent me a letter about him. However, I think he is likely to be first-rate﻿—has studied in Paris, knew Broussais; has ideas, you know﻿—wants to raise the profession.”\n\n“Lydgate has lots of ideas, quite new, about ventilation and diet, that sort of thing,” resumed Mr. Brooke, after he had handed out Lady Chettam, and had returned to be civil to a group of Middlemarchers.\n\n“Hang it, do you think that is quite sound?﻿—upsetting the old treatment, which has made Englishmen what they are?” said Mr. Standish.\n\n“Medical knowledge is at a low ebb among us,” said Mr. Bulstrode, who spoke in a subdued tone, and had rather a sickly air. “I, for my part, hail the advent of Mr. Lydgate. I hope to find good reason for confiding the new hospital to his management.”\n\n“That is all very fine,” replied Mr. Standish, who was not fond of Mr. Bulstrode; “if you like him to try experiments on your hospital patients, and kill a few people for charity I have no objection. But I am not going to hand money out of my purse to have experiments tried on me. I like treatment that has been tested a little.”\n\n“Well, you know, Standish, every dose you take is an experiment﻿—an experiment, you know,” said Mr. Brooke, nodding towards the lawyer.\n\n“Oh, if you talk in that sense!” said Mr. Standish, with as much disgust at such nonlegal quibbling as a man can well betray towards a valuable client.",
+      "text_sha256": "3c0251cb89814720e2aef9614c723a5f6e6abad1e35be5e5f02bca90b3b0906e",
+      "work_id": "6F6316F0-DFFF-4CA6-A758-C50B65E796B6"
+    },
+    {
+      "citation_id": "c3",
+      "edition_id": "413513ED-46EE-42D2-8AE7-5FDE25810753",
+      "estimated_tokens": 628,
+      "evidence_id": "8BFF22A1-B5D7-4219-882E-61D130578E36",
+      "location_label": "X",
+      "origin": "source_text",
+      "position": {
+        "first_ordinal": 565,
+        "last_ordinal": 569,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/chapter-10.xhtml"
+      },
+      "retrieval": {
+        "rank": 3,
+        "score": -1.6995782352016688
+      },
+      "role": "retrieved",
+      "source_quality": "extracted_text",
+      "text": "“I should be glad of any treatment that would cure me without reducing me to a skeleton, like poor Grainger,” said Mr. Vincy, the mayor, a florid man, who would have served for a study of flesh in striking contrast with the Franciscan tints of Mr. Bulstrode. “It’s an uncommonly dangerous thing to be left without any padding against the shafts of disease, as somebody said﻿—and I think it a very good expression myself.”\n\nMr. Lydgate, of course, was out of hearing. He had quitted the party early, and would have thought it altogether tedious but for the novelty of certain introductions, especially the introduction to Miss Brooke, whose youthful bloom, with her approaching marriage to that faded scholar, and her interest in matters socially useful, gave her the piquancy of an unusual combination.\n\n“She is a good creature﻿—that fine girl﻿—but a little too earnest,” he thought. “It is troublesome to talk to such women. They are always wanting reasons, yet they are too ignorant to understand the merits of any question, and usually fall back on their moral sense to settle things after their own taste.”\n\nEvidently Miss Brooke was not Mr. Lydgate’s style of woman any more than Mr. Chichely’s. Considered, indeed, in relation to the latter, whose mind was matured, she was altogether a mistake, and calculated to shock his trust in final causes, including the adaptation of fine young women to purplefaced bachelors. But Lydgate was less ripe, and might possibly have experience before him which would modify his opinion as to the most excellent things in woman.\n\nMiss Brooke, however, was not again seen by either of these gentlemen under her maiden name. Not long after that dinner-party she had become Mrs. Casaubon, and was on her way to Rome.",
+      "text_sha256": "800177fef601faa66a3eada783781454e132400afe163773ccb183b214eb6644",
+      "work_id": "6F6316F0-DFFF-4CA6-A758-C50B65E796B6"
+    },
+    {
+      "citation_id": "c4",
+      "edition_id": "413513ED-46EE-42D2-8AE7-5FDE25810753",
+      "estimated_tokens": 673,
+      "evidence_id": "6592943D-6486-406D-A1AE-541532C4BFB4",
+      "location_label": "IX",
+      "origin": "source_text",
+      "position": {
+        "first_ordinal": 443,
+        "last_ordinal": 453,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/chapter-9.xhtml"
+      },
+      "retrieval": {
+        "rank": 4,
+        "score": -1.7920412816205133e-06
+      },
+      "role": "retrieved",
+      "source_quality": "extracted_text",
+      "text": "“This is your mother,” said Dorothea, who had turned to examine the group of miniatures. “It is like the tiny one you brought me; only, I should think, a better portrait. And this one opposite, who is this?”\n\n“Her elder sister. They were, like you and your sister, the only two children of their parents, who hang above them, you see.”\n\n“The sister is pretty,” said Celia, implying that she thought less favorably of Mr. Casaubon’s mother. It was a new opening to Celia’s imagination, that he came of a family who had all been young in their time﻿—the ladies wearing necklaces.\n\n“It is a peculiar face,” said Dorothea, looking closely. “Those deep gray eyes rather near together﻿—and the delicate irregular nose with a sort of ripple in it﻿—and all the powdered curls hanging backward. Altogether it seems to me peculiar rather than pretty. There is not even a family likeness between her and your mother.”\n\n“No. And they were not alike in their lot.”\n\n“You did not mention her to me,” said Dorothea.\n\n“My aunt made an unfortunate marriage. I never saw her.”\n\nDorothea wondered a little, but felt that it would be indelicate just then to ask for any information which Mr. Casaubon did not proffer, and she turned to the window to admire the view. The sun had lately pierced the gray, and the avenue of limes cast shadows.\n\n“Shall we not walk in the garden now?” said Dorothea.\n\n“And you would like to see the church, you know,” said Mr. Brooke. “It is a droll little church. And the village. It all lies in a nutshell. By the way, it will suit you, Dorothea; for the cottages are like a row of alms-houses﻿—little gardens, gillyflowers, that sort of thing.”\n\n“Yes, please,” said Dorothea, looking at Mr. Casaubon, “I should like to see all that.” She had got nothing from him more graphic about the Lowick cottages than that they were “not bad.”",
+      "text_sha256": "49488cdb9ef7f8fa3d0aded1515e33cf307c2d1b071b59df875bfe754867186e",
+      "work_id": "6F6316F0-DFFF-4CA6-A758-C50B65E796B6"
+    },
+    {
+      "citation_id": "c5",
+      "edition_id": "413513ED-46EE-42D2-8AE7-5FDE25810753",
+      "estimated_tokens": 593,
+      "evidence_id": "EC4EA310-F2C7-4191-9896-EDB79AC825DA",
+      "location_label": "III",
+      "origin": "source_text",
+      "position": {
+        "first_ordinal": 137,
+        "last_ordinal": 144,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/chapter-3.xhtml"
+      },
+      "retrieval": {
+        "rank": 5,
+        "score": -1.737327673946554e-06
+      },
+      "role": "retrieved",
+      "source_quality": "extracted_text",
+      "text": "Sir James interpreted the heightened color in the way most gratifying to himself, and thought he never saw Miss Brooke looking so handsome.\n\n“I have brought a little petitioner,” he said, “or rather, I have brought him to see if he will be approved before his petition is offered.” He showed the white object under his arm, which was a tiny Maltese puppy, one of nature’s most naive toys.\n\n“It is painful to me to see these creatures that are bred merely as pets,” said Dorothea, whose opinion was forming itself that very moment (as opinions will) under the heat of irritation.\n\n“Oh, why?” said Sir James, as they walked forward.\n\n“I believe all the petting that is given them does not make them happy. They are too helpless: their lives are too frail. A weasel or a mouse that gets its own living is more interesting. I like to think that the animals about us have souls something like our own, and either carry on their own little affairs or can be companions to us, like Monk here. Those creatures are parasitic.”\n\n“I am so glad I know that you do not like them,” said good Sir James. “I should never keep them for myself, but ladies usually are fond of these Maltese dogs. Here, John, take this dog, will you?”\n\nThe objectionable puppy, whose nose and eyes were equally black and expressive, was thus got rid of, since Miss Brooke decided that it had better not have been born. But she felt it necessary to explain.\n\n“You must not judge of Celia’s feeling from mine. I think she likes these small pets. She had a tiny terrier once, which she was very fond of. It made me unhappy, because I was afraid of treading on it. I am rather shortsighted.”",
+      "text_sha256": "de2c175a2895223df4061316bdbd72ffd90ad2a06b991cff4a0b9f17f89a751f",
+      "work_id": "6F6316F0-DFFF-4CA6-A758-C50B65E796B6"
+    },
+    {
+      "citation_id": "c6",
+      "edition_id": "413513ED-46EE-42D2-8AE7-5FDE25810753",
+      "estimated_tokens": 954,
+      "evidence_id": "8B6BFE65-7D69-4D53-8139-8DE60557B380",
+      "location_label": "X",
+      "origin": "source_text",
+      "position": {
+        "first_ordinal": 520,
+        "last_ordinal": 523,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/chapter-10.xhtml"
+      },
+      "role": "adjacent",
+      "source_quality": "extracted_text",
+      "text": "It was time to dress. There was to be a dinner-party that day, the last of the parties which were held at the Grange as proper preliminaries to the wedding, and Dorothea was glad of a reason for moving away at once on the sound of the bell, as if she needed more than her usual amount of preparation. She was ashamed of being irritated from some cause she could not define even to herself; for though she had no intention to be untruthful, her reply had not touched the real hurt within her. Mr. Casaubon’s words had been quite reasonable, yet they had brought a vague instantaneous sense of aloofness on his part.\n\n“Surely I am in a strangely selfish weak state of mind,” she said to herself. “How can I have a husband who is so much above me without knowing that he needs me less than I need him?”\n\nHaving convinced herself that Mr. Casaubon was altogether right, she recovered her equanimity, and was an agreeable image of serene dignity when she came into the drawing-room in her silver-gray dress﻿—the simple lines of her dark-brown hair parted over her brow and coiled massively behind, in keeping with the entire absence from her manner and expression of all search after mere effect. Sometimes when Dorothea was in company, there seemed to be as complete an air of repose about her as if she had been a picture of Santa Barbara looking out from her tower into the clear air; but these intervals of quietude made the energy of her speech and emotion the more remarked when some outward appeal had touched her.\n\nShe was naturally the subject of many observations this evening, for the dinner-party was large and rather more miscellaneous as to the male portion than any which had been held at the Grange since Mr. Brooke’s nieces had resided with him, so that the talking was done in duos and trios more or less inharmonious. There was the newly elected mayor of Middlemarch, who happened to be a manufacturer; the philanthropic banker his brother-in-law, who predominated so much in the town that some called him a Methodist, others a hypocrite, according to the resources of their vocabulary; and there were various professional men. In fact, Mrs. Cadwallader said that Brooke was beginning to treat the Middlemarchers, and that she preferred the farmers at the tithe-dinner, who drank her health unpretentiously, and were not ashamed of their grandfathers’ furniture. For in that part of the country, before reform had done its notable part in developing the political consciousness, there was a clearer distinction of ranks and a dimmer distinction of parties; so that Mr. Brooke’s miscellaneous invitations seemed to belong to that general laxity which came from his inordinate travel and habit of taking too much in the form of ideas.",
+      "text_sha256": "247c1f62067a9fa25e0b5085a08e671ff3e11df79df3d1011bbf7819970d26cc",
+      "work_id": "6F6316F0-DFFF-4CA6-A758-C50B65E796B6"
+    },
+    {
+      "citation_id": "c7",
+      "edition_id": "413513ED-46EE-42D2-8AE7-5FDE25810753",
+      "estimated_tokens": 690,
+      "evidence_id": "29D07CCC-7E6D-46BF-B3D0-5D4826199669",
+      "location_label": "X",
+      "origin": "source_text",
+      "position": {
+        "first_ordinal": 531,
+        "last_ordinal": 537,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/chapter-10.xhtml"
+      },
+      "role": "adjacent",
+      "source_quality": "extracted_text",
+      "text": "“Well, make up, make up,” said Mr. Standish, jocosely; “you see the middle-aged fellows carry the day.”\n\nMr. Chichely shook his head with much meaning: he was not going to incur the certainty of being accepted by the woman he would choose.\n\nThe Miss Vincy who had the honor of being Mr. Chichely’s ideal was of course not present; for Mr. Brooke, always objecting to go too far, would not have chosen that his nieces should meet the daughter of a Middlemarch manufacturer, unless it were on a public occasion. The feminine part of the company included none whom Lady Chettam or Mrs. Cadwallader could object to; for Mrs. Renfrew, the colonel’s widow, was not only unexceptionable in point of breeding, but also interesting on the ground of her complaint, which puzzled the doctors, and seemed clearly a case wherein the fullness of professional knowledge might need the supplement of quackery. Lady Chettam, who attributed her own remarkable health to homemade bitters united with constant medical attendance, entered with much exercise of the imagination into Mrs. Renfrew’s account of symptoms, and into the amazing futility in her case of all strengthening medicines.\n\n“Where can all the strength of those medicines go, my dear?” said the mild but stately dowager, turning to Mrs. Cadwallader reflectively, when Mrs. Renfrew’s attention was called away.\n\n“It strengthens the disease,” said the Rector’s wife, much too wellborn not to be an amateur in medicine. “Everything depends on the constitution: some people make fat, some blood, and some bile﻿—that’s my view of the matter; and whatever they take is a sort of grist to the mill.”\n\n“Then she ought to take medicines that would reduce﻿—reduce the disease, you know, if you are right, my dear. And I think what you say is reasonable.”\n\n“Certainly it is reasonable. You have two sorts of potatoes, fed on the same soil. One of them grows more and more watery﻿—”",
+      "text_sha256": "006a871c011cf5b7fff7d087d115c059f20a3b6de910ace306412999489e44ff",
+      "work_id": "6F6316F0-DFFF-4CA6-A758-C50B65E796B6"
+    }
+  ],
+  "history": {
+    "excluded_turn_count": 2,
+    "exclusion_reason": "1 earlier question in this conversation went to a different provider or model, so it and its answer weren't sent to 127.0.0.1 · local · local-model. Earlier answers in this conversation used passages beyond your position, so they weren't sent. Start a new conversation with \"Do not include later passages\" to keep them out entirely.",
+    "included_turns": [
+      {
+        "answer": "A new doctor in Middlemarch [earlier source].",
+        "destination": {
+          "base_path": "/v1",
+          "classification": "local",
+          "host": "127.0.0.1",
+          "model": "local-model",
+          "origin": "http://127.0.0.1:1234",
+          "provider_kind": "openai_compatible_chat"
+        },
+        "edition_id": "413513ED-46EE-42D2-8AE7-5FDE25810753",
+        "max_evidence_ordinal": 529,
+        "question": "Who is Lydgate?",
+        "shared_scopes": [
+          "source_text"
+        ],
+        "turn_id": "67DF330B-FC1A-421A-9D04-2F40908908D2"
+      }
+    ]
+  },
+  "limitations": [],
+  "mode": "source_grounded",
+  "pack_id": "56FF5214-F917-48DF-9E80-20C62AF32D1E",
+  "pack_sha256": "55c869a3c48cb0c18dd3a55e65c76f2eb21a6e4fb4819be56e579484ea7ab604",
+  "prompt_template_version": "sylvia-grounded-3",
+  "question": "What is Bulstrode like?",
+  "request_id": "DEBC2861-05BD-411B-8ABB-C1865AC96EAD",
+  "retrieval": {
+    "adjacent_chunks": 1,
+    "candidates_considered": 52,
+    "chunk_words_max": 600,
+    "chunk_words_min": 300,
+    "query_terms": [
+      "bulstrode",
+      "like"
+    ],
+    "strategy": "fts5_bm25",
+    "top_k": 5
+  },
+  "schema_version": 1,
+  "scope": "work_search",
+  "scope_label": "Relevant passages from this work",
+  "spoiler_boundary": {
+    "basis": "user_confirmed_position",
+    "enabled": true,
+    "excluded_evidence_count": 512,
+    "max_ordinal": 569
+  },
+  "text_coverage": {
+    "resources_indexed": 95,
+    "resources_total": 95,
+    "state": "book_text_indexed"
+  },
+  "truncation": {
+    "omitted_evidence_count": 0,
+    "truncated": false
+  },
+  "work": {
+    "author_display": "George Eliot",
+    "edition_id": "413513ED-46EE-42D2-8AE7-5FDE25810753",
+    "source_kind": "local_epub",
+    "title": "Middlemarch",
+    "work_id": "6F6316F0-DFFF-4CA6-A758-C50B65E796B6"
+  }
+}

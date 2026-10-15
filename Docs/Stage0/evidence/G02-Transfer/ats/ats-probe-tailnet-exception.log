@@ -1,0 +1,34 @@
+environment: simulator (Version 26.5 (Build 23F77)), hosted test in com.jevidon.sylvia.spike.transfer.atsvariant
+ATS variant: tailnet-exception; Info.plist NSAppTransportSecurity: {     NSExceptionDomains =     {         "100.64.0.0/10" =         {             NSExceptionAllowsInsecureHTTPLoads = 1;         };         "ts.net" =         {             NSExceptionAllowsInsecureHTTPLoads = 1;             NSIncludesSubdomains = 1;         };     }; }
+pinned HTTPS = GET /v1/capabilities on the MAIN source (self-signed P-256 certificate whose name is not the host), trust answered only by the SPKI pin
+foreground = ephemeral URLSession data task; background = URLSessionConfiguration.background download task
+cleartext control = GET http://<host>:<port>/ on a plain Python server bound to the same address
+
+IPv4 loopback [127.0.0.1]
+  pinned HTTPS, foreground: HTTP 200; challenges: server_trust=matched
+  pinned HTTPS, background: HTTP 200; challenges: server_trust=matched
+  cleartext HTTP:           loaded (HTTP 200)
+IPv6 loopback [::1]
+  pinned HTTPS, foreground: HTTP 200; challenges: server_trust=matched
+  pinned HTTPS, background: HTTP 200; challenges: server_trust=matched
+  cleartext HTTP:           loaded (HTTP 200)
+unqualified name [localhost]
+  pinned HTTPS, foreground: HTTP 200; challenges: server_trust=matched
+  pinned HTTPS, background: HTTP 200; challenges: server_trust=matched
+  cleartext HTTP:           loaded (HTTP 200)
+LAN IPv4 [192.168.20.104]
+  pinned HTTPS, foreground: HTTP 200; challenges: server_trust=matched
+  pinned HTTPS, background: HTTP 200; challenges: server_trust=matched
+  cleartext HTTP:           loaded (HTTP 200)
+.local name [M5-Max-MBP.local]
+  pinned HTTPS, foreground: HTTP 200; challenges: server_trust=matched
+  pinned HTTPS, background: HTTP 200; challenges: server_trust=matched
+  cleartext HTTP:           loaded (HTTP 200)
+Tailscale IPv4 (100.64/10) [100.104.83.3]
+  pinned HTTPS, foreground: HTTP 200; challenges: server_trust=matched
+  pinned HTTPS, background: HTTP 200; challenges: server_trust=matched
+  cleartext HTTP:           loaded (HTTP 200)
+MagicDNS name (ts.net) [m5-max-mbp.[redacted]]
+  pinned HTTPS, foreground: HTTP 200; challenges: server_trust=matched
+  pinned HTTPS, background: HTTP 200; challenges: server_trust=matched
+  cleartext HTTP:           loaded (HTTP 200)

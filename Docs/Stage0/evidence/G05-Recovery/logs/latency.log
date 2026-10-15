@@ -1,0 +1,5 @@
+capture save latency: environment host (macOS); budget p95 <= 200 ms (plan 19.2); indicative only
+chosen: synchronous=FULL fullfsync=ON: n=2000 p50=1.243 ms p95=3.250 ms p99=7.574 ms max=57.751 ms
+full-no-fullfsync: synchronous=FULL fullfsync=OFF: n=2000 p50=0.700 ms p95=2.030 ms p99=5.123 ms max=141.152 ms
+grdb-default: synchronous=NORMAL fullfsync=OFF: n=2000 p50=0.517 ms p95=1.533 ms p99=4.437 ms max=40.812 ms
+RESULT: PASS (chosen p95 3.250125 ms <= 200 ms)

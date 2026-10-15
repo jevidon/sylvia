@@ -1,0 +1,22 @@
+{
+  "allow_insecure_local_http": false,
+  "base_url": "https://gateway.example.com/api/v1/chat/completions",
+  "capabilities": {
+    "model_listing": false,
+    "stream_usage": false,
+    "streaming": true,
+    "timestamps": false,
+    "token_counting": false
+  },
+  "credential_ref": {
+    "account": "14817500-C4B7-4E01-89ED-91ED951F851B",
+    "origin": "https://gateway.example.com",
+    "store": "keychain"
+  },
+  "display_name": "Gateway",
+  "model": "gateway-model",
+  "privacy_classification": "hosted",
+  "provider_id": "7FBF2E97-B6DE-4347-AFBB-EDD16615973C",
+  "provider_kind": "openai_compatible_chat",
+  "schema_version": 1
+}

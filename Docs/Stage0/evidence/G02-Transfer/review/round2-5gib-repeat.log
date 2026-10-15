@@ -1,0 +1,21 @@
+environment: host (macOS 26.6.2, Apple M5 Max); commit 4693905
+command: swift test --filter fiveGiBThroughTheBackgroundClientWithARelaunch (SourceService), 3 runs, 2026-10-12T03:00:13Z
+each run's lines from faults/large-5GiB-background-client.log (the test rewrites that file)
+--- run 1: ✔ Test run with 1 test in 1 suite passed after 17.660 seconds.
+relaunch: start() took 1.11 s; staging check re-hashed 2717908992 bytes in 1104 ms (2348 MiB/s)
+jobViews() polled 163 times during start(); slowest call 0.031 ms (asserted < 250 ms: the re-hash runs outside the lock)
+final full-file SHA-256 (assembly) took 2242 ms on the assembly queue; jobViews() polled 319 times while the job showed "assembling", slowest of those 2.342 ms (asserted < 250 ms: the check runs outside the lock)
+jobViews() polled 728 times from the relaunch to the import; slowest call 51.190 ms (asserted < 1 s). Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the 158 parts verified after the relaunch: median 12, max 50 (report finding 20)
+background-events completion handed in while the job showed "assembling": held, then called after assembly_verified
+--- run 2: ✔ Test run with 1 test in 1 suite passed after 15.305 seconds.
+relaunch: start() took 1.05 s; staging check re-hashed 2785017856 bytes in 1048 ms (2534 MiB/s)
+jobViews() polled 150 times during start(); slowest call 0.030 ms (asserted < 250 ms: the re-hash runs outside the lock)
+final full-file SHA-256 (assembly) took 2125 ms on the assembly queue; jobViews() polled 294 times while the job showed "assembling", slowest of those 12.890 ms (asserted < 250 ms: the check runs outside the lock)
+jobViews() polled 626 times from the relaunch to the import; slowest call 12.890 ms (asserted < 1 s). Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the 154 parts verified after the relaunch: median 10, max 13 (report finding 20)
+background-events completion handed in while the job showed "assembling": held, then called after assembly_verified
+--- run 3: ✔ Test run with 1 test in 1 suite passed after 14.915 seconds.
+relaunch: start() took 1.02 s; staging check re-hashed 2751463424 bytes in 1018 ms (2578 MiB/s)
+jobViews() polled 146 times during start(); slowest call 0.029 ms (asserted < 250 ms: the re-hash runs outside the lock)
+final full-file SHA-256 (assembly) took 2082 ms on the assembly queue; jobViews() polled 290 times while the job showed "assembling", slowest of those 6.065 ms (asserted < 250 ms: the check runs outside the lock)
+jobViews() polled 619 times from the relaunch to the import; slowest call 11.788 ms (asserted < 1 s). Part commits (16 MiB copy, hash and write barrier) still hold the lock: commit_ms of the 156 parts verified after the relaunch: median 10, max 12 (report finding 20)
+background-events completion handed in while the job showed "assembling": held, then called after assembly_verified

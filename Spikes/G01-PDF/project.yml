@@ -1,0 +1,101 @@
+# G0.1 PDF spike: PDFKit selection, anchors, overlays and link policy (ADR-0005).
+# Stage 0 harness only; never shipped. Generate with `sylvia_generate Spikes/G01-PDF`.
+# No third-party packages: PDFKit, CryptoKit and Synchronization are system frameworks.
+name: G01PDF
+options:
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+targets:
+  PDFAnchorKit:
+    type: framework
+    platform: iOS
+    sources:
+      - path: Sources/PDFAnchorKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.pdf.anchorkit
+        GENERATE_INFOPLIST_FILE: YES
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+  PDFSpikeHarness:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources/Harness
+        excludes:
+          - Info.plist
+      # Committed fixtures are copied as a folder reference: <bundle>/Fixtures/*.pdf
+      - path: Fixtures
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - target: PDFAnchorKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.pdf
+        PRODUCT_NAME: PDFSpikeHarness
+        GENERATE_INFOPLIST_FILE: YES
+        # Only adds CFBundleURLTypes (the link canary scheme); everything else is generated.
+        INFOPLIST_FILE: Sources/Harness/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: Sylvia PDF Spike
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+  PDFAnchorKitTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/Unit
+      - path: Fixtures
+        type: folder
+        buildPhase: resources
+      # Anchors captured on iOS 26.5, restored by CrossOSRestoreTests: <bundle>/Resources/*.json
+      - path: Tests/Resources
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - target: PDFSpikeHarness
+      - target: PDFAnchorKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.pdf.tests
+        GENERATE_INFOPLIST_FILE: YES
+  PDFSpikeHarnessUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/UI
+    dependencies:
+      - target: PDFSpikeHarness
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.pdf.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: PDFSpikeHarness
+schemes:
+  PDFSpikeHarness:
+    build:
+      targets:
+        PDFSpikeHarness: all
+        PDFAnchorKitTests: [test]
+        PDFSpikeHarnessUITests: [test]
+    test:
+      config: Debug
+      gatherCoverageData: false
+      targets:
+        - name: PDFAnchorKitTests
+        - name: PDFSpikeHarnessUITests

@@ -1,0 +1,85 @@
+{
+  "budget": {
+    "context_limit_source": "default_unknown_model",
+    "context_limit_tokens": 8192,
+    "estimated": true,
+    "estimator": {
+      "kind": "heuristic",
+      "name": "utf8-bytes-div-3"
+    },
+    "evidence_budget_tokens": 5968,
+    "evidence_tokens": 49,
+    "history_tokens": 0,
+    "output_reserve_tokens": 1024,
+    "question_tokens": 32,
+    "safety_margin_tokens": 819,
+    "system_tokens": 349
+  },
+  "conversation_id": "AAFA063E-06B1-4EB4-B9A1-EA74D8CCEEF4",
+  "coverage": "excerpt_only",
+  "coverage_label": "Excerpt only",
+  "created_at": "2026-10-10T00:00:00.123Z",
+  "endpoint": {
+    "base_path": "/v1",
+    "classification": "local",
+    "host": "127.0.0.1",
+    "model": "local-model",
+    "origin": "http://127.0.0.1:1234",
+    "provider_kind": "openai_compatible_chat"
+  },
+  "evidence": [
+    {
+      "citation_id": "c1",
+      "edition_id": "E84FA4B2-6E76-4F73-AFF3-7F8699079C7F",
+      "estimated_tokens": 49,
+      "evidence_id": "F053AFF0-5840-4650-BC1F-AFBFADA38F4F",
+      "location_label": "Where I Lived, and What I Lived For",
+      "origin": "source_text",
+      "position": {
+        "first_ordinal": 237,
+        "last_ordinal": 237,
+        "ordinal_unit": "extracted_paragraph",
+        "resource_href": "text/where-i-lived-and-what-i-lived-for.xhtml"
+      },
+      "role": "selection",
+      "source_quality": "extracted_text",
+      "text": "I went to the woods because I wished to live deliberately",
+      "text_sha256": "d062c8cebe5ec6f33eff6157feccbe301a664faff41dfef6d9e73a164d946803",
+      "work_id": "2977D70A-41DA-4C60-85E0-7E008C35A039"
+    }
+  ],
+  "history": {
+    "excluded_turn_count": 0,
+    "included_turns": []
+  },
+  "limitations": [],
+  "mode": "source_grounded",
+  "pack_id": "924E441E-12D7-48F1-BE8D-43C80CFC7453",
+  "pack_sha256": "267434014dea98ccc2ec1b1d6bfa6e5fc49f35d8e82c32c6a119a57041ef48d9",
+  "prompt_template_version": "sylvia-grounded-3",
+  "request_id": "5F91117A-B148-4346-9332-A8E79DD61435",
+  "schema_version": 1,
+  "scope": "selected_passage",
+  "scope_label": "Selected passage",
+  "spoiler_boundary": {
+    "basis": "none",
+    "enabled": false,
+    "excluded_evidence_count": 0
+  },
+  "text_coverage": {
+    "resources_indexed": 18,
+    "resources_total": 18,
+    "state": "book_text_indexed"
+  },
+  "truncation": {
+    "omitted_evidence_count": 0,
+    "truncated": false
+  },
+  "work": {
+    "author_display": "Henry David Thoreau",
+    "edition_id": "E84FA4B2-6E76-4F73-AFF3-7F8699079C7F",
+    "source_kind": "local_epub",
+    "title": "Walden",
+    "work_id": "2977D70A-41DA-4C60-85E0-7E008C35A039"
+  }
+}

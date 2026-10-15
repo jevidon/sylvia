@@ -1,0 +1,221 @@
+# G0.3 evidence: slashes hidden inside grapheme clusters, BEFORE the fix (report finding F18).
+# The tests in PackPathSeparatorTests.swift and PathSeparatorTests.swift (commit 50735dc, tests only) ran against the
+# readers as they were then: every hidden-separator path was accepted, the hostile pack was extracted and wrote a file
+# into the parent of its extraction directory (the line "file written outside the extraction directory: true"), and the
+# drop area's Remove deleted a file beside Documents.
+# Host: macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.0 (27A266a), Swift 6.4.
+# Command (in Spikes/G03-Intake/IntakeKit, after swift build --build-tests): swift test --skip-build --filter PathSeparatorTests
+
+# swift test --skip-build --filter PathSeparatorTests
+# commit 50735dc, started 2026-10-13T03:46:50Z
+# load: 16:46  up 10 days,  2:57, 1 user, load averages: 142.70 115.91 101.68
+warning: 'zipfoundation': /Users/jevidon/Git/sylvia/.claude/worktrees/wf_744b95c1-309-3/Spikes/G03-Intake/IntakeKit/.build/checkouts/ZIPFoundation/Package.swift:24:58: warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]
+22 |     name: "ReadiumZIPFoundation",
+23 |     platforms: [
+24 |         .macOS(.v11), .iOS(.v13), .tvOS(.v12), .watchOS(.v4), .visionOS(.v1)
+   |                                                          `- warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]
+25 |     ],
+26 |     products: [
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "sylviapack paths: separators are bytes, not Characters (T13)" started.
+◇ Test "extraction never writes outside its directory: a hidden '..' is refused before anything is written" started.
+◇ Test "the byte-level rules still accept ordinary non-ASCII paths, including combining marks inside a component" started.
+◇ Test "a file that is also used as a folder is refused when the separator hides inside a grapheme cluster" started.
+◇ Test "an entry name ending in a slash after a prepended mark is a directory entry and is refused" started.
+◇ Test "manifest paths whose separators hide inside a grapheme cluster are refused" started.
+◇ Test "the platform fact: a slash inside a grapheme cluster is invisible to Character-based String operations" started.
+◇ Test case passing 2 arguments label → "a '.' component", path → "./́dot.md" to "manifest paths whose separators hide inside a grapheme cluster are refused" started.
+◇ Test case passing 2 arguments label → "absolute: a leading slash carrying a combining mark", path → "/́escape.md" to "manifest paths whose separators hide inside a grapheme cluster are refused" started.
+◇ Test case passing 2 arguments label → "traversal: '..' then a slash carrying a combining mark", path → "../́escape.md" to "manifest paths whose separators hide inside a grapheme cluster are refused" started.
+◇ Test case passing 2 arguments label → "16 components joined by slashes that carry combining marks", path → "d1/́d2/́d3/́d4/́d5/́d6/́d7/́d8/́d9/́d10/́d11/́d12/́d13/́d14/́d15/́d16.md" to "manifest paths whose separators hide inside a grapheme cluster are refused" started.
+◇ Test case passing 2 arguments label → "traversal in the middle", path → "Walden/../́escape.md" to "manifest paths whose separators hide inside a grapheme cluster are refused" started.
+◇ Test case passing 2 arguments label → "16 components joined by slashes after prepended marks", path → "d1؀/d2؀/d3؀/d4؀/d5؀/d6؀/d7؀/d8؀/d9؀/d10؀/d11؀/d12؀/d13؀/d14؀/d15؀/d16؀.md" to "manifest paths whose separators hide inside a grapheme cluster are refused" started.
+◇ Test case passing 2 arguments label → "an empty component", path → "Walden//́x.md" to "manifest paths whose separators hide inside a grapheme cluster are refused" started.
+◇ Test case passing 2 arguments label → "an empty last component after a prepended mark", path → "Walden/x؀/" to "manifest paths whose separators hide inside a grapheme cluster are refused" started.
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "an empty last component after a prepended mark", path → "Walden/x؀/" at PackPathSeparatorTests.swift:42:9: Expectation failed: an error was expected but none was thrown
+↳ an empty last component after a prepended mark: PackPath
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "traversal: '..' then a slash carrying a combining mark", path → "../́escape.md" at PackPathSeparatorTests.swift:42:9: Expectation failed: an error was expected but none was thrown
+↳ traversal: '..' then a slash carrying a combining mark: PackPath
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "16 components joined by slashes that carry combining marks", path → "d1/́d2/́d3/́d4/́d5/́d6/́d7/́d8/́d9/́d10/́d11/́d12/́d13/́d14/́d15/́d16.md" at PackPathSeparatorTests.swift:42:9: Expectation failed: an error was expected but none was thrown
+↳ 16 components joined by slashes that carry combining marks: PackPath
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "16 components joined by slashes after prepended marks", path → "d1؀/d2؀/d3؀/d4؀/d5؀/d6؀/d7؀/d8؀/d9؀/d10؀/d11؀/d12؀/d13؀/d14؀/d15؀/d16؀.md" at PackPathSeparatorTests.swift:42:9: Expectation failed: an error was expected but none was thrown
+↳ 16 components joined by slashes after prepended marks: PackPath
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "an empty last component after a prepended mark", path → "Walden/x؀/" at PackPathSeparatorTests.swift:43:9: Expectation failed: an error was expected but none was thrown
+↳ an empty last component after a prepended mark: entry name
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "16 components joined by slashes after prepended marks", path → "d1؀/d2؀/d3؀/d4؀/d5؀/d6؀/d7؀/d8؀/d9؀/d10؀/d11؀/d12؀/d13؀/d14؀/d15؀/d16؀.md" at PackPathSeparatorTests.swift:43:9: Expectation failed: an error was expected but none was thrown
+↳ 16 components joined by slashes after prepended marks: entry name
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "traversal: '..' then a slash carrying a combining mark", path → "../́escape.md" at PackPathSeparatorTests.swift:43:9: Expectation failed: an error was expected but none was thrown
+↳ traversal: '..' then a slash carrying a combining mark: entry name
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "16 components joined by slashes that carry combining marks", path → "d1/́d2/́d3/́d4/́d5/́d6/́d7/́d8/́d9/́d10/́d11/́d12/́d13/́d14/́d15/́d16.md" at PackPathSeparatorTests.swift:43:9: Expectation failed: an error was expected but none was thrown
+↳ 16 components joined by slashes that carry combining marks: entry name
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "traversal in the middle", path → "Walden/../́escape.md" at PackPathSeparatorTests.swift:42:9: Expectation failed: an error was expected but none was thrown
+↳ traversal in the middle: PackPath
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "an empty component", path → "Walden//́x.md" at PackPathSeparatorTests.swift:42:9: Expectation failed: an error was expected but none was thrown
+↳ an empty component: PackPath
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "traversal in the middle", path → "Walden/../́escape.md" at PackPathSeparatorTests.swift:43:9: Expectation failed: an error was expected but none was thrown
+↳ traversal in the middle: entry name
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "a '.' component", path → "./́dot.md" at PackPathSeparatorTests.swift:42:9: Expectation failed: an error was expected but none was thrown
+↳ a '.' component: PackPath
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "an empty component", path → "Walden//́x.md" at PackPathSeparatorTests.swift:43:9: Expectation failed: an error was expected but none was thrown
+↳ an empty component: entry name
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "a '.' component", path → "./́dot.md" at PackPathSeparatorTests.swift:43:9: Expectation failed: an error was expected but none was thrown
+↳ a '.' component: entry name
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "absolute: a leading slash carrying a combining mark", path → "/́escape.md" at PackPathSeparatorTests.swift:42:9: Expectation failed: an error was expected but none was thrown
+↳ absolute: a leading slash carrying a combining mark: PackPath
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "absolute: a leading slash carrying a combining mark", path → "/́escape.md" at PackPathSeparatorTests.swift:43:9: Expectation failed: an error was expected but none was thrown
+↳ absolute: a leading slash carrying a combining mark: entry name
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✔ Test "the platform fact: a slash inside a grapheme cluster is invisible to Character-based String operations" passed after 0.002 seconds.
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "16 components joined by slashes after prepended marks", path → "d1؀/d2؀/d3؀/d4؀/d5؀/d6؀/d7؀/d8؀/d9؀/d10؀/d11؀/d12؀/d13؀/d14؀/d15؀/d16؀.md" at PackPathSeparatorTests.swift:46:9: Expectation failed: try await verdict(fixture.rawZip().build()) == .unsafePath
+↳ 16 components joined by slashes after prepended marks
+↳ try await verdict(fixture.rawZip().build()) == .unsafePath → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "an empty last component after a prepended mark", path → "Walden/x؀/" at PackPathSeparatorTests.swift:46:9: Expectation failed: try await verdict(fixture.rawZip().build()) == .unsafePath
+↳ an empty last component after a prepended mark
+↳ try await verdict(fixture.rawZip().build()) == .unsafePath → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "traversal in the middle", path → "Walden/../́escape.md" at PackPathSeparatorTests.swift:46:9: Expectation failed: try await verdict(fixture.rawZip().build()) == .unsafePath
+↳ traversal in the middle
+↳ try await verdict(fixture.rawZip().build()) == .unsafePath → <not evaluated>
+✘ Test "an entry name ending in a slash after a prepended mark is a directory entry and is refused" recorded an issue at PackPathSeparatorTests.swift:64:9: Expectation failed: code == .specialEntry || code == .unsafePath
+↳ Optional(SylviaPack.PackRejection.Code.unexpectedEntry)
+↳ code == .specialEntry || code == .unsafePath → false
+↳   code == .specialEntry → false
+↳   code == .unsafePath → false
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "an empty component", path → "Walden//́x.md" at PackPathSeparatorTests.swift:46:9: Expectation failed: try await verdict(fixture.rawZip().build()) == .unsafePath
+↳ an empty component
+↳ try await verdict(fixture.rawZip().build()) == .unsafePath → <not evaluated>
+✘ Test "an entry name ending in a slash after a prepended mark is a directory entry and is refused" recorded an issue at PackPathSeparatorTests.swift:65:9: Expectation failed: an error was expected but none was thrown
+↳ PackRejection.self → <not evaluated>
+↳   PackRejection → <not evaluated>
+↳   self → <not evaluated>
+✘ Test "an entry name ending in a slash after a prepended mark is a directory entry and is refused" failed after 0.130 seconds with 2 issues.
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "traversal: '..' then a slash carrying a combining mark", path → "../́escape.md" at PackPathSeparatorTests.swift:46:9: Expectation failed: try await verdict(fixture.rawZip().build()) == .unsafePath
+↳ traversal: '..' then a slash carrying a combining mark
+↳ try await verdict(fixture.rawZip().build()) == .unsafePath → <not evaluated>
+✘ Test "a file that is also used as a folder is refused when the separator hides inside a grapheme cluster" recorded an issue at PackPathSeparatorTests.swift:53:9: Expectation failed: try await verdict(fixture.rawZip().build()) == .pathConflict
+↳ try await verdict(fixture.rawZip().build()) == .pathConflict → <not evaluated>
+✘ Test "a file that is also used as a folder is refused when the separator hides inside a grapheme cluster" recorded an issue at PackPathSeparatorTests.swift:54:9: Expectation failed: an error was expected but none was thrown
+↳ PackRejection(.pathConflict, "a file is also used as a folder") → <not evaluated>
+↳   .pathConflict → <not evaluated>
+↳   "a file is also used as a folder" → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "16 components joined by slashes that carry combining marks", path → "d1/́d2/́d3/́d4/́d5/́d6/́d7/́d8/́d9/́d10/́d11/́d12/́d13/́d14/́d15/́d16.md" at PackPathSeparatorTests.swift:46:9: Expectation failed: try await verdict(fixture.rawZip().build()) == .unsafePath
+↳ 16 components joined by slashes that carry combining marks
+↳ try await verdict(fixture.rawZip().build()) == .unsafePath → <not evaluated>
+✔ Test "the byte-level rules still accept ordinary non-ASCII paths, including combining marks inside a component" passed after 0.131 seconds.
+✘ Test "a file that is also used as a folder is refused when the separator hides inside a grapheme cluster" failed after 0.131 seconds with 2 issues.
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "a '.' component", path → "./́dot.md" at PackPathSeparatorTests.swift:46:9: Expectation failed: try await verdict(fixture.rawZip().build()) == .unsafePath
+↳ a '.' component
+↳ try await verdict(fixture.rawZip().build()) == .unsafePath → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" recorded an issue with 2 arguments label → "absolute: a leading slash carrying a combining mark", path → "/́escape.md" at PackPathSeparatorTests.swift:46:9: Expectation failed: try await verdict(fixture.rawZip().build()) == .unsafePath
+↳ absolute: a leading slash carrying a combining mark
+↳ try await verdict(fixture.rawZip().build()) == .unsafePath → <not evaluated>
+✘ Test "manifest paths whose separators hide inside a grapheme cluster are refused" with 8 test cases failed after 0.131 seconds with 24 issues.
+✘ Test "extraction never writes outside its directory: a hidden '..' is refused before anything is written" recorded an issue at PackPathSeparatorTests.swift:84:25: Issue recorded
+↳ the hostile pack was extracted
+hidden-separator extraction: file written outside the extraction directory: true
+✘ Test "extraction never writes outside its directory: a hidden '..' is refused before anything is written" recorded an issue at PackPathSeparatorTests.swift:90:9: Expectation failed: !leaked
+↳ a file was written outside the extraction directory
+↳ !leaked → <not evaluated>
+↳   leaked → <not evaluated>
+✘ Test "extraction never writes outside its directory: a hidden '..' is refused before anything is written" recorded an issue at PackPathSeparatorTests.swift:91:9: Expectation failed: try Durability.lstatInfo(destination) == nil
+↳ try Durability.lstatInfo(destination) == nil → <not evaluated>
+✘ Test "extraction never writes outside its directory: a hidden '..' is refused before anything is written" failed after 0.161 seconds with 3 issues.
+✘ Suite "sylviapack paths: separators are bytes, not Characters (T13)" failed after 0.161 seconds with 31 issues.
+↳ /// A "/" followed by a combining mark (U+0301), or preceded by a prepended concatenation mark (U+0600), forms one Swift
+↳ /// `Character` with that mark (Unicode UAX #29 rules GB9 and GB9b). Character-based String operations (`split`,
+↳ /// `hasPrefix`, `contains`, `==`) therefore do not see such a "/" as a separator, while the file system, the contract's
+↳ /// pattern and every other reader do. Path rules must work on bytes. Found while closing G0.3 review round 3 (report
+↳ /// finding F18): the reader accepted "../" + U+0301 + "x", and extraction wrote that file into the parent of its
+↳ /// extraction directory.
+✘ Test run with 6 tests in 1 suite failed after 0.161 seconds with 31 issues.
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "separators are bytes, not Characters: handoff file names and drop-area names" started.
+◇ Test "a handoff manifest whose original_filename holds a slash inside a grapheme cluster is refused, as the schema refuses it" started.
+◇ Test "drop-area names: a slash inside a grapheme cluster cannot reach a file outside Documents" started.
+✘ Test "drop-area names: a slash inside a grapheme cluster cannot reach a file outside Documents" recorded an issue at PathSeparatorTests.swift:34:9: Expectation failed: an error was expected but none was thrown
+↳ DropAreaImporter.ImportError.notInDropArea → <not evaluated>
+↳   DropAreaImporter.ImportError → <not evaluated>
+↳   notInDropArea → <not evaluated>
+✘ Test "a handoff manifest whose original_filename holds a slash inside a grapheme cluster is refused, as the schema refuses it" recorded an issue at PathSeparatorTests.swift:21:13: Expectation failed: an error was expected but none was thrown
+↳ "Meditations/́.epub"
+↳ HandoffManifestError.invalidField("original_filename") → <not evaluated>
+↳   HandoffManifestError → <not evaluated>
+↳   "original_filename" → <not evaluated>
+✘ Test "a handoff manifest whose original_filename holds a slash inside a grapheme cluster is refused, as the schema refuses it" recorded an issue at PathSeparatorTests.swift:21:13: Expectation failed: an error was expected but none was thrown
+↳ "/́Meditations.epub"
+↳ HandoffManifestError.invalidField("original_filename") → <not evaluated>
+↳   HandoffManifestError → <not evaluated>
+↳   "original_filename" → <not evaluated>
+✘ Test "a handoff manifest whose original_filename holds a slash inside a grapheme cluster is refused, as the schema refuses it" recorded an issue at PathSeparatorTests.swift:21:13: Expectation failed: an error was expected but none was thrown
+↳ "Meditations؀/.epub"
+↳ HandoffManifestError.invalidField("original_filename") → <not evaluated>
+↳   HandoffManifestError → <not evaluated>
+↳   "original_filename" → <not evaluated>
+✘ Test "a handoff manifest whose original_filename holds a slash inside a grapheme cluster is refused, as the schema refuses it" failed after 0.003 seconds with 3 issues.
+✘ Test "drop-area names: a slash inside a grapheme cluster cannot reach a file outside Documents" recorded an issue at PathSeparatorTests.swift:36:9: Expectation failed: FileManager.default.fileExists(atPath: outside.path)
+↳ the file outside Documents must be untouched
+↳ FileManager.default.fileExists(atPath: outside.path) → false
+↳   FileManager.default → <NSFileManager: 0x104bdc8c0>
+↳   outside.path → "/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g03-tests-477DA356-40D4-4857-B620-BCCE6FB57A73/7D0C20FA-AF2B-409C-8154-F009F6DB4B04/́outside.epub"
+✘ Test "drop-area names: a slash inside a grapheme cluster cannot reach a file outside Documents" failed after 0.005 seconds with 2 issues.
+✘ Suite "separators are bytes, not Characters: handoff file names and drop-area names" failed after 0.005 seconds with 5 issues.
+↳ /// The handoff reader and the drop area apply the same byte-level separator rule as the pack reader
+↳ /// (PackPathSeparatorTests): a "/" followed by a combining mark is one Swift `Character` with it, so Character-based
+↳ /// `contains("/")` and `hasPrefix` do not see it, while the schema's pattern and the file system do (report F18).
+✘ Test run with 2 tests in 1 suite failed after 0.005 seconds with 5 issues.
+Note: Some test targets reported failures:
+  - SylviaPackTests (Swift Testing)
+  - SylviaContainerLayoutTests (Swift Testing)
+# exit status 1, finished 2026-10-13T03:46:53Z

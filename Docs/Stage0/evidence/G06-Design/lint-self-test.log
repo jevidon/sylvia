@@ -1,0 +1,16 @@
+self-test ok: Packages/Design/LintFixtures/violating/Bypasses.swift: 39 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Colors.swift: 15 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Fonts.swift: 13 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Literal.colorset: 1 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Multiline.swift: 44 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Phrases.swift: 22 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Strings.xcstrings: 1 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Styles.swift: 41 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/clean/Clean.swift: clean
+self-test ok: target discovery (Apps and UI packages in; Domain, Design, Spikes and Tests out)
+self-test ok: lint Spikes/G06 exits 2
+self-test ok: lint Apps/Sylvia/Tests exits 2
+self-test ok: lint Packages/Design/Sources exits 2
+self-test ok: lint Apps/Missing exits 2
+self-test ok: lint Apps/Sylvia/Sources exits 1
+lint self-test: 15 sample file(s), 0 failure(s)

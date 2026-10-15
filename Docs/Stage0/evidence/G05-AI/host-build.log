@@ -1,0 +1,65 @@
+# environment: host: macOS 26.6.2 (25G83), arm64
+# toolchain: Xcode 27.0 Build version 27A266a 
+# command: swift build --build-tests (Scripts/ci.d/70-g05-ai.sh)
+# commit: 48a75c8 (log copied 2026-10-12T23:11Z)
+
+Fetching https://github.com/groue/GRDB.swift.git from cache
+warning: 'grdb.swift': skipping cache due to an error: The file “maintenance.lock” doesn’t exist.
+[1/114078] Fetching grdb.swift
+Fetched https://github.com/groue/GRDB.swift.git (13.95s)
+Computing version for https://github.com/groue/GRDB.swift.git
+Computed https://github.com/groue/GRDB.swift.git at 7.11.1 (14.55s)
+Creating working copy for https://github.com/groue/GRDB.swift.git
+Working copy of https://github.com/groue/GRDB.swift.git resolved at 7.11.1
+Building for debugging...
+[Provisioning 4 / 15]
+[Planning 197 / 359]
+[Creating build graph]
+[89 / 175] G05AI_SylviaContextTests
+[93 / 175]
+[95 / 177] SylviaAI
+[114 / 291]
+[123 / 291]
+[133 / 291]
+[136 / 291]
+[144 / 291]
+[149 / 291]
+[156 / 291]
+[162 / 291]
+[167 / 291]
+[169 / 291]
+[188 / 291] GRDB
+[190 / 291] SylviaAI
+[191 / 291] SylviaAI
+[192 / 291] SylviaAI
+[198 / 291] GRDB
+[202 / 291] SylviaAI
+[204 / 291] GRDB
+[212 / 291] SylviaAI
+[214 / 291] SylviaAI-product
+[216 / 292]
+[216 / 292] SylviaAI
+[231 / 301] SylviaAI
+[241 / 301] SylviaAITests-product
+[243 / 309]
+[250 / 309] SylviaAI
+[258 / 309] SylviaAI
+[260 / 309] SylviaAI
+[271 / 311] GRDB
+[279 / 312] LiveProviderTests-product
+[280 / 329] SylviaContextTests-product
+[281 / 337]
+[300 / 337] SylviaAITests-product
+[304 / 337] SylviaAITests-product
+[309 / 337] LiveProviderTests-product
+[309 / 337] SylviaContextTests-product
+[314 / 337] LiveProviderTests-product
+[316 / 337] SylviaAITests-product
+[318 / 337] LiveProviderTests-product
+[325 / 337] SylviaContextTests-product
+[325 / 337] SylviaAITests-product
+[325 / 337] SylviaContextTests-product
+[327 / 337] SylviaContextTests-product
+[331 / 337] SylviaAITests-product
+[333 / 337] SylviaAITests-product
+Build complete! (17.14 sec)

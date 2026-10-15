@@ -1,0 +1,84 @@
+{
+  "budget": {
+    "context_limit_source": "default_unknown_model",
+    "context_limit_tokens": 8192,
+    "estimated": true,
+    "estimator": {
+      "kind": "heuristic",
+      "name": "utf8-bytes-div-3"
+    },
+    "evidence_budget_tokens": 5971,
+    "evidence_tokens": 0,
+    "history_tokens": 0,
+    "output_reserve_tokens": 1024,
+    "question_tokens": 29,
+    "safety_margin_tokens": 819,
+    "system_tokens": 349
+  },
+  "conversation_id": "3B6A433A-BBFE-46D1-BE00-8725FDB1783E",
+  "coverage": "no_passages",
+  "coverage_label": "No passages sent",
+  "created_at": "2026-10-10T00:00:00.123Z",
+  "endpoint": {
+    "base_path": "/v1",
+    "classification": "local",
+    "host": "127.0.0.1",
+    "model": "local-model",
+    "origin": "http://127.0.0.1:1234",
+    "provider_kind": "openai_compatible_chat"
+  },
+  "evidence": [],
+  "history": {
+    "excluded_turn_count": 0,
+    "included_turns": []
+  },
+  "limitations": [
+    {
+      "code": "no_enforceable_position",
+      "disclosure": "\"Do not include later passages\" is on, but no reading position is set, so no passages from Middlemarch were sent. Set your position to include passages up to it."
+    }
+  ],
+  "mode": "source_grounded",
+  "pack_id": "A9BCD40E-1060-492B-8177-0DDD57E7878B",
+  "pack_sha256": "9d4d983c2e92f60380ed366bc0820897e3f7727fdb4a4e4633d81f9fb434df34",
+  "prompt_template_version": "sylvia-grounded-3",
+  "question": "What happens to Dorothea?",
+  "request_id": "9D829724-DF0E-4361-8F35-CD1F527F6914",
+  "retrieval": {
+    "adjacent_chunks": 1,
+    "candidates_considered": 0,
+    "chunk_words_max": 600,
+    "chunk_words_min": 300,
+    "query_terms": [
+      "happens",
+      "dorothea"
+    ],
+    "strategy": "fts5_bm25",
+    "top_k": 5
+  },
+  "schema_version": 1,
+  "scope": "work_search",
+  "scope_label": "Relevant passages from this work",
+  "spoiler_boundary": {
+    "basis": "none",
+    "enabled": true,
+    "excluded_evidence_count": 346,
+    "max_ordinal": -1
+  },
+  "text_coverage": {
+    "resources_indexed": 95,
+    "resources_total": 95,
+    "state": "book_text_indexed"
+  },
+  "truncation": {
+    "omitted_evidence_count": 0,
+    "truncated": false
+  },
+  "work": {
+    "author_display": "George Eliot",
+    "edition_id": "3ED31797-B630-4D44-8D28-C746756C08DF",
+    "source_kind": "local_epub",
+    "title": "Middlemarch",
+    "work_id": "0960AFBD-7039-477B-9314-C63BA5C82C7E"
+  }
+}

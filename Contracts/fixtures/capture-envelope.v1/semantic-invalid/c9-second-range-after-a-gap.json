@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "capture_id": "a09cbdc8-b373-5eff-b8ec-8e8e186e9378",
+  "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+  "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55",
+  "kind": "audio_capture",
+  "source_snapshot": {
+    "title": "Meditations",
+    "author_display": "Marcus Aurelius",
+    "source_kind": "local_audio",
+    "location_label": "Part 2 · 0:10",
+    "location_label_origin": "app"
+  },
+  "anchors": [
+    {
+      "schema_version": 1,
+      "kind": "audio",
+      "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+      "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55",
+      "timeline_revision": 1,
+      "ranges": [
+        {
+          "asset_id": "00000000-0000-4000-8000-000000000401",
+          "asset_sha256": "2d1e16363bc6d43f9acbd52f91a029ee19eef27871791e820975eb4d2348a94a",
+          "start_ms": 142299,
+          "end_ms": 162299
+        },
+        {
+          "asset_id": "00000000-0000-4000-8000-000000000402",
+          "asset_sha256": "9f096a3ae944e155e8b3e6321bb62a42d02f51256a20f299b25b3256e008bfaf",
+          "start_ms": 0,
+          "end_ms": 10000
+        }
+      ]
+    }
+  ],
+  "notes": [],
+  "retained_excerpt": {
+    "state": "preserved",
+    "blob_sha256": "c35745a28041b410171461f0d0629f42c8b32765e9c3623d563493025cd6964d",
+    "file_extension": "m4a",
+    "media_type": "audio/mp4",
+    "byte_count": 288429,
+    "format": "m4a/aac-lc/64k/44.1k/mono",
+    "sample_rate_hz": 44100,
+    "frame_count": 1322990,
+    "actual_ranges": [
+      {
+        "asset_id": "00000000-0000-4000-8000-000000000401",
+        "start_ms": 142299,
+        "end_ms": 162299,
+        "clip_start_ms": 0,
+        "source_format": ".mp3/44100/1"
+      },
+      {
+        "asset_id": "00000000-0000-4000-8000-000000000402",
+        "start_ms": 0,
+        "end_ms": 10000,
+        "clip_start_ms": 25000,
+        "source_format": ".mp3/44100/1"
+      }
+    ],
+    "duration_ms": 30000
+  },
+  "provenance": {
+    "surface": "quick_capture",
+    "idempotency_key": "fixture-audio-cross",
+    "entry_point": "intent.control@com.jevidon.sylvia"
+  },
+  "created_at": "2026-10-13T08:00:00Z",
+  "updated_at": "2026-10-13T08:00:01Z",
+  "revision": 2
+}

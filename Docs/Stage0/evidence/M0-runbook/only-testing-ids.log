@@ -1,0 +1,139 @@
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# simulator: Sylvia-M0-runbook (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5), created by this job
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5; started 2026-10-14T06:54:55Z; load: 24.39 9.69 5.63
+build-for-testing g05-ai (simulator, in Spikes/G05-AI/ATSProbe, .build/DerivedData-sim): exit 0 ** TEST BUILD SUCCEEDED **
+
+== run g05-ai-step2-as-written: xcodebuild test-without-building ... -only-testing:ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnotherDeviceOnTheLAN (exit 0)
+** TEST EXECUTE SUCCEEDED **
+✔ Test run with 0 tests in 1 suite passed after 0.001 seconds.
+
+== run g05-ai-step2-with-parentheses: xcodebuild test-without-building ... -only-testing:ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnotherDeviceOnTheLAN() (exit 0)
+** TEST EXECUTE SUCCEEDED **
+​➜ Test plainHTTPToAnotherDeviceOnTheLAN() skipped: "device checklist step 2 only: needs G05_LAN_TARGET and G05_EXPECT_LOCAL_NETWORK"
+✔ Test run with 1 test in 1 suite passed after 0.001 seconds.
+
+== enumerate g05-ai-step2-as-written: -only-testing:ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnotherDeviceOnTheLAN (exit 0)
+selected by the filter: 0; left out (listed as disabled): 13
+expected: 0; as expected: yes
+
+== enumerate g05-ai-step2-with-parentheses: -only-testing:ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnotherDeviceOnTheLAN() (exit 0)
+selected by the filter: 1; left out (listed as disabled): 12
+expected: 1; as expected: yes
+  ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnotherDeviceOnTheLAN()
+
+== enumerate g05-ai-step4: -only-testing:ProbeDefaultATSUITests (exit 0)
+selected by the filter: 1; left out (listed as disabled): 0
+expected: 1; as expected: yes
+  ProbeDefaultATSUITests/SuspensionUITests/testLeavingTheForegroundMidStreamLeavesAnInterruptedPartialAnswer()
+build-for-testing g05-recovery (simulator, in Spikes/G05-Recovery, .build/DerivedData-sim): exit 0 ** TEST BUILD SUCCEEDED **
+
+== enumerate g05-recovery-step3: -only-testing:SylviaRecoveryTests/DeviceLockProbeTests (exit 0)
+selected by the filter: 1; left out (listed as disabled): 57
+expected: 1; as expected: yes
+  SylviaRecoveryTests/DeviceLockProbeTests/lockedWrites()
+
+== enumerate g05-recovery-step4: -only-testing:SylviaRecoveryTests/DevicePersistenceProbeTests (exit 0)
+selected by the filter: 1; left out (listed as disabled): 57
+expected: 1; as expected: yes
+  SylviaRecoveryTests/DevicePersistenceProbeTests/persistentLibrary()
+build-for-testing g05-recovery-release (simulator, in Spikes/G05-Recovery, .build/DerivedData-sim-release): exit 0 ** TEST BUILD SUCCEEDED **
+
+== enumerate g05-recovery-step2-release-latency: -only-testing:SylviaRecoveryTests/DurabilityTests/latency() (exit 0)
+selected by the filter: 1; left out (listed as disabled): 57
+expected: 1; as expected: yes
+  SylviaRecoveryTests/DurabilityTests/latency()
+
+== enumerate g05-recovery-step2-release-latency-without-parentheses: -only-testing:SylviaRecoveryTests/DurabilityTests/latency (exit 0)
+selected by the filter: 0; left out (listed as disabled): 58
+expected: 0; as expected: yes
+build-for-testing g02 (simulator, in Spikes/G02-Transfer/iOS, .build/DerivedData-sim): exit 0 ** TEST BUILD SUCCEEDED **
+
+== enumerate g02-step1: -only-testing:G02TransferHostedTests/KeychainCredentialStoreTests (exit 0)
+selected by the filter: 3; left out (listed as disabled): 9
+expected: 3; as expected: yes
+  G02TransferHostedTests/KeychainCredentialStoreTests/itemIsNotSynchronizable()
+  G02TransferHostedTests/KeychainCredentialStoreTests/replaceAndDelete()
+  G02TransferHostedTests/KeychainCredentialStoreTests/storesTokenAfterFirstUnlockThisDeviceOnly()
+build-for-testing g03 (simulator, in Spikes/G03-Intake/App, .build/DerivedData-sim): exit 0 ** TEST BUILD SUCCEEDED **
+
+== enumerate g03-step24: -only-testing:IntakeHarnessTests/InAppLayoutTests (exit 0)
+selected by the filter: 4; left out (listed as disabled): 3
+expected: 4; as expected: yes
+  IntakeHarnessTests/InAppLayoutTests/cloneProtectionClass()
+  IntakeHarnessTests/InAppLayoutTests/finderDeletion()
+  IntakeHarnessTests/InAppLayoutTests/layout()
+  IntakeHarnessTests/InAppLayoutTests/markdownTypes()
+build-for-testing g04 (simulator, in Spikes/G04-Audio, .build/DerivedData-sim): exit 0 ** TEST BUILD SUCCEEDED **
+
+== enumerate g04-step1.5-BudgetTests: -only-testing:G04AudioTests/RealAV/BudgetTests (exit 0)
+selected by the filter: 1; left out (listed as disabled): 139
+expected: 1; as expected: yes
+  G04AudioTests/RealAV/BudgetTests/budgets()
+
+== enumerate g04-step1.5-RealPreviewTests: -only-testing:G04AudioTests/RealAV/RealPreviewTests (exit 0)
+selected by the filter: 4; left out (listed as disabled): 136
+expected: 4; as expected: yes
+  G04AudioTests/RealAV/RealPreviewTests/interruptionDuringPreview()
+  G04AudioTests/RealAV/RealPreviewTests/loadingAnotherEditionDuringPreview()
+  G04AudioTests/RealAV/RealPreviewTests/pendingPreviewBoundariesPerFormat()
+  G04AudioTests/RealAV/RealPreviewTests/previewRestoresContextAndHitsBoundaries()
+
+== enumerate g04-step1.5-LongFormatTests: -only-testing:G04AudioTests/RealAV/LongFormatTests (exit 0)
+selected by the filter: 4; left out (listed as disabled): 136
+expected: 4; as expected: yes
+  G04AudioTests/RealAV/LongFormatTests/coldResumeByDepth()
+  G04AudioTests/RealAV/LongFormatTests/exportAndPreviewInLongFiles()
+  G04AudioTests/RealAV/LongFormatTests/openTimeAgainstLength()
+  G04AudioTests/RealAV/LongFormatTests/remuxMitigation()
+
+== enumerate g04-step1.5-PerFileTimingTests: -only-testing:G04AudioTests/RealAV/PerFileTimingTests (exit 0)
+selected by the filter: 3; left out (listed as disabled): 137
+expected: 3; as expected: yes
+  G04AudioTests/RealAV/PerFileTimingTests/capturePaths()
+  G04AudioTests/RealAV/PerFileTimingTests/decoderWindows()
+  G04AudioTests/RealAV/PerFileTimingTests/detection()
+build-for-testing g01-epub (simulator, in Spikes/G01-EPUB, .build/DerivedData-sim): exit 0 ** TEST BUILD SUCCEEDED **
+
+== enumerate g01-epub-step11: -only-testing:EPUBHarnessTests (exit 0)
+selected by the filter: 37; left out (listed as disabled): 0
+expected: 37; as expected: yes
+  EPUBHarnessTests/AnchorSamplesTests/testCaptureAnchorSamples()
+  EPUBHarnessTests/AnchorStabilityTests/testCaptureDoesNotMoveThePage()
+  EPUBHarnessTests/AnchorStabilityTests/testExtractionRebuildGivesTheSameOffsets()
+  EPUBHarnessTests/AnchorStabilityTests/testHighlightFollowsTheTextThroughSettingsAndRotation()
+  EPUBHarnessTests/CompatibilityMatrixTests/testCompatibilityMatrix()
+  EPUBHarnessTests/ExtractionSearchTests/testChunksAndALexicalHitReopenThePassage()
+  EPUBHarnessTests/ExtractionSearchTests/testNonBMPHitOffsetsConvertAtTheAdapterBoundary()
+  EPUBHarnessTests/FootnoteTests/testNoterefShowsTheNoteWithoutMoving()
+  EPUBHarnessTests/FootnoteTests/testReturnAfterLinkRestoresTheExactPosition()
+  EPUBHarnessTests/FootnoteTests/testTappedInternalLinkAndReturnWalkBackThroughHistory()
+  EPUBHarnessTests/HighlightDecorationTests/testCrossParagraphSelectionStillDecorates()
+  EPUBHarnessTests/HighlightDecorationTests/testDecorationRaceReadiumAloneVersusAdapter()
+  EPUBHarnessTests/HighlightDecorationTests/testDuplicateRenderingIsRepaired()
+  EPUBHarnessTests/HighlightDecorationTests/testOchreFillAndUnderlineInPaperAndNight()
+  EPUBHarnessTests/HighlightDecorationTests/testRapidSettingsChangesConverge()
+  EPUBHarnessTests/NavigationSettleTests/testJumpIntoAFreshResourceStaysPut()
+  EPUBHarnessTests/SafetyTests/testCSPPlacementBypassesRunNoScript()
+  EPUBHarnessTests/SafetyTests/testExcessiveNestingIsWithheldAndReported()
+  EPUBHarnessTests/SafetyTests/testFontObfuscationStillOpensAndIsDeobfuscated()
+  EPUBHarnessTests/SafetyTests/testHostileArchivesAreRejectedOrBoundedAndNothingIsWrittenOutside()
+  EPUBHarnessTests/SafetyTests/testHostilePublicationRunsNoScriptAndMakesNoRequest()
+  EPUBHarnessTests/SafetyTests/testNestingAtTheLimitIsShownAndExtracted()
+  EPUBHarnessTests/SafetyTests/testNonHTMLReadingOrderDocumentsRunNoScript()
+  EPUBHarnessTests/SafetyTests/testNonLinkNavigationsReachOnlySanitizedDeclaredDocuments()
+  EPUBHarnessTests/SafetyTests/testParserDivergenceNestingCannotReachReadium()
+  EPUBHarnessTests/SafetyTests/testProtectedContentGivesAClearUnsupportedProtectionError()
+  EPUBHarnessTests/SanitizerFidelityTests/testSanitizedDocumentsShowTheSameTextInWebKit()
+  EPUBHarnessTests/SelectionCaptureTests/testGreekSelection()
+  EPUBHarnessTests/SelectionCaptureTests/testKnownPassageWithCurlyApostrophe()
+  EPUBHarnessTests/SelectionCaptureTests/testLongSelectionIsNotTruncated()
+  EPUBHarnessTests/SelectionCaptureTests/testNonBMPSelectionAndOffsetConversion()
+  EPUBHarnessTests/SelectionCaptureTests/testQuotationAcrossResourcesBecomesOrderedAnchors()
+  EPUBHarnessTests/SelectionCaptureTests/testSelectionAcrossAnElementBoundary()
+  EPUBHarnessTests/SelectionCaptureTests/testSelectionRightAfterAJumpNamesTheRightResource()
+  EPUBHarnessTests/TypographyTests/testLiterataIsTheDefaultFaceAndActuallyLoads()
+  EPUBHarnessTests/TypographyTests/testSizeAndLineSpacingTakeEffect()
+  EPUBHarnessTests/TypographyTests/testSystemSerifAndSystemSans()
+
+# finished 2026-10-14T06:57:40Z; load: 10.60 12.33 7.73; simulator shut down
+# builds failed or enumerations not as expected: 0

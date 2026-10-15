@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:backup-manifest:v1",
+  "title": "Sylvia knowledge backup manifest",
+  "description": "manifest.json at the root of a .sylviabackup (plan 17.3, 17.4; ADR-0012). It describes every other file in the backup with its role, size and SHA-256; a reader rejects any file the manifest does not list, any path outside these rules and any digest or size mismatch. The manifest itself is never listed. Backups are unencrypted (plan 17.3) and carry no credentials, tokens or key material; there is no field for one. Readers tolerate unknown optional fields (Contracts/README.md).",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "format",
+    "backup_id",
+    "created_at",
+    "originating_device_id",
+    "library",
+    "snapshot",
+    "counts",
+    "included_classes",
+    "excluded_classes",
+    "excluded_media",
+    "complete",
+    "encryption",
+    "files"
+  ],
+  "properties": {
+    "schema_version": {
+      "description": "Version of this manifest format. A reader refuses any version it does not know.",
+      "const": 1
+    },
+    "format": {
+      "const": "sylviabackup"
+    },
+    "backup_id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "created_at": {
+      "description": "When the export finished, RFC 3339 in UTC.",
+      "$ref": "#/$defs/utc_timestamp"
+    },
+    "originating_device_id": {
+      "description": "Installation ID of the device that made the backup. A restore never adopts it.",
+      "$ref": "#/$defs/uuid"
+    },
+    "library": {
+      "type": "object",
+      "required": ["schema_version", "migrations"],
+      "properties": {
+        "schema_version": {
+          "description": "Library database schema version of the snapshot. A reader refuses a version newer than it supports.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "migrations": {
+          "description": "Every migration identifier applied to the snapshot, in order. A reader refuses unknown identifiers.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,127}$"
+          }
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "required": ["change_journal_seq", "method"],
+      "properties": {
+        "change_journal_seq": {
+          "description": "Highest ChangeJournal sequence inside the snapshot: edits after it are not in this backup.",
+          "$ref": "#/$defs/int64_non_negative"
+        },
+        "method": {
+          "description": "How the database snapshot was taken.",
+          "enum": ["sqlite_online_backup"]
+        }
+      }
+    },
+    "counts": {
+      "description": "Row count of every library table in the snapshot.",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z_]{0,63}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/int64_non_negative"
+      }
+    },
+    "included_classes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/storage_class"
+      }
+    },
+    "excluded_classes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["class", "reason"],
+        "properties": {
+          "class": {
+            "$ref": "#/$defs/storage_class"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        }
+      }
+    },
+    "excluded_media": {
+      "description": "Original media assets known to the library but not in this backup (I-09). A restore shows them as unavailable.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["asset_id", "sha256", "byte_count", "media_type"],
+        "properties": {
+          "asset_id": {
+            "$ref": "#/$defs/uuid"
+          },
+          "sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "byte_count": {
+            "$ref": "#/$defs/int64_non_negative"
+          },
+          "media_type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          }
+        }
+      }
+    },
+    "complete": {
+      "description": "True exactly when no original media known to the library was left out, that is when excluded_media is empty. Rebuildable indexes, staging and secrets are never part of a backup and do not make it incomplete. A user interface must not call a backup complete when this is false (plan 17.3). A reader also checks excluded_media against the assets in the database snapshot.",
+      "type": "boolean"
+    },
+    "encryption": {
+      "description": "Version 1 backups are unencrypted containers (plan 17.3).",
+      "const": "none"
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100000,
+      "items": {
+        "$ref": "#/$defs/file"
+      },
+      "contains": {
+        "type": "object",
+        "required": ["role"],
+        "properties": {
+          "role": {
+            "const": "database_snapshot"
+          }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["excluded_media"],
+        "properties": {
+          "excluded_media": {
+            "minItems": 1
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "complete": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["excluded_media"],
+        "properties": {
+          "excluded_media": {
+            "maxItems": 0
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "complete": {
+            "const": true
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "uuid": {
+      "description": "Lowercase UUID generated on device.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "sha256": {
+      "description": "Lowercase hex SHA-256.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "int64_non_negative": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+    },
+    "utc_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "storage_class": {
+      "description": "Plan 17.1 storage classes and the parts of a backup. canonical_cover_thumbnail is the one small cover image per edition kept with the knowledge (plan 17.3); other thumbnails are rebuildable_indexes.",
+      "enum": [
+        "permanent_knowledge",
+        "retained_excerpt_audio",
+        "saved_ai_evidence",
+        "canonical_cover_thumbnail",
+        "database_snapshot",
+        "portable_json",
+        "markdown",
+        "original_media",
+        "derived_source_text",
+        "rebuildable_indexes",
+        "staging_recovery",
+        "secrets"
+      ]
+    },
+    "relative_path": {
+      "description": "Relative path inside the backup: '/'-separated ASCII components, each starting with a letter or digit and using only letters, digits, '.', '_' and '-'. No absolute paths, '.', '..', backslashes or empty components.",
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}(/[A-Za-z0-9][A-Za-z0-9._-]{0,127}){0,7}$"
+    },
+    "file": {
+      "type": "object",
+      "required": ["path", "role", "sha256", "byte_count"],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "role": {
+          "enum": ["database_snapshot", "portable_json", "markdown", "retained_excerpt", "cover_thumbnail"]
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "byte_count": {
+          "$ref": "#/$defs/int64_non_negative"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "role": { "const": "database_snapshot" } }
+          },
+          "then": {
+            "properties": { "path": { "const": "database/library.sqlite" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "role": { "const": "portable_json" } }
+          },
+          "then": {
+            "properties": { "path": { "const": "export/library.json" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "role": { "const": "markdown" } }
+          },
+          "then": {
+            "properties": { "path": { "pattern": "^export/markdown/[A-Za-z0-9][A-Za-z0-9._-]{0,124}\\.md$" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "role": { "const": "retained_excerpt" } }
+          },
+          "then": {
+            "properties": { "path": { "pattern": "^blobs/excerpts/[0-9a-f]{64}\\.[a-z0-9]{1,8}$" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "role": { "const": "cover_thumbnail" } }
+          },
+          "then": {
+            "properties": { "path": { "pattern": "^blobs/covers/[0-9a-f]{64}\\.(jpg|png|heic)$" } }
+          }
+        }
+      ]
+    }
+  }
+}

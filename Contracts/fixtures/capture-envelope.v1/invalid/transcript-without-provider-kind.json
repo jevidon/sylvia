@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "capture_id": "4c01f839-312e-5fb9-b856-e276c2c8d554",
+  "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+  "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55",
+  "kind": "audio_capture",
+  "source_snapshot": {
+    "title": "Meditations",
+    "author_display": "Marcus Aurelius",
+    "source_kind": "local_audio",
+    "location_label": "Part 1 · 1:30",
+    "location_label_origin": "app"
+  },
+  "anchors": [
+    {
+      "schema_version": 1,
+      "kind": "audio",
+      "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+      "edition_id": "08ce3917-4cc0-5803-8996-0f2771464c55",
+      "timeline_revision": 1,
+      "ranges": [
+        {
+          "asset_id": "00000000-0000-4000-8000-000000000401",
+          "asset_sha256": "2d1e16363bc6d43f9acbd52f91a029ee19eef27871791e820975eb4d2348a94a",
+          "start_ms": 60000,
+          "end_ms": 90000
+        }
+      ]
+    }
+  ],
+  "notes": [],
+  "retained_excerpt": {
+    "state": "preserved",
+    "blob_sha256": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6",
+    "file_extension": "m4a",
+    "media_type": "audio/mp4",
+    "byte_count": 295185,
+    "format": "m4a/aac-lc/64k/44.1k/mono",
+    "sample_rate_hz": 44100,
+    "frame_count": 1323000,
+    "actual_ranges": [
+      {
+        "asset_id": "00000000-0000-4000-8000-000000000401",
+        "start_ms": 60000,
+        "end_ms": 90000,
+        "clip_start_ms": 0,
+        "source_format": ".mp3/44100/1"
+      }
+    ],
+    "duration_ms": 30000
+  },
+  "transcript": {
+    "clip_sha256": "8db23ffa61679189458d3c0d47d81f2c7f554c4390f9b32d38e84e252219e3b6",
+    "raw_text": "From the gods, to have had good grandfathers, good parents, a good sister.",
+    "segments": [
+      {
+        "start_ms": 0,
+        "end_ms": 4200,
+        "text": "From the gods, to have had good grandfathers, good parents, a good sister."
+      }
+    ],
+    "language": "en",
+    "host": "speech.example.invalid",
+    "model": "fixture-transcriber-1",
+    "created_at": "2026-10-13T08:05:00Z",
+    "discarded_segment_count": 0
+  },
+  "provenance": {
+    "surface": "player",
+    "idempotency_key": "fixture-audio-transcript"
+  },
+  "created_at": "2026-10-13T08:00:00Z",
+  "updated_at": "2026-10-13T08:05:00Z",
+  "revision": 3
+}

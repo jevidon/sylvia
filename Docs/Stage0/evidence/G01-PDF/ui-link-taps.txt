@@ -1,0 +1,8 @@
+simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), runtime 26.5
+Link taps in the harness with LinkInterceptor (actions.pdf)
+link frames (window points): ["46.7,168.0,215.3,10.4", "46.7,187.4,215.3,10.4", "46.7,206.9,215.3,10.4", "46.7,226.3,215.3,10.4"]
+https link -> alert "Open link?" showing https://example.invalid/track; tapped Cancel
+linkLog: Links: blocked: scheme sylvia-g01-canary is not allowed | blocked: scheme file is not allowed | ask: https://example.invalid/track
+openedURLs: URLs opened into the harness: none
+GoTo link -> Page index 1 of 2, no printed label
+app state after all taps: runningForeground = true

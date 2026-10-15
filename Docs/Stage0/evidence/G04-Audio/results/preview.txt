@@ -1,0 +1,23 @@
+# Capture preview (preview AVQueuePlayer) while the main AVQueuePlayer session is paused. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+# kind: the retained excerpt file, or the pending capture's source ranges (one segment per member file, played back to back)
+# head_err = true content position of the first rendered second minus the intended start (ms, analysis tap + cross-correlation)
+# seam_errs = for each later segment (the next member file), true content position of its first rendered second minus its intended start (ms)
+# rendered_s = seconds of each segment's intended span the tap processed (clipped at its intended end), summed; intended_s = the capture's length
+# tap_end_overrun = source time the analysis tap processed past the intended end (ms; an upper bound: the tap also processes buffers the output may never play)
+# player_end = the preview player's own time when it reached the end, minus the intended end (ms)
+# post_end_rms_ratio = loudness of the tap audio past the intended end relative to the whole run (0 = silence)
+kind	range(global ms)	segments	head_err_ms	head_peak	seam_errs_ms	rendered_s	intended_s	tap_end_overrun_ms	player_end_ms	post_end_rms_ratio	main_restored	progress_unchanged
+excerpt	135535-140035	1	-13.1	0.997	-	4.500	4.500	422.6	2.3	0.000	true	true
+source ranges	135535-140035	2	-13.1	0.999	-13.1	4.500	4.500	472.2	1.1	0.000	true	true
+excerpt	61234-65734	1	-13.1	0.958	-	4.500	4.500	422.6	0.7	0.000	true	true
+source ranges	61234-65734	1	-13.1	0.959	-	4.500	4.500	422.6	1.5	0.000	true	true
+excerpt	296734-301234	1	-13.1	1.000	-	4.500	4.500	422.6	0.9	0.000	true	true
+source ranges	296734-301234	2	-13.1	1.000	-13.1	4.500	4.500	457.6	2.0	0.000	true	true
+excerpt	330500-335000	1	-13.1	0.995	-	4.500	4.500	422.6	0.6	0.000	true	true
+source ranges	330500-335000	1	-13.1	0.998	-	4.500	4.500	422.6	1.6	0.001	true	true
+excerpt	500000-504500	1	-13.1	1.000	-	4.500	4.500	422.6	2.4	0.000	true	true
+source ranges	500000-504500	1	-13.1	1.000	-	4.500	4.500	422.6	0.9	0.000	true	true
+preview head |error|: n=10 p50=13.071 p95=13.084 max=13.084 ms
+preview seam |error| (pending cross-file previews): n=2 p50=13.061 p95=13.061 max=13.061 ms
+preview tap end |overrun| (upper bound): n=10 p50=422.630 p95=465.603 max=472.154 ms
+preview player end |error|: n=10 p50=1.318 p95=2.352 max=2.358 ms

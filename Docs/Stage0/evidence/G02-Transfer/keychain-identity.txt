@@ -1,0 +1,5 @@
+host (macOS): KeychainIdentityStore round trip from the unsigned swift test binary, policy allowLoginKeychainFallback
+(what the command-line tools use; the companion uses dataProtectionOnly)
+backend used: login keychain (file-based)
+created, reloaded with the same SPKI pin and source ID; state directory holds only identity.json (public certificate)
+reset produced a new key (new pin), so paired phones must pair again

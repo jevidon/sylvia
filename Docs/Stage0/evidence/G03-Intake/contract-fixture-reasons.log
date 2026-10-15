@@ -1,0 +1,100 @@
+# G0.3 contract fixtures: the schema errors of each fixture (one reason per invalid fixture; review rounds 3 and 4)
+# Command: sylvia_python Spikes/G03-Intake/scripts/fixture-reasons.py <repository root>
+# Run at 2026-10-13T07:42:09Z, commit 34fe383; host macOS 26.6.2 (25G83)
+
+ok  import-handoff-manifest.v1/valid/created-at-fraction-and-offset.json: 0 error(s)
+ok  import-handoff-manifest.v1/valid/one-file-representation.json: 0 error(s)
+ok  import-handoff-manifest.v1/valid/stored-path-without-extension.json: 0 error(s)
+ok  import-handoff-manifest.v1/valid/strings-at-limits.json: 0 error(s)
+ok  import-handoff-manifest.v1/valid/two-files-from-file-urls.json: 0 error(s)
+ok  import-handoff-manifest.v1/invalid/build-version-empty.json: 1 error(s): producer/build_version: minLength
+ok  import-handoff-manifest.v1/invalid/build-version-too-long.json: 1 error(s): producer/build_version: maxLength
+ok  import-handoff-manifest.v1/invalid/bundle-identifier-empty.json: 1 error(s): producer/bundle_identifier: minLength
+ok  import-handoff-manifest.v1/invalid/bundle-identifier-too-long.json: 1 error(s): producer/bundle_identifier: maxLength
+ok  import-handoff-manifest.v1/invalid/byte-count-not-integer.json: 1 error(s): items/0/byte_count: type
+ok  import-handoff-manifest.v1/invalid/content-type-empty.json: 1 error(s): items/0/content_type: minLength
+ok  import-handoff-manifest.v1/invalid/content-type-too-long.json: 1 error(s): items/0/content_type: maxLength
+ok  import-handoff-manifest.v1/invalid/created-at-february-30.json: 1 error(s): created_at: format
+ok  import-handoff-manifest.v1/invalid/created-at-not-rfc3339.json: 1 error(s): created_at: format
+ok  import-handoff-manifest.v1/invalid/handoff-id-not-uuid.json: 1 error(s): handoff_id: format
+ok  import-handoff-manifest.v1/invalid/handoff-id-nul-suffix.json: 1 error(s): handoff_id: format
+ok  import-handoff-manifest.v1/invalid/item-id-nul-suffix.json: 1 error(s): items/0/item_id: format
+ok  import-handoff-manifest.v1/invalid/missing-producer.json: 1 error(s): (root): required
+ok  import-handoff-manifest.v1/invalid/missing-total-bytes.json: 1 error(s): (root): required
+ok  import-handoff-manifest.v1/invalid/negative-byte-count.json: 1 error(s): items/0/byte_count: minimum
+ok  import-handoff-manifest.v1/invalid/no-items.json: 1 error(s): items: minItems
+ok  import-handoff-manifest.v1/invalid/original-filename-slash-before-combining-mark.json: 1 error(s): items/0/original_filename: pattern
+ok  import-handoff-manifest.v1/invalid/original-filename-too-long.json: 1 error(s): items/0/original_filename: maxLength
+ok  import-handoff-manifest.v1/invalid/original-filename-with-slash.json: 1 error(s): items/0/original_filename: pattern
+ok  import-handoff-manifest.v1/invalid/producer-not-share-extension.json: 1 error(s): producer/kind: const
+ok  import-handoff-manifest.v1/invalid/provider-type-identifier-empty.json: 1 error(s): items/0/provider_type_identifier: minLength
+ok  import-handoff-manifest.v1/invalid/provider-type-identifier-too-long.json: 1 error(s): items/0/provider_type_identifier: maxLength
+ok  import-handoff-manifest.v1/invalid/schema-version-2.json: 1 error(s): schema_version: const
+ok  import-handoff-manifest.v1/invalid/sha256-too-short.json: 1 error(s): items/0/sha256: pattern
+ok  import-handoff-manifest.v1/invalid/sha256-uppercase.json: 1 error(s): items/0/sha256: pattern
+ok  import-handoff-manifest.v1/invalid/stored-path-absolute.json: 1 error(s): items/0/stored_path: pattern
+ok  import-handoff-manifest.v1/invalid/stored-path-traversal.json: 1 error(s): items/0/stored_path: pattern
+ok  import-handoff-manifest.v1/invalid/stored-path-uppercase-extension.json: 1 error(s): items/0/stored_path: pattern
+ok  import-handoff-manifest.v1/invalid/too-many-items.json: 1 error(s): items: maxItems
+ok  import-handoff-manifest.v1/invalid/unknown-representation.json: 1 error(s): items/0/representation: enum
+ok  sylviapack-manifest.v1/valid/created-at-fraction-and-offset.json: 0 error(s)
+ok  sylviapack-manifest.v1/valid/created-at-lowercase-t-and-z.json: 0 error(s)
+ok  sylviapack-manifest.v1/valid/generated-large-pack.json: 0 error(s)
+ok  sylviapack-manifest.v1/valid/path-at-limits.json: 0 error(s)
+ok  sylviapack-manifest.v1/valid/publication-and-audiobook.json: 0 error(s)
+ok  sylviapack-manifest.v1/valid/single-file-no-groups.json: 0 error(s)
+ok  sylviapack-manifest.v1/valid/strings-at-limits.json: 0 error(s)
+ok  sylviapack-manifest.v1/invalid/bad-group-id.json: 1 error(s): groups/0/group_id: pattern
+ok  sylviapack-manifest.v1/invalid/created-at-february-30.json: 1 error(s): created_at: format
+ok  sylviapack-manifest.v1/invalid/file-group-id-kelvin-sign.json: 1 error(s): files/0/group_id: pattern
+ok  sylviapack-manifest.v1/invalid/file-group-id-null.json: 1 error(s): files/0/group_id: type
+ok  sylviapack-manifest.v1/invalid/file-order-null.json: 1 error(s): files/1/order: type
+ok  sylviapack-manifest.v1/invalid/generator-name-empty.json: 1 error(s): generator/name: minLength
+ok  sylviapack-manifest.v1/invalid/generator-name-too-long.json: 1 error(s): generator/name: maxLength
+ok  sylviapack-manifest.v1/invalid/generator-version-empty.json: 1 error(s): generator/version: minLength
+ok  sylviapack-manifest.v1/invalid/generator-version-too-long.json: 1 error(s): generator/version: maxLength
+ok  sylviapack-manifest.v1/invalid/group-creator-too-long.json: 1 error(s): groups/0/creators/0: maxLength
+ok  sylviapack-manifest.v1/invalid/group-creators-null.json: 1 error(s): groups/0/creators: type
+ok  sylviapack-manifest.v1/invalid/group-identifiers-null.json: 1 error(s): groups/0/identifiers: type
+ok  sylviapack-manifest.v1/invalid/group-language-null.json: 1 error(s): groups/0/language: type
+ok  sylviapack-manifest.v1/invalid/group-language-too-long.json: 1 error(s): groups/0/language: maxLength
+ok  sylviapack-manifest.v1/invalid/group-member-order-basis-null.json: 1 error(s): groups/1/member_order_basis: enum
+ok  sylviapack-manifest.v1/invalid/group-title-null.json: 1 error(s): groups/0/title: type
+ok  sylviapack-manifest.v1/invalid/group-title-too-long.json: 1 error(s): groups/0/title: maxLength
+ok  sylviapack-manifest.v1/invalid/identifier-scheme-empty.json: 1 error(s): groups/0/identifiers/0/scheme: minLength
+ok  sylviapack-manifest.v1/invalid/identifier-scheme-too-long.json: 1 error(s): groups/0/identifiers/0/scheme: maxLength
+ok  sylviapack-manifest.v1/invalid/identifier-value-empty.json: 1 error(s): groups/0/identifiers/0/value: minLength
+ok  sylviapack-manifest.v1/invalid/identifier-value-too-long.json: 1 error(s): groups/0/identifiers/0/value: maxLength
+ok  sylviapack-manifest.v1/invalid/media-type-empty.json: 1 error(s): files/0/media_type: minLength
+ok  sylviapack-manifest.v1/invalid/media-type-too-long.json: 1 error(s): files/0/media_type: maxLength
+ok  sylviapack-manifest.v1/invalid/missing-file-sha256.json: 1 error(s): files/0: required
+ok  sylviapack-manifest.v1/invalid/missing-groups.json: 1 error(s): (root): required
+ok  sylviapack-manifest.v1/invalid/missing-manifest-total-size.json: 1 error(s): (root): required
+ok  sylviapack-manifest.v1/invalid/negative-size.json: 1 error(s): files/0/size: minimum
+ok  sylviapack-manifest.v1/invalid/no-files.json: 1 error(s): files: minItems
+ok  sylviapack-manifest.v1/invalid/order-zero-publication-member.json: 1 error(s): files/0/order: minimum
+ok  sylviapack-manifest.v1/invalid/order-zero.json: 1 error(s): files/1/order: minimum
+ok  sylviapack-manifest.v1/invalid/pack-id-not-uuid.json: 1 error(s): pack_id: format
+ok  sylviapack-manifest.v1/invalid/pack-id-nul-suffix.json: 1 error(s): pack_id: format
+ok  sylviapack-manifest.v1/invalid/path-absolute-slash-before-combining-mark.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/path-absolute.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/path-backslash.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/path-control-character.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/path-dot-component.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/path-empty-component.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/path-sixteen-components.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/path-too-deep.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/path-too-long.json: 1 error(s): files/0/path: maxLength
+ok  sylviapack-manifest.v1/invalid/path-traversal-slash-before-combining-mark.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/path-traversal.json: 1 error(s): files/0/path: pattern
+ok  sylviapack-manifest.v1/invalid/schema-version-2.json: 1 error(s): schema_version: const
+ok  sylviapack-manifest.v1/invalid/sha256-uppercase.json: 1 error(s): files/0/sha256: pattern
+ok  sylviapack-manifest.v1/invalid/unknown-group-kind.json: 1 error(s): groups/0/kind: enum
+ok  sylviapack-manifest.v1/invalid/unknown-kind.json: 1 error(s): files/0/kind: enum
+ok  sylviapack-manifest.v1/invalid/wrong-format.json: 1 error(s): format: const
+import-handoff-manifest.v1 valid: 5
+import-handoff-manifest.v1 invalid: 30
+sylviapack-manifest.v1 valid: 7
+sylviapack-manifest.v1 invalid: 48
+fixtures not as expected: 0
+# exit status 0

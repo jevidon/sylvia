@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:provider-config:v1",
+  "title": "AI provider configuration v1",
+  "description": "One configured AI endpoint (plan 14.1-14.3). It never contains a credential: `credential_ref` names a Keychain item on the device that created it, and credentials do not migrate through backups or exports (plan 14.2). The base URL is normalized once at configuration time (no query, fragment or user info; endpoint paths are appended without a version segment, so a request URL never contains /v1/v1). Cleartext http is valid only for an eligible local IP literal with the explicit opt-in; the Swift EndpointPolicy is authoritative and this schema is a structural guard (it does not range-check octets).",
+  "type": "object",
+  "required": [
+    "schema_version", "provider_id", "provider_kind", "display_name", "base_url", "model", "capabilities", "allow_insecure_local_http"
+  ],
+  "propertyNames": { "$ref": "#/$defs/notSecretName" },
+  "properties": {
+    "schema_version": { "const": 1 },
+    "provider_id": { "$ref": "#/$defs/uuid" },
+    "provider_kind": { "enum": ["openai_responses", "anthropic_messages", "openai_compatible_chat", "openai_compatible_transcription"] },
+    "display_name": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "base_url": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2000,
+      "pattern": "^https?://[^/?#@\\s]+(/[^?#\\s]*)?$",
+      "not": { "pattern": "/$|/v([0-9]+)/v\\1(/|$)|/(chat/completions|responses|messages|audio/transcriptions)$" }
+    },
+    "model": { "type": "string", "minLength": 1, "maxLength": 200, "description": "Entered manually or picked from a listing; never assumed." },
+    "credential_ref": {
+      "description": "Reference to a Keychain item. Absent for endpoints that need no key. The key is bound to `origin`, the origin it was entered for (plan 18.1): the origin is part of the Keychain item's identity, and Sylvia sends the key only to a request whose origin equals it, so a configuration whose `base_url` names another origin never sends the key there. That `origin` equals the origin of `base_url` cannot be expressed in JSON Schema and is checked in code (Swift: ProviderConfig.credentialMatchesOrigin, enforced by the providers; Python: Spikes/G05-AI/Scripts/validate-exports.py on every exported instance and committed valid fixture).",
+      "type": "object",
+      "required": ["store", "account", "origin"],
+      "additionalProperties": false,
+      "properties": {
+        "store": { "const": "keychain" },
+        "account": { "$ref": "#/$defs/uuid" },
+        "origin": {
+          "description": "scheme://host[:port], lowercase, default port omitted, IPv6 hosts in brackets; no path, user info, query or fragment.",
+          "type": "string",
+          "maxLength": 300,
+          "pattern": "^https?://[^/?#@\\s:A-Z]+(:[0-9]{1,5})?$|^https?://\\[[0-9a-f:.]+\\](:[0-9]{1,5})?$"
+        }
+      }
+    },
+    "capabilities": {
+      "description": "Optional capabilities; none is required to configure a custom endpoint.",
+      "type": "object",
+      "required": ["streaming", "stream_usage", "model_listing", "token_counting", "timestamps"],
+      "propertyNames": { "$ref": "#/$defs/notSecretName" },
+      "properties": {
+        "streaming": { "type": "boolean" },
+        "stream_usage": { "type": "boolean" },
+        "model_listing": { "type": "boolean" },
+        "token_counting": { "type": "boolean" },
+        "timestamps": { "type": "boolean" }
+      }
+    },
+    "context_limit_tokens": { "type": "integer", "minimum": 1 },
+    "max_output_tokens": { "type": "integer", "minimum": 1 },
+    "request_timeout_ms": { "type": "integer", "minimum": 1000, "maximum": 600000 },
+    "privacy_classification": {
+      "description": "The class the user declared. The effective class shown to the user is never narrower than the automatic one.",
+      "enum": ["local", "user_managed", "hosted"]
+    },
+    "allow_insecure_local_http": { "type": "boolean" }
+  },
+  "allOf": [
+    {
+      "description": "Cleartext only with the opt-in, only to a local IP literal, never for first-party adapters.",
+      "if": { "properties": { "base_url": { "pattern": "^http://" } }, "required": ["base_url"] },
+      "then": {
+        "properties": {
+          "allow_insecure_local_http": { "const": true },
+          "provider_kind": { "enum": ["openai_compatible_chat", "openai_compatible_transcription"] },
+          "privacy_classification": { "const": "local" },
+          "base_url": {
+            "pattern": "^http://(127\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|172\\.(1[6-9]|2[0-9]|3[01])\\.[0-9]{1,3}\\.[0-9]{1,3}|192\\.168\\.[0-9]{1,3}\\.[0-9]{1,3}|169\\.254\\.[0-9]{1,3}\\.[0-9]{1,3}|\\[(::1|[fF][cCdD][0-9a-fA-F:]*|[fF][eE][89abAB][0-9a-fA-F]:[0-9a-fA-F:]*)\\])(:[0-9]{1,5})?(/|$)"
+          }
+        }
+      }
+    },
+    {
+      "description": "First-party adapters use their own hosts over HTTPS.",
+      "if": { "properties": { "provider_kind": { "enum": ["openai_responses", "anthropic_messages"] } }, "required": ["provider_kind"] },
+      "then": { "properties": { "base_url": { "pattern": "^https://" } } }
+    }
+  ],
+  "$defs": {
+    "uuid": { "type": "string", "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$" },
+    "notSecretName": {
+      "description": "No field may carry a credential (Contracts README, Secrets).",
+      "not": { "pattern": "(?i)^(api[_-]?key|apikey|key|secret|client[_-]?secret|password|passwd|token|access[_-]?token|auth[_-]?token|bearer|authorization|x[_-]api[_-]key|credential|credentials|value)$" }
+    }
+  }
+}

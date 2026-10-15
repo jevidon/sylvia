@@ -1,0 +1,142 @@
+commit: 878f1cc34607e705414487407b924be3e0f83a1f; uncommitted files before this run: 0
+start: 2026-10-14T22:13:52Z; load: 11:13  up 11 days, 21:24, 1 user, load averages: 2.70 2.95 3.20
+
+== 1. git diff --stat efc9479 HEAD -- Spikes Scripts Packages Apps Contracts Fixtures .github (nothing below = no change)
+
+== 2. Git LFS state
+.gitattributes: absent
+git config --show-origin --get-regexp 'filter\.lfs|lfs\.':
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.repositoryformatversion 0
+git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+files tracked by LFS (git lfs ls-files): 0
+git check-attr filter on one snapshot reference and one evidence image:
+Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests/progressRule.light-default.png: filter: unspecified
+Docs/Stage0/evidence/G01-EPUB/highlight-paper.png: filter: unspecified
+
+== 3. M0-gate.md paths and statuses
+paths checked: 127; missing: 0
+row 1: passed-simulator
+row 2: pending-device
+row 3: passed-simulator
+row 4: pending-human
+row 5: passed-simulator
+row 6: passed-simulator
+row 7: passed-simulator
+row 8: passed-simulator
+row 9: pending-device
+row 10: failed
+row 11: passed-simulator
+row 12: pending-human
+row 13: passed-simulator
+row 14: passed-simulator
+row 15: pending-device
+row 16: passed-simulator
+row 17: partial
+row 18: partial
+row 19: passed-host
+row 20: passed-host
+row 21: passed-simulator
+row 22: failed
+row 23: pending-device
+row 24: pending-human
+row 25: passed-host
+row 26: passed-simulator
+row 27: pending-device
+row 28: pending-device
+row 29: passed-host
+row 30: passed-simulator
+row 31: passed-host
+row 32: passed-simulator
+row 33: pending-device
+row 34: partial
+row 35: passed-host
+row 36: pending-device
+row 37: passed-simulator
+row 38: pending-device
+row 39: passed-simulator
+row 40: pending-device
+row 41: passed-simulator
+row 42: failed
+row 43: passed-simulator
+row 44: passed-simulator
+row 45: passed-simulator
+row 46: passed-simulator
+row 47: partial
+row 48: passed-simulator
+row 49: pending-device
+row 50: partial
+row 51: partial
+row 52: partial
+row 53: passed-host
+row 54: partial
+row 55: passed-simulator
+row 56: pending-device
+row 57: passed-host
+row 58: partial
+row 59: pending-human
+row 60: passed-simulator
+row 61: passed-simulator
+row 62: pending-device
+row 63: failed
+row 64: pending-device
+row 65: partial
+row 66: pending-human
+row 67: pending-human
+row 68: pending-human
+row 69: partial
+row 70: partial
+row 71: pending-human
+row 72: passed-simulator
+row 73: pending-human
+row 74: pending-device
+row 75: passed-host
+row 76: failed
+row 77: pending-human
+row 78: pending-human
+row 79: passed-simulator
+row 80: pending-human
+row 81: pending-human
+row 82: pending-human
+row 83: pending-human
+row 84: pending-human
+row 85: pending-human
+row 86: pending-human
+row 87: pending-human
+row 88: pending-human
+row 89: pending-human
+row 90: passed-host
+row 91: passed-host
+row 92: pending-human
+rows: 92; failed 5, partial 12, passed-host 11, passed-simulator 27, pending-device 15, pending-human 22
+
+== 4. Scripts/ci.sh contracts dependency-lock hard-rules
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (51s)
+==> 12-dependency-lock
+    pass (34s)
+==> 13-hard-rules
+    pass (5s)
+all 4 steps passed
+summary lines from the drop-ins' own logs (.build/ci-logs/):
+-- 10-contracts (last 4 lines)
+schemas: 17  fixtures: 644  openapi: 1  instances: 1
+-- 11-capture-anchor-contracts (last 4 lines)
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete minLength
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete type
+generic bound, survived: capture-envelope#/properties/word: delete type
+result: pass
+-- 12-dependency-lock (last 4 lines)
+ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+ok    toolchain: xcodegen --version -> Version: 2.46.0
+ok    acknowledgements draft: matches the inventory (235350 characters)
+dependency lock check: 0 failure(s), 0 warning(s)
+-- 13-hard-rules (last 4 lines)
+| todo-in-product | 0 | 0 |
+
+result: PASS (0 finding(s), 50 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+13-hard-rules: self-test and repository audit passed; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_84f4e4ba-f4a-6/.build/ci-logs/hard-rules
+
+exit: 0
+end: 2026-10-14T22:15:23Z; load: 11:15  up 11 days, 21:25, 1 user, load averages: 4.85 3.63 3.43

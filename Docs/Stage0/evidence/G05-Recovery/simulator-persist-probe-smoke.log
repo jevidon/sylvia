@@ -1,0 +1,22 @@
+# G0.5 T50 persistence probe: simulator smoke run of its write, verify and clean modes (checks the probe code; NOT T50 evidence: the simulator neither reboots nor enforces data protection, and its protection readback is not faithful)
+# environment: simulator Sylvia-M0-g05-recovery, iPhone 17 (iPhone18,3), iOS 26.5 (23F77), on host macOS 26.6.2 (25G83)
+# code: commit 1c6931b (test sources unchanged since)
+# command, per mode: TEST_RUNNER_SYLVIA_DEVICE_PERSIST_PROBE=<mode> xcodebuild test -scheme G05Recovery-Package -destination id=<sim> -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution -only-testing:SylviaRecoveryTests/DevicePersistenceProbeTests
+# filtered from the full xcodebuild output of the three runs (450 KB, mostly build lines) with: grep -E '^=== SYLVIA|^exit |T50 persistence probe|Test run with|TEST SUCCEEDED|TEST FAILED|recorded an issue'
+
+=== SYLVIA_DEVICE_PERSIST_PROBE=write
+[evidence] [simulator (iOS Version 26.5 (Build 23F77), Sylvia-M0-g05-recovery, iPhone18,3)] T50 persistence probe write: library at /Users/jevidon/Library/Developer/CoreSimulator/Devices/6BAD0806-A80D-42D2-B11E-7BED97359AE2/data/Library/Application Support/Sylvia with 20 captures and 61 journal entries, knowledge sha256 f2cd2c5811087a3989ac8a655c9256e1fc2fa01412e8d207bdbf95563d17f673; canary sha256 fa76746801dfd25ac8b87dbaf946e2a6804acd1193789886e2e3d256eaa4c3a2; classes Sylvia=none reported Library=none reported library.sqlite=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-wal=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-shm=NSFileProtectionCompleteUntilFirstUserAuthentication installation.json=NSFileProtectionCompleteUntilFirstUserAuthentication t50-canary.bin=NSFileProtectionCompleteUntilFirstUserAuthentication t50-expected.json=NSFileProtectionCompleteUntilFirstUserAuthentication
+[evidence] [simulator (iOS Version 26.5 (Build 23F77), Sylvia-M0-g05-recovery, iPhone18,3)] T50 persistence probe write: restart the phone now and do not unlock it (checklist step 4.2)
+✔ Test run with 1 test in 1 suite passed after 0.063 seconds.
+** TEST SUCCEEDED **
+exit 0
+=== SYLVIA_DEVICE_PERSIST_PROBE=verify
+[evidence] [simulator (iOS Version 26.5 (Build 23F77), Sylvia-M0-g05-recovery, iPhone18,3)] T50 persistence probe verify: written 3 s ago; knowledge sha256 equal; 20 captures, 61 journal entries, integrity ok, 0 foreign-key violations; canary intact; classes Sylvia=none reported Library=none reported library.sqlite=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-wal=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-shm=NSFileProtectionCompleteUntilFirstUserAuthentication installation.json=NSFileProtectionCompleteUntilFirstUserAuthentication t50-canary.bin=NSFileProtectionCompleteUntilFirstUserAuthentication t50-expected.json=NSFileProtectionCompleteUntilFirstUserAuthentication
+✔ Test run with 1 test in 1 suite passed after 0.013 seconds.
+** TEST SUCCEEDED **
+exit 0
+=== SYLVIA_DEVICE_PERSIST_PROBE=clean
+[evidence] [simulator (iOS Version 26.5 (Build 23F77), Sylvia-M0-g05-recovery, iPhone18,3)] T50 persistence probe clean: removed /Users/jevidon/Library/Developer/CoreSimulator/Devices/6BAD0806-A80D-42D2-B11E-7BED97359AE2/data/Library/Application Support/Sylvia
+✔ Test run with 1 test in 1 suite passed after 0.002 seconds.
+** TEST SUCCEEDED **
+exit 0

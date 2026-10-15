@@ -1,0 +1,63 @@
+commit: efc9479be34b8e7bfcb7c1ba124bcd0e1988c5dd; uncommitted files: 0
+start: 2026-10-14T17:31:03Z; load:  6:31  up 11 days, 16:41, 1 user, load averages: 4.54 4.71 4.68
+simulator name for every drop-in: Sylvia-M0-assemble; G02_LOOPBACK_ONLY=1; SYLVIA_AUDIBLE_PLAYBACK unset (test volume 0.01)
+command: Scripts/ci.sh 
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (53s)
+==> 12-dependency-lock
+    pass (28s)
+==> 13-hard-rules
+    pass (5s)
+==> 20-design
+    pass (173s)
+==> 21-design-catalog
+    pass (2623s)
+==> 31-g01-epub
+    pass (724s)
+==> 32-g01-pdf
+    pass (736s)
+==> 40-g02-transfer
+    pass (437s)
+==> 50-g03-intake
+    pass (1872s)
+==> 60-g04-audio
+    pass (5330s)
+==> 70-g05-ai
+    pass (85s)
+==> 71-g05-recovery
+    FAIL (37s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_84f4e4ba-f4a-1/.build/ci-logs/71-g05-recovery.log
+    | ✔ Test "an injected ENOSPC at each fallible file operation of a put-back leaves a state the next open finishes" with 3 test cases passed after 15.957 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] capture save latency synchronous=FULL fullfsync=ON: n=400 p50=6.726 ms p95=21.120 ms p99=32.002 ms max=45.450 ms
+    | ✔ Test "capture save latency against the 200 ms p95 budget (indicative)" passed after 14.600 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] crash drill (short)
+    | durability: synchronous=FULL fullfsync=ON
+    | iterations: 60
+    | SIGKILLs by mode: after-ack=20 in-tx=20 random=20
+    | kills while a write transaction was open, in-flight item absent after reopen (in-tx mode): 20
+    | in-tx kills that landed after the commit instead: 0
+    | children that finished before the kill: 0
+    | acknowledged items: 218
+    | committed but unacknowledged items (allowed; UI never said Saved; retry deduplicated): 0
+    | retries answered 'already saved' instead of duplicating: 6
+    | captures in library: 218
+    | failures: 0
+    | ✔ Test "SIGKILL crash drill (short run; the CI drill runs many hundreds of kills)" passed after 16.200 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] migration put-back crash drill (short)
+    | iterations: 24
+    | measured unkilled run (open, snapshot, failed migration, put-back): 599.4 ms
+    | SIGKILLs by plan: delay databaseMovedAside=1, delay intentWritten=1, delay migrationFailed=1, delay shmMovedAside=1, delay snapshotMovedIn=1, delay staged=1, delay walMovedAside=1, pause databaseMovedAside=1, pause intentRemoved=1, pause intentWritten=1, pause migrationFailed=1, pause shmMovedAside=1, pause snapshotMovedIn=1, pause staged=1, pause walMovedAside=1, random=3
+    | SIGKILLs by the last line the child printed: STEP databaseMovedAside=3, STEP intentRemoved=2, STEP intentWritten=3, STEP migrationFailed=3, STEP shmMovedAside=2, STEP snapshotMovedIn=1, STEP staged=2, STEP walMovedAside=2
+    | children that finished before the kill: 6
+    | first reopen: migrated=8 put back, then migrated at the next open=16
+    | failures: 0
+    | ✔ Test "SIGKILL at every put-back step and at random times never leaves an empty or partial library (short run; CI runs 240)" passed after 17.920 seconds.
+    | ✔ Suite "Migration put-back (plan 7.4, T45)" passed after 17.920 seconds.
+    | ✔ Test "storage full on a real volume: the WAL append fails, nothing half-written, earlier saves intact after reopen, retry saves once" passed after 22.043 seconds.
+    | ✔ Suite "Durable saves (I-03, T02, plan 19.2)" passed after 22.412 seconds.
+    | ✔ Test run with 73 tests in 11 suites passed after 22.413 seconds.
+    | FAIL: row 10 evidence missing from host-tests.log: [class B (non-default) requested: read back on] [files SQLite created in a class-B directory:]. The class-B protection tests skip while the host screen is locked; unlock it and rerun (or set G05_ALLOW_MISSING_CLASS_B=1 to accept a run without that evidence)
+FAILED: 71-g05-recovery
+ci.sh exit: 1
+end: 2026-10-14T20:52:47Z; load:  9:52  up 11 days, 20:03, 1 user, load averages: 12.59 6.49 4.07

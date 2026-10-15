@@ -1,0 +1,24 @@
+actions-chained.pdf: PDFView.perform(presented action) with LinkInterceptor installed, starting on page index 0 each time, simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77)
+A GoTo+Next: PDFKit presents PDFActionGoTo type GoTo; page index after: 1; URLs reaching the delegate: []; delegate decisions: []
+B NextPage+Next: PDFKit presents PDFActionNamed type Named; page index after: 1; URLs reaching the delegate: []; delegate decisions: []
+C GoTo+Next[URI,Launch,JavaScript]: PDFKit presents PDFActionGoTo type GoTo; page index after: 1; URLs reaching the delegate: []; delegate decisions: []
+D https+Next: PDFKit presents PDFActionURL type URI https://example.invalid/chained; page index after: 0; URLs reaching the delegate: ["https://example.invalid/chained"]; delegate decisions: [PDFAnchorKit.LinkDecision.askUserBeforeOpening(https://example.invalid/chained)]
+E AA U only: PDFKit presents PDFActionURL type URI sylvia-g01-canary://aa-mouse-up-only; page index after: 0; URLs reaching the delegate: ["sylvia-g01-canary://aa-mouse-up-only"]; delegate decisions: [PDFAnchorKit.LinkDecision.blocked(reason: "scheme sylvia-g01-canary is not allowed")]
+F GoTo+AA every trigger: PDFKit presents PDFActionGoTo type GoTo; page index after: 2; URLs reaching the delegate: []; delegate decisions: []
+G GoTo+Next cycle: PDFKit presents PDFActionGoTo type GoTo; page index after: 1; URLs reaching the delegate: []; delegate decisions: []
+H AA D,U: PDFKit presents no action; nothing to perform
+I AA U,D: PDFKit presents no action; nothing to perform
+J AA D only: PDFKit presents no action; nothing to perform
+K AA U,E: PDFKit presents PDFActionURL type URI sylvia-g01-canary://aa-up-enter-u; page index after: 0; URLs reaching the delegate: ["sylvia-g01-canary://aa-up-enter-u"]; delegate decisions: [PDFAnchorKit.LinkDecision.blocked(reason: "scheme sylvia-g01-canary is not allowed")]
+L canary URI+Next: PDFKit presents PDFActionURL type URI sylvia-g01-canary://uri-first; page index after: 0; URLs reaching the delegate: ["sylvia-g01-canary://uri-first"]; delegate decisions: [PDFAnchorKit.LinkDecision.blocked(reason: "scheme sylvia-g01-canary is not allowed")]
+field note: PDFKit presents no action; nothing to perform
+field second: PDFKit presents no action; nothing to perform
+field third: PDFKit presents PDFActionURL type URI sylvia-g01-canary://third-field-mouse-up; page index after: 0; URLs reaching the delegate: ["sylvia-g01-canary://third-field-mouse-up"]; delegate decisions: [PDFAnchorKit.LinkDecision.blocked(reason: "scheme sylvia-g01-canary is not allowed")]
+outline 0 "Outline item: canary URI": PDFKit presents PDFActionURL type URI sylvia-g01-canary://outline-uri; page index after: 0; URLs reaching the delegate: ["sylvia-g01-canary://outline-uri"]; delegate decisions: [PDFAnchorKit.LinkDecision.blocked(reason: "scheme sylvia-g01-canary is not allowed")]
+outline 1 "Outline item: page two, then /Next canary": PDFKit presents PDFActionGoTo type GoTo; page index after: 1; URLs reaching the delegate: []; delegate decisions: []
+outline 1.0 "Outline child: JavaScript": PDFKit presents PDFAction type JavaScript; page index after: 0; URLs reaching the delegate: []; delegate decisions: []
+outline 2 "Outline item: destination only": PDFKit presents PDFActionGoTo type GoTo; page index after: 0; URLs reaching the delegate: []; delegate decisions: []
+page index shown after going back to page 0 before each of the 14 actions: 0 every time (page 0's /AA /O, a GoTo to page index 2, did not run)
+URLs delivered to the harness after all actions and 3.0 s: []
+presented over the app: nothing
+file SHA-256 before 21f8480692ca81003190b7fd496acf9255fcd9e4a73b1950daafd1c9cc3f89b4, after 21f8480692ca81003190b7fd496acf9255fcd9e4a73b1950daafd1c9cc3f89b4

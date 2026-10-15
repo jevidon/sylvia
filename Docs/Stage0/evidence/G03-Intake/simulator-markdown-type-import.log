@@ -1,0 +1,12 @@
+# G0.3: Markdown type resolution inside the harness app WITH an imported type declaration
+environment: simulator, iPhone 17, iOS 26.5 (Sylvia-M0-g03-intake), 2026-10-06
+build: commit 0464ef6, whose Spikes/G03-Intake/App/Harness/Info.plist declared UTImportedTypeDeclarations for
+  net.daringfireball.markdown (conforms to public.plain-text) with extensions md, markdown, mdown, mkd, mkdn
+command: Scripts/ci.d/50-g03-intake.sh (trial run), step 7, test InAppLayoutTests.markdownTypes
+result: the import does not change resolution; only .md maps to the Markdown type. The declaration was removed
+  afterwards and intake maps Markdown extensions explicitly (SupportedContent.markdownExtensions).
+lines copied verbatim from .build/ci-logs/g03-intake/sim-app-tests.log of that run:
+
+G03-EVIDENCE types: UTType(filenameExtension: "md") in the harness app = net.daringfireball.markdown, dynamic=false
+G03-EVIDENCE types: UTType(filenameExtension: "markdown") in the harness app = dyn.ah62d4rv4ge8042pwrrwg875s, dynamic=true
+G03-EVIDENCE types: UTType(filenameExtension: "mdown") in the harness app = dyn.ah62d4rv4ge8043dts71a, dynamic=true

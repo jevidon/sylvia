@@ -1,0 +1,40 @@
+# Soak test in the two clean CI runs before the evidence-of-record run. First clean CI run after the review-round-1 fixes (started 2026-10-11T20:43Z, commit a4d8bd2; simulator iPhone 17, iOS 26.5;
+# host macOS 26.6.2, Xcode 27.0): the soak test failed two checks. The run's results/ were replaced by the next clean run, so
+# these lines are copied from that run's soak.txt and CI log (Scripts/ci.d/60-g04-audio.sh output) as printed at the time.
+#
+# Failed checks (SoakTests.swift):
+#   Expectation failed: firstGap <= 5.5                          (first periodic checkpoint 7.530 s after play())
+#   Expectation failed: (mediaGaps.max() ?? .infinity) <= 5_000  (14108 ms of media between two checkpoints at 3x)
+#
+# Cause (diagnosed from the code, then fixed in the test, not in the service):
+# - firstGap: play() started with a cold seek 9.46 h into the 10-hour VBR MP3, which takes seconds to produce audio (report
+#   row 21). The player's time does not advance before audio flows, so no tick and no checkpoint is due and nothing can be lost.
+#   The check now counts from the first audio and also checks the media advanced at the first checkpoint.
+# - media gap: once a minute the test built tap runs (an O(n^2) copy of about a minute of audio) and cross-correlated them on the
+#   main actor, where the playback service and the player's periodic time observer run. That blocked the ticks for up to about
+#   4.7 s of wall time (the largest wall gap), 14.1 s of media at 3x. The analysis now runs off the main actor and the runs are
+#   built in place. Product consequence recorded in ADR-0006 (checkpoints depend on a responsive main thread).
+#
+# Summary lines of that soak.txt:
+played: wall 2400.4 s, media 7176.9 s (2.9898 x wall), from 34044673 to 41221598 ms global
+content error |ms| (each minute): n=39 p50=0.000 p95=13.061 max=13.061 ms
+tap lead over the player clock: n=39 p50=0.789 p95=0.840 max=0.855 s
+checkpoints while playing: 1698; wall gap max 4.704 s; media gap max 14108 ms; first after play 7.530 s; item-change checkpoints naming member 2: 1
+final: last_ms=41221598 durable_last_ms=41221598 furthest_ms=41221597 durable_furthest_ms=41221597 listened_ms=2400438 durable_reason=pause
+memory footprint: first sample 103.0 MB, last 62.5 MB, max 103.0 MB, growth -40.5 MB
+
+# Second clean CI run (started 2026-10-11T21:41:57Z, commit 5c63ba4, the analysis off the main actor): the soak failed two
+# checks by small margins; the other suites passed. Lines copied from that run's soak.txt and CI log:
+#   Expectation failed: (mediaGaps.max() ?? .infinity) <= 5_000          (5001 ms)
+#   Expectation failed: durable.reason == .pause && durable.lastGlobalMs == endGlobal   (41216709 vs 41216710 ms)
+# Causes and fixes:
+# - The service checkpoints at the first player tick 4 s of media after the last checkpoint; ticks came every 1 s of
+#   media, so a gap can reach 5 s plus latency. Ticks are now every 0.5 s of media (AVQueuePlayerEngine.tickIntervalSeconds),
+#   a product change: the gap is at most about 4.5 s plus main-thread latency.
+# - AVPlayer's reported time moved by 1 ms after pause() returned; the check allows 50 ms (the pause checkpoint is still
+#   required to be the durable state).
+# With the analysis off the main actor the largest wall gap fell from 4.704 s (first run) to 1.689 s.
+play() to first audio (cold seek into the 10-hour MP3): 8.780 s
+checkpoints while playing: 1726; wall gap max 1.689 s; media gap max 5001 ms; first 0.008 s after the first audio, 0 ms of media after the start; item-change checkpoints naming member 2: 1
+final: last_ms=41216710 durable_last_ms=41216709 furthest_ms=41216708 durable_furthest_ms=41216708 listened_ms=2400084 durable_reason=pause
+memory footprint: first sample 87.6 MB, last 60.2 MB, max 99.2 MB, growth -27.4 MB

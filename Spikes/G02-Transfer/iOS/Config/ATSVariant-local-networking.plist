@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  ATS PROBE VARIANT ONLY (G0.2 part 2): the G02TransferATSVariant app built with G02_ATS_VARIANT=local-networking.
+  Measures whether NSAllowsLocalNetworking changes what the pinned client can reach. Never the harness's or the
+  product's configuration; Scripts/ci.d/40-g02-transfer.sh allows ATS keys only in Config/ATSVariant-*.plist.
+-->
+<plist version="1.0">
+<dict>
+	<key>G02ATSVariant</key>
+	<string>local-networking</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_sylvia-src._tcp</string>
+	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Sylvia connects to the Mac you paired with on your network to download books and audiobooks you send to this iPhone.</string>
+</dict>
+</plist>

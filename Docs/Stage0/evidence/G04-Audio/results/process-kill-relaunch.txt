@@ -1,0 +1,11 @@
+# Process-kill trial: harness app on the simulator iPhone-17, iOS-26-5 (udid E8630656-D6CD-4CD8-9EE6-1005724B0746); SIGKILL from the host, then a normal relaunch.
+# Book: the four-file MP3 book in Documents/G04Book (importer order). Each trial resumes from where the previous relaunch loaded.
+# true_ms = last position the harness logged while playing + wall time from that log line to the kill (1x); resumed_ms = position the relaunched harness loaded from its durable checkpoint.
+# members opened as the import decided (the harness's `member` lines, every load): estimatedCBR
+trial	played_s	started_ms	last_logged_ms	log_to_kill_s	true_ms	resumed_ms	loss_ms	furthest_after_relaunch_ms
+0	7.3	0	6924	0.350	7274	4000	3274	4000
+1	12.4	4000	15930	0.469	16399	16000	399	16000
+2	9.6	16000	25428	0.163	25591	24000	1591	24000
+3	4.2	24000	27923	0.237	28160	28000	160	28000
+loss: n=4 min=160 ms max=3274 ms (budget 5000 ms)
+harness output: 8 launches, every one logged output volume=0.01 preview_volume=0.01 (quiet test runs; the volume does not change the positions measured here)

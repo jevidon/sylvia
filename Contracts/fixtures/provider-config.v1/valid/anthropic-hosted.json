@@ -1,0 +1,23 @@
+{
+  "allow_insecure_local_http": false,
+  "base_url": "https://api.anthropic.com/v1",
+  "capabilities": {
+    "model_listing": false,
+    "stream_usage": false,
+    "streaming": true,
+    "timestamps": false,
+    "token_counting": false
+  },
+  "credential_ref": {
+    "account": "ACF5AF09-75B7-4547-AFC5-078CC3CF6C29",
+    "origin": "https://api.anthropic.com",
+    "store": "keychain"
+  },
+  "display_name": "Anthropic",
+  "max_output_tokens": 4000,
+  "model": "model-entered-by-user",
+  "provider_id": "DA961EC2-79DE-42DB-96B3-22B788B35F7F",
+  "provider_kind": "anthropic_messages",
+  "request_timeout_ms": 120000,
+  "schema_version": 1
+}

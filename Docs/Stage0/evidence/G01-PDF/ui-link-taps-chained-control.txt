@@ -1,0 +1,17 @@
+simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), runtime 26.5
+Control: real taps on actions-chained.pdf in the harness without LinkInterceptor (-noLinkInterceptor), one fresh launch per link
+A GoTo + /Next canary: tap at window (160.8, 173.1) -> Page index 1 of 3, no printed label; linkLog ""; URLs opened into the harness: none; foreground true
+B NextPage + /Next canary: tap at window (160.8, 191.3) -> Page index 1 of 3, no printed label; linkLog ""; URLs opened into the harness: none; foreground true
+C GoTo + /Next [canary URI, Launch, JavaScript]: tap at window (160.8, 209.4) -> Page index 1 of 3, no printed label; linkLog ""; URLs opened into the harness: none; foreground true
+E no /A, /AA {U} canary: tap at window (160.8, 245.7) -> Page index 0 of 3, no printed label; linkLog ""; URLs opened into the harness: sylvia-g01-canary://aa-mouse-up-only; foreground true
+F GoTo page 3 + /AA every trigger: tap at window (160.8, 263.9) -> Page index 2 of 3, no printed label; linkLog ""; URLs opened into the harness: none; foreground true
+G GoTo + /Next cycle: tap at window (160.8, 282.1) -> Page index 1 of 3, no printed label; linkLog ""; URLs opened into the harness: none; foreground true
+H no /A, /AA {D, U} canaries: tap at window (160.8, 300.2) -> Page index 0 of 3, no printed label; linkLog ""; URLs opened into the harness: none; foreground true
+I no /A, /AA {U, D} canaries: tap at window (160.8, 318.4) -> Page index 0 of 3, no printed label; linkLog ""; URLs opened into the harness: none; foreground true
+J no /A, /AA {D} canary: tap at window (160.8, 336.5) -> Page index 0 of 3, no printed label; linkLog ""; URLs opened into the harness: none; foreground true
+K no /A, /AA {U, E} canaries: tap at window (160.8, 354.7) -> Page index 0 of 3, no printed label; linkLog ""; URLs opened into the harness: sylvia-g01-canary://aa-up-enter-u; foreground true
+L canary URI + /Next canary: tap at window (160.8, 372.8) -> Page index 0 of 3, no printed label; linkLog ""; URLs opened into the harness: sylvia-g01-canary://uri-first; foreground true
+D https + /Next canary: not tapped without the interceptor (its https URL would open Safari)
+field note: tap at window (184.1, 400.1), keyboard true, typed "1" (1 switch(es) to the numbers layout), tapped outside at window (197.1, 532.3) -> value "Typed1"; linkLog ""; URLs opened into the harness: none; foreground true
+field second: tap at window (184.1, 418.2), keyboard true, typed "2" (1 switch(es) to the numbers layout), tapped outside at window (197.1, 532.3) -> value "Second2"; linkLog ""; URLs opened into the harness: none; foreground true
+field third: tap at window (184.1, 436.4), keyboard true, typed "3" (1 switch(es) to the numbers layout), tapped outside at window (197.1, 532.3) -> value "Third3"; linkLog ""; URLs opened into the harness: none; foreground true

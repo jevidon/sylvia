@@ -1,0 +1,25 @@
+# G0.3 experiment: the Files app's "Open With" menu and LSSupportsOpeningDocumentsInPlace (report finding F6).
+# 2026-10-11T17:25Z, host as in the report, iPhone 17 simulator Sylvia-M0-g03-intake, iOS 26.5 (23F77).
+# Command (.build/scratch/openwith-experiment.sh, not committed): copy Spikes/G03-Intake/App to a temporary sibling
+# directory, set LSSupportsOpeningDocumentsInPlace = true in the copy's Harness/Info.plist (the committed Info.plist
+# keeps false), sylvia_generate, place Fixtures/epub/se-walden.epub in Files > On My iPhone as in the CI drop-in, then
+#   TEST_RUNNER_G03_FILES_PROBE=placed xcodebuild test ... \
+#     -only-testing:IntakeHarnessUITests/FilesAppUITests/testFilesAppOpenWithOffersTheHarness
+# on a fresh install; the copy and the app were removed afterwards.
+#
+# With the committed value (false), every run showed (simulator-files-app-observation.log, and sim-app-tests.log of
+# the clean CI run):
+#   G03-EVIDENCE files app Open With menu: ... label: 'No Apps Available', Disabled | ... label: 'Preview with Quick Look'
+#
+# With LSSupportsOpeningDocumentsInPlace = true:
+Print :LSSupportsOpeningDocumentsInPlace -> true
+G03-EVIDENCE files app Open With menu: Button, 0x114876080, {{40.0, 475.4}, {250.0, 42.0}}, label: 'Sylvia Intake Spike' | Button, 0x114876440, {{40.0, 538.4}, {250.0, 42.0}}, label: 'Preview with Quick Look'
+G03-EVIDENCE files app Open With offers Sylvia Intake Spike: true
+G03-EVIDENCE files app Open With: harness says 'Opened file staged: 1 file(s), state staged'
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppOpenWithOffersTheHarness]' passed (262.476 seconds).
+** TEST SUCCEEDED **
+#
+# Reading: on this simulator the Files app lists an app under Open With only when it declares in-place support, and
+# with it the harness imported the opened EPUB through DropAreaImporter (a coordinated, security-scoped read that
+# never writes the source). This run did not record whether the URL was the original file or a Documents/Inbox copy.
+# Device behaviour is unverified (device checklist step 13).

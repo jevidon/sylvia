@@ -1,0 +1,2 @@
+Overlay drawing while highlights change, simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77)
+(b) live PDFView, rotated.pdf page 1: 285 rounds in 6 s, each setting highlightRects (0-6 rects) and scaleFactor = fit x (1 + (round % 4) x 0.35), setNeedsDisplay() every 3rd round: 271 OverlayPage.draw calls for the page, 271 off the main thread, highlight counts drawn [0, 1, 2, 3, 4, 5, 6], no crash

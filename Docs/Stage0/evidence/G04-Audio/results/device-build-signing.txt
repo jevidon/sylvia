@@ -1,0 +1,36 @@
+# Device build for testing (generic/platform=iOS, Debug, automatic signing). Environment: host 26.6.2 (25G83), Xcode 27.0
+# Signing only: the products are not installed or run here (device checklist steps 1 and 1.5).
+== G04AudioHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g04audio
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+Signed Time=Oct 14, 2026 at 11:34:38 AM
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+profile TeamIdentifier:0=A4KBDX665Z
+profile ExpirationDate=Tue Aug 17 04:53:58 NZST 2027
+== G04AudioHarness.app/PlugIns/G04CaptureControl.appex: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g04audio.capturecontrol
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+Signed Time=Oct 14, 2026 at 11:34:34 AM
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+profile TeamIdentifier:0=A4KBDX665Z
+profile ExpirationDate=Tue Aug 17 04:53:58 NZST 2027
+== G04AudioHarness.app/Frameworks/G04AudioKit.framework: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g04audio.kit
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+Signed Time=Oct 14, 2026 at 11:34:34 AM
+TeamIdentifier=A4KBDX665Z
+== G04AudioHarness.app/PlugIns/G04AudioTests.xctest: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g04audio.tests
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+Signed Time=Oct 14, 2026 at 11:34:38 AM
+TeamIdentifier=A4KBDX665Z

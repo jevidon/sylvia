@@ -1,0 +1,150 @@
+# Release-configuration check of the device checklist commands (steps 1.5 and 2.1) on the simulator Sylvia-M0-g04-audio (iPhone 17, iOS 26.5), review R2-07.
+# Run from the repository root after 'source Scripts/lib/env.sh' and 'sylvia_generate Spikes/G04-Audio', with TEST_RUNNER_SYLVIA_FIXTURE_CACHE and TEST_RUNNER_G04_RESULTS_DIR set as the CI drop-in sets them.
+# started 2026-10-12T04:20:13Z at commit e9a07335121c232768ba343acfef5ef779c5afef (uncommitted files: 0)
+# finished 2026-10-12T04:27:27Z
+# Host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27A266a.
+# The commands are the checklist's with the simulator as destination (no signing flags):
+#   xcodebuild build -project Spikes/G04-Audio/G04Audio.xcodeproj -scheme G04AudioHarness -configuration Release -destination id=<simulator> -derivedDataPath Spikes/G04-Audio/.build/DerivedData-release
+#   xcodebuild test  -project Spikes/G04-Audio/G04Audio.xcodeproj -scheme G04AudioHarness -configuration Release ENABLE_TESTABILITY=YES -destination id=<simulator> -derivedDataPath Spikes/G04-Audio/.build/DerivedData-release -only-testing:G04AudioTests/RealAV/BudgetTests -only-testing:G04AudioTests/RealAV/RealPreviewTests
+# Simulator numbers only: not a device result, and not a replacement for checklist step 1.5.
+
+## Outcome
+harness Release build exit 0
+release test exit 0
+  ✔ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" passed after 65.761 seconds.
+  ✔ Test "A phone-call interruption during preview restores the main context, paused (T22)" passed after 6.233 seconds.
+  ✔ Test "Pending preview of a source range in every provisional release format: head and end boundaries" passed after 144.709 seconds.
+  ✔ Suite "Capture preview on the real engine (T22)" passed after 216.705 seconds.
+  ━ Test "Start/resume (warm, and cold resume by depth into the file) and acknowledged capture save distributions" recorded a known issue at RealServiceTests.swift:820:17: Expectation failed: deep.allSatisfy { $0 <= 1.5 }
+  ━ Test "Start/resume (warm, and cold resume by depth into the file) and acknowledged capture save distributions" passed after 148.579 seconds with 1 known issue.
+  ━ Suite "Indicative budgets (simulator)" passed after 148.579 seconds with 1 known issue.
+  ━ Suite "Real AVFoundation (serialized)" passed after 365.285 seconds with 1 known issue.
+  ━ Test run with 4 tests in 3 suites passed after 365.285 seconds with 1 known issue.
+
+## budgets.txt (Release build)
+# Indicative budgets (plan 19.2). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Release build
+# warm start/resume = play() to the first buffer at the position reaching the analysis tap (excludes output latency),
+# for files this process has already inspected or opened (start after a seek, resume after a pause); cold resume is below
+multi-file MP3 trial 0 at 191389 ms: start 0.112 s, resume 0.011 s
+multi-file MP3 trial 1 at 117189 ms: start 0.136 s, resume 0.008 s
+multi-file MP3 trial 2 at 204010 ms: start 0.132 s, resume 0.014 s
+multi-file MP3 trial 3 at 102262 ms: start 0.127 s, resume 0.009 s
+multi-file MP3 trial 4 at 88213 ms: start 0.020 s, resume 0.009 s
+multi-file MP3 trial 5 at 160029 ms: start 0.106 s, resume 0.008 s
+multi-file MP3 trial 6 at 11570 ms: start 0.104 s, resume 0.011 s
+multi-file MP3 trial 7 at 335298 ms: start 0.111 s, resume 0.010 s
+multi-file MP3 trial 8 at 427194 ms: start 0.052 s, resume 0.012 s
+multi-file MP3 trial 9 at 307431 ms: start 0.020 s, resume 0.011 s
+LibriVox M4B trial 0 at 1751309 ms: start 0.102 s, resume 0.013 s
+LibriVox M4B trial 1 at 299667 ms: start 0.020 s, resume 0.014 s
+LibriVox M4B trial 2 at 9033163 ms: start 0.030 s, resume 0.005 s
+LibriVox M4B trial 3 at 8817651 ms: start 0.020 s, resume 0.006 s
+LibriVox M4B trial 4 at 7403915 ms: start 0.021 s, resume 0.008 s
+LibriVox M4B trial 5 at 17252481 ms: start 0.020 s, resume 0.005 s
+LibriVox M4B trial 6 at 8271871 ms: start 0.030 s, resume 0.015 s
+LibriVox M4B trial 7 at 11124577 ms: start 0.020 s, resume 0.008 s
+LibriVox M4B trial 8 at 2314960 ms: start 0.020 s, resume 0.008 s
+LibriVox M4B trial 9 at 17096184 ms: start 0.031 s, resume 0.012 s
+# cold resume: fresh copy of the file, stored checkpoint at depth_h into it, new service: load (open + zero-tolerance seek) then play()
+cold_resume	file	trial	depth_h	checkpoint_ms	load_s	play_to_audio_s	load_plus_play_s	resumed_at_checkpoint	content_error_ms
+cold_resume	long-aac-10h.m4b	0	0.33	1203400	0.054	0.096	0.150	yes	0.0
+cold_resume	long-aac-10h.m4b	1	1.00	3601700	0.055	0.103	0.158	yes	0.0
+cold_resume	long-aac-10h.m4b	2	1.50	5398300	0.052	0.104	0.156	yes	0.0
+cold_resume	long-aac-10h.m4b	3	2.00	7204100	0.055	0.103	0.158	yes	0.0
+cold_resume	long-aac-10h.m4b	4	3.01	10850000	0.055	0.101	0.157	yes	0.0
+cold_resume	long-aac-10h.m4b	5	5.03	18123400	0.052	0.097	0.149	yes	0.0
+cold_resume	long-aac-10h.m4b	6	7.63	27456700	0.053	0.106	0.159	yes	0.0
+cold_resume	long-aac-10h.m4b	7	10.00	35987600	0.054	0.104	0.158	yes	0.0
+cold_resume	long-mp3-cbr-10h.mp3	0	0.33	1203400	0.054	0.429	0.483	yes	-13.1
+cold_resume	long-mp3-cbr-10h.mp3	1	1.00	3601700	0.053	1.055	1.107	yes	-13.1
+cold_resume	long-mp3-cbr-10h.mp3	2	1.50	5398300	0.054	1.556	1.609	yes	-13.1
+cold_resume	long-mp3-cbr-10h.mp3	3	2.00	7204100	0.053	2.035	2.089	yes	-13.1
+cold_resume	long-mp3-cbr-10h.mp3	4	3.01	10850000	0.052	3.061	3.113	yes	-13.1
+cold_resume	long-mp3-cbr-10h.mp3	5	5.03	18123400	0.053	5.044	5.097	yes	-13.1
+cold_resume	long-mp3-cbr-10h.mp3	6	7.63	27456700	0.053	7.625	7.678	yes	-13.1
+cold_resume	long-mp3-cbr-10h.mp3	7	10.00	35987600	0.056	9.659	9.715	yes	-13.1
+cold_resume	long-mp3-vbr-10h.mp3	0	0.33	1203400	0.054	0.374	0.428	yes	-13.1
+cold_resume	long-mp3-vbr-10h.mp3	1	1.00	3601700	0.055	0.935	0.990	yes	-13.1
+cold_resume	long-mp3-vbr-10h.mp3	2	1.50	5398300	0.054	1.362	1.416	yes	-13.1
+cold_resume	long-mp3-vbr-10h.mp3	3	2.00	7204100	0.052	1.770	1.823	yes	-13.1
+cold_resume	long-mp3-vbr-10h.mp3	4	3.01	10850000	0.054	2.643	2.697	yes	-13.1
+cold_resume	long-mp3-vbr-10h.mp3	5	5.03	18123400	0.055	4.378	4.434	yes	-13.1
+cold_resume	long-mp3-vbr-10h.mp3	6	7.63	27456700	0.053	6.558	6.611	yes	-13.1
+cold_resume	long-mp3-vbr-10h.mp3	7	10.00	35987600	0.056	8.751	8.807	yes	-13.1
+cold_resume	fmt-librivox-mp3-22k.mp3	0	0.17	600000	0.055	0.329	0.384	yes	0.0
+cold_resume	fmt-librivox-mp3-22k.mp3	1	0.37	1330000	0.055	0.508	0.563	yes	0.0
+cold_resume	multi/Part 1.mp3	0	0.03	120000	0.055	0.130	0.184	yes	-13.1
+start/resume local audio, warm (multi-file MP3 members and the LibriVox M4B; budget p95 <= 1.5 s): n=40 p50=0.018 p95=0.127 max=0.136 s
+  LibriVox M4B: resume after pause: n=10 p50=0.008 p95=0.015 max=0.015 s
+  LibriVox M4B: start after seek: n=10 p50=0.020 p95=0.070 max=0.102 s
+  multi-file MP3: resume after pause: n=10 p50=0.010 p95=0.013 max=0.014 s
+  multi-file MP3: start after seek: n=10 p50=0.108 p95=0.134 max=0.136 s
+cold resume (load + play to audio), long-aac-10h.m4b (budget 1.5 s): n=8 p50=0.157 p95=0.158 max=0.159 s within_budget=8/8
+cold resume (load + play to audio), long-mp3-cbr-10h.mp3 (budget 1.5 s): n=8 p50=2.601 p95=9.002 max=9.715 s within_budget=2/8
+cold resume (load + play to audio), long-mp3-vbr-10h.mp3 (budget 1.5 s): n=8 p50=2.260 p95=8.038 max=8.807 s within_budget=3/8
+cold resume (load + play to audio), fmt-librivox-mp3-22k.mp3 (budget 1.5 s): n=2 p50=0.473 p95=0.554 max=0.563 s within_budget=2/2
+cold resume (load + play to audio), multi/Part 1.mp3 (budget 1.5 s): n=1 p50=0.184 p95=0.184 max=0.184 s within_budget=1/1
+budget crossing, long-mp3-cbr-10h.mp3: between 1.00 h (1.107 s) and 1.50 h (1.609 s), interpolated 1.39 h; every deeper trial over the budget: yes; least squares 0.175 s + 0.967 s per hour of depth (reaches 1.5 s at 1.37 h)
+budget crossing, long-mp3-vbr-10h.mp3: between 1.50 h (1.416 s) and 2.00 h (1.823 s), interpolated 1.60 h; every deeper trial over the budget: yes; least squares 0.112 s + 0.863 s per hour of depth (reaches 1.5 s at 1.61 h)
+acknowledged capture save (budget p95 <= 200 ms): n=40 p50=10.245 p95=16.237 max=16.634 ms
+
+## preview-end-formats.tsv (Release build)
+# Pending capture preview of the source range 221.37-229.37 s (preview AVQueuePlayer, forwardPlaybackEndTime) in each format; main paused. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Release build
+# head_err = true content position where the first rendered second starts minus the intended start (ms; analysis tap + cross-correlation with master-600s)
+# end_content_err = true content position of a 1.5 s probe within the last 2 s the tap rendered before the intended end, minus the position the player reported for it (ms)
+# audible_past_end = audio past the intended end louder than -40 dB of the range's peak (ms; 0 = only silence past the end)
+# end_err = where the audible content really ends minus the intended end (end_content_err + audible_past_end; ms)
+# player_end = the preview player's own time when it reached the end, minus the intended end (ms)
+# tap_end_overrun = source time the tap processed past the intended end (ms; an upper bound: the tap processes whole buffers, which past the end are silent)
+# post_end_rms_ratio = loudness of what the tap processed past the intended end, relative to the range (0 = silence)
+# session_released = the preview's audio session was deactivated (notifyOthersOnDeactivation) when it ended, main being paused (review R2-06)
+format	file	head_err_ms	head_peak	end_content_err_ms	end_peak	audible_past_end_ms	end_err_ms	player_end_ms	tap_end_overrun_ms	post_end_rms_ratio	rendered_s	intended_s	main_restored	session_released
+mp3-cbr	fmt-mp3-cbr.mp3	-13.1	0.999	-13.1	0.999	0.0	-13.1	2.0	452.1	0.000	8.000	8.000	true	yes
+mp3-vbr-xing	fmt-mp3-vbr-xing.mp3	-13.1	0.998	-13.1	0.998	0.0	-13.1	1.1	452.1	0.000	8.000	8.000	true	yes
+mp3-vbr-noxing	fmt-mp3-vbr-noxing.mp3	-13.1	0.998	-13.1	0.998	0.0	-13.1	1.4	452.1	0.000	8.000	8.000	true	yes
+mp3-id3-chap	fmt-mp3-chap.mp3	-13.1	0.999	-13.1	0.999	0.0	-13.1	1.4	452.1	0.000	8.000	8.000	true	yes
+mp3-librivox-22k	fmt-librivox-mp3-22k.mp3	-0.0	1.000	-0.0	1.000	0.0	-0.0	1.8	775.3	0.000	8.000	8.000	true	yes
+m4a-aac-lc	fmt-m4a-aac-lc.m4a	0.0	0.999	0.0	0.999	0.0	0.0	1.3	452.1	0.000	8.000	8.000	true	yes
+m4a-he-aac-v1	fmt-m4a-heaac-v1.m4a	-47.9	0.993	-47.9	0.994	0.0	-47.9	1.0	452.1	0.000	8.000	8.000	true	yes
+m4a-he-aac-v2	fmt-m4a-heaac-v2.m4a	-47.9	0.993	-47.9	0.994	0.0	-47.9	1.5	452.1	0.000	8.000	8.000	true	yes
+m4a-alac	fmt-m4a-alac.m4a	0.0	1.000	0.0	1.000	0.0	0.0	2.5	452.1	0.000	8.000	8.000	true	yes
+flac	fmt-flac.flac	0.0	1.000	0.0	1.000	0.0	0.0	1.1	452.1	0.000	8.000	8.000	true	yes
+mp4-flac	fmt-mp4-flac.m4a	0.0	1.000	0.0	1.000	0.0	0.0	2.1	452.1	0.000	8.000	8.000	true	yes
+ogg-opus	fmt-opus.ogg	0.0	0.993	0.0	0.989	0.0	0.0	0.7	362.7	0.000	8.000	8.000	true	yes
+opus-ext	fmt-opus.opus	0.0	0.993	0.0	0.989	0.0	0.0	1.8	362.7	0.000	8.000	8.000	true	yes
+mp4-opus	fmt-mp4-opus.m4a	0.0	0.993	0.0	0.989	0.0	0.0	1.9	362.7	0.000	8.000	8.000	true	yes
+caf-opus	fmt-caf-opus.caf	0.2	0.910	0.0	0.923	0.0	0.0	1.6	362.7	0.000	8.000	8.000	true	yes
+wav	fmt-wav.wav	0.0	1.000	0.0	1.000	0.0	0.0	2.5	452.1	0.000	8.000	8.000	true	yes
+head |error|: n=16 p50=0.045 p95=47.891 max=47.891 ms
+end |error| (audible content end minus intended end): n=16 p50=0.045 p95=47.891 max=47.891 ms
+player end |error|: n=16 p50=1.571 p95=2.461 max=2.472 ms
+
+## preview.txt (Release build)
+# Capture preview (preview AVQueuePlayer) while the main AVQueuePlayer session is paused. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Release build
+# kind: the retained excerpt file, or the pending capture's source ranges (one segment per member file, played back to back)
+# head_err = true content position of the first rendered second minus the intended start (ms, analysis tap + cross-correlation)
+# seam_errs = for each later segment (the next member file), true content position of its first rendered second minus its intended start (ms)
+# rendered_s = seconds of each segment's intended span the tap processed (clipped at its intended end), summed; intended_s = the capture's length
+# tap_end_overrun = source time the analysis tap processed past the intended end (ms; an upper bound: the tap also processes buffers the output may never play)
+# player_end = the preview player's own time when it reached the end, minus the intended end (ms)
+# post_end_rms_ratio = loudness of the tap audio past the intended end relative to the whole run (0 = silence)
+kind	range(global ms)	segments	head_err_ms	head_peak	seam_errs_ms	rendered_s	intended_s	tap_end_overrun_ms	player_end_ms	post_end_rms_ratio	main_restored	progress_unchanged
+excerpt	135535-140035	1	-13.1	0.997	-	4.500	4.500	422.6	2.2	0.000	true	true
+source ranges	135535-140035	2	-13.1	0.999	-13.1	4.500	4.500	472.2	1.0	0.000	true	true
+excerpt	61234-65734	1	-13.1	0.958	-	4.500	4.500	422.6	1.0	0.000	true	true
+source ranges	61234-65734	1	-13.1	0.959	-	4.500	4.500	422.6	1.0	0.000	true	true
+excerpt	296734-301234	1	-13.1	1.000	-	4.500	4.500	422.6	2.3	0.000	true	true
+source ranges	296734-301234	2	-13.1	1.000	-13.1	4.500	4.500	457.6	2.2	0.000	true	true
+excerpt	330500-335000	1	-13.1	0.995	-	4.500	4.500	422.6	0.5	0.000	true	true
+source ranges	330500-335000	1	-13.1	0.998	-	4.500	4.500	422.6	2.3	0.001	true	true
+excerpt	500000-504500	1	-13.1	1.000	-	4.500	4.500	422.6	0.9	0.000	true	true
+source ranges	500000-504500	1	-13.1	1.000	-	4.500	4.500	422.6	2.1	0.000	true	true
+preview head |error|: n=10 p50=13.071 p95=13.084 max=13.084 ms
+preview seam |error| (pending cross-file previews): n=2 p50=13.061 p95=13.061 max=13.061 ms
+preview tap end |overrun| (upper bound): n=10 p50=422.630 p95=465.603 max=472.154 ms
+preview player end |error|: n=10 p50=1.544 p95=2.331 max=2.341 ms
+
+## preview-interruption.txt (Release build)
+# Interruption during preview (AVAudioSession notifications posted on the shared session). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Release build
+saved main context at preview start: Optional(G04AudioKit.AudioPoint(assetID: E33C1759-4CE8-4A4B-BF60-C702CBEB9092, ms: 113999)) furthest=0 listened=1533
+after interruption began, 2 s, ended(shouldResume): mode=main status=paused main=Optional(G04AudioKit.AudioPoint(assetID: E33C1759-4CE8-4A4B-BF60-C702CBEB9092, ms: 113999)) furthest=0 listened=1533 preview_playing=false main_player_rate=0.0

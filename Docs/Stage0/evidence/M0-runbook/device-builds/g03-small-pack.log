@@ -1,0 +1,42 @@
+# check: g03-small-pack
+# expected on this Mac (stated before the run): pass
+# note: G03 checklist step 4 small pack (written to .build/scratch instead of ~/Desktop), host.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:54:08Z; load at start: 8.13 5.98 4.22
+# command (from the repository root):
+#   bash -c cd\ Spikes/G03-Intake/IntakeKit\ \&\&\ exec\ xcrun\ swift\ run\ -c\ release\ sylviapack-tool\ gen-pack\ \"\$0/small.sylviapack\"\ \"\$0/work\"\ 1000000 .build/scratch/g03-small-pack 
+# finished: 2026-10-14T06:54:21Z after 13 s; exit status 0; load at end: 8.44 6.13 4.30
+--- result lines
+Build complete! (10.26 sec)
+gen-pack ok: 4357385 bytes, 6 entries, zip64_end_record=false, manifest_sha256=9e7f8269dc1d11c125346efee1a73b8ded1870da40704b9d18ffebf335fbb367, elapsed=0.0s
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+--- warning count: 2 (first 20 unique)
+   |                                                          `- warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]
+warning: 'zipfoundation': Spikes/G03-Intake/IntakeKit/.build/checkouts/ZIPFoundation/Package.swift:24:58: warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]
+--- last 15 lines of the output
+[134 / 172] SylviaIntakeCore
+[141 / 173] SylviaImportHandoff
+[144 / 175] SylviaImportHandoff
+[150 / 175] ReadiumZIPFoundation
+[157 / 176] SylviaPack
+[161 / 179] SylviaPack
+[168 / 180] SylviaContainerLayout
+[171 / 182] SylviaContainerLayout
+[178 / 183] sylviapack-tool-product
+[180 / 184] sylviapack-tool-product
+[182 / 184] sylviapack-tool-product
+[183 / 184] sylviapack-tool-product
+Build complete! (10.26 sec)
+gen-pack ok: 4357385 bytes, 6 entries, zip64_end_record=false, manifest_sha256=9e7f8269dc1d11c125346efee1a73b8ded1870da40704b9d18ffebf335fbb367, elapsed=0.0s
+gen-pack (write + self-validation) memory: sampled_peak_phys_footprint=7.8 MiB lifetime_peak_phys_footprint=7.8 MiB max_rss=13.2 MiB
+# result: pass; expected: pass; as expected: yes
+--- small pack contents (zipinfo -1)
+sylviapack/manifest.json
+sylviapack/manifest.sha256
+content/Generated Audiobook/part-01.caf
+content/Generated Audiobook/part-02.caf
+content/Generated Audiobook/notes.md
+content/Generated Text/chapter.txt
+size: 4357385 bytes

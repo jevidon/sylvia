@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:transfer-manifest:v1",
+  "title": "Transfer manifest",
+  "description": "Exact byte description of one immutable item version served by a Mac source (plan 15.4, Appendix A.3; GET /v1/items/{item_id}/manifest). The manifest identifies bytes, never paths: display_name is a label for people and is never used to build a local or remote path. A source manifest never sets a local file path or touches the phone's annotation or ledger state. Rules a JSON Schema cannot express (part continuity: no duplicate, overlapping or missing parts, no gap, no missing final bytes; parts summing to the asset length; every part but the last exactly part_size; unique asset IDs; ordinals equal to array position; cover_asset_id naming a listed asset; total parts per manifest at most 65536; manifest_digest recomputation) are enforced by the client's semantic validator (Spikes/G02-Transfer/TransferKit, ManifestValidator) before any byte is requested. manifest_digest is the lowercase hex SHA-256 of the ASCII digest input defined in ADR-0009: lines 'sylvia-transfer-manifest-v1', 'protocol=<major>.<minor>', 'source=<source_id>', 'item=<item_id>', 'version=<item_version_id>', 'cover=<cover_asset_id or ->', 'assets=<count>', then per asset 'asset=<ordinal>,<asset_id>,<media_type>,<length>,<etag>,<sha256>,<part_size>,<part_count>' followed by one 'part=<index>,<offset>,<length>,<sha256>' line per part, each line terminated by a line feed.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "protocol_version",
+    "source_id",
+    "item_id",
+    "item_version_id",
+    "created_at",
+    "manifest_digest",
+    "grouping",
+    "assets"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "protocol_version": {
+      "description": "Transfer protocol version. A different major version is rejected before downloading, with an update message.",
+      "type": "object",
+      "required": ["major", "minor"],
+      "properties": {
+        "major": { "const": 1 },
+        "minor": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "source_id": { "$ref": "#/$defs/uuid", "description": "Stable ID of the Mac source; must equal the paired source." },
+    "item_id": { "$ref": "#/$defs/uuid", "description": "Opaque, stable ID of the shared item." },
+    "item_version_id": { "$ref": "#/$defs/uuid", "description": "ID of this immutable prepared snapshot. A changed original gets a new version ID." },
+    "created_at": { "$ref": "#/$defs/timestamp" },
+    "manifest_digest": { "$ref": "#/$defs/sha256" },
+    "grouping": {
+      "description": "Edition and grouping metadata. A single file is kind 'single' with exactly one asset; an audiobook folder is kind 'group' with ordered members.",
+      "type": "object",
+      "required": ["kind", "title"],
+      "properties": {
+        "kind": { "enum": ["single", "group"] },
+        "title": { "$ref": "#/$defs/label", "maxLength": 512 },
+        "creators": {
+          "type": "array",
+          "maxItems": 16,
+          "items": { "$ref": "#/$defs/label", "maxLength": 256 }
+        }
+      }
+    },
+    "cover_asset_id": {
+      "description": "Optional cover reference: the asset_id of a listed asset.",
+      "oneOf": [{ "$ref": "#/$defs/uuid" }, { "type": "null" }]
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": { "$ref": "#/$defs/asset" }
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "sha256": { "type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[0-9a-f]{64}$" },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+    },
+    "label": {
+      "description": "Human-readable text without control characters.",
+      "type": "string",
+      "minLength": 1,
+      "not": { "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]" }
+    },
+    "asset": {
+      "type": "object",
+      "required": ["asset_id", "ordinal", "display_name", "media_type", "length", "etag", "sha256", "part_size", "parts"],
+      "properties": {
+        "asset_id": { "$ref": "#/$defs/uuid" },
+        "ordinal": { "type": "integer", "minimum": 0, "description": "Position in the ordered member list; equals the array index." },
+        "display_name": {
+          "description": "Label for people, never a path: no slash or backslash. The source sends the last path component only.",
+          "$ref": "#/$defs/label",
+          "maxLength": 255,
+          "not": { "pattern": "[/\\\\]" }
+        },
+        "media_type": {
+          "type": "string",
+          "maxLength": 255,
+          "pattern": "^[a-z0-9][a-z0-9!#$&^_.+-]*/[a-z0-9][a-z0-9!#$&^_.+-]*$"
+        },
+        "length": {
+          "description": "Total bytes. Zero-length files are rejected. Bounded by 2^53-1 so JSON consumers with binary64 numbers read it exactly.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "etag": {
+          "description": "Strong entity tag of this asset version, sent back in If-Match. Weak tags (W/) are not allowed.",
+          "type": "string",
+          "pattern": "^\"[\\x21\\x23-\\x2b\\x2d-\\x7e]{1,128}\"$"
+        },
+        "sha256": { "$ref": "#/$defs/sha256", "description": "SHA-256 of the complete asset, verified before handoff to the importer." },
+        "part_size": {
+          "description": "Bytes per part (every part except the last). Default 16 MiB; a whole number of MiB from 1 to 64 MiB, negotiated through capabilities.",
+          "type": "integer",
+          "minimum": 1048576,
+          "maximum": 67108864,
+          "multipleOf": 1048576
+        },
+        "parts": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16384,
+          "items": {
+            "type": "object",
+            "required": ["index", "offset", "length", "sha256"],
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "offset": { "type": "integer", "minimum": 0, "maximum": 9007199254740990 },
+              "length": { "type": "integer", "minimum": 1, "maximum": 67108864 },
+              "sha256": { "$ref": "#/$defs/sha256" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

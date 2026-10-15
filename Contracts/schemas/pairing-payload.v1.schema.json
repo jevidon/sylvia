@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:pairing-payload:v1",
+  "title": "Pairing payload",
+  "description": "Single-use invitation shown by the Mac and read by the phone through a user-mediated channel (plan 15.2, ADR-0008). Text forms: code 'SYLVIA1-' + base64url(JSON) and link 'sylvia://pair/v1#' + base64url(JSON) (unpadded base64url, payload in the fragment). The phone pins spki_sha256 before it sends invitation_secret. invitation_secret is a credential: it is never logged, persisted, sent to analytics or placed in pasteboard history managed by Sylvia, and the phone clears its temporary pairing state after pairing.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "protocol_version",
+    "source_id",
+    "source_name",
+    "endpoints",
+    "spki_sha256",
+    "invitation_id",
+    "invitation_secret",
+    "expires_at"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "protocol_version": {
+      "type": "object",
+      "required": ["major", "minor"],
+      "properties": {
+        "major": { "const": 1 },
+        "minor": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "source_id": { "$ref": "#/$defs/uuid", "description": "Stable ID of the Mac source." },
+    "source_name": {
+      "description": "Name shown on the phone during pairing.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "not": { "pattern": "[\\u0000-\\u001f\\u007f-\\u009f]" }
+    },
+    "endpoints": {
+      "description": "Addresses to try in order: LAN IP, Bonjour host name, Tailscale IP or MagicDNS name. None of them is a security check; the SPKI pin is.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["host", "port"],
+        "properties": {
+          "host": {
+            "description": "DNS name, IPv4 dotted quad or IPv6 literal without brackets.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 253,
+            "pattern": "^[A-Za-z0-9.:-]+$"
+          },
+          "port": { "type": "integer", "minimum": 1, "maximum": 65535 }
+        }
+      }
+    },
+    "spki_sha256": {
+      "description": "Lowercase hex SHA-256 of the DER SubjectPublicKeyInfo of the source's TLS certificate. Shown to people as uppercase groups of four.",
+      "$ref": "#/$defs/sha256"
+    },
+    "invitation_id": { "$ref": "#/$defs/uuid" },
+    "invitation_secret": {
+      "description": "Unpadded base64url of 16 to 64 random bytes (at least 128 bits; the Mac issues 32 bytes).",
+      "type": "string",
+      "minLength": 22,
+      "maxLength": 86,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "expires_at": {
+      "description": "After this instant the invitation is refused by both ends.",
+      "$ref": "#/$defs/timestamp"
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "sha256": { "type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[0-9a-f]{64}$" },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+    }
+  }
+}

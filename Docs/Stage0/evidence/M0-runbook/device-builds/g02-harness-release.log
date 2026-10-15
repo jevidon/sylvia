@@ -1,0 +1,47 @@
+# check: g02-harness-release
+# expected on this Mac (stated before the run): pass
+# note: Runbook 8.7 (G02 step 11 on device A; plan 19.1: timings from a Release build without a debugger): the harness in Release, in a derived-data folder of its own. Its entitlements are recorded: Instruments attaches to it only with get-task-allow.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:48:11Z; load at start: 10.68 5.23 3.25
+# command (from the repository root):
+#   xcodebuild build -project Spikes/G02-Transfer/iOS/G02Transfer.xcodeproj -scheme G02TransferHarness -configuration Release -destination generic/platform=iOS -derivedDataPath Spikes/G02-Transfer/iOS/.build/DerivedData-release -disableAutomaticPackageResolution DEVELOPMENT_TEAM=A4KBDX665Z 
+# finished: 2026-10-14T06:48:29Z after 17 s; exit status 0; load at end: 9.18 5.24 3.30
+--- result lines
+** BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+Provisioning Profile: "iOS Team Provisioning Profile: *"
+Signing Identity:     "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+--- warning count: 2 (first 20 unique)
+2026-10-14 19:48:28.892 appintentsmetadataprocessor[94923:35845624] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'G02TransferHarness' from project 'G02Transfer')
+--- last 15 lines of the output
+    builtin-validationUtility Spikes/G02-Transfer/iOS/.build/DerivedData-release/Build/Products/Release-iphoneos/G02TransferHarness.app -shallow-bundle -infoplist-subpath Info.plist
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'G02TransferHarness' from project 'G02Transfer')
+
+Touch Spikes/G02-Transfer/iOS/.build/DerivedData-release/Build/Products/Release-iphoneos/G02TransferHarness.app (in target 'G02TransferHarness' from project 'G02Transfer')
+    cd Spikes/G02-Transfer/iOS
+    /usr/bin/touch -c Spikes/G02-Transfer/iOS/.build/DerivedData-release/Build/Products/Release-iphoneos/G02TransferHarness.app
+
+PruneExplicitPrecompiledModules Spikes/G02-Transfer/iOS/.build/DerivedData-release/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G02-Transfer/iOS/.build/DerivedData-release/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G02-Transfer/iOS/.build/DerivedData-release/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+** BUILD SUCCEEDED **
+
+--- codesign checks of the products (in Spikes/G02-Transfer/iOS/.build/DerivedData-release/Build/Products/Release-iphoneos)
+== G02TransferHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.transfer
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+# result: pass; expected: pass; as expected: yes
+--- entitlements of the Release app (information; codesign -d --entitlements -, get-task-allow lines)
+  "application-identifier" => "A4KBDX665Z.com.jevidon.sylvia.spike.transfer"
+  "com.apple.developer.team-identifier" => "A4KBDX665Z"
+  "get-task-allow" => true

@@ -1,0 +1,31 @@
+host (macOS), in-process source, 1 MiB parts, asset 6295777 bytes
+request POST /v1/pair range=- -> 200
+request GET /v1/items/7604bbde-b3e2-4dd5-bed7-8abb3017051c/manifest range=- -> 200
+request GET /v1/assets/54f3f33f-4325-4f86-b595-aa855a2619ac/content range=bytes=1048576-2097151 -> 206
+request GET /v1/assets/54f3f33f-4325-4f86-b595-aa855a2619ac/content range=bytes=0-1048575 -> 206
+request GET /v1/assets/54f3f33f-4325-4f86-b595-aa855a2619ac/content range=bytes=2097152-3145727 -> 206
+request GET /v1/assets/54f3f33f-4325-4f86-b595-aa855a2619ac/content range=bytes=3145728-4194303 -> 412 fault=preconditionFailed
+request GET /v1/assets/54f3f33f-4325-4f86-b595-aa855a2619ac/content range=bytes=4194304-5242879 -> 206
+request GET /v1/items/7604bbde-b3e2-4dd5-bed7-8abb3017051c/manifest range=- -> 200
+request GET /v1/assets/54f3f33f-4325-4f86-b595-aa855a2619ac/content range=bytes=3145728-4194303 -> 206
+request GET /v1/assets/54f3f33f-4325-4f86-b595-aa855a2619ac/content range=bytes=5242880-6291455 -> 206
+request GET /v1/assets/54f3f33f-4325-4f86-b595-aa855a2619ac/content range=bytes=6291456-6295776 -> 206
+event manifestFetched(itemVersionID: "fac432de-6bde-4af5-a35c-1ccf8e69d2a3")
+event partRequested(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 0, attempt: 1)
+event partRequested(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 1, attempt: 1)
+event partVerified(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 1)
+event partRequested(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 2, attempt: 1)
+event partVerified(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 0)
+event partRequested(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 3, attempt: 1)
+event partVerified(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 2)
+event partRequested(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 4, attempt: 1)
+event partFailed(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 3, failure: SylviaTransferCore.PartFailure.preconditionFailed)
+event partVerified(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 4)
+event manifestFetched(itemVersionID: "fac432de-6bde-4af5-a35c-1ccf8e69d2a3")
+event partRequested(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 3, attempt: 1)
+event partRequested(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 5, attempt: 1)
+event partVerified(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 5)
+event partRequested(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 6, attempt: 1)
+event partVerified(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 3)
+event partVerified(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac", index: 6)
+event assetFinalized(assetID: "54f3f33f-4325-4f86-b595-aa855a2619ac")

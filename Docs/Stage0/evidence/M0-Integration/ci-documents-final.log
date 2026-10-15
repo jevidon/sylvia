@@ -1,0 +1,15 @@
+commit: b08f92727159913f47673ff79a811e3d328fa725; uncommitted files: 0
+start: 2026-10-14T21:12:46Z; load: 10:12  up 11 days, 20:23, 1 user, load averages: 2.45 2.23 2.56
+simulator name for every drop-in: Sylvia-M0-assemble; G02_LOOPBACK_ONLY=1; SYLVIA_AUDIBLE_PLAYBACK unset (test volume 0.01)
+command: Scripts/ci.sh contracts dependency-lock hard-rules
+==> 10-contracts
+    pass (0s)
+==> 11-capture-anchor-contracts
+    pass (51s)
+==> 12-dependency-lock
+    pass (29s)
+==> 13-hard-rules
+    pass (5s)
+all 4 steps passed
+ci.sh exit: 0
+end: 2026-10-14T21:14:11Z; load: 10:14  up 11 days, 20:24, 1 user, load averages: 4.06 2.84 2.76

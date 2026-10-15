@@ -1,0 +1,29 @@
+environment: host (macOS 26.6.2); sylvia-test-source and sylvia-fetch built from this checkout
+Building for debugging...
+[Computing dependencies]
+[Pre-planning 1 / 1310]
+[Planning deferred tasks]
+[Starting]
+[5 / 99]
+Build complete! (1.59 sec)
+Building for debugging...
+[1 / 7] SwiftASN1
+Build complete! (0.33 sec)
+environment: host (macOS 26.6.2); the checklist's logging-source command line under a pseudo-terminal; sylvia-fetch stands in for the phone
+command line (as in the checklist, bound to 127.0.0.1 instead of --lan, with --ephemeral-identity): sylvia-test-source --root <folder> --state <dir> --ephemeral-identity --test-log-requests --qr 2>&1 | tee /dev/tty | sed -l -E 's/(SYLVIA1-|sylvia:\/\/pair\/v1#)[A-Za-z0-9_-]+/[pairing code redacted]/g' > source.log
+on the terminal (what the person sees and answers):
+  ok: the pairing code, unredacted
+  ok: the approval prompt with the Mac's fingerprint
+  ok: the QR code drawing
+  ok: the answer "y" reached the source ("approved ...")
+sylvia-fetch (stands in for the phone): exit status 0
+  ok: paired and downloaded
+in source.log (what is attached to the step record):
+  ok: no pairing code or link (grep -cE 'SYLVIA1-|sylvia://pair/v1#' prints 0)
+  ok: the code and link lines, redacted (2)
+  ok: the approval prompt and the answer
+  ok: the request log with timestamps (1 content requests)
+  ok: no QR code drawing
+  ok: the source stopped on "quit"
+terminal capture and source.log (the run's code was single use and is spent) deleted: True
+RESULT: PASS

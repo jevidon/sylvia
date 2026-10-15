@@ -1,0 +1,50 @@
+# check: g01-epub-tests-debug
+# expected on this Mac (stated before the run): pass
+# note: G01-EPUB checklist step 11 (Debug, hosted tests on the device), as build-for-testing.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:50:12Z; load at start: 7.00 5.39 3.56
+# command (from the repository root):
+#   xcodebuild build-for-testing -project Spikes/G01-EPUB/G01EPUB.xcodeproj -scheme EPUBHarness -configuration Debug -destination generic/platform=iOS -derivedDataPath Spikes/G01-EPUB/.build/DerivedData-device-debug -disableAutomaticPackageResolution DEVELOPMENT_TEAM=A4KBDX665Z 
+# finished: 2026-10-14T06:50:28Z after 16 s; exit status 0; load at end: 8.70 5.90 3.79
+--- result lines
+** TEST BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+Provisioning Profile: "iOS Team Provisioning Profile: *"
+Signing Identity:     "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+--- warning count: 3 (first 20 unique)
+2026-10-14 19:50:25.016 appintentsmetadataprocessor[97432:35857493] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:50:27.829 appintentsmetadataprocessor[97451:35857580] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:50:28.224 appintentsmetadataprocessor[97462:35857662] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+--- last 15 lines of the output
+    cd Spikes/G01-EPUB
+    builtin-RegisterExecutionPolicyException Spikes/G01-EPUB/.build/DerivedData-device-debug/Build/Products/Debug-iphoneos/EPUBHarnessUITests-Runner.app/PlugIns/EPUBHarnessUITests.xctest
+
+Touch Spikes/G01-EPUB/.build/DerivedData-device-debug/Build/Products/Debug-iphoneos/EPUBHarnessUITests-Runner.app/PlugIns/EPUBHarnessUITests.xctest (in target 'EPUBHarnessUITests' from project 'G01EPUB')
+    cd Spikes/G01-EPUB
+    /usr/bin/touch -c Spikes/G01-EPUB/.build/DerivedData-device-debug/Build/Products/Debug-iphoneos/EPUBHarnessUITests-Runner.app/PlugIns/EPUBHarnessUITests.xctest
+
+PruneExplicitPrecompiledModules Spikes/G01-EPUB/.build/DerivedData-device-debug/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G01-EPUB/.build/DerivedData-device-debug/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G01-EPUB/.build/DerivedData-device-debug/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+** TEST BUILD SUCCEEDED **
+
+--- codesign checks of the products (in Spikes/G01-EPUB/.build/DerivedData-device-debug/Build/Products/Debug-iphoneos)
+== EPUBHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.epub
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+== EPUBHarness.app/PlugIns/EPUBHarnessTests.xctest: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.epub.tests
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+# result: pass; expected: pass; as expected: yes

@@ -1,0 +1,16 @@
+command: Docs/Stage0/evidence/M0-Integration/commands/assembly-squash-check.sh; 2026-10-14T15:13:34Z; host macOS 26.6.2 (25G83)
+each line: item, branch head, the final commit its last review examined, whether they match, merge base, paths the branch changes, how many of them differ in the squash commit, paths the squash commit changes
+contracts head=ef0d5de68f3bd7bdd301275796611e857bf663fb final=ef0d5de68f3bd7bdd301275796611e857bf663fb match=yes base=b354dc7b7 branch_paths=499 differing=0 squash_paths=499
+  DIFF Docs/ADRs/0014-dependency-lock-and-license-inventory.md branch=[100644 002485a3c297786e682ce26b49a8e5f8770f3292] squash=[100644 f099f28e07fab9d3ef7710aa1a6e6ba839758602]
+deps head=67682c2394d7d6ed488cf2902c944efd2e12d539 final=67682c2394d7d6ed488cf2902c944efd2e12d539 match=yes base=b354dc7b7 branch_paths=107 differing=1 squash_paths=107
+threat head=6bb2b9e8811d4ce1d7786c9c2f971ce4416facfe final=6bb2b9e8811d4ce1d7786c9c2f971ce4416facfe match=yes base=b354dc7b7 branch_paths=10 differing=0 squash_paths=10
+minors-g06-design head=98125421e27490aa11c7c4151c8457ce36bd2c34 final=98125421e27490aa11c7c4151c8457ce36bd2c34 match=yes base=b354dc7b7 branch_paths=244 differing=0 squash_paths=244
+minors-g05-recovery head=cd3e42b0345b3f1fb21e21a109deff0c4a2e26d6 final=cd3e42b0345b3f1fb21e21a109deff0c4a2e26d6 match=yes base=b354dc7b7 branch_paths=39 differing=0 squash_paths=39
+minors-g01-epub head=d31705419c15da68cd4208dc243e696b2f6d8346 final=d31705419c15da68cd4208dc243e696b2f6d8346 match=yes base=b354dc7b7 branch_paths=32 differing=0 squash_paths=32
+minors-g01-pdf head=a44b746c6a83f77aa20cf8cc43f399fe1d628717 final=a44b746c6a83f77aa20cf8cc43f399fe1d628717 match=yes base=b354dc7b7 branch_paths=115 differing=0 squash_paths=115
+minors-g03-intake head=77ceaf3f5228b91c1e000047014618a9f783a6b1 final=77ceaf3f5228b91c1e000047014618a9f783a6b1 match=yes base=b354dc7b7 branch_paths=121 differing=0 squash_paths=121
+minors-g02-transfer head=c83a3b9ff051aa023391c16904ca075de4ab52dd final=c83a3b9ff051aa023391c16904ca075de4ab52dd match=yes base=b354dc7b7 branch_paths=124 differing=0 squash_paths=124
+minors-g05-ai head=4090d590e1c09335b3c2124bda18598bb3797d18 final=4090d590e1c09335b3c2124bda18598bb3797d18 match=yes base=b354dc7b7 branch_paths=25 differing=0 squash_paths=25
+runbook head=6f339473eec57fd4dc6b989efde195519c019f5b final=6f339473eec57fd4dc6b989efde195519c019f5b match=yes base=471b1437e branch_paths=39 differing=0 squash_paths=39
+amendments head=694518f2e189ed4a7424a466d24533c106f686d3 final=694518f2e189ed4a7424a466d24533c106f686d3 match=yes base=471b1437e branch_paths=6 differing=0 squash_paths=6
+minors-g04-audio head=d0c612031d2e0e625ea3a26fef134876d390cd54 final=d0c612031d2e0e625ea3a26fef134876d390cd54 match=yes base=471b1437e branch_paths=81 differing=0 squash_paths=81

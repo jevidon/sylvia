@@ -1,0 +1,104 @@
+round 2 reproductions 2026-10-14T01:59:04Z at commit cfc5dea3d616b477733d76e1d3ab0d215d513f20; reviewed commit 1442a66860577512a13861667c1b573ea755a1e6
+host: macOS 26.6.2 (25G83); Xcode 27.0 Build version 27A266a ; swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+load: 14:59  up 11 days,  1:09, 1 user, load averages: 9.22 7.76 9.89
+
+### The unchanged tree
+ok    the committed tree passes: dependency lock check: 0 failure(s), 0 warning(s)
+
+### R2-02 (a): non-test code in a directory named like test code (test code is now what only test targets build)
+ok    SylviaDesign builds ABTests/Experiment.swift, which imports Zip (the reviewer's case) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL test-layout Packages/Design/Sources/SylviaDesign/ABTests/Experiment.swift: target SylviaDesign (Packages/Design/Package.swift) is not a test target but builds this file, which sits in a directory named Tests or ending in Tests; rename the direct
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ABTests/Experiment.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal tha
+ok    SylviaDesign builds a file from ABTests/ (named like test code) -> 1 x test-layout (reviewed check: missed)
+        FAIL test-layout Packages/Design/Sources/SylviaDesign/ABTests/Experiment.swift: target SylviaDesign (Packages/Design/Package.swift) is not a test target but builds this file, which sits in a directory named Tests or ending in Tests; rename the direct
+ok    a C file in SylviaDesign's ABTests/ includes Minizip's unzip.h -> 1 x transitive-direct (reviewed check: missed)
+        FAIL test-layout Packages/Design/Sources/SylviaDesign/ABTests/zipprobe.c: target SylviaDesign (Packages/Design/Package.swift) is not a test target but builds this file, which sits in a directory named Tests or ending in Tests; rename the directory or
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ABTests/zipprobe.c:1: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a comm
+ok    a module map in SylviaDesign's ABTests/ wraps unzip.h -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ABTests/module.modulemap:2: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment that names i
+        FAIL outside-product Packages/Design/Sources/SylviaDesign/ABTests/module.modulemap:2: names 'unzip.h', which resolves to Packages/Design/Sources/SylviaDesign/ABTests/unzip.h: nothing there is tracked by git, so it can hold only build products, packag
+        FAIL test-layout Packages/Design/Sources/SylviaDesign/ABTests/module.modulemap: target SylviaDesign (Packages/Design/Package.swift) is not a test target but builds this file, which sits in a directory named Tests or ending in Tests; rename the direct
+ok    the DesignCatalog app target builds Sources/FeatureTests/ZipProbe.swift, which imports Zip -> 1 x transitive-direct (reviewed check: missed)
+        FAIL test-layout Apps/DesignCatalog/Sources/FeatureTests/ZipProbe.swift: target DesignCatalog (Apps/DesignCatalog/project.yml) is not a test target but builds this file, which sits in a directory named Tests or ending in Tests; rename the directory o
+        FAIL transitive-direct Apps/DesignCatalog/Sources/FeatureTests/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names
+ok    a file under Packages/Design/Tests that no target includes imports Zip -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Tests/Shared/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names the import
+
+### R2-02 (b): literals and identifiers a lexer can misread (the check now reads the raw text)
+ok    import Zip between two extended regex literals that hold /* and */ -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:2: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names th
+ok    import Zip after a bare regex literal that holds a quote, on one line -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names th
+ok    import Zip between two multi-line extended regex literals that hold /* and */ -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:4: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names th
+ok    import Zip between two raw identifiers that hold /* and */ -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:2: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names th
+ok    import Zip after a raw identifier that holds a quote -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names th
+ok    a comment that names the import is reported too (the cost of reading the raw text; the reviewed check rightly ignored it) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names th
+ok    #include <unzip.h> after a C++ raw string that holds /* -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/zipprobe.cpp:3: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a comment or
+ok    #include <unzip.h> after a comment that a line splice ends -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/zipprobe.c:3: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a comment or l
+ok    %:include <unzip.h> (digraph) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/zipprobe.c:1: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a comment or l
+ok    ??=include <unzip.h> (trigraph) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/zipprobe.c:1: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a comment or l
+ok    a computed #include through a macro that names unzip.h -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/zipprobe.c:1: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a comment or l
+ok    _Pragma("clang module import Minizip") -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/zipprobe.c:1: imports Minizip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names th
+ok    #import "Zip-Swift.h" (the Swift module's generated header) -> 1 x transitive-direct (reviewed check: missed)
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.m:1: names Zip-Swift.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a comment 
+ok    SylviaDesign renames Zip with SwiftPM module aliasing (moduleAliases:); also test-in-product and a stale used_by_targets, since the only remote package a product manifest requires today is a test package -> 1 x transitive-direct (reviewed check: missed)
+        FAIL test-in-product Packages/Design/Package.swift: target SylviaDesign uses SnapshotTesting from the test-only package pointfreeco/swift-snapshot-testing
+        FAIL transitive-direct Packages/Design/Package.swift: aliases Zip (Archive=Zip), a module of marmelroy/Zip, which product code may use only through the package that brings it
+        FAIL lock-registry Docs/Licenses/inventory.json: pointfreeco/swift-snapshot-testing: used_by_targets is stale: the manifests also have [('Packages/Design/Package.swift', 'SylviaDesign', 'SnapshotTesting', False)]; the inventory also has nothing (run 
+
+### Allowed: changes the rules must not report
+ok    a test of the design package imports Zip (SylviaDesignTests builds it; tests never ship) -> dependency lock check: 0 failure(s), 0 warning(s)
+ok    SylviaDesign builds a file from Testing/ (a name that does not end in Tests) -> dependency lock check: 0 failure(s), 0 warning(s)
+
+### Limits ADR-0014 section 3 lists: not reported
+ok    a computed #include whose header name a macro assembles by token pasting (unzip.h never appears whole) -> not reported, as ADR-0014 section 3 states (dependency lock check: 0 failure(s), 0 warning(s))
+ok    @_silgen_name declares a Minizip C function by symbol, with no import -> not reported, as ADR-0014 section 3 states (dependency lock check: 0 failure(s), 0 warning(s))
+
+### The forms compile: each hides a real import or include of a stand-in module, then calls into it
+ok    stand-in Swift module BModule built (swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1))
+ok    compiles (swiftc -typecheck -swift-version 6), and `@MainActor func useB() -> Int { bfunc() }` resolves: import between two extended regex literals that hold /* and */
+ok    compiles (swiftc -typecheck -swift-version 6), and `@MainActor func useB() -> Int { bfunc() }` resolves: import after a bare regex literal that holds a quote
+ok    compiles (swiftc -typecheck -swift-version 6), and `@MainActor func useB() -> Int { bfunc() }` resolves: import between two multi-line extended regex literals
+ok    compiles (swiftc -typecheck -swift-version 6), and `@MainActor func useB() -> Int { bfunc() }` resolves: import between two raw identifiers that hold /* and */
+ok    compiles (swiftc -typecheck -swift-version 6), and `@MainActor func useB() -> Int { bfunc() }` resolves: import after a raw identifier that holds a quote
+ok    compiles (clang++ -fsyntax-only -Werror=implicit-function-declaration -std=c++17), and bfunc is declared by the header: #include after a C++ raw string that holds /*
+ok    compiles (clang -fsyntax-only -Werror=implicit-function-declaration), and bfunc is declared by the header: #include after a comment that a line splice ends
+ok    compiles (clang -fsyntax-only -Werror=implicit-function-declaration), and bfunc is declared by the header: %:include (digraph)
+ok    compiles (clang -fsyntax-only -Werror=implicit-function-declaration -trigraphs), and bfunc is declared by the header: ??=include (trigraph, with -trigraphs)
+ok    compiles (clang -fsyntax-only -Werror=implicit-function-declaration), and bfunc is declared by the header: computed #include through a macro
+ok    compiles (clang -fsyntax-only -Werror=implicit-function-declaration -fmodules -fmodules-cache-path=/Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-1/.build/scratch/round2-20261014T015904Z-87462/proof/mcache), and bfunc is declared by the header: _Pragma("clang module import BModule")
+ok    compiles (clang -fsyntax-only -Werror=implicit-function-declaration), and bfunc is declared by the header: limit: #include assembled by token pasting (bmodule.h never appears whole)
+ok    compiles (swiftc -typecheck -swift-version 6), and `@MainActor func useC() -> Int32 { cBfunc() }` resolves: limit: @_silgen_name declares a C function by its symbol, with no import
+
+### R2-01: a tools virtualenv as a fresh bootstrap makes it
+python3 on PATH (what bootstrap.sh runs): /opt/homebrew/bin/python3 -> Python 3.14.6; its ensurepip bundles pip 26.1.2
+python3 -m venv: pip 26.1.2 from /Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-1/.build/scratch/round2-20261014T015904Z-87462/fresh-venv/lib/python3.14/site-packages/pip (python 3.14)
+copied from the shared virtualenv (/Users/jevidon/Library/Caches/SylviaTools/venv), pip excluded: 20 distributions
+the new virtualenv's distributions: PyYAML 6.0.3, annotated-types 0.8.0, attrs 26.1.0, jsonschema 4.26.0, jsonschema-path 0.5.0, jsonschema-specifications 2025.9.1, lazy-object-proxy 1.12.0, openapi-schema-validator 0.9.0, openapi-spec-validator 0.9.0, pathable 0.6.0, pip 26.1.2, pydantic 2.13.5, pydantic-settings 2.15.0, pydantic_core 2.46.5, python-dotenv 1.2.4, referencing 0.37.0, rfc3339-validator 0.1.4, rpds-py 2026.9.1, six 1.17.0, typing-inspection 0.4.4, typing_extensions 4.16.0
+
+the reviewed commit's check (check --toolchain on the reviewed tree) with this virtualenv:
+  failed, as review R2-01 reported:
+    FAIL toolchain virtualenv: virtualenv has pip 26.1.2, inventory 26.2.1
+
+Scripts/ci.sh dependency-lock at HEAD with SYLVIA_TOOLS_VENV set to this virtualenv (the drop-in runs the self-test, then check --toolchain):
+ok    passed (32 s, load 7.64 7.58 9.17)
+    | ==> 12-dependency-lock
+    |     pass (32s)
+    | all 1 steps passed
+    drop-in log: self-test: 228 mutations (22 categories: binary, ci-actions, docs, flag, inventory, license-text, lock-registry, not-exact, outside-product, pin-differs, pin-missing, platform, python-tools, spike-in-product, test-in-product, test-layout, toolchain, transitive-direct, unknown-package, unlocked, vendored-asset, xcode-project) and 30 allowed changes; 109 of the 109 failure branches reached by the mu
+    drop-in log: ok    python tools: 20 pinned, 1 recorded as unpinned (pip at any version, with a warning below 26.2.0); the virtualenv holds exactly these (pip 26.1.2, below 26.2.0 (see the warning))
+    drop-in log: WARN toolchain virtualenv: pip 26.1.2 is below 26.2.0, the first release outside every advisory the inventory records for it (GHSA-qwm4-qh6w-59xr (CVE-2026-13346, PYSEC-2026-3721: doubly-encoded package URLs from an index can install files outside the target directory) affects every pip before 26.2.0; every other pip advisory OSV lists is fixed at or before 26.1.2 (advisories-search.log, the any-v
+    drop-in log: dependency lock check: 0 failure(s), 1 warning(s) (the WARN lines above do not fail the check)
+
+round 2 reproductions finished 2026-10-14T02:04:12Z; failures: 0
+load: 15:04  up 11 days,  1:14, 1 user, load averages: 7.64 7.58 9.17

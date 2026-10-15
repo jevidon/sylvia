@@ -1,0 +1,553 @@
+openapi: 3.1.0
+info:
+  title: Sylvia Mac source service
+  version: "1.0"
+  summary: Pairing, catalog and verified, resumable downloads from a Mac source to a paired phone.
+  description: |
+    The Mac hosts this service; the phone is the client (plan 15.1). Every path carries the protocol
+    major version (`/v1/...`). A request to another major version gets 400 `unsupported_protocol_version`
+    with an update message. Readers tolerate unknown optional fields (plan 15.3).
+
+    **Transport and trust (ADR-0008).** HTTP/1.1 over TLS 1.2 or 1.3 only (1.3 preferred). The server
+    certificate is self-signed; the client trusts it only if the SHA-256 of its DER SubjectPublicKeyInfo
+    equals the `spki_sha256` it learned from the pairing payload, and it checks that pin before sending
+    any request (so the invitation secret and tokens never reach another host). There is no CA or host
+    name check and no "ignore certificate" option. Redirects are never followed. The service binds only
+    explicitly configured addresses (loopback by default) and refuses wildcard binds unless the owner asks.
+
+    **Authentication.** Every endpoint except `GET /v1/capabilities` and `POST /v1/pair` requires
+    `Authorization: Bearer <token>`, where the token was issued by `POST /v1/pair` for one device.
+    Tokens are scoped to `catalog`, `read`, `download` and `receipt`; there is no scope for deletion or
+    arbitrary file access. A token in the query string (`access_token`, `token`, `authorization`, ...)
+    is refused with 400 `token_in_query_forbidden` and never used. A request with an `Origin` header
+    (a web browser) is refused with 403 `browser_origin_forbidden`; no CORS header is ever sent.
+
+    **Identifiers.** Every ID is a lowercase hyphenated UUID; anything else is 400 `invalid_id`. Paths
+    are matched segment by segment against the routes below; percent-encoding, empty segments, `.` and
+    `..` are 400 `invalid_request`. IDs map to entries of the Mac's index; a remote path never reaches
+    the file system.
+
+    **Content (plan 15.4, ADR-0009).** Asset bytes come from an immutable snapshot of the original
+    (APFS clone), so one version's bytes never change. The strong ETag is `"sha256-<hex>"` of the whole
+    asset. Content requests must carry `If-Match` with the manifest's ETag (428 otherwise) and at most
+    one byte range. If-Match is evaluated before Range (RFC 9110 section 13.2.2): a version mismatch is
+    412 whatever the range. Responses are never transformed (`Cache-Control: no-store, no-transform`,
+    no `Content-Encoding`) and always carry `Content-Length`.
+
+    **Errors.** Every non-2xx response has an `error.v1` body. Messages never contain secrets, tokens,
+    file paths or titles. A method a path does not support gets 405 `method_not_allowed` with an `Allow`
+    header; a request body over 64 KiB gets 413 `payload_too_large`; an unknown path gets 404 `not_found`.
+
+    **Connections.** A connection with no traffic in either direction for 60 seconds is closed, except
+    while its request is being handled (a pairing request waits for the Mac user's answer, up to the
+    approval timeout of 120 seconds).
+  license:
+    name: Proprietary (Sylvia Stage 0 contract)
+    identifier: LicenseRef-Sylvia-Proprietary
+servers:
+  - url: https://{host}:{port}
+    description: A Mac source, at an address from the pairing payload, Bonjour or manual entry.
+    variables:
+      host:
+        default: 127.0.0.1
+      port:
+        default: "443"
+security:
+  - bearer: []
+tags:
+  - name: discovery
+  - name: pairing
+  - name: library
+  - name: transfer
+  - name: delivery
+paths:
+  /v1/capabilities:
+    get:
+      tags: [discovery]
+      operationId: getCapabilities
+      summary: Protocol compatibility and limits.
+      description: Unauthenticated. Carries no library data, item counts, device or user names.
+      security: []
+      responses:
+        "200":
+          description: Capabilities.
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/capabilities.v1.schema.json"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /v1/pair:
+    post:
+      tags: [pairing]
+      operationId: pair
+      summary: Exchange a single-use invitation for a per-device token.
+      description: |
+        Sent only over a connection whose certificate matches the pinned SPKI digest. The Mac checks,
+        in order: the per-address rate limit (429), the request shape (400), the invitation ID and
+        secret (403 `invitation_invalid`; after five wrong secrets the invitation is destroyed), whether
+        it was already used (403 `invitation_used`), its expiry on the Mac's clock (403
+        `invitation_expired`) and the source binding (403 `source_mismatch`). The invitation is then
+        consumed, before the Mac user is asked, so it is single-use whatever the answer. The Mac shows
+        the device name, device ID and its own fingerprint (groups of four) and the user approves (200),
+        declines (403 `pairing_denied`) or does not answer within the timeout (403 `approval_timeout`).
+        The token is 32 random bytes (unpadded base64url); the Mac stores only its SHA-256. The phone
+        stores it only in its Keychain (after first unlock, this device only).
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/pair-request.v1.schema.json"
+      responses:
+        "200":
+          description: Paired. The response is never cached or logged.
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/pair-response.v1.schema.json"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "413":
+          $ref: "#/components/responses/PayloadTooLarge"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/catalog:
+    get:
+      tags: [library]
+      operationId: getCatalog
+      summary: Browse the items in the folders the Mac user shared (scope `catalog`).
+      description: |
+        Items are ordered by `item_id`. The cursor is opaque; it names the last item of the previous
+        page, so items added or removed between pages never cause repeats or skips of the remaining
+        ones. `current_version_id` is null until the item has been prepared.
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: One page of items.
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/catalog-page.v1.schema.json"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/items/{item_id}/manifest:
+    get:
+      tags: [transfer]
+      operationId: getManifest
+      summary: Exact byte description of the current immutable version of an item (scope `read`).
+      description: |
+        Prepares the item if needed (APFS clone of every member, then hashing of the clone). If the
+        original changed since the last version, a new version with a new `item_version_id` is
+        prepared; the old version's ETags then fail with 412. The client validates the manifest
+        semantically (Appendix A.3) before requesting any byte.
+      parameters:
+        - $ref: "#/components/parameters/ItemID"
+        - name: part_size
+          in: query
+          required: false
+          description: Part size in bytes, a whole number of MiB within the capabilities range. Default is the advertised default.
+          schema:
+            type: integer
+            minimum: 1048576
+            maximum: 67108864
+            multipleOf: 1048576
+      responses:
+        "200":
+          description: The manifest.
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/transfer-manifest.v1.schema.json"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: "`not_found` (no such item) or `source_unavailable` (the original is missing or outside the shared folder; retryable)."
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/error.v1.schema.json"
+        "409":
+          description: "`empty_file`, `item_too_large`, or `source_changing` (the original kept changing while it was being snapshotted; retryable)."
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/error.v1.schema.json"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          description: |
+            `preparing` (retryable): preparation did not finish within the source's response limit
+            (10 seconds by default). It continues on the Mac; ask again after `Retry-After` seconds. A later
+            request joins the same preparation. Clients show this as "Preparing transfer" (plan 16.2).
+          headers:
+            Retry-After:
+              required: true
+              schema:
+                type: integer
+                minimum: 1
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/error.v1.schema.json"
+  /v1/assets/{asset_id}/content:
+    get:
+      tags: [transfer]
+      operationId: getAssetContent
+      summary: Verified immutable bytes of one asset version (scope `download`).
+      description: |
+        Clients request one part at a time with `Range: bytes=<offset>-<offset+length-1>` and
+        `If-Match: <etag from the manifest>`, and accept only a 206 whose `Content-Range` and
+        `Content-Length` match the request exactly, whose `ETag` equals the manifest's, with no
+        `Content-Encoding`, and whose body hashes to the part's SHA-256. Anything else (a 200 to a
+        range request, 412, 416, a changed ETag, an encoding, a short or long body) is discarded and
+        never appended; 412, 416 and a changed ETag make the client fetch the manifest again.
+      parameters:
+        - $ref: "#/components/parameters/AssetID"
+        - name: If-Match
+          in: header
+          required: true
+          description: Exactly one strong entity tag (the manifest's `etag`). `*`, lists and weak tags are not accepted.
+          schema:
+            type: string
+            pattern: '^"[\x21\x23-\x2b\x2d-\x7e]{1,128}"$'
+        - name: Range
+          in: header
+          required: false
+          description: |
+            One byte range: `bytes=first-last`, `bytes=first-` or `bytes=-suffix` (RFC 9110 section 14.1.2).
+            A range past the end is clamped to the last byte; a first byte at or past the end is 416.
+            Several ranges are 400 `multiple_ranges_unsupported`; a malformed value is 400 `invalid_range`.
+            Without Range the whole asset is sent with 200.
+          schema:
+            type: string
+            pattern: '^bytes=([0-9]{1,19}-[0-9]{0,19}|-[0-9]{1,19})$'
+      responses:
+        "200":
+          description: The whole asset (no Range header was sent).
+          headers:
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Content-Length:
+              $ref: "#/components/headers/ContentLength"
+            Accept-Ranges:
+              $ref: "#/components/headers/AcceptRanges"
+            Cache-Control:
+              $ref: "#/components/headers/CacheControl"
+          content:
+            "*/*":
+              schema:
+                type: string
+                description: The asset bytes. Content-Type is the asset's media_type from the manifest; clients identify bytes by digest, never by this header.
+        "206":
+          description: Exactly the requested single range.
+          headers:
+            Content-Range:
+              description: "`bytes <first>-<last>/<complete length>`, matching the request."
+              required: true
+              schema:
+                type: string
+                pattern: '^bytes [0-9]+-[0-9]+/[0-9]+$'
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Content-Length:
+              $ref: "#/components/headers/ContentLength"
+            Accept-Ranges:
+              $ref: "#/components/headers/AcceptRanges"
+            Cache-Control:
+              $ref: "#/components/headers/CacheControl"
+          content:
+            "*/*":
+              schema:
+                type: string
+                description: The bytes of the requested range, unchanged. Content-Type is the asset's media_type from the manifest.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "412":
+          description: "`precondition_failed`: the asset changed (or has no prepared version). The current ETag, if any, is in the `ETag` header. Fetch the manifest again."
+          headers:
+            ETag:
+              description: Current strong ETag, when a current version exists.
+              required: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/error.v1.schema.json"
+        "416":
+          description: "`range_not_satisfiable`, with `Content-Range: bytes */<complete length>`. Fetch the manifest again."
+          headers:
+            Content-Range:
+              required: true
+              schema:
+                type: string
+                pattern: '^bytes \*/[0-9]+$'
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/error.v1.schema.json"
+        "428":
+          description: "`precondition_required`: If-Match is missing."
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/error.v1.schema.json"
+  /v1/device-inbox:
+    get:
+      tags: [delivery]
+      operationId: getDeviceInbox
+      summary: Items the Mac user queued for this device (scope `catalog`).
+      description: |
+        Oldest first, by queue sequence; the cursor is opaque. Listing marks entries `observed_by_phone`
+        and implies neither download nor import. If an original changed after queueing, the entry
+        points at the newest prepared version (or null until one is prepared).
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: One page of this device's entries.
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/device-inbox-page.v1.schema.json"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/receipts:
+    post:
+      tags: [delivery]
+      operationId: postReceipt
+      summary: Report "downloaded to phone", "imported into Sylvia" or an import failure (scope `receipt`).
+      description: |
+        Idempotent by `receipt_id`: the same ID and body again returns the original acknowledgement with
+        `duplicate: true` and changes nothing; the same ID with a different body is 409
+        `receipt_conflict`. A receipt for another device's queue entry is 404. Receipts never move an
+        entry backwards (a late `downloaded_to_phone` after `imported_into_sylvia` keeps it imported) and
+        never delete or modify the original source file. An import failure keeps the entry for retry.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/receipt.v1.schema.json"
+      responses:
+        "200":
+          description: Recorded (or recorded earlier, for a duplicate).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptAck"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: "`receipt_conflict`."
+          content:
+            application/json:
+              schema:
+                $ref: "../schemas/error.v1.schema.json"
+        "413":
+          $ref: "#/components/responses/PayloadTooLarge"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/pairings/{device_id}:
+    delete:
+      tags: [pairing]
+      operationId: revokePairing
+      summary: Self-revocation by the authenticated device.
+      description: |
+        A device may revoke only its own pairing (403 `forbidden` for another device's ID). The Mac
+        owner revokes any device on the Mac itself. Revocation is immediate and durable: later requests
+        with the token get 401. It cannot erase files the device already imported.
+      parameters:
+        - name: device_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
+      responses:
+        "204":
+          description: Revoked.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      description: Per-device token from POST /v1/pair, in the Authorization header only. Never in a query string.
+  schemas:
+    UUID:
+      type: string
+      minLength: 36
+      maxLength: 36
+      pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+    ReceiptAck:
+      type: object
+      required: [schema_version, receipt_id, queue_entry_id, entry_state, duplicate]
+      properties:
+        schema_version:
+          const: 1
+        receipt_id:
+          $ref: "#/components/schemas/UUID"
+        queue_entry_id:
+          oneOf:
+            - $ref: "#/components/schemas/UUID"
+            - type: "null"
+        entry_state:
+          description: The queue entry's state after this receipt; null for a catalog download without a queue entry.
+          oneOf:
+            - enum: [queued_on_mac, observed_by_phone, downloaded_to_phone, imported_into_sylvia, import_failed]
+            - type: "null"
+        duplicate:
+          type: boolean
+          description: True when this receipt_id was already recorded with the same body.
+  parameters:
+    ItemID:
+      name: item_id
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/UUID"
+    AssetID:
+      name: asset_id
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/UUID"
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      description: Opaque cursor from the previous page's `next_cursor` (at most 256 characters).
+      schema:
+        type: string
+        maxLength: 256
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Page size, 1 to 200 (default 50).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 50
+  headers:
+    ETag:
+      description: 'Strong entity tag of the asset version, `"sha256-<hex>"`.'
+      required: true
+      schema:
+        type: string
+    ContentLength:
+      description: Exact body length in bytes.
+      required: true
+      schema:
+        type: integer
+        minimum: 0
+    AcceptRanges:
+      required: true
+      schema:
+        const: bytes
+    CacheControl:
+      required: true
+      schema:
+        const: no-store, no-transform
+  responses:
+    BadRequest:
+      description: |
+        `invalid_request`, `invalid_id`, `invalid_cursor`, `invalid_part_size`, `invalid_range`,
+        `multiple_ranges_unsupported`, `invalid_precondition`, `token_in_query_forbidden` or
+        `unsupported_protocol_version` (the message asks the user to update Sylvia).
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error.v1.schema.json"
+    Unauthenticated:
+      description: "`unauthenticated`: no bearer token, or the token is unknown, revoked, or was issued under a previous source key. Pair again."
+      headers:
+        WWW-Authenticate:
+          required: true
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error.v1.schema.json"
+    Forbidden:
+      description: "`insufficient_scope`, `forbidden`, `browser_origin_forbidden`, or a pairing refusal (`invitation_invalid`, `invitation_used`, `invitation_expired`, `source_mismatch`, `pairing_denied`, `approval_timeout`)."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error.v1.schema.json"
+    NotFound:
+      description: "`not_found`."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error.v1.schema.json"
+    PayloadTooLarge:
+      description: "`payload_too_large`: request bodies are limited to 64 KiB."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error.v1.schema.json"
+    RateLimited:
+      description: "`rate_limited`: too many pairing attempts from this address. Retry after the given seconds."
+      headers:
+        Retry-After:
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error.v1.schema.json"
+    InternalError:
+      description: "`internal_error` (retryable)."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error.v1.schema.json"

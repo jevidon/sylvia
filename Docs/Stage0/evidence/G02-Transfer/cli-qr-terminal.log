@@ -1,0 +1,17 @@
+environment: host (macOS 26.6.2); sylvia-source
+command: qr-terminal-check.py <sylvia-source> <work> <log> (Spikes/G02-Transfer/Scripts); source options: --ephemeral-identity --qr --invitation-minutes 1
+run 1: controlling terminal = pseudo-terminal, standard output redirected to a file
+  ok: source became ready
+  ok: QR drawing on the terminal (41 lines)
+  ok: no QR drawing and no block character in standard output
+  ok: standard output has the code line
+  ok: standard output says "qr: drawn on the terminal only"
+  ok: the code line is not on the terminal
+  ok: exited after quit
+run 2: no controlling terminal (new session), standard output to a file
+  ok: source became ready
+  ok: standard output says "qr: not drawn: no controlling terminal"
+  ok: no QR drawing and no block character in standard output
+  ok: exited after quit
+captured terminal and output files (they hold pairing codes) deleted: True
+RESULT: PASS

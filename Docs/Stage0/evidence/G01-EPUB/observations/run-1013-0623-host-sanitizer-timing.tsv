@@ -1,0 +1,51 @@
+# load average (1, 5, 15 min) at start: 73.36, 60.81, 36.93; at end: 35.31, 52.23, 35.35; 18 processors
+# pattern	input	seconds (host, debug build)	result
+script tokens in one comment	1 MiB	0.044 s	served
+script tokens in one comment	2 MiB	0.066 s	served
+script tokens in one comment	4 MiB	0.128 s	served
+script tokens in one comment	8 MiB	0.237 s	served
+script tokens in one comment	16 MiB	0.489 s	unsupported-markup
+script tokens in 1 KiB comments	1 MiB	0.033 s	served
+script tokens in 1 KiB comments	2 MiB	0.065 s	served
+script tokens in 1 KiB comments	4 MiB	0.128 s	served
+script tokens in 1 KiB comments	8 MiB	0.252 s	served
+script tokens in 1 KiB comments	16 MiB	0.494 s	served
+escaped script tokens in text	1 MiB	0.233 s	served
+escaped script tokens in text	2 MiB	0.455 s	served
+escaped script tokens in text	4 MiB	0.906 s	served
+escaped script tokens in text	8 MiB	1.785 s	served
+escaped script tokens in text	16 MiB	3.646 s	served
+named entities in text	1 MiB	0.206 s	served
+named entities in text	2 MiB	0.389 s	served
+named entities in text	4 MiB	0.735 s	served
+named entities in text	8 MiB	1.490 s	served
+named entities in text	16 MiB	2.951 s	served
+many elements with attributes	1 MiB	1.999 s	served
+many elements with attributes	2 MiB	0.298 s	unsupported-markup
+many elements with attributes	4 MiB	0.415 s	unsupported-markup
+many elements with attributes	8 MiB	0.676 s	unsupported-markup
+many elements with attributes	16 MiB	1.182 s	unsupported-markup
+256 attributes per element	1 MiB	0.157 s	unsupported-markup
+256 attributes per element	2 MiB	0.176 s	unsupported-markup
+256 attributes per element	4 MiB	0.216 s	unsupported-markup
+256 attributes per element	8 MiB	0.290 s	unsupported-markup
+256 attributes per element	16 MiB	0.464 s	unsupported-markup
+64 attributes per element	1 MiB	0.160 s	unsupported-markup
+64 attributes per element	2 MiB	0.178 s	unsupported-markup
+64 attributes per element	4 MiB	0.246 s	unsupported-markup
+64 attributes per element	8 MiB	0.316 s	unsupported-markup
+64 attributes per element	16 MiB	0.508 s	unsupported-markup
+long attribute values	1 MiB	0.142 s	served
+long attribute values	2 MiB	0.295 s	served
+long attribute values	4 MiB	0.579 s	served
+long attribute values	8 MiB	1.157 s	served
+long attribute values	16 MiB	2.345 s	served
+256 attributes per element, just under the document's attribute cap (run 1 of 3)	0.82 MiB	4.760 s	served (394 elements, 99588 attributes)
+256 attributes per element, just under the document's attribute cap (run 2 of 3)	0.82 MiB	4.822 s	served (394 elements, 99588 attributes)
+256 attributes per element, just under the document's attribute cap (run 3 of 3)	0.82 MiB	4.979 s	served (394 elements, 99588 attributes)
+one attribute per element, just under the element cap (run 1 of 3)	1.34 MiB	4.203 s	served (99995 elements, 99994 attributes)
+one attribute per element, just under the element cap (run 2 of 3)	1.34 MiB	4.552 s	served (99995 elements, 99994 attributes)
+one attribute per element, just under the element cap (run 3 of 3)	1.34 MiB	4.744 s	served (99995 elements, 99994 attributes)
+no attributes, just under the element cap (run 1 of 3)	0.76 MiB	2.020 s	served (99995 elements, 4 attributes)
+no attributes, just under the element cap (run 2 of 3)	0.76 MiB	2.028 s	served (99995 elements, 4 attributes)
+no attributes, just under the element cap (run 3 of 3)	0.76 MiB	2.011 s	served (99995 elements, 4 attributes)

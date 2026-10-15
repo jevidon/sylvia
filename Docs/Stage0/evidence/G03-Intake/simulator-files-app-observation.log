@@ -1,0 +1,34 @@
+# G0.3 Files app on the simulator: exploratory runs of FilesAppUITests, 2026-10-07, host as in the report,
+# iPhone 17 simulator, iOS 26.5 (23F77). Each block: how the run was set up, then the lines it printed.
+
+## 1. Fresh install of the harness; Files opened before the harness had ever been launched (only UI tests ran)
+G03-EVIDENCE files app Open With menu: Button, 0x115096080, {{40.0, 475.4}, {250.0, 42.0}}, label: 'No Apps Available', Disabled | Button, 0x115096440, {{40.0, 538.4}, {250.0, 42.0}}, label: 'Preview with Quick Look'
+G03-EVIDENCE files app Open With offers Sylvia Intake Spike: false
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppOpenWithOffersTheHarness]' passed (196.213 seconds).
+G03-EVIDENCE files app share sheet (On My iPhone, G03 Files Share.epub): Cell, 0x1150a0640, {{27.3, 378.3}, {82.0, 122.3}}, identifier: 'shareCell', label: 'More' | Cell, 0x1150a1040, {{27.3, 502.3}, {82.0, 138.3}}, identifier: 'actionGroupCell', label: 'Copy'
+G03-EVIDENCE files app share sheet, More list: Table, 0x115e757c0, {{0.0, 72.0}, {402.0, 802.0}}, identifier: 'tableView', label: 'Empty list'
+G03-EVIDENCE files app share sheet offers Sylvia Intake Spike: false
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppShareSheetOffersTheExtension]' passed (156.595 seconds).
+
+## 2. Fresh install; the in-app unit tests (which launch the harness) ran before the UI tests
+G03-EVIDENCE files app Open With menu: Button, 0x10bece940, {{40.0, 475.4}, {250.0, 42.0}}, label: 'No Apps Available', Disabled | Button, 0x10beced00, {{40.0, 538.4}, {250.0, 42.0}}, label: 'Preview with Quick Look'
+G03-EVIDENCE files app Open With offers Sylvia Intake Spike: false
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppOpenWithOffersTheHarness]' passed (196.011 seconds).
+G03-EVIDENCE files app share sheet (On My iPhone, G03 Files Share.epub): Cell, 0x1183dc3c0, {{27.3, 378.3}, {82.0, 138.3}}, identifier: 'shareCell', label: 'Sylvia Intake Spike' | Cell, 0x1183dcc80, {{115.7, 378.3}, {82.0, 122.3}}, identifier: 'shareCell', label: 'More' | Cell, 0x1183dd680, {{27.3, 518.3}, {82.0, 138.3}}, identifier: 'actionGroupCell', label: 'Copy'
+G03-EVIDENCE files app share sheet offers Sylvia Intake Spike: true
+G03-EVIDENCE files app share: extension reports '1 item(s), 997147 bytes. Open Sylvia to finish importing.'
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppShareSheetOffersTheExtension]' failed (171.329 seconds).
+(the extension received the file; this run's import check read only the latest scan line, which the foreground
+ scan had already overwritten with accepted=0; the check now reads the scan log)
+
+## 3. Fresh install; the test launches the harness once, then opens Files (the committed test)
+G03-EVIDENCE files app Open With menu: Button, 0x11308a1c0, {{40.0, 475.4}, {250.0, 42.0}}, label: 'No Apps Available', Disabled | Button, 0x11308a580, {{40.0, 538.4}, {250.0, 42.0}}, label: 'Preview with Quick Look'
+G03-EVIDENCE files app Open With offers Sylvia Intake Spike: false
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppOpenWithOffersTheHarness]' passed (201.129 seconds).
+G03-EVIDENCE files app share sheet (On My iPhone, G03 Files Share.epub): Cell, 0x1139a3d40, {{27.3, 378.3}, {82.0, 138.3}}, identifier: 'shareCell', label: 'Sylvia Intake Spike' | Cell, 0x1139a4640, {{115.7, 378.3}, {82.0, 122.3}}, identifier: 'shareCell', label: 'More' | Cell, 0x1139a5040, {{27.3, 518.3}, {82.0, 138.3}}, identifier: 'actionGroupCell', label: 'Copy'
+G03-EVIDENCE files app share sheet offers Sylvia Intake Spike: true
+G03-EVIDENCE files app share: extension reports '1 item(s), 997147 bytes. Open Sylvia to finish importing.'
+G03-EVIDENCE files app share: Received as: items/0.epub: file_representation, in place (org.idpf.epub-container)
+G03-EVIDENCE files app share: Protection: Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, items/0.epub=none reported
+G03-EVIDENCE files app share: harness scans launch requested 21:23:56.551Z, waited 0.0s, ran 0.0s -> launch: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 21:23:56.747Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0; summary jobs=1 staged=1 review=0 share=1
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppShareSheetOffersTheExtension]' passed (146.353 seconds).

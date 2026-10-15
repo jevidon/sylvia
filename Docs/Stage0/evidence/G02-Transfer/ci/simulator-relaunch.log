@@ -1,0 +1,297 @@
+keep-alive: RESULT: PASS
+connection-close: RESULT: PASS
+environment: simulator Sylvia-M0-minors-g02-transfer (14A94E34-A628-4CBD-9A37-89CED5ED550E), runtime com.apple.CoreSimulator.SimRuntime.iOS-26-5, device type com.apple.CoreSimulator.SimDeviceType.iPhone-17; XCUITest
+  source: sylvia-test-source on 127.0.0.1, 40 MiB file in 4 MiB parts, about 1 MiB/s per response, Connection: close on every response
+  app terminated with XCUIApplication.terminate() after at least 2 verified parts, not running for 60 s, then launched again
+  source ready: {"endpoints":[{"host":"127.0.0.1","port":57049}],"fingerprint":"ACEB C92A F9F9 22C8 44B1 4030 471C AE08 ABC2 62DE 3117 6B90 9DE5 CA31 558F 598A","port":57049,"roots":["\/Users\/jevidon\/Git\/sylvia\/.claude\/worktrees\/wf_5552ba19-d21-9\/.build\/scratch\/g02-relaunch-run\/UICLOSE\/library"],"source_id":"4afa109d-5a3b-4e35-a290-5d0cf9769f80"}
+--- XCUITest (exit 0)
+G02-UI connection-close: terminated with 4 verified parts (stage Downloading); app not running for 60 s
+G02-UI connection-close: after relaunch: jobs 1, outstanding tasks 2, adopted 2, enqueued 0; kept verified parts 8, discarded 0, cancelled 0
+G02-UI connection-close: imported after relaunch; 41.9 of 41.9 MB verified; 41.9 of 41.9 MB received
+Test Case '-[G02TransferUITests.TerminateRelaunchUITests testTerminatedMidTransferWhenEveryPartNeedsANewConnection]' passed (91.668 seconds).
+** TEST SUCCEEDED **
+--- app event log (pulled from the simulator container), checked by analyze-relaunch.py
+app launches: 3; jobs: 1
+launch 1 at 2026-10-12T21:09:02.587Z: launch by the test (scene became active); UIKit applicationState at didFinishLaunching: background
+  reconciliation: adopted=0 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
+  parts requested: 8; verified: 4; trust challenges: 8 (app states ['foreground'], results ['matched'])
+  parts verified by app state: {'foreground': 4}
+  last event before the next launch: 2026-10-12T21:09:24.087Z trust_challenge
+launch 2 at 2026-10-12T21:09:28.376Z: system background relaunch (handleEventsForBackgroundURLSession, no scene became active); UIKit applicationState at didFinishLaunching: background
+  2026-10-12T21:09:28.446Z background_events_launch app_state=background_relaunch
+  reconciliation: adopted=4 app_state=background_relaunch completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=4 outstanding_tasks=4 refreshes=0
+  2026-10-12T21:09:28.584Z background_events_finished app_state=background_relaunch had_completion=true waiting_for_assembly=false
+  parts requested: 2; verified: 4; trust challenges: 0 (app states [], results [])
+  parts verified by app state: {'background_relaunch': 4}
+  last event before the next launch: 2026-10-12T21:09:28.584Z background_events_finished
+launch 3 at 2026-10-12T21:10:27.061Z: launch by the test (scene became active); UIKit applicationState at didFinishLaunching: background
+  reconciliation: adopted=2 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=8 outstanding_tasks=2 refreshes=0
+  parts requested: 0; verified: 2; trust challenges: 2 (app states ['foreground'], results ['matched'])
+  parts verified by app state: {'foreground': 2}
+imported events for the job: 1 (completions=1)
+gap before launch 2: 2026-10-12T21:09:24.087000+00:00 to 2026-10-12T21:09:28.376000+00:00 (4.3 s): 3 content requests reached the source
+  request 2026-10-12T21:09:24.280Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=29360128-33554431 -> 206
+  request 2026-10-12T21:09:24.280Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=25165824-29360127 -> 206
+  request 2026-10-12T21:09:24.280Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=20971520-25165823 -> 206
+  log lines with a higher accepted TCP connection count during the gap: 1
+  connections 2026-10-12T21:09:24.280Z accepted=14 decrypted_bytes=5822
+gap before launch 3: 2026-10-12T21:09:28.584000+00:00 to 2026-10-12T21:10:27.061000+00:00 (58.5 s): 0 content requests reached the source
+  log lines with a higher accepted TCP connection count during the gap: 0
+--- raw app events
+2026-10-12T21:09:02.587Z app_launch application_state=background protected_data_available=true
+2026-10-12T21:09:02.589Z store_protection events.jsonl=none_reported sources.json=none_reported store_folder=none_reported
+2026-10-12T21:09:02.835Z staging_checked jobs=0 milliseconds=0 rehashed=true verified_bytes=0
+2026-10-12T21:09:02.839Z coordinator_start app_state=inactive jobs=0 protected_data_available=true session=com.jevidon.sylvia.spike.transfer.parts
+2026-10-12T21:09:02.858Z launch_reconciliation adopted=0 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
+2026-10-12T21:09:18.259Z paired device=544010c0-9d2a-49cc-81d6-d3c136e0e195 endpoints=1 source=4afa109d-5a3b-4e35-a290-5d0cf9769f80
+2026-10-12T21:09:19.251Z inbox_checked entries=0 source=4afa109d-5a3b-4e35-a290-5d0cf9769f80 states=
+2026-10-12T21:09:20.088Z inbox_checked entries=0 source=4afa109d-5a3b-4e35-a290-5d0cf9769f80 states=
+2026-10-12T21:09:20.149Z job_created bytes=41943040 item=66bc5c08-39d0-44cc-8809-0cfa31f7f376 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 parts=10 queue_entry=none version=e817c98f-2b85-464d-9b50-95cf1b6f8996
+2026-10-12T21:09:20.151Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:0 port=57049
+2026-10-12T21:09:20.153Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:1 port=57049
+2026-10-12T21:09:20.155Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:2 port=57049
+2026-10-12T21:09:20.156Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:3 port=57049
+2026-10-12T21:09:20.166Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:0 port=57049 result=matched
+2026-10-12T21:09:20.173Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:1 port=57049 result=matched
+2026-10-12T21:09:20.178Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:2 port=57049 result=matched
+2026-10-12T21:09:20.184Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:1 port=57049 result=matched
+2026-10-12T21:09:24.031Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:3 protocol=http/1.1 reused_connection=true tls=772
+2026-10-12T21:09:24.031Z part_verified app_state=foreground attempt=1 commit_ms=6 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:3
+2026-10-12T21:09:24.032Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:4 port=57049
+2026-10-12T21:09:24.037Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:0 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:09:24.037Z part_verified app_state=foreground attempt=1 commit_ms=4 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:0
+2026-10-12T21:09:24.043Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:5 port=57049
+2026-10-12T21:09:24.048Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:2 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:09:24.048Z part_verified app_state=foreground attempt=1 commit_ms=4 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:2
+2026-10-12T21:09:24.051Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:6 port=57049
+2026-10-12T21:09:24.056Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:1 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:09:24.056Z part_verified app_state=foreground attempt=1 commit_ms=4 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:1
+2026-10-12T21:09:24.058Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:7 port=57049
+2026-10-12T21:09:24.060Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:4 port=57049 result=matched
+2026-10-12T21:09:24.073Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:5 port=57049 result=matched
+2026-10-12T21:09:24.079Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:6 port=57049 result=matched
+2026-10-12T21:09:24.087Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:5 port=57049 result=matched
+2026-10-12T21:09:28.376Z app_launch application_state=background protected_data_available=true
+2026-10-12T21:09:28.378Z store_protection events.jsonl=none_reported sources.json=none_reported store_folder=none_reported
+2026-10-12T21:09:28.446Z background_events_launch app_state=background_relaunch
+2026-10-12T21:09:28.544Z staging_checked jobs=1 milliseconds=12 rehashed=true verified_bytes=16777216
+2026-10-12T21:09:28.544Z coordinator_start app_state=background_relaunch jobs=1 protected_data_available=true session=com.jevidon.sylvia.spike.transfer.parts
+2026-10-12T21:09:28.556Z launch_reconciliation adopted=4 app_state=background_relaunch completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=4 outstanding_tasks=4 refreshes=0
+2026-10-12T21:09:28.562Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:4 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:09:28.563Z part_verified app_state=background_relaunch attempt=1 commit_ms=5 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:4
+2026-10-12T21:09:28.565Z part_requested app_state=background_relaunch attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:8 port=57049
+2026-10-12T21:09:28.572Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:7 protocol=http/1.1 reused_connection=true tls=772
+2026-10-12T21:09:28.572Z part_verified app_state=background_relaunch attempt=1 commit_ms=6 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:7
+2026-10-12T21:09:28.574Z part_requested app_state=background_relaunch attempt=1 host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:9 port=57049
+2026-10-12T21:09:28.579Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:6 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:09:28.579Z part_verified app_state=background_relaunch attempt=1 commit_ms=4 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:6
+2026-10-12T21:09:28.584Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:5 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:09:28.584Z part_verified app_state=background_relaunch attempt=1 commit_ms=4 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:5
+2026-10-12T21:09:28.584Z background_events_finished app_state=background_relaunch had_completion=true waiting_for_assembly=false
+2026-10-12T21:10:27.061Z app_launch application_state=background protected_data_available=true
+2026-10-12T21:10:27.063Z store_protection events.jsonl=none_reported sources.json=none_reported store_folder=none_reported
+2026-10-12T21:10:27.317Z staging_checked jobs=1 milliseconds=21 rehashed=true verified_bytes=33554432
+2026-10-12T21:10:27.318Z coordinator_start app_state=foreground jobs=1 protected_data_available=true session=com.jevidon.sylvia.spike.transfer.parts
+2026-10-12T21:10:27.335Z launch_reconciliation adopted=2 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=8 outstanding_tasks=2 refreshes=0
+2026-10-12T21:10:27.571Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:9 port=57049 result=matched
+2026-10-12T21:10:27.578Z trust_challenge app_state=foreground host=127.0.0.1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 level=task method=NSURLAuthenticationMethodServerTrust part=edd5aeee-b15c-421e-9745-42a04f84d86f:8 port=57049 result=matched
+2026-10-12T21:10:31.409Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:9 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:10:31.409Z part_verified app_state=foreground attempt=1 commit_ms=7 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:9
+2026-10-12T21:10:31.433Z task_metrics attempt=1 fetch_type=1 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:8 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:10:31.433Z part_verified app_state=foreground attempt=1 commit_ms=6 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 part=edd5aeee-b15c-421e-9745-42a04f84d86f:8
+2026-10-12T21:10:31.436Z assembly_started app_state=foreground job=d45f04ae-e82e-4c01-94fd-38b52ef01811
+2026-10-12T21:10:31.454Z assembly_verified app_state=foreground assets=1 bytes=41943040 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 milliseconds=16
+2026-10-12T21:10:31.460Z imported completions=1 duplicate_requests=0 import=326a6ac9-9d64-45a6-b89a-3f3ea680bbdc import_ms=5 job=d45f04ae-e82e-4c01-94fd-38b52ef01811 version=e817c98f-2b85-464d-9b50-95cf1b6f8996
+2026-10-12T21:10:31.483Z receipt_acknowledged duplicate=false entry_state=none job=d45f04ae-e82e-4c01-94fd-38b52ef01811 queue_entry=none state=downloaded_to_phone
+2026-10-12T21:10:31.501Z receipt_acknowledged duplicate=false entry_state=none job=d45f04ae-e82e-4c01-94fd-38b52ef01811 queue_entry=none state=imported_into_sylvia
+--- source output
+source> TEST SOURCE: fault injection and test hooks active (auto-approve, throttle 1024 KiB/s, Connection: close, codes to file); not a production configuration
+source> Sylvia source (G0.2 spike), protocol 1.0
+source> source id: 4afa109d-5a3b-4e35-a290-5d0cf9769f80
+source> source name: G02 UICLOSE source
+source> fingerprint: ACEB C92A F9F9 22C8 44B1 4030 471C AE08 ABC2 62DE 3117 6B90 9DE5 CA31 558F 598A
+source> identity key: memory only (--ephemeral-identity)
+source> listening: 127.0.0.1:57049
+source> endpoints in pairing payload: 127.0.0.1:57049
+source> shared folders: 1
+source> pairing codes written: 1 (single use, not printed)
+source> ready
+source> auto-approved pairing request from "Sylvia-M0-minors-g02-transfer" (device 544010c0-9d2a-49cc-81d6-d3c136e0e195, address 127.0.0.1)
+source> connections 2026-10-12T21:09:18.341Z accepted=1 decrypted_bytes=596
+source> request 2026-10-12T21:09:18.342Z POST /v1/pair range=- -> 200
+source> connections 2026-10-12T21:09:19.366Z accepted=3 decrypted_bytes=1247
+source> request 2026-10-12T21:09:19.366Z GET /v1/device-inbox range=- -> 200
+source> request 2026-10-12T21:09:19.366Z GET /v1/catalog range=- -> 200
+source> connections 2026-10-12T21:09:20.177Z accepted=9 decrypted_bytes=3149
+source> request 2026-10-12T21:09:20.177Z GET /v1/catalog range=- -> 200
+source> request 2026-10-12T21:09:20.177Z GET /v1/device-inbox range=- -> 200
+source> request 2026-10-12T21:09:20.177Z GET /v1/items/66bc5c08-39d0-44cc-8809-0cfa31f7f376/manifest range=- -> 200
+source> request 2026-10-12T21:09:20.177Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=0-4194303 -> 206
+source> request 2026-10-12T21:09:20.177Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=12582912-16777215 -> 206
+source> connections 2026-10-12T21:09:20.391Z accepted=10 decrypted_bytes=4038
+source> request 2026-10-12T21:09:20.391Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=8388608-12582911 -> 206
+source> request 2026-10-12T21:09:20.391Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=4194304-8388607 -> 206
+source> connections 2026-10-12T21:09:24.069Z accepted=12 decrypted_bytes=4484
+source> request 2026-10-12T21:09:24.069Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=16777216-20971519 -> 206
+source> connections 2026-10-12T21:09:24.280Z accepted=14 decrypted_bytes=5822
+source> request 2026-10-12T21:09:24.280Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=29360128-33554431 -> 206
+source> request 2026-10-12T21:09:24.280Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=25165824-29360127 -> 206
+source> request 2026-10-12T21:09:24.280Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=20971520-25165823 -> 206
+source> connections 2026-10-12T21:10:27.763Z accepted=16 decrypted_bytes=6714
+source> request 2026-10-12T21:10:27.763Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=37748736-41943039 -> 206
+source> request 2026-10-12T21:10:27.763Z GET /v1/assets/edd5aeee-b15c-421e-9745-42a04f84d86f/content range=bytes=33554432-37748735 -> 206
+source> connections 2026-10-12T21:10:31.482Z accepted=17 decrypted_bytes=7359
+source> request 2026-10-12T21:10:31.482Z POST /v1/receipts range=- -> 200
+source> connections 2026-10-12T21:10:31.682Z accepted=18 decrypted_bytes=8005
+source> request 2026-10-12T21:10:31.682Z POST /v1/receipts range=- -> 200
+RESULT: PASS
+environment: simulator Sylvia-M0-minors-g02-transfer (14A94E34-A628-4CBD-9A37-89CED5ED550E), runtime com.apple.CoreSimulator.SimRuntime.iOS-26-5, device type com.apple.CoreSimulator.SimDeviceType.iPhone-17; XCUITest
+  source: sylvia-test-source on 127.0.0.1, 40 MiB file in 4 MiB parts, about 1 MiB/s per response
+  app terminated with XCUIApplication.terminate() after at least 2 verified parts, not running for 60 s, then launched again
+  source ready: {"endpoints":[{"host":"127.0.0.1","port":56228}],"fingerprint":"EC37 D3E4 0041 FB59 8E41 3C8A FEA2 FB9B C039 F4B0 886C BA1E D2E3 5AAC 55DF 1636","port":56228,"roots":["\/Users\/jevidon\/Git\/sylvia\/.claude\/worktrees\/wf_5552ba19-d21-9\/.build\/scratch\/g02-relaunch-run\/UI\/library"],"source_id":"e1bc3c36-3a86-41cf-9d25-1e6c36cd9495"}
+--- XCUITest (exit 0)
+G02-UI keep-alive: terminated with 2 verified parts (stage Downloading); app not running for 60 s
+G02-UI keep-alive: after relaunch: jobs 1, outstanding tasks 4, adopted 4, enqueued 0; kept verified parts 4, discarded 0, cancelled 0
+G02-UI keep-alive: imported after relaunch; 41.9 of 41.9 MB verified; 41.9 of 41.9 MB received
+Test Case '-[G02TransferUITests.TerminateRelaunchUITests testTerminatedMidTransferResumesFromVerifiedParts]' passed (92.904 seconds).
+** TEST SUCCEEDED **
+--- app event log (pulled from the simulator container), checked by analyze-relaunch.py
+app launches: 3; jobs: 1
+launch 1 at 2026-10-12T21:07:25.853Z: launch by the test (scene became active); UIKit applicationState at didFinishLaunching: background
+  reconciliation: adopted=0 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
+  parts requested: 6; verified: 2; trust challenges: 2 (app states ['foreground'], results ['matched'])
+  parts verified by app state: {'foreground': 2}
+  last event before the next launch: 2026-10-12T21:07:48.416Z part_requested
+launch 2 at 2026-10-12T21:07:52.961Z: system background relaunch (handleEventsForBackgroundURLSession, no scene became active); UIKit applicationState at didFinishLaunching: background
+  2026-10-12T21:07:53.038Z background_events_launch app_state=background_relaunch
+  reconciliation: adopted=4 app_state=background_relaunch completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=2 outstanding_tasks=4 refreshes=0
+  2026-10-12T21:07:53.165Z background_events_finished app_state=background_relaunch had_completion=true waiting_for_assembly=false
+  parts requested: 2; verified: 2; trust challenges: 2 (app states ['background_relaunch'], results ['matched'])
+  parts verified by app state: {'background_relaunch': 2}
+  last event before the next launch: 2026-10-12T21:07:53.204Z trust_challenge
+launch 3 at 2026-10-12T21:08:51.750Z: launch by the test (scene became active); UIKit applicationState at didFinishLaunching: background
+  reconciliation: adopted=4 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=4 outstanding_tasks=4 refreshes=0
+  2026-10-12T21:08:52.173Z background_events_launch app_state=foreground
+  2026-10-12T21:08:52.302Z background_events_finished app_state=foreground had_completion=true waiting_for_assembly=false
+  parts requested: 2; verified: 6; trust challenges: 4 (app states ['foreground'], results ['matched'])
+  parts verified by app state: {'foreground': 6}
+imported events for the job: 1 (completions=1)
+gap before launch 2: 2026-10-12T21:07:48.416000+00:00 to 2026-10-12T21:07:52.961000+00:00 (4.5 s): 2 content requests reached the source
+  request 2026-10-12T21:07:48.821Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=4194304-8388607 -> 206
+  request 2026-10-12T21:07:48.821Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=12582912-16777215 -> 206
+  log lines with a higher accepted TCP connection count during the gap: 1
+  connections 2026-10-12T21:07:52.508Z accepted=9 decrypted_bytes=4038
+gap before launch 3: 2026-10-12T21:07:53.204000+00:00 to 2026-10-12T21:08:51.750000+00:00 (58.5 s): 2 content requests reached the source
+  request 2026-10-12T21:07:53.332Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=16777216-20971519 -> 206
+  request 2026-10-12T21:07:53.332Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=20971520-25165823 -> 206
+  log lines with a higher accepted TCP connection count during the gap: 1
+  connections 2026-10-12T21:07:53.332Z accepted=10 decrypted_bytes=4930
+--- raw app events
+2026-10-12T21:07:25.853Z app_launch application_state=background protected_data_available=true
+2026-10-12T21:07:25.857Z store_protection events.jsonl=none_reported sources.json=none_reported store_folder=none_reported
+2026-10-12T21:07:26.080Z staging_checked jobs=0 milliseconds=0 rehashed=true verified_bytes=0
+2026-10-12T21:07:26.082Z coordinator_start app_state=inactive jobs=0 protected_data_available=true session=com.jevidon.sylvia.spike.transfer.parts
+2026-10-12T21:07:26.107Z launch_reconciliation adopted=0 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=0 kept_verified_parts=0 outstanding_tasks=0 refreshes=0
+2026-10-12T21:07:42.307Z paired device=44b410df-977d-42e3-b6d7-33e405aa5e4b endpoints=1 source=e1bc3c36-3a86-41cf-9d25-1e6c36cd9495
+2026-10-12T21:07:43.433Z inbox_checked entries=0 source=e1bc3c36-3a86-41cf-9d25-1e6c36cd9495 states=
+2026-10-12T21:07:44.400Z inbox_checked entries=0 source=e1bc3c36-3a86-41cf-9d25-1e6c36cd9495 states=
+2026-10-12T21:07:44.485Z job_created bytes=41943040 item=16fff0d7-92e4-4918-ae93-0e4cdadddf38 job=cef86016-2849-4b76-a92f-891ddd1288c9 parts=10 queue_entry=none version=445313c2-8898-4e69-912d-8d8ec787ef95
+2026-10-12T21:07:44.488Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:0 port=56228
+2026-10-12T21:07:44.490Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:1 port=56228
+2026-10-12T21:07:44.492Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:2 port=56228
+2026-10-12T21:07:44.493Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:3 port=56228
+2026-10-12T21:07:44.503Z trust_challenge app_state=foreground host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 level=task method=NSURLAuthenticationMethodServerTrust part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:0 port=56228 result=matched
+2026-10-12T21:07:44.510Z trust_challenge app_state=foreground host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 level=task method=NSURLAuthenticationMethodServerTrust part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:1 port=56228 result=matched
+2026-10-12T21:07:48.410Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:0 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:07:48.410Z part_verified app_state=foreground attempt=1 commit_ms=7 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:0
+2026-10-12T21:07:48.414Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:4 port=56228
+2026-10-12T21:07:48.414Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:2 protocol=http/1.1 reused_connection=true tls=772
+2026-10-12T21:07:48.414Z part_verified app_state=foreground attempt=1 commit_ms=23 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:2
+2026-10-12T21:07:48.416Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:5 port=56228
+2026-10-12T21:07:52.961Z app_launch application_state=background protected_data_available=true
+2026-10-12T21:07:52.963Z store_protection events.jsonl=none_reported sources.json=none_reported store_folder=none_reported
+2026-10-12T21:07:53.038Z background_events_launch app_state=background_relaunch
+2026-10-12T21:07:53.145Z staging_checked jobs=1 milliseconds=9 rehashed=true verified_bytes=8388608
+2026-10-12T21:07:53.145Z coordinator_start app_state=background_relaunch jobs=1 protected_data_available=true session=com.jevidon.sylvia.spike.transfer.parts
+2026-10-12T21:07:53.159Z launch_reconciliation adopted=4 app_state=background_relaunch completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=2 outstanding_tasks=4 refreshes=0
+2026-10-12T21:07:53.163Z trust_challenge app_state=background_relaunch host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 level=task method=NSURLAuthenticationMethodServerTrust part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:4 port=56228 result=matched
+2026-10-12T21:07:53.165Z background_events_finished app_state=background_relaunch had_completion=true waiting_for_assembly=false
+2026-10-12T21:07:53.189Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:3 protocol=http/1.1 reused_connection=true tls=772
+2026-10-12T21:07:53.190Z part_verified app_state=background_relaunch attempt=1 commit_ms=10 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:3
+2026-10-12T21:07:53.197Z part_requested app_state=background_relaunch attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:6 port=56228
+2026-10-12T21:07:53.200Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:1 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:07:53.200Z part_verified app_state=background_relaunch attempt=1 commit_ms=8 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:1
+2026-10-12T21:07:53.202Z part_requested app_state=background_relaunch attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:7 port=56228
+2026-10-12T21:07:53.204Z trust_challenge app_state=background_relaunch host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 level=task method=NSURLAuthenticationMethodServerTrust part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:5 port=56228 result=matched
+2026-10-12T21:08:51.750Z app_launch application_state=background protected_data_available=true
+2026-10-12T21:08:51.760Z store_protection events.jsonl=none_reported sources.json=none_reported store_folder=none_reported
+2026-10-12T21:08:52.071Z staging_checked jobs=1 milliseconds=42 rehashed=true verified_bytes=16777216
+2026-10-12T21:08:52.080Z coordinator_start app_state=foreground jobs=1 protected_data_available=true session=com.jevidon.sylvia.spike.transfer.parts
+2026-10-12T21:08:52.112Z launch_reconciliation adopted=4 app_state=foreground completed_before_reconciliation=0 discarded_parts=0 enqueued=0 finalized=0 imports_retried=0 jobs=1 kept_verified_parts=4 outstanding_tasks=4 refreshes=0
+2026-10-12T21:08:52.173Z background_events_launch app_state=foreground
+2026-10-12T21:08:52.221Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:4 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:08:52.231Z part_verified app_state=foreground attempt=1 commit_ms=44 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:4
+2026-10-12T21:08:52.237Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:8 port=56228
+2026-10-12T21:08:52.286Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:5 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:08:52.290Z part_verified app_state=foreground attempt=1 commit_ms=40 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:5
+2026-10-12T21:08:52.297Z part_requested app_state=foreground attempt=1 host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:9 port=56228
+2026-10-12T21:08:52.301Z trust_challenge app_state=foreground host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 level=task method=NSURLAuthenticationMethodServerTrust part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:6 port=56228 result=matched
+2026-10-12T21:08:52.302Z background_events_finished app_state=foreground had_completion=true waiting_for_assembly=false
+2026-10-12T21:08:52.315Z trust_challenge app_state=foreground host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 level=task method=NSURLAuthenticationMethodServerTrust part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:8 port=56228 result=matched
+2026-10-12T21:08:52.326Z trust_challenge app_state=foreground host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 level=task method=NSURLAuthenticationMethodServerTrust part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:7 port=56228 result=matched
+2026-10-12T21:08:52.341Z trust_challenge app_state=foreground host=127.0.0.1 job=cef86016-2849-4b76-a92f-891ddd1288c9 level=task method=NSURLAuthenticationMethodServerTrust part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:9 port=56228 result=matched
+2026-10-12T21:08:56.292Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:6 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:08:56.292Z part_verified app_state=foreground attempt=1 commit_ms=6 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:6
+2026-10-12T21:08:56.352Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:7 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:08:56.352Z part_verified app_state=foreground attempt=1 commit_ms=4 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:7
+2026-10-12T21:08:56.357Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:9 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:08:56.357Z part_verified app_state=foreground attempt=1 commit_ms=4 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:9
+2026-10-12T21:08:56.361Z task_metrics attempt=1 fetch_type=1 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:8 protocol=http/1.1 reused_connection=false tls=772
+2026-10-12T21:08:56.362Z part_verified app_state=foreground attempt=1 commit_ms=3 job=cef86016-2849-4b76-a92f-891ddd1288c9 part=4a3ec70a-85e2-4dad-89c5-88c4a4091678:8
+2026-10-12T21:08:56.364Z assembly_started app_state=foreground job=cef86016-2849-4b76-a92f-891ddd1288c9
+2026-10-12T21:08:56.382Z assembly_verified app_state=foreground assets=1 bytes=41943040 job=cef86016-2849-4b76-a92f-891ddd1288c9 milliseconds=16
+2026-10-12T21:08:56.388Z imported completions=1 duplicate_requests=0 import=cf1a0184-9186-42dc-ba05-b095070679cc import_ms=5 job=cef86016-2849-4b76-a92f-891ddd1288c9 version=445313c2-8898-4e69-912d-8d8ec787ef95
+2026-10-12T21:08:56.412Z receipt_acknowledged duplicate=false entry_state=none job=cef86016-2849-4b76-a92f-891ddd1288c9 queue_entry=none state=downloaded_to_phone
+2026-10-12T21:08:56.422Z receipt_acknowledged duplicate=false entry_state=none job=cef86016-2849-4b76-a92f-891ddd1288c9 queue_entry=none state=imported_into_sylvia
+--- source output
+source> TEST SOURCE: fault injection and test hooks active (auto-approve, throttle 1024 KiB/s, codes to file); not a production configuration
+source> Sylvia source (G0.2 spike), protocol 1.0
+source> source id: e1bc3c36-3a86-41cf-9d25-1e6c36cd9495
+source> source name: G02 UI source
+source> fingerprint: EC37 D3E4 0041 FB59 8E41 3C8A FEA2 FB9B C039 F4B0 886C BA1E D2E3 5AAC 55DF 1636
+source> identity key: memory only (--ephemeral-identity)
+source> listening: 127.0.0.1:56228
+source> endpoints in pairing payload: 127.0.0.1:56228
+source> shared folders: 1
+source> pairing codes written: 1 (single use, not printed)
+source> ready
+source> auto-approved pairing request from "Sylvia-M0-minors-g02-transfer" (device 44b410df-977d-42e3-b6d7-33e405aa5e4b, address 127.0.0.1)
+source> connections 2026-10-12T21:07:42.448Z accepted=1 decrypted_bytes=596
+source> request 2026-10-12T21:07:42.448Z POST /v1/pair range=- -> 200
+source> connections 2026-10-12T21:07:43.472Z accepted=3 decrypted_bytes=1247
+source> request 2026-10-12T21:07:43.473Z GET /v1/device-inbox range=- -> 200
+source> request 2026-10-12T21:07:43.473Z GET /v1/catalog range=- -> 200
+source> connections 2026-10-12T21:07:44.487Z accepted=6 decrypted_bytes=2265
+source> request 2026-10-12T21:07:44.487Z GET /v1/catalog range=- -> 200
+source> request 2026-10-12T21:07:44.487Z GET /v1/device-inbox range=- -> 200
+source> request 2026-10-12T21:07:44.487Z GET /v1/items/16fff0d7-92e4-4918-ae93-0e4cdadddf38/manifest range=- -> 200
+source> connections 2026-10-12T21:07:44.692Z accepted=8 decrypted_bytes=3148
+source> request 2026-10-12T21:07:44.692Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=0-4194303 -> 206
+source> request 2026-10-12T21:07:44.692Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=8388608-12582911 -> 206
+source> connections 2026-10-12T21:07:48.806Z accepted=8 decrypted_bytes=4038
+source> request 2026-10-12T21:07:48.821Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=4194304-8388607 -> 206
+source> request 2026-10-12T21:07:48.821Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=12582912-16777215 -> 206
+source> connections 2026-10-12T21:07:52.508Z accepted=9 decrypted_bytes=4038
+source> connections 2026-10-12T21:07:53.332Z accepted=10 decrypted_bytes=4930
+source> request 2026-10-12T21:07:53.332Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=16777216-20971519 -> 206
+source> request 2026-10-12T21:07:53.332Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=20971520-25165823 -> 206
+source> connections 2026-10-12T21:08:52.218Z accepted=11 decrypted_bytes=4930
+source> connections 2026-10-12T21:08:52.421Z accepted=14 decrypted_bytes=6714
+source> request 2026-10-12T21:08:52.424Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=25165824-29360127 -> 206
+source> request 2026-10-12T21:08:52.424Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=29360128-33554431 -> 206
+source> request 2026-10-12T21:08:52.424Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=33554432-37748735 -> 206
+source> request 2026-10-12T21:08:52.425Z GET /v1/assets/4a3ec70a-85e2-4dad-89c5-88c4a4091678/content range=bytes=37748736-41943039 -> 206
+source> connections 2026-10-12T21:08:56.587Z accepted=15 decrypted_bytes=8005
+source> request 2026-10-12T21:08:56.587Z POST /v1/receipts range=- -> 200
+source> request 2026-10-12T21:08:56.587Z POST /v1/receipts range=- -> 200
+RESULT: PASS

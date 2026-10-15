@@ -1,0 +1,238 @@
+environment: simulator Sylvia-M0-minors-g02-transfer (14A94E34-A628-4CBD-9A37-89CED5ED550E), runtime com.apple.CoreSimulator.SimRuntime.iOS-26-5, device type com.apple.CoreSimulator.SimDeviceType.iPhone-17
+  host: macOS 26.6.2 (25G83); sources: sylvia-test-source (auto-approve, codes in files)
+  address forms: LAN 192.168.20.104, .local M5-Max-MBP.local, Tailscale 100.104.83.3, MagicDNS m5-max-mbp.[redacted]
+  MAIN ready: {"endpoints":[{"host":"192.168.20.104","port":55279},{"host":"100.104.83.3","port":55279},{"host":"m5-max-mbp.[redacted]","port":55279},{"host":"M5-Max-MBP.local","port":55279}],"fingerprint":"5A83 B534 C73E 41E5 C2A2 9C11 D923 0A4A 1AE5 F009 FAA1 5705 8009 A1F9 FE8C 1B82","port":55279,"roots":["\/Users\/jevidon\/Git\/sylvia\/.claude\/worktrees\/wf_5552ba19-d21-9\/.build\/scratch\/g02-bg-run\/MAIN\/library"],"source_id":"588a4335-c353-488d-965e-d13528e7d075"}
+  FAULTY ready: {"endpoints":[{"host":"127.0.0.1","port":55280}],"fingerprint":"0D59 BCEB CE45 3E7A 8901 5C50 B71C A167 B6C3 DCBF A989 2421 B07B 0CE0 154B 3538","port":55280,"roots":["\/Users\/jevidon\/Git\/sylvia\/.claude\/worktrees\/wf_5552ba19-d21-9\/.build\/scratch\/g02-bg-run\/FAULTY\/library"],"source_id":"e8c74edc-010f-486f-9def-6ec6b84023cb"}
+  SLOW ready: {"endpoints":[{"host":"127.0.0.1","port":55286}],"fingerprint":"DF56 1C4E F795 AD14 54D9 3ABC 5CB6 BD3C 4A8E 0DC6 FB79 BC49 513F 8E89 6A85 FF40","port":55286,"roots":["\/Users\/jevidon\/Git\/sylvia\/.claude\/worktrees\/wf_5552ba19-d21-9\/.build\/scratch\/g02-bg-run\/SLOW\/library"],"source_id":"aa845e6d-52d2-4bbe-ad17-7d46aff95436"}
+  cleartext controls: {"127.0.0.1": 55290, "localhost": 55290, "::1": 55291, "192.168.20.104": 55292, "M5-Max-MBP.local": 55292, "100.104.83.3": 55293, "m5-max-mbp.[redacted]": 55293}
+script> xcodebuild test -scheme G02TransferHarness -only-testing:G02TransferHostedTests/BackgroundSessionTests -only-testing:G02TransferHostedTests/ATSProbeTests (destination id=14A94E34-A628-4CBD-9A37-89CED5ED550E)
+✔ Test pinnedHTTPSAndCleartextByAddressForm() passed after 0.276 seconds.
+✔ Suite "Simulator: App Transport Security probe (14.3)" passed after 0.277 seconds.
+✔ Test fullTransferThroughTheBackgroundSessionWithThePinnedChallenge() passed after 0.813 seconds.
+✔ Test wrongPartDigestIsRefetchedAndEachNewConnectionIsPinned() passed after 1.598 seconds.
+✔ Test sourceChangedMidTransferIsDetectedAndOnlyTheNewVersionIsImported() passed after 3.412 seconds.
+✔ Test revokedCredentialBlocksAndKeepsVerifiedBytesAcrossARelaunch() passed after 3.315 seconds.
+✔ Test manualAddressFormsWorkThroughTheBackgroundSession() passed after 0.706 seconds.
+✔ Test bonjourBrowseFindsResolvesAndPinsTheSource() passed after 0.065 seconds.
+✔ Test deviceInboxEntryIsObservedDownloadedAndImported() passed after 0.580 seconds.
+✔ Suite "Simulator: background session transfers (15.2 gate, 15.4, 15.5)" passed after 10.493 seconds.
+✔ Test run with 8 tests in 2 suites passed after 10.770 seconds.
+** TEST SUCCEEDED **
+script> xcodebuild test -scheme G02TransferATSVariant G02_ATS_VARIANT=local-networking (ATS probe variant)
+2026-10-13 10:05:32.216 appintentsmetadataprocessor[13323:26679796] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-13 10:05:32.460 appintentsmetadataprocessor[13330:26679833] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+✔ Test pinnedHTTPSAndCleartextByAddressForm() passed after 0.205 seconds.
+✔ Suite "Simulator: App Transport Security probe (14.3)" passed after 0.206 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.206 seconds.
+** TEST SUCCEEDED **
+script> xcodebuild test -scheme G02TransferATSVariant G02_ATS_VARIANT=tailnet-exception (ATS probe variant)
+2026-10-13 10:05:44.853 appintentsmetadataprocessor[13773:26682343] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-13 10:05:45.108 appintentsmetadataprocessor[13780:26682396] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+✔ Test pinnedHTTPSAndCleartextByAddressForm() passed after 0.267 seconds.
+✔ Suite "Simulator: App Transport Security probe (14.3)" passed after 0.268 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.268 seconds.
+** TEST SUCCEEDED **
+--- MAIN source output (requests carry IDs and ranges only; codes were written to a file, never printed)
+MAIN> TEST SOURCE: fault injection and test hooks active (auto-approve, codes to file, queue an item for each paired device); not a production configuration
+MAIN> Sylvia source (G0.2 spike), protocol 1.0
+MAIN> source id: 588a4335-c353-488d-965e-d13528e7d075
+MAIN> source name: G02 MAIN source
+MAIN> fingerprint: 5A83 B534 C73E 41E5 C2A2 9C11 D923 0A4A 1AE5 F009 FAA1 5705 8009 A1F9 FE8C 1B82
+MAIN> identity key: memory only (--ephemeral-identity)
+MAIN> listening: 127.0.0.1:55279 ::1:55279 192.168.20.104:55279 100.104.83.3:55279
+MAIN> endpoints in pairing payload: 192.168.20.104:55279 100.104.83.3:55279 m5-max-mbp.[redacted]:55279 M5-Max-MBP.local:55279
+MAIN> bonjour: advertising _sylvia-src._tcp
+MAIN> shared folders: 1
+MAIN> pairing codes written: 5 (single use, not printed)
+MAIN> ready
+MAIN> connections 2026-10-12T21:05:10.294Z accepted=4 decrypted_bytes=920
+MAIN> request 2026-10-12T21:05:10.295Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:10.295Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:10.295Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:10.295Z GET /v1/capabilities range=- -> 200
+MAIN> connections 2026-10-12T21:05:10.502Z accepted=14 decrypted_bytes=2336
+MAIN> request 2026-10-12T21:05:10.503Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:10.503Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:10.503Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:10.503Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:10.503Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:10.503Z GET /v1/capabilities range=- -> 200
+MAIN> auto-approved pairing request from "Simulator background full" (device c5e853c8-4101-4ae5-b943-f4f36019b3cc, address 192.168.20.104)
+MAIN> test send-on-pair: queued cada93e6-ad53-47a3-8ddf-59e8457b5aff item d4b38aec-d2a2-4350-92b7-bc5fe53c267a for device c5e853c8-4101-4ae5-b943-f4f36019b3cc state queued_on_mac
+MAIN> connections 2026-10-12T21:05:10.706Z accepted=17 decrypted_bytes=3633
+MAIN> request 2026-10-12T21:05:10.706Z POST /v1/pair range=- -> 200
+MAIN> request 2026-10-12T21:05:10.706Z GET /v1/catalog range=- -> 200
+MAIN> connections 2026-10-12T21:05:10.907Z accepted=19 decrypted_bytes=4528
+MAIN> request 2026-10-12T21:05:10.907Z GET /v1/items/1c54ffe5-8192-4fb8-8c82-1ce2af7f28ac/manifest range=- -> 200
+MAIN> request 2026-10-12T21:05:10.907Z GET /v1/assets/e23cb8c0-6f15-4f1f-94e5-16a2689196a5/content range=bytes=0-16777215 -> 206
+MAIN> request 2026-10-12T21:05:10.907Z GET /v1/assets/e23cb8c0-6f15-4f1f-94e5-16a2689196a5/content range=bytes=33554432-50331647 -> 206
+MAIN> connections 2026-10-12T21:05:11.107Z accepted=19 decrypted_bytes=7692
+MAIN> request 2026-10-12T21:05:11.107Z GET /v1/assets/e23cb8c0-6f15-4f1f-94e5-16a2689196a5/content range=bytes=50331648-67108863 -> 206
+MAIN> request 2026-10-12T21:05:11.107Z GET /v1/assets/e23cb8c0-6f15-4f1f-94e5-16a2689196a5/content range=bytes=16777216-33554431 -> 206
+MAIN> request 2026-10-12T21:05:11.107Z GET /v1/assets/e23cb8c0-6f15-4f1f-94e5-16a2689196a5/content range=bytes=67108864-83886079 -> 206
+MAIN> request 2026-10-12T21:05:11.107Z GET /v1/assets/e23cb8c0-6f15-4f1f-94e5-16a2689196a5/content range=bytes=83886080-100663295 -> 206
+MAIN> request 2026-10-12T21:05:11.107Z GET /v1/assets/e23cb8c0-6f15-4f1f-94e5-16a2689196a5/content range=bytes=100663296-117440511 -> 206
+MAIN> request 2026-10-12T21:05:11.107Z GET /v1/assets/e23cb8c0-6f15-4f1f-94e5-16a2689196a5/content range=bytes=117440512-134217727 -> 206
+MAIN> request 2026-10-12T21:05:11.107Z GET /v1/assets/e23cb8c0-6f15-4f1f-94e5-16a2689196a5/content range=bytes=134217728-138201537 -> 206
+MAIN> connections 2026-10-12T21:05:11.309Z accepted=20 decrypted_bytes=8993
+MAIN> request 2026-10-12T21:05:11.312Z POST /v1/receipts range=- -> 200
+MAIN> request 2026-10-12T21:05:11.312Z POST /v1/receipts range=- -> 200
+MAIN> auto-approved pairing request from "Simulator background addresses" (device 7b745365-94f1-44c9-a798-1b56de0081c5, address 192.168.20.104)
+MAIN> test send-on-pair: queued ea9a8d85-5cfe-47ea-8760-b6e468a2ce2a item d4b38aec-d2a2-4350-92b7-bc5fe53c267a for device 7b745365-94f1-44c9-a798-1b56de0081c5 state queued_on_mac
+MAIN> connections 2026-10-12T21:05:19.740Z accepted=25 decrypted_bytes=10546
+MAIN> request 2026-10-12T21:05:19.740Z POST /v1/pair range=- -> 200
+MAIN> request 2026-10-12T21:05:19.740Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:19.741Z GET /v1/catalog range=- -> 200
+MAIN> request 2026-10-12T21:05:19.741Z GET /v1/items/d4b38aec-d2a2-4350-92b7-bc5fe53c267a/manifest range=- -> 200
+MAIN> connections 2026-10-12T21:05:19.942Z accepted=32 decrypted_bytes=14538
+MAIN> request 2026-10-12T21:05:19.942Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=0-16777215 -> 206
+MAIN> request 2026-10-12T21:05:19.942Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=16777216-20971519 -> 206
+MAIN> request 2026-10-12T21:05:19.942Z POST /v1/receipts range=- -> 200
+MAIN> request 2026-10-12T21:05:19.942Z POST /v1/receipts range=- -> 200
+MAIN> request 2026-10-12T21:05:19.942Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:19.942Z GET /v1/catalog range=- -> 200
+MAIN> request 2026-10-12T21:05:19.942Z GET /v1/items/d4b38aec-d2a2-4350-92b7-bc5fe53c267a/manifest range=- -> 200
+MAIN> request 2026-10-12T21:05:19.942Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=0-16777215 -> 206
+MAIN> request 2026-10-12T21:05:19.942Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=16777216-20971519 -> 206
+MAIN> connections 2026-10-12T21:05:20.147Z accepted=39 decrypted_bytes=18983
+MAIN> request 2026-10-12T21:05:20.151Z POST /v1/receipts range=- -> 200
+MAIN> request 2026-10-12T21:05:20.151Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:20.151Z POST /v1/receipts range=- -> 200
+MAIN> request 2026-10-12T21:05:20.151Z GET /v1/catalog range=- -> 200
+MAIN> request 2026-10-12T21:05:20.151Z GET /v1/items/d4b38aec-d2a2-4350-92b7-bc5fe53c267a/manifest range=- -> 200
+MAIN> request 2026-10-12T21:05:20.151Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=0-16777215 -> 206
+MAIN> request 2026-10-12T21:05:20.151Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=16777216-20971519 -> 206
+MAIN> request 2026-10-12T21:05:20.151Z POST /v1/receipts range=- -> 200
+MAIN> auto-approved pairing request from "Simulator Bonjour" (device 02d9f680-cb55-4b7e-9f19-b319334b94d7, address 192.168.20.104)
+MAIN> connections 2026-10-12T21:05:20.358Z accepted=48 decrypted_bytes=22748
+MAIN> request 2026-10-12T21:05:20.358Z POST /v1/receipts range=- -> 200
+MAIN> request 2026-10-12T21:05:20.358Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:20.358Z GET /v1/catalog range=- -> 200
+MAIN> request 2026-10-12T21:05:20.358Z GET /v1/items/d4b38aec-d2a2-4350-92b7-bc5fe53c267a/manifest range=- -> 200
+MAIN> request 2026-10-12T21:05:20.358Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=0-16777215 -> 206
+MAIN> request 2026-10-12T21:05:20.358Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=16777216-20971519 -> 206
+MAIN> request 2026-10-12T21:05:20.358Z POST /v1/receipts range=- -> 200
+MAIN> request 2026-10-12T21:05:20.358Z POST /v1/receipts range=- -> 200
+MAIN> auto-approved pairing request from "Simulator inbox" (device 9ac37d29-d127-4dc5-ac53-d50c3b44eda3, address 192.168.20.104)
+MAIN> test send-on-pair: queued 479a0fad-8ca0-43b9-be8b-648aabb010e0 item d4b38aec-d2a2-4350-92b7-bc5fe53c267a for device 02d9f680-cb55-4b7e-9f19-b319334b94d7 state queued_on_mac
+MAIN> test send-on-pair: queued b0cd1220-73e3-40d9-8a0b-519feada398e item d4b38aec-d2a2-4350-92b7-bc5fe53c267a for device 9ac37d29-d127-4dc5-ac53-d50c3b44eda3 state queued_on_mac
+MAIN> connections 2026-10-12T21:05:20.563Z accepted=52 decrypted_bytes=23934
+MAIN> request 2026-10-12T21:05:20.565Z POST /v1/pair range=- -> 200
+MAIN> request 2026-10-12T21:05:20.565Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:20.565Z POST /v1/pair range=- -> 200
+MAIN> request 2026-10-12T21:05:20.565Z GET /v1/device-inbox range=- -> 200
+MAIN> connections 2026-10-12T21:05:20.766Z accepted=54 decrypted_bytes=24639
+MAIN> request 2026-10-12T21:05:20.767Z GET /v1/device-inbox range=- -> 200
+MAIN> connections 2026-10-12T21:05:20.975Z accepted=57 decrypted_bytes=26903
+MAIN> request 2026-10-12T21:05:20.975Z GET /v1/items/d4b38aec-d2a2-4350-92b7-bc5fe53c267a/manifest range=- -> 200
+MAIN> request 2026-10-12T21:05:20.975Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=0-16777215 -> 206
+MAIN> request 2026-10-12T21:05:20.975Z GET /v1/assets/7026cb7f-9434-4eaf-a56a-383f99595ae2/content range=bytes=16777216-20971519 -> 206
+MAIN> request 2026-10-12T21:05:20.975Z POST /v1/receipts range=- -> 200
+MAIN> request 2026-10-12T21:05:20.975Z POST /v1/receipts range=- -> 200
+MAIN> connections 2026-10-12T21:05:21.183Z accepted=58 decrypted_bytes=27236
+MAIN> request 2026-10-12T21:05:21.183Z GET /v1/device-inbox range=- -> 200
+MAIN> connections 2026-10-12T21:05:34.183Z accepted=69 decrypted_bytes=29602
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:34.184Z GET /v1/capabilities range=- -> 200
+MAIN> connections 2026-10-12T21:05:34.397Z accepted=72 decrypted_bytes=29602
+MAIN> connections 2026-10-12T21:05:46.656Z accepted=80 decrypted_bytes=31484
+MAIN> request 2026-10-12T21:05:46.656Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.656Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.656Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.656Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.656Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.656Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.656Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.656Z GET /v1/capabilities range=- -> 200
+MAIN> connections 2026-10-12T21:05:46.863Z accepted=86 decrypted_bytes=32952
+MAIN> request 2026-10-12T21:05:46.863Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.863Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.863Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.863Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.863Z GET /v1/capabilities range=- -> 200
+MAIN> request 2026-10-12T21:05:46.863Z GET /v1/capabilities range=- -> 200
+--- FAULTY source output (requests carry IDs and ranges only; codes were written to a file, never printed)
+FAULTY> TEST SOURCE: fault injection and test hooks active (auto-approve, corrupt first response of parts 1, Connection: close, codes to file); not a production configuration
+FAULTY> Sylvia source (G0.2 spike), protocol 1.0
+FAULTY> source id: e8c74edc-010f-486f-9def-6ec6b84023cb
+FAULTY> source name: G02 FAULTY source
+FAULTY> fingerprint: 0D59 BCEB CE45 3E7A 8901 5C50 B71C A167 B6C3 DCBF A989 2421 B07B 0CE0 154B 3538
+FAULTY> identity key: memory only (--ephemeral-identity)
+FAULTY> listening: 127.0.0.1:55280
+FAULTY> endpoints in pairing payload: 127.0.0.1:55280
+FAULTY> shared folders: 1
+FAULTY> pairing codes written: 2 (single use, not printed)
+FAULTY> ready
+FAULTY> auto-approved pairing request from "Simulator background faulty" (device 0117a5ed-a29b-4c30-961d-1421966f6ab3, address 127.0.0.1)
+FAULTY> connections 2026-10-12T21:05:11.509Z accepted=3 decrypted_bytes=1284
+FAULTY> request 2026-10-12T21:05:11.509Z POST /v1/pair range=- -> 200
+FAULTY> request 2026-10-12T21:05:11.509Z GET /v1/catalog range=- -> 200
+FAULTY> connections 2026-10-12T21:05:11.712Z accepted=7 decrypted_bytes=3061
+FAULTY> request 2026-10-12T21:05:11.712Z GET /v1/items/c8a8fc07-6b1f-4446-a33e-6bfd397e0e59/manifest range=- -> 200
+FAULTY> request 2026-10-12T21:05:11.712Z GET /v1/assets/c5446a31-94d0-4e87-8e0a-45dc5ee63ea3/content range=bytes=0-16777215 -> 206
+FAULTY> request 2026-10-12T21:05:11.712Z GET /v1/assets/c5446a31-94d0-4e87-8e0a-45dc5ee63ea3/content range=bytes=33554432-50331647 -> 206
+FAULTY> request 2026-10-12T21:05:11.712Z GET /v1/assets/c5446a31-94d0-4e87-8e0a-45dc5ee63ea3/content range=bytes=16777216-33554431 -> 206 fault=corruptByte(at: 4096)
+FAULTY> request 2026-10-12T21:05:11.712Z GET /v1/assets/c5446a31-94d0-4e87-8e0a-45dc5ee63ea3/content range=bytes=50331648-52428799 -> 206
+FAULTY> connections 2026-10-12T21:05:12.958Z accepted=10 decrypted_bytes=4798
+FAULTY> request 2026-10-12T21:05:12.963Z GET /v1/assets/c5446a31-94d0-4e87-8e0a-45dc5ee63ea3/content range=bytes=16777216-33554431 -> 206
+FAULTY> request 2026-10-12T21:05:12.963Z POST /v1/receipts range=- -> 200
+FAULTY> request 2026-10-12T21:05:12.963Z POST /v1/receipts range=- -> 200
+--- SLOW source output (requests carry IDs and ranges only; codes were written to a file, never printed)
+SLOW> TEST SOURCE: fault injection and test hooks active (auto-approve, throttle 4096 KiB/s, codes to file); not a production configuration
+SLOW> Sylvia source (G0.2 spike), protocol 1.0
+SLOW> source id: aa845e6d-52d2-4bbe-ad17-7d46aff95436
+SLOW> source name: G02 SLOW source
+SLOW> fingerprint: DF56 1C4E F795 AD14 54D9 3ABC 5CB6 BD3C 4A8E 0DC6 FB79 BC49 513F 8E89 6A85 FF40
+SLOW> identity key: memory only (--ephemeral-identity)
+SLOW> listening: 127.0.0.1:55286
+SLOW> endpoints in pairing payload: 127.0.0.1:55286
+SLOW> shared folders: 1
+SLOW> pairing codes written: 3 (single use, not printed)
+SLOW> ready
+SLOW> auto-approved pairing request from "Simulator background mutation" (device 89fad226-7bcf-474e-93b2-63213ed8231b, address 127.0.0.1)
+SLOW> connections 2026-10-12T21:05:12.958Z accepted=2 decrypted_bytes=919
+SLOW> request 2026-10-12T21:05:12.963Z POST /v1/pair range=- -> 200
+SLOW> connections 2026-10-12T21:05:13.170Z accepted=5 decrypted_bytes=2169
+SLOW> request 2026-10-12T21:05:13.170Z GET /v1/catalog range=- -> 200
+SLOW> request 2026-10-12T21:05:13.170Z GET /v1/items/68976b4c-f58a-44bf-9acc-d447663be701/manifest range=- -> 200
+SLOW> request 2026-10-12T21:05:13.170Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=0-4194303 -> 206
+SLOW> request 2026-10-12T21:05:13.170Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=8388608-12582911 -> 206
+SLOW> connections 2026-10-12T21:05:14.200Z accepted=6 decrypted_bytes=4318
+SLOW> request 2026-10-12T21:05:14.200Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=4194304-8388607 -> 412
+SLOW> request 2026-10-12T21:05:14.200Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=12582912-16777215 -> 412
+SLOW> request 2026-10-12T21:05:14.200Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=20971520-25165823 -> 412
+SLOW> request 2026-10-12T21:05:14.200Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=16777216-20971519 -> 412
+SLOW> connections 2026-10-12T21:05:14.402Z accepted=6 decrypted_bytes=5208
+SLOW> request 2026-10-12T21:05:14.404Z GET /v1/items/68976b4c-f58a-44bf-9acc-d447663be701/manifest range=- -> 200
+SLOW> request 2026-10-12T21:05:14.404Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=4194304-8388607 -> 206
+SLOW> request 2026-10-12T21:05:14.404Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=12582912-16777215 -> 206
+SLOW> connections 2026-10-12T21:05:15.419Z accepted=6 decrypted_bytes=6100
+SLOW> request 2026-10-12T21:05:15.419Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=16777216-20971519 -> 206
+SLOW> request 2026-10-12T21:05:15.419Z GET /v1/assets/b0a2346b-da46-4d73-9ec0-a40d2390da08/content range=bytes=20971520-25165823 -> 206
+SLOW> auto-approved pairing request from "Simulator background revoke" (device 452540e9-4f6b-4939-b198-3de5949c2a1b, address 127.0.0.1)
+SLOW> connections 2026-10-12T21:05:16.437Z accepted=10 decrypted_bytes=8675
+SLOW> request 2026-10-12T21:05:16.437Z POST /v1/receipts range=- -> 200
+SLOW> request 2026-10-12T21:05:16.437Z POST /v1/receipts range=- -> 200
+SLOW> request 2026-10-12T21:05:16.437Z POST /v1/pair range=- -> 200
+SLOW> request 2026-10-12T21:05:16.437Z GET /v1/catalog range=- -> 200
+SLOW> request 2026-10-12T21:05:16.437Z GET /v1/items/369232a3-3e1f-4a7f-9560-af54d698f12f/manifest range=- -> 200
+SLOW> connections 2026-10-12T21:05:16.642Z accepted=12 decrypted_bytes=9558
+SLOW> request 2026-10-12T21:05:16.642Z GET /v1/assets/19c4547f-fe8f-4be1-9ba1-ad530a7e17ef/content range=bytes=0-4194303 -> 206
+SLOW> request 2026-10-12T21:05:16.642Z GET /v1/assets/19c4547f-fe8f-4be1-9ba1-ad530a7e17ef/content range=bytes=8388608-12582911 -> 206
+SLOW> connections 2026-10-12T21:05:17.668Z accepted=13 decrypted_bytes=10831
+SLOW> request 2026-10-12T21:05:17.671Z GET /v1/assets/19c4547f-fe8f-4be1-9ba1-ad530a7e17ef/content range=bytes=12582912-16777215 -> 206
+SLOW> request 2026-10-12T21:05:17.671Z GET /v1/assets/19c4547f-fe8f-4be1-9ba1-ad530a7e17ef/content range=bytes=4194304-8388607 -> 206
+SLOW> request 2026-10-12T21:05:17.878Z DELETE /v1/pairings/452540e9-4f6b-4939-b198-3de5949c2a1b range=- -> 204
+SLOW> connections 2026-10-12T21:05:18.696Z accepted=13 decrypted_bytes=11723
+SLOW> request 2026-10-12T21:05:18.696Z GET /v1/assets/19c4547f-fe8f-4be1-9ba1-ad530a7e17ef/content range=bytes=20971520-25165823 -> 401
+SLOW> request 2026-10-12T21:05:18.696Z GET /v1/assets/19c4547f-fe8f-4be1-9ba1-ad530a7e17ef/content range=bytes=16777216-20971519 -> 401
+after the run: no process started by this run is still running (pgrep over /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-9/.build/scratch/g02-bg-run/ found none)
+RESULT: PASS

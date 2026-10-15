@@ -1,0 +1,84 @@
+readium-css provenance 2026-10-14T01:52:58Z; GitHub API authenticated with the gh CLI token (not shown)
+13 stylesheets bundled by the toolkit, with their blob ids:
+  eb6124c2861224e2f1abf79eacecf4774eda8219 ReadiumCSS-after.css
+  6511e6d589bd3c3676d6ad3cb759136ce9044e25 ReadiumCSS-before.css
+  78aa0172b690d350e5bae91fd4169b6002441bf4 ReadiumCSS-default.css
+  b73eb6744f71f826e02446ae72cec315b39cbe87 ReadiumCSS-ebpaj_fonts_patch.css
+  47867bfd540446769efb2040abf790a546b4a30b cjk-horizontal/ReadiumCSS-after.css
+  dcb79fffddd9e7c591b275bdc3f9900203d36f09 cjk-horizontal/ReadiumCSS-before.css
+  37530d830a8ccb32ec065bbf24b2809f518b9596 cjk-horizontal/ReadiumCSS-default.css
+  d60d264dcad05ca6ec29b34ca3a3bd6c66ac0915 cjk-vertical/ReadiumCSS-after.css
+  2c8d03df4cf8ae00692d386f6333fc20986dabad cjk-vertical/ReadiumCSS-before.css
+  7122cfa6cc51e703f23f48220be97bd8bf79e502 cjk-vertical/ReadiumCSS-default.css
+  92ea61f1380ab812e3539a684540facc5d084264 rtl/ReadiumCSS-after.css
+  dcb79fffddd9e7c591b275bdc3f9900203d36f09 rtl/ReadiumCSS-before.css
+  18bb89311d998c1e3f917d2a3c0bbead785edf8c rtl/ReadiumCSS-default.css
+136 commits touch css/dist; 8 release tags
+  6cdf7318611c 2024-06-21T08:09:02Z: 1 of 13 identical  (Update ReadMe in dist)
+  005184034cfd 2024-06-20T08:18:04Z: 1 of 13 identical  (Merge branch 'develop' into thorium-ports)
+  2e1bb29d02de 2024-06-18T13:57:40Z: 1 of 13 identical  (Build updated dist stylesheets)
+  95a0ec0e4407 2024-05-22T15:15:13Z: 1 of 13 identical  (Add ruby user submodule)
+  7a8452474c26 2024-05-22T14:29:41Z: 1 of 13 identical  (Fix text-align user setting)
+  843c1088ceb9 2024-05-22T14:11:47Z: 1 of 13 identical  (Fix safeguards for audio)
+  29603488a7c0 2024-05-22T13:41:32Z: 1 of 13 identical  (Enable letter-spacing user setting for CJK)
+  5b4df15faf96 2023-02-02T10:09:22Z: 1 of 13 identical  (Update AccessibleDfa)
+  f926e167affd 2020-11-09T16:28:22Z: 1 of 13 identical  (Expose root width as --RS__viewportWidth variable)
+  0d6655682ac8 2020-06-03T18:01:13Z: 1 of 13 identical  (Build new beta.2 version w/o highlights + minification)
+  0849bc41f758 2020-06-02T11:47:04Z: 1 of 13 identical  (Add header in dist files and remove comments)
+  1ba225fecf1e 2020-05-08T16:41:11Z: 11 of 13 identical  (Correct Chinese para indent)
+  784142c4a370 2020-04-21T15:30:05Z: 9 of 13 identical  (Build as version 1.0.0-alpha.6)
+  67c26f60a482 2020-03-13T00:42:16Z: 1 of 13 identical  (fixed massive performance hit in Chromium v80 (Electron v8) )
+  5cf7718e99b3 2020-03-12T19:59:37Z: 1 of 13 identical  (exterminated a few more trailing spaces)
+  60754654a04f 2020-03-12T19:57:32Z: 1 of 13 identical  (eliminated a few more rogue trailing spaces)
+  69cb8225b83b 2020-03-12T19:54:23Z: 1 of 13 identical  (removed rogue trailing spaces in CSS selectors)
+  091896d4b74e 2020-03-12T19:40:29Z: 1 of 13 identical  (NPM packages updates, consistent multiline CSS selectors (li)
+  79a61fc3b03d 2019-08-04T13:34:21Z: 1 of 13 identical  (Improve reading modes and highlights)
+  bd6462780d1e 2019-04-10T12:44:30Z: 1 of 13 identical  (Remove vertical margins in scroll view)
+  3ab4a5ff0288 2018-05-18T16:10:22Z: 1 of 13 identical  (Improve safeguard for medias in vertical-rl (issue #50))
+  4f53b50421f5 2018-05-02T11:04:14Z: 1 of 13 identical  (Fix AccessibleDFA discrepancy #35)
+  9623743eb31c 2018-04-17T09:32:00Z: 1 of 13 identical  (Fix table safeguard)
+  cbd218a842d3 2018-03-21T13:13:08Z: 1 of 13 identical  (fix sepia blend mode for SVG)
+  96a5ea54fc93 2018-03-18T12:23:26Z: 1 of 13 identical  (Rebuild dist)
+  bc52b6d0a6ea 2018-03-05T10:08:57Z: 1 of 13 identical  (Correct AccessibleDfa name (bug #35))
+  edfdc2a9c213 2018-03-04T11:48:36Z: 1 of 13 identical  (Add Duospace font for a11y)
+  0069ec2822dc 2018-03-02T09:23:37Z: 1 of 13 identical  (Add custom selector font a11y font)
+  214389d4c057 2018-02-28T09:09:37Z: 1 of 13 identical  (Correct vertical writing spacing)
+  9043247761df 2018-02-27T12:48:40Z: 1 of 13 identical  (Update docs (RTL no hyphens))
+  713eb5baaeb9 2018-02-27T12:45:25Z: 1 of 13 identical  (Remove hyphenation for RTL scripts)
+  841582ce8140 2018-02-26T16:50:41Z: 1 of 13 identical  (Enable source maps)
+  2393a990c68b 2018-02-26T10:24:11Z: 1 of 13 identical  (Fix and improve stylelint warnings)
+  cdf9f1775637 2018-02-26T09:44:49Z: 1 of 13 identical  (Update config file)
+  c4ebd5804e51 2018-02-26T07:45:19Z: 1 of 13 identical  (Correct font path and disable module for RTL & CJK scripts)
+  c42112a415b4 2018-02-25T16:30:28Z: 1 of 13 identical  (rebuild dist files)
+  f628c5018a9e 2018-02-25T16:09:38Z: 1 of 13 identical  (Move fonts to dist)
+  908a8eb52c4e 2018-02-25T16:00:20Z: 1 of 13 identical  (Add EBPAJ font-patch to dist)
+  ffd817b73601 tag v2.0.5: 0 of 13 identical
+  3643b4764caa tag v2.0.4: 0 of 13 identical
+  c3b11a748780 tag v2.0.3: 0 of 13 identical
+  db8f1ba5bf31 tag v2.0.2: 0 of 13 identical
+  67d5d38b2f14 tag v2.0.1: 0 of 13 identical
+  f3f1b90e1313 tag v2.0.0: 0 of 13 identical
+  0728ade3893b tag v.1.1.1: 0 of 13 identical
+  5084cac30299 tag v.1.1.0: 0 of 13 identical
+source: readium/readium-css 1ba225fecf1e63e6cccc93e1f4a50107e56f93e5 (2020-05-08T16:41:11Z): 11 of 13 stylesheets identical by blob id
+differs: ReadiumCSS-after.css (3 lines), diff against the source:
+    --- readium-css 1ba225fecf1e css/dist/ReadiumCSS-after.css
+    +++ swift-toolkit 3.11.0 ReadiumCSS-after.css
+    @@ -763,4 +763,3 @@
+     
+    -:root[style*="readium-advanced-on"][style*="--USER__paraIndent"] p *,
+    -:root[style*="readium-advanced-on"][style*="--USER__paraIndent"] p:first-letter {
+    +:root[style*="readium-advanced-on"][style*="--USER__paraIndent"] p * {
+       text-indent: 0 !important;
+differs: rtl/ReadiumCSS-after.css (3 lines), diff against the source:
+    --- readium-css 1ba225fecf1e css/dist/rtl/ReadiumCSS-after.css
+    +++ swift-toolkit 3.11.0 rtl/ReadiumCSS-after.css
+    @@ -642,4 +642,3 @@
+     
+    -:root[style*="readium-advanced-on"][style*="--USER__paraIndent"] p *,
+    -:root[style*="readium-advanced-on"][style*="--USER__paraIndent"] p:first-letter {
+    +:root[style*="readium-advanced-on"][style*="--USER__paraIndent"] p * {
+       text-indent: 0 !important;
+readium-css LICENSE at 1ba225fecf1e63e6cccc93e1f4a50107e56f93e5: 1507 bytes, sha256 f47741fce46e526840d3d5b70788a3d791144411dd21c94a73864188770e2d82 (saved as /Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-1/.build/scratch/run-all-20261014T014333Z/readium-css/LICENSE-1ba225fecf1e63e6cccc93e1f4a50107e56f93e5); first line: BSD 3-Clause License
+the toolkit LICENSE: sha256 f47741fce46e526840d3d5b70788a3d791144411dd21c94a73864188770e2d82: byte-identical
+copyright line: Copyright (c) 2017, Readium

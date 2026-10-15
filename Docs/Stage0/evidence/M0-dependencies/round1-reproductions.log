@@ -1,0 +1,73 @@
+round 1 reproductions 2026-10-14T01:56:36Z at commit cfc5dea3d616b477733d76e1d3ab0d215d513f20
+host: macOS 26.6.2 (25G83); Xcode 27.0 Build version 27A266a 
+load: 14:56  up 11 days,  1:07, 1 user, load averages: 5.89 6.60 9.97
+
+### The unchanged tree
+ok    the committed tree passes: dependency lock check: 0 failure(s), 0 warning(s)
+
+### R1-01: imports of Zip and Minizip in product code
+ok    internal import Zip and internal import Minizip (the reviewer's case) -> 2 x transitive-direct
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal tha
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:2: imports Minizip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal
+ok    import Zip (the reviewer's control) -> 1 x transitive-direct
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal tha
+ok    public import Zip, package import Minizip -> 2 x transitive-direct
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal tha
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:2: imports Minizip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal
+ok    import Foundation; import Zip on one line -> 1 x transitive-direct
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal tha
+ok    an attribute line, then fileprivate import with a line break before Minizip -> 1 x transitive-direct
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:2: imports Minizip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal
+ok    @import Minizip; in an Objective-C file -> 1 x transitive-direct
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.m:1: imports Minizip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal tha
+ok    #include <unzip.h> and #import <Minizip/zip.h> in a C file -> 3 x transitive-direct
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/zipprobe.c:1: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a co
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/zipprobe.c:2: imports Minizip (a path into it: Minizip/...), a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/zipprobe.c:2: names zip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: any include of it, or a comm
+ok    the DesignCatalog target aliases Zip with -module-alias Archive=Zip -> 1 x transitive-direct
+        FAIL transitive-direct Apps/DesignCatalog/project.yml: aliases Zip (Archive=Zip), a module of marmelroy/Zip, which product code may use only through the package that brings it
+ok    a module map under Packages/Design wraps Minizip's unzip.h -> 1 x transitive-direct
+        FAIL transitive-direct Packages/Design/Sources/SylviaDesign/include/module.modulemap:2: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment th
+ok    the import moved to shared code outside Apps/ and Packages/ that DesignCatalog compiles -> 1 x outside-product
+        FAIL outside-product Apps/DesignCatalog/project.yml: builds from 'Shared/Code', which resolves to Shared/Code, outside Apps and Packages, where the product rules do not apply
+
+### R1-02: Spikes code (or any code outside Apps/ and Packages/) reached from a product target
+ok    the DesignCatalog target's sources include Spikes/G01-EPUB/Core sources (the reviewer's case) -> 1 x spike-in-product
+        FAIL spike-in-product Apps/DesignCatalog/project.yml: names '../../Spikes/G01-EPUB/Core/Sources/G01EPUBCore', which resolves to Spikes/G01-EPUB/Core/Sources/G01EPUBCore under Spikes; Spikes code is never shipped
+ok    a symbolic link Packages/Linked -> ../Spikes/G01-EPUB/Core used as a local package -> 2 x spike-in-product
+        FAIL spike-in-product Apps/DesignCatalog/project.yml: depends on Spikes/G01-EPUB/Core under Spikes, which is never shipped
+        FAIL spike-in-product Packages/Linked: is a symbolic link to Spikes/G01-EPUB/Core, under Spikes, which is never shipped
+ok    a symbolic link to a Spikes source file inside SylviaDesign's sources -> 1 x spike-in-product
+        FAIL spike-in-product Packages/Design/Sources/SylviaDesign/Linked.swift: is a symbolic link to Spikes/G01-EPUB/Core/Sources/G01EPUBCore/MarkupCanonicalizer.swift, under Spikes, which is never shipped
+ok    a symbolic link inside SylviaDesign's sources that leaves the repository -> 1 x outside-product
+        FAIL outside-product Packages/Design/Sources/SylviaDesign/Linked.swift: is a symbolic link to ../Elsewhere/Code.swift, outside Apps and Packages, so what it reaches is not checked as product code
+ok    an xcconfig the DesignCatalog project uses searches Spikes/ for headers -> 1 x spike-in-product
+        FAIL spike-in-product Apps/DesignCatalog/Config/Catalog.xcconfig (used by Apps/DesignCatalog/project.yml): names '$(SRCROOT)/../../Spikes/G01-EPUB/Core/Sources', which resolves to Spikes/G01-EPUB/Core/Sources under Spikes; Spikes code is ne
+ok    the DesignCatalog target compiles shared code outside Apps/ and Packages/ -> 1 x outside-product
+        FAIL outside-product Apps/DesignCatalog/project.yml: builds from 'Shared/Code', which resolves to Shared/Code, outside Apps and Packages, where the product rules do not apply
+
+### R1-08: a lock that no longer covers its manifest
+ok    G05-AI's manifest gains an exact, inventoried requirement (SwiftSoup) but its lock is not re-resolved -> 2 x pin-missing
+        FAIL pin-missing Spikes/G05-AI/ATSProbe/Package.resolved: does not pin https://github.com/scinfu/SwiftSoup.git, which Spikes/G05-AI/ATSProbe/project.yml requires through its local package Spikes/G05-AI: the lock is stale; re-resolve it
+        FAIL pin-missing Spikes/G05-AI/Package.resolved: does not pin https://github.com/scinfu/SwiftSoup.git, which Spikes/G05-AI/Package.swift requires: the lock is stale; re-resolve it
+ok    G05-Recovery's lock and the inventory both drop GRDB, which its manifest requires -> 1 x pin-missing
+        FAIL pin-missing Spikes/G05-Recovery/Package.resolved: does not pin https://github.com/groue/GRDB.swift.git, which Spikes/G05-Recovery/Package.swift requires: the lock is stale; re-resolve it
+
+### R1-09: third-party binaries in product targets
+ok    Packages/Design declares a remote binary target -> 1 x binary
+        FAIL binary Packages/Design/Package.swift: binary target Vendor is third-party binary code that the inventory does not list (binaries)
+ok    the DesignCatalog target links a committed xcframework -> 2 x binary
+        FAIL binary Apps/DesignCatalog/project.yml: framework dependency Apps/DesignCatalog/Vendor/Foo.xcframework of target DesignCatalog is third-party binary code that the inventory does not list (binaries)
+        FAIL binary Apps/DesignCatalog/Vendor/Foo.xcframework/ios-arm64/Foo.framework/Foo: a committed Mach-O file under Apps or Packages that the inventory does not list (binaries)
+ok    SylviaDesign links a library no SDK provides (.linkedLibrary) -> 1 x binary
+        FAIL binary Packages/Design/Package.swift: links the library 'vendorfoo', which no SDK provides and the inventory does not list (binaries, kind linked): third-party binary code
+ok    the DesignCatalog target searches /opt/homebrew/lib and links -lfoo -> 2 x binary
+        FAIL binary Apps/DesignCatalog/project.yml: searches for libraries or frameworks in '/opt/homebrew/lib', which resolves to ../../../../../../../../../../../opt/homebrew/lib, outside Apps and Packages, where the product rules do not apply
+        FAIL binary Apps/DesignCatalog/project.yml: links the library 'foo', which no SDK provides and the inventory does not list (binaries, kind linked): third-party binary code
+
+### Allowed: changes the rules must not report
+ok    a test of the design package imports Zip (tests never ship) -> dependency lock check: 0 failure(s), 0 warning(s)
+ok    the DesignCatalog target links SDK libraries and searches its own and build-product directories -> dependency lock check: 0 failure(s), 0 warning(s)
+
+round 1 reproductions finished 2026-10-14T01:59:04Z; failures: 0
+load: 14:59  up 11 days,  1:09, 1 user, load averages: 9.22 7.76 9.89

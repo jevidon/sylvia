@@ -1,0 +1,150 @@
+vendored-advisories 2026-10-14T01:49:23Z; raw responses in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-1/.build/scratch/run-all-20261014T014333Z/vendored-advisories
+GitHub API: authenticated with the gh CLI token (not shown)
+llhttp in swift-nio 2.103.0: 9.3.0 (the LLHTTP_VERSION_ macros in Sources/CNIOLLHTTP/include/c_nio_llhttp.h)
+BoringSSL in swift-nio-ssl 2.37.5: 817ab07ebb53da35afea409ab9328f578492832d (its hash.txt)
+BoringSSL in swift-crypto 5.0.0: 0226f30467f540a3f62ef48d453f93927da199b6 (its hash.txt)
+
+## Keyword searches: the GitHub Advisory Database (every page; reviewed and unreviewed) and NVD
+control: the GitHub keyword swift-nio lists GHSA-rj37-6j9x-74q6
+control: the GitHub keyword swift-nio lists GHSA-r3rc-9hpw-54v9
+control: the GitHub keyword swift-nio lists GHSA-cq87-8r7h-962v
+control: the NVD keyword Zip Swift lists CVE-2023-39135
+GitHub keyword 'llhttp': 14 advisories
+  GHSA-45c4-8wx5-qw6w: llhttp 9.3.0 is outside the range: aiohttp 3.8.4 and earlier, which bundle llhttp 6.0.6 (CVE-2023-30589, fixed in llhttp 8.1.1); CVE-2023-37276
+  GHSA-5492-mr68-4m2h: llhttp 9.3.0 is outside the range: the llhttp in Node.js before 14.20.1, 16.17.1 and 18.9.1 (July 2022 releases, llhttp 6.0.x), CVE-2022-32215
+  GHSA-5689-v88g-g6rv: llhttp 9.3.0 is outside the range: llhttp before 6.0.7 (and 2.1.5), CVE-2022-32213
+  GHSA-63hf-3vf5-4wqf: not an llhttp advisory: aiohttp 3.13.3 and earlier (CVE-2026-34520); its patch (aio-libs/aiohttp 9370b97) changes aiohttp's own header validation, and no llhttp version is listed
+  GHSA-8qpw-xqxj-h4r2: not llhttp: aiohttp's pure-Python HTTP parser (CVE-2024-23829)
+  GHSA-cggh-pq45-6h9x: llhttp 9.3.0 is outside the range: llhttp before 8.1.1, CVE-2023-30589
+  GHSA-f52w-8j3h-j724: not llhttp: Traefik (Go), CVE-2026-88009
+  GHSA-gfw2-4jvh-wgfg: not llhttp: aiohttp's pure-Python HTTP parser (CVE-2023-47627)
+  GHSA-hchw-qwx7-4w4c: llhttp 9.3.0 is outside the range: Node.js 20 before its upgrade to llhttp 9, which fixed it (CVE-2025-23167)
+  GHSA-mhxq-vjjq-pcvf: llhttp 9.3.0 is outside the range: llhttp before 2.1.4 and 6.0.6, CVE-2021-22959
+  GHSA-pjjw-qhg8-p2p9: llhttp 9.3.0 is outside the range: aiohttp before 3.8.6, which bundled llhttp 8.1.1; the advisory says llhttp 9 resolves it
+  GHSA-px8h-5r3g-hj68: llhttp 9.3.0 is outside the range: llhttp before 2.1.4 and 6.0.6, CVE-2021-22960
+  GHSA-q5vx-44v4-gch4: llhttp 9.3.0 is outside the range: llhttp before 6.0.7 (and 2.1.5), CVE-2022-32214
+  GHSA-rc2m-q589-vpqx: llhttp 9.3.0 is outside the range: the llhttp in Node.js 18.7.0 (2022), CVE-2022-35256
+GitHub keyword 'boringssl': 9 advisories
+  GHSA-2mc4-j865-9q4r: not BoringSSL at 817ab07e or 0226f304: netty-incubator-codec-ohttp, Java code that calls BoringSSL (CVE-2026-61798)
+  GHSA-2mjx-qc3c-rqvc: not BoringSSL at 817ab07e or 0226f304: rustls (Rust)
+  GHSA-32hf-8jw3-v4qq: not BoringSSL at 817ab07e or 0226f304: netty-incubator-codec-ohttp, Java code that calls BoringSSL (CVE-2026-48040)
+  GHSA-7gr4-mrjx-cjx9: not BoringSSL at 817ab07e or 0226f304: LibreSSL 2.7.0 (CVE-2018-8970); BoringSSL is named only for its documentation
+  GHSA-c95q-mpxc-wgf9: not BoringSSL at 817ab07e or 0226f304: BoringSSL SPAKE2 in Chrome before 63.0.3239.84, 2017 (CVE-2017-15423); both revisions are from 2025
+  GHSA-g6cj-pr64-35w5: not BoringSSL at 817ab07e or 0226f304: pyca/cryptography (CVE-2026-69247)
+  GHSA-g762-h86w-8749: not BoringSSL at 817ab07e or 0226f304: netty-incubator-codec-ohttp, Java code that calls BoringSSL (CVE-2024-36121)
+  GHSA-mwrj-3qqh-xprh: not BoringSSL at 817ab07e or 0226f304: BoringSSL through 2018-06-14 (CVE-2018-12440); both revisions are from 2025
+  GHSA-r5xm-3hfm-w636: not BoringSSL at 817ab07e or 0226f304: Conscrypt and BoringSSL in Android 6.x and 7.0 before 2016-11-01 (CVE-2016-6709)
+GitHub keyword 'attaswift': 0 advisories (the page says: No results matched your search)
+GitHub keyword 'BigInt swift': 0 advisories (the page says: No results matched your search)
+GitHub keyword 'minizip': 5 advisories
+  GHSA-4jvx-jmjp-xmq4: not the Minizip in marmelroy/Zip 2.1.2: minizip-ng 4.0.2, a different project (CVE-2023-48106)
+  GHSA-j5rw-m6xg-866q: not the Minizip in marmelroy/Zip 2.1.2: minizip-ng 4.0.2, a different project (CVE-2023-48107)
+  GHSA-jx5r-f949-99mv: not in the Minizip in marmelroy/Zip 2.1.2: miniunz.c, the miniunzip program, which it does not contain (CVE-2014-9485)
+  GHSA-mq29-j5xf-cjwr: APPLIES to the Minizip in marmelroy/Zip 2.1.2: its zip.c has the zipOpenNewFileInZip4_64 pattern, in a write path that Readium never calls (recorded in advisories.md); this record is for pyminizip
+  GHSA-q5fm-55c2-v6j9: APPLIES to the Minizip in marmelroy/Zip 2.1.2: its zip.c has the zipOpenNewFileInZip4_64 pattern, in a write path that Readium never calls (recorded in advisories.md); this record is for Fiona
+GitHub keyword 'uSHET': 0 advisories (the page says: No results matched your search)
+GitHub keyword 'cpp_magic': 0 advisories (the page says: No results matched your search)
+GitHub keyword '18sg': 0 advisories (the page says: No results matched your search)
+GitHub keyword 'fiat-crypto': 0 advisories (the page says: No results matched your search)
+GitHub keyword 'readium-css': 0 advisories (the page says: No results matched your search)
+NVD keyword 'llhttp': 9 CVEs
+  CVE-2021-22960: llhttp 9.3.0 is outside the range: llhttp before 2.1.4 and 6.0.6, CVE-2021-22960
+  CVE-2021-22959: llhttp 9.3.0 is outside the range: llhttp before 2.1.4 and 6.0.6, CVE-2021-22959
+  CVE-2022-32213: llhttp 9.3.0 is outside the range: llhttp before 6.0.7 (and 2.1.5), CVE-2022-32213
+  CVE-2022-32214: llhttp 9.3.0 is outside the range: llhttp before 6.0.7 (and 2.1.5), CVE-2022-32214
+  CVE-2022-32215: llhttp 9.3.0 is outside the range: the llhttp in Node.js before 14.20.1, 16.17.1 and 18.9.1 (July 2022 releases, llhttp 6.0.x), CVE-2022-32215
+  CVE-2022-35256: llhttp 9.3.0 is outside the range: the llhttp in Node.js 18.7.0 (2022), CVE-2022-35256
+  CVE-2023-30589: llhttp 9.3.0 is outside the range: llhttp before 8.1.1, CVE-2023-30589
+  CVE-2023-37276: llhttp 9.3.0 is outside the range: aiohttp 3.8.4 and earlier, which bundle llhttp 6.0.6 (CVE-2023-30589, fixed in llhttp 8.1.1); CVE-2023-37276
+  CVE-2026-69244: not an llhttp advisory: aiohttp before 3.14.3 misused an llhttp error-position pointer in its own aiohttp/_http_parser.pyx
+NVD keyword 'boringssl': 9 CVEs
+  CVE-2016-6709: not BoringSSL at 817ab07e or 0226f304: Conscrypt and BoringSSL in Android 6.x and 7.0 before 2016-11-01 (CVE-2016-6709)
+  CVE-2018-8970: not BoringSSL at 817ab07e or 0226f304: LibreSSL 2.7.0 (CVE-2018-8970); BoringSSL is named only for its documentation
+  CVE-2018-12440: not BoringSSL at 817ab07e or 0226f304: BoringSSL through 2018-06-14 (CVE-2018-12440); both revisions are from 2025
+  CVE-2017-15423: not BoringSSL at 817ab07e or 0226f304: BoringSSL SPAKE2 in Chrome before 63.0.3239.84, 2017 (CVE-2017-15423); both revisions are from 2025
+  CVE-2024-36121: not BoringSSL at 817ab07e or 0226f304: netty-incubator-codec-ohttp, Java code that calls BoringSSL (CVE-2024-36121)
+  CVE-2026-48040: not BoringSSL at 817ab07e or 0226f304: netty-incubator-codec-ohttp, Java code that calls BoringSSL (CVE-2026-48040)
+  CVE-2026-43823: not BoringSSL at 817ab07e or 0226f304: swift-crypto 3.2.0 to 4.5.0 (GHSA-8q93-f6xh-4f6f), a double free in its own Swift code; the pinned swift-crypto 5.0.0 contains the fix, commit 47d3869a
+  CVE-2026-69247: not BoringSSL at 817ab07e or 0226f304: pyca/cryptography (CVE-2026-69247)
+  CVE-2026-100665: not BoringSSL at 817ab07e or 0226f304: Netty QUIC (Java), CVE-2026-100665
+NVD keyword 'attaswift': 0 CVEs
+NVD keyword 'BigInt Swift': 0 CVEs
+NVD keyword 'minizip': 4 CVEs
+  CVE-2014-9485: not in the Minizip in marmelroy/Zip 2.1.2: miniunz.c, the miniunzip program, which it does not contain (CVE-2014-9485)
+  CVE-2023-45853: APPLIES to the Minizip in marmelroy/Zip 2.1.2: its zip.c has the zipOpenNewFileInZip4_64 pattern, in a write path that Readium never calls (recorded in advisories.md)
+  CVE-2023-48106: not the Minizip in marmelroy/Zip 2.1.2: minizip-ng 4.0.2, a different project (CVE-2023-48106)
+  CVE-2023-48107: not the Minizip in marmelroy/Zip 2.1.2: minizip-ng 4.0.2, a different project (CVE-2023-48107)
+NVD keyword 'Info-ZIP': 21 CVEs
+  CVE-2001-1268: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 5.42 extraction of .. paths
+  CVE-2001-1269: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 5.42 extraction of absolute paths
+  CVE-2004-1010: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): Zip 2.3 recursive compression
+  CVE-2015-1315: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.10b charset conversion in unix/unix.c
+  CVE-2015-7696: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.0 extra-field handling when extracting password-protected archives
+  CVE-2015-7697: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.0 bzip2 handling
+  CVE-2014-9913: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.0 list.c
+  CVE-2016-9844: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.0 zipinfo.c
+  CVE-2018-1000031: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.10c22 program code
+  CVE-2018-1000032: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.10c22 program code
+  CVE-2018-1000033: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.10c22 program code
+  CVE-2018-1000034: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.10c22 program code
+  CVE-2018-1000035: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.00 password handling (its password buffer); crypt.h's functions copy no password
+  CVE-2018-13410: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): Zip 3.0 -T and -TT options
+  CVE-2018-18384: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.0 list.c
+  CVE-2019-13232: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.0 overlapping entries
+  CVE-2014-8139: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.0 CRC32 verification with -t
+  CVE-2014-8140: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.0 test_compr_eb
+  CVE-2014-8141: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): UnZip 6.0 getZip64Data
+  CVE-2026-48961: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): Perl IO::Compress zipdetails
+  CVE-2026-87794: not the Info-ZIP decryption functions in Minizip's crypt.h (decrypt_byte, update_keys, init_keys, crypthead): bestzip (npm), which runs the zip program
+NVD keyword 'uSHET': 0 CVEs
+NVD keyword 'cpp_magic': 0 CVEs
+NVD keyword 'fiat-crypto': 0 CVEs
+NVD keyword 'readium-css': 0 CVEs
+
+## llhttp 9.3.0: OSV (npm) and the GitHub Advisory Database, at that version and at any version
+OSV control: lodash 4.17.15 returned GHSA-p6mc-m468-83gw
+OSV, llhttp 9.3.0: none
+OSV, llhttp at any version: GHSA-5689-v88g-g6rv, GHSA-cggh-pq45-6h9x, GHSA-q5vx-44v4-gch4
+  GHSA-5689-v88g-g6rv: llhttp 9.3.0 is outside the range: llhttp before 6.0.7 (and 2.1.5), CVE-2022-32213
+  GHSA-cggh-pq45-6h9x: llhttp 9.3.0 is outside the range: llhttp before 8.1.1, CVE-2023-30589
+  GHSA-q5vx-44v4-gch4: llhttp 9.3.0 is outside the range: llhttp before 6.0.7 (and 2.1.5), CVE-2022-32214
+GitHub control: lodash@4.17.15 returned GHSA-p6mc-m468-83gw
+GitHub reviewed advisories affecting llhttp@9.3.0: none
+
+## BoringSSL by revision: OSV, which indexes BoringSSL from OSS-Fuzz as git ranges
+OSV control: commit 33b569282ca1, where OSV-2023-41 begins, returned it
+OSV, commit 817ab07ebb53 (BoringSSL in swift-nio-ssl 2.37.5): none
+OSV, commit 0226f30467f5 (BoringSSL in swift-crypto 5.0.0): none
+OSV, OSS-Fuzz boringssl at any revision: OSV-2023-41 (the commit queries above say whether a revision is in their ranges)
+
+## BigInt (attaswift/BigInt), as vendored by CryptoSwift 1.10.0
+CryptoSwift 1.10.0 vendors 22 BigInt files (Sources/CryptoSwift/CS_BigInt besides CS.swift); each compared with the same file in every attaswift/BigInt 5.x and 6.x release, ignoring blank lines, indentation, header comments and the CS wrapper and CS. prefix that CryptoSwift adds:
+  v5.0.0: 14 of 22 files identical; 237 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.1.0: 14 of 22 files identical; 184 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.2.0: 15 of 22 files identical; 72 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.2.1: 15 of 22 files identical; 60 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.3.0: 15 of 22 files identical; 64 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.4.0: 15 of 22 files identical; 59 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.4.1: 15 of 22 files identical; 59 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.5.0: 13 of 22 files identical; 277 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.5.1: 13 of 22 files identical; 318 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.5.2: 13 of 22 files identical; 318 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.6.0: 13 of 22 files identical; 332 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v5.7.0: 13 of 22 files identical; 332 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v6.0.0: 13 of 22 files identical; 332 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  v6.0.1: 13 of 22 files identical; 332 lines differ in the others; LICENSE.md sha256 c3dfd0dca467, identical to the committed text
+  closest: v5.4.0 (59 differing lines); no release matches exactly, so every release above is searched
+OSV control: github.com/marmelroy/Zip 2.1.2 returned GHSA-g454-wj9r-jpg4
+OSV, at the 14 releases above (every spelling): none; at any version: none
+GitHub control: github.com/marmelroy/Zip@2.1.2 returned GHSA-g454-wj9r-jpg4
+GitHub reviewed advisories affecting those releases: none
+
+## Published security advisories of the vendored projects repositories
+control: apple/swift-nio lists GHSA-r3rc-9hpw-54v9 (6 published)
+nodejs/llhttp: 0 published
+attaswift/BigInt: 0 published
+18sg/uSHET: 0 published
+mit-plv/fiat-crypto: 0 published
+readium/readium-css: 0 published
+
+finished 2026-10-14T01:52:58Z; failures: 0

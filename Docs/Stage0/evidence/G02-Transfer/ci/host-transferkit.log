@@ -1,0 +1,296 @@
+environment: host (macOS 26.6.2), swift test
+Fetching https://github.com/apple/swift-asn1.git from cache
+Fetched https://github.com/apple/swift-asn1.git from cache (0.85s)
+Computing version for https://github.com/apple/swift-asn1.git
+Computed https://github.com/apple/swift-asn1.git at 1.7.3 (1.83s)
+Creating working copy for https://github.com/apple/swift-asn1.git
+Working copy of https://github.com/apple/swift-asn1.git resolved at 1.7.3
+Building for debugging...
+[Computing dependencies]
+[Pre-planning 1 / 329]
+[Planning deferred tasks]
+[79 / 161] SylviaTransferKit_SylviaTransferCoreTests
+[80 / 161]
+[81 / 162] SwiftASN1
+[91 / 215]
+[96 / 215]
+[99 / 215]
+[100 / 215]
+[104 / 215]
+[107 / 215]
+[112 / 215]
+[114 / 215]
+[115 / 215]
+[134 / 215] SwiftASN1
+[141 / 216] SylviaTransferCore
+[144 / 230]
+[155 / 230] SylviaTransferCore
+[164 / 231] SylviaTransferClient
+[166 / 241]
+[174 / 241] SylviaTransferClient
+[185 / 242] SwiftASN1
+[185 / 242] SylviaTransferClient
+[185 / 242] SylviaTransferCore
+[194 / 249] SylviaTransferCore
+[199 / 250] SylviaBackgroundTransfer
+[207 / 250] SylviaBackgroundTransfer
+[208 / 259] SylviaBackgroundTransfer
+[214 / 260]
+[222 / 260] SylviaBackgroundTransfer
+[222 / 260] SylviaTransferClientTests-product
+[226 / 264] SylviaTransferClientTests-product
+[226 / 264] SylviaTransferCoreTests-product
+[231 / 264] SylviaTransferCoreTests-product
+[236 / 264] SylviaTransferClientTests-product
+[236 / 264] SylviaTransferCoreTests-product
+[238 / 264] SylviaBackgroundTransfer
+[244 / 265] SylviaTransferCoreTests-product
+[248 / 265] SylviaBackgroundTransferTests-product
+[253 / 270] SylviaBackgroundTransferTests-product
+[255 / 270] SylviaTransferCoreTests-product
+[260 / 270] SylviaTransferCoreTests-product
+[264 / 270] SylviaBackgroundTransferTests-product
+[266 / 270] SylviaBackgroundTransferTests-product
+Build complete! (9.96 sec)
+Test Suite 'All tests' started at 2026-10-13 10:00:19.471.
+Test Suite 'All tests' passed at 2026-10-13 10:00:19.472.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'All tests' started at 2026-10-13 10:00:20.255.
+Test Suite 'All tests' passed at 2026-10-13 10:00:20.256.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'All tests' started at 2026-10-13 10:00:20.700.
+Test Suite 'All tests' passed at 2026-10-13 10:00:20.706.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.006) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Manifest validation (A.3)" started.
+◇ Suite "Part state machine" started.
+◇ Suite "SPKI pin and fingerprint (15.2)" started.
+◇ Suite "Pairing payload codec (15.2)" started.
+◇ Suite "Part plan, Range and response validation (15.4)" started.
+◇ Suite "Encodings and wire models" started.
+◇ Test rejectsGroupingCoverAndAssetListProblems() started.
+◇ Test everyInvalidContractFixtureIsRejectedBySwiftToo() started.
+◇ Test rejectsDuplicatePart() started.
+◇ Test rejectsMissingFinalBytesAndInconsistentTotalLength() started.
+◇ Test rejectsInconsistentPartSizes() started.
+◇ Test semanticInvalidSetIsComplete() started.
+◇ Test semanticInvalidFixture(name:reason:) started.
+◇ Test rejectsZeroLengthFile() started.
+◇ Test everyValidContractFixturePassesTheSwiftValidator() started.
+◇ Test rejectsUnsupportedMajorVersionBeforeDecodingTheRest() started.
+◇ Test rejectsWrongSourceItemAndIdentifiers() started.
+◇ Test rejectsWeakETagsBadDigestsAndPathLikeNames() started.
+◇ Test limitsPartCounts() started.
+◇ Test manifestDigestIsReproducibleAndCoversPartLayout() started.
+◇ Test acceptsValidSingleAndGroupManifests() started.
+◇ Test rejectsOverlappingPartsAndGaps() started.
+◇ Test versionChangeInvalidates() started.
+◇ Test happyPathAndRetry() started.
+◇ Test digestFailureAfterReceiving() started.
+◇ Test illegalTransitionsAreRefused() started.
+◇ Test fingerprintIsUppercaseGroupsOfFour() started.
+◇ Test differentKeysDoNotMatch() started.
+◇ Test malformedCertificatesAreRejected() started.
+◇ Test matchesOpenSSLComputedPin(name:) started.
+◇ Test malformedAndForeignInputsAreRefused() started.
+◇ Test contractFixturesDecode() started.
+◇ Test expiredInvitationIsRefusedLocally() started.
+◇ Test codeAndLinkRoundTrip() started.
+◇ Test secretHasAtLeast128Bits() started.
+◇ Test endpointsAndVersionsAreValidated() started.
+◇ Test bodyValidation() started.
+◇ Test resolvesRangesAgainstLength() started.
+◇ Test contentRangeRoundTrip() started.
+◇ Test partPlanFor5GiBAt16MiB() started.
+◇ Test recoveryPathForEachFailure() started.
+◇ Test partPlanWithShortFinalPart() started.
+◇ Test strongETags() started.
+◇ Test classifiesEveryUnsafeResponse() started.
+◇ Test acceptsExactPartialContent() started.
+◇ Test validFixturesRoundTrip(schema:) started.
+◇ Test hexAndIdentifiers() started.
+◇ Test base64URLIsCanonicalAndUnpadded() started.
+◇ Test timestamps() started.
+◇ Test capabilitiesNegotiation() started.
+◇ Test parsesSingleRanges() started.
+◇ Test case passing 2 arguments name → "duplicate-part", reason → "duplicatePart" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "overlapping-parts", reason → "overlappingParts" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "gap-between-parts", reason → "gapBetweenParts" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "missing-final-bytes", reason → "missingFinalBytes" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "inconsistent-total-length", reason → "missingFinalBytes" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "parts-exceed-length", reason → "partsExceedLength" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "short-non-final-part", reason → "partSizeInconsistent" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "parts-out-of-order", reason → "partOrderInvalid" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "cover-not-in-assets", reason → "coverNotInAssets" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "single-with-two-assets", reason → "groupingMismatch" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "manifest-digest-mismatch", reason → "manifestDigestMismatch" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "duplicate-asset-id", reason → "duplicateAsset" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "ordinal-not-array-position", reason → "assetOrderInvalid" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 2 arguments name → "different-source", reason → "sourceMismatch" to semanticInvalidFixture(name:reason:) started.
+◇ Test case passing 1 argument name → "p256" to matchesOpenSSLComputedPin(name:) started.
+◇ Test case passing 1 argument name → "p384" to matchesOpenSSLComputedPin(name:) started.
+◇ Test case passing 1 argument name → "rsa2048" to matchesOpenSSLComputedPin(name:) started.
+◇ Test case passing 1 argument schema → "capabilities" to validFixturesRoundTrip(schema:) started.
+◇ Test case passing 1 argument schema → "pair-request" to validFixturesRoundTrip(schema:) started.
+◇ Test case passing 1 argument schema → "pair-response" to validFixturesRoundTrip(schema:) started.
+◇ Test case passing 1 argument schema → "catalog-page" to validFixturesRoundTrip(schema:) started.
+◇ Test case passing 1 argument schema → "device-inbox-page" to validFixturesRoundTrip(schema:) started.
+◇ Test case passing 1 argument schema → "receipt" to validFixturesRoundTrip(schema:) started.
+◇ Test case passing 1 argument schema → "error" to validFixturesRoundTrip(schema:) started.
+◇ Test case passing 1 argument schema → "pairing-payload" to validFixturesRoundTrip(schema:) started.
+◇ Test case passing 1 argument schema → "transfer-manifest" to validFixturesRoundTrip(schema:) started.
+✔ Test rejectsGroupingCoverAndAssetListProblems() passed after 0.814 seconds.
+✔ Test rejectsDuplicatePart() passed after 0.814 seconds.
+✔ Test rejectsMissingFinalBytesAndInconsistentTotalLength() passed after 0.814 seconds.
+✔ Test semanticInvalidSetIsComplete() passed after 0.814 seconds.
+✔ Test everyInvalidContractFixtureIsRejectedBySwiftToo() passed after 0.815 seconds.
+✔ Test rejectsInconsistentPartSizes() passed after 0.814 seconds.
+✔ Test versionChangeInvalidates() passed after 0.814 seconds.
+✔ Test happyPathAndRetry() passed after 0.814 seconds.
+✔ Test digestFailureAfterReceiving() passed after 0.814 seconds.
+✔ Test illegalTransitionsAreRefused() passed after 0.814 seconds.
+✔ Test fingerprintIsUppercaseGroupsOfFour() passed after 0.814 seconds.
+✔ Test malformedCertificatesAreRejected() passed after 0.814 seconds.
+✔ Test differentKeysDoNotMatch() passed after 0.814 seconds.
+✔ Test matchesOpenSSLComputedPin(name:) with 3 test cases passed after 0.814 seconds.
+✔ Test malformedAndForeignInputsAreRefused() passed after 0.814 seconds.
+✔ Test contractFixturesDecode() passed after 0.814 seconds.
+✔ Test expiredInvitationIsRefusedLocally() passed after 0.814 seconds.
+✔ Test secretHasAtLeast128Bits() passed after 0.814 seconds.
+✔ Test codeAndLinkRoundTrip() passed after 0.814 seconds.
+✔ Test endpointsAndVersionsAreValidated() passed after 0.814 seconds.
+✔ Test rejectsUnsupportedMajorVersionBeforeDecodingTheRest() passed after 0.814 seconds.
+✔ Test rejectsWrongSourceItemAndIdentifiers() passed after 0.814 seconds.
+✔ Test validFixturesRoundTrip(schema:) with 9 test cases passed after 0.814 seconds.
+✔ Test hexAndIdentifiers() passed after 0.814 seconds.
+✔ Test base64URLIsCanonicalAndUnpadded() passed after 0.814 seconds.
+✔ Test timestamps() passed after 0.814 seconds.
+✔ Test capabilitiesNegotiation() passed after 0.814 seconds.
+✔ Test rejectsWeakETagsBadDigestsAndPathLikeNames() passed after 0.814 seconds.
+✔ Suite "Part state machine" passed after 0.815 seconds.
+✔ Suite "SPKI pin and fingerprint (15.2)" passed after 0.815 seconds.
+✔ Suite "Pairing payload codec (15.2)" passed after 0.815 seconds.
+✔ Suite "Encodings and wire models" passed after 0.815 seconds.
+✔ Test semanticInvalidFixture(name:reason:) with 14 test cases passed after 0.820 seconds.
+✔ Test rejectsZeroLengthFile() passed after 0.821 seconds.
+✔ Test limitsPartCounts() passed after 0.833 seconds.
+✔ Test manifestDigestIsReproducibleAndCoversPartLayout() passed after 0.837 seconds.
+✔ Test everyValidContractFixturePassesTheSwiftValidator() passed after 0.839 seconds.
+✔ Test rejectsOverlappingPartsAndGaps() passed after 0.848 seconds.
+✔ Test partPlanFor5GiBAt16MiB() passed after 0.966 seconds.
+✔ Test bodyValidation() passed after 0.967 seconds.
+✔ Test contentRangeRoundTrip() passed after 0.976 seconds.
+✔ Test partPlanWithShortFinalPart() passed after 0.980 seconds.
+✔ Test recoveryPathForEachFailure() passed after 0.987 seconds.
+✔ Test resolvesRangesAgainstLength() passed after 0.990 seconds.
+✔ Test strongETags() passed after 0.999 seconds.
+✔ Test acceptsExactPartialContent() passed after 1.133 seconds.
+✔ Test classifiesEveryUnsafeResponse() passed after 1.138 seconds.
+✔ Test acceptsValidSingleAndGroupManifests() passed after 1.151 seconds.
+✔ Suite "Manifest validation (A.3)" passed after 1.152 seconds.
+✔ Test parsesSingleRanges() passed after 1.158 seconds.
+✔ Suite "Part plan, Range and response validation (15.4)" passed after 1.158 seconds.
+✔ Test run with 45 tests in 6 suites passed after 1.159 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Local network permission check (R2-03)" started.
+◇ Suite "Part staging store (15.4, 15.5)" started.
+◇ Test aListeningMacIsNotADenial() started.
+◇ Test versionChangeKeepsOnlyIdenticalParts() started.
+◇ Test refusesBytesThatDoNotMatchThePart() started.
+◇ Test aRefusedConnectionIsNotADenial() started.
+◇ Test finalDigestMismatchHandsNothingOff() started.
+◇ Test onlyNetworkFailuresAreReclassified() started.
+◇ Test resumeKeepsVerifiedPartsAndDropsUnverifiedIncoming() started.
+◇ Test stopBetweenFinalMoveAndJournalKeepsTheVerifiedParts() started.
+◇ Test inMemoryCredentialStore() started.
+◇ Test resumeDetectsDamagedOrMissingStagedBytes() started.
+◇ Test commitsVerifiedPartsAndFinalizes() started.
+✔ Test onlyNetworkFailuresAreReclassified() passed after 0.001 seconds.
+✔ Test inMemoryCredentialStore() passed after 0.001 seconds.
+✔ Test aListeningMacIsNotADenial() passed after 0.002 seconds.
+✔ Test aRefusedConnectionIsNotADenial() passed after 0.003 seconds.
+✔ Suite "Local network permission check (R2-03)" passed after 0.003 seconds.
+✔ Test refusesBytesThatDoNotMatchThePart() passed after 0.231 seconds.
+✔ Test finalDigestMismatchHandsNothingOff() passed after 0.236 seconds.
+✔ Test stopBetweenFinalMoveAndJournalKeepsTheVerifiedParts() passed after 0.243 seconds.
+✔ Test commitsVerifiedPartsAndFinalizes() passed after 0.329 seconds.
+✔ Test resumeDetectsDamagedOrMissingStagedBytes() passed after 0.333 seconds.
+✔ Test resumeKeepsVerifiedPartsAndDropsUnverifiedIncoming() passed after 0.428 seconds.
+✔ Test versionChangeKeepsOnlyIdenticalParts() passed after 0.436 seconds.
+✔ Suite "Part staging store (15.4, 15.5)" passed after 0.436 seconds.
+✔ Test run with 11 tests in 2 suites passed after 0.436 seconds.
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Launch reconciliation planner (6.4, 15.5, T41)" started.
+◇ Suite "Task descriptors carry IDs only (15.5)" started.
+◇ Suite "Stores that cannot be read (R1-04)" started.
+◇ Suite "Received versus verified wording (15.5)" started.
+◇ Suite "Job store and durable files" started.
+◇ Suite "Stub importer: exactly-once handoff (T38 single import)" started.
+◇ Test revokedOrLockedCredentialBlocksWithoutTouchingVerifiedParts() started.
+◇ Test cancelsForeignUnknownVerifiedAndDuplicateTasks() started.
+◇ Test pausedAndFinishedJobsGetNoTasks() started.
+◇ Test completeAssemblingAndReadyJobsAreFinishedNotRefetched() started.
+◇ Test windowIsNeverExceededAndAllPartsEventuallyCovered() started.
+◇ Test unreadableManifestBlocksAndCancels() started.
+◇ Test damagedSourcesFileIsReportedAndKept() started.
+◇ Test pairedSourcesThatCannotBeReadAreNeitherListedNorOverwritten() started.
+◇ Test plansExampleAndRoundingNeverClaimsCompletion() started.
+◇ Test importLedgerThatCannotBeReadRefusesToImport() started.
+◇ Test roundTrips() started.
+◇ Test receivedAndVerifiedAreDistinct() started.
+◇ Test jobsRoundTripAndUnreadableFoldersAreReportedNotDeleted() started.
+◇ Test jobRecordThatCannotBeReadIsInaccessibleNotUnreadable() started.
+◇ Test rejectsAnythingElse(_:) started.
+◇ Test missingVerifiedFileIsAnErrorNotAnEmptyImport() started.
+◇ Test aStopAtAnyPointIsCompletedByTheNextCallExactlyOnce(_:) started.
+◇ Test refetchesOnlyMissingPartsAndAdoptsRunningTasks() started.
+◇ Test outOfSpaceErrorsAreRecognizedInEveryShape() started.
+◇ Test importsOnceAndCountsLaterCallsAsDuplicates() started.
+◇ Test case passing 1 argument text → nil to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument point → "after_intent" to aStopAtAnyPointIsCompletedByTheNextCallExactlyOnce(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/2 job=11111111-2222-4333-8444-555555555555 asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee part=1 attempt=1" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument point → "after_move:first" to aStopAtAnyPointIsCompletedByTheNextCallExactlyOnce(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1 job=11111111-2222-4333-8444-555555555555 asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee part=1" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1 job=11111111-2222-4333-8444-555555555555 asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee part=-1 attempt=1" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1 job=11111111-2222-4333-8444-555555555555 asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee part=01 attempt=1" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1 job=11111111-2222-4333-8444-555555555555 asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee part=1 attempt=0" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1 job=11111111-2222-4333-8444-555555555555 asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee part=1 attempt=1 token=x" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1 job=11111111-2222-4333-8444-555555555555 asset=AAAAAAAA-BBBB-4CCC-8DDD-EEEEEEEEEEEE part=1 attempt=1" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1 asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee job=11111111-2222-4333-8444-555555555555 part=1 attempt=1" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1  job=11111111-2222-4333-8444-555555555555 asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee part=1 attempt=1" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1 job=../../etc asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee part=1 attempt=1" to rejectsAnythingElse(_:) started.
+◇ Test case passing 1 argument text → "sylvia-xfer/1 job=11111111-2222-4333-8444-555555555555 asset=aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee part=99999 attempt=1" to rejectsAnythingElse(_:) started.
+✔ Test plansExampleAndRoundingNeverClaimsCompletion() passed after 0.001 seconds.
+✔ Test completeAssemblingAndReadyJobsAreFinishedNotRefetched() passed after 0.001 seconds.
+✔ Test roundTrips() passed after 0.001 seconds.
+✔ Test receivedAndVerifiedAreDistinct() passed after 0.001 seconds.
+✔ Test unreadableManifestBlocksAndCancels() passed after 0.001 seconds.
+✔ Test revokedOrLockedCredentialBlocksWithoutTouchingVerifiedParts() passed after 0.001 seconds.
+✔ Test pausedAndFinishedJobsGetNoTasks() passed after 0.001 seconds.
+✔ Test refetchesOnlyMissingPartsAndAdoptsRunningTasks() passed after 0.001 seconds.
+✔ Test cancelsForeignUnknownVerifiedAndDuplicateTasks() passed after 0.001 seconds.
+✔ Suite "Received versus verified wording (15.5)" passed after 0.001 seconds.
+✔ Test rejectsAnythingElse(_:) with 13 test cases passed after 0.001 seconds.
+✔ Suite "Task descriptors carry IDs only (15.5)" passed after 0.001 seconds.
+✔ Test windowIsNeverExceededAndAllPartsEventuallyCovered() passed after 0.001 seconds.
+✔ Suite "Launch reconciliation planner (6.4, 15.5, T41)" passed after 0.001 seconds.
+✔ Test outOfSpaceErrorsAreRecognizedInEveryShape() passed after 0.001 seconds.
+✔ Test damagedSourcesFileIsReportedAndKept() passed after 0.004 seconds.
+✔ Test jobRecordThatCannotBeReadIsInaccessibleNotUnreadable() passed after 0.010 seconds.
+✔ Test pairedSourcesThatCannotBeReadAreNeitherListedNorOverwritten() passed after 0.011 seconds.
+✔ Test jobsRoundTripAndUnreadableFoldersAreReportedNotDeleted() passed after 0.011 seconds.
+✔ Suite "Job store and durable files" passed after 0.011 seconds.
+✔ Test missingVerifiedFileIsAnErrorNotAnEmptyImport() passed after 0.011 seconds.
+✔ Test importLedgerThatCannotBeReadRefusesToImport() passed after 0.013 seconds.
+✔ Suite "Stores that cannot be read (R1-04)" passed after 0.013 seconds.
+✔ Test aStopAtAnyPointIsCompletedByTheNextCallExactlyOnce(_:) with 2 test cases passed after 0.017 seconds.
+✔ Test importsOnceAndCountsLaterCallsAsDuplicates() passed after 0.017 seconds.
+✔ Suite "Stub importer: exactly-once handoff (T38 single import)" passed after 0.017 seconds.
+✔ Test run with 20 tests in 6 suites passed after 0.017 seconds.

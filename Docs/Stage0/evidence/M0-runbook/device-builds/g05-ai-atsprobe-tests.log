@@ -1,0 +1,66 @@
+# check: g05-ai-atsprobe-tests
+# expected on this Mac (stated before the run): pass
+# note: G05-AI checklist steps 1-4 (xcodebuild test with the device signing flags), as build-for-testing.
+# commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+# environment: host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+# started: 2026-10-14T06:47:49Z; load at start: 7.93 4.35 2.90
+# command (from the repository root):
+#   bash -c $'cd Spikes/G05-AI/ATSProbe && exec xcodebuild build-for-testing -project G05ATSProbe.xcodeproj -scheme G05ATSProbe \\\n      -destination generic/platform=iOS -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution \\\n      DEVELOPMENT_TEAM="$0" CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY="Apple Development"' A4KBDX665Z 
+# finished: 2026-10-14T06:48:03Z after 14 s; exit status 0; load at end: 11.18 5.23 3.24
+--- result lines
+** TEST BUILD SUCCEEDED **
+--- error lines (0 in all; first 40 unique)
+--- signing lines (first 20 unique)
+Provisioning Profile: "iOS Team Provisioning Profile: *"
+Signing Identity:     "Apple Development: JUSTIN EVIDON (8CRWY2K873)"
+--- warning count: 11 (first 20 unique)
+2026-10-14 19:47:59.075 appintentsmetadataprocessor[94085:35841894] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:02.556 appintentsmetadataprocessor[94272:35842793] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:02.556 appintentsmetadataprocessor[94273:35842804] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:02.564 appintentsmetadataprocessor[94274:35842809] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:02.692 appintentsmetadataprocessor[94302:35842921] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:02.692 appintentsmetadataprocessor[94304:35842923] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:02.693 appintentsmetadataprocessor[94306:35842925] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-14 19:48:03.008 appintentsmetadataprocessor[94331:35843049] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+--- last 15 lines of the output
+    cd Spikes/G05-AI/ATSProbe
+    builtin-RegisterExecutionPolicyException Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphoneos/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest
+
+Touch Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphoneos/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest (in target 'ProbeDefaultATSUITests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    /usr/bin/touch -c Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphoneos/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+** TEST BUILD SUCCEEDED **
+
+--- codesign checks of the products (in Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphoneos)
+== ProbeDefaultATS.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.atsprobe.default
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+== ProbeLocalNetworking.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.atsprobe.local
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+== ProbeCIDRException.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.atsprobe.cidr
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+# result: pass; expected: pass; as expected: yes

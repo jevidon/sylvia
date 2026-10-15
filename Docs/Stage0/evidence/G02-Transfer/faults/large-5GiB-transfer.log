@@ -1,0 +1,16 @@
+environment: host (macOS Version 26.6.2 (Build 25G83)), in-process source and client, TLS on 127.0.0.1
+file: generate-g02-transfer-large.sh output, 5368709120 bytes, sha256 d2383fe38d8033b62ef9e6222756369fab813d2c64b2bce41e86ad9494af16d9
+part size 16777216 bytes, 320 parts, engine concurrency 2
+faults: connection dropped after 5 MiB on first attempt of 8 parts [7, 47, 87, 127, 167, 207, 247, 287]; one byte flipped on first attempt of 3 parts [50, 147, 244]
+client restarts: 2 (engine cancelled after [100, 220] verified parts, new engine resumed from the journal)
+content requests: 333 for 320 parts; 13 parts fetched more than once; 13 extra requests
+  of which 11 for the 11 faulted parts and 2 for parts in flight when an engine was cancelled for a restart (that number depends on timing and varies between runs)
+parts verified before each interruption and fetched again afterwards: 0 (asserted)
+result: ready; handed-off file re-hashed independently: matches
+elapsed: 13.1 s (390 MiB/s including server preparation and three full-file hashes)
+load averages (1, 5, 15 min): 147.47 100.19 62.53 at the start, 117.42 95.87 61.64 at the end (timings under parallel load are indicative only)
+memory (proc_pid_rusage, whole test process: source + client):
+  phys_footprint before: 8 MiB; peak sampled every 50 ms during transfer: 123 MiB; after: 123 MiB
+  growth at peak: 115 MiB (bound asserted: < 256 MiB)
+  resident size peak sampled: 165 MiB
+  kernel lifetime maximum phys_footprint of the process: 123 MiB

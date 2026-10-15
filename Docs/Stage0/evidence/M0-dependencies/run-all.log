@@ -1,0 +1,81 @@
+run-all started 2026-10-14T01:43:33Z at commit cfc5dea3d616b477733d76e1d3ab0d215d513f20
+load: 14:43  up 11 days, 54 mins, 1 user, load averages: 8.58 14.41 15.95
+ok    toolchain (3 s) -> Docs/Stage0/evidence/M0-dependencies/toolchain.log
+ok    resolve-locks (10 s) -> Docs/Stage0/evidence/M0-dependencies/resolve-locks.log
+ok    transitive-modules (2 s) -> Docs/Stage0/evidence/M0-dependencies/transitive-modules.log
+ok    read-licenses (2 s) -> Docs/Stage0/evidence/M0-dependencies/read-licenses.log
+ok    vendored-headers (4 s) -> Docs/Stage0/evidence/M0-dependencies/vendored-headers.log
+ok    copyright-lines (0 s) -> Docs/Stage0/evidence/M0-dependencies/copyright-lines.log
+ok    font-names (1 s) -> Docs/Stage0/evidence/M0-dependencies/font-names.log
+ok    readium-js-closure (0 s) -> Docs/Stage0/evidence/M0-dependencies/readium-js-closure.log
+ok    privacy-manifests (0 s) -> Docs/Stage0/evidence/M0-dependencies/privacy-manifests.log
+ok    extract-notices (0 s) -> Docs/Stage0/evidence/M0-dependencies/extract-notices.log
+ok    fetch-external-licenses (45 s) -> Docs/Stage0/evidence/M0-dependencies/fetch-external-licenses.log
+ok    fetch-npm-licenses (20 s) -> Docs/Stage0/evidence/M0-dependencies/fetch-npm-licenses.log
+ok    advisories-search (263 s) -> Docs/Stage0/evidence/M0-dependencies/advisories-search.log
+ok    vendored-advisories (215 s) -> Docs/Stage0/evidence/M0-dependencies/vendored-advisories.log
+ok    readium-css-provenance (203 s) -> Docs/Stage0/evidence/M0-dependencies/readium-css-provenance.log
+ok    xcode-settings (0 s) -> Docs/Stage0/evidence/M0-dependencies/xcode-settings.log
+ok    linkage (15 s) -> Docs/Stage0/evidence/M0-dependencies/linkage.log
+ok    xcodegen-requirements (0 s) -> Docs/Stage0/evidence/M0-dependencies/xcodegen-requirements.log
+ok    fixtures-crosscheck (0 s) -> Docs/Stage0/evidence/M0-dependencies/fixtures-crosscheck.log
+ok    round1-reproductions (148 s) -> Docs/Stage0/evidence/M0-dependencies/round1-reproductions.log
+ok    round2-reproductions (308 s) -> Docs/Stage0/evidence/M0-dependencies/round2-reproductions.log
+ok    round3-reproductions (321 s) -> Docs/Stage0/evidence/M0-dependencies/round3-reproductions.log
+
+texts under Docs/Licenses/texts compared with what the commands produced in this run:
+  identical: apple__swift-nio/LICENSE.txt (copied from the pinned checkout)
+  identical: apple__swift-nio/NOTICE.txt (copied from the pinned checkout)
+  apple__swift-nio/Sources__CNIOAtomics__src__cpp_magic.h__notice: extracted from a source file (extract-notices.log compares it)
+  identical: apple__swift-nio/Sources__CNIOLLHTTP__LICENSE (copied from the pinned checkout)
+  identical: apple__swift-nio/external__uSHET-c09e0acafd86720efe42dc15c63e0cc228244c32__LICENSE (fetched)
+  identical: readium__zipfoundation/LICENSE (copied from the pinned checkout)
+  readium__zipfoundation/Sources__ZIPFoundation__DataSource.swift__notice: extracted from a source file (extract-notices.log compares it)
+  identical: weichsel__zipfoundation/LICENSE (copied from the pinned checkout)
+  identical: ra1028__differencekit/LICENSE (copied from the pinned checkout)
+  identical: stephencelis__sqlite.swift/LICENSE.txt (copied from the pinned checkout)
+  identical: apple__swift-atomics/LICENSE.txt (copied from the pinned checkout)
+  identical: readium__gcdwebserver/LICENSE (copied from the pinned checkout)
+  identical: readium__swift-toolkit/LICENSE (copied from the pinned checkout)
+  identical: readium__swift-toolkit/Sources__Navigator__EPUB__Assets__Static__readium-css__fonts__LICENSE-AccessibleDfa (copied from the pinned checkout)
+  identical: readium__swift-toolkit/Sources__Navigator__EPUB__Assets__Static__readium-css__fonts__LICENSE-IaWriterDuospace.md (copied from the pinned checkout)
+  readium__swift-toolkit/Sources__Streamer__Toolkit__DataCompression.swift__notice: extracted from a source file (extract-notices.log compares it)
+  identical: readium__swift-toolkit/external__hypothesis-client-v1.1763.0__LICENSE (fetched)
+  identical: readium__swift-toolkit/external__navigator-scripts-npm-licenses.txt (fetched)
+  identical: readium__swift-toolkit/external__readium-css-1ba225fecf1e63e6cccc93e1f4a50107e56f93e5__LICENSE (fetched)
+  identical: pointfreeco__swift-custom-dump/LICENSE (copied from the pinned checkout)
+  identical: apple__swift-certificates/LICENSE.txt (copied from the pinned checkout)
+  identical: apple__swift-certificates/NOTICE.txt (copied from the pinned checkout)
+  apple__swift-certificates/Sources__X509__X509BaseTypes__TimeCalculations.swift__notice: extracted from a source file (extract-notices.log compares it)
+  identical: swiftlang__swift-syntax/LICENSE.txt (copied from the pinned checkout)
+  identical: apple__swift-asn1/LICENSE.txt (copied from the pinned checkout)
+  identical: apple__swift-asn1/NOTICE.txt (copied from the pinned checkout)
+  identical: pointfreeco__swift-snapshot-testing/LICENSE (copied from the pinned checkout)
+  identical: apple__swift-crypto/LICENSE.txt (copied from the pinned checkout)
+  identical: apple__swift-crypto/NOTICE.txt (copied from the pinned checkout)
+  identical: apple__swift-crypto/external__boringssl-0226f30467f540a3f62ef48d453f93927da199b6__LICENSE (fetched)
+  identical: apple__swift-crypto/external__boringssl-0226f30467f540a3f62ef48d453f93927da199b6__third_party__fiat__LICENSE (fetched)
+  identical: apple__swift-collections/LICENSE.txt (copied from the pinned checkout)
+  groue__grdb.swift/GRDB__Core__Cursor.swift__notice: extracted from a source file (extract-notices.log compares it)
+  groue__grdb.swift/GRDB__Utils__Inflections+English.swift__notice: extracted from a source file (extract-notices.log compares it)
+  identical: groue__grdb.swift/LICENSE (copied from the pinned checkout)
+  identical: apple__swift-nio-ssl/LICENSE.txt (copied from the pinned checkout)
+  identical: apple__swift-nio-ssl/NOTICE.txt (copied from the pinned checkout)
+  identical: apple__swift-nio-ssl/external__boringssl-817ab07ebb53da35afea409ab9328f578492832d__LICENSE (fetched)
+  identical: marmelroy__zip/LICENSE (copied from the pinned checkout)
+  marmelroy__zip/Zip__minizip__include__crypt.h__header-comment: extracted from a source file (extract-notices.log compares it)
+  marmelroy__zip/Zip__minizip__unzip.c__header-comment: extracted from a source file (extract-notices.log compares it)
+  identical: marmelroy__zip/external__infozip-license-2009-Jan-02.txt (fetched)
+  identical: marmelroy__zip/external__zlib-v1.3.1__LICENSE (fetched)
+  identical: pointfreeco__swift-issue-reporting/LICENSE (copied from the pinned checkout)
+  identical: readium__fuzi/LICENSE (copied from the pinned checkout)
+  identical: krzyzanowskim__cryptoswift/LICENSE (copied from the pinned checkout)
+  krzyzanowskim__cryptoswift/Sources__CryptoSwift__CS_BigInt__GCD.swift__notice: extracted from a source file (extract-notices.log compares it)
+  identical: krzyzanowskim__cryptoswift/external__attaswift-BigInt-v5.3.0__LICENSE.md (fetched)
+  identical: apple__swift-system/LICENSE.txt (copied from the pinned checkout)
+  identical: scinfu__swiftsoup/LICENSE (copied from the pinned checkout)
+  scinfu__swiftsoup/Sources__LRUCache.swift__notice: extracted from a source file (extract-notices.log compares it)
+  51 committed texts; 0 differ; 0 copied but not committed
+
+run-all finished 2026-10-14T02:09:33Z; failures: 0
+load: 15:09  up 11 days,  1:20, 1 user, load averages: 7.40 7.98 8.91

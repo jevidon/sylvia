@@ -1,0 +1,109 @@
+# G0.3 intake spike: harness app + share extension + tests (ADR-0010).
+# Stage 0 harness only; never shipped. Generate with `sylvia_generate Spikes/G03-Intake/App`.
+name: G03Intake
+options:
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    MARKETING_VERSION: "0.1"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    # Simulator builds are signed to run locally; entitlements (the App Group) are still applied.
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    DEVELOPMENT_TEAM: ""
+packages:
+  IntakeKit:
+    path: ../IntakeKit
+targets:
+  IntakeHarness:
+    type: application
+    platform: iOS
+    sources:
+      - path: Harness
+    dependencies:
+      - target: IntakeShare
+        embed: true
+      - package: IntakeKit
+        product: SylviaImportHandoff
+      - package: IntakeKit
+        product: SylviaPack
+      - package: IntakeKit
+        product: SylviaContainerLayout
+      - package: IntakeKit
+        product: SylviaIntakeCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.intake
+        PRODUCT_NAME: IntakeHarness
+        INFOPLIST_FILE: Harness/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: Harness/IntakeHarness.entitlements
+  IntakeShare:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: ShareExtension
+    dependencies:
+      - package: IntakeKit
+        product: SylviaImportHandoff
+      - package: IntakeKit
+        product: SylviaIntakeCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.intake.share
+        PRODUCT_NAME: IntakeShare
+        INFOPLIST_FILE: ShareExtension/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: ShareExtension/IntakeShare.entitlements
+        APPLICATION_EXTENSION_API_ONLY: YES
+  IntakeHarnessTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/Unit
+    dependencies:
+      - target: IntakeHarness
+      - package: IntakeKit
+        product: SylviaImportHandoff
+      - package: IntakeKit
+        product: SylviaPack
+      - package: IntakeKit
+        product: SylviaContainerLayout
+      - package: IntakeKit
+        product: SylviaIntakeCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.intake.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/IntakeHarness.app/IntakeHarness"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+  IntakeHarnessUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/UI
+    dependencies:
+      - target: IntakeHarness
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.intake.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: IntakeHarness
+schemes:
+  IntakeHarness:
+    build:
+      targets:
+        IntakeHarness: all
+        IntakeShare: all
+    test:
+      targets:
+        - IntakeHarnessTests
+        - IntakeHarnessUITests

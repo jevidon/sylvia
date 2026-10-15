@@ -1,0 +1,829 @@
+{
+  "schema_version": 1,
+  "description": "Sylvia third-party inventory and dependency lock (ADR-0014). Scripts/check-dependency-lock.py checks the repository against this file in CI (Scripts/ci.d/12-dependency-lock.sh). Human-readable form: Docs/Licenses/third-party-inventory.md. Change this file in the same commit as any Package.swift, project.yml, Package.resolved, vendored asset, Python requirement or workflow action change (ADR-0014, update procedure).",
+  "as_of": "2026-10-14",
+  "adr": "Docs/ADRs/0014-dependency-lock-and-license-inventory.md",
+  "roots": {
+    "product": ["Apps", "Packages"],
+    "spike": ["Spikes"]
+  },
+  "roles": {
+    "product": "Recommended for product use from M1 (subject to its owning ADR's approval). A product target may depend on it directly.",
+    "product-transitive": "Reaches product graphs only through another product package. Allowed in product locks; a product manifest must not depend on it directly.",
+    "test": "Only test targets may depend on it. Allowed in product locks; never linked into a shipped binary.",
+    "spike": "Stage 0 evaluation only. Must not appear in any manifest or lock under Apps/ or Packages/."
+  },
+  "toolchain": {
+    "xcode": {"version": "27.0", "build": "27A266a"},
+    "swift": "6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+    "xcodegen": "2.46.0",
+    "sdks": ["iOS 27.0", "iOS Simulator 27.0", "macOS 27.0"],
+    "simulator_runtimes": ["iOS 26.5 (23F77)", "iOS 27.0 (24A434)"],
+    "deployment_targets": {"iOS": "26.0", "macOS": "26.0"},
+    "host": "macOS 26.6.2 (25G83), Apple M5 Max",
+    "owning_adr": "0001",
+    "evidence": "Docs/Stage0/evidence/M0-dependencies/toolchain.log"
+  },
+  "locks": [
+    {"path": "Apps/DesignCatalog/Package.resolved", "manifest": "Apps/DesignCatalog/project.yml", "note": "A copy of Packages/Design/Package.resolved, which sylvia_generate installs into the generated project: Xcode writes no lock for a project whose only package is local (ADR-0013)."},
+    {"path": "Packages/Design/Package.resolved", "manifest": "Packages/Design/Package.swift"},
+    {"path": "Spikes/G01-EPUB/Package.resolved", "manifest": "Spikes/G01-EPUB/project.yml"},
+    {"path": "Spikes/G01-EPUB/Core/Package.resolved", "manifest": "Spikes/G01-EPUB/Core/Package.swift"},
+    {"path": "Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "manifest": "Spikes/G02-Transfer/MacIdentityProbe/project.yml", "note": "A copy of Spikes/G02-Transfer/SourceService/Package.resolved, which sylvia_generate installs into the generated project: Xcode writes no lock for a project whose only package is the local ../SourceService. Committed by G0.2 on m0-int-minors-g02-transfer (ADR-0014 request); the package-locks step of Scripts/ci.d/40-g02-transfer.sh checks that it equals that lock."},
+    {"path": "Spikes/G02-Transfer/SourceService/Package.resolved", "manifest": "Spikes/G02-Transfer/SourceService/Package.swift"},
+    {"path": "Spikes/G02-Transfer/TransferKit/Package.resolved", "manifest": "Spikes/G02-Transfer/TransferKit/Package.swift"},
+    {"path": "Spikes/G02-Transfer/iOS/Package.resolved", "manifest": "Spikes/G02-Transfer/iOS/project.yml", "note": "A copy of Spikes/G02-Transfer/TransferKit/Package.resolved, which sylvia_generate installs into the generated project: Xcode writes no lock for a project whose only package is the local ../TransferKit. Committed by G0.2 on m0-int-minors-g02-transfer (ADR-0014 request); the package-locks step of Scripts/ci.d/40-g02-transfer.sh checks that it equals that lock."},
+    {"path": "Spikes/G03-Intake/App/Package.resolved", "manifest": "Spikes/G03-Intake/App/project.yml"},
+    {"path": "Spikes/G03-Intake/IntakeKit/Package.resolved", "manifest": "Spikes/G03-Intake/IntakeKit/Package.swift"},
+    {"path": "Spikes/G03-Intake/ZipEval/Readium/Package.resolved", "manifest": "Spikes/G03-Intake/ZipEval/Readium/Package.swift"},
+    {"path": "Spikes/G03-Intake/ZipEval/Upstream/Package.resolved", "manifest": "Spikes/G03-Intake/ZipEval/Upstream/Package.swift"},
+    {"path": "Spikes/G05-AI/Package.resolved", "manifest": "Spikes/G05-AI/Package.swift"},
+    {"path": "Spikes/G05-AI/ATSProbe/Package.resolved", "manifest": "Spikes/G05-AI/ATSProbe/project.yml"},
+    {"path": "Spikes/G05-Recovery/Package.resolved", "manifest": "Spikes/G05-Recovery/Package.swift"}
+  ],
+  "unlocked": [
+    {
+      "manifest": "Spikes/G03-Intake/ZipEval/IdentityProbe/Package.swift",
+      "reason": "A probe whose resolution is refused by design: readium/ZIPFoundation and weichsel/ZIPFoundation share the package identity zipfoundation (ADR-0010). There is nothing to lock.",
+      "owner": "G0.3 intake spike",
+      "fix": "None needed."
+    }
+  ],
+  "packages": [
+    {
+      "name": "readium/swift-toolkit",
+      "url": "https://github.com/readium/swift-toolkit.git",
+      "identity": "swift-toolkit",
+      "version": "3.11.0",
+      "revision": "d82f44f4f05d87add9e22a8b75abbd61dce745dd",
+      "role": "product",
+      "platforms": ["iOS"],
+      "purpose": "EPUB parsing and navigation behind the ReaderSession adapter; products ReadiumShared, ReadiumStreamer and ReadiumNavigator only.",
+      "owning_adrs": ["0004"],
+      "direct_in": ["Spikes/G01-EPUB/project.yml", "Spikes/G03-Intake/ZipEval/IdentityProbe/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G01-EPUB/project.yml", "target": "EPUBHarness", "products": ["ReadiumNavigator", "ReadiumShared", "ReadiumStreamer"], "test": false},
+        {"manifest": "Spikes/G03-Intake/ZipEval/IdentityProbe/Package.swift", "target": "IdentityProbe", "products": ["ReadiumShared"], "test": false}
+      ],
+      "locks": ["Spikes/G01-EPUB/Package.resolved"],
+      "linked": "Linked into the EPUB harness app (iOS Simulator debug build): ReadiumShared, ReadiumStreamer, ReadiumNavigator and ReadiumInternal. ReadiumOPDS, ReadiumLCP and both adapters are not linked.",
+      "license": {
+        "id": "BSD-3-Clause",
+        "read_at": "d82f44f4f05d87add9e22a8b75abbd61dce745dd",
+        "files": [
+          {"path": "LICENSE", "sha256": "f47741fce46e526840d3d5b70788a3d791144411dd21c94a73864188770e2d82", "text": "Docs/Licenses/texts/readium__swift-toolkit/LICENSE"}
+        ]
+      },
+      "obligations": "Reproduce the copyright notice, conditions and disclaimer in the app's acknowledgements; do not use the Readium name to endorse Sylvia.",
+      "bundled": [
+        {"component": "OpenDyslexic 2.001 (four OTF files in ReadiumNavigator's resources, a fifth copy of the Regular face in ReadiumStreamer's)", "license": "Embedded statement only: original glyphs Bitstream (Bitstream Vera license, not included; the URL the fonts name now shows a page about the newer OFL release); OpenDyslexic changes by Abelardo Gonzalez under CC BY 3.0 Unported. No license file is shipped beside them.", "ships": "Yes: copied unchanged into the app's resource bundles, and registered as a font face in every EPUB web view by default (EPUBNavigatorViewModel.swift lines 95-110).", "decision": "pending-human (licensing)"},
+        {"component": "Accessible DfA 1.10 (readium-css/fonts/AccessibleDfA.otf)", "license": "SIL OFL 1.1, Reserved Font Name Accessible-Dfa; LICENSE-AccessibleDfa ships beside the font", "ships": "Yes", "text": "Docs/Licenses/texts/readium__swift-toolkit/Sources__Navigator__EPUB__Assets__Static__readium-css__fonts__LICENSE-AccessibleDfa"},
+        {"component": "iA Writer Duospace 1.001 (readium-css/fonts/iAWriterDuospace-Regular.ttf), derived from IBM Plex Mono", "license": "SIL OFL 1.1, Reserved Font Name Plex; LICENSE-IaWriterDuospace.md ships beside the font", "ships": "Yes", "text": "Docs/Licenses/texts/readium__swift-toolkit/Sources__Navigator__EPUB__Assets__Static__readium-css__fonts__LICENSE-IaWriterDuospace.md"},
+        {"component": "ReadiumCSS stylesheets (Sources/Navigator/EPUB/Assets/Static/readium-css, 13 files) from readium/readium-css's css/dist at commit 1ba225fecf1e63e6cccc93e1f4a50107e56f93e5 (8 May 2020): 11 are byte-identical to it by git blob id, and ReadiumCSS-after.css and rtl/ReadiumCSS-after.css differ from it in one rule each (a p:first-letter selector removed). Found in review round 3 (readium-css-provenance.log)", "license": "BSD-3-Clause, Copyright (c) 2017, Readium: readium-css's LICENSE at that commit (fetched), byte-identical to the toolkit's own LICENSE (sha256 f47741fce46e...). The stylesheets themselves carry no license header", "ships": "Yes", "text": "Docs/Licenses/texts/readium__swift-toolkit/external__readium-css-1ba225fecf1e63e6cccc93e1f4a50107e56f93e5__LICENSE"},
+        {"component": "DataCompression by Markus Wanke (Sources/Streamer/Toolkit/DataCompression.swift; a copy also in Sources/LCP, not linked)", "license": "Apache-2.0, Copyright 2016 Markus Wanke (file header)", "ships": "Yes, in ReadiumStreamer", "text": "Docs/Licenses/texts/readium__swift-toolkit/Sources__Streamer__Toolkit__DataCompression.swift__notice"},
+        {"component": "Navigator scripts readium-*.js (webpack bundles, comments stripped): Readium's own code, Hypothesis client anchoring code v1.1763.0 and at most 95 npm packages", "license": "Hypothesis: BSD-2-Clause (Copyright (c) 2013-2019 Hypothes.is Project and contributors). npm: 93 MIT with a license file, approx-string-match 1.1.0 MIT by package.json (no license file published), @juggle/resize-observer 3.4.0 Apache-2.0 (no NOTICE file)", "ships": "Yes, without any license notice inside the bundles", "text": "Docs/Licenses/texts/readium__swift-toolkit/external__hypothesis-client-v1.1763.0__LICENSE; Docs/Licenses/texts/readium__swift-toolkit/external__navigator-scripts-npm-licenses.txt"}
+      ],
+      "declared_not_resolved": "Readium's Package.swift also declares apple/swift-docc-plugin (from 1.5.0); no target uses it, so SwiftPM never resolves or pins it.",
+      "privacy_manifest": "None shipped by Readium; the app's own manifest must cover any required-reason API Readium uses.",
+      "advisories": "None found for readium/swift-toolkit or its ReadiumCSS: OSV and the GitHub Advisory Database at 3.11.0, the repository advisories of readium/swift-toolkit and readium/readium-css (none published), and NVD and the GitHub Advisory Database by keyword (readium: only CVE-2023-24720, readium-js, a different project; readium-css: none). None for any version of the 95 npm packages or the Hypothesis client 1.1763.0 inside its navigator scripts (version-exact search with positive controls). See advisories.md."
+    },
+    {
+      "name": "readium/ZIPFoundation",
+      "url": "https://github.com/readium/ZIPFoundation.git",
+      "identity": "zipfoundation",
+      "version": "3.0.1",
+      "revision": "adb49c8bfe060cc187370b12fa081012a6440b86",
+      "role": "product",
+      "platforms": ["iOS", "macOS"],
+      "purpose": "ZIP reading and writing (module ReadiumZIPFoundation): Readium's archive layer, and the archive library behind Sylvia's own strict checks for .sylviapack and the later backup archive.",
+      "owning_adrs": ["0004", "0010"],
+      "direct_in": ["Spikes/G03-Intake/IntakeKit/Package.swift", "Spikes/G03-Intake/ZipEval/Readium/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G03-Intake/IntakeKit/Package.swift", "target": "SylviaPack", "products": ["ReadiumZIPFoundation"], "test": false},
+        {"manifest": "Spikes/G03-Intake/ZipEval/Readium/Package.swift", "target": "zipeval-readium", "products": ["ReadiumZIPFoundation"], "test": false}
+      ],
+      "locks": ["Spikes/G01-EPUB/Package.resolved", "Spikes/G03-Intake/App/Package.resolved", "Spikes/G03-Intake/IntakeKit/Package.resolved", "Spikes/G03-Intake/ZipEval/Readium/Package.resolved"],
+      "linked": "Linked into the EPUB harness app (1,945 symbols).",
+      "license": {
+        "id": "MIT; two files under a Readium Foundation header that names a BSD-style license (see bundled)",
+        "read_at": "adb49c8bfe060cc187370b12fa081012a6440b86",
+        "files": [
+          {"path": "LICENSE", "sha256": "5d9ecf59967651f9483b87ddd8d89b0cff66ad0f4c67d8658cb24a7610b70222", "text": "Docs/Licenses/texts/readium__zipfoundation/LICENSE"}
+        ]
+      },
+      "obligations": "Include the MIT copyright and permission notice in the acknowledgements, and, for the two Readium Foundation files below, their copyright line with the BSD-3-Clause conditions and disclaimer of Readium's license (pending counsel; reproducing both satisfies either reading).",
+      "bundled": [
+        {"component": "Two files written by the Readium Foundation for the fork (Sources/ZIPFoundation/DataSource.swift and SharedMutableValue.swift), compiled into ReadiumZIPFoundation with the rest of the module", "license": "Each file's header: \"Copyright 2025 Readium Foundation. All rights reserved. Use of this source code is governed by the BSD-style license available in the top-level LICENSE file of the project.\" The fork's top-level LICENSE is MIT (Thomas Zoechling), so the header names a license this repository does not contain; the likely intent is Readium's own BSD-3-Clause license (readium/swift-toolkit's LICENSE, the same header Readium puts on its toolkit's files).", "ships": "Yes (linked into the EPUB harness app with ReadiumZIPFoundation)", "text": "Docs/Licenses/texts/readium__zipfoundation/Sources__ZIPFoundation__DataSource.swift__notice; Docs/Licenses/texts/readium__swift-toolkit/LICENSE", "decision": "pending-human (licensing): which license the header means; until then the acknowledgements reproduce the header with Readium's BSD-3-Clause text as well as the fork's MIT notice"}
+      ],
+      "privacy_manifest": "Ships one: FileTimestamp (3B52.1).",
+      "advisories": "CVE-2023-39138 (weichsel/ZIPFoundation <= 0.9.17) does not apply: the fork contains the whole upstream 0.9.18 release. See advisories.md."
+    },
+    {
+      "name": "readium/Fuzi",
+      "url": "https://github.com/readium/Fuzi.git",
+      "identity": "fuzi",
+      "version": "4.0.1",
+      "revision": "173ec944ca6f2e8024ceb7324bcb8a3cc95a0661",
+      "role": "product-transitive",
+      "platforms": ["iOS"],
+      "purpose": "XML parsing for Readium (module ReadiumFuzi), over the system libxml2.",
+      "owning_adrs": ["0004"],
+      "modules": ["ReadiumFuzi"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Spikes/G01-EPUB/Package.resolved"],
+      "linked": "Linked into the EPUB harness app (724 symbols).",
+      "license": {
+        "id": "MIT",
+        "read_at": "173ec944ca6f2e8024ceb7324bcb8a3cc95a0661",
+        "files": [
+          {"path": "LICENSE", "sha256": "3ecf30f6b182389d0c8e89bb32d7da076d687c2eec4ff4679952063f931144e5", "text": "Docs/Licenses/texts/readium__fuzi/LICENSE"}
+        ]
+      },
+      "obligations": "Include the copyright and permission notice in the acknowledgements.",
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "scinfu/SwiftSoup",
+      "url": "https://github.com/scinfu/SwiftSoup.git",
+      "identity": "swiftsoup",
+      "version": "2.13.9",
+      "revision": "18b80329749eca5ea29fc50211dca5c7eff5bfec",
+      "role": "product",
+      "platforms": ["iOS"],
+      "purpose": "HTML parsing: used by Readium, and directly by the EPUB adapter's sanitizer, which parses each served document as Readium does.",
+      "owning_adrs": ["0004"],
+      "direct_in": ["Spikes/G01-EPUB/Core/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G01-EPUB/Core/Package.swift", "target": "G01EPUBCore", "products": ["SwiftSoup"], "test": false},
+        {"manifest": "Spikes/G01-EPUB/Core/Package.swift", "target": "G01EPUBCoreTests", "products": ["SwiftSoup"], "test": true}
+      ],
+      "locks": ["Spikes/G01-EPUB/Package.resolved", "Spikes/G01-EPUB/Core/Package.resolved"],
+      "linked": "Linked into the EPUB harness app (11,593 symbols).",
+      "license": {
+        "id": "MIT",
+        "read_at": "18b80329749eca5ea29fc50211dca5c7eff5bfec",
+        "files": [
+          {"path": "LICENSE", "sha256": "6d9f121428f5571c4e20362fa91186c552f82648c0161dacc12e239b1544d49d", "text": "Docs/Licenses/texts/scinfu__swiftsoup/LICENSE"}
+        ]
+      },
+      "obligations": "Include the notice, which names both Jonathan Hedley (jsoup) and Nabil Chatbi (Swift port), and the LRUCache notice below. Whether the binary search adapted from a Stack Overflow answer (below) owes attribution is pending counsel.",
+      "bundled": [
+        {"component": "LRUCache by Nick Lockwood (Sources/LRUCache.swift, vendored and trimmed)", "license": "MIT, Copyright © 2021 Nick Lockwood (file header)", "ships": "Yes", "text": "Docs/Licenses/texts/scinfu__swiftsoup/Sources__LRUCache.swift__notice"},
+        {"component": "A generic binary search on Collection (Sources/BinarySearch.swift, \"Created by Garth Snyder on 2/28/19\"), whose header says \"Adapted from https://stackoverflow.com/questions/31904396/swift-binary-search-for-standard-array\"; found by the origin-note survey in review round 2 (vendored-headers.log)", "license": "None stated in the file beyond SwiftSoup's MIT. Stack Overflow publishes contributions under CC BY-SA (2.5, 3.0 or 4.0, by the date of the post); the file does not say which answer it adapted.", "ships": "Yes, in SwiftSoup (linked into the EPUB harness app)", "decision": "pending-human (licensing): whether the adaptation carries the answer's CC BY-SA terms (attribution, share-alike) or is SwiftSoup's own expression of a standard algorithm; ADR-0014 section 7 item 8"}
+      ],
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "krzyzanowskim/CryptoSwift",
+      "url": "https://github.com/krzyzanowskim/CryptoSwift.git",
+      "identity": "cryptoswift",
+      "version": "1.10.0",
+      "revision": "f2a627b84c1ff96f21ac2fcb623ab36142dd5512",
+      "role": "product-transitive",
+      "platforms": ["iOS"],
+      "purpose": "Cryptography used by ReadiumStreamer (font deobfuscation).",
+      "owning_adrs": ["0004"],
+      "modules": ["CryptoSwift", "CryptoSwiftResources"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Spikes/G01-EPUB/Package.resolved"],
+      "linked": "Linked into the EPUB harness app (5,408 symbols); its resource bundle carries only a privacy manifest.",
+      "license": {
+        "id": "LicenseRef-CryptoSwift (zlib-style with an attribution requirement)",
+        "read_at": "f2a627b84c1ff96f21ac2fcb623ab36142dd5512",
+        "files": [
+          {"path": "LICENSE", "sha256": "e4ea9188602dd4217309aec044481b0a7d2f9d539b1d1673b9a1809709c804e0", "text": "Docs/Licenses/texts/krzyzanowskim__cryptoswift/LICENSE"}
+        ]
+      },
+      "obligations": "Stricter than zlib: an acknowledgment in the product documentation is required, the notice may not be removed from any source or binary distribution, and every redistribution must retain the sentence: This product includes software developed by the \"Marcin Krzyzanowski\" (http://krzyzanowskim.com/). Also the BigInt notice below.",
+      "bundled": [
+        {"component": "BigInt by Károly Lőrentey (Sources/CryptoSwift/CS_BigInt, 22 files besides CS.swift), from attaswift/BigInt: closest to its 5.4.0 and 5.4.1 releases (15 of 22 files identical once CryptoSwift's renaming is undone; 59 lines differ in the rest) and identical to none (vendored-advisories.log)", "license": "MIT, Copyright (c) 2016-2017 Károly Lőrentey: upstream's LICENSE.md, the same in every 5.x and 6.x release (vendored-advisories.log). The vendored files carry only the copyright line and CryptoSwift ships no license for them", "ships": "Yes", "text": "Docs/Licenses/texts/krzyzanowskim__cryptoswift/Sources__CryptoSwift__CS_BigInt__GCD.swift__notice; Docs/Licenses/texts/krzyzanowskim__cryptoswift/external__attaswift-BigInt-v5.3.0__LICENSE.md"}
+      ],
+      "privacy_manifest": "Ships one: no accessed API types.",
+      "advisories": "None found: OSV and the GitHub Advisory Database at 1.10.0, krzyzanowskim/CryptoSwift's repository advisories (none published) and NVD by keyword. For the BigInt code it vendors: none in OSV or the GitHub Advisory Database for attaswift/BigInt at any 5.x or 6.x release or at any version, none published by attaswift/BigInt, and none by keyword (attaswift; BigInt with Swift) in the GitHub Advisory Database or NVD (vendored-advisories.log). See advisories.md."
+    },
+    {
+      "name": "ra1028/DifferenceKit",
+      "url": "https://github.com/ra1028/DifferenceKit.git",
+      "identity": "differencekit",
+      "version": "1.3.0",
+      "revision": "073b9671ce2b9b5b96398611427a1f929927e428",
+      "role": "product-transitive",
+      "platforms": ["iOS"],
+      "purpose": "Collection diffing used by ReadiumNavigator.",
+      "owning_adrs": ["0004"],
+      "modules": ["DifferenceKit"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Spikes/G01-EPUB/Package.resolved"],
+      "linked": "Linked into the EPUB harness app (671 symbols).",
+      "license": {
+        "id": "Apache-2.0",
+        "read_at": "073b9671ce2b9b5b96398611427a1f929927e428",
+        "files": [
+          {"path": "LICENSE", "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1", "text": "Docs/Licenses/texts/ra1028__differencekit/LICENSE"}
+        ]
+      },
+      "obligations": "Give recipients a copy of the Apache License 2.0 (section 4(a)); the package ships no NOTICE file.",
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "marmelroy/Zip",
+      "url": "https://github.com/marmelroy/Zip.git",
+      "identity": "zip",
+      "version": "2.1.2",
+      "revision": "67fa55813b9e7b3b9acee9c0ae501def28746d76",
+      "role": "product-transitive",
+      "platforms": ["iOS"],
+      "purpose": "Its bundled Minizip C library is Readium's first ZIP reader (MinizipArchiveOpener, read functions only).",
+      "owning_adrs": ["0004"],
+      "modules": ["Zip", "Minizip"],
+      "headers": ["Minizip.h", "crypt.h", "ioapi.h", "unzip.h", "zip.h"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Spikes/G01-EPUB/Package.resolved"],
+      "linked": "Linked into the EPUB harness app: the Zip Swift module (207 symbols, including the vulnerable unzipFile, never called) and Minizip (55 C functions, including the unused write path zipOpenNewFileInZip*).",
+      "license": {
+        "id": "MIT (Zip); Minizip under the zlib license; Minizip's crypt.h under the Info-ZIP license",
+        "read_at": "67fa55813b9e7b3b9acee9c0ae501def28746d76",
+        "files": [
+          {"path": "LICENSE", "sha256": "8b8f4b269a1eb4fd0125d24859f5f8d6cbd79596856de29b08695c852956915b", "text": "Docs/Licenses/texts/marmelroy__zip/LICENSE"}
+        ]
+      },
+      "obligations": "Include Zip's MIT notice. Minizip (Copyright (C) 1998-2010 Gilles Vollant, 2007-2008 Even Rouault, 2009-2010 Mathias Svensson, 2010-2014 Nathan Moinvaziri) is under the zlib license, which requires only that the notice stay in source distributions; listing it in the acknowledgements is recommended. Minizip's crypt.h is Info-ZIP code (Copyright (C) 1990-2000 Info-ZIP; modifications Copyright (C) 2003 Terry Thorsen and 1998-2005 Gilles Vollant) and is compiled in (decrypt_byte, init_keys and update_keys are linked): the Info-ZIP license requires its copyright notice, definition, disclaimer and conditions in the documentation of a binary distribution, and the acknowledgements also reproduce crypt.h's own notice. Neither license file is in the package; the texts are kept beside Zip's.",
+      "bundled": [
+        {"component": "Minizip 1.1 with Nathan Moinvaziri's 2010-2014 changes (Zip/minizip: ioapi.c, unzip.c, zip.c)", "license": "zlib (\"the same license as zlib\", file headers)", "ships": "Yes", "text": "Docs/Licenses/texts/marmelroy__zip/Zip__minizip__unzip.c__header-comment; Docs/Licenses/texts/marmelroy__zip/external__zlib-v1.3.1__LICENSE"},
+        {"component": "Traditional PKWARE decryption from Info-ZIP (Zip/minizip/include/crypt.h, compiled into unzip.c and zip.c)", "license": "Info-ZIP license, \"version 2000-Apr-09 or later\" (crypt.h header); the 2009-Jan-02 version is kept. crypt.h carries its own notice, with holders unzip.c's header does not name: Copyright (C) 1998-2005 Gilles Vollant; modifications for Info-ZIP crypting Copyright (C) 2003 Terry Thorsen; Copyright (C) 1990-2000 Info-ZIP", "ships": "Yes", "text": "Docs/Licenses/texts/marmelroy__zip/Zip__minizip__include__crypt.h__header-comment; Docs/Licenses/texts/marmelroy__zip/external__infozip-license-2009-Jan-02.txt"}
+      ],
+      "privacy_manifest": "None.",
+      "advisories": "CVE-2023-39135 (GHSA-g454-wj9r-jpg4, High, path traversal in Zip.unzipFile) affects every release through 2.1.2 and has no patched release; the function is linked but never called. The vendored zip.c has the CVE-2023-45853 pattern in a write path that is never called. Product code must not import Zip. See advisories.md."
+    },
+    {
+      "name": "readium/GCDWebServer",
+      "url": "https://github.com/readium/GCDWebServer.git",
+      "identity": "gcdwebserver",
+      "version": "4.0.1",
+      "revision": "584db89a4c3c3be27206cce6afde037b2b6e38d8",
+      "role": "product-transitive",
+      "platforms": ["iOS"],
+      "purpose": "None in Sylvia: resolved because Readium declares it for ReadiumAdapterGCDWebServer, which Sylvia does not use.",
+      "owning_adrs": ["0004"],
+      "modules": ["ReadiumGCDWebServer"],
+      "headers": ["GCDWebServer.h", "GCDWebServerConnection.h", "GCDWebServerCore.h", "GCDWebServerDataRequest.h", "GCDWebServerDataResponse.h", "GCDWebServerErrorResponse.h", "GCDWebServerFileRequest.h", "GCDWebServerFileResponse.h", "GCDWebServerFunctions.h", "GCDWebServerHTTPStatusCodes.h", "GCDWebServerMultiPartFormRequest.h", "GCDWebServerRequest.h", "GCDWebServerResponse.h", "GCDWebServerStreamedResponse.h", "GCDWebServerURLEncodedFormRequest.h"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Spikes/G01-EPUB/Package.resolved"],
+      "linked": "Not linked (no GCDWebServer class in the EPUB harness app).",
+      "license": {
+        "id": "BSD-3-Clause-style (GCDWebServer license)",
+        "read_at": "584db89a4c3c3be27206cce6afde037b2b6e38d8",
+        "files": [
+          {"path": "LICENSE", "sha256": "dc116599d0a903b9e38abeef48d5e930f03a32fb1719eb2ddc01dff8eca31d95", "text": "Docs/Licenses/texts/readium__gcdwebserver/LICENSE"}
+        ]
+      },
+      "obligations": "None while it is not linked; if it ever ships, reproduce the notice.",
+      "privacy_manifest": "None.",
+      "advisories": "CVE-2019-14924 (GCDWebUploader, before 3.5.3) does not apply: not linked, GCDWebUploader is outside the SwiftPM product, and the fix is in the pinned history. See advisories.md."
+    },
+    {
+      "name": "stephencelis/SQLite.swift",
+      "url": "https://github.com/stephencelis/SQLite.swift.git",
+      "identity": "sqlite.swift",
+      "version": "0.16.0",
+      "revision": "964c300fb0736699ce945c9edb56ecd62eba27a3",
+      "role": "product-transitive",
+      "platforms": ["iOS"],
+      "purpose": "None in Sylvia: resolved because Readium declares it for ReadiumAdapterLCPSQLite, which Sylvia does not use.",
+      "owning_adrs": ["0004"],
+      "modules": ["SQLite"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Spikes/G01-EPUB/Package.resolved"],
+      "linked": "Not linked (no SQLite.swift module symbols in the EPUB harness app).",
+      "license": {
+        "id": "MIT",
+        "read_at": "964c300fb0736699ce945c9edb56ecd62eba27a3",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "54309d83b514af75deacb70285d5debe8c74ddfd7ca2d1990ae14a0255aceeba", "text": "Docs/Licenses/texts/stephencelis__sqlite.swift/LICENSE.txt"}
+        ]
+      },
+      "obligations": "None while it is not linked.",
+      "privacy_manifest": "Ships one (not linked): no accessed API types.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "groue/GRDB.swift",
+      "url": "https://github.com/groue/GRDB.swift.git",
+      "identity": "grdb.swift",
+      "version": "7.11.1",
+      "revision": "b83108d10f42680d78f23fe4d4d80fc88dab3212",
+      "role": "product",
+      "platforms": ["iOS", "macOS"],
+      "purpose": "Persistence over the system SQLite (ADR-0003); FTS5 retrieval (ADR-0011); online backup (ADR-0012).",
+      "owning_adrs": ["0003", "0011", "0012"],
+      "direct_in": ["Spikes/G05-AI/Package.swift", "Spikes/G05-Recovery/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G05-AI/Package.swift", "target": "SylviaContext", "products": ["GRDB"], "test": false},
+        {"manifest": "Spikes/G05-Recovery/Package.swift", "target": "SylviaRecovery", "products": ["GRDB"], "test": false},
+        {"manifest": "Spikes/G05-Recovery/Package.swift", "target": "SylviaRecoveryTests", "products": ["GRDB"], "test": true},
+        {"manifest": "Spikes/G05-Recovery/Package.swift", "target": "g05-recovery-tool", "products": ["GRDB"], "test": false}
+      ],
+      "locks": ["Spikes/G05-AI/Package.resolved", "Spikes/G05-AI/ATSProbe/Package.resolved", "Spikes/G05-Recovery/Package.resolved"],
+      "linked": "No M0 iOS app links GRDB yet (the G0.5 ATS probe apps link SylviaAI, which does not use it). Linked into g05-recovery-tool (host, 20,313 symbols) and into the G0.5 recovery package's iOS Simulator test bundle (20,324 symbols), both of which load the system's /usr/lib/libsqlite3.dylib and define no sqlite3_* symbol of their own: SQLite is the system's, not bundled (linkage.log sections 3 and 4). The SQLiteCustom tree in the checkout (SQLite public domain, MIT build files) belongs to GRDB's separate Xcode project and is not part of the SwiftPM product.",
+      "license": {
+        "id": "MIT",
+        "read_at": "b83108d10f42680d78f23fe4d4d80fc88dab3212",
+        "files": [
+          {"path": "LICENSE", "sha256": "9853f9dce81365fcc1d9b46004633354450164b8d17904e92e80c444545f7e87", "text": "Docs/Licenses/texts/groue__grdb.swift/LICENSE"}
+        ]
+      },
+      "obligations": "Include GRDB's copyright and permission notice, and the two notices below.",
+      "bundled": [
+        {"component": "English inflection rules from Ruby on Rails (GRDB/Utils/Inflections+English.swift)", "license": "MIT, Copyright (c) 2005-2019 David Heinemeier Hansson (file header)", "ships": "Yes", "text": "Docs/Licenses/texts/groue__grdb.swift/GRDB__Utils__Inflections+English.swift__notice"},
+        {"component": "Code derived from the Swift standard library (GRDB/Core/Cursor.swift, Record/EncodableRecord.swift, Record/FetchableRecord.swift)", "license": "Apache-2.0 WITH Swift-exception, Copyright (c) 2014-2020 Apple Inc. and the Swift project authors (file comments)", "ships": "Yes", "text": "Docs/Licenses/texts/groue__grdb.swift/GRDB__Core__Cursor.swift__notice"}
+      ],
+      "privacy_manifest": "Ships one: no accessed API types.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "pointfreeco/swift-snapshot-testing",
+      "url": "https://github.com/pointfreeco/swift-snapshot-testing",
+      "identity": "swift-snapshot-testing",
+      "version": "1.19.6",
+      "revision": "28e5de025e3fd98991791bfbf83023ab3708da03",
+      "role": "test",
+      "platforms": ["iOS"],
+      "purpose": "Design snapshot tests (SylviaDesignSnapshotTests; T51, T53).",
+      "owning_adrs": ["0013"],
+      "direct_in": ["Packages/Design/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Packages/Design/Package.swift", "target": "SylviaDesignSnapshotTests", "products": ["SnapshotTesting"], "test": true}
+      ],
+      "locks": ["Apps/DesignCatalog/Package.resolved", "Packages/Design/Package.resolved"],
+      "linked": "Test target only; never linked into SylviaDesign or the catalog app.",
+      "license": {
+        "id": "MIT",
+        "read_at": "28e5de025e3fd98991791bfbf83023ab3708da03",
+        "files": [
+          {"path": "LICENSE", "sha256": "5b31e3500e1add0ccd688abaa98c9a4086200a4a738e780760b57be97f5f6a4d", "text": "Docs/Licenses/texts/pointfreeco__swift-snapshot-testing/LICENSE"}
+        ]
+      },
+      "obligations": "None for the shipped app (not distributed).",
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "pointfreeco/swift-custom-dump",
+      "url": "https://github.com/pointfreeco/swift-custom-dump",
+      "identity": "swift-custom-dump",
+      "version": "1.7.3",
+      "revision": "4fb9e7cbb4b8f5a7354005db39447f570d6b3e19",
+      "role": "test",
+      "platforms": ["iOS"],
+      "purpose": "Transitive dependency of swift-snapshot-testing.",
+      "owning_adrs": ["0013"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Apps/DesignCatalog/Package.resolved", "Packages/Design/Package.resolved"],
+      "linked": "Test target only.",
+      "license": {
+        "id": "MIT",
+        "read_at": "4fb9e7cbb4b8f5a7354005db39447f570d6b3e19",
+        "files": [
+          {"path": "LICENSE", "sha256": "e26e14493356d7abf33f426942a1c451832a8a4a309297d44c5b8a03af1d9ea1", "text": "Docs/Licenses/texts/pointfreeco__swift-custom-dump/LICENSE"}
+        ]
+      },
+      "obligations": "None for the shipped app.",
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "pointfreeco/swift-issue-reporting",
+      "url": "https://github.com/pointfreeco/swift-issue-reporting",
+      "identity": "swift-issue-reporting",
+      "version": "2.1.1",
+      "revision": "75b000cea2ca6d7527a57e1b9cc0bdf21a9abe9f",
+      "role": "test",
+      "platforms": ["iOS"],
+      "purpose": "Transitive dependency of swift-snapshot-testing (through swift-custom-dump).",
+      "owning_adrs": ["0013"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Apps/DesignCatalog/Package.resolved", "Packages/Design/Package.resolved"],
+      "linked": "Test target only.",
+      "license": {
+        "id": "MIT",
+        "read_at": "75b000cea2ca6d7527a57e1b9cc0bdf21a9abe9f",
+        "files": [
+          {"path": "LICENSE", "sha256": "e26e14493356d7abf33f426942a1c451832a8a4a309297d44c5b8a03af1d9ea1", "text": "Docs/Licenses/texts/pointfreeco__swift-issue-reporting/LICENSE"}
+        ]
+      },
+      "obligations": "None for the shipped app.",
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "swiftlang/swift-syntax",
+      "url": "https://github.com/swiftlang/swift-syntax",
+      "identity": "swift-syntax",
+      "version": "604.0.0",
+      "revision": "050f1a346fbbac0ca2cfb15a95274f7bd1cf0ccf",
+      "role": "test",
+      "platforms": ["iOS", "macOS"],
+      "purpose": "Transitive dependency of swift-snapshot-testing (its inline-snapshot macros).",
+      "owning_adrs": ["0013"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Apps/DesignCatalog/Package.resolved", "Packages/Design/Package.resolved"],
+      "linked": "Test target only.",
+      "license": {
+        "id": "Apache-2.0 WITH Swift-exception",
+        "read_at": "050f1a346fbbac0ca2cfb15a95274f7bd1cf0ccf",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "770af8291f708538d8ff885a0bbc4e045cd700531741c4f99528d435c14d7f55", "text": "Docs/Licenses/texts/swiftlang__swift-syntax/LICENSE.txt"}
+        ]
+      },
+      "obligations": "None for the shipped app.",
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "apple/swift-nio",
+      "url": "https://github.com/apple/swift-nio.git",
+      "identity": "swift-nio",
+      "version": "2.103.0",
+      "revision": "21de5f08c1a166a6dd293d0e587ad977bf8dac5d",
+      "role": "product",
+      "platforms": ["macOS"],
+      "purpose": "Networking for the Mac source service (NIOCore, NIOPosix, NIOHTTP1; ADR-0009). Never in the iOS app.",
+      "owning_adrs": ["0009"],
+      "direct_in": ["Spikes/G02-Transfer/SourceService/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["NIOCore", "NIOHTTP1", "NIOPosix"], "test": false},
+        {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceServiceTests", "products": ["NIOCore", "NIOPosix"], "test": true}
+      ],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "linked": "Linked into sylvia-source (host): NIOCore, NIOPosix, NIOHTTP1, the vendored llhttp (138 symbols) and CNIOAtomics (390 catmc_ functions, generated with uSHET's cpp_magic.h). NIOWebSocket and CNIOSHA1 are not linked.",
+      "license": {
+        "id": "Apache-2.0",
+        "read_at": "21de5f08c1a166a6dd293d0e587ad977bf8dac5d",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30", "text": "Docs/Licenses/texts/apple__swift-nio/LICENSE.txt"},
+          {"path": "NOTICE.txt", "sha256": "d25ed2452b3476c342082d11e4e8bf5459174d2836124f842b499850bcebc50e", "text": "Docs/Licenses/texts/apple__swift-nio/NOTICE.txt"},
+          {"path": "Sources/CNIOLLHTTP/LICENSE", "sha256": "ebca854e0134cd256d673627c20499f42577eb74bacf08b9f25b626a73c91277", "text": "Docs/Licenses/texts/apple__swift-nio/Sources__CNIOLLHTTP__LICENSE"}
+        ]
+      },
+      "obligations": "Mac companion only: the Apache License 2.0 text and the readable NOTICE contents (section 4(d)); llhttp's MIT notice (Fedor Indutny); uSHET's MIT notice (Thomas Nixon, Jonathan Heathcote) for cpp_magic.h.",
+      "bundled": [
+        {"component": "llhttp 9.3.0 (Sources/CNIOLLHTTP; the version its header's LLHTTP_VERSION macros give: swift-nio's update_and_patch_llhttp.sh builds llhttp's default branch, so this is the 9.3.0 release or a later commit before the next version)", "license": "MIT", "ships": "Yes, in the Mac source service", "text": "Docs/Licenses/texts/apple__swift-nio/Sources__CNIOLLHTTP__LICENSE"},
+        {"component": "cpp_magic.h from uSHET at c09e0acafd86720efe42dc15c63e0cc228244c32 (Sources/CNIOAtomics/src/cpp_magic.h): C preprocessor macros whose MAP() generates CNIOAtomics' catmc_atomic_* and catmc_nio_atomic_* functions in c-atomics.c and c-nioatomics.c. Found by review round 2 (R2-03); the origin-note survey now reads every C target of the shipping packages (vendored-headers.log)", "license": "MIT: the file's header says \"this is https://github.com/18sg/uSHET/blob/c09e0aca.../lib/cpp_magic.h\" and \"LICENSE: MIT\", and the checkout holds no license for it; uSHET's LICENSE at that commit (fetched) gives the MIT text with \"Copyright (c) 2014 Thomas Nixon, Jonathan Heathcote\", followed by the license of jsmn, another library in uSHET that swift-nio does not include", "ships": "Yes, in the Mac source service: CNIOAtomics is a dependency of NIOConcurrencyHelpers, which NIOCore depends on (linkage.log counts its catmc_ symbols)", "text": "Docs/Licenses/texts/apple__swift-nio/Sources__CNIOAtomics__src__cpp_magic.h__notice; Docs/Licenses/texts/apple__swift-nio/external__uSHET-c09e0acafd86720efe42dc15c63e0cc228244c32__LICENSE"}
+      ],
+      "privacy_manifest": "Ships them for NIOPosix, NIOFS and _NIOFileSystem: FileTimestamp (0A2A.1).",
+      "advisories": "Seven advisories name swift-nio, all fixed at or before 2.101.0, which the pinned 2.103.0 follows (round3-reproductions.log): the six its repository publishes, among them GHSA-qcc5-f287-vgmq (CVE-2026-43678, 2.100.0 and earlier: a WebSocket frame length trap; NIOWebSocket is not linked), found in review round 3 in neither database the version-exact search reads, and CVE-2018-4281 (SwiftNIO before 1.8.0, NVD). Never pin below 2.101.0. For the llhttp 9.3.0 it vendors: OSV lists three llhttp advisories, all fixed before 9.3.0 (in 6.0.7 and 8.1.1); none in the GitHub Advisory Database at 9.3.0; nodejs/llhttp publishes none; no keyword hit in the GitHub Advisory Database or NVD applies (vendored-advisories.log). See advisories.md."
+    },
+    {
+      "name": "apple/swift-nio-ssl",
+      "url": "https://github.com/apple/swift-nio-ssl.git",
+      "identity": "swift-nio-ssl",
+      "version": "2.37.5",
+      "revision": "322f3c2a4a21df31c84ca416bf65ee5e9059e440",
+      "role": "product",
+      "platforms": ["macOS"],
+      "purpose": "TLS for the Mac source service (ADR-0008, ADR-0009).",
+      "owning_adrs": ["0008", "0009"],
+      "direct_in": ["Spikes/G02-Transfer/SourceService/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["NIOSSL"], "test": false},
+        {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceServiceTests", "products": ["NIOSSL"], "test": true}
+      ],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "linked": "Linked into sylvia-source (host): NIOSSL and its vendored BoringSSL (3,832 CNIOBoringSSL_ symbols).",
+      "license": {
+        "id": "Apache-2.0; vendored BoringSSL under the OpenSSL License, the original SSLeay License and ISC (plus MIT for third_party/fiat)",
+        "read_at": "322f3c2a4a21df31c84ca416bf65ee5e9059e440",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30", "text": "Docs/Licenses/texts/apple__swift-nio-ssl/LICENSE.txt"},
+          {"path": "NOTICE.txt", "sha256": "03e8ca5c65a3df21fe1ab48eef91bca7d370db56c290d8ef16eaaa09ba322abe", "text": "Docs/Licenses/texts/apple__swift-nio-ssl/NOTICE.txt"}
+        ]
+      },
+      "obligations": "Mac companion only: Apache-2.0 text and NOTICE; the BoringSSL license at the vendored revision, which is the old combination (its own NOTICE points at BoringSSL's current LICENSE, which is Apache-2.0 and does not match the vendored files). The OpenSSL License (1998-2011, in the fetched text): the copyright notice, conditions and disclaimer in the documentation of any binary distribution (clause 2); every redistribution, in any form, must retain the acknowledgment 'This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/)' (clause 6, lines 58-61 of the text; the acknowledgements draft carries it in that form); and advertising material that mentions the software's features or use must display it, in clause 3's form with a full stop before the URL (clause 3). The original SSLeay License: the notice in the documentation (clause 2), attribution to Eric Young as the author of the parts used, in documentation or at startup (the draft carries it), and 'This product includes cryptographic software written by Eric Young (eay@cryptsoft.com)' in such advertising material (clause 3). Its clause 4 (Tim Hudson) covers Windows code from SSLeay's apps directory, which this copy does not hold.",
+      "bundled": [
+        {"component": "BoringSSL at 817ab07ebb53da35afea409ab9328f578492832d (committed 28 January 2025; Sources/CNIOBoringSSL/hash.txt)", "license": "OpenSSL License + original SSLeay License (dual), ISC for new code, MIT for third_party/fiat (all four in the fetched LICENSE). License statements in the first 60 lines of the 644 files (vendored-headers.log; review R2-05 counted statements, not words): 323 OpenSSL License (its short header), 200 ISC (4 of them also note public-domain origins), 1 Apache-2.0 (swift-nio-ssl's own umbrella header, CNIOBoringSSL.h), 1 with only a public-domain origin note (crypto/poly1305/poly1305_arm_asm.S), and 119 with none: 107 generated assembly files, 11 fiat-crypto files in third_party/fiat and the module map; BoringSSL's LICENSE governs those", "ships": "Yes, in the Mac source service", "text": "Docs/Licenses/texts/apple__swift-nio-ssl/external__boringssl-817ab07ebb53da35afea409ab9328f578492832d__LICENSE"}
+      ],
+      "privacy_manifest": "Ships one for NIOSSL: no accessed API types.",
+      "advisories": "Two advisories in apple/swift-nio-ssl's repository: GHSA-xfxg-9975-pc2j (CVE-2026-43820, 2.18.0 to 2.37.1: an out-of-bounds read through a SAN that is not a string; fixed in 2.37.2, which the pinned 2.37.5 follows), found in review round 3 in neither database the version-exact search reads; and CVE-2019-8849 (before 2.4.1). For its BoringSSL at 817ab07e: OSV, which indexes BoringSSL from OSS-Fuzz by commit, lists none at that revision (its positive control commit returns OSV-2023-41), and no keyword hit in the GitHub Advisory Database or NVD applies (vendored-advisories.log). BoringSSL fixes reach Sylvia only through swift-nio-ssl releases. See advisories.md."
+    },
+    {
+      "name": "apple/swift-certificates",
+      "url": "https://github.com/apple/swift-certificates.git",
+      "identity": "swift-certificates",
+      "version": "1.21.0",
+      "revision": "ff86b924ead66f853b8baf91f3c41926a8f36177",
+      "role": "product",
+      "platforms": ["macOS"],
+      "purpose": "The Mac source's self-signed X.509 identity (ADR-0008).",
+      "owning_adrs": ["0008"],
+      "direct_in": ["Spikes/G02-Transfer/SourceService/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["X509"], "test": false},
+        {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceServiceTests", "products": ["X509"], "test": true}
+      ],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "linked": "Linked into sylvia-source (host): X509 (11,055 symbols); it depends on swift-crypto's _CryptoExtras, which brings swift-crypto's BoringSSL.",
+      "license": {
+        "id": "Apache-2.0",
+        "read_at": "ff86b924ead66f853b8baf91f3c41926a8f36177",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac", "text": "Docs/Licenses/texts/apple__swift-certificates/LICENSE.txt"},
+          {"path": "NOTICE.txt", "sha256": "57d7797703d906b63c2be50d891cf70bdec307ae6f77a881638c33343f3dd195", "text": "Docs/Licenses/texts/apple__swift-certificates/NOTICE.txt"}
+        ]
+      },
+      "obligations": "Mac companion only: Apache-2.0 text and NOTICE, and the musl notice below, which the NOTICE points to. (Tests/X509Tests/CSR Vectors carries test vectors under their own license; tests do not ship.)",
+      "bundled": [
+        {"component": "UNIX time calculations translated from musl libc (Sources/X509/X509BaseTypes/TimeCalculations.swift)", "license": "MIT, Copyright © 2005-2020 Rich Felker, et al. (file header)", "ships": "Yes, in the Mac source service", "text": "Docs/Licenses/texts/apple__swift-certificates/Sources__X509__X509BaseTypes__TimeCalculations.swift__notice"}
+      ],
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "apple/swift-crypto",
+      "url": "https://github.com/apple/swift-crypto.git",
+      "identity": "swift-crypto",
+      "version": "5.0.0",
+      "revision": "a9d1d5ab8951ada40cafff8c8e2b551dfde4f390",
+      "role": "product",
+      "platforms": ["macOS"],
+      "purpose": "P-256 identity key for the Mac source (ADR-0008). On Apple platforms Crypto wraps CryptoKit; CryptoExtras uses its vendored BoringSSL.",
+      "owning_adrs": ["0008"],
+      "direct_in": ["Spikes/G02-Transfer/SourceService/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["Crypto"], "test": false},
+        {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceServiceTests", "products": ["Crypto"], "test": true}
+      ],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "linked": "Linked into sylvia-source (host): Crypto (63 symbols, over the system CryptoKit), CryptoExtras/_CryptoExtras (3,159) and its vendored BoringSSL (3,368 CCryptoBoringSSL_ symbols). CXKCP (Keccak) is not linked.",
+      "license": {
+        "id": "Apache-2.0; vendored BoringSSL under Apache-2.0",
+        "read_at": "a9d1d5ab8951ada40cafff8c8e2b551dfde4f390",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30", "text": "Docs/Licenses/texts/apple__swift-crypto/LICENSE.txt"},
+          {"path": "NOTICE.txt", "sha256": "b3ddc2ae068e76b3beb71be03c0400f90090f9469aa491bf7b1ac42320af37b8", "text": "Docs/Licenses/texts/apple__swift-crypto/NOTICE.txt"}
+        ]
+      },
+      "obligations": "Mac companion only: Apache-2.0 text and NOTICE, the BoringSSL license at the vendored revision, and the fiat-crypto authors' copyright notice for the code in third_party/fiat.",
+      "bundled": [
+        {"component": "BoringSSL at 0226f30467f540a3f62ef48d453f93927da199b6 (committed 7 September 2025; Sources/CCryptoBoringSSL/hash.txt)", "license": "Apache-2.0. License statements in the first 60 lines of the 622 files (vendored-headers.log; review R2-05: the OpenSSL/SSLeay file counted in round 1 was the symbol kSSLeayMethod in crypto/rand/rand.cc, whose header is Apache-2.0): 492 Apache-2.0 (4 of them also note public-domain origins), 1 with only a public-domain origin note (crypto/poly1305/poly1305_arm_asm.S), and 129 with none: 107 generated assembly files, 18 fiat-crypto files in third_party/fiat (below), 3 FIPS known-answer data files and the module map. No file carries the OpenSSL or SSLeay license", "ships": "Yes, in the Mac source service", "text": "Docs/Licenses/texts/apple__swift-crypto/external__boringssl-0226f30467f540a3f62ef48d453f93927da199b6__LICENSE"},
+        {"component": "fiat-crypto generated field arithmetic in BoringSSL 0226f304 (Sources/CCryptoBoringSSL/third_party/fiat: 18 files, Fiat-C and Bedrock-generated, included by the curve25519 and P-256 code)", "license": "Apache-2.0, \"Copyright 2015-2020 the fiat-crypto authors\": BoringSSL's third_party/fiat/LICENSE at that revision (fetched). swift-crypto copies the files but not that LICENSE, and BoringSSL's top-level LICENSE at 0226f304 does not mention them (at swift-nio-ssl's older revision it carried fiat's MIT text)", "ships": "Yes, in the Mac source service: compiled into CCryptoBoringSSL, whose X25519, Ed25519 and P-256 entry points (the files that include fiat-crypto) are linked, 8 symbols (linkage.log; the fiat functions are static inline and have no symbols of their own)", "text": "Docs/Licenses/texts/apple__swift-crypto/external__boringssl-0226f30467f540a3f62ef48d453f93927da199b6__third_party__fiat__LICENSE"}
+      ],
+      "privacy_manifest": "Ships them for Crypto, CryptoExtras, CryptoBoringWrapper, CCryptoBoringSSL, CXKCP and CXKCPShims: no accessed API types.",
+      "advisories": "Two advisories in apple/swift-crypto's repository, neither affecting 5.0.0: GHSA-8q93-f6xh-4f6f (CVE-2026-43823, 3.2.0 to 4.5.0: a double free when an RSA public key fails to decode), found in review round 3 in neither database the version-exact search reads, whose fix (commit 47d3869a) 5.0.0 contains (round3-reproductions.log); and CVE-2026-28815 (4.0.0 to 4.3.0). For its BoringSSL at 0226f304: none in OSV at that revision, and no keyword hit in the GitHub Advisory Database or NVD applies (vendored-advisories.log). See advisories.md."
+    },
+    {
+      "name": "apple/swift-asn1",
+      "url": "https://github.com/apple/swift-asn1.git",
+      "identity": "swift-asn1",
+      "version": "1.7.3",
+      "revision": "3b6410f7dee09eb33cdd26260c5fd47fda19b0e2",
+      "role": "product",
+      "platforms": ["iOS", "macOS"],
+      "purpose": "SPKI pin extraction in the shared transfer core (SylviaTransferCore, iOS and macOS; ADR-0008).",
+      "owning_adrs": ["0008"],
+      "direct_in": ["Spikes/G02-Transfer/SourceService/Package.swift", "Spikes/G02-Transfer/TransferKit/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G02-Transfer/SourceService/Package.swift", "target": "SylviaSourceService", "products": ["SwiftASN1"], "test": false},
+        {"manifest": "Spikes/G02-Transfer/TransferKit/Package.swift", "target": "SylviaTransferCore", "products": ["SwiftASN1"], "test": false}
+      ],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved", "Spikes/G02-Transfer/TransferKit/Package.resolved", "Spikes/G02-Transfer/iOS/Package.resolved"],
+      "linked": "Linked into sylvia-source (host, 3,101 symbols) and, through SylviaTransferCore, into the G0.2 iOS transfer harness app (iOS Simulator, 2,715 symbols; linkage.log sections 1 and 5).",
+      "license": {
+        "id": "Apache-2.0",
+        "read_at": "3b6410f7dee09eb33cdd26260c5fd47fda19b0e2",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac", "text": "Docs/Licenses/texts/apple__swift-asn1/LICENSE.txt"},
+          {"path": "NOTICE.txt", "sha256": "11dd3b3b783e6ec26098dd38ebc962986ea109b85447e28e62867b83bd0f8c5b", "text": "Docs/Licenses/texts/apple__swift-asn1/NOTICE.txt"}
+        ]
+      },
+      "obligations": "iOS app and Mac companion: Apache-2.0 text and NOTICE.",
+      "privacy_manifest": "None.",
+      "advisories": "CVE-2025-0343 (GHSA-w8xv-rwgf-4fwh), fixed in 1.3.1 (the GitHub Advisory Database gives 1.3.0 and earlier; the repository's own record, before 1.3.0), the one advisory apple/swift-asn1 publishes; not 1.7.3. See advisories.md."
+    },
+    {
+      "name": "apple/swift-atomics",
+      "url": "https://github.com/apple/swift-atomics.git",
+      "identity": "swift-atomics",
+      "version": "1.3.1",
+      "revision": "0442cb5a3f98ab802acb777929fdb446bda11a34",
+      "role": "product-transitive",
+      "platforms": ["macOS"],
+      "purpose": "Transitive dependency of swift-nio.",
+      "owning_adrs": ["0009"],
+      "modules": ["Atomics", "_AtomicsShims"],
+      "headers": ["_AtomicsShims.h"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "linked": "Linked into sylvia-source (606 symbols).",
+      "license": {
+        "id": "Apache-2.0 WITH Swift-exception",
+        "read_at": "0442cb5a3f98ab802acb777929fdb446bda11a34",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "770af8291f708538d8ff885a0bbc4e045cd700531741c4f99528d435c14d7f55", "text": "Docs/Licenses/texts/apple__swift-atomics/LICENSE.txt"}
+        ]
+      },
+      "obligations": "The Runtime Library Exception waives the attribution of sections 4(a), 4(b) and 4(d) for portions embedded into a binary by compiling; listing it in the acknowledgements anyway is recommended.",
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "apple/swift-collections",
+      "url": "https://github.com/apple/swift-collections.git",
+      "identity": "swift-collections",
+      "version": "1.7.1",
+      "revision": "98ef3c98609a1e31b7e157b5b619579001a789d6",
+      "role": "product-transitive",
+      "platforms": ["macOS"],
+      "purpose": "Transitive dependency of swift-nio (DequeModule).",
+      "owning_adrs": ["0009"],
+      "modules": ["Collections", "BasicContainers", "BitCollections", "ContainersPreview", "DequeModule", "HashTreeCollections", "HeapModule", "OrderedCollections", "_RopeModule", "SpanPreview", "TrailingElementsModule", "SortedCollections", "InternalCollectionsUtilities", "_CollectionsTestSupport"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "linked": "Linked into sylvia-source (DequeModule, 957 symbols).",
+      "license": {
+        "id": "Apache-2.0 WITH Swift-exception",
+        "read_at": "98ef3c98609a1e31b7e157b5b619579001a789d6",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "770af8291f708538d8ff885a0bbc4e045cd700531741c4f99528d435c14d7f55", "text": "Docs/Licenses/texts/apple__swift-collections/LICENSE.txt"}
+        ]
+      },
+      "obligations": "As swift-atomics.",
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "apple/swift-system",
+      "url": "https://github.com/apple/swift-system.git",
+      "identity": "swift-system",
+      "version": "1.8.1",
+      "revision": "869129b7bf4ecc57b97d0193ad29690ca2134750",
+      "role": "product-transitive",
+      "platforms": ["macOS"],
+      "purpose": "Transitive dependency of swift-nio (NIOFileSystem).",
+      "owning_adrs": ["0009"],
+      "modules": ["SystemPackage", "CSystem"],
+      "headers": ["CSystemDarwin.h", "CSystemFreeBSD.h", "CSystemLinux.h", "CSystemShared.h", "CSystemWASI.h", "CSystemWindows.h", "io_uring.h"],
+      "direct_in": [],
+      "used_by_targets": [],
+      "locks": ["Spikes/G02-Transfer/MacIdentityProbe/Package.resolved", "Spikes/G02-Transfer/SourceService/Package.resolved"],
+      "linked": "Resolved but not linked into sylvia-source (no SystemPackage symbols).",
+      "license": {
+        "id": "Apache-2.0 WITH Swift-exception",
+        "read_at": "869129b7bf4ecc57b97d0193ad29690ca2134750",
+        "files": [
+          {"path": "LICENSE.txt", "sha256": "2245a990b635558be210fb3eb4f8a6f7a49aebc0fefbf5859146a65ddc7ddcf3", "text": "Docs/Licenses/texts/apple__swift-system/LICENSE.txt"}
+        ]
+      },
+      "obligations": "None while it is not linked; as swift-atomics if it is.",
+      "privacy_manifest": "None.",
+      "advisories": "None found. See advisories.md."
+    },
+    {
+      "name": "weichsel/ZIPFoundation",
+      "url": "https://github.com/weichsel/ZIPFoundation.git",
+      "identity": "zipfoundation",
+      "version": "0.9.20",
+      "revision": "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
+      "role": "spike",
+      "platforms": ["macOS"],
+      "purpose": "The G0.3 archive-library evaluation only (ZipEval/Upstream, IdentityProbe). It cannot share a SwiftPM graph with Readium (same identity, zipfoundation) and opened truncated multi-GiB copies as empty archives (ADR-0010).",
+      "owning_adrs": ["0010"],
+      "direct_in": ["Spikes/G03-Intake/ZipEval/Upstream/Package.swift", "Spikes/G03-Intake/ZipEval/IdentityProbe/Package.swift"],
+      "used_by_targets": [
+        {"manifest": "Spikes/G03-Intake/ZipEval/IdentityProbe/Package.swift", "target": "IdentityProbe", "products": ["ZIPFoundation"], "test": false},
+        {"manifest": "Spikes/G03-Intake/ZipEval/Upstream/Package.swift", "target": "zipeval-upstream", "products": ["ZIPFoundation"], "test": false}
+      ],
+      "locks": ["Spikes/G03-Intake/ZipEval/Upstream/Package.resolved"],
+      "linked": "Only in the zipeval-upstream evaluation tool; never in an app.",
+      "license": {
+        "id": "MIT",
+        "read_at": "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
+        "files": [
+          {"path": "LICENSE", "sha256": "93a5b6f4c4fcfbca71aaf17f5758d249cf205d5d1c237becc37f14e43af09f6b", "text": "Docs/Licenses/texts/weichsel__zipfoundation/LICENSE"}
+        ]
+      },
+      "obligations": "None (never shipped).",
+      "privacy_manifest": "Ships one (never shipped): FileTimestamp (0A2A.1).",
+      "advisories": "CVE-2023-39138 affects <= 0.9.17 only. See advisories.md."
+    }
+  ],
+  "acknowledgements": {
+    "draft": "Docs/Licenses/acknowledgements-draft.md",
+    "apache_text": "Docs/Licenses/texts/apple__swift-asn1/LICENSE.txt",
+    "preamble": "Draft of the third-party notices Sylvia must carry (plan 18.4 and Appendix C; ADR-0014). **Status: draft, agent-prepared; the release owner and counsel have not reviewed it, and no build shows it yet.** It covers the packages ADR-0014 recommends for each product and what they bring. The M0 builds link or bundle every component listed here (Docs/Stage0/evidence/M0-dependencies/linkage.log: the EPUB harness, the G0.2 transfer harness, the design catalog and, for GRDB, the G0.5 recovery package's iOS test bundle for the app; the G0.2 source service for the companion), except that no M0 iOS app links GRDB yet. M1 and M6 update it as the product targets take their packages. Entries marked Pending need a decision before any distribution (ADR-0014, open items).",
+    "products": [
+      {
+        "title": "Sylvia for iPhone and iPad",
+        "basis": "Readium (EPUB), GRDB (persistence), Readium's ZIPFoundation (bundles and backups), SwiftASN1 (transfer pinning), Literata, and everything those bring into the app: the libraries Readium links, the code they vendor, and the fonts, styles and scripts in Readium's resource bundles.",
+        "entries": [
+          {"name": "Readium Swift Toolkit", "version": "3.11.0", "url": "https://github.com/readium/swift-toolkit", "license": "BSD-3-Clause", "texts": ["Docs/Licenses/texts/readium__swift-toolkit/LICENSE"]},
+          {"name": "ReadiumCSS (in Readium's resources)", "version": "readium-css commit 1ba225fecf1e63e6cccc93e1f4a50107e56f93e5", "url": "https://github.com/readium/readium-css", "license": "BSD-3-Clause", "texts": ["Docs/Licenses/texts/readium__swift-toolkit/external__readium-css-1ba225fecf1e63e6cccc93e1f4a50107e56f93e5__LICENSE"]},
+          {"name": "DataCompression (in Readium Swift Toolkit)", "url": "Readium Sources/Streamer/Toolkit/DataCompression.swift", "license": "Apache-2.0", "texts": ["Docs/Licenses/texts/readium__swift-toolkit/Sources__Streamer__Toolkit__DataCompression.swift__notice"], "apache": true},
+          {"name": "Accessible DfA (font, in Readium's resources)", "version": "1.10", "url": "https://github.com/Orange-OpenSource/font-accessible-dfa", "license": "SIL Open Font License 1.1", "texts": ["Docs/Licenses/texts/readium__swift-toolkit/Sources__Navigator__EPUB__Assets__Static__readium-css__fonts__LICENSE-AccessibleDfa"]},
+          {"name": "iA Writer Duospace (font, in Readium's resources)", "version": "1.001", "url": "Readium Sources/Navigator/EPUB/Assets/Static/readium-css/fonts", "license": "SIL Open Font License 1.1 (derived from IBM Plex Mono; the license file also carries IBM's Apache-2.0 notice for its type code)", "texts": ["Docs/Licenses/texts/readium__swift-toolkit/Sources__Navigator__EPUB__Assets__Static__readium-css__fonts__LICENSE-IaWriterDuospace.md"]},
+          {"name": "OpenDyslexic (font, in Readium's resources)", "version": "2.001", "url": "https://opendyslexic.org", "license": "Bitstream Vera license (original glyphs) and CC BY 3.0 Unported (OpenDyslexic changes), as stated in the font files", "pending": "The fonts state: \"Original Fonts are © Bitstream. OpenDyslexic changes and additional glyphs by Abelardo Gonzalez are licensed under a Creative Commons Attribution 3.0 Unported License. Based on a work at http://dyslexicfonts.com.\" The Bitstream license text they point to (http://opendyslexic.org/legal/) is no longer published there, and CC BY 3.0 section 4(a) forbids applying technological measures to the work; whether App Store distribution is compatible, and whether to ship these files at all, is for the product owner and counsel (ADR-0014)."},
+          {"name": "Hypothesis client anchoring code (in Readium's navigator scripts)", "version": "1.1763.0", "url": "https://github.com/hypothesis/client", "license": "BSD-2-Clause", "texts": ["Docs/Licenses/texts/readium__swift-toolkit/external__hypothesis-client-v1.1763.0__LICENSE"]},
+          {"name": "JavaScript packages compiled into Readium's navigator scripts", "license": "MIT, except @juggle/resize-observer (Apache-2.0)", "note": "The runtime closure in Readium's pnpm-lock.yaml (an upper bound: the bundler may leave some out). approx-string-match 1.1.0 (Robert Knight) declares MIT in its package.json but publishes no license file, so it has no text below.", "npm": "Docs/Licenses/texts/readium__swift-toolkit/external__navigator-scripts-npm-licenses.txt"},
+          {"name": "ZIPFoundation (Readium fork)", "version": "3.0.1", "url": "https://github.com/readium/ZIPFoundation", "license": "MIT", "texts": ["Docs/Licenses/texts/readium__zipfoundation/LICENSE"]},
+          {"name": "Readium Foundation code in ZIPFoundation (DataSource.swift, SharedMutableValue.swift)", "version": "3.0.1", "url": "https://github.com/readium/ZIPFoundation", "license": "BSD-style license (Readium's BSD-3-Clause, reproduced below)", "note": "These two files' headers point to \"the BSD-style license available in the top-level LICENSE file of the project\"; the fork's top-level LICENSE is the MIT license above, so both are reproduced.", "pending": "Which license the header means is for counsel and Readium to confirm (ADR-0014).", "texts": ["Docs/Licenses/texts/readium__zipfoundation/Sources__ZIPFoundation__DataSource.swift__notice", "Docs/Licenses/texts/readium__swift-toolkit/LICENSE"]},
+          {"name": "Fuzi (Readium fork)", "version": "4.0.1", "url": "https://github.com/readium/Fuzi", "license": "MIT", "texts": ["Docs/Licenses/texts/readium__fuzi/LICENSE"]},
+          {"name": "SwiftSoup", "version": "2.13.9", "url": "https://github.com/scinfu/SwiftSoup", "license": "MIT", "pending": "SwiftSoup's Sources/BinarySearch.swift (Garth Snyder, 2019) says it was \"Adapted from https://stackoverflow.com/questions/31904396/swift-binary-search-for-standard-array\". Stack Overflow publishes contributions under CC BY-SA, and the file does not name the answer it adapted. Whether an attribution is owed, and in what form, is for counsel (ADR-0014).", "texts": ["Docs/Licenses/texts/scinfu__swiftsoup/LICENSE", "Docs/Licenses/texts/scinfu__swiftsoup/Sources__LRUCache.swift__notice"]},
+          {"name": "CryptoSwift", "version": "1.10.0", "url": "https://github.com/krzyzanowskim/CryptoSwift", "license": "CryptoSwift license (zlib-style, with a required acknowledgment)", "note": "This product includes software developed by the \"Marcin Krzyzanowski\" (http://krzyzanowskim.com/).", "texts": ["Docs/Licenses/texts/krzyzanowskim__cryptoswift/LICENSE"]},
+          {"name": "BigInt (in CryptoSwift)", "url": "https://github.com/attaswift/BigInt", "license": "MIT", "texts": ["Docs/Licenses/texts/krzyzanowskim__cryptoswift/Sources__CryptoSwift__CS_BigInt__GCD.swift__notice", "Docs/Licenses/texts/krzyzanowskim__cryptoswift/external__attaswift-BigInt-v5.3.0__LICENSE.md"]},
+          {"name": "DifferenceKit", "version": "1.3.0", "url": "https://github.com/ra1028/DifferenceKit", "license": "Apache-2.0", "note": "The package states no copyright holder and ships no NOTICE file.", "apache": true},
+          {"name": "Zip", "version": "2.1.2", "url": "https://github.com/marmelroy/Zip", "license": "MIT", "texts": ["Docs/Licenses/texts/marmelroy__zip/LICENSE"]},
+          {"name": "Minizip (in Zip)", "version": "1.1", "url": "http://www.winimage.com/zLibDll/minizip.html", "license": "zlib license", "texts": ["Docs/Licenses/texts/marmelroy__zip/Zip__minizip__unzip.c__header-comment", "Docs/Licenses/texts/marmelroy__zip/external__zlib-v1.3.1__LICENSE"]},
+          {"name": "Info-ZIP decryption code (in Minizip, crypt.h)", "url": "https://infozip.sourceforge.net/license.html", "license": "Info-ZIP license", "note": "crypt.h's own notice, then the Info-ZIP license it refers to.", "texts": ["Docs/Licenses/texts/marmelroy__zip/Zip__minizip__include__crypt.h__header-comment", "Docs/Licenses/texts/marmelroy__zip/external__infozip-license-2009-Jan-02.txt"]},
+          {"name": "GRDB.swift", "version": "7.11.1", "url": "https://github.com/groue/GRDB.swift", "license": "MIT", "note": "Includes English inflection rules from Ruby on Rails (MIT) and code derived from the Swift standard library (Apache-2.0 with the Runtime Library Exception; full Apache text at the end).", "texts": ["Docs/Licenses/texts/groue__grdb.swift/LICENSE", "Docs/Licenses/texts/groue__grdb.swift/GRDB__Utils__Inflections+English.swift__notice", "Docs/Licenses/texts/groue__grdb.swift/GRDB__Core__Cursor.swift__notice"]},
+          {"name": "SwiftASN1", "version": "1.7.3", "url": "https://github.com/apple/swift-asn1", "license": "Apache-2.0", "notices": ["Docs/Licenses/texts/apple__swift-asn1/NOTICE.txt"], "apache": true},
+          {"name": "Literata", "version": "3.103", "url": "https://github.com/googlefonts/literata", "license": "SIL Open Font License 1.1", "note": "OFL.txt also ships beside the font files in the app.", "texts": ["Packages/Design/Sources/SylviaDesign/Resources/Fonts/OFL.txt"]}
+        ]
+      },
+      {
+        "title": "Sylvia for Mac (companion)",
+        "basis": "The G0.2 Mac source service's packages (ADR-0008, ADR-0009) and what they link. M6 decides the companion's final package set; if it also uses GRDB or ZIPFoundation, their entries above apply to it too.",
+        "entries": [
+          {"name": "SwiftNIO", "version": "2.103.0", "url": "https://github.com/apple/swift-nio", "license": "Apache-2.0", "notices": ["Docs/Licenses/texts/apple__swift-nio/NOTICE.txt"], "apache": true},
+          {"name": "llhttp (in SwiftNIO)", "version": "9.3.0", "url": "https://github.com/nodejs/llhttp", "license": "MIT", "texts": ["Docs/Licenses/texts/apple__swift-nio/Sources__CNIOLLHTTP__LICENSE"]},
+          {"name": "cpp_magic.h from uSHET (in SwiftNIO)", "version": "commit c09e0acafd86720efe42dc15c63e0cc228244c32", "url": "https://github.com/18sg/uSHET", "license": "MIT", "note": "The header's own lines, then uSHET's license file at that commit. That file also carries the license of jsmn, another library in uSHET, which SwiftNIO does not include.", "texts": ["Docs/Licenses/texts/apple__swift-nio/Sources__CNIOAtomics__src__cpp_magic.h__notice", "Docs/Licenses/texts/apple__swift-nio/external__uSHET-c09e0acafd86720efe42dc15c63e0cc228244c32__LICENSE"]},
+          {"name": "SwiftNIO SSL", "version": "2.37.5", "url": "https://github.com/apple/swift-nio-ssl", "license": "Apache-2.0", "notices": ["Docs/Licenses/texts/apple__swift-nio-ssl/NOTICE.txt"], "apache": true},
+          {"name": "BoringSSL (in SwiftNIO SSL)", "version": "revision 817ab07ebb53da35afea409ab9328f578492832d", "url": "https://boringssl.googlesource.com/boringssl", "license": "OpenSSL License and original SSLeay License, ISC, MIT (fiat)", "note": "This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/)\n\nThis product includes cryptographic software written by Eric Young (eay@cryptsoft.com)", "texts": ["Docs/Licenses/texts/apple__swift-nio-ssl/external__boringssl-817ab07ebb53da35afea409ab9328f578492832d__LICENSE"]},
+          {"name": "Swift Certificates", "version": "1.21.0", "url": "https://github.com/apple/swift-certificates", "license": "Apache-2.0", "notices": ["Docs/Licenses/texts/apple__swift-certificates/NOTICE.txt"], "apache": true},
+          {"name": "musl libc time calculations (in Swift Certificates)", "url": "https://musl.libc.org", "license": "MIT", "texts": ["Docs/Licenses/texts/apple__swift-certificates/Sources__X509__X509BaseTypes__TimeCalculations.swift__notice"]},
+          {"name": "Swift Crypto", "version": "5.0.0", "url": "https://github.com/apple/swift-crypto", "license": "Apache-2.0", "notices": ["Docs/Licenses/texts/apple__swift-crypto/NOTICE.txt"], "apache": true},
+          {"name": "BoringSSL (in Swift Crypto)", "version": "revision 0226f30467f540a3f62ef48d453f93927da199b6", "url": "https://boringssl.googlesource.com/boringssl", "license": "Apache-2.0", "texts": ["Docs/Licenses/texts/apple__swift-crypto/external__boringssl-0226f30467f540a3f62ef48d453f93927da199b6__LICENSE"]},
+          {"name": "fiat-crypto (in Swift Crypto's BoringSSL)", "version": "as in BoringSSL revision 0226f30467f540a3f62ef48d453f93927da199b6", "url": "https://github.com/mit-plv/fiat-crypto", "license": "Apache-2.0", "note": "BoringSSL's third_party/fiat/LICENSE at that revision.", "texts": ["Docs/Licenses/texts/apple__swift-crypto/external__boringssl-0226f30467f540a3f62ef48d453f93927da199b6__third_party__fiat__LICENSE"]},
+          {"name": "SwiftASN1", "version": "1.7.3", "url": "https://github.com/apple/swift-asn1", "license": "Apache-2.0", "notices": ["Docs/Licenses/texts/apple__swift-asn1/NOTICE.txt"], "apache": true},
+          {"name": "Swift Atomics", "version": "1.3.1", "url": "https://github.com/apple/swift-atomics", "license": "Apache-2.0 with the Runtime Library Exception", "note": "The exception waives attribution for portions embedded in a binary by compiling; listed anyway.", "apache": true},
+          {"name": "Swift Collections", "version": "1.7.1", "url": "https://github.com/apple/swift-collections", "license": "Apache-2.0 with the Runtime Library Exception", "note": "The exception waives attribution for portions embedded in a binary by compiling; listed anyway.", "apache": true}
+        ]
+      }
+    ]
+  },
+  "binaries": [],
+  "vendored_assets": [
+    {"path": "Packages/Design/Sources/SylviaDesign/Resources/Fonts/Literata-Variable.ttf", "sha256": "b41138c9373112f32abb589cc22e8674b06ed4048b0c513be922bdd26f274440", "what": "Literata 3.103 roman variable font (Literata[opsz,wght].ttf, renamed), unmodified", "source": "https://github.com/googlefonts/literata/releases/tag/3.103", "license": "OFL-1.1, no Reserved Font Name", "owning_adr": "0013"},
+    {"path": "Packages/Design/Sources/SylviaDesign/Resources/Fonts/Literata-Italic-Variable.ttf", "sha256": "d483dfaeba9cbf4ce71d32a52ee65df82f7e35b15fff8d1011cdb242d1fcd465", "what": "Literata 3.103 italic variable font (Literata-Italic[opsz,wght].ttf, renamed), unmodified", "source": "https://github.com/googlefonts/literata/releases/tag/3.103", "license": "OFL-1.1, no Reserved Font Name", "owning_adr": "0013"},
+    {"path": "Packages/Design/Sources/SylviaDesign/Resources/Fonts/OFL.txt", "sha256": "8742963604cd89dc81437811a850018fc03b2bfad686d7422c8235967c87614e", "what": "The SIL Open Font License 1.1 text with the Literata Project Authors' copyright line, shipped beside the fonts", "source": "Literata 3.103 release", "license": "OFL-1.1 (the license text itself)", "owning_adr": "0013"}
+  ],
+  "python_tools": {
+    "requirements": "Scripts/tools/requirements.txt",
+    "note": "CI tooling in $SYLVIA_TOOLS_VENV (ADR-0002); never shipped. Licenses from each installed distribution's metadata (toolchain.log). Advisories: none affects the 20 pinned versions or pip 26.2.1, the shared virtualenv's (version-exact search, advisories-search.log); the pip a fresh bootstrap installs is below the minimum recorded for it (unpinned, below). With --toolchain, CI fails unless the virtualenv holds exactly the packages below at their versions, and pip at any version; it warns when pip is below its minimum.",
+    "packages": [
+      {"name": "annotated-types", "version": "0.8.0", "license": "MIT"},
+      {"name": "attrs", "version": "26.1.0", "license": "MIT"},
+      {"name": "jsonschema", "version": "4.26.0", "license": "MIT"},
+      {"name": "jsonschema-path", "version": "0.5.0", "license": "Apache-2.0"},
+      {"name": "jsonschema-specifications", "version": "2025.9.1", "license": "MIT"},
+      {"name": "lazy-object-proxy", "version": "1.12.0", "license": "BSD-2-Clause"},
+      {"name": "openapi-schema-validator", "version": "0.9.0", "license": "BSD-3-Clause"},
+      {"name": "openapi-spec-validator", "version": "0.9.0", "license": "Apache-2.0"},
+      {"name": "pathable", "version": "0.6.0", "license": "Apache-2.0"},
+      {"name": "pydantic", "version": "2.13.5", "license": "MIT"},
+      {"name": "pydantic-settings", "version": "2.15.0", "license": "MIT"},
+      {"name": "pydantic-core", "version": "2.46.5", "license": "MIT"},
+      {"name": "python-dotenv", "version": "1.2.4", "license": "BSD-3-Clause"},
+      {"name": "pyyaml", "version": "6.0.3", "license": "MIT"},
+      {"name": "referencing", "version": "0.37.0", "license": "MIT"},
+      {"name": "rfc3339-validator", "version": "0.1.4", "license": "MIT"},
+      {"name": "rpds-py", "version": "2026.9.1", "license": "MIT"},
+      {"name": "six", "version": "1.17.0", "license": "MIT"},
+      {"name": "typing-inspection", "version": "0.4.4", "license": "MIT"},
+      {"name": "typing-extensions", "version": "4.16.0", "license": "PSF-2.0"}
+    ],
+    "unpinned": [
+      {"name": "pip", "version": "26.2.1", "fresh_bootstrap_version": "26.1.2", "version_is": "What the shared virtualenv on the build Mac holds (toolchain.log). Not enforced: a freshly bootstrapped virtualenv holds the pip its Python bundles, 26.1.2 with Python 3.14.6 (ensurepip; round2-reproductions.log), and CI accepts any version (ADR-0014 section 3).", "minimum": "26.2.0", "minimum_why": "GHSA-qwm4-qh6w-59xr (CVE-2026-13346, PYSEC-2026-3721: doubly-encoded package URLs from an index can install files outside the target directory) affects every pip before 26.2.0; every other pip advisory OSV lists is fixed at or before 26.1.2 (advisories-search.log, the any-version query)", "license": "MIT (vendors its own dependencies, each with its license file in the distribution)", "why": "The virtualenv's installer, not a tool the scripts import. Neither Scripts/tools/requirements.txt nor bootstrap.sh pins it: `python3 -m venv` installs the pip that Python 3.14.6 bundles (ensurepip: 26.1.2), and bootstrap.sh never upgrades it. The shared virtualenv holds 26.2.1, so pip was upgraded after that virtualenv was created on 6 October 2026 (its files are dated 08:12 NZDT, before the kickoff commit), by a command that is not recorded (toolchain.log).", "owner": "Scripts/tools owner (ADR-0002); requested in ADR-0014", "fix": "add pip==26.2.1 to Scripts/tools/requirements.txt (bootstrap.sh's `pip install -r` then installs it in every new virtualenv), and move this entry to packages, where the version is checked exactly"}
+    ]
+  },
+  "ci_actions": [
+    {"uses": "actions/checkout@11d5960a326750d5838078e36cf38b85af677262", "workflow": ".github/workflows/ci.yml", "license": "MIT (Copyright (c) 2018 GitHub, Inc. and contributors, read at the v4 tag)", "pinned_to_commit": true, "release": "v4.4.0, the release the v4 tag named on 13 October 2026 (GitHub tags API, advisories-search.log)", "advisories": "None at v4.4.0 (GitHub Advisory Database; OSV lists none for any version). See advisories.md.", "owner": "workflow owner (ADR-0002); pinned to the release SHA at M0 assembly (14 October 2026), as ADR-0014 requested"},
+    {"uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02", "workflow": ".github/workflows/ci.yml", "license": "MIT (Copyright (c) 2018 GitHub, Inc. and contributors, read at the v4 tag)", "pinned_to_commit": true, "release": "v4.6.2, the release the v4 tag named on 13 October 2026 (GitHub tags API, advisories-search.log)", "advisories": "None at v4.6.2 (GitHub Advisory Database; OSV lists none for any version). See advisories.md.", "owner": "workflow owner (ADR-0002); pinned to the release SHA at M0 assembly (14 October 2026), as ADR-0014 requested"}
+  ],
+  "host_tools": [
+    {"name": "Xcode", "version": "27.0 (27A266a), Swift 6.4", "source": "/Applications/Xcode.app (DEVELOPER_DIR)", "license": "Apple Xcode and SDK agreement", "used_by": "every build and test", "required": true},
+    {"name": "XcodeGen", "version": "2.46.0", "source": "Homebrew", "license": "MIT", "used_by": "Scripts/lib/xcodegen.sh (every Xcode project)", "required": true},
+    {"name": "Python (tools virtualenv)", "version": "3.14.6", "source": "Homebrew python@3.14", "license": "Python-2.0", "used_by": "contract validation, design lint, this checker", "required": true},
+    {"name": "/usr/bin/python3", "version": "3.9.6", "source": "macOS (Command Line Tools)", "license": "Python-2.0", "used_by": "fixture generators and several CI drop-ins that name it", "required": true},
+    {"name": "ffmpeg and ffprobe", "version": "8.1.2", "source": "Homebrew, built with --enable-gpl --enable-version3 --enable-libmp3lame --enable-libopus --enable-audiotoolbox", "license": "GPL-3.0-or-later (this build); libmp3lame LGPL-2.0-or-later, libopus BSD-3-Clause", "used_by": "G0.4 fixture generators and excerpt portability check (m0-g04-audio); host only, output is test data", "required": "for G0.4 only"},
+    {"name": "OpenSSL", "version": "3.6.3", "source": "Homebrew openssl@3 (first openssl on PATH)", "license": "Apache-2.0", "used_by": "G0.2 test certificates and digests", "required": true},
+    {"name": "LibreSSL /usr/bin/openssl", "version": "3.3.6", "source": "macOS", "license": "OpenSSL/ISC (system component)", "used_by": "G0.1 EPUB fixture generator", "required": true},
+    {"name": "git", "version": "2.55.0", "source": "Homebrew", "license": "GPL-2.0-only and others", "used_by": "evidence scripts", "required": true},
+    {"name": "git-lfs", "version": "3.7.1", "source": "Homebrew", "license": "MIT", "used_by": "nothing yet (LFS deferred, ADR-0002)", "required": false},
+    {"name": "macOS system tools", "version": "macOS 26.6.2 (25G83)", "source": "macOS", "license": "Apple", "used_by": "afconvert, afinfo, shasum, unzip (Info-ZIP 6.00), rsync (openrsync), sips, plutil, perl 5.34.1, codesign, security and du (the G0.4 drop-in), curl 8.7.1, dd, ifconfig", "required": true},
+    {"name": "Google Chrome", "version": "155.0.8059.40 (toolchain.log; Chrome updates itself, so this is the version on the day the log was written)", "source": "/Applications", "license": "Google Chrome terms", "used_by": "Docs/Design/render.py only (design boards load Literata from Google Fonts)", "required": false},
+    {"name": "Tailscale", "version": "1.102.4", "source": "/Applications", "license": "Tailscale terms", "used_by": "Scripts/ci.d/40-g02-transfer.sh, only when a tailnet address is present", "required": false}
+  ]
+}

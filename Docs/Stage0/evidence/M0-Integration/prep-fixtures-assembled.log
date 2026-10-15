@@ -1,0 +1,35 @@
+command: Docs/Stage0/evidence/M0-Integration/commands/prep-fixtures.sh (run as an identical copy under .build/scratch/ before the complete CI run)
+start: 2026-10-14T14:39:31Z; load:  3:39  up 11 days, 13:50, 1 user, load averages: 5.63 4.05 2.96
+==> Scripts/fixtures/fetch.sh
+ok       meditationsofmarcusaurelius_01_aurelius_64kb.mp3
+ok       meditationsofmarcusaurelius_02_aurelius_64kb.mp3
+ok       MeditationsMarcusAurelius_librivox.m4b
+    exit 0
+==> Scripts/fixtures/generate-g01-pdf-large.sh
+up to date: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g01-pdf/large-1000.pdf
+    exit 0
+==> Scripts/fixtures/generate-g02-transfer-large.sh
+present and verified: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g02-transfer/large-5GiB.bin
+    exit 0
+==> Scripts/fixtures/generate-g02-transfer-sim-files.sh
+present and verified: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g02-transfer/sim-small.bin
+present and verified: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g02-transfer/sim-faulty.bin
+present and verified: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g02-transfer/sim-slow.bin
+present and verified: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g02-transfer/sim-ui.bin
+    exit 0
+==> Scripts/fixtures/generate-g03-intake-pack.sh
+ok       /Users/jevidon/Library/Caches/SylviaFixtures/generated/g03-intake/large.sylviapack (982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268)
+    exit 0
+==> Scripts/fixtures/generate-g04-audio-fixtures.sh
+g04 audio fixtures are current in /Users/jevidon/Library/Caches/SylviaFixtures/generated/g04-audio
+    exit 0
+==> Scripts/fixtures/generate-g04-audio-long-formats.sh
+g04 long-format fixtures are current in /Users/jevidon/Library/Caches/SylviaFixtures/generated/g04-audio/long-formats
+    exit 0
+==> Scripts/fixtures/generate-g04-audio-probes.sh
+g04 probe fixtures are current in /Users/jevidon/Library/Caches/SylviaFixtures/generated/g04-audio/probes
+    exit 0
+==> Scripts/fixtures/generate-g04-audio-stereo.sh
+g04 stereo fixtures are current in /Users/jevidon/Library/Caches/SylviaFixtures/generated/g04-audio/stereo
+    exit 0
+end: 2026-10-14T14:39:48Z; load:  3:39  up 11 days, 13:50, 1 user, load averages: 5.79 4.16 3.01

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "protocol_version": {
+    "major": 1,
+    "minor": 0
+  },
+  "source_id": "5a1e0c3e-7d2b-4c1a-9f00-000000000001",
+  "item_id": "00000000-0000-4000-8000-000000000001",
+  "item_version_id": "00000000-0000-4000-8000-000000000002",
+  "created_at": "2026-10-06T09:00:00Z",
+  "manifest_digest": "8411e86cf59bca291b575af3846edebedb373bdf2d349b7682b067a2871a9d34",
+  "grouping": {
+    "kind": "single",
+    "title": "Walden",
+    "creators": [
+      "Henry David Thoreau"
+    ]
+  },
+  "assets": [
+    {
+      "asset_id": "00000000-0000-4000-8000-000000000101",
+      "ordinal": 0,
+      "display_name": "walden.epub",
+      "media_type": "application/epub+zip",
+      "length": 2621440,
+      "etag": "\"sha256-665055e1b9b73e51cbd2ca36b1e2a548d412573af060d2e867ce7cb9c062808b\"",
+      "sha256": "665055e1b9b73e51cbd2ca36b1e2a548d412573af060d2e867ce7cb9c062808b",
+      "part_size": 1048577,
+      "parts": [
+        {
+          "index": 0,
+          "offset": 0,
+          "length": 1048576,
+          "sha256": "f8bc949911dce018f594e7cc65ee52335770315942f1404a6eba4b777af3c6f9"
+        },
+        {
+          "index": 1,
+          "offset": 1048576,
+          "length": 1048576,
+          "sha256": "fc1aafc8fb6221e2dcaf0ceee27a96ea6f7dd02a6a961c4be45751b7966df0e0"
+        },
+        {
+          "index": 2,
+          "offset": 2097152,
+          "length": 524288,
+          "sha256": "c8aca7a5f4497c8613c53b37a5259239de521096abc91c9453952e5c9178c1b3"
+        }
+      ]
+    }
+  ]
+}

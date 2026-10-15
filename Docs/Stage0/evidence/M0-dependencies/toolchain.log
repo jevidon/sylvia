@@ -1,0 +1,124 @@
+toolchain inventory 2026-10-14T01:43:33Z at commit cfc5dea3d616b477733d76e1d3ab0d215d513f20
+load: 14:43  up 11 days, 54 mins, 1 user, load averages: 8.58 14.41 15.95
+
+### Host
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+Apple M5 Max
+
+### Xcode (DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer)
+Xcode 27.0
+Build version 27A266a
+version.plist ProductBuildVersion: 27A266a
+sylvia_check_xcode: matches the ADR-0001 pin (27A266a)
+swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+Target: arm64-apple-macosx26.0
+
+SDKs:
+  	DriverKit 27.0                	-sdk driverkit27.0
+  	iOS 27.0                      	-sdk iphoneos27.0
+  	Simulator - iOS 27.0          	-sdk iphonesimulator27.0
+  	macOS 27.0                    	-sdk macosx27.0
+  	macOS 27.0                    	-sdk macosx27.0
+  	tvOS 27.0                     	-sdk appletvos27.0
+  	Simulator - tvOS 27.0         	-sdk appletvsimulator27.0
+  	visionOS 27.0                 	-sdk xros27.0
+  	Simulator - visionOS 27.0     	-sdk xrsimulator27.0
+  	watchOS 27.0                  	-sdk watchos27.0
+  	Simulator - watchOS 27.0      	-sdk watchsimulator27.0
+
+Simulator runtimes:
+  == Runtimes ==
+  iOS 26.5 (26.5 - 23F77) - com.apple.CoreSimulator.SimRuntime.iOS-26-5
+  iOS 27.0 (27.0 - 24A434) - com.apple.CoreSimulator.SimRuntime.iOS-27-0
+
+### Tools named by Scripts/ and Spikes/ (and by Scripts/ci.d/60-g04-audio.sh and the G0.4 generators on m0-g04-audio)
+xcodegen: /opt/homebrew/bin/xcodegen -> /opt/homebrew/Cellar/xcodegen/2.46.0/bin/xcodegen | Version: 2.46.0
+ffmpeg: /opt/homebrew/bin/ffmpeg -> /opt/homebrew/Cellar/ffmpeg/8.1.2/bin/ffmpeg | ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers
+ffprobe: /opt/homebrew/bin/ffprobe -> /opt/homebrew/Cellar/ffmpeg/8.1.2/bin/ffprobe | ffprobe version 8.1.2 Copyright (c) 2007-2026 the FFmpeg developers
+afconvert: /usr/bin/afconvert -> /usr/bin/afconvert | (macOS system tool; no version flag)
+afinfo: /usr/bin/afinfo -> /usr/bin/afinfo | (macOS system tool; no version flag)
+python3: /opt/homebrew/bin/python3 -> /opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/bin/python3.14 | Python 3.14.6
+openssl: /opt/homebrew/bin/openssl -> /opt/homebrew/Cellar/openssl@3/3.6.3/bin/openssl | OpenSSL 3.6.3 9 Jun 2026 (Library: OpenSSL 3.6.3 9 Jun 2026)
+shasum: /usr/bin/shasum -> /usr/bin/shasum | 6.02
+unzip: /usr/bin/unzip -> /usr/bin/unzip | UnZip 6.00 of 20 April 2009, by Info-ZIP, with modifications by Apple Inc.
+rsync: /usr/bin/rsync -> /usr/bin/rsync | openrsync: protocol version 29
+sips: /usr/bin/sips -> /usr/bin/sips | sips-316
+plutil: /usr/bin/plutil -> /usr/bin/plutil | (macOS system tool)
+perl: /usr/bin/perl -> /usr/bin/perl | perl v5.34.1
+codesign: /usr/bin/codesign -> /usr/bin/codesign | (macOS system tool; no version flag)
+security: /usr/bin/security -> /usr/bin/security | (macOS system tool; no version flag)
+du: /usr/bin/du -> /usr/bin/du | (macOS system tool; no version flag)
+curl: /usr/bin/curl -> /usr/bin/curl | curl 8.7.1 (x86_64-apple-darwin25.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.68.1
+git: /opt/homebrew/bin/git -> /opt/homebrew/Cellar/git/2.55.0/bin/git | git version 2.55.0
+git-lfs: /opt/homebrew/bin/git-lfs -> /opt/homebrew/Cellar/git-lfs/3.7.1/bin/git-lfs | git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+/usr/bin/python3 (used by scripts that name it): Python 3.9.6
+/usr/bin/openssl (used by the G0.1 EPUB generator): LibreSSL 3.3.6
+Google Chrome (optional): 155.0.8059.40
+Tailscale (optional): 1.102.4
+
+ffmpeg build configuration (licensing flags):
+  --enable-version3
+  --enable-gpl
+  --enable-libopus
+  --enable-libmp3lame
+  --enable-audiotoolbox
+  ffmpeg -L: ffmpeg is free software; you can redistribute it and/or modify
+  ffmpeg -L: it under the terms of the GNU General Public License as published by
+  ffmpeg -L: the Free Software Foundation; either version 3 of the License, or
+
+### Homebrew formulae (installed versions and declared licenses, from the local Homebrew metadata)
+Homebrew 7.0.7
+  ffmpeg 8.1.2 (tap homebrew/core): license GPL-3.0-or-later; declared dependencies: dav1d, lame, libvmaf, libvpx, openssl@4, opus, sdl2-compat, svt-av1, x264, x265, xz
+  git 2.55.0 (tap homebrew/core): license GPL-2.0-only AND GPL-2.0-or-later AND LGPL-2.1-or-later AND BSD-3-Clause AND MIT; declared dependencies: pcre2, gettext
+  git-lfs 3.7.1 (tap homebrew/core): license MIT; declared dependencies: none
+  lame 3.100 (tap homebrew/core): license LGPL-2.0-or-later; declared dependencies: mpg123
+  openssl@3 3.6.3 (tap homebrew/core): license Apache-2.0; declared dependencies: ca-certificates
+  opus 1.6.1 (tap homebrew/core): license BSD-3-Clause; declared dependencies: none
+  python@3.13 3.13.15 (tap homebrew/core): license Python-2.0; declared dependencies: mpdecimal, openssl@3, sqlite, xz
+  python@3.14 3.14.6 (tap homebrew/core): license Python-2.0; declared dependencies: ca-certificates, mpdecimal, openssl@4, sqlite, xz, zstd
+  x264 r3222 (tap homebrew/core): license GPL-2.0-or-later; declared dependencies: none
+  xcodegen 2.46.0 (tap homebrew/core): license MIT; declared dependencies: none
+libraries linked by ffmpeg's libavcodec (otool -L, non-system):
+  /opt/homebrew/opt/ffmpeg/lib/libavcodec.62.dylib (compatibility version 62.0.0, current version 62.28.102)
+  /opt/homebrew/Cellar/ffmpeg/8.1.2/lib/libswresample.6.dylib (compatibility version 6.0.0, current version 6.3.102)
+  /opt/homebrew/Cellar/ffmpeg/8.1.2/lib/libavutil.60.dylib (compatibility version 60.0.0, current version 60.26.102)
+  /opt/homebrew/opt/libvpx/lib/libvpx.12.dylib (compatibility version 1.0.0, current version 1.0.0)
+  /opt/homebrew/opt/dav1d/lib/libdav1d.7.dylib (compatibility version 7.0.0, current version 7.0.0)
+  /opt/homebrew/opt/lame/lib/libmp3lame.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+  /opt/homebrew/opt/opus/lib/libopus.0.dylib (compatibility version 12.0.0, current version 12.1.0)
+  /opt/homebrew/opt/svt-av1/lib/libSvtAv1Enc.4.dylib (compatibility version 4.0.0, current version 4.1.0)
+  /opt/homebrew/opt/x264/lib/libx264.165.dylib (compatibility version 0.0.0, current version 0.0.0)
+  /opt/homebrew/opt/x265/lib/libx265.216.dylib (compatibility version 216.0.0, current version 216.0.0)
+  /opt/homebrew/opt/openssl@3/lib/libssl.3.dylib (compatibility version 3.0.0, current version 3.0.0)
+  /opt/homebrew/opt/openssl@3/lib/libcrypto.3.dylib (compatibility version 3.0.0, current version 3.0.0)
+
+### Python CI tooling (Scripts/tools/requirements.txt in $SYLVIA_TOOLS_VENV=/Users/jevidon/Library/Caches/SylviaTools/venv)
+Python 3.14.6
+  annotated-types 0.8.0: ok; license field: MIT; classifiers: MIT License; files: annotated_types-0.8.0.dist-info/licenses/LICENSE
+  attrs 26.1.0: ok; license field: MIT; classifiers: -; files: attrs-26.1.0.dist-info/licenses/LICENSE
+  jsonschema 4.26.0: ok; license field: MIT; classifiers: -; files: jsonschema-4.26.0.dist-info/licenses/COPYING
+  jsonschema-path 0.5.0: ok; license field: Apache-2.0; classifiers: Apache Software License; files: jsonschema_path-0.5.0.dist-info/licenses/LICENSE
+  jsonschema-specifications 2025.9.1: ok; license field: MIT; classifiers: -; files: jsonschema_specifications-2025.9.1.dist-info/licenses/COPYING
+  lazy-object-proxy 1.12.0: ok; license field: BSD-2-Clause; classifiers: -; files: lazy_object_proxy-1.12.0.dist-info/licenses/LICENSE
+  openapi-schema-validator 0.9.0: ok; license field: BSD-3-Clause; classifiers: BSD License; files: openapi_schema_validator-0.9.0.dist-info/licenses/LICENSE
+  openapi-spec-validator 0.9.0: ok; license field: Apache-2.0; classifiers: -; files: openapi_spec_validator-0.9.0.dist-info/licenses/LICENSE, openapi_spec_validator-0.9.0.dist-info/licenses/NOTICE
+  pathable 0.6.0: ok; license field: Apache-2.0; classifiers: Apache Software License; files: pathable-0.6.0.dist-info/licenses/LICENSE
+  pydantic 2.13.5: ok; license field: MIT; classifiers: -; files: pydantic-2.13.5.dist-info/licenses/LICENSE
+  pydantic-core 2.46.5: ok; license field: MIT; classifiers: -; files: pydantic_core-2.46.5.dist-info/licenses/LICENSE
+  pydantic-settings 2.15.0: ok; license field: MIT; classifiers: MIT License; files: pydantic_settings-2.15.0.dist-info/licenses/LICENSE
+  python-dotenv 1.2.4: ok; license field: BSD-3-Clause; classifiers: -; files: python_dotenv-1.2.4.dist-info/licenses/LICENSE
+  pyyaml 6.0.3: ok; license field: MIT; classifiers: MIT License; files: pyyaml-6.0.3.dist-info/licenses/LICENSE
+  referencing 0.37.0: ok; license field: MIT; classifiers: -; files: referencing-0.37.0.dist-info/licenses/COPYING
+  rfc3339-validator 0.1.4: ok; license field: MIT license; classifiers: MIT License; files: rfc3339_validator-0.1.4.dist-info/LICENSE
+  rpds-py 2026.9.1: ok; license field: MIT; classifiers: -; files: rpds_py-2026.9.1.dist-info/licenses/LICENSE
+  six 1.17.0: ok; license field: MIT; classifiers: MIT License; files: six-1.17.0.dist-info/LICENSE
+  typing-extensions 4.16.0: ok; license field: PSF-2.0; classifiers: -; files: typing_extensions-4.16.0.dist-info/licenses/LICENSE
+  typing-inspection 0.4.4: ok; license field: MIT; classifiers: -; files: typing_inspection-0.4.4.dist-info/licenses/LICENSE
+  installed but not in requirements.txt (every distribution, none excluded): pip 26.2.1
+  virtualenv: /Users/jevidon/Library/Caches/SylviaTools/venv; pyvenv.cfg written 2026-10-06 08:12 NZDT: version = 3.14.6; command = /opt/homebrew/opt/python@3.14/bin/python3.14 -m venv /Users/jevidon/Library/Caches/SylviaTools/venv
+  pip bundled with this Python (ensurepip, what `python3 -m venv` installs): 26.1.2
+  pip in the virtualenv: 26.2.1, its dist-info written 2026-10-06 08:12 NZDT; requested explicitly: yes; pinned by requirements.txt: no
+
+finished 2026-10-14T01:43:36Z

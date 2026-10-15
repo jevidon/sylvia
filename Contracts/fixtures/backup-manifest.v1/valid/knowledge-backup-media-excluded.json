@@ -1,0 +1,166 @@
+{
+  "backup_id": "fcbacc30-3035-491f-9cbb-59e114da4474",
+  "complete": false,
+  "counts": {
+    "asset": 6,
+    "asset_location": 6,
+    "capture": 5,
+    "capture_anchor": 6,
+    "change_journal": 75,
+    "consumption_run": 4,
+    "context_evidence": 2,
+    "context_pack": 1,
+    "contributor": 4,
+    "conversation": 1,
+    "edition": 6,
+    "edition_asset": 6,
+    "export_record": 0,
+    "ledger_event": 9,
+    "message": 3,
+    "note": 7,
+    "note_revision": 9,
+    "rating": 2,
+    "recommendation_event": 3,
+    "retained_excerpt": 1,
+    "retention_lease": 1,
+    "work": 3,
+    "work_contributor": 4
+  },
+  "created_at": "2026-10-05T21:06:35.256Z",
+  "encryption": "none",
+  "excluded_classes": [
+    {
+      "class": "original_media",
+      "reason": "Knowledge backup; originals are listed in excluded_media."
+    },
+    {
+      "class": "derived_source_text",
+      "reason": "Full extracted text is optional and not included."
+    },
+    {
+      "class": "rebuildable_indexes",
+      "reason": "Search indexes and thumbnails beyond the canonical cover are rebuilt after restore."
+    },
+    {
+      "class": "staging_recovery",
+      "reason": "Partial transfers, staging and recovery copies."
+    },
+    {
+      "class": "secrets",
+      "reason": "Provider keys and pairing identity stay in the Keychain."
+    }
+  ],
+  "excluded_media": [
+    {
+      "asset_id": "15b1557b-c8cf-4095-8e17-b6fe202623f3",
+      "byte_count": 2621440,
+      "media_type": "audio/mpeg",
+      "sha256": "5a559e1e125c0db77432ada63baa238c6a1d70a7baee55577ee917ab3c1c5b3b"
+    },
+    {
+      "asset_id": "175e58ca-6d58-4457-a94a-fff14f5110a2",
+      "byte_count": 1572864,
+      "media_type": "application/epub+zip",
+      "sha256": "3d041eaf4fcd615bbdb32520ba2a163fcaa8b6379bf1ed32560aee6c5b52492e"
+    },
+    {
+      "asset_id": "4abe10a5-7c17-439c-85d1-7c177863fd68",
+      "byte_count": 3145728,
+      "media_type": "audio/mpeg",
+      "sha256": "cf1401704569deba30be116f440b29fc49ca4dfad48c2246c0a032313c11e82a"
+    },
+    {
+      "asset_id": "6bf1ddff-0819-4c01-87e8-4f8c82faefe3",
+      "byte_count": 1048576,
+      "media_type": "application/epub+zip",
+      "sha256": "ad2563d4862205068a769dccaa2b7667b7d246cfebbb15294984aad3c3b9c810"
+    },
+    {
+      "asset_id": "c55db0af-d2d0-4482-9b0b-1eeec03fec10",
+      "byte_count": 5368709127,
+      "media_type": "audio/mp4",
+      "sha256": "578cc6af53e18c5d1b1f728162b8981e48907e5add17e1dbfccc273c470392e7"
+    },
+    {
+      "asset_id": "d5892420-64c1-4a8b-8555-bd35fe7e03a0",
+      "byte_count": 524288,
+      "media_type": "application/pdf",
+      "sha256": "72ec2c762c2aa6895be74d2ac708d83d266d780506ca5d981559a793eef0170d"
+    }
+  ],
+  "files": [
+    {
+      "byte_count": 24576,
+      "path": "blobs/covers/2f6b3c0e9a7d41c58e1f0b6a3d9c7e5f1a2b4c6d8e0f1a3b5c7d9e1f2a4b6c8d.jpg",
+      "role": "cover_thumbnail",
+      "sha256": "2f6b3c0e9a7d41c58e1f0b6a3d9c7e5f1a2b4c6d8e0f1a3b5c7d9e1f2a4b6c8d"
+    },
+    {
+      "byte_count": 12288,
+      "path": "blobs/covers/9c1e5a7b3d2f4e6a8c0b1d3f5e7a9c2b4d6f8a0c1e3b5d7f9a2c4e6b8d0f1a3c.png",
+      "role": "cover_thumbnail",
+      "sha256": "9c1e5a7b3d2f4e6a8c0b1d3f5e7a9c2b4d6f8a0c1e3b5d7f9a2c4e6b8d0f1a3c"
+    },
+    {
+      "byte_count": 240000,
+      "path": "blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3",
+      "role": "retained_excerpt",
+      "sha256": "7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f"
+    },
+    {
+      "byte_count": 360448,
+      "path": "database/library.sqlite",
+      "role": "database_snapshot",
+      "sha256": "21cb7fd86e2e09973d8537ce2648090bef0bfa1e5c786c9b8d3f27967b699755"
+    },
+    {
+      "byte_count": 37360,
+      "path": "export/library.json",
+      "role": "portable_json",
+      "sha256": "7577c19b429b040de2cdacfbd369ddfff443a8f75950fdcc3549579d14614042"
+    },
+    {
+      "byte_count": 215,
+      "path": "export/markdown/degard-s-field-notes-edition-3931f185.md",
+      "role": "markdown",
+      "sha256": "26a6cacf85b5521850a7a4576d7f7bfe4d36bb144d2235eff04e6437ed982dd7"
+    },
+    {
+      "byte_count": 1890,
+      "path": "export/markdown/meditations-322f5523.md",
+      "role": "markdown",
+      "sha256": "ef2e956ede478388b642e62755e32a07226d64629f0fa7a70b9fd1191af0beab"
+    },
+    {
+      "byte_count": 288,
+      "path": "export/markdown/walden-or-life-in-the-woods-9922847a.md",
+      "role": "markdown",
+      "sha256": "9a50b78aa4fb88e3139d5d5faf8e4d1b0124fbc6b569eafa3cdddf00f904fe48"
+    }
+  ],
+  "format": "sylviabackup",
+  "included_classes": [
+    "permanent_knowledge",
+    "retained_excerpt_audio",
+    "saved_ai_evidence",
+    "canonical_cover_thumbnail",
+    "database_snapshot",
+    "portable_json",
+    "markdown"
+  ],
+  "library": {
+    "migrations": [
+      "v1-initial",
+      "v2-rating-review-note",
+      "v2-recommendation-date-precision",
+      "v2-edition-cover-thumbnail"
+    ],
+    "schema_version": 2
+  },
+  "originating_device_id": "7e3e494c-dd08-481d-80a3-95f0b01f6289",
+  "schema_version": 1,
+  "snapshot": {
+    "change_journal_seq": 75,
+    "method": "sqlite_online_backup"
+  }
+}

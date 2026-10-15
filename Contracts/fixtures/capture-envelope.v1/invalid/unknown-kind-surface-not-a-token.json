@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "capture_id": "e153eec4-7009-5ce1-bf3a-00c803f842c4",
+  "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+  "edition_id": "72c2260b-4f1b-52f7-a9e7-883bd8d80481",
+  "kind": "later_kind_example",
+  "quoted_text": "Text a later kind carries; a v1 reader never shows it as a Quote.",
+  "quoted_text_origin": "later_origin_example",
+  "source_snapshot": {
+    "title": "Meditations",
+    "author_display": "Marcus Aurelius",
+    "source_kind": "later_source_example",
+    "location_label": "Book I",
+    "location_label_origin": "later_origin_example"
+  },
+  "anchors": [
+    {
+      "schema_version": 1,
+      "kind": "later_kind_example",
+      "work_id": "53603273-26de-531b-a132-2bbd8d202727",
+      "later_field": {
+        "opaque": true,
+        "note": "A field only a later writer understands."
+      },
+      "edition_id": "72c2260b-4f1b-52f7-a9e7-883bd8d80481"
+    }
+  ],
+  "notes": [
+    {
+      "note_id": "29b3c5d9-d7c5-5e43-8c4b-ede96b2ea49b",
+      "current_revision": 1,
+      "revisions": [
+        {
+          "revision": 1,
+          "body": "A note on a later writer's capture, in a format v1 does not know.",
+          "format": "later_format_example",
+          "saved_at": "2026-10-13T08:00:10Z"
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "surface": "Later Surface",
+    "idempotency_key": "fixture-later"
+  },
+  "created_at": "2026-10-13T08:00:00Z",
+  "updated_at": "2026-10-13T08:00:00Z",
+  "revision": 1
+}

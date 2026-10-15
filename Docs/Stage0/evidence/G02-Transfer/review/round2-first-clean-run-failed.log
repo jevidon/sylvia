@@ -1,0 +1,97 @@
+The first clean run after the round 2 fixes (commit f5f2832) failed one step: large-5gib.
+Cause: the reservation before every request (R2-02 fix) read the volume's 'available for important usage'
+capacity with the coordinator's lock held; that query took about 20 ms idle on this host and longer while the
+5 GiB check kept the disk busy, so jobViews() waited 425 ms (the R2-04 assertion, < 250 ms, caught it).
+Fix: commit 712f8c0 reads free space before taking the lock (availableSpace()). Repeat runs after the fix:
+review/round2-5gib-repeat.log. The clean run in ci-clean-run.log is the one after the fix.
+
+--- summary of that run (.build/scratch/ci-clean-run.log, first 45 lines)
+clean state: removing .build/ci-logs .build/DerivedData .build/scratch/g02-bg-run .build/scratch/g02-ios .build/scratch/g02-relaunch-run .build/scratch/g02-entry-run .build/scratch/g02-identity-probe Spikes/G02-Transfer/SourceService/.build Spikes/G02-Transfer/TransferKit/.build Spikes/G02-Transfer/iOS/.build Spikes/G02-Transfer/iOS/G02Transfer.xcodeproj Spikes/G02-Transfer/MacIdentityProbe/.build Spikes/G02-Transfer/MacIdentityProbe/G02MacIdentityProbe.xcodeproj
+git: f5f2832d852e8e9266b67de997906a386393f8c8 (0 uncommitted paths in tracked files)
+started: 2026-10-12T01:17:34Z
+command: Scripts/ci.sh contracts g02-transfer
+==> 10-contracts
+    pass (1s)
+==> 40-g02-transfer
+    FAIL (605s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_cc8cfd94-737-12/.build/ci-logs/40-g02-transfer.log
+    |    | ↳ /// generates it, sets SYLVIA_G02_LARGE_FILE and SYLVIA_G02_LARGE_SHA256, runs this suite in a process of
+    |    | ↳ /// its own (so the kernel's lifetime peak footprint belongs to this test), and fails if it did not run.
+    |    | ✘ Test run with 2 tests in 1 suite failed after 52.855 seconds with 1 issue.
+    |    | Note: Some test targets reported failures:
+    |    |   - SylviaSourceServiceTests (Swift Testing)
+    | == cli-loopback-ipv4
+    |    pass (15 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-loopback-ipv4.log
+    | == cli-loopback-ipv6
+    |    pass (7 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-loopback-ipv6.log
+    | == cli-lan
+    |    pass (8 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-lan.log
+    | == cli-tailscale-ip
+    |    pass (7 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-tailscale-ip.log
+    | == cli-tailscale-magicdns
+    |    pass (8 s) - Docs/Stage0/evidence/G02-Transfer/ci/cli-tailscale-magicdns.log
+    | == mac-identity-signed
+    |    NOT RUN: code signing for team A4KBDX665Z is unavailable on this Mac (Docs/Stage0/evidence/G02-Transfer/keychain-identity-signed.log)
+    | == simulator
+    |    pass (44 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator.log
+    | == simulator-pairing
+    |    pass (13 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-pairing.log
+    | == simulator-background
+    |    pass (58 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-background.log
+    | == simulator-pairing-entry
+    |    pass (70 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-pairing-entry.log
+    | == simulator-relaunch
+    |    pass (210 s) - Docs/Stage0/evidence/G02-Transfer/ci/simulator-relaunch.log
+    | 
+    | not run on this Mac (see each log for the reason): mac-identity-signed
+    | FAILED: large-5gib
+FAILED: 40-g02-transfer
+
+--- Scripts/ci.d/10-contracts.sh output (.build/ci-logs/10-contracts.log)
+schemas: 9  fixtures: 60  openapi: 1  instances: 0
+
+--- Scripts/ci.d/40-g02-transfer.sh output (.build/ci-logs/40-g02-transfer.log)
+G0.2 transfer CI drop-in, 2026-10-12T01:17:36Z
+
+--- its ci/large-5gib.log
+environment: host (macOS 26.6.2); 5 GiB test in a process of its own
+present and verified: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g02-transfer/large-5GiB.bin
+Building for debugging...
+[Computing dependencies]
+[Provisioning 4 / 67]
+[Using on-disk description]
+[1 / 5]
+[1 / 5] CNIOLinux
+[1 / 5] swift-crypto_CryptoBoringWrapper
+Build complete! (2.09 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "5 GiB transfer with interruptions and bounded memory (T38)" started.
+◇ Test fiveGiBTransferSurvivesInterruptionsWithBoundedMemory() started.
+✔ Test fiveGiBTransferSurvivesInterruptionsWithBoundedMemory() passed after 27.108 seconds.
+◇ Test fiveGiBThroughTheBackgroundClientWithARelaunch() started.
+✘ Test fiveGiBThroughTheBackgroundClientWithARelaunch() recorded an issue at LargeTransferTests.swift:265:9: Expectation failed: finish.slowest < .milliseconds(250)
+↳ jobViews() waited 0.42539375 seconds after the relaunch: the full-file check held the lock
+↳ finish.slowest < .milliseconds(250) → false
+↳   finish.slowest → 0.42539375 seconds
+↳     _low → 425393750000000000
+↳     _high → 0
+↳   .milliseconds(250) → 0.25 seconds
+↳     _low → 250000000000000000
+↳     _high → 0
+✘ Test fiveGiBThroughTheBackgroundClientWithARelaunch() failed after 25.746 seconds with 1 issue.
+↳ /// Gate gap from the round 1 review: the background client (download tasks, synchronous move, verified-only
+↳ /// journal, assembly, importer) at 5 GiB, with a relaunch half way. Measures the launch re-hash of the staged
+↳ /// verified parts and checks that it does not hold the coordinator's lock (the transfer screen polls
+↳ /// `jobViews()` throughout; before this round the re-hash ran inside the lock).
+✘ Suite "5 GiB transfer with interruptions and bounded memory (T38)" failed after 52.854 seconds with 1 issue.
+↳ /// T38 at full size: a 5 GiB deterministic file over real TLS on loopback, 16 MiB parts, with repeated
+↳ /// connection drops, corrupted parts and two client restarts, while the process's memory is sampled.
+↳ /// Environment: host (macOS); source and client run in the same test process.
+↳ ///
+↳ /// Needs the file from Scripts/fixtures/generate-g02-transfer-large.sh. Scripts/ci.d/40-g02-transfer.sh
+↳ /// generates it, sets SYLVIA_G02_LARGE_FILE and SYLVIA_G02_LARGE_SHA256, runs this suite in a process of
+↳ /// its own (so the kernel's lifetime peak footprint belongs to this test), and fails if it did not run.
+✘ Test run with 2 tests in 1 suite failed after 52.855 seconds with 1 issue.
+Note: Some test targets reported failures:
+  - SylviaSourceServiceTests (Swift Testing)

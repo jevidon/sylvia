@@ -1,0 +1,10 @@
+Large PDF timing, simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77). SIMULATOR ON THE BUILD MAC; NOT A DEVICE RESULT.
+build Mac load averages (1, 5, 15 min, from getloadavg, which reads the Mac's kernel): 31.44 21.57 15.86 before, 31.44 21.57 15.86 after; other jobs share the Mac, so these timings are indicative only
+file: generated/g01-pdf/large-1000.pdf, 1000 pages, 1713026 bytes (Scripts/fixtures/generate-g01-pdf-large.sh)
+open (sha256 + structure check + PDFKit parse): median 1.1 ms, max 1.2 ms, runs ["1.1", "1.1", "1.1", "1.2", "1.2"]
+first page offscreen render at 2x: median 1.1 ms, max 2.1 ms, runs ["1.0", "1.1", "1.1", "1.1", "2.1"]
+PDFView: document set -> page 0 drawn by the tile renderer: median 26.7 ms, max 26.9 ms, runs ["26.2", "26.3", "26.7", "26.8", "26.9"]
+extract text of all pages: median 507.2 ms, max 517.3 ms, runs ["503.4", "503.8", "507.2", "510.2", "517.3"]
+HighlightOverlay.apply, no highlights, fresh document: median 0.0 ms, max 0.0 ms, runs ["0.0", "0.0", "0.0", "0.0", "0.0"]
+HighlightOverlay.apply, one highlight on page 777, fresh document: median 0.7 ms, max 0.7 ms, runs ["0.7", "0.7", "0.7", "0.7", "0.7"]
+capture + exact restore on physical page 777 (printed label 768): ok

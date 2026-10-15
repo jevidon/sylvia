@@ -1,0 +1,59 @@
+{
+  "budget_seconds" : 20,
+  "build_configuration" : "Debug",
+  "documents" : [
+    {
+      "attributes" : 99588,
+      "document" : "256 attributes per element, just under the document's attribute cap",
+      "elements" : 394,
+      "input_mib" : 0.81999999999999995,
+      "max_seconds" : 5.1139999999999999,
+      "seconds" : [
+        5.1139999999999999,
+        4.6239999999999997,
+        5.1050000000000004
+      ],
+      "served" : true
+    },
+    {
+      "attributes" : 99994,
+      "document" : "one attribute per element, just under the element cap",
+      "elements" : 99995,
+      "input_mib" : 1.3400000000000001,
+      "max_seconds" : 5.7050000000000001,
+      "seconds" : [
+        5.7050000000000001,
+        4.7199999999999998,
+        5.0519999999999996
+      ],
+      "served" : true
+    },
+    {
+      "attributes" : 4,
+      "document" : "no attributes, just under the element cap",
+      "elements" : 99995,
+      "input_mib" : 0.76000000000000001,
+      "max_seconds" : 2.7050000000000001,
+      "seconds" : [
+        2.7050000000000001,
+        2.0710000000000002,
+        2.1299999999999999
+      ],
+      "served" : true
+    }
+  ],
+  "environment" : "simulator: Sylvia-M0-minors-g01-epub (iPhone18,3), iOS 26.5",
+  "load_average_after" : [
+    61.670000000000002,
+    41.310000000000002,
+    38.469999999999999
+  ],
+  "load_average_before" : [
+    43.25,
+    35.659999999999997,
+    36.439999999999998
+  ],
+  "note" : "Wall-clock time of PublicationHTMLSafety.sanitize per run; the product withholds a document that takes longer than budget_seconds.",
+  "processor_count" : 18,
+  "runs_per_document" : 3
+}

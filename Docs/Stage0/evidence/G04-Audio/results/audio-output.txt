@@ -1,0 +1,17 @@
+# Output volume of the tests, probes and harness (quiet, 1 % volume, unless SYLVIA_AUDIBLE_PLAYBACK=1) and what the analysis taps see.
+# Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+# reference: tone-1khz-60s.m4a decoded with AVAssetReader, peak 0.0647. Time-domain pitch algorithm (the engine's).
+# Rows 'muted' and 'volume-0' are recorded only: they show why the tests are quiet rather than muted (not asserted).
+config	player_muted	player_volume	tap	rate	media_advance_per_wall_s	chunks	peak	peak_over_reference	rms	measured_tone_hz
+test (quiet)	false	0.01	pre-effects	1.0	1.000	33	0.0647	1.000	0.0442	1000.0
+test (quiet)	false	0.01	pre-effects	2.0	2.000	64	0.0645	0.997	0.0442	999.9
+test (quiet)	false	0.01	pre-effects	3.0	3.000	97	0.0633	0.979	0.0443	1000.0
+test (quiet)	false	0.01	post-effects	1.0	1.000	35	0.0647	1.000	0.0442	999.9
+test (quiet)	false	0.01	post-effects	2.0	2.000	35	0.0645	0.997	0.0443	999.8
+test (quiet)	false	0.01	post-effects	3.0	3.000	35	0.0639	0.988	0.0443	999.9
+muted	true	0.01	post-effects	1.0	1.000	36	0.0647	1.000	0.0442	999.9
+muted	true	0.01	post-effects	2.0	2.000	36	0.0645	0.997	0.0361	664.9
+muted	true	0.01	post-effects	3.0	3.000	35	0.0630	0.973	0.0255	331.9
+volume-0	false	0.0	post-effects	1.0	1.000	35	0.0647	1.000	0.0442	999.9
+volume-0	false	0.0	post-effects	2.0	2.000	35	0.0645	0.997	0.0443	999.8
+volume-0	false	0.0	post-effects	3.0	3.000	35	0.0639	0.988	0.0443	999.9

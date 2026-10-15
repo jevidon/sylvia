@@ -1,0 +1,15 @@
+crash drill: environment host (macOS), seed 20261006, 150 iterations, 12 items per child
+  100 iterations, 1917 acknowledged, 0 failures
+durability: synchronous=OFF fullfsync=OFF
+iterations: 150
+SIGKILLs by mode: after-ack=50 in-tx=50 random=50
+kills while a write transaction was open, in-flight item absent after reopen (in-tx mode): 50
+in-tx kills that landed after the commit instead: 0
+children that finished before the kill: 0
+acknowledged items: 2755
+committed but unacknowledged items (allowed; UI never said Saved; retry deduplicated): 1
+retries answered 'already saved' instead of duplicating: 1
+captures in library: 2756
+failures: 0
+elapsed: 23.0 s
+RESULT: PASS

@@ -1,0 +1,38 @@
+# command: git archive 943d5e778de2b58f47343f0e146f9e3ed7baa70e (m0-g04-audio) | tar -x -C .build/scratch/g04-tree; Scripts/audit-hard-rules.sh --root .build/scratch/g04-tree --allow-stale
+# commit: 7d990f63e3e7d548b9aec3a18f49b5fef0392541
+# date: 2026-10-12T18:20:28Z
+# host: macOS 26.6.2 (25G83), Python 3.9.6
+
+root: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5ce13c9e-6bf-6/.build/scratch/g04-tree
+file list: walk (directory walk)
+files scanned: 190 (40 binary, skipped for text rules); not scanned (hold the patterns): none
+allowlist: 11 entries
+
+NOTE allowlist line 1 (ats-exception | Spikes/G02-Transfer/iOS/Config/ATSVariant-*.plist) matched nothing
+NOTE allowlist line 2 (ats-exception | Spikes/G05-AI/ATSProbe/App/Info-*.plist) matched nothing
+NOTE allowlist line 3 (ats-exception | Spikes/G05-AI/ATSProbe/project.yml) matched nothing
+NOTE allowlist line 4 (trust-override | Spikes/G02-Transfer/TransferKit/Sources/SylviaTransferClient/PinnedSession.swift) matched nothing
+NOTE allowlist line 5 (trust-override | Spikes/G02-Transfer/SourceService/Sources/SylviaSourceService/HTTPServer.swift) matched nothing
+NOTE allowlist line 6 (trust-override | Scripts/ci.d/40-g02-transfer.sh) matched nothing
+NOTE allowlist line 7 (file-protection-none | Spikes/G05-Recovery/Sources/SylviaRecovery/FileProtection.swift) matched nothing
+NOTE allowlist line 8 (file-protection-none | Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift) matched nothing
+NOTE allowlist line 9 (key-like-string | Spikes/G05-AI/Tests/SylviaAITests/CredentialSafetyTests.swift) matched nothing
+NOTE allowlist line 10 (generic-secret | Contracts/fixtures/*) matched nothing
+NOTE allowlist line 11 (generic-secret | Scripts/fixtures/generate-g02-transfer-contract-fixtures.sh) matched nothing
+
+| Rule | Findings | Allowed |
+| --- | --- | --- |
+| ats-arbitrary-loads | 0 | 0 |
+| ats-exception | 0 | 0 |
+| trust-override | 0 | 0 |
+| weak-tls | 0 | 0 |
+| file-protection-none | 0 | 0 |
+| keychain-accessible-always | 0 | 0 |
+| key-like-string | 0 | 0 |
+| private-key-block | 0 | 0 |
+| generic-secret | 0 | 0 |
+| secret-file | 0 | 0 |
+| todo-in-product | 0 | 0 |
+
+result: PASS (0 finding(s), 0 allowed, 11 stale allowlist entries, 0 allowlist error(s))
+exit status: 0

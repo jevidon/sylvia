@@ -1,0 +1,520 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sylvia:schema:design-tokens:v1",
+  "title": "Marginalia design token export",
+  "description": "The portable export of Sylvia's design language (plan Section 4.4.9, Appendix A.5): color tokens in four appearances, the marker set, type roles, shape, space, elevation, motion and the status vocabulary. Generated from Packages/Design by sylvia-design-export; never edited by hand. Sizes are points at the default text size; durations are milliseconds; colors are sRGB hex.",
+  "type": "object",
+  "required": [
+    "schema_version", "language", "token_version", "appearances", "color", "contrast", "marker",
+    "capture_kind_mapping", "symbols", "type", "space", "radius", "hairline", "elevation", "motion",
+    "cover", "vocabulary", "status_moments", "import_state_mapping", "labels", "lint"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "language": { "const": "marginalia" },
+    "token_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "generator": { "type": "string" },
+    "plan_reference": { "type": "string" },
+    "appearances": { "const": ["light", "dark", "light_increased_contrast", "dark_increased_contrast"] },
+    "color": {
+      "type": "object",
+      "required": [
+        "ground", "surface", "ink", "muted", "hairline", "pine", "pine_on", "pine_tint", "ochre", "ochre_tint",
+        "cover_field_1", "cover_field_2", "cover_field_3", "cover_field_4", "cover_field_5", "cover_title", "shadow"
+      ],
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "additionalProperties": { "$ref": "#/$defs/colorEntry" }
+    },
+    "contrast": {
+      "type": "object",
+      "required": ["minimum_ratio", "minimum_ratio_large_text", "large_text_minimum_points", "pairs", "overrides"],
+      "properties": {
+        "minimum_ratio": { "type": "number", "minimum": 4.5 },
+        "minimum_ratio_large_text": { "type": "number", "minimum": 3 },
+        "large_text_minimum_points": { "type": "number", "minimum": 24, "description": "Text at or above this size needs only minimum_ratio_large_text; lowering it would weaken the rule, so only 24 or more is valid." },
+        "method": { "type": "string" },
+        "pairs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["text", "fill", "text_size", "use"],
+            "additionalProperties": false,
+            "properties": {
+              "text": { "$ref": "#/$defs/colorReference" },
+              "fill": { "$ref": "#/$defs/colorReference" },
+              "text_size": { "enum": ["any", "large"] },
+              "use": { "type": "string" }
+            }
+          }
+        },
+        "minimum_ratio_non_text": { "type": "number", "minimum": 3, "description": "Glyphs that carry meaning inside components (WCAG 2.x 1.4.11)." },
+        "component_pairs": {
+          "description": "Text or glyphs on fills as components draw them, where that differs from a token pair: a color from the opposite appearance, a fill other than a ground or tint, or a control faded over the ground by its state. Exempt pairs (disabled controls) are reported, not enforced.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["component", "state", "text", "text_appearance", "fill", "opacity_over_ground", "content", "requirement", "use"],
+            "additionalProperties": false,
+            "properties": {
+              "component": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+              "state": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+              "text": { "$ref": "#/$defs/colorReference" },
+              "text_appearance": { "enum": ["same", "opposite"] },
+              "fill": { "$ref": "#/$defs/colorReference" },
+              "opacity_over_ground": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+              "content": { "enum": ["text", "glyph"] },
+              "requirement": { "enum": ["required", "exempt_disabled"] },
+              "use": { "type": "string" }
+            },
+            "if": { "properties": { "requirement": { "const": "exempt_disabled" } } },
+            "then": { "properties": { "state": { "const": "disabled" } } }
+          }
+        },
+        "overrides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["token", "appearance", "before", "after", "darkening_step", "reason"],
+            "additionalProperties": false,
+            "properties": {
+              "token": { "$ref": "#/$defs/colorReference" },
+              "appearance": { "$ref": "#/$defs/appearance" },
+              "before": { "$ref": "#/$defs/opaqueHex" },
+              "after": { "$ref": "#/$defs/opaqueHex" },
+              "darkening_step": { "type": "integer", "minimum": 1, "maximum": 100 },
+              "reason": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "rules": { "type": "object" }
+      }
+    },
+    "marker": {
+      "type": "object",
+      "required": ["quote", "note", "audio", "generated", "word", "attention", "pending"],
+      "additionalProperties": false,
+      "properties": {
+        "quote": { "$ref": "#/$defs/marker" },
+        "note": { "$ref": "#/$defs/marker" },
+        "audio": { "$ref": "#/$defs/marker" },
+        "generated": { "$ref": "#/$defs/marker" },
+        "word": { "$ref": "#/$defs/marker" },
+        "attention": { "$ref": "#/$defs/marker" },
+        "pending": { "$ref": "#/$defs/marker" }
+      }
+    },
+    "capture_kind_mapping": {
+      "type": "object",
+      "required": ["kinds", "matching", "unrecognized"],
+      "properties": {
+        "kinds": {
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/captureKind" },
+          "additionalProperties": { "enum": ["quote", "note", "audio", "generated", "word"] }
+        },
+        "matching": { "const": "exact, case-sensitive" },
+        "unrecognized": {
+          "type": "object",
+          "required": ["marker", "label", "never"],
+          "properties": {
+            "marker": { "const": "pending" },
+            "label": { "type": "string" },
+            "empty_label_key": { "type": "string", "pattern": "^[a-z][a-z0-9_.]*$", "description": "Key in labels shown instead of an empty or white-space-only kind, so the Pending marker always has a label." },
+            "never": { "const": "quote" }
+          }
+        },
+        "status": { "type": "string" }
+      }
+    },
+    "symbols": {
+      "type": "object",
+      "propertyNames": { "pattern": "^sylvia\\.[a-z][a-z0-9_.]*$" },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["view_box", "stroke_width", "line_cap", "line_join", "polylines", "accessibility_label_key"],
+        "properties": {
+          "view_box": { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4 },
+          "stroke_width": { "type": "number", "exclusiveMinimum": 0 },
+          "line_cap": { "enum": ["round", "square", "butt"] },
+          "line_join": { "enum": ["round", "miter", "bevel"] },
+          "polylines": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "array",
+              "minItems": 2,
+              "items": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 }
+            }
+          },
+          "accessibility_label_key": { "$ref": "#/$defs/stringKey" },
+          "board_source": { "type": "string" }
+        }
+      }
+    },
+    "status_glyphs": {
+      "type": "object",
+      "required": ["dot", "check", "triangle"],
+      "additionalProperties": { "type": "string" }
+    },
+    "typefaces": { "type": "object" },
+    "type": {
+      "type": "object",
+      "required": ["display", "title", "heading", "reading", "body", "callout", "caption", "micro"],
+      "additionalProperties": false,
+      "properties": {
+        "display": { "$ref": "#/$defs/typeRole" },
+        "title": { "$ref": "#/$defs/typeRole" },
+        "heading": { "$ref": "#/$defs/typeRole" },
+        "reading": {
+          "allOf": [{ "$ref": "#/$defs/typeRole" }],
+          "required": ["user_range"]
+        },
+        "body": { "$ref": "#/$defs/typeRole" },
+        "callout": { "$ref": "#/$defs/typeRole" },
+        "caption": { "$ref": "#/$defs/typeRole" },
+        "micro": { "$ref": "#/$defs/typeRole" }
+      }
+    },
+    "type_scaling": { "type": "object" },
+    "space": {
+      "type": "object",
+      "required": ["grid", "steps", "gutter_phone", "gutter_pad"],
+      "properties": {
+        "grid": { "type": "number", "exclusiveMinimum": 0 },
+        "steps": { "type": "array", "minItems": 1, "items": { "type": "number", "exclusiveMinimum": 0 } },
+        "gutter_phone": { "type": "number", "exclusiveMinimum": 0 },
+        "gutter_pad": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "radius": {
+      "type": "object",
+      "required": ["block", "control", "button", "card", "sheet", "pill"],
+      "additionalProperties": {
+        "oneOf": [{ "type": "number", "exclusiveMinimum": 0 }, { "const": "full" }]
+      }
+    },
+    "hairline": {
+      "type": "object",
+      "required": ["width", "unit", "color"],
+      "properties": {
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": { "enum": ["pt", "px"] },
+        "color": { "$ref": "#/$defs/colorReference" }
+      }
+    },
+    "elevation": {
+      "type": "object",
+      "required": ["shadow"],
+      "properties": {
+        "shadow": {
+          "type": "object",
+          "required": ["x", "y", "blur", "color", "components"],
+          "properties": {
+            "x": { "type": "number" },
+            "y": { "type": "number" },
+            "blur": { "type": "number", "minimum": 0 },
+            "color": { "$ref": "#/$defs/colorReference" },
+            "components": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "required": ["sheet", "highlight", "progress_rule", "reduce_motion"],
+      "properties": {
+        "sheet": { "$ref": "#/$defs/motion" },
+        "highlight": { "$ref": "#/$defs/motion" },
+        "progress_rule": { "$ref": "#/$defs/motion" },
+        "reduce_motion": { "type": "string" },
+        "while_reading": { "type": "string" }
+      }
+    },
+    "cover": {
+      "type": "object",
+      "required": ["fields", "title", "assignment"],
+      "properties": {
+        "fields": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/colorReference" } },
+        "title": { "$ref": "#/$defs/colorReference" },
+        "assignment": { "type": "string" }
+      }
+    },
+    "vocabulary": {
+      "type": "object",
+      "required": ["save.in_progress", "save.done", "save.failed", "import.ready_indexing"],
+      "propertyNames": { "$ref": "#/$defs/stringKey" },
+      "additionalProperties": { "$ref": "#/$defs/phrase" }
+    },
+    "vocabulary_entries": { "type": "object", "propertyNames": { "$ref": "#/$defs/stringKey" } },
+    "status_moments": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["title", "state_machine", "phrases", "forbidden"],
+        "properties": {
+          "title": { "type": "string" },
+          "state_machine": { "type": "string" },
+          "phrases": { "type": "array", "items": { "$ref": "#/$defs/stringKey" } },
+          "forbidden": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind", "text", "qualifier"],
+              "additionalProperties": false,
+              "properties": {
+                "kind": { "enum": ["phrase", "behavior"] },
+                "text": { "type": "string", "minLength": 1 },
+                "qualifier": { "type": ["string", "null"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "import_state_mapping": {
+      "type": "object",
+      "required": [
+        "created", "acquiring", "staged", "validating", "identifying", "needs_review", "committing", "ready",
+        "waiting_for_source", "waiting_for_space", "unsupported", "failed_retryable", "failed_final", "cancelled"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": ["shown"],
+        "properties": {
+          "shown": { "type": "boolean" },
+          "phrase": { "$ref": "#/$defs/stringKey" },
+          "phrase_while_indexing": { "$ref": "#/$defs/stringKey" },
+          "glyph": { "enum": ["dot", "check", "triangle"] },
+          "text": { "$ref": "#/$defs/colorReference" },
+          "fill": { "$ref": "#/$defs/colorReference" },
+          "requires_reason_and_next_step": { "type": "boolean" },
+          "note": { "type": "string" }
+        },
+        "if": { "properties": { "shown": { "const": true } } },
+        "then": { "required": ["phrase", "glyph", "text", "fill", "requires_reason_and_next_step"] }
+      }
+    },
+    "components": {
+      "description": "Component dimensions and rules (plan 4.4.7; ADR-0013 Section 10). Optional: added in token version 0.2.0.",
+      "type": "object",
+      "required": ["metrics", "cover_layout", "rating", "audio_range", "button_roles"],
+      "properties": {
+        "metrics": {
+          "type": "object",
+          "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+          "additionalProperties": {
+            "type": "object",
+            "required": ["points", "stated_in_plan", "use"],
+            "additionalProperties": false,
+            "properties": {
+              "points": { "type": "number", "exclusiveMinimum": 0 },
+              "stated_in_plan": { "type": "boolean" },
+              "use": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "label_weight": { "type": "integer", "minimum": 100, "maximum": 900 },
+        "quiet_label_weight": { "type": "integer", "minimum": 100, "maximum": 900 },
+        "pressed_opacity": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "disabled_opacity": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "bar_maximum_text_size": { "type": "string" },
+        "separator": { "type": "string", "minLength": 1 },
+        "waveform_minimum_level": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "control_symbols": {
+          "description": "SF Symbols used by controls and navigation; other platforms map the same names.",
+          "type": "object",
+          "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+          "additionalProperties": {
+            "type": "object",
+            "required": ["glyph", "use"],
+            "additionalProperties": false,
+            "properties": {
+              "glyph": { "type": "string", "minLength": 1 },
+              "use": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "glyph_text": {
+          "type": "object",
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        },
+        "cover_layout": { "type": "object" },
+        "rating": {
+          "type": "object",
+          "required": ["stored_range", "stars", "cleared"],
+          "properties": {
+            "stored_range": { "const": [1, 10] },
+            "stars": { "const": 5 },
+            "cleared": { "type": "string" }
+          }
+        },
+        "audio_range": {
+          "type": "object",
+          "required": ["default_length_ms", "maximum_length_ms", "minimum_length_ms", "step_ms"],
+          "properties": {
+            "default_length_ms": { "type": "integer", "minimum": 1 },
+            "maximum_length_ms": { "type": "integer", "minimum": 1 },
+            "minimum_length_ms": { "type": "integer", "minimum": 1 },
+            "step_ms": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "button_roles": {
+          "type": "object",
+          "required": ["primary", "secondary", "quiet", "destructive"],
+          "additionalProperties": {
+            "type": "object",
+            "required": ["text", "fill", "border", "minimum_height"],
+            "properties": {
+              "text": { "$ref": "#/$defs/colorReference" },
+              "fill": { "anyOf": [{ "$ref": "#/$defs/colorReference" }, { "type": "null" }] },
+              "border": { "anyOf": [{ "$ref": "#/$defs/colorReference" }, { "type": "null" }] },
+              "minimum_height": { "type": "number", "minimum": 44 }
+            }
+          }
+        }
+      }
+    },
+    "labels": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/stringKey" },
+      "additionalProperties": { "$ref": "#/$defs/phrase" }
+    },
+    "formats": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/stringKey" },
+      "additionalProperties": { "$ref": "#/$defs/phrase" }
+    },
+    "lint": {
+      "type": "object",
+      "required": ["permitted_phrases", "forbidden_phrases"],
+      "properties": {
+        "permitted_phrases": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/phrase" } },
+        "forbidden_phrases": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "placeholder_syntax": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "appearance": { "enum": ["light", "dark", "light_increased_contrast", "dark_increased_contrast"] },
+    "hex": {
+      "description": "sRGB #RRGGBB, or #RRGGBBAA when translucent (alpha rounded to 8 bits; the exact alpha is in the entry's alpha map).",
+      "type": "string",
+      "pattern": "^#[0-9A-F]{6}([0-9A-F]{2})?$"
+    },
+    "opaqueHex": { "type": "string", "pattern": "^#[0-9A-F]{6}$" },
+    "appearanceColors": {
+      "type": "object",
+      "required": ["light", "dark", "light_increased_contrast", "dark_increased_contrast"],
+      "additionalProperties": false,
+      "properties": {
+        "light": { "$ref": "#/$defs/hex" },
+        "dark": { "$ref": "#/$defs/hex" },
+        "light_increased_contrast": { "$ref": "#/$defs/hex" },
+        "dark_increased_contrast": { "$ref": "#/$defs/hex" }
+      }
+    },
+    "colorEntry": {
+      "type": "object",
+      "required": ["light", "dark", "light_increased_contrast", "dark_increased_contrast", "use"],
+      "additionalProperties": false,
+      "properties": {
+        "light": { "$ref": "#/$defs/hex" },
+        "dark": { "$ref": "#/$defs/hex" },
+        "light_increased_contrast": { "$ref": "#/$defs/hex" },
+        "dark_increased_contrast": { "$ref": "#/$defs/hex" },
+        "alpha": {
+          "type": "object",
+          "required": ["light", "dark", "light_increased_contrast", "dark_increased_contrast"],
+          "additionalProperties": false,
+          "patternProperties": { "^(light|dark)(_increased_contrast)?$": { "type": "number", "minimum": 0, "maximum": 1 } }
+        },
+        "use": { "type": "string", "minLength": 1 },
+        "derivation": { "type": "string" },
+        "plan_listed_dark": { "$ref": "#/$defs/opaqueHex" }
+      }
+    },
+    "colorReference": { "type": "string", "pattern": "^(color\\.[a-z][a-z0-9_]*|marker\\.[a-z]+\\.(text|tint))$" },
+    "captureKind": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+    "stringKey": { "type": "string", "pattern": "^[a-z][a-z_]*(\\.[a-z][a-z_0-9]*)+$" },
+    "phrase": {
+      "description": "Sentence case; never an exclamation mark (Section 4.4.6). {name} marks a placeholder.",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^!]+$"
+    },
+    "marker": {
+      "type": "object",
+      "required": ["category", "capture_kinds", "text", "tint", "glyph", "glyph_rendering", "label", "label_key", "alternate_labels", "frame", "body", "filter_label"],
+      "additionalProperties": false,
+      "properties": {
+        "category": { "enum": ["capture_kind", "status"] },
+        "capture_kinds": { "type": "array", "items": { "$ref": "#/$defs/captureKind" } },
+        "text": { "$ref": "#/$defs/appearanceColors" },
+        "tint": { "oneOf": [{ "$ref": "#/$defs/appearanceColors" }, { "type": "null" }] },
+        "glyph": { "type": "string", "pattern": "^[a-z][a-z0-9.]*$" },
+        "glyph_rendering": {
+          "type": "object",
+          "required": ["kind"],
+          "properties": {
+            "kind": { "enum": ["system_symbol", "custom_symbol", "typeset"] },
+            "name": { "type": "string" },
+            "text": { "type": "string", "minLength": 1 },
+            "face": { "enum": ["literata", "system", "monospace"] },
+            "equivalent_symbol": { "type": "string" }
+          }
+        },
+        "label": { "type": "string", "pattern": "^[A-Z][A-Z ]*$" },
+        "label_key": { "$ref": "#/$defs/stringKey" },
+        "alternate_labels": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z ]*$" } },
+        "frame": { "enum": ["none", "dashed", "tinted_row"] },
+        "body": {
+          "type": "object",
+          "required": ["face", "roles", "weight", "treatment"],
+          "properties": {
+            "face": { "enum": ["literata", "system", "monospace", null] },
+            "roles": { "type": "array", "items": { "type": "string" } },
+            "weight": { "type": ["integer", "null"] },
+            "treatment": { "type": "string" }
+          }
+        },
+        "filter_label": { "type": ["string", "null"] }
+      },
+      "if": { "properties": { "category": { "const": "capture_kind" } } },
+      "then": { "properties": { "capture_kinds": { "minItems": 1 } } },
+      "else": { "properties": { "capture_kinds": { "maxItems": 0 } } }
+    },
+    "typeRole": {
+      "type": "object",
+      "required": ["face", "weight", "size", "line", "tracking", "maps_to", "uppercase", "usage"],
+      "additionalProperties": false,
+      "properties": {
+        "face": { "enum": ["Literata", "system"] },
+        "weight": { "type": "integer", "minimum": 100, "maximum": 900, "multipleOf": 100 },
+        "size": { "type": "number", "exclusiveMinimum": 0 },
+        "line": { "type": "number", "exclusiveMinimum": 0 },
+        "tracking": { "type": "number", "minimum": -0.1, "maximum": 0.2 },
+        "maps_to": { "enum": ["largeTitle", "title1", "title2", "body", "subheadline", "footnote", "caption2"] },
+        "uppercase": { "type": "boolean" },
+        "usage": { "type": "string" },
+        "user_range": {
+          "type": "array",
+          "prefixItems": [{ "type": "number", "exclusiveMinimum": 0 }, { "type": "number", "exclusiveMinimum": 0 }],
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "required": ["duration_ms", "curve", "stated_in_plan"],
+      "additionalProperties": false,
+      "properties": {
+        "duration_ms": { "type": "integer", "minimum": 0 },
+        "curve": { "enum": ["ease_out", "ease_in_out", "linear"] },
+        "stated_in_plan": { "type": "boolean" }
+      }
+    }
+  }
+}

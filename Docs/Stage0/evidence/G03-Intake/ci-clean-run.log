@@ -1,0 +1,294 @@
+# G0.3 clean CI run
+# started: 2026-10-13T07:26:47Z, commit 34fe383, working tree clean: yes
+# build products deleted first: .build/DerivedData .build/ci-logs Spikes/G03-Intake/IntakeKit/.build Spikes/G03-Intake/App/.build Spikes/G03-Intake/App/G03Intake.xcodeproj Spikes/G03-Intake/ZipEval/Readium/.build Spikes/G03-Intake/ZipEval/Upstream/.build Spikes/G03-Intake/ZipEval/IdentityProbe/.build Spikes/G03-Intake/ZipEval/Common/.build
+# command: G03_SIM_NAME=Sylvia-M0-minors-g03-intake Scripts/ci.sh contracts g03-intake
+# load at start: 20:26  up 10 days,  6:37, 1 user, load averages: 18.53 10.56 11.51
+# timings below are indicative only: other agents may be building and testing on this Mac
+
+==> 10-contracts
+    pass (1s)
+==> 50-g03-intake
+    pass (2009s)
+all 2 steps passed
+
+# Scripts/ci.sh exit status: 0
+
+################ .build/ci-logs/10-contracts.log
+schemas: 15  fixtures: 232  openapi: 1  instances: 1
+
+################ .build/ci-logs/50-g03-intake.log
+G0.3 intake CI drop-in
+date: 2026-10-13T07:26:48Z
+host: macOS 26.6.2 (25G83), Apple M5 Max
+xcode: Xcode 27.0 Build version 27A266a 
+git: 34fe383
+logs: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_744b95c1-309-12/.build/ci-logs/g03-intake
+
+=== 1. fixtures (07:26:48Z)
+ok       /Users/jevidon/Library/Caches/SylviaFixtures/generated/g03-intake/large.sylviapack (982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268)
+
+=== 2. host: IntakeKit tests (swift test) (07:26:58Z)
+  canonical equivalence: "WALDEN_\u{212A}" == "WALDEN_K" is true; as bytes: false
+  manifest size limit: 16777216 bytes read in 0.271828625 seconds (debug build: indicative); one byte more refused
+  ✔ Test "the byte-level rules still accept ordinary non-ASCII paths, including combining marks inside a component" passed after 0.918 seconds.
+  non-ASCII paths: 512 bytes (258 code points) accepted and extracted; 513 bytes and the 607-byte, 307-code-point example refused (length); a 256-byte component refused
+  short deflate stream: rejection code actual_size_mismatch
+  aggregate expansion: 2000 deflated entries of 1 MiB, archive 2721302 bytes, declares 2097152000 bytes (770:1): rejection code expansion_limit in 0.194674875 seconds
+  entry limit: 9998 files in 10000 entries, manifest 9356558 bytes (limit 16777216), archive 20524663 bytes, validated in 2.592618417 seconds (debug build, tests running in parallel: indicative)
+  ✔ Test run with 59 tests in 5 suites passed after 16.325 seconds.
+  in-memory plain-text provider: materialized as a file and received
+  direct file URL provider registered ["public.file-url", "public.url"]; representation used: file_url
+  coordinator cancelled before coordinate: returned after 5.0458e-05 seconds, block ran: false, error code: 3072
+  ✔ Test "platform: a file coordinator cancelled before its coordinate call returns at once with NSUserCancelledError (copyCoordinated relies on it)" passed after 1.795 seconds.
+  cancel after the last byte, before the commit: not received: cancelled
+  EPUB folder as a file representation: not received: the sharing app offered a folder, not a single file
+  handoff.json size: 100 items with 255-byte names and 128-character type identifiers: 87803 bytes (limit 262144)
+  stall timeout vs a delivery in its window: success(42) after 1.842588959 seconds; load cancelled: false
+  ✔ Test "handoff.json size: 100 items at the name and type limits fit within 256 KiB; a larger manifest is never committed" passed after 2.530 seconds.
+  cancel before delivery (file representation): not received: cancelled after 1.554353542 seconds, cancel sent at 1 s, delivery due at 60 s
+  cancel before delivery (file URL): not received: cancelled after 1.617862125 seconds, delivery due at 30 s
+  ✔ Test "Cancel while a direct file URL provider is still delivering: fails as cancelled at once, nothing received" passed after 2.664 seconds.
+  cancel during a coordinated-read wait: not received: cancelled after 1.047037584 seconds, writer still holding: true
+  cancel before delivery (file representation): provider saw the cancel: true
+  slow but moving provider: received after 3.889433125 seconds
+  ✔ Test run with 47 tests in 3 suites passed after 4.925 seconds.
+  contract names checked: 37 member names, 15 enum values and constants; holding ;, ` or K, or non-ASCII: []
+  platform canonical equivalence: "\u{212A}" == "K": true; init(rawValue:) gives Optional(SylviaContainerLayoutTests.CanonicalEquivalenceTests.Probe.k); JSONDecoder matches the member "\u212A" to the key K: true; decodes the enum value "\u212A" as K: true
+  contract fixtures: import-handoff-manifest.v1 valid=5 invalid=30 agree with HandoffManifest
+  contract fixtures: sylviapack-manifest.v1 valid=7 invalid=48 agree with PackManifest
+  ✔ Test "documented divergences: non-ASCII paths and file names over their byte limits are refused although the schema's code-point bounds admit them" passed after 0.131 seconds.
+  raw Finder file: imported as documents_file staged, again needs_review; the Documents copy stayed until removed
+  insufficient space: not enough space: free up 69.2 MB more (69205026 bytes)
+  raw file changing during its import: refused (stillBeingWritten); after it stopped changing: staged 2101248 bytes
+  ✔ Test "a raw file that changes while it is imported (Finder still copying) is refused and nothing is staged; once it stops changing it imports" passed after 0.597 seconds.
+  raw file still copying: import at half staged 2097152 of 4194304 bytes (staged); after the copy finished 4194304 bytes (staged)
+  ✔ Test "a raw file still being written (as Finder may be) is staged as the partial bytes: without a manifest nothing proves completeness" passed after 0.645 seconds.
+  uncoordinated writer: rejected at half: bundle rejected: truncated_or_not_a_pack: no end record at the end of the file; accepted after completion
+  ✔ Test "an uncoordinated writer still copying (as Finder may be): import is rejected until the copy completes" passed after 0.709 seconds.
+  created_at continuity: 119987 consecutive months from 0001-01 to 9999-12, 0 not one month apart
+  canonical twins of ASCII: Foundation ["U+37E", "U+1FEF", "U+212A"]; Swift == ["U+37E", "U+1FEF", "U+212A"]
+  ✔ Suite "canonical equivalence: what Swift equates, and why the contracts' names cannot be confused" passed after 0.874 seconds.
+  coordinated writer: import waited 1.04758925 seconds for the coordinated write
+  ✔ Test "a coordinated writer: the coordinated snapshot waits for the write to finish" passed after 1.413 seconds.
+  ✔ Test run with 40 tests in 6 suites passed after 1.414 seconds.
+  no compiler warnings in our sources
+
+=== 3. host: large-pack run (07:27:33Z)
+  validate ACCEPTED: 4846059727 bytes, 7 entries, zip64_end_record=true, elapsed=1.8s, 2524 MiB/s
+  validate memory: sampled_peak_phys_footprint=7.0 MiB lifetime_peak_phys_footprint=7.0 MiB max_rss=12.1 MiB
+  extract ACCEPTED: 4846059727 bytes, 7 entries, zip64_end_record=true, elapsed=2.2s, 2061 MiB/s
+  extract memory: sampled_peak_phys_footprint=7.7 MiB lifetime_peak_phys_footprint=7.8 MiB max_rss=13.9 MiB
+    extracted=b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1
+    source   =b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1
+  truncation-sweep: 163 cut points x {truncated, zero-padded to full length} = 326 copies of a 4846059727-byte pack
+  truncation-sweep: partial copies accepted=0; zero-padded copies byte-identical to the original (accepted, correct)=2
+  truncation-sweep: rejection codes: truncated_or_not_a_pack=163, truncated_or_not_a_pack (zero-padded)=161
+  truncation-sweep: slowest single rejection 0.001s
+  copy-measure: 4831838986 bytes in 2.0s (2264 MiB/s), buffer 1048576 bytes
+  copy-measure: phys_footprint before=1.7 MiB
+  copy-measure memory: sampled_peak_phys_footprint=4.6 MiB lifetime_peak_phys_footprint=4.6 MiB max_rss=15.2 MiB
+
+=== 4. host: kill the handoff writer at every step and at random moments (07:28:23Z)
+  uninterrupted copy of 4831838986 bytes (process start to exit): 4.14s
+  kills that landed mid-copy (killed, no manifest, 0 < copied bytes < 4831838986): 8 of 12
+  failures=0
+
+=== 5. host: current output validates against the contract schemas; schema and reader agree on edge inputs (07:29:12Z)
+  Build complete! (0.37 sec)
+  RECEIVED handoff=07470B79-1FFD-4078-9EC3-E1B2DDB83DE8 items=2 bytes=2438156
+  handoff.json written by HandoffSession now: valid against import-handoff-manifest.v1
+  large pack entries: ['sylviapack/manifest.json', 'sylviapack/manifest.sha256'] then 5 content entries
+  large pack sylviapack/manifest.json: valid against sylviapack-manifest.v1
+  manifest.sha256 entry equals SHA-256(manifest.json) + LF: True
+  
+  differential check (schema verdict vs Swift reader verdict):
+  named cases: 363 (pack 230, handoff 133)
+  named pack: agree 177, documented 25, reader-limit 12, quirk 16; not as expected 0
+  named handoff: agree 110, documented 6, reader-limit 8, quirk 9; not as expected 0
+  random mutations: seed 20261013, 1500 per kind
+  random pack: both accept 194, both refuse 1143, schema accepts, reader refuses: documented 130, schema accepts, reader refuses: quirk 2, schema accepts, reader refuses: reader-limit 31
+  random pack: 312 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  random handoff: both accept 136, both refuse 1175, schema accepts, reader refuses: documented 156, schema accepts, reader refuses: quirk 3, schema accepts, reader refuses: reader-limit 30
+  random handoff: 2 mutations wrote a canonical twin (U+212A, U+037E or U+1FEF)
+  instants: 42 created_at values compared with Python's, failures=0
+  differential: 363 named cases, 3000 random mutations and the instants of 42 date-times, failures=0
+
+=== 6. simulator: IntakeKit tests on iOS (07:29:15Z)
+simulator: iOS-26-5 Sylvia-M0-minors-g03-intake (iPhone-17), 81160261-7829-4275-BF9B-0AA6D47142A3
+  canonical equivalence: "WALDEN_\u{212A}" == "WALDEN_K" is true; as bytes: false
+  manifest size limit: 16777216 bytes read in 0.439982833 seconds (debug build: indicative); one byte more refused
+  ✔ Test "the byte-level rules still accept ordinary non-ASCII paths, including combining marks inside a component" passed after 1.113 seconds.
+  non-ASCII paths: 512 bytes (258 code points) accepted and extracted; 513 bytes and the 607-byte, 307-code-point example refused (length); a 256-byte component refused
+  aggregate expansion: 2000 deflated entries of 1 MiB, archive 2721302 bytes, declares 2097152000 bytes (770:1): rejection code expansion_limit in 0.211995417 seconds
+  entry limit: 9998 files in 10000 entries, manifest 9356558 bytes (limit 16777216), archive 20524663 bytes, validated in 3.106041625 seconds (debug build, tests running in parallel: indicative)
+  ✔ Test run with 59 tests in 5 suites passed after 21.109 seconds.
+  ​in-memory plain-text provider: materialized as a file and received
+  direct file URL provider registered ["public.file-url", "public.url"]; representation used: file_url
+  coordinator cancelled before coordinate: returned after 0.000213667 seconds, block ran: false, error code: 3072
+  ✔ Test "platform: a file coordinator cancelled before its coordinate call returns at once with NSUserCancelledError (copyCoordinated relies on it)" passed after 1.904 seconds.
+  cancel after the last byte, before the commit: not received: cancelled
+  handoff.json size: 100 items with 255-byte names and 128-character type identifiers: 87803 bytes (limit 262144)
+  stall timeout vs a delivery in its window: success(42) after 2.42040525 seconds; load cancelled: false
+  ✔ Test "handoff.json size: 100 items at the name and type limits fit within 256 KiB; a larger manifest is never committed" passed after 2.694 seconds.
+  cancel before delivery (file representation): not received: cancelled after 2.692919458 seconds, cancel sent at 1 s, delivery due at 60 s
+  cancel before delivery (file URL): not received: cancelled after 2.697883333 seconds, delivery due at 30 s
+  ✔ Test "Cancel while a direct file URL provider is still delivering: fails as cancelled at once, nothing received" passed after 2.727 seconds.
+  cancel before delivery (file representation): provider saw the cancel: true
+  cancel during a coordinated-read wait: not received: cancelled after 1.030041333 seconds, writer still holding: true
+  slow but moving provider: received after 5.070967583000001 seconds
+  ✔ Test run with 47 tests in 3 suites passed after 5.107 seconds.
+  platform canonical equivalence: "\u{212A}" == "K": true; init(rawValue:) gives Optional(SylviaContainerLayoutTests.CanonicalEquivalenceTests.Probe.k); JSONDecoder matches the member "\u212A" to the key K: true; decodes the enum value "\u212A" as K: true
+  contract names checked: 37 member names, 15 enum values and constants; holding ;, ` or K, or non-ASCII: []
+  contract fixtures: import-handoff-manifest.v1 valid=5 invalid=30 agree with HandoffManifest
+  contract fixtures: sylviapack-manifest.v1 valid=7 invalid=48 agree with PackManifest
+  raw file changing during its import: refused (stillBeingWritten); after it stopped changing: staged 2101248 bytes
+  ✔ Test "documented divergences: non-ASCII paths and file names over their byte limits are refused although the schema's code-point bounds admit them" passed after 0.292 seconds.
+  ✔ Test "a raw file that changes while it is imported (Finder still copying) is refused and nothing is staged; once it stops changing it imports" passed after 0.398 seconds.
+  raw file still copying: import at half staged 2097152 of 4194304 bytes (staged); after the copy finished 4194304 bytes (staged)
+  ✔ Test "a raw file still being written (as Finder may be) is staged as the partial bytes: without a manifest nothing proves completeness" passed after 0.586 seconds.
+  created_at continuity: 119987 consecutive months from 0001-01 to 9999-12, 0 not one month apart
+  canonical twins of ASCII: Foundation ["U+37E", "U+1FEF", "U+212A"]; Swift == ["U+37E", "U+1FEF", "U+212A"]
+  ✔ Suite "canonical equivalence: what Swift equates, and why the contracts' names cannot be confused" passed after 0.754 seconds.
+  ✔ Test run with 40 tests in 6 suites passed after 1.526 seconds.
+  ** TEST SUCCEEDED **
+  no compiler warnings in our sources
+
+=== 7. simulator: harness app, share extension, in-app and UI tests (07:30:20Z)
+  no compiler warnings in our sources
+  Xcode build-system warning (package targets; see report): warning: 'SylviaImportHandoff' is missing a dependency on 'SylviaIntakeCore' because dependency scan of Swift module 'SylviaImportHandoff' discovered a dependency on 'SylviaIntakeCore'
+  Xcode build-system warning (package targets; see report): warning: 'SylviaPack' is missing a dependency on 'ReadiumZIPFoundation' because dependency scan of Swift module 'SylviaPack' discovered a dependency on 'ReadiumZIPFoundation'
+  Xcode build-system warning (package targets; see report): warning: 'SylviaPack' is missing a dependency on 'SylviaIntakeCore' because dependency scan of Swift module 'SylviaPack' discovered a dependency on 'SylviaIntakeCore'
+  Files probe: se-walden.epub placed in On My iPhone as 'G03 Files Share.epub'
+  G03-EVIDENCE layout: documents=<app>/Documents database=<app>/Library/Application Support/Sylvia/Database/library.sqlite notes=<app>/Library/Application Support/Sylvia/Knowledge/Notes staging=<app>/Library/Application Support/Sylvia/Staging handoffInbox=<appgroup>/Intake/Handoffs
+  G03-EVIDENCE layout: Documents contains 0 item(s): []
+  G03-EVIDENCE layout: protection attributes (simulator): library.sqlite=none reported, library.sqlite-wal=none reported, library.sqlite-shm=none reported, Staging/=none reported, Staging/journal.json=absent, Knowledge/Notes/=none reported, Media/=none reported, <appgroup>/Intake/Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, handoff item=none reported
+  G03-EVIDENCE layout: excluded from backup: Staging=true handoffInbox=true; backup-eligible: Database, Knowledge, Media
+  G03-EVIDENCE types: UTType(filenameExtension: "md") in the harness app = net.daringfireball.markdown, dynamic=false
+  G03-EVIDENCE types: UTType(filenameExtension: "markdown") in the harness app = dyn.ah62d4rv4ge8042pwrrwg875s, dynamic=true
+  G03-EVIDENCE types: UTType(filenameExtension: "mdown") in the harness app = dyn.ah62d4rv4ge8043dts71a, dynamic=true
+  G03-EVIDENCE layout: clone protection (simulator): cloned=true sourceDir=none reported source=none reported targetDir=none reported clone=none reported
+  G03-EVIDENCE simulator validate: 4846059727 bytes, 7 entries, 2.1s, phys_footprint before 49.1 MiB, sampled peak 49.2 MiB (+0.1 MiB)
+  G03-EVIDENCE simulator extract: 2.5s, part-01.caf 4831838986 bytes, sampled peak phys_footprint 49.1 MiB (-0.0 MiB over the pre-validation baseline); lifetime phys_footprint=49.1 MiB peak_phys_footprint=50.3 MiB max_rss=280.0 MiB
+  G03-EVIDENCE simulator truncation: 80 of 80 partial copies rejected; codes ["truncated_or_not_a_pack": 80]
+  G03-EVIDENCE simulator handoff copy: 4831838986 bytes in 2.1s, phys_footprint before 49.0 MiB, sampled peak 49.1 MiB (+0.0 MiB)
+  ✔ Test run with 7 tests in 2 suites passed after 7.051 seconds.
+  G03-EVIDENCE files app Open With menu: Button, 0x115adae40, {{40.0, 475.4}, {250.0, 42.0}}, label: 'No Apps Available', Disabled | Button, 0x115adb200, {{40.0, 538.4}, {250.0, 42.0}}, label: 'Preview with Quick Look'
+  G03-EVIDENCE files app Open With offers Sylvia Intake Spike: false
+  Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppOpenWithOffersTheHarness]' passed (201.569 seconds).
+  G03-EVIDENCE files app share sheet (On My iPhone, G03 Files Share.epub): Cell, 0x1163e9400, {{27.3, 378.3}, {82.0, 138.3}}, identifier: 'shareCell', label: 'Sylvia Intake Spike' | Cell, 0x1163e9cc0, {{115.7, 378.3}, {82.0, 122.3}}, identifier: 'shareCell', label: 'More' | Cell, 0x1163ea6c0, {{27.3, 518.3}, {82.0, 138.3}}, identifier: 'actionGroupCell', label: 'Copy' | Cell, 0x1163eb0c0, {{115.7, 518.3}, {82.0, 138.3}}, identifier: 'actionGroupCell', label: 'Add Tags'
+  G03-EVIDENCE files app share sheet offers Sylvia Intake Spike: true
+  G03-EVIDENCE files app share: extension reports '1 item(s), 997147 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE files app share: Received as: items/0.epub: file_representation, in place (org.idpf.epub-container)
+  G03-EVIDENCE files app share: Protection: Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, items/0.epub=none reported
+  G03-EVIDENCE files app share: harness scans launch requested 07:36:32.788Z, waited 0.0s, ran 0.0s -> launch: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 07:36:32.945Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0; summary jobs=1 staged=1 review=0 share=1
+  Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppShareSheetOffersTheExtension]' passed (146.937 seconds).
+  G03-EVIDENCE document picker, first pick: 'Picked file staged: 1 file(s), state needs_review, 997147 bytes'; pick 1: picked from outside the app container; security-scoped access granted: true; source identity before and after the import equal (device, inode, size, modification time): true [device 16777230, inode 67257679, 997147 bytes, modified 1791876633.160883779]; source SHA-256 afterwards equals the imported bytes: true
+  G03-EVIDENCE document picker, same file again: 'Picked file staged: 1 file(s), state needs_review, 997147 bytes'; pick 2: picked from outside the app container; security-scoped access granted: true; source identity before and after the import equal (device, inode, size, modification time): true [device 16777230, inode 67257679, 997147 bytes, modified 1791876633.160883779]; source SHA-256 afterwards equals the imported bytes: true
+  G03-EVIDENCE document picker: app summary jobs=3 staged=1 review=2 share=1
+  Test Case '-[IntakeHarnessUITests.ImportRoutesUITests testDocumentPickerImportsInPlaceAndFlagsTheSameFileAsDuplicate]' passed (26.893 seconds).
+  G03-EVIDENCE raw drop-area file: 'Imported G03 Finder Copy.epub: 1 files, state staged, route documents_file'
+  G03-EVIDENCE raw drop-area file, the same bytes again: 'Imported G03 Finder Copy.epub: 1 files, state needs_review, route documents_file'
+  G03-EVIDENCE raw drop-area file: removed by the user; app summary jobs=5 staged=2 review=3 share=1
+  Test Case '-[IntakeHarnessUITests.ImportRoutesUITests testRawFileInDropAreaImportsAndStaysUntilRemoved]' passed (15.232 seconds).
+  G03-EVIDENCE cancel mid-copy: extension shows 'Not received. Nothing was saved to Sylvia.' / 'The copy was cancelled.'
+  Test Case '-[IntakeHarnessUITests.ShareSheetUITests testCancelMidCopyShowsFallbackAndClaimsNothing]' passed (22.482 seconds).
+  G03-EVIDENCE cancel before delivery: extension showed 'Zero KB copied' when Cancel was tapped; 'Not received. Nothing was saved to Sylvia.' / 'The copy was cancelled.' 1.5 s after the tap (provider due to deliver at 90 s)
+  G03-EVIDENCE cancel before delivery: harness-side provider loads: load 1: started; app summary jobs=5 staged=2 review=3 share=1
+  Test Case '-[IntakeHarnessUITests.ShareSheetUITests testCancelWhileProviderIsStillDelivering]' passed (21.433 seconds).
+  G03-EVIDENCE share 67108864 bytes: extension Extension footprint: start 25200728 bytes, peak 31443056 bytes
+  G03-EVIDENCE share 67108864 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+  G03-EVIDENCE share 67108864 bytes: Footprint MiB by MiB copied: 1:26
+  G03-EVIDENCE share 67108864 bytes: extension reports '1 item(s), 67108864 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 67108864 bytes: Done tapped at 07:38:09.930Z
+  G03-EVIDENCE share 67108864 bytes: app scans: launch requested 07:38:04.080Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 07:38:04.281Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 07:38:10.675Z, waited 0.0s, ran 0.1s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+  G03-EVIDENCE share 1073741824 bytes: extension Extension footprint: start 25233496 bytes, peak 40994904 bytes
+  G03-EVIDENCE share 1073741824 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+  G03-EVIDENCE share 1073741824 bytes: Footprint MiB by MiB copied: 1:26
+  G03-EVIDENCE share 1073741824 bytes: extension reports '1 item(s), 1073741824 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 1073741824 bytes: Done tapped at 07:38:20.863Z
+  G03-EVIDENCE share 1073741824 bytes: app scans: launch requested 07:38:13.568Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 07:38:13.773Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 07:38:21.605Z, waited 0.0s, ran 0.4s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+  G03-EVIDENCE share 4294967297 bytes: extension Extension footprint: start 25151576 bytes, peak 48072936 bytes
+  G03-EVIDENCE share 4294967297 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+  G03-EVIDENCE share 4294967297 bytes: Footprint MiB by MiB copied: 1:26 1025:33 2049:44 3073:44
+  G03-EVIDENCE share 4294967297 bytes: extension reports '1 item(s), 4294967297 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 4294967297 bytes: Done tapped at 07:38:38.819Z
+  G03-EVIDENCE share 4294967297 bytes: app scans: launch requested 07:38:24.496Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 07:38:24.692Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 07:38:39.559Z, waited 0.0s, ran 1.6s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+  G03-EVIDENCE share 8589934593 bytes: extension Extension footprint: start 25266264 bytes, peak 49088744 bytes
+  G03-EVIDENCE share 8589934593 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+  G03-EVIDENCE share 8589934593 bytes: Footprint MiB by MiB copied: 1:26 1025:33 2049:45 3073:45 4097:45 5121:45 6145:45 7169:45
+  G03-EVIDENCE share 8589934593 bytes: extension reports '1 item(s), 8589934593 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 8589934593 bytes: Done tapped at 07:39:06.281Z
+  G03-EVIDENCE share 8589934593 bytes: app scans: launch requested 07:38:43.546Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 07:38:43.754Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 07:39:06.972Z, waited 0.0s, ran 3.2s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+  G03-EVIDENCE extension peak growth from 64 MiB to 8 GiB + 1 byte: 17645688 bytes; from 4 GiB + 1 to 8 GiB + 1: 1015808 bytes
+  Test Case '-[IntakeHarnessUITests.ShareSheetUITests testExtensionMemoryDoesNotGrowWithFileSize]' passed (69.875 seconds).
+  G03-EVIDENCE kill mid-copy: SIGKILL sent to IntakeShare pid(s) [2933] in simulator 81160261-7829-4275-BF9B-0AA6D47142A3 (host-wide IntakeShare processes: 1) after '1.95 GB copied'
+  G03-EVIDENCE kill mid-copy: app scan after kill: manual: accepted=0 recovered=0 inProgress=1 removed=0 rejected=0; summary jobs=9 staged=6 review=3 share=5
+  Test Case '-[IntakeHarnessUITests.ShareSheetUITests testKillExtensionMidCopyClaimsNothing]' passed (19.095 seconds).
+  G03-EVIDENCE share 3 MiB: extension says Extension footprint: start 25266264 bytes, peak 31000664 bytes
+  G03-EVIDENCE share 3 MiB: extension reports '1 item(s), 3145728 bytes. Open Sylvia to finish importing.'
+  G03-EVIDENCE share 3 MiB: Received as: items/0.epub: file_representation, in place (org.idpf.epub-container)
+  G03-EVIDENCE share 3 MiB: Protection: Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, items/0.epub=none reported
+  G03-EVIDENCE share 3 MiB: app summary after scan: jobs=10 staged=7 review=3 share=6
+  Test Case '-[IntakeHarnessUITests.ShareSheetUITests testShareIntoExtensionIsReceivedAndImported]' passed (9.994 seconds).
+  ** TEST EXECUTE SUCCEEDED **
+    harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Opened file staged: 4 file(s), state staged
+    ok: the system's copy was in Documents/Inbox (Documents/Inbox)
+    ok: Inbox copy removed after the import (0)
+    ok: bundle imported through the bundle importer (open_in jobs, states, items) (1 staged 4)
+    ok: files left in Documents (0)
+    harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Open-in not imported: bundle rejected: truncated_or_not_a_pack: no end record at the end of the file
+    ok: truncated bundle rejected (outcome=Open-in not imported: bundle rejected: truncated_or_not_a_pack)
+    ok: Inbox copy removed after the rejection (0)
+    ok: no job for the truncated bundle (1)
+    ok: files left in Documents (0)
+    harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Opened file staged: 1 file(s), state staged
+    ok: the system's copy was in Documents/Inbox (Documents/Inbox)
+    ok: EPUB imported through the single-file importer (2 staged,staged 4,1)
+    ok: files left in Documents (0)
+    harness: G03-OPENIN folder=Documents/Inbox inboxEntriesBefore=1 inboxEntriesAfter=0 outcome=Opened file staged: 1 file(s), state needs_review
+    ok: the same EPUB opened again is flagged for review, not staged twice (3 staged,staged,needs_review)
+    ok: files left in Documents (0)
+  failures=0
+
+=== 8. host: archive-library evidence (ADR-0010 section 3) (07:40:11Z)
+    exit status of the resolve: 1
+  ok: Readium 3.11.0 resolves the same ZIPFoundation fork revision that IntakeKit locks
+  ok: upstream ZIPFoundation 0.9.20 cannot join the graph (same package identity 'zipfoundation')
+  [upstream ZIPFoundation 0.9.20] write ok archive=upstream.zip big=4831850553 elapsed=1.0s phys_footprint=5.2MiB peak_phys_footprint=5.2MiB max_rss=9.7MiB
+  [ReadiumZIPFoundation 3.0.1] write ok archive=readium.zip big=4831850553 elapsed=0.9s phys_footprint=5.5MiB peak_phys_footprint=5.5MiB max_rss=10.1MiB
+  -- archive written by upstream
+  [upstream ZIPFoundation 0.9.20] read ok entries=2 elapsed=1.9s phys_footprint=5.4MiB peak_phys_footprint=5.4MiB max_rss=10.0MiB
+  [ReadiumZIPFoundation 3.0.1] read ok entries=2 elapsed=1.9s phys_footprint=5.8MiB peak_phys_footprint=5.8MiB max_rss=10.5MiB
+  -- archive written by readium
+  [upstream ZIPFoundation 0.9.20] read ok entries=2 elapsed=1.9s phys_footprint=5.4MiB peak_phys_footprint=5.4MiB max_rss=10.0MiB
+  [ReadiumZIPFoundation 3.0.1] read ok entries=2 elapsed=1.9s phys_footprint=5.9MiB peak_phys_footprint=5.9MiB max_rss=10.5MiB
+  -- readium.zip truncated to 4831851357 of 4831851358 bytes
+  [upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=76.1s
+    !! truncated copy was ACCEPTED by zipeval-upstream
+  [zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+  -- readium.zip truncated to 4831851336 of 4831851358 bytes
+  [upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=63.8s
+    !! truncated copy was ACCEPTED by zipeval-upstream
+  [zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+  -- readium.zip truncated to 4831851260 of 4831851358 bytes
+  [upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=78.3s
+    !! truncated copy was ACCEPTED by zipeval-upstream
+  [zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+  -- readium.zip truncated to 2415925679 of 4831851358 bytes
+  [upstream ZIPFoundation 0.9.20] open ACCEPTED (first entry: none) elapsed=44.6s
+    !! truncated copy was ACCEPTED by zipeval-upstream
+  [zipeval-readium] did not finish within 120s (SIGKILLed by the watchdog)
+  -- readium.zip truncated to 4096 of 4831851358 bytes
+  [ReadiumZIPFoundation 3.0.1] write ok archive=small.zip big=67121209 elapsed=0.0s phys_footprint=3.4MiB peak_phys_footprint=3.4MiB max_rss=8.0MiB
+  -- small.zip truncated to 67121885 of 67121886 bytes
+  -- small.zip truncated to 67121864 of 67121886 bytes
+  -- small.zip truncated to 67121788 of 67121886 bytes
+  -- small.zip truncated to 33560943 of 67121886 bytes
+  -- small.zip truncated to 4096 of 67121886 bytes
+  eval finished, status=0
+
+G0.3 intake CI drop-in passed
+
+# finished: 2026-10-13T08:00:17Z
+# load at end: 21:00  up 10 days,  7:10, 1 user, load averages: 9.62 18.32 22.89
+clean-run finished

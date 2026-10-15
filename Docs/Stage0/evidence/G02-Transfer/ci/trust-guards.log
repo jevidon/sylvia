@@ -1,0 +1,6 @@
+environment: host; static checks over Spikes/G02-Transfer (sources, project files, plists)
+ok: NSAllowsArbitraryLoads appears nowhere
+ok: no App Transport Security key in the harness; ATS keys only in iOS/Config/ATSVariant-*.plist (probe app); Swift comment lines that name a key are not configuration and are ignored
+ok: G02TransferHarness uses Config/Harness-Info.plist only
+ok: URLCredential(trust:) appears once, in PinnedTrustEvaluator.answer (PinnedSession.swift), used by every session
+ok: no TLS minimum below 1.2

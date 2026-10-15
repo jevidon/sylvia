@@ -1,0 +1,209 @@
+# Reduced from the full xcodebuild log (sim-intakekit-tests.log of the CI run): test results, issues and evidence lines only.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Test "the byte-level rules still accept ordinary non-ASCII paths, including combining marks inside a component" started.
+canonical equivalence: "WALDEN_\u{212A}" == "WALDEN_K" is true; as bytes: false
+✔ Test "platform fact (recorded): Swift's ==, Set and Dictionary take U+212A for K; byte comparison does not" passed after 0.181 seconds.
+✔ Test "the writer refuses such a manifest before writing anything" passed after 0.183 seconds.
+✔ Test "the writer refuses a manifest over the reader's limit before writing anything" passed after 0.188 seconds.
+✔ Test "the manifest reader refuses a file group_id that is a canonical twin of its group's, for audiobook members and a publication" passed after 0.183 seconds.
+✔ Test "a file that is also used as a folder is refused when the separator hides inside a grapheme cluster" passed after 0.191 seconds.
+✔ Test "an entry name ending in a slash after a prepended mark is a directory entry and is refused" passed after 0.191 seconds.
+✔ Test "the writer refuses an existing destination and leaves no partial file on bad input" passed after 0.190 seconds.
+hidden-separator extraction: file written outside the extraction directory: false
+manifest size limit: 16777216 bytes read in 0.439982833 seconds (debug build: indicative); one byte more refused
+✔ Test "manifest paths whose separators hide inside a grapheme cluster are refused" with 8 test cases passed after 1.068 seconds.
+✔ Test "a source that changes between hashing and packing is caught; no pack is published" passed after 1.073 seconds.
+✔ Test "an entry not listed in the manifest is rejected" passed after 0.890 seconds.
+✔ Test "a manifest path with traversal is rejected even when the entry name matches it" passed after 0.890 seconds.
+✔ Test "entries out of manifest order are rejected" passed after 0.890 seconds.
+✔ Test "symbolic links, directories, FIFOs and devices are rejected" with 6 test cases passed after 0.890 seconds.
+✔ Test "manifest size: exactly the limit is read, one byte more is refused as manifest_too_large, whitespace included" passed after 1.079 seconds.
+✔ Test "a partial copy padded with zeros to the full length is rejected" with 4 test cases passed after 0.890 seconds.
+✔ Test "per-kind size limits and audio member limits apply" passed after 0.890 seconds.
+✔ Test "a manifest file without an entry is rejected" passed after 0.891 seconds.
+✔ Test "audio, EPUB, PDF and covers must be stored, not deflated" passed after 0.891 seconds.
+✔ Test "MS-DOS directory attribute is rejected" passed after 0.891 seconds.
+✔ Test "a name that is not Unicode NFC is rejected" passed after 0.891 seconds.
+✔ Test "a stored entry whose compressed and uncompressed sizes differ is rejected" passed after 0.891 seconds.
+✔ Test "an entry whose header size differs from the manifest is rejected" passed after 0.891 seconds.
+✔ Test "encryption, data descriptors, unknown methods and newer versions are rejected" passed after 0.893 seconds.
+✔ Test "bytes after the end record mean the end record is not at the end" passed after 0.888 seconds.
+✔ Test "a local header that disagrees with the central directory is rejected" passed after 0.895 seconds.
+✔ Test "a directory entry (trailing slash) is rejected" passed after 0.895 seconds.
+✔ Test "duplicate names: exact, differing only in case, differing only in normalization" passed after 0.898 seconds.
+✔ Test "an archive comment is rejected" passed after 0.895 seconds.
+✔ Test "a manifest that lists more files than the entry limit allows is rejected" passed after 0.889 seconds.
+✔ Test "a complete-length copy with a zeroed range in the middle is rejected" passed after 0.918 seconds.
+✔ Test "changed content with the original CRC fails the CRC check" passed after 0.916 seconds.
+✔ Test "the byte-level rules still accept ordinary non-ASCII paths, including combining marks inside a component" passed after 1.113 seconds.
+✔ Test "the raw baseline pack is accepted (control for every negative test)" passed after 1.112 seconds.
+✔ Test "a pack whose manifest holds such a group_id is refused by validation and by extraction, which writes nothing" passed after 1.113 seconds.
+✔ Test "the raw baseline with ZIP64 end records is accepted" passed after 1.113 seconds.
+✔ Test "a symbolic link to a valid pack is refused; the pack itself is accepted" passed after 0.930 seconds.
+✔ Suite "sylviapack paths: separators are bytes, not Characters (T13)" passed after 1.127 seconds.
+✔ Suite "a file's group_id must name its group exactly: canonically equivalent spellings are refused" passed after 1.128 seconds.
+non-ASCII paths: 512 bytes (258 code points) accepted and extracted; 513 bytes and the 607-byte, 307-code-point example refused (length); a 256-byte component refused
+✔ Test "changed content with a recomputed CRC fails the SHA-256 check" passed after 1.006 seconds.
+✔ Test "non-ASCII manifest paths: the limits are UTF-8 bytes (512 in total, 255 per component), stricter than the schema's code points" passed after 1.213 seconds.
+✔ Test "bytes before the first entry or between entries are rejected" passed after 1.105 seconds.
+short deflate stream: rejection code actual_size_mismatch
+✔ Test "a deflated entry that produces fewer bytes than declared is rejected" passed after 1.129 seconds.
+✔ Test "a failed extraction leaves nothing behind; an existing destination is refused" passed after 1.138 seconds.
+✔ Test "more than 10,000 entries: a forged count is rejected before the directory is read" passed after 1.137 seconds.
+✔ Test "extraction checks free space first, names the shortfall and writes nothing" passed after 1.327 seconds.
+✔ Test "text too repetitive to deflate within the limits is written stored, and the pack validates" passed after 1.337 seconds.
+✔ Test "writer output validates, extracts to identical bytes and is deterministic" passed after 1.332 seconds.
+✔ Suite "sylviapack reader: accepted packs" passed after 1.333 seconds.
+✔ Test "manifest paths: 15 components and 512 bytes are the limits, so every accepted path makes a readable pack" passed after 1.341 seconds.
+✔ Test "the aggregate limit is the ratio times the deflated bytes plus a fixed allowance" passed after 1.413 seconds.
+✔ Test "manifest problems: digest, missing, too large, not JSON, wrong version" passed after 1.299 seconds.
+aggregate expansion: 2000 deflated entries of 1 MiB, archive 2721302 bytes, declares 2097152000 bytes (770:1): rejection code expansion_limit in 0.211995417 seconds
+✔ Test "many deflated entries at or below the per-entry floor cannot add up to a bomb" passed after 1.741 seconds.
+✔ Test "more than 10,000 entries: a real 10,001-entry archive is rejected" passed after 1.671 seconds.
+✔ Test "excessive expansion: a 64 MiB run of zeros deflated about 1000:1 is rejected before inflating" passed after 3.564 seconds.
+entry limit: 9998 files in 10000 entries, manifest 9356558 bytes (limit 16777216), archive 20524663 bytes, validated in 3.106041625 seconds (debug build, tests running in parallel: indicative)
+✔ Test "the entry limit is reachable: 9,998 files with every path at its 512-byte limit, in 20 audiobook groups at their metadata limits, make a pack the reader accepts" passed after 5.691 seconds.
+✔ Suite "sylviapack reader: aggregate expansion, free space and path boundaries" passed after 5.691 seconds.
+truncation sweep: 122446 lengths rejected; codes ["truncated_or_not_a_pack=122446"]
+✔ Test "truncation at every byte offset of a small pack is rejected" passed after 20.914 seconds.
+✔ Suite "sylviapack reader: rejections (T13 archive half, T42)" passed after 21.102 seconds.
+✔ Test run with 59 tests in 5 suites passed after 21.109 seconds.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Test "Cancel while a direct file URL provider is still delivering: fails as cancelled at once, nothing received" started.
+◇ Test "platform: a file coordinator cancelled before its coordinate call returns at once with NSUserCancelledError (copyCoordinated relies on it)" started.
+◇ Test "provider returns no file and no error: fallback" started.
+◇ Test "provider error: fallback, nothing received" started.
+◇ Test "handoff.json size: 100 items at the name and type limits fit within 256 KiB; a larger manifest is never committed" started.
+​2026-10-13 20:30:12.856358+1300 xctest[70439:32495576] [general] <NSItemProvider 0x1078952d0> Finished loading in-place file representation for type identifier 'com.adobe.pdf' with error: Error Domain=NSItemProviderErrorDomain Code=-1000 "Cannot load representation of type com.adobe.pdf" UserInfo={NSLocalizedDescription=Cannot load representation of type com.adobe.pdf, NSUnderlyingError=0x107869b60 {Error Domain=NSItemProviderErrorDomain Code=-1000 "No loader block available for type com.adobe.pdf." UserInfo={NSLocalizedDescription=No loader block available for type com.adobe.pdf.}}}
+2026-10-13 20:30:12.856553+1300 xctest[70439:32495576] [general] <NSItemProvider 0x1078949a0> Finished loading in-place file representation for type identifier 'com.adobe.pdf' with error: Error Domain=NSItemProviderErrorDomain Code=-1000 "Cannot load representation of type com.adobe.pdf" UserInfo={NSLocalizedDescription=Cannot load representation of type com.adobe.pdf, NSUnderlyingError=0x107869ef0 {Error Domain=NSItemProviderErrorDomain Code=-1000 "No loader block available for type com.adobe.pdf." UserInfo={NSLocalizedDescription=No loader block available for type com.adobe.pdf.}}}
+2026-10-13 20:30:12.856981+1300 xctest[70439:32495576] [general] <NSItemProvider 0x107895b90> Finished loading in-place file representation for type identifier 'com.adobe.pdf' with error: Error Domain=NSItemProviderErrorDomain Code=-1000 "Cannot load representation of type com.adobe.pdf" UserInfo={NSLocalizedDescription=Cannot load representation of type com.adobe.pdf, NSUnderlyingError=0x10786aee0 {Error Domain=com.example.provider Code=7 "(null)"}}
+✔ Test "every failure maps to an actionable fallback that never claims receipt" passed after 1.717 seconds.
+✔ Test "a web link is not a durable file: fallback names that" passed after 1.717 seconds.
+✔ Test "a signal cancelled before the share starts: nothing is loaded or received" passed after 1.717 seconds.
+✔ Test "not enough space: refused before anything is written, naming the shortfall" passed after 1.717 seconds.
+✔ Test "stored names never come from the shared file name" passed after 1.717 seconds.
+​in-memory plain-text provider: materialized as a file and received
+direct file URL provider registered ["public.file-url", "public.url"]; representation used: file_url
+✔ Test "cancellation mid-copy is not received and leaves nothing" passed after 1.817 seconds.
+✔ Test "a source that changes during the copy is not received" passed after 1.818 seconds.
+✔ Test "bytes changed after the manifest was written: rejected, quarantined, never journaled" passed after 1.818 seconds.
+✔ Test "a complete handoff is verified, moved into private staging and journaled once; rescans are no-ops" passed after 1.818 seconds.
+✔ Test "rejected handoffs are kept for the retention period, then removed with a cleanup record" passed after 1.818 seconds.
+✔ Test "the extension commits between the staleness check and the claim: the handoff is kept and imported" passed after 1.818 seconds.
+✔ Test "recovery after a crash: items that no longer match end the job as failed_final instead of retrying forever" with 2 test cases passed after 1.818 seconds.
+✔ Test "the app reads handoff.json up to 256 KiB, whitespace included, and refuses one byte more" passed after 1.823 seconds.
+✔ Test "cleanup policy: an incomplete directory is kept while fresh and removed once stale; strays likewise" passed after 1.823 seconds.
+✔ Test "happy path: receipt only after the manifest; every step of the sequence is exercised" passed after 1.823 seconds.
+✔ Test "a crash between a claim and its deletion: a claimed handoff with a manifest is restored, others removed" passed after 1.823 seconds.
+✔ Test "forged or damaged manifests are rejected" with 6 test cases passed after 1.823 seconds.
+✔ Test "a live extension whose directory was claimed as abandoned cannot commit and claims nothing" passed after 1.823 seconds.
+✔ Test "a directory with a modification time in the future is never treated as stale" passed after 1.826 seconds.
+✔ Test "the same bytes shared twice: the second job needs review as a duplicate of the first" passed after 1.826 seconds.
+✔ Test "items removed between verification and the move: job failed_final, quarantined, nothing staged" with 2 test cases passed after 1.829 seconds.
+✔ Test "provider returns no file and no error: fallback" passed after 1.859 seconds.
+✔ Test "an unsupported type is not received" passed after 1.862 seconds.
+✔ Test "provider file deleted before the copy: fallback, nothing received" passed after 1.867 seconds.
+✔ Suite "main-app inbox scan, commit journal and cleanup policy" passed after 1.868 seconds.
+coordinator cancelled before coordinate: returned after 0.000213667 seconds, block ran: false, error code: 3072
+✔ Test "a direct file URL item is copied with coordination" passed after 1.884 seconds.
+✔ Test "provider error: fallback, nothing received" passed after 1.884 seconds.
+✔ Test "platform: a file coordinator cancelled before its coordinate call returns at once with NSUserCancelledError (copyCoordinated relies on it)" passed after 1.904 seconds.
+✔ Test "a file representation (as Files offers) is streamed into the handoff" passed after 2.084 seconds.
+cancel after the last byte, before the commit: not received: cancelled
+✔ Test "Cancel after the last byte is copied but before the commit: discarded, nothing received" passed after 2.091 seconds.
+EPUB folder as a file representation: not received: the sharing app offered a folder, not a single file
+✔ Test "an EPUB package folder offered by a provider: the fallback names a folder, nothing received" passed after 2.147 seconds.
+2026-10-13 20:30:14.855957+1300 xctest[70439:32495563] [general] <NSItemProvider 0x1078958f0> Finished loading in-place file representation for type identifier 'com.adobe.pdf' with error: Error Domain=NSItemProviderErrorDomain Code=-1000 "Data transfer has been cancelled." UserInfo={NSLocalizedDescription=Data transfer has been cancelled.}
+✔ Test "provider that never delivers: stall timeout, fallback" passed after 2.234 seconds.
+handoff.json size: 100 items with 255-byte names and 128-character type identifiers: 87803 bytes (limit 262144)
+stall timeout vs a delivery in its window: success(42) after 2.42040525 seconds; load cancelled: false
+✔ Test "a delivery at the moment the stall timeout fires wins: the timeout neither fails the share nor cancels the load" passed after 2.424 seconds.
+✔ Test "handoff.json size: 100 items at the name and type limits fit within 256 KiB; a larger manifest is never committed" passed after 2.694 seconds.
+✔ Suite "share-extension write sequence (T07)" passed after 2.696 seconds.
+2026-10-13 20:30:15.348685+1300 xctest[70439:32495578] [general] <NSItemProvider 0x107894000> Finished loading in-place file representation for type identifier 'org.idpf.epub-container' with error: Error Domain=NSItemProviderErrorDomain Code=-1000 "Data transfer has been cancelled." UserInfo={NSLocalizedDescription=Data transfer has been cancelled.}
+cancel before delivery (file representation): not received: cancelled after 2.692919458 seconds, cancel sent at 1 s, delivery due at 60 s
+cancel before delivery (file URL): not received: cancelled after 2.697883333 seconds, delivery due at 30 s
+✔ Test "Cancel while a direct file URL provider is still delivering: fails as cancelled at once, nothing received" passed after 2.727 seconds.
+cancel before delivery (file representation): provider saw the cancel: true
+2026-10-13 20:30:15.508630+1300 xctest[70439:32495577] [claims] 4B8243AC-30FB-44AB-9275-6173675E3883 grantAccessClaim reply is an error: Error Domain=NSCocoaErrorDomain Code=3072 "The operation was cancelled."
+cancel during a coordinated-read wait: not received: cancelled after 1.030041333 seconds, writer still holding: true
+✔ Test "Cancel while the coordinated read waits for another writer: the wait is cancelled, nothing copied or received" passed after 2.888 seconds.
+✔ Test "Cancel while the provider is still delivering (progress moving): fails as cancelled at once, the provider is told to stop, nothing received" passed after 3.148 seconds.
+2026-10-13 20:30:16.141447+1300 xctest[70439:32495577] [general] <NSItemProvider 0x107894310> Finished loading in-place file representation for type identifier 'com.adobe.pdf' with error: Error Domain=NSItemProviderErrorDomain Code=-1000 "Data transfer has been cancelled." UserInfo={NSLocalizedDescription=Data transfer has been cancelled.}
+✔ Test "a provider that makes progress and then stops is cut off after the stall timeout" passed after 3.519 seconds.
+slow but moving provider: received after 5.070967583000001 seconds
+✔ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" passed after 5.106 seconds.
+✔ Suite "NSItemProvider intake and fallback" passed after 5.106 seconds.
+✔ Test run with 47 tests in 3 suites passed after 5.107 seconds.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Suite "canonical equivalence: what Swift equates, and why the contracts' names cannot be confused" started.
+◇ Test "documented divergences: non-ASCII paths and file names over their byte limits are refused although the schema's code-point bounds admit them" started.
+◇ Test "an uncoordinated writer still copying (as Finder may be): import is rejected until the copy completes" started.
+◇ Test "a raw file that changes while it is imported (Finder still copying) is refused and nothing is staged; once it stops changing it imports" started.
+◇ Test "a raw file still being written (as Finder may be) is staged as the partial bytes: without a manifest nothing proves completeness" started.
+◇ Test "a coordinated writer: the coordinated snapshot waits for the write to finish" started.
+platform canonical equivalence: "\u{212A}" == "K": true; init(rawValue:) gives Optional(SylviaContainerLayoutTests.CanonicalEquivalenceTests.Probe.k); JSONDecoder matches the member "\u212A" to the key K: true; decodes the enum value "\u212A" as K: true
+contract names checked: 37 member names, 15 enum values and constants; holding ;, ` or K, or non-ASCII: []
+platform JSONDecoder: trailing comma accepted: true; trailing comma in an array accepted: true; UTF-8 byte order mark accepted: true; UTF-16LE accepted: true; invalid UTF-8 in an undecoded member accepted: true; unpaired surrogate in an undecoded member accepted: true; malformed number in an undecoded member accepted: true; duplicate name keeps the first value: true; UUID(uuidString:) accepts a UUID followed by NUL and more: true
+contract fixtures: import-handoff-manifest.v1 valid=5 invalid=30 agree with HandoffManifest
+contract fixtures: sylviapack-manifest.v1 valid=7 invalid=48 agree with PackManifest
+raw file changing during its import: refused (stillBeingWritten); after it stopped changing: staged 2101248 bytes
+✔ Test "strict JSON: unpaired surrogate escapes are refused anywhere; surrogate pairs are one character" passed after 0.287 seconds.
+✔ Test "strict JSON: refuses texts that are not JSON, not UTF-8, or carry a byte order mark" passed after 0.287 seconds.
+✔ Test "created_at: RFC 3339 exactly as the schemas' date-time format (fractions, offsets and lowercase t/z accepted; 30 February, hour 24, leap seconds, offsets without a colon refused)" passed after 0.287 seconds.
+✔ Test "strict JSON: a member name twice in one object is refused, compared code point by code point after escapes" passed after 0.287 seconds.
+✔ Test "decodeExactCase, which the readers' enums use, refuses the canonical twin and takes the exact value" passed after 0.287 seconds.
+✔ Test "strict JSON: nesting and integer length at their limits (512 levels, as JSONDecoder; 4,300 digits, as the validator)" passed after 0.291 seconds.
+✔ Test "no member name, enum value or constant of either G0.3 contract holds ;, ` or K, so no other spelling can match one" passed after 0.292 seconds.
+✔ Test "platform facts (recorded): ==, init(rawValue:) and JSONDecoder's member names and enum values all take U+212A for K" passed after 0.292 seconds.
+✔ Test "platform facts behind the strict reader (recorded): what JSONDecoder and UUID(uuidString:) accept on their own" passed after 0.291 seconds.
+✔ Test "readers refuse a member name given twice, whichever of the two values is valid" passed after 0.291 seconds.
+✔ Test "pack reader refuses an explicit null in every optional member, as the schema does, and accepts the member absent" passed after 0.291 seconds.
+✔ Test "documented divergences: non-ASCII paths and file names over their byte limits are refused although the schema's code-point bounds admit them" passed after 0.292 seconds.
+✔ Test "import-handoff-manifest v1 fixtures" passed after 0.294 seconds.
+✔ Test "process death mid-copy (no commit intent yet): relaunch removes the partial copy and records no job" passed after 0.294 seconds.
+✔ Test "a handoff manifest whose original_filename holds a slash inside a grapheme cluster is refused, as the schema refuses it" passed after 0.294 seconds.
+✔ Test "readers accept UUIDs only in their canonical form (a NUL suffix, extra or missing hyphens, braces and signs are refused)" passed after 0.294 seconds.
+✔ Test "sylviapack-manifest v1 fixtures" passed after 0.295 seconds.
+✔ Test "strict JSON: what the writers produce and every committed manifest fixture passes the text check" passed after 0.294 seconds.
+✔ Test "staging and the handoff inbox are excluded from backup; knowledge and database are not" passed after 0.295 seconds.
+✔ Test "an intent whose bytes vanished is reported as failed_final, never as staged" passed after 0.295 seconds.
+✔ Test "the layout puts every private class outside Documents and the Info.plist keys are checked" passed after 0.295 seconds.
+✔ Suite "manifest text: strict JSON, no null members, canonical UUIDs" passed after 0.298 seconds.
+✔ Test "an open-in copy left in Documents/Inbox by a crash is listed and can be imported or removed" passed after 0.328 seconds.
+✔ Test "drop-area names: a slash inside a grapheme cluster cannot reach a file outside Documents" passed after 0.329 seconds.
+raw Finder file: imported as documents_file staged, again needs_review; the Documents copy stayed until removed
+✔ Suite "separators are bytes, not Characters: handoff file names and drop-area names" passed after 0.341 seconds.
+✔ Test "unsupported single files and names outside the drop area are refused" passed after 0.369 seconds.
+✔ Test "a raw file that changes while it is imported (Finder still copying) is refused and nothing is staged; once it stops changing it imports" passed after 0.398 seconds.
+✔ Test "a single-file import is an APFS clone: identical bytes, private mode, the source untouched" passed after 0.407 seconds.
+insufficient space: not enough space: free up 69.2 MB more (69205026 bytes)
+raw file still copying: import at half staged 2097152 of 4194304 bytes (staged); after the copy finished 4194304 bytes (staged)
+✔ Test "a raw EPUB copied into Documents with Finder imports through the single-file importer and stays until removed" passed after 0.462 seconds.
+✔ Test "deleting everything in Documents (as Finder can) leaves the catalog untouched" passed after 0.506 seconds.
+✔ Suite "container layout (T42: private data never Finder-visible)" passed after 0.507 seconds.
+✔ Test "not enough space to extract: the shortfall is named, nothing is written, the bundle stays" passed after 0.534 seconds.
+✔ Test "a raw file still being written (as Finder may be) is staged as the partial bytes: without a manifest nothing proves completeness" passed after 0.586 seconds.
+created_at continuity: 119987 consecutive months from 0001-01 to 9999-12, 0 not one month apart
+✔ Test "created_at: the first of every month from 0001 to 9999 lies exactly one proleptic Gregorian month after the previous one" passed after 0.697 seconds.
+✔ Suite "contract fixtures agree with the Swift implementation" passed after 0.698 seconds.
+uncoordinated writer: rejected at half: bundle rejected: truncated_or_not_a_pack: no end record at the end of the file; accepted after completion
+✔ Test "open-in of a .sylviapack goes through the bundle importer; the Inbox copy is removed after success and failure" passed after 0.714 seconds.
+✔ Test "open-in, document picker and share extension: the same bytes are flagged as duplicates the same way" passed after 0.730 seconds.
+✔ Test "an uncoordinated writer still copying (as Finder may be): import is rejected until the copy completes" passed after 0.731 seconds.
+✔ Test "a bundle replaced in the drop area while it was being imported is not removed" passed after 0.735 seconds.
+canonical twins of ASCII: Foundation ["U+37E", "U+1FEF", "U+212A"]; Swift == ["U+37E", "U+1FEF", "U+212A"]
+✔ Test "only three non-ASCII code points are canonically equivalent to ASCII text: U+037E (;), U+1FEF (`) and U+212A (K)" passed after 0.753 seconds.
+✔ Suite "canonical equivalence: what Swift equates, and why the contracts' names cannot be confused" passed after 0.754 seconds.
+✔ Test "a valid bundle copied into Documents imports into private staging, then leaves the drop area" passed after 0.790 seconds.
+coordinated writer: import waited 1.044632916 seconds for the coordinated write
+✔ Test "a coordinated writer: the coordinated snapshot waits for the write to finish" passed after 1.523 seconds.
+✔ Suite "drop-area import (Finder cable copy) and single-file routes (T08, T42)" passed after 1.526 seconds.
+✔ Test run with 40 tests in 6 suites passed after 1.526 seconds.
+** TEST SUCCEEDED **

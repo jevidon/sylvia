@@ -1,0 +1,6 @@
+# Error states on AVQueuePlayer. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+member 3 not on this device: status=segmentUnavailable(memberIndex: 2) position=299834 ms (member start 299834) player_rate=0.0
+member 4 after the gap: status=playing player_rate=1.0
+member 2 file deleted: status=failed(memberIndex: 1, G04AudioKit.PlaybackService.PlaybackFailure.missingFile)
+member 3 undecodable: status=failed(memberIndex: 2, G04AudioKit.PlaybackService.PlaybackFailure.decodeError("The operation could not be completed"))
+member 1 still plays: status=playing player_rate=1.0

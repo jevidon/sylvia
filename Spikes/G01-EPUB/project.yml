@@ -1,0 +1,103 @@
+# G0.1 EPUB spike: Readium 3.11.0 behind a ReaderSession adapter (ADR-0004).
+# Stage 0 harness only; never shipped. Generate with `sylvia_generate Spikes/G01-EPUB`.
+name: G01EPUB
+options:
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: NO
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+packages:
+  Readium:
+    url: https://github.com/readium/swift-toolkit.git
+    exactVersion: 3.11.0
+  G01EPUBCore:
+    path: Core
+targets:
+  EPUBHarness:
+    type: application
+    platform: iOS
+    sources:
+      - path: Adapter
+      - path: Harness
+      # Literata is copied into the harness bundle from the design package (not moved).
+      - path: ../../Packages/Design/Sources/SylviaDesign/Resources/Fonts/Literata-Variable.ttf
+        buildPhase: resources
+      - path: ../../Packages/Design/Sources/SylviaDesign/Resources/Fonts/Literata-Italic-Variable.ttf
+        buildPhase: resources
+      # Fixture folders are copied as folder references: <bundle>/epub/*.epub and <bundle>/generated/*.epub
+      - path: ../../Fixtures/epub
+        type: folder
+        buildPhase: resources
+      - path: Fixtures/generated
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - package: Readium
+        product: ReadiumShared
+      - package: Readium
+        product: ReadiumStreamer
+      - package: Readium
+        product: ReadiumNavigator
+      - package: G01EPUBCore
+        product: G01EPUBCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.epub
+        PRODUCT_NAME: EPUBHarness
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Sylvia EPUB Spike
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+  EPUBHarnessTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/Unit
+    dependencies:
+      - target: EPUBHarness
+      - package: G01EPUBCore
+        product: G01EPUBCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.epub.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/EPUBHarness.app/EPUBHarness"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+  EPUBHarnessUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/UI
+    dependencies:
+      - target: EPUBHarness
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.epub.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: EPUBHarness
+schemes:
+  EPUBHarness:
+    build:
+      targets:
+        EPUBHarness: all
+        EPUBHarnessTests: [test]
+        EPUBHarnessUITests: [test]
+    test:
+      config: Debug
+      gatherCoverageData: false
+      targets:
+        - name: EPUBHarnessTests
+        - name: EPUBHarnessUITests

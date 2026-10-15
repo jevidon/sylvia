@@ -1,0 +1,127 @@
+Report finding 4: a PDFPage subclass with a Swift stored property crashed the harness (development build, 6 October 2026)
+
+Environment: simulator iPhone 17 (iPhone18,3), iOS 26.5 (23F77), Sylvia-M0-g01-pdf; host macOS 26.6.2 (25G83); Xcode 27.0 (27A266a).
+Source: the 8 crash reports PDFSpikeHarness-2026-10-06-0952*.ips and -0953*.ips in ~/Library/Logs/DiagnosticReports on
+the build Mac (machine-local system files, not committed). All 8 come from one build (slice c32110c3) of the unit tests
+in which OverlayPage kept its rectangles in a stored property, as committed in 63640a2:
+
+    public final class OverlayPage: PDFPage {
+        private let overlay = Mutex<[CGRect]>([])
+
+Command:
+    python3 Spikes/G01-PDF/Tools/summarize_crash_reports.py ~/Library/Logs/DiagnosticReports/PDFSpikeHarness-2026-10-06-095[23]*.ips
+
+Result: 8 crashes, all EXC_BAD_ACCESS reading address 0x10 inside a Swift array (Collection.isEmpty ->
+_ArrayBuffer.count): 3 on the main thread in HighlightOverlay.apply (reading page.highlightRects) and 5 on PDFKit's
+tile-render queue PDFKit.PDFTilePool.workQueue in OverlayPage.draw(with:to:) (reading highlightRects while PDFView drew
+a tile).
+
+Cause: PDFKit creates pageClass instances through an Objective-C initializer that does not run Swift property
+initializers, so the stored Mutex was zeroed memory and the array inside it a null buffer.
+PDFKitObservationTests.testPageClassInstancesSkipSwiftPropertyInitializers shows the cause without a crash
+(pdfkit-page-class-initializers.txt: a stored `var marker: Int = 20823` reads 0 on a page PDFKit made and 20823 on a
+page Swift made).
+
+Fix: OverlayPage has no stored properties. Its rectangles live in an associated object (OverlayBox) holding a
+Mutex<[CGRect]>, created on first non-empty assignment under a creation lock (HighlightOverlay.swift). Tests that keep
+the fix in place: GeometryOverlayTests.testOverlayPagesAreTheSubclass and the overlay pixel tests,
+PDFKitObservationTests.testPageClassInstancesSkipSwiftPropertyInitializers, and OverlayConcurrencyTests (also in a
+Thread Sanitizer build: overlay-concurrency-*-tsan.txt; control with the mutex removed: tsan-control-unguarded.txt).
+
+Summaries:
+== PDFSpikeHarness-2026-10-06-095256.0002.ips
+  captured 2026-10-06 09:52:40.4669 +1300; process PDFSpikeHarness (com.jevidon.sylvia.spike.pdf); host macOS 26.6.2 (25G83); build slice c32110c3-5881-38fc-90db-69bfc63efa39
+  exception EXC_BAD_ACCESS SIGSEGV KERN_INVALID_ADDRESS at 0x0000000000000010
+  crashed thread 0, queue com.apple.main-thread
+    libswiftCore.dylib  _ArrayBuffer.count.getter
+    libswiftCore.dylib  protocol witness for Collection.endIndex.getter in conformance [A]
+    libswiftCore.dylib  Collection.isEmpty.getter
+    PDFAnchorKit  static HighlightOverlay.apply(_:to:) (HighlightOverlay.swift:97)
+    PDFAnchorKitTests  AnchorCaptureRestoreTests.testHighlightsAreStoredSylviaSideAndTheFileIsUnchanged() (AnchorCaptureRestoreTests.swift:188)
+    PDFAnchorKitTests  @objc AnchorCaptureRestoreTests.testHighlightsAreStoredSylviaSideAndTheFileIsUnchanged() (/<compiler-generated>:?)
+    CoreFoundation  __invoking___
+    CoreFoundation  -[NSInvocation invoke]
+== PDFSpikeHarness-2026-10-06-095258.ips
+  captured 2026-10-06 09:52:57.9754 +1300; process PDFSpikeHarness (com.jevidon.sylvia.spike.pdf); host macOS 26.6.2 (25G83); build slice c32110c3-5881-38fc-90db-69bfc63efa39
+  exception EXC_BAD_ACCESS SIGSEGV KERN_INVALID_ADDRESS at 0x0000000000000010
+  crashed thread 0, queue com.apple.main-thread
+    libswiftCore.dylib  _ArrayBuffer.count.getter
+    libswiftCore.dylib  protocol witness for Collection.endIndex.getter in conformance [A]
+    libswiftCore.dylib  Collection.isEmpty.getter
+    PDFAnchorKit  static HighlightOverlay.apply(_:to:) (HighlightOverlay.swift:97)
+    PDFAnchorKitTests  GeometryOverlayTests.testOverlayDrawsOchreFillAndUnderlineOnEveryRotation() (GeometryOverlayTests.swift:128)
+    PDFAnchorKitTests  @objc GeometryOverlayTests.testOverlayDrawsOchreFillAndUnderlineOnEveryRotation() (/<compiler-generated>:?)
+    CoreFoundation  __invoking___
+    CoreFoundation  -[NSInvocation invoke]
+== PDFSpikeHarness-2026-10-06-095300.ips
+  captured 2026-10-06 09:52:59.3632 +1300; process PDFSpikeHarness (com.jevidon.sylvia.spike.pdf); host macOS 26.6.2 (25G83); build slice c32110c3-5881-38fc-90db-69bfc63efa39
+  exception EXC_BAD_ACCESS SIGSEGV KERN_INVALID_ADDRESS at 0x0000000000000010
+  crashed thread 6, queue PDFKit.PDFTilePool.workQueue
+    libswiftCore.dylib  _ArrayBuffer.count.getter
+    libswiftCore.dylib  protocol witness for Collection.endIndex.getter in conformance [A]
+    libswiftCore.dylib  Collection.isEmpty.getter
+    PDFAnchorKit  OverlayPage.draw(with:to:) (HighlightOverlay.swift:63)
+    PDFAnchorKit  @objc OverlayPage.draw(with:to:) (/<compiler-generated>:?)
+    PDFKit  -[PDFView drawPage:toContext:]
+    PDFKit  __37-[PDFTilePool _renderTileForRequest:]_block_invoke
+    PDFKit  -[PDFTilePool _renderTileForRequest:]
+== PDFSpikeHarness-2026-10-06-095302.ips
+  captured 2026-10-06 09:53:01.4470 +1300; process PDFSpikeHarness (com.jevidon.sylvia.spike.pdf); host macOS 26.6.2 (25G83); build slice c32110c3-5881-38fc-90db-69bfc63efa39
+  exception EXC_BAD_ACCESS SIGSEGV KERN_INVALID_ADDRESS at 0x0000000000000010
+  crashed thread 0, queue com.apple.main-thread
+    libswiftCore.dylib  _ArrayBuffer.count.getter
+    libswiftCore.dylib  protocol witness for Collection.endIndex.getter in conformance [A]
+    libswiftCore.dylib  Collection.isEmpty.getter
+    PDFAnchorKit  static HighlightOverlay.apply(_:to:) (HighlightOverlay.swift:97)
+    PDFAnchorKitTests  GeometryOverlayTests.testPDFViewShowsOverlayOnRotatedPage() (GeometryOverlayTests.swift:181)
+    PDFAnchorKitTests  @objc GeometryOverlayTests.testPDFViewShowsOverlayOnRotatedPage() (/<compiler-generated>:?)
+    CoreFoundation  __invoking___
+    CoreFoundation  -[NSInvocation invoke]
+== PDFSpikeHarness-2026-10-06-095324.ips
+  captured 2026-10-06 09:53:03.6402 +1300; process PDFSpikeHarness (com.jevidon.sylvia.spike.pdf); host macOS 26.6.2 (25G83); build slice c32110c3-5881-38fc-90db-69bfc63efa39
+  exception EXC_BAD_ACCESS SIGSEGV KERN_INVALID_ADDRESS at 0x0000000000000010
+  crashed thread 6, queue PDFKit.PDFTilePool.workQueue
+    libswiftCore.dylib  _ArrayBuffer.count.getter
+    libswiftCore.dylib  protocol witness for Collection.endIndex.getter in conformance [A]
+    libswiftCore.dylib  Collection.isEmpty.getter
+    PDFAnchorKit  OverlayPage.draw(with:to:) (HighlightOverlay.swift:63)
+    PDFAnchorKit  @objc OverlayPage.draw(with:to:) (/<compiler-generated>:?)
+    PDFKit  -[PDFView drawPage:toContext:]
+    PDFKit  __37-[PDFTilePool _renderTileForRequest:]_block_invoke
+    PDFKit  -[PDFTilePool _renderTileForRequest:]
+== PDFSpikeHarness-2026-10-06-095340.000.ips
+  captured 2026-10-06 09:53:25.0369 +1300; process PDFSpikeHarness (com.jevidon.sylvia.spike.pdf); host macOS 26.6.2 (25G83); build slice c32110c3-5881-38fc-90db-69bfc63efa39
+  exception EXC_BAD_ACCESS SIGSEGV KERN_INVALID_ADDRESS at 0x0000000000000010
+  crashed thread 7, queue PDFKit.PDFTilePool.workQueue
+    libswiftCore.dylib  _ArrayBuffer.count.getter
+    libswiftCore.dylib  protocol witness for Collection.endIndex.getter in conformance [A]
+    libswiftCore.dylib  Collection.isEmpty.getter
+    PDFAnchorKit  OverlayPage.draw(with:to:) (HighlightOverlay.swift:63)
+    PDFAnchorKit  @objc OverlayPage.draw(with:to:) (/<compiler-generated>:?)
+    PDFKit  -[PDFView drawPage:toContext:]
+    PDFKit  __37-[PDFTilePool _renderTileForRequest:]_block_invoke
+    PDFKit  -[PDFTilePool _renderTileForRequest:]
+== PDFSpikeHarness-2026-10-06-095342.000.ips
+  captured 2026-10-06 09:53:41.6996 +1300; process PDFSpikeHarness (com.jevidon.sylvia.spike.pdf); host macOS 26.6.2 (25G83); build slice c32110c3-5881-38fc-90db-69bfc63efa39
+  exception EXC_BAD_ACCESS SIGSEGV KERN_INVALID_ADDRESS at 0x0000000000000010
+  crashed thread 3, queue PDFKit.PDFTilePool.workQueue
+    libswiftCore.dylib  _ArrayBuffer.count.getter
+    libswiftCore.dylib  protocol witness for Collection.endIndex.getter in conformance [A]
+    libswiftCore.dylib  Collection.isEmpty.getter
+    PDFAnchorKit  OverlayPage.draw(with:to:) (HighlightOverlay.swift:63)
+    PDFAnchorKit  @objc OverlayPage.draw(with:to:) (/<compiler-generated>:?)
+    PDFKit  -[PDFView drawPage:toContext:]
+    PDFKit  __37-[PDFTilePool _renderTileForRequest:]_block_invoke
+    PDFKit  -[PDFTilePool _renderTileForRequest:]
+== PDFSpikeHarness-2026-10-06-095344.ips
+  captured 2026-10-06 09:53:43.7573 +1300; process PDFSpikeHarness (com.jevidon.sylvia.spike.pdf); host macOS 26.6.2 (25G83); build slice c32110c3-5881-38fc-90db-69bfc63efa39
+  exception EXC_BAD_ACCESS SIGSEGV KERN_INVALID_ADDRESS at 0x0000000000000010
+  crashed thread 4, queue PDFKit.PDFTilePool.workQueue
+    libswiftCore.dylib  _ArrayBuffer.count.getter
+    libswiftCore.dylib  protocol witness for Collection.endIndex.getter in conformance [A]
+    libswiftCore.dylib  Collection.isEmpty.getter
+    PDFAnchorKit  OverlayPage.draw(with:to:) (HighlightOverlay.swift:63)
+    PDFAnchorKit  @objc OverlayPage.draw(with:to:) (/<compiler-generated>:?)
+    PDFKit  -[PDFView drawPage:toContext:]
+    PDFKit  __37-[PDFTilePool _renderTileForRequest:]_block_invoke
+    PDFKit  -[PDFTilePool _renderTileForRequest:]

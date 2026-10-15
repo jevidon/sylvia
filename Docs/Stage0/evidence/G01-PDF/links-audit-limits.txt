@@ -1,0 +1,4 @@
+PDFActionAudit limits on in-memory PDFs, simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77)
+/Next chain of 100 GoTo actions: 64 listed, then "(depth limit)" (testAuditCutsAChainPastTheDepthLimit)
+/Next arrays naming the same action twice at each of 30 levels (2999 bytes, 2^30 - 1 paths): 4096 rows listed, then "(list limit)": nothing listed after 4096 rows
+cycles and 100-level nesting in the outline, the form field tree and the JavaScript name tree: see links-audit-trees.txt (testAuditStopsAtCyclesAndDepthInTrees)

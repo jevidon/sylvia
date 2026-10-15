@@ -1,0 +1,12 @@
+xcodegen-requirements 2026-10-14T01:56:36Z at commit cfc5dea3d616b477733d76e1d3ab0d215d513f20; Version: 2.46.0
+key in project.yml -> requirement written to the generated project
+  https://example.invalid/a/branch.git               branch = main; kind = branch;
+  https://example.invalid/a/exactversion.git         kind = exactVersion; version = 1.2.3;
+  https://example.invalid/a/from.git                 kind = upToNextMajorVersion; minimumVersion = 1.2.3;
+  https://example.invalid/a/majorversion.git         kind = upToNextMajorVersion; minimumVersion = 1.2.3;
+  https://example.invalid/a/minorversion.git         kind = upToNextMinorVersion; minimumVersion = 1.2.3;
+  https://example.invalid/a/range.git                kind = versionRange; maximumVersion = 2.0.0; minimumVersion = 1.2.3;
+  https://example.invalid/a/revision.git             kind = revision; revision = 0123456789abcdef0123456789abcdef01234567;
+  https://example.invalid/a/version.git              kind = exactVersion; version = 1.2.3;
+  https://github.com/example/github-shorthand        kind = exactVersion; version = 1.2.3;
+exact requirements: https://example.invalid/a/exactversion.git, https://example.invalid/a/version.git, https://github.com/example/github-shorthand

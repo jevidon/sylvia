@@ -1,0 +1,15 @@
+environment: host (macOS 26.6.2), Apple M5 Max; code at commit c5c3162 (the same SourceService and TransferKit code as the final clean run; later commits changed only UI tests and documents)
+command (10 times, one after another): xcrun swift test --package-path Spikes/G02-Transfer/SourceService --skip LargeTransferTests
+why: review finding R1-01 saw this suite trap in NIO in 2 of 7 runs; each run below includes the 200-stop stress test
+result: 10 of 10 runs passed, no trap (run 7 was slower throughout, every test in it, while other work loaded this Mac)
+---
+run 1: exit 0, 18 s: ✔ Test run with 58 tests in 6 suites passed after 14.607 seconds. 
+run 2: exit 0, 18 s: ✔ Test run with 58 tests in 6 suites passed after 15.065 seconds. 
+run 3: exit 0, 21 s: ✔ Test run with 58 tests in 6 suites passed after 18.282 seconds. 
+run 4: exit 0, 18 s: ✔ Test run with 58 tests in 6 suites passed after 16.011 seconds. 
+run 5: exit 0, 20 s: ✔ Test run with 58 tests in 6 suites passed after 15.478 seconds. 
+run 6: exit 0, 16 s: ✔ Test run with 58 tests in 6 suites passed after 13.723 seconds. 
+run 7: exit 0, 73 s: ✔ Test run with 58 tests in 6 suites passed after 70.799 seconds. 
+run 8: exit 0, 26 s: ✔ Test run with 58 tests in 6 suites passed after 15.188 seconds. 
+run 9: exit 0, 16 s: ✔ Test run with 58 tests in 6 suites passed after 13.455 seconds. 
+run 10: exit 0, 15 s: ✔ Test run with 58 tests in 6 suites passed after 13.507 seconds. 

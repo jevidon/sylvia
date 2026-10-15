@@ -1,0 +1,53 @@
+command: Docs/Stage0/evidence/M0-contracts/commands/check-g04-head.sh 943d5e778de2b58f47343f0e146f9e3ed7baa70e 038145a
+commit: 038145aaa68006ba138f84a3358f8abf7b53b9e8 (branch m0-integrate; uncommitted files before the run: 2)
+m0-g04-audio head: 459229347684220687b814a162d2fcdd863c718c
+host: macOS 26.6.2 (25G83); load:  6:28  up 11 days, 16:39, 1 user, load averages: 3.34 5.21 4.85
+audio: none played (the probe decodes and encodes only)
+
+==> G0.4 943d5e778de2b58f47343f0e146f9e3ed7baa70e = 943d5e778de2b58f47343f0e146f9e3ed7baa70e
+    capture code changed since 943d5e7: 
+    per-file timing mode: no (not at this commit)
+    compiled: 11 files, 0 warnings (-warnings-as-errors)
+    records: 5, excerpt files: 2, durable writes: 8
+    kept: 5 records in .build/scratch/m0-contracts/g04-head/943d5e778de2/probe
+    records: 5 (m0-contracts-bookmark, m0-contracts-cross-file, m0-contracts-failed, m0-contracts-pending, m0-contracts-single); same idempotency keys as the committed records: True
+    same format: m0-contracts-bookmark (14 key paths)
+    same format: m0-contracts-cross-file (30 key paths)
+    same format: m0-contracts-failed (17 key paths)
+    same format: m0-contracts-pending (14 key paths)
+    same format: m0-contracts-single (31 key paths)
+    m0-contracts-single: actual ranges [60000, 90000), 1323000 frames at 44100 Hz, read back 30000 ms, 295185 bytes
+    m0-contracts-cross-file: actual ranges [142299, 162299), [0, 10000), 1322990 frames at 44100 Hz, read back 30000 ms, 288429 bytes
+    checker with these records: result: pass (0 problem(s))
+      ok   G0.4 record m0-contracts-cross-file (2EA78657-F9BB-4F73-B44B-34119AE497E8.json): 1 anchor(s), envelope audio_capture
+      ok   G0.4 record m0-contracts-pending (8290185B-965C-45E8-8EC1-76DB4399108A.json): 1 anchor(s), envelope audio_capture
+      ok   G0.4 record m0-contracts-failed (C6E8753A-3008-4571-B9EC-57FDE5BCF523.json): 1 anchor(s), envelope audio_capture
+      ok   G0.4 record m0-contracts-single (CB5438AA-3DD8-420A-801C-395CAC9658F8.json): 1 anchor(s), envelope audio_capture
+      not a capture: G0.4 record m0-contracts-bookmark (8C96DB2B-48B5-4EF0-AE96-FC20798890B1.json): a bookmark is a position only, not a capture in the envelope (ADR-0016)
+
+==> G0.4 038145a = 038145aaa68006ba138f84a3358f8abf7b53b9e8
+    capture code changed since 943d5e7: Capture/CaptureService.swift Capture/CaptureStore.swift Capture/QuickCaptureCoordinator.swift Capture/VocabularyKey.swift Excerpt/ExcerptExporter.swift Media/AssetInspector.swift Media/AssetTiming.swift Media/ImportRemuxer.swift Media/MP3FrameScanner.swift Media/PCMDecoder.swift Timeline/EditionTimeline.swift Timeline/MemberOrdering.swift 
+    per-file timing mode: yes (AssetTiming.swift present; G04_ASSET_TIMING defined)
+    compiled: 13 files, 0 warnings (-warnings-as-errors)
+    records: 5, excerpt files: 2, durable writes: 8
+    kept: 5 records in .build/scratch/m0-contracts/g04-head/038145aaa680/probe
+    records: 5 (m0-contracts-bookmark, m0-contracts-cross-file, m0-contracts-failed, m0-contracts-pending, m0-contracts-single); same idempotency keys as the committed records: True
+    same format: m0-contracts-bookmark (14 key paths)
+    same format: m0-contracts-cross-file (30 key paths)
+    same format: m0-contracts-failed (17 key paths)
+    same format: m0-contracts-pending (14 key paths)
+    same format: m0-contracts-single (31 key paths)
+    m0-contracts-single: actual ranges [60000, 90000), 1323000 frames at 44100 Hz, read back 30000 ms, 295185 bytes
+    m0-contracts-cross-file: actual ranges [142299, 162299), [0, 10000), 1322990 frames at 44100 Hz, read back 30000 ms, 288429 bytes
+    member Part 1.mp3: timing estimatedCBR (constant bit rate 64 kb/s, 6214 frames, Info tag)
+    member Part 2.mp3: timing estimatedCBR (constant bit rate 64 kb/s, 5266 frames, Info tag)
+    member Part 3.mp3: timing estimatedCBR (constant bit rate 64 kb/s, 5745 frames, Info tag)
+    member Part 10.mp3: timing estimatedCBR (constant bit rate 64 kb/s, 4600 frames, Info tag)
+    checker with these records: result: pass (0 problem(s))
+      ok   G0.4 record m0-contracts-failed (0F6474A7-44F8-4FDE-9D59-61CD1DFCCBDD.json): 1 anchor(s), envelope audio_capture
+      ok   G0.4 record m0-contracts-pending (1F49F628-3F88-461D-A796-462A2DD3CE51.json): 1 anchor(s), envelope audio_capture
+      ok   G0.4 record m0-contracts-single (5DC5FAE7-232F-45C1-9E99-0DD42E09430A.json): 1 anchor(s), envelope audio_capture
+      ok   G0.4 record m0-contracts-cross-file (60FD5AFC-7847-4937-89CC-3072787AC1B9.json): 1 anchor(s), envelope audio_capture
+      not a capture: G0.4 record m0-contracts-bookmark (B723ACF7-4F2B-41BE-A4AA-E1A722563477.json): a bookmark is a position only, not a capture in the envelope (ADR-0016)
+
+exit 0

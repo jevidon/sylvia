@@ -1,0 +1,51 @@
+== Git LFS configuration and hooks: after git lfs install --local (step 3) (2026-10-18T17:00:39Z; 2026-10-19 06:00:39 NZDT)
+repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1; common git directory: /Users/jevidon/Git/sylvia/.git
+git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+
+$ git config --show-origin --get-regexp '^(filter\.lfs|lfs\.)'
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.repositoryformatversion 0
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.smudge git-lfs smudge -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.process git-lfs filter-process
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.required true
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.clean git-lfs clean -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.https://github.com/jevidon/sylvia.git/info/lfs.access basic
+
+$ git config --system --show-origin --get-regexp '^(filter\.lfs|lfs\.)'
+(no entry at the system scope)
+
+$ git config --global --show-origin --get-regexp '^(filter\.lfs|lfs\.)'
+(no entry at the global scope)
+
+$ git config --local --show-origin --get-regexp '^(filter\.lfs|lfs\.)'
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.repositoryformatversion 0
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.smudge git-lfs smudge -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.process git-lfs filter-process
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.required true
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.clean git-lfs clean -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.https://github.com/jevidon/sylvia.git/info/lfs.access basic
+
+user configuration files:
+  /Users/jevidon/.gitconfig: does not exist
+  /Users/jevidon/.config/git/config: does not exist
+system configuration (git config --system --list --show-origin):
+  file:/opt/homebrew/etc/gitconfig	credential.helper=osxkeychain
+extensions.worktreeConfig: unset
+core.hooksPath: unset
+
+hooks directory: /Users/jevidon/Git/sylvia/.git/hooks (git rev-parse --git-path hooks); hooks that are not *.sample:
+  post-checkout: 360 bytes, mode -rwxr-xr-x, modified 2026-10-15 12:13:30 +1300, sha256 8d606e58cce98604696a4abcf3ae1ebde6f9f31ac72bb0d44e2444cc39f26030
+      | #!/bin/sh
+      | command -v git-lfs >/dev/null 2>&1 || { printf >&2 "\n%s\n\n" "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'post-checkout' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."; exit 2; }
+      | git lfs post-checkout "$@"
+  post-commit: 356 bytes, mode -rwxr-xr-x, modified 2026-10-15 12:13:30 +1300, sha256 f3eb4d1f62924c09d481a0563a84b158c66eb2feb3431cfdb3e6760aab4d661d
+      | #!/bin/sh
+      | command -v git-lfs >/dev/null 2>&1 || { printf >&2 "\n%s\n\n" "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'post-commit' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."; exit 2; }
+      | git lfs post-commit "$@"
+  post-merge: 354 bytes, mode -rwxr-xr-x, modified 2026-10-15 12:13:30 +1300, sha256 cecb594e8fa65831654fc95e96db9f1249e09c52810c6fbb2b428280aac22158
+      | #!/bin/sh
+      | command -v git-lfs >/dev/null 2>&1 || { printf >&2 "\n%s\n\n" "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'post-merge' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."; exit 2; }
+      | git lfs post-merge "$@"
+  pre-push: 350 bytes, mode -rwxr-xr-x, modified 2026-10-15 12:13:30 +1300, sha256 a52d0510d0f8c75e27852156ec6f7791f0d8ed65fc58fcc368dd1de0a60a1d74
+      | #!/bin/sh
+      | command -v git-lfs >/dev/null 2>&1 || { printf >&2 "\n%s\n\n" "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'pre-push' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."; exit 2; }
+      | git lfs pre-push "$@"

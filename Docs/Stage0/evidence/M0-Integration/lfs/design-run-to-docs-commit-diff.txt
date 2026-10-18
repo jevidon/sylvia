@@ -1,0 +1,10 @@
+# What changed outside Docs/ between the commit of the full clean-checkout design run (28d7501) and the commit the
+# final checks ran on (77d6cf7):
+#   git diff --stat 28d7501c7822dbc12138e1a24fa0a4a9e7832f13 77d6cf7806ad59154973f457ed9674a6147bac7b -- . ':(exclude)Docs'
+# The workflow change is a comment (the download size); CLAUDE.md is instructions; 00-git-lfs.sh changed only its
+# output (one line per self-test case in CI runs, and its pass line). Neither design drop-in reads any of them.
+
+ .github/workflows/ci.yml   |  4 ++--
+ CLAUDE.md                  | 11 +++++++++--
+ Scripts/ci.d/00-git-lfs.sh | 24 ++++++++++++++----------
+ 3 files changed, 25 insertions(+), 14 deletions(-)

@@ -1,0 +1,36 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1; commit: 3021ddd1f9a20bc04816cdf95b2ca9021651184b (m0-integrate); uncommitted files: 8
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T17:42:15Z; load:  6:42  up 15 days, 16:52, 3 users, load averages: 4.45 8.46 8.50
+command: /usr/bin/python3 -I Docs/Stage0/evidence/M0-Integration/lfs/commands/check_attr_proof.py adab8e2a3b69671ddabe7963793f41a828620ffb .build/scratch/lfs/manifest-minus-first-line.sha256 adab8e2a3b69671ddabe7963793f41a828620ffb
+
+# git check-attr over every tracked path at adab8e2a3b69671ddabe7963793f41a828620ffb (2919 paths, .gitattributes included)
+attributes from: .gitattributes at adab8e2a3b69671ddabe7963793f41a828620ffb (git check-attr --source adab8e2a3b69671ddabe7963793f41a828620ffb); sha256 66ab0d2efa70ccf57d68ffff73c54da693b0e0dc9645c305ad4a2f26ed9a3493
+  **/__Snapshots__/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+manifest: .build/scratch/lfs/manifest-minus-first-line.sha256, 776 paths (776 distinct)
+git version 2.55.0
+
+core.ignorecase=true: 2919 paths answered; filter=lfs on 777; manifest paths without it: 0; paths with it outside the manifest: 1; LFS paths without diff=lfs, merge=lfs and -text: 0; other paths with any of these attributes: 0 -> FAIL
+  extra: Docs/Stage0/evidence/G01-EPUB/anchor-rotate-landscape.png {'filter': 'lfs', 'diff': 'lfs', 'merge': 'lfs', 'text': 'unset'}
+
+core.ignorecase=false: 2919 paths answered; filter=lfs on 777; manifest paths without it: 0; paths with it outside the manifest: 1; LFS paths without diff=lfs, merge=lfs and -text: 0; other paths with any of these attributes: 0 -> FAIL
+  extra: Docs/Stage0/evidence/G01-EPUB/anchor-rotate-landscape.png {'filter': 'lfs', 'diff': 'lfs', 'merge': 'lfs', 'text': 'unset'}
+
+RESULT: FAIL
+
+exit status: 1
+end: 2026-10-18T17:42:16Z; load:  6:42  up 15 days, 16:52, 3 users, load averages: 4.45 8.46 8.50

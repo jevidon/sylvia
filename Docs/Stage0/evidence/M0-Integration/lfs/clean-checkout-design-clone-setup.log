@@ -1,0 +1,322 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1; commit: 28d7501c7822dbc12138e1a24fa0a4a9e7832f13 (m0-integrate); uncommitted files: 2
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T17:29:30Z; load:  6:29  up 15 days, 16:40, 3 users, load averages: 3.82 3.30 3.14
+command: Docs/Stage0/evidence/M0-Integration/lfs/commands/clean-checkout.sh /Users/jevidon/Git/sylvia .build/scratch clone
+
+# clean-checkout.sh phase clone (2026-10-18T17:29:30Z); source /Users/jevidon/Git/sylvia (m0-integrate at 28d7501c7822dbc12138e1a24fa0a4a9e7832f13)
+git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3); git config --global --list: fatal: unable to read config file '/Users/jevidon/.gitconfig': No such file or directory
+
+$ git clone --no-local /Users/jevidon/Git/sylvia /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone
+Cloning into '/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone'...
+[exit 0]
+CHECK PASS: clone with --no-local (origin is the local path) (exit 0)
+
+origin: /Users/jevidon/Git/sylvia; first checkout: codex/readme-platform-vision at 771243a; .gitattributes there: no
+$ git lfs install --local
+Updated Git hooks.
+Git LFS initialized.
+[exit 0]
+CHECK PASS: git lfs install --local in the clone (exit 0)
+
+$ git config --show-origin --get-regexp ^(filter\.lfs|lfs\.)
+file:.git/config	lfs.repositoryformatversion 0
+file:.git/config	filter.lfs.clean git-lfs clean -- %f
+file:.git/config	filter.lfs.smudge git-lfs smudge -- %f
+file:.git/config	filter.lfs.process git-lfs filter-process
+file:.git/config	filter.lfs.required true
+[exit 0]
+Endpoint=file:///Users/jevidon/Git/sylvia/.git (auth=none)
+LocalMediaDir=/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.git/lfs/objects
+DownloadTransfers=basic,lfs-standalone-file,ssh
+$ git checkout m0-integrate
+Switched to a new branch 'm0-integrate'
+branch 'm0-integrate' set up to track 'origin/m0-integrate'.
+[exit 0]
+CHECK PASS: check out m0-integrate (smudges the LFS files from the source's LFS storage) (exit 0)
+
+HEAD: 28d7501c7822dbc12138e1a24fa0a4a9e7832f13 Add the commands behind the Git LFS CI evidence
+LFS objects now in the clone's own storage: 719
+
+$ Scripts/setup-repo.sh
+==> 1. git-lfs
+git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+==> 2. git lfs install --local (repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone)
+Updated Git hooks.
+Git LFS initialized.
+==> 3. LFS files in the working tree
+every file stored with Git LFS is present: nothing to download
+==> 4. Scripts/ci.d/00-git-lfs.sh
+00-git-lfs 2026-10-18T17:29:34Z at commit 28d7501c7822dbc12138e1a24fa0a4a9e7832f13
+
+--- self-test
+self-test: temporary repository /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo with this repository's .gitattributes (git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3))
+self-test: 1, a correct checkout: the check passed, as it must
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | pointer files in the working tree: none
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 00-git-lfs: pass: every LFS file is present in the working tree and committed as an LFS pointer
+self-test: 2, pointer text in a plain-git file (outside the LFS patterns) is not reported: the check passed, as it must
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | pointer files in the working tree: none
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 00-git-lfs: pass: every LFS file is present in the working tree and committed as an LFS pointer
+self-test: 3, a snapshot reference left as a pointer file: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests/sample.light-default.png
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 4, an evidence photo (.JPG) left as a pointer file: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Docs/Stage0/evidence/G02-Transfer/DEVICE-PHOTO.JPG
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 5, a pointer file added at a new path (staged, not committed): the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 4 listed by git lfs ls-files, 4 tracked paths matched by an LFS attribute, 4 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Docs/Stage0/evidence/G01-PDF/copied-from-another-checkout.png
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 6, a pointer file that only the LFS attribute catches (git lfs ls-files does not list it): the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 4 tracked paths matched by an LFS attribute, 4 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Docs/Stage0/evidence/G01-EPUB/staged-without-lfs.png
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 7, a pointer committed outside the LFS patterns (only git lfs ls-files catches it): the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 4 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 4 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Docs/Design/images/committed-as-a-pointer.png
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 8, the repository-local LFS filter not configured: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: the repository-local Git LFS filter is not configured: filter.lfs.clean is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (in effect: 'unset'), expected 'git-lfs clean -- %f'.
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | FAIL: the repository-local Git LFS filter is not configured: filter.lfs.clean is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (in effect: 'unset'), expected 'git-lfs clean -- %f'.
+    | FAIL: the repository-local Git LFS filter is not configured: filter.lfs.smudge is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (in effect: 'unset'), expected 'git-lfs smudge -- %f'.
+    | FAIL: the repository-local Git LFS filter is not configured: filter.lfs.process is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (in effect: 'unset'), expected 'git-lfs filter-process'.
+    | FAIL: the repository-local Git LFS filter is not configured: filter.lfs.required is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (in effect: 'unset'), expected 'true'.
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | pointer files in the working tree: none
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (filter). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 9, git-lfs not installed: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: git-lfs is not installed (no working git-lfs on PATH).
+    | FAIL: git-lfs is not installed (no working git-lfs on PATH).
+    |   This repository stores its snapshot references and evidence images with Git LFS (ADR-0002); without
+    |   git-lfs a checkout holds small pointer files in their place. Install it with 'brew install git-lfs',
+    |   then run Scripts/setup-repo.sh from the repository root.
+self-test: 10, an image committed as a plain git blob: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: git lfs fsck --pointers found files that .gitattributes stores with Git LFS but HEAD holds as plain git blobs, or malformed pointers:
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.w9ql2J/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 4 tracked paths matched by an LFS attribute, 4 distinct
+    | pointer files in the working tree: none
+    | FAIL: git lfs fsck --pointers found files that .gitattributes stores with Git LFS but HEAD holds as plain git blobs, or malformed pointers:
+    |     pointer: unexpectedGitObject: "Docs/Stage0/evidence/G06-Design/committed-without-lfs.png" (treeish c5d3a814e609b4f6010f979c4bd7ad68885b6e75) should have been a pointer but was not
+    | 
+    | 00-git-lfs: FAIL (fsck). What to do:
+    |   The files git lfs fsck lists were committed where Git LFS was not set up. Run Scripts/setup-repo.sh, then
+    |   'git add --renormalize -- <path>' for each of them and commit, so that they are stored as LFS pointers.
+self-test: passed (10 cases)
+
+--- this checkout
+repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.git/config (clean, smudge, process, required)
+LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+pointer files in the working tree: none
+git lfs fsck --pointers (HEAD): Git LFS fsck OK
+00-git-lfs: pass: every LFS file is present in the working tree and committed as an LFS pointer
+[exit 0]
+CHECK PASS: Scripts/setup-repo.sh (idempotent: nothing to download) (exit 0)
+
+$ Scripts/ci.d/00-git-lfs.sh
+00-git-lfs 2026-10-18T17:29:39Z at commit 28d7501c7822dbc12138e1a24fa0a4a9e7832f13
+
+--- self-test
+self-test: temporary repository /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo with this repository's .gitattributes (git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3))
+self-test: 1, a correct checkout: the check passed, as it must
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | pointer files in the working tree: none
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 00-git-lfs: pass: every LFS file is present in the working tree and committed as an LFS pointer
+self-test: 2, pointer text in a plain-git file (outside the LFS patterns) is not reported: the check passed, as it must
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | pointer files in the working tree: none
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 00-git-lfs: pass: every LFS file is present in the working tree and committed as an LFS pointer
+self-test: 3, a snapshot reference left as a pointer file: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests/sample.light-default.png
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 4, an evidence photo (.JPG) left as a pointer file: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Docs/Stage0/evidence/G02-Transfer/DEVICE-PHOTO.JPG
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 5, a pointer file added at a new path (staged, not committed): the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 4 listed by git lfs ls-files, 4 tracked paths matched by an LFS attribute, 4 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Docs/Stage0/evidence/G01-PDF/copied-from-another-checkout.png
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 6, a pointer file that only the LFS attribute catches (git lfs ls-files does not list it): the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 4 tracked paths matched by an LFS attribute, 4 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Docs/Stage0/evidence/G01-EPUB/staged-without-lfs.png
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 7, a pointer committed outside the LFS patterns (only git lfs ls-files catches it): the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 4 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 4 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (1):
+    |     Docs/Design/images/committed-as-a-pointer.png
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 8, the repository-local LFS filter not configured: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: the repository-local Git LFS filter is not configured: filter.lfs.clean is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (in effect: 'unset'), expected 'git-lfs clean -- %f'.
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | FAIL: the repository-local Git LFS filter is not configured: filter.lfs.clean is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (in effect: 'unset'), expected 'git-lfs clean -- %f'.
+    | FAIL: the repository-local Git LFS filter is not configured: filter.lfs.smudge is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (in effect: 'unset'), expected 'git-lfs smudge -- %f'.
+    | FAIL: the repository-local Git LFS filter is not configured: filter.lfs.process is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (in effect: 'unset'), expected 'git-lfs filter-process'.
+    | FAIL: the repository-local Git LFS filter is not configured: filter.lfs.required is 'unset' in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (in effect: 'unset'), expected 'true'.
+    | LFS files: 3 listed by git lfs ls-files, 3 tracked paths matched by an LFS attribute, 3 distinct
+    | pointer files in the working tree: none
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (filter). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+self-test: 9, git-lfs not installed: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: git-lfs is not installed (no working git-lfs on PATH).
+    | FAIL: git-lfs is not installed (no working git-lfs on PATH).
+    |   This repository stores its snapshot references and evidence images with Git LFS (ADR-0002); without
+    |   git-lfs a checkout holds small pointer files in their place. Install it with 'brew install git-lfs',
+    |   then run Scripts/setup-repo.sh from the repository root.
+self-test: 10, an image committed as a plain git blob: the check failed, as it must, naming Scripts/setup-repo.sh: FAIL: git lfs fsck --pointers found files that .gitattributes stores with Git LFS but HEAD holds as plain git blobs, or malformed pointers:
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.build/scratch/ci-00-git-lfs.DBvaP1/repo/.git/config (clean, smudge, process, required)
+    | LFS files: 3 listed by git lfs ls-files, 4 tracked paths matched by an LFS attribute, 4 distinct
+    | pointer files in the working tree: none
+    | FAIL: git lfs fsck --pointers found files that .gitattributes stores with Git LFS but HEAD holds as plain git blobs, or malformed pointers:
+    |     pointer: unexpectedGitObject: "Docs/Stage0/evidence/G06-Design/committed-without-lfs.png" (treeish ead116ee3844275694a9bd529397a25fe053f57e) should have been a pointer but was not
+    | 
+    | 00-git-lfs: FAIL (fsck). What to do:
+    |   The files git lfs fsck lists were committed where Git LFS was not set up. Run Scripts/setup-repo.sh, then
+    |   'git add --renormalize -- <path>' for each of them and commit, so that they are stored as LFS pointers.
+self-test: passed (10 cases)
+
+--- this checkout
+repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone (git directory /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/.git/config (clean, smudge, process, required)
+LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+pointer files in the working tree: none
+git lfs fsck --pointers (HEAD): Git LFS fsck OK
+00-git-lfs: pass: every LFS file is present in the working tree and committed as an LFS pointer
+[exit 0]
+CHECK PASS: Scripts/ci.d/00-git-lfs.sh (exit 0)
+
+manifest Docs/Stage0/evidence/M0-Integration/lfs/lfs-manifest.sha256: 777 files match their SHA-256, 0 do not (of 777)
+CHECK PASS: every LFS file matches the manifest
+git status --porcelain: (nothing: the working tree matches HEAD)
+CHECK PASS: clean working tree
+
+$ Scripts/ci.sh contracts
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (52s)
+all 3 steps passed
+[exit 0]
+CHECK PASS: Scripts/ci.sh contracts (exit 0)
+
+
+# phase clone done (2026-10-18T17:30:42Z); checks failed: see CHECK FAIL lines (none means all passed)
+
+exit status: 0
+end: 2026-10-18T17:30:42Z; load:  6:30  up 15 days, 16:41, 3 users, load averages: 6.04 4.07 3.44

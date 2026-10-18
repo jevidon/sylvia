@@ -1,0 +1,127 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme SylviaDesign-Package -destination id=299A22F1-BAD8-438A-9DEF-42C7280D3C9F -derivedDataPath /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/Packages/Design/.build/DerivedData -disableAutomaticPackageResolution "-only-testing:SylviaDesignSnapshotTests/ComponentSnapshotTests"
+
+Resolve Package Graph
+2026-10-19 06:33:46.529 xcodebuild[16968:39980625] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+
+
+Resolved source packages:
+  SylviaDesign: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/Packages/Design
+  swift-syntax: https://github.com/swiftlang/swift-syntax @ 604.0.0
+  swift-issue-reporting: https://github.com/pointfreeco/swift-issue-reporting @ 2.1.1
+  swift-custom-dump: https://github.com/pointfreeco/swift-custom-dump @ 1.7.3
+  swift-snapshot-testing: https://github.com/pointfreeco/swift-snapshot-testing @ 1.19.6
+
+2026-10-19 06:33:48.499 xcodebuild[16968:39980625] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+Test Suite 'Selected tests' started at 2026-10-19 06:33:50.222.
+Test Suite 'SylviaDesignSnapshotTests.xctest' started at 2026-10-19 06:33:50.222.
+Test Suite 'SylviaDesignSnapshotTests.xctest' passed at 2026-10-19 06:33:50.223.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+Test Suite 'Selected tests' passed at 2026-10-19 06:33:50.223.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Suite "Component snapshots (T51, T53)" started.
+◇ Test "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test "Recorded on the reference simulator" started.
+◇ Test "The sample list names every sample" started.
+◇ Test case passing 1 argument name → "buttons" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "statusPills" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "availabilityBadges" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.quote" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "markerRows" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.word" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "rating" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.note" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "sidebar" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureSheet.quote" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureSheet.saveStates" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "card" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureSheet.audio" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.audio" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "textField" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "typographicCover" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "navigationBar" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "statusBanners" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "readingParagraph" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "playPauseButton" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "inboxRows" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "selectionMenu" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "progressRule" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "tabBar" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "actionCards" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "miniPlayer" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "areaTitle" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "readerChrome" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "impactReport" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.generated" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "filterChips" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+⎙ Attached 'reference.png' to "Snapshots in four appearances, two text sizes, grayscale and Bold Text".
+⎙ Attached 'failure.png' to "Snapshots in four appearances, two text sizes, grayscale and Bold Text".
+⎙ Attached 'difference.png' to "Snapshots in four appearances, two text sizes, grayscale and Bold Text".
+✘ Test "Snapshots in four appearances, two text sizes, grayscale and Bold Text" recorded an issue with 1 argument name → "rating" at ComponentSnapshotTests.swift:43:27: Issue recorded
+↳ Snapshot "light-default" does not match reference.
+  
+  @−
+  "file:///Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests/rating.light-default.png"
+  @+
+  "file:///Users/jevidon/Library/Developer/CoreSimulator/Devices/299A22F1-BAD8-438A-9DEF-42C7280D3C9F/data/tmp/ComponentSnapshotTests/rating.light-default.png"
+  
+  To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+  
+      withSnapshotTesting(diffTool: .ksdiff) {
+        // ...
+      }
+  
+  Newly-taken snapshot does not match reference.
+⎙ Attached 'reference.png' to "Snapshots in four appearances, two text sizes, grayscale and Bold Text".
+⎙ Attached 'failure.png' to "Snapshots in four appearances, two text sizes, grayscale and Bold Text".
+⎙ Attached 'difference.png' to "Snapshots in four appearances, two text sizes, grayscale and Bold Text".
+✘ Test "Snapshots in four appearances, two text sizes, grayscale and Bold Text" recorded an issue with 1 argument name → "rating" at ComponentSnapshotTests.swift:45:31: Issue recorded
+↳ Snapshot "light-default-gray" does not match reference.
+  
+  @−
+  "file:///Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests/rating.light-default-gray.png"
+  @+
+  "file:///Users/jevidon/Library/Developer/CoreSimulator/Devices/299A22F1-BAD8-438A-9DEF-42C7280D3C9F/data/tmp/ComponentSnapshotTests/rating.light-default-gray.png"
+  
+  To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+  
+      withSnapshotTesting(diffTool: .ksdiff) {
+        // ...
+      }
+  
+  289425 of 289440 grey pixels differ (largest difference 221 levels)
+IOSurfaceClientSetSurfaceNotify failed e00002c7
+​​​​​​​​​​​​​​​​​​​​​​​✔ Test "Recorded on the reference simulator" passed after 50.056 seconds.
+​​​​✔ Test "The sample list names every sample" passed after 50.057 seconds.
+​​​​✘ Test "Snapshots in four appearances, two text sizes, grayscale and Bold Text" with 31 test cases failed after 50.057 seconds with 2 issues.
+✘ Suite "Component snapshots (T51, T53)" failed after 50.058 seconds with 2 issues.
+↳ /// T51/T53 snapshot matrix (plan 4.4.9, 20.1; ADR-0013 Section 9): every Section 4.4.7 component in
+↳ /// light, dark, light and dark with Increase Contrast, at the default text size and the largest
+↳ /// accessibility size (AX5), each with its grayscale rendering, plus Bold Text in light at the
+↳ /// default size. References are recorded on the iPhone 17 / iOS 26.5 simulator at 2x.
+↳ ///
+↳ /// Record mode comes from SNAPSHOT_TESTING_RECORD (set TEST_RUNNER_SNAPSHOT_TESTING_RECORD for
+↳ /// xcodebuild); Scripts/ci.d/20-design.sh sets `never`, so a missing reference fails.
+✘ Test run with 3 tests in 1 suite failed after 50.060 seconds with 2 issues.
+2026-10-19 06:34:40.327 xcodebuild[16968:39980625] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 06:34:40.327 xcodebuild[16968:39980625] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 06:34:40.605 xcodebuild[16968:39984230]  IDETestOperationsObserverDebug: Failure collecting diagnostics from simulator: Process exited with error 72:
+ xcrun: error: unable to find utility "simctl", not a developer tool or in PATH
+
+2026-10-19 06:34:40.615 xcodebuild[16968:39980625] [MT] IDETestOperationsObserverDebug: 53.861 elapsed -- Testing started completed.
+2026-10-19 06:34:40.615 xcodebuild[16968:39980625] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-19 06:34:40.615 xcodebuild[16968:39980625] [MT] IDETestOperationsObserverDebug: 53.861 sec, +53.861 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-clone/Packages/Design/.build/DerivedData/Logs/Test/Test-SylviaDesign-Package-2026.10.19_06-33-46-+1300.xcresult
+
+Failing tests:
+	-[ComponentSnapshotTests snapshots(_:)]
+	-[ComponentSnapshotTests snapshots(_:)]
+
+** TEST EXECUTE FAILED **
+
+Testing started

@@ -1,0 +1,11 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1; commit: 77d6cf7806ad59154973f457ed9674a6147bac7b (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T18:04:53Z; load:  7:04  up 15 days, 17:15, 3 users, load averages: 3.31 5.88 6.33
+command: /Users/jevidon/Library/Caches/SylviaTools/venv/bin/python -I /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/Docs/Stage0/evidence/M0-Integration/lfs/commands/parse_workflow.py .github/workflows/ci.yml
+
+{"uses": "actions/checkout@11d5960a326750d5838078e36cf38b85af677262", "with": {"lfs": true}}
+triggers: ['workflow_dispatch']
+steps: ['actions/checkout@11d5960a326750d5838078e36cf38b85af677262', 'Select pinned Xcode (ADR-0001)', 'Install XcodeGen 2.46.0 (ADR-0002)', 'Tools and fixtures', 'Run CI', 'Upload logs']
+
+exit status: 0
+end: 2026-10-18T18:04:53Z; load:  7:04  up 15 days, 17:15, 3 users, load averages: 3.31 5.88 6.33

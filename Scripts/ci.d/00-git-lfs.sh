@@ -17,8 +17,8 @@
 # repository's .gitattributes and small stand-in images at real paths, where a correct checkout must pass, pointer text
 # in a plain-git file must not be reported, and each failure above, planted in turn, must fail with its message.
 #
-#   Scripts/ci.d/00-git-lfs.sh                       # self-test, then check this checkout
-#   Scripts/ci.d/00-git-lfs.sh --self-test           # self-test only
+#   Scripts/ci.d/00-git-lfs.sh                       # self-test (one line per case), then check this checkout
+#   Scripts/ci.d/00-git-lfs.sh --self-test           # self-test only, with the check's output for every case
 #   Scripts/ci.d/00-git-lfs.sh --check <dir>         # check the repository at <dir> only
 #   Scripts/ci.d/00-git-lfs.sh --list-pointers <dir> # print "pointer <path>" or "missing <path>" for each LFS file
 #                                                    # that is a pointer or missing in the working tree there
@@ -193,6 +193,8 @@ write_image() {
 }
 
 # run_case <label> <expected exit: 0 or 1> <text the output must contain when 1> <command...>
+# Prints one line per case; with VERBOSE=1 (--self-test), also the check's whole output, which is always printed when
+# a case goes wrong.
 run_case() {
   local label="$1" want="$2" needle="$3" out expected status=0
   shift 3
@@ -200,7 +202,7 @@ run_case() {
   if [[ "$want" == 0 && "$status" == 0 ]]; then
     echo "self-test: $label: the check passed, as it must"
   elif [[ "$want" == 1 && "$status" == 1 && "$out" == *"$needle"* && "$out" == *"$SETUP"* ]]; then
-    echo "self-test: $label: the check failed, as it must, naming $SETUP: $(printf '%s\n' "$out" | grep -m 1 '^FAIL:')"
+    echo "self-test: $label: the check failed, as it must (its output names $SETUP and \"$needle\")"
   else
     expected="exit $want"
     if [[ -n "$needle" ]]; then expected="exit $want, with \"$needle\" and $SETUP in the output"; fi
@@ -208,7 +210,7 @@ run_case() {
     printf '%s\n' "$out" | sed 's/^/    | /'
     return 1
   fi
-  printf '%s\n' "$out" | sed 's/^/    | /'
+  if [[ "$VERBOSE" == 1 ]]; then printf '%s\n' "$out" | sed 's/^/    | /'; fi
 }
 
 expect() {  # expect <description> <actual> <wanted>
@@ -326,15 +328,16 @@ self_test_body() {
   echo "self-test: passed (10 cases)"
 }
 
-self_test() {
+self_test() {  # self_test <verbose: 0 or 1>
   local scratch status=0
   mkdir -p "$SYLVIA_ROOT/.build/scratch"
   scratch="$(mktemp -d "$SYLVIA_ROOT/.build/scratch/ci-00-git-lfs.XXXXXX")"
-  "$SELF" --self-test-body "$scratch" || status=$?
+  "$SELF" --self-test-body "$scratch" "$1" || status=$?
   rm -rf "$scratch"
   return "$status"
 }
 
+VERBOSE=0
 case "${1:-}" in
   --check)
     check_repo "${2:?usage: 00-git-lfs.sh --check <dir>}" ;;
@@ -343,16 +346,17 @@ case "${1:-}" in
     lfs_paths "${2:?usage: 00-git-lfs.sh --list-pointers <dir>}" | classify_paths "$2" |
       sed -e 's/^P /pointer /' -e 's/^M /missing /' ;;
   --self-test-body)
+    VERBOSE="${3:-0}"
     self_test_body "${2:?}" ;;
   --self-test)
     if ! lfs_present; then check_repo "$SYLVIA_ROOT"; exit 1; fi
-    self_test ;;
+    self_test 1 ;;
   "")
     echo "00-git-lfs $(date -u +%Y-%m-%dT%H:%M:%SZ) at commit $(git -C "$SYLVIA_ROOT" rev-parse HEAD)"
     if ! lfs_present; then check_repo "$SYLVIA_ROOT"; exit 1; fi
     echo
-    echo "--- self-test"
-    self_test
+    echo "--- self-test (Scripts/ci.d/00-git-lfs.sh --self-test shows each case's output)"
+    self_test 0
     echo
     echo "--- this checkout"
     check_repo "$SYLVIA_ROOT" ;;

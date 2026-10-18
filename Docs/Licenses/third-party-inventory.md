@@ -210,6 +210,14 @@ Recorded on the build Mac (`toolchain.log`). None of these ships in Sylvia.
 
 `Fixtures/LICENSES.md` was cross-checked against the committed files (`fixtures-crosscheck.log`): every SHA-256 it states matches its file (7 committed fixtures, 10 G0.1 PDFs, the G0.5 library, both Literata fonts), the three cache files' digests are pinned in their generators, the 17 G0.1 EPUBs match `MANIFEST.tsv`, every count and size it gives matches, every committed EPUB, PDF, audio, database, certificate and font file is named in it, and its fetched-file list equals `Scripts/fixtures/manifest.tsv`. No private key is committed. Sources are public domain (LibriVox, Project Gutenberg texts, Standard Ebooks texts with CC0 contributions) or generated. Two notes stay with that file's owner: the Project Gutenberg files carry the Project Gutenberg License (the file says so, and that they must be replaced or complied with before any public distribution), and G0.4's generated fixtures are listed when `m0-g04-audio` is merged (the rows requested are in the next section; written at that merge on 14 October 2026).
 
+## Design references (not dependencies)
+
+Recorded on 19 October 2026 from the plan (Appendix B [S25], Sections 4.1, 13.1 and 24). A design reference informs how Sylvia is designed; nothing from it is copied into the tree, required by a manifest, pinned by a lock or linked into a build, so it is not in `inventory.json` and the CI check does not read it.
+
+| Reference | Read at | What it informs | Why it is not a dependency |
+| --- | --- | --- | --- |
+| Gloss, `github.com/Nutlope/gloss` | commit `54b13b8` (`54b13b8882d8a109132c5b2045acd6b45628563d`), reviewed on 15 October 2026 for the plan's draft 0.6 | M3 and M5 interaction design (passage preview while writing, Explain and Simplify question starters, follow-ups, citation evidence previews), the later web reader, and article-extraction approaches to evaluate for post-V1 Phase A (plan Sections 4.1, 13.1 and 24) | The plan records that this snapshot declares no reuse license (Appendix B [S25]; Section 24), so its source, assets, prompts and evaluation cases are not copied, and interaction ideas are implemented independently. Any direct reuse first needs a suitable license or explicit permission, recorded through ADR-0014's update procedure before adoption (plan Sections 18 and 22). Not re-checked here: the license statement is the plan's, read at that commit on 15 October 2026 |
+
 ## G0.4 audio
 
 `m0-g04-audio` is not merged here. It was first read at commit `943d5e778de2b58f47343f0e146f9e3ed7baa70e`, and read again with git at its head on 14 October (New Zealand time), `459229347684220687b814a162d2fcdd863c718c`, after review round 2 found it had moved. At that head:

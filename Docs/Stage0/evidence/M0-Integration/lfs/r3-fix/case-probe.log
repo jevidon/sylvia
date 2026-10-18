@@ -1,0 +1,63 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3; commit: 9ac7789101c1749eb8eecf051ee710d30de0533e (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T19:46:19Z; load:  8:46  up 15 days, 18:56, 3 users, load averages: 1.30 1.23 2.47
+command: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/Docs/Stage0/evidence/M0-Integration/lfs/commands/case-probe.sh 9ac7789101c1749eb8eecf051ee710d30de0533e /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/.build/scratch/case-probe-evidence
+
+# case-probe.sh: .gitattributes of 9ac7789101c1749eb8eecf051ee710d30de0533e (sha256 629119b5f545916fa01500bb63d4c5bba96575a0ce6285d67d212c215b6cfaeb)
+git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3); macOS 26.6.2 (25G83)
+temporary repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/.build/scratch/case-probe-evidence/repo; its own core.ignorecase: true
+tracked paths (git ls-files), all plain git blobs:
+  .gitattributes
+  Docs/Stage0/Evidence/capital-e-evidence.png
+  Docs/Stage0/evidence/G06-Design/UPPER-CASE-EXTENSION.PNG
+  Docs/Stage0/evidence/G06-Design/as-written.png
+  Packages/Design/Tests/X/__Snapshots__/as-written.png
+  Packages/Design/Tests/X/__snapshots__/lower-case-snapshots.png
+  docs/stage0/evidence/lower-case-directories.png
+
+== core.ignorecase=true: git check-attr --source HEAD filter
+  Docs/Stage0/evidence/G06-Design/as-written.png: filter: lfs
+  Docs/Stage0/evidence/G06-Design/UPPER-CASE-EXTENSION.PNG: filter: lfs
+  Packages/Design/Tests/X/__Snapshots__/as-written.png: filter: lfs
+  docs/stage0/evidence/lower-case-directories.png: filter: lfs
+  Docs/Stage0/Evidence/capital-e-evidence.png: filter: lfs
+  Packages/Design/Tests/X/__snapshots__/lower-case-snapshots.png: filter: lfs
+== core.ignorecase=true: git lfs fsck --pointers
+  pointer: unexpectedGitObject: "docs/stage0/evidence/lower-case-directories.png" should have been a pointer but was not
+  pointer: unexpectedGitObject: "Docs/Stage0/Evidence/capital-e-evidence.png" should have been a pointer but was not
+  pointer: unexpectedGitObject: "Docs/Stage0/evidence/G06-Design/UPPER-CASE-EXTENSION.PNG" should have been a pointer but was not
+  pointer: unexpectedGitObject: "Docs/Stage0/evidence/G06-Design/as-written.png" should have been a pointer but was not
+  pointer: unexpectedGitObject: "Packages/Design/Tests/X/__Snapshots__/as-written.png" should have been a pointer but was not
+  pointer: unexpectedGitObject: "Packages/Design/Tests/X/__snapshots__/lower-case-snapshots.png" should have been a pointer but was not
+  [exit 1]
+  Docs/Stage0/evidence/G06-Design/as-written.png: reported
+  Docs/Stage0/evidence/G06-Design/UPPER-CASE-EXTENSION.PNG: reported
+  Packages/Design/Tests/X/__Snapshots__/as-written.png: reported
+  docs/stage0/evidence/lower-case-directories.png: reported
+  Docs/Stage0/Evidence/capital-e-evidence.png: reported
+  Packages/Design/Tests/X/__snapshots__/lower-case-snapshots.png: reported
+
+== core.ignorecase=false: git check-attr --source HEAD filter
+  Docs/Stage0/evidence/G06-Design/as-written.png: filter: lfs
+  Docs/Stage0/evidence/G06-Design/UPPER-CASE-EXTENSION.PNG: filter: lfs
+  Packages/Design/Tests/X/__Snapshots__/as-written.png: filter: lfs
+  docs/stage0/evidence/lower-case-directories.png: filter: unspecified
+  Docs/Stage0/Evidence/capital-e-evidence.png: filter: unspecified
+  Packages/Design/Tests/X/__snapshots__/lower-case-snapshots.png: filter: unspecified
+== core.ignorecase=false: git lfs fsck --pointers
+  pointer: unexpectedGitObject: "Packages/Design/Tests/X/__snapshots__/lower-case-snapshots.png" should have been a pointer but was not
+  pointer: unexpectedGitObject: "docs/stage0/evidence/lower-case-directories.png" should have been a pointer but was not
+  pointer: unexpectedGitObject: "Docs/Stage0/Evidence/capital-e-evidence.png" should have been a pointer but was not
+  pointer: unexpectedGitObject: "Docs/Stage0/evidence/G06-Design/UPPER-CASE-EXTENSION.PNG" should have been a pointer but was not
+  pointer: unexpectedGitObject: "Docs/Stage0/evidence/G06-Design/as-written.png" should have been a pointer but was not
+  pointer: unexpectedGitObject: "Packages/Design/Tests/X/__Snapshots__/as-written.png" should have been a pointer but was not
+  [exit 1]
+  Docs/Stage0/evidence/G06-Design/as-written.png: reported
+  Docs/Stage0/evidence/G06-Design/UPPER-CASE-EXTENSION.PNG: reported
+  Packages/Design/Tests/X/__Snapshots__/as-written.png: reported
+  docs/stage0/evidence/lower-case-directories.png: reported
+  Docs/Stage0/Evidence/capital-e-evidence.png: reported
+  Packages/Design/Tests/X/__snapshots__/lower-case-snapshots.png: reported
+
+exit status: 0
+end: 2026-10-18T19:46:19Z; load:  8:46  up 15 days, 18:56, 3 users, load averages: 1.30 1.23 2.47

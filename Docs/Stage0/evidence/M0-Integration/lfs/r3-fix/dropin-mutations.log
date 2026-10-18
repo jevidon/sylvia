@@ -1,0 +1,20 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3; commit: 9ac7789101c1749eb8eecf051ee710d30de0533e (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T19:47:13Z; load:  8:47  up 15 days, 18:57, 3 users, load averages: 1.09 1.19 2.38
+command: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/Docs/Stage0/evidence/M0-Integration/lfs/commands/dropin-mutations.sh /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/.build/scratch/lfs-dropin-mutations
+
+# Mutation check of the self-test of Scripts/ci.d/00-git-lfs.sh (2026-10-18T19:47:13Z)
+drop-in: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/Scripts/ci.d/00-git-lfs.sh, sha256 289410df81922258bef84bc1414755bb557ea378c324c503e48ede498a792d6b
+
+unchanged copy: self-test passed (exit 0), as it must
+pointer detection disabled (is_pointer_file never true): self-test failed (exit 1), as it must: self-test: 3, a snapshot reference left as a pointer file: WRONG RESULT: expected exit 1, with "Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/Co
+the git lfs ls-files route disabled: self-test failed (exit 1), as it must: self-test: 7, a pointer committed outside the LFS patterns (only git lfs ls-files catches it): WRONG RESULT: expected exit 1, with "Docs/Design/images/committed
+the LFS attribute route disabled: self-test failed (exit 1), as it must: self-test: 6, a pointer file that only the LFS attribute catches (git lfs ls-files does not list it): WRONG RESULT: expected exit 1, with "Docs/Stage0/evidence/
+the repository-local filter check disabled: self-test failed (exit 1), as it must: self-test: 8, the repository-local LFS filter not configured: WRONG RESULT: expected exit 1, with "repository-local Git LFS filter is not configured" and Script
+the git-lfs presence check disabled: self-test failed (exit 1), as it must: self-test: 9, git-lfs not installed: WRONG RESULT: expected exit 1, with "git-lfs is not installed" and Scripts/setup-repo.sh in the output; got exit 1:
+the git lfs fsck --pointers check disabled: self-test failed (exit 1), as it must: self-test: 10, an image committed as a plain git blob: WRONG RESULT: expected exit 1, with "Docs/Stage0/evidence/G06-Design/committed-without-lfs.png" and Scrip
+
+RESULT: PASS: the unchanged drop-in passes its self-test, and each of the 6 mutations makes it fail
+
+exit status: 0
+end: 2026-10-18T19:47:37Z; load:  8:47  up 15 days, 18:58, 3 users, load averages: 1.51 1.29 2.38

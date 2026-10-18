@@ -1,0 +1,53 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3; commit: 9ac7789101c1749eb8eecf051ee710d30de0533e (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T19:46:19Z; load:  8:46  up 15 days, 18:56, 3 users, load averages: 1.30 1.23 2.47
+command: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/Docs/Stage0/evidence/M0-Integration/lfs/commands/doc-checks-before-after.sh 57094b1 13254bc /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/.build/scratch/doc-checks
+
+# consistency checks of the edited documents, before (57094b14c79b4a657a4c87729f3435d4674fbdcf) and after (13254bc581667054e02dd7ebd65c6382ac3ad58f); Python 3.14.6
+
+== Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py
+-- on the tree of before: exit 1
+   FAIL G01-PDF.md: 15 findings, each in Section 2 or 3: 10, 11, 12, 13, 14, 15
+   FAIL G02-Transfer.md: 22 findings, each in Section 2 or 3: 21, 22
+   FAIL G03-Intake.md: 19 findings, each in Section 2 or 3: F15, F16, F17, F18, F19
+   FAIL G04-Audio.md: 9 findings, each in Section 2 or 3: 9
+   FAIL G05-Recovery.md: 12 findings, each in Section 2 or 3: F11, F12
+   FAIL G06-Design.md: 18 findings, each in Section 2 or 3: 18
+   FAIL G01-PDF.md: 8 open questions, each referenced: 6, 7, 8
+   FAIL G02-Transfer.md: 12 open questions, each referenced: 12
+   FAIL G03-Intake.md: 10 open questions, each referenced: 8, 9, 10
+   FAIL G06-Design.md: 14 open questions, each referenced: 14
+   FAIL G04-Audio.md: 7 open-question bullets (six questions and a warnings note), each matched to the entry that covers it: no single mapping: Product owner: decisions PO-1 to PO-6 (Decisions f; no single mapping: Design package (G0.6): the vocabulary has no phras; 2 mappings unused
+   FAIL Section 3.2: ADR-0001 to ADR-0014, 108 consequences, each mapped to a tag or to no change: ADR-0002: items [1, 2] against 3 bullets; ADR-0003: items [1, 2, 3, 4, 5, 6, 7] against 10 bullets; ADR-0005: items [1, 2, 3, 4, 5, 6, 7] against 10 bullets; ADR-0010: items [1, 2, 3, 4, 5, 6, 7, 8] against 13 bullets; ADR-0014: items [1, 2] against 9 bullets
+   FAIL new anchor phrases are present in the plan (28): **Status:** Draft 0.5; **Revised:** 14 October 2026
+   FAIL Section 24 is byte-identical to draft 0.4 (471b143): 7062f657073beec13b7dcd54cfa90ea69d8105eef28083fa19b44da3588c39bf
+   summary: 132 numbered findings in the eight reports; 53 amendment tags; 36 product-owner questions; 14 failed checks
+-- on the tree of after: exit 1
+   FAIL G01-PDF.md: 15 findings, each in Section 2 or 3: 10, 11, 12, 13, 14, 15
+   FAIL G02-Transfer.md: 22 findings, each in Section 2 or 3: 21, 22
+   FAIL G03-Intake.md: 19 findings, each in Section 2 or 3: F15, F16, F17, F18, F19
+   FAIL G04-Audio.md: 9 findings, each in Section 2 or 3: 9
+   FAIL G05-Recovery.md: 12 findings, each in Section 2 or 3: F11, F12
+   FAIL G06-Design.md: 18 findings, each in Section 2 or 3: 18
+   FAIL G01-PDF.md: 8 open questions, each referenced: 6, 7, 8
+   FAIL G02-Transfer.md: 12 open questions, each referenced: 12
+   FAIL G03-Intake.md: 10 open questions, each referenced: 8, 9, 10
+   FAIL G06-Design.md: 14 open questions, each referenced: 14
+   FAIL G04-Audio.md: 7 open-question bullets (six questions and a warnings note), each matched to the entry that covers it: no single mapping: Product owner: decisions PO-1 to PO-6 (Decisions f; no single mapping: Design package (G0.6): the vocabulary has no phras; 2 mappings unused
+   FAIL Section 3.2: ADR-0001 to ADR-0014, 108 consequences, each mapped to a tag or to no change: ADR-0002: items [1, 2] against 3 bullets; ADR-0003: items [1, 2, 3, 4, 5, 6, 7] against 10 bullets; ADR-0005: items [1, 2, 3, 4, 5, 6, 7] against 10 bullets; ADR-0010: items [1, 2, 3, 4, 5, 6, 7, 8] against 13 bullets; ADR-0014: items [1, 2] against 9 bullets
+   FAIL new anchor phrases are present in the plan (28): **Status:** Draft 0.5; **Revised:** 14 October 2026
+   FAIL Section 24 is byte-identical to draft 0.4 (471b143): 7062f657073beec13b7dcd54cfa90ea69d8105eef28083fa19b44da3588c39bf
+   summary: 132 numbered findings in the eight reports; 53 amendment tags; 36 product-owner questions; 14 failed checks
+-- outputs: identical (from the second line on)
+
+== Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py
+-- on the tree of before: exit 1
+   77 texts checked, 59 missing
+-- on the tree of after: exit 1
+   77 texts checked, 59 missing
+-- outputs: identical (from the second line on)
+
+RESULT: the edits change nothing either check reports
+
+exit status: 0
+end: 2026-10-18T19:46:21Z; load:  8:46  up 15 days, 18:56, 3 users, load averages: 1.36 1.25 2.47

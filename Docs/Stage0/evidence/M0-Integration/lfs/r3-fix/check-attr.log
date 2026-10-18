@@ -1,0 +1,34 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3; commit: 9ac7789101c1749eb8eecf051ee710d30de0533e (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T19:46:14Z; load:  8:46  up 15 days, 18:56, 3 users, load averages: 1.42 1.26 2.49
+command: /usr/bin/python3 -I /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/Docs/Stage0/evidence/M0-Integration/lfs/commands/check_attr_proof.py 9ac7789101c1749eb8eecf051ee710d30de0533e /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/Docs/Stage0/evidence/M0-Integration/lfs/lfs-manifest.sha256 9ac7789101c1749eb8eecf051ee710d30de0533e
+
+# git check-attr over every tracked path at 9ac7789101c1749eb8eecf051ee710d30de0533e (2975 paths, .gitattributes included)
+attributes from: .gitattributes at 9ac7789101c1749eb8eecf051ee710d30de0533e (git check-attr --source 9ac7789101c1749eb8eecf051ee710d30de0533e); sha256 629119b5f545916fa01500bb63d4c5bba96575a0ce6285d67d212c215b6cfaeb
+  **/__Snapshots__/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+  **/__Snapshots__/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+  Docs/Stage0/evidence/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+manifest: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/Docs/Stage0/evidence/M0-Integration/lfs/lfs-manifest.sha256, 777 paths (777 distinct)
+git version 2.55.0
+
+core.ignorecase=true: 2975 paths answered; filter=lfs on 777; manifest paths without it: 0; paths with it outside the manifest: 0; LFS paths without diff=lfs, merge=lfs and -text: 0; other paths with any of these attributes: 0 -> PASS
+
+core.ignorecase=false: 2975 paths answered; filter=lfs on 777; manifest paths without it: 0; paths with it outside the manifest: 0; LFS paths without diff=lfs, merge=lfs and -text: 0; other paths with any of these attributes: 0 -> PASS
+
+RESULT: PASS: the LFS attributes match exactly the 777 manifest paths, with either core.ignorecase setting, and nothing else
+
+exit status: 0
+end: 2026-10-18T19:46:14Z; load:  8:46  up 15 days, 18:56, 3 users, load averages: 1.42 1.26 2.49

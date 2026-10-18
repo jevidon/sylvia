@@ -1,8 +1,10 @@
 #!/bin/bash
-# Verification finding R3-02 of the Git LFS adoption: the documents edited for it (M0-device-runbook.md, G06-Design.md
-# and M0-plan-amendments.md) are read by two consistency checks of their own:
-#   Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py (the plan amendments against the reports), and
-#   Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py (the texts the runbook's corrections replace).
+# Verification finding R3-02 of the Git LFS adoption edits M0-device-runbook.md, G06-Design.md and
+# M0-plan-amendments.md. Two consistency checks read some of them:
+#   Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py (M0-plan-amendments.md against the reports,
+#   G06-Design.md among them), and
+#   Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py (the files whose texts the runbook's corrections
+#   replace, G06-Design.md among them). Neither reads the runbook's own text, and no committed check does.
 # This runs both on the tree of <before> and on the tree of <after>, each exported with `git archive` into
 # <scratch-dir>, and prints each run's exit status, its FAIL lines and summary, and whether the two runs' outputs are
 # identical (the timestamp on the first line of check-correction-texts.py's output is left out of the comparison).

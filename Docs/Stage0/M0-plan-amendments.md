@@ -256,7 +256,7 @@ Columns: the finding as its report numbers it; the evidence; the plan sections a
 | G0.6 other findings | Pills of one family (queued, receiving, verifying, preparing, waiting) differ only by their phrase | What 4.4.7 specifies: hue never separated them |
 | G0.6 other findings | The layout audit's reach; the test-only private accessibility call; earlier WIP reviewed; `ViewThatFits` phantom texts; simulator launch refusals; example host and model values | Test method or process notes; nothing ships |
 | G0.6 other findings | Where the prototype differs from the boards (no "Done" on the capture sheet, a Pine primary in the impact report, no lock beside the endpoint, and others) | The plan wins (4.4); the boards are corrected by their owner (ADR-0013 section 11) |
-| G0.6 other findings and open question 8 | Evidence and reference images add tens of MB to history | ADR-0002 already decides plain git now and Git LFS on its trigger |
+| G0.6 other findings and open question 8 | Evidence and reference images add tens of MB to history | ADR-0002 already decides plain git now and Git LFS on its trigger. *(19 October 2026: the product owner decided on 13 October 2026 to adopt Git LFS, and it was done on `m0-integrate` on 19 October 2026: ADR-0002, integration log section 9. The plan text is unaffected.)* |
 
 ### 3.2 ADR consequences, item by item
 
@@ -336,7 +336,7 @@ Listed so that nothing is dropped; none is decided here.
 - **Host run:** the G0.5 recovery drop-in with the Mac's screen unlocked, to restore the class-B evidence for the current code (G0.5 recovery open question 7).
 - **Account holder:** the team's Program License Agreement and the Xcode account on the build Mac (G0.2 open question 9); every phone step needs the team's code signing, so this comes before the first device run, and under PO-34's recommended default before M1.
 - **Release owner:** the license notices (ADR-0014), and replacing the Project Gutenberg fixtures before any public distribution (G0.1 EPUB open question 7).
-- **Repository owner:** Git LFS on ADR-0002's trigger (G0.6 open question 8).
+- **Repository owner:** Git LFS on ADR-0002's trigger (G0.6 open question 8). *(19 October 2026: decided by the product owner on 13 October 2026 and done on `m0-integrate` on 19 October 2026: ADR-0002, integration log section 9. What remains is the owner's push, which uploads the LFS objects.)*
 - **Already answered or done:** the archive implementation for the single-file backup is proposed in ADR-0010 (`readium/ZIPFoundation` 3.0.1; G0.5 recovery open question 4); the G0.5 recovery fixture row is in `Fixtures/LICENSES.md` (integration log row 6; open question 8); the production AI stores follow the persistence decision (G0.5 AI Q7), as plan 7.2 already provides.
 
 ## 6. Amendments applied to the plan (draft 0.5)

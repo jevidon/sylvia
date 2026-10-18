@@ -187,7 +187,7 @@ Review round 3:
 5. Should Increase Contrast also raise text colors that already pass? (part 1)
 6. Design: is 1.5:1 the right minimum between a filled primary button and ink text in grayscale (measured 2.31 light, 2.06 dark)?
 7. Product owner: accept system sheet motion (Finding 8) and the xxxLarge cap on bars (Finding 9)?
-8. Repository: each re-baseline of the references adds up to 38 MB to git history (527 references), and each refresh of the part 3 screenshots about 20 MB. Should references and screenshots move to Git LFS, or be stored at 1x only?
+8. Repository: each re-baseline of the references adds up to 38 MB to git history (527 references), and each refresh of the part 3 screenshots about 20 MB. Should references and screenshots move to Git LFS, or be stored at 1x only? *(Decided by the product owner on 13 October 2026: Git LFS, with repository-local configuration and the existing history left intact. Done on `m0-integrate` on 19 October 2026 (ADR-0002; integration log section 9): new versions of the references and of the evidence screenshots are stored as LFS objects, and the versions committed before then stay in git history.)*
 9. Design and product owner: content-sized sheets (Finding 13), the title-fitting exception (Finding 14) and the mini-player at accessibility sizes (Finding 15).
 10. Product owner: when a request is stopped before any text arrives, the vocabulary only offers "Interrupted · partial answer", although nothing arrived. Add a phrase for "stopped before an answer" (Section 14.4)?
 11. Product owner: the onboarding sample. Section 4.2 asks for a bundled, licensed short sample; the prototype opens its Middlemarch passage. Which public-domain text ships as the M2 sample?

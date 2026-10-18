@@ -1,8 +1,10 @@
 #!/bin/bash
 # Steps 6 and 7 of the Git LFS adoption (ADR-0002), in an existing checkout of m0-integrate with LFS set up:
 # the drop-in (self-test and check), the mutation check of its self-test, Scripts/setup-repo.sh, and Scripts/ci.sh
-# with filter words (the 00-* drop-in runs first; a filter that matches nothing still exits 2; the drop-ins that read
-# documents, scripts and the workflow still pass). Each command is recorded with run-logged.sh.
+# with filter words (the 00-* drop-in runs first; a filter that matches nothing still exits 2; and the drop-ins that
+# read the documents, the scripts and the workflow: contracts, dependency lock and hard rules, whose results are in the
+# logs; 12-dependency-lock's toolchain check also depends on the installed Xcode). Each command is recorded with
+# run-logged.sh.
 #   ci-worktree-checks.sh <checkout> <log-dir>
 set -uo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"

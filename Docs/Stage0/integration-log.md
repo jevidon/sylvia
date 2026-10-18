@@ -301,7 +301,7 @@ The product owner decided on 13 October 2026: "Adopt Git LFS for the snapshot an
 
 ### 9.3 Steps 6 and 7: CI and setup, in this worktree
 
-`commands/ci-worktree-checks.sh . <dir>` ran each check through `commands/run-logged.sh`, whose first lines name the commit, the uncommitted files and the load at the start and the end.
+`commands/ci-worktree-checks.sh . <dir>` ran each check through `commands/run-logged.sh` on `913340e`; the commits after it change only documents and evidence (`git diff --stat 913340e m0-integrate` lists only `Docs/` paths). Each log's first lines name the commit, the number of uncommitted files in this worktree at its start and the load at the start and the end. The first four logs, the hard-rule audit's among them, started with none; later ones with one to five, the evidence commands and documents being written meanwhile (committed with the logs, and read by none of these checks; the clean-checkout clones come from the committed `913340e`).
 
 | Check | Command | Result | Evidence |
 | --- | --- | --- | --- |
@@ -312,10 +312,12 @@ The product owner decided on 13 October 2026: "Adopt Git LFS for the snapshot an
 | Control for that failure | `commands/clean-checkout.sh … base-control`: a clone at `504fac2`, before the adoption, runs `Scripts/ci.d/12-dependency-lock.sh` | The same single failure: it comes from the Mac's Xcode (9.5), not from the adoption | `clean-checkout-base-control.log` |
 | `ci.sh`, no match | `Scripts/ci.sh nosuchstep` | "no CI steps matched: nosuchstep", exit 2, nothing run, as before | `ci-sh-no-match-worktree.log` |
 | `ci.sh`, LFS check only | `Scripts/ci.sh git-lfs` | only `00-git-lfs`, pass | `ci-sh-git-lfs-only-worktree.log` |
+| The required filter | `commands/required-filter-check.sh <dir>`: a temporary repository with the filter set as `git lfs install --local` sets it, run without git-lfs on `PATH` | `git add` of a new image and `git checkout` of a committed one both fail ("clean filter 'lfs' failed", "smudge filter lfs failed") and write nothing: where the filter is set up but git-lfs is gone, git stops instead of committing a raw image or writing a pointer | `required-filter-check.log` |
+| The workflow | `commands/parse_workflow.py .github/workflows/ci.yml` with the tools virtualenv's PyYAML | It parses; the checkout step is the pinned `actions/checkout@11d5960…` with `lfs: true`; the only trigger is still `workflow_dispatch`; the other steps are unchanged, the Xcode guard among them. The workflow was not run (manual dispatch on GitHub only) | `workflow-parse.log` |
 
 ### 9.4 Step 8: clean checkouts
 
-`commands/clean-checkout.sh /Users/jevidon/Git/sylvia .build/scratch <phase>`, through `commands/run-logged.sh`. Every clone was made with `git clone --no-local` from the local repository (its `origin` is that path), so nothing came from the network. git-lfs needed no setting for the local-path remote: in each clone, `git lfs env` shows the endpoint `file:///Users/jevidon/Git/sylvia/.git` and the built-in `lfs-standalone-file` transfer, which copies the objects from the repository's own LFS storage into the clone's. Each clone first checks out the local repository's current branch (at the time `codex/readme-platform-vision`, which has no `.gitattributes`) and then `m0-integrate`.
+`commands/clean-checkout.sh /Users/jevidon/Git/sylvia <scratch-dir> <phase>`, through `commands/run-logged.sh`. The `clone`, `skip-smudge`, `no-setup` and `base-control` phases and a second run of `20-design` ran on `913340e` (clones under `.build/scratch/final-clones`). The full design run, `20-design` and `21-design-catalog` (about 45 minutes), ran once, earlier, in a clone of `28d7501`; between that commit and `913340e` the only changes outside `Docs/` are a comment in the workflow, `CLAUDE.md` and the self-test output format of `00-git-lfs` (`design-run-to-docs-commit-diff.txt`), none of which the design drop-ins read. Every clone was made with `git clone --no-local` from the local repository (its `origin` is that path), so nothing came from the network. git-lfs needed no setting for the local-path remote: in each clone, `git lfs env` shows the endpoint `file:///Users/jevidon/Git/sylvia/.git` and the built-in `lfs-standalone-file` transfer, which copies the objects from the repository's own LFS storage into the clone's. Each clone first checks out the local repository's current branch (at the time `codex/readme-platform-vision`, which has no `.gitattributes`) and then `m0-integrate`.
 
 | Phase | Result | Evidence |
 | --- | --- | --- |

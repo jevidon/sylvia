@@ -163,7 +163,7 @@ check_repo() {
   fi
 
   if (( ${#problems[@]} == 0 )); then
-    echo "00-git-lfs: pass: every LFS file is present in the working tree and committed as an LFS pointer"
+    echo "00-git-lfs: pass: no file stored with Git LFS is a pointer in the working tree, and every file the LFS attributes match is committed as an LFS pointer"
     return 0
   fi
   echo

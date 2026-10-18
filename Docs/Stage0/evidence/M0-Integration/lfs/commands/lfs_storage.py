@@ -6,13 +6,16 @@
 Reads image-inventory.tsv (step 1) and prints, for the snapshot and evidence images now stored with LFS, the number of
 files and bytes, and the number of distinct objects (identical images share one object) and their bytes: what the first
 push of the adoption uploads and what one download of the current set (a clone or a CI checkout with lfs: true)
-transfers. With <lfs-objects-dir> (a repository's .git/lfs/objects), it also counts the objects stored there and checks
+transfers. It also prints how the files share the objects: how many objects are used by one file each, how many are
+shared by several files (grouped by the number of files that share each) and how many files those are.
+With <lfs-objects-dir> (a repository's .git/lfs/objects), it also counts the objects stored there and checks
 that every distinct object of the manifest is present with its size and SHA-256. Standard library only; read-only.
 """
 import csv
 import hashlib
 import os
 import sys
+from collections import Counter
 
 
 def main():
@@ -24,9 +27,17 @@ def main():
     for r in rows:
         distinct[r['sha256']] = int(r['bytes'])
     files_bytes = sum(int(r['bytes']) for r in rows)
+    uses = Counter(r['sha256'] for r in rows)        # object -> number of files whose content it is
+    shared = [n for n in uses.values() if n > 1]     # one entry per object that several files share
+    groups = Counter(shared)                         # number of files sharing an object -> number of such objects
     print(f'LFS files: {len(rows)} ({files_bytes} bytes, {files_bytes / 2**20:.1f} MiB)')
     print(f'distinct LFS objects: {len(distinct)} ({sum(distinct.values())} bytes, {sum(distinct.values()) / 2**20:.1f} MiB, '
-          f'{sum(distinct.values()) / 2**30:.4f} GiB); {len(rows) - len(distinct)} files share an object with another file')
+          f'{sum(distinct.values()) / 2**30:.4f} GiB)')
+    print(f'sharing: {len(uses) - len(shared)} objects are each used by one file; {len(shared)} objects are each shared '
+          f'by several files ({", ".join(f"{groups[n]} by {n} files" for n in sorted(groups))}), {sum(shared)} files in all; '
+          f'so there are {len(rows) - len(distinct)} fewer objects than files')
+    if (len(uses) - len(shared)) + sum(shared) != len(rows) or sum(shared) - len(shared) != len(rows) - len(distinct):
+        sys.exit('the sharing counts do not add up to the number of files and objects')
     if len(sys.argv) == 3:
         store = sys.argv[2]
         found = {}

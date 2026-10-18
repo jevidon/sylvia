@@ -7,7 +7,7 @@ Approved decisions for Sylvia (plan Section 22.4). Copy `0000-template.md` for a
 | ADR | Title | Status (15 October 2026) | Owner during Stage 0 |
 | --- | --- | --- | --- |
 | [0001](0001-platform-baseline-and-toolchain.md) | Platform baseline and toolchain | Accepted for the platform floor; toolchain pin awaiting the owner's confirmation | Kickoff |
-| [0002](0002-repository-build-and-ci.md) | Repository, build and CI conventions | Accepted for Stage 0; amended at M0 integration and M0 assembly (approval of the amendments pending) | Kickoff |
+| [0002](0002-repository-build-and-ci.md) | Repository, build and CI conventions | Accepted for Stage 0; amended at M0 integration and M0 assembly (approval of the amendments pending), and on 19 October 2026 by the Git LFS adoption the product owner decided on 13 October 2026 (agent review and human sign-off pending) | Kickoff |
 | [0003](0003-persistence.md) | Persistence: GRDB, durability, migrations | Proposed | G0.5 recovery spike |
 | [0004](0004-epub-reader-adapter.md) | EPUB reader adapter (Readium) | Proposed | G0.1 EPUB spike |
 | [0005](0005-pdf-reading-and-anchors.md) | PDF reading and anchors (PDFKit) | Proposed | G0.1 PDF spike |

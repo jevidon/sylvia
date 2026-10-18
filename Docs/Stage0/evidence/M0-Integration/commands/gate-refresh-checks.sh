@@ -49,6 +49,7 @@ if python3 -I "$commands/gate-refresh-codetree.py" "$root" 4a44739 > .build/scra
 else
   grep -E '^PROBLEM|^result:' .build/scratch/gate-refresh-codetree-negative.out | sed 's/^/   /' >> "$log"
 fi
+part2=.build/scratch/gate-refresh-part2.out
 {
   echo
   echo "== 2. The merge of the M0 work into main (local repository; nothing fetched)"
@@ -68,8 +69,9 @@ fi
   done
   echo "origin/main as this repository last fetched it (not fetched here): $(git rev-parse --verify -q origin/main || echo none)"
   echo "commits on HEAD after 504fac2: $(git rev-list --count 504fac2..HEAD)"
-} >> "$log" 2>&1
-grep -q -E 'PROBLEM|in the history of HEAD: NO' "$log" && status=1
+} > "$part2" 2>&1
+cat "$part2" >> "$log"
+grep -q -E 'PROBLEM|in the history of HEAD: NO' "$part2" && status=1
 {
   echo
   echo "== 3. Git LFS state"

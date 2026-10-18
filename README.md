@@ -46,7 +46,7 @@ Concept designs in **Marginalia**, Sylvia's visual language: warm paper, readabl
 
 ## Project status
 
-Sylvia is in design and feasibility development; there is no released app yet. The main branch contains the product plans and concept designs. Native feasibility prototypes and their evidence are maintained separately on [m0-integrate](https://github.com/jevidon/sylvia/tree/m0-integrate).
+Sylvia is in design and feasibility development; there is no released app yet. The main branch contains the product plans and concept designs, and since 15 October 2026 the M0 feasibility work: native feasibility prototypes, the `SylviaDesign` package, the contracts and their evidence ([Stage 0 evidence](Docs/Stage0/README.md)). The M0 gate is pending approval: every gate still has device and human steps to run. Later M0 work continues on [m0-integrate](https://github.com/jevidon/sylvia/tree/m0-integrate) and reaches main by pull request.
 
 - [Product brief](Docs/Sylvia_Product_Brief.md) — the problem, audience and product vision.
 - [Implementation plan](Docs/Sylvia_v1_iOS_Implementation_Plan.md) — V1 scope, milestones, acceptance criteria and roadmap.

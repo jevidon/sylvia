@@ -6,7 +6,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 
 **Setup:**
 
-- On the build Mac, check out the M0 integration branch (`m0-integrate`, or `m0` once it is merged; record `git rev-parse HEAD`) and run `Scripts/fixtures/fetch.sh`. No fixtures are needed beyond the committed ones.
+- On the build Mac, check out the M0 integration branch (`m0-integrate`, or `main` once the later M0 work has reached it, since pull request #4 merged `m0-integrate` up to `177ed9a` into `main` on 15 October 2026; record `git rev-parse HEAD`) and run `Scripts/fixtures/fetch.sh`. No fixtures are needed beyond the committed ones.
 - Find the device ID with `xcrun devicectl list devices`. Use the Identifier only when it is the device's UDID (copy the identifier alone); if devicectl shows an ECID or a CoreDevice identifier instead, take the UDID from Xcode > Window > Devices and Simulators > the device > Identifier: `xcodebuild -destination id=` needs the UDID.
 - All commands run from `Spikes/G05-Recovery` with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
 - Test runs need signing for the device: add `-allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z` (the second flag registers a device the team has not registered; it takes effect only with the first).

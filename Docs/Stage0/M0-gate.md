@@ -21,7 +21,7 @@ Every other criterion is passed on the host or simulator, partial, or pending a 
 
 **What happened since the first version of this summary (15 October 2026).**
 
-- **The M0 work is on `main`, and the M0 gate is still pending.** On 15 October 2026 you merged `m0-integrate` (at `177ed9a`) into `main` through pull request #4 (merge commit `504fac2`), before the M0 gate was approved. The merge changes no status in this summary. `m0-integrate` was then fast-forwarded to `504fac2`, the later M0 work (the Git LFS adoption and this refresh) continues on it, and it goes to `main` by a follow-up pull request. The plan, the Companion Vision addendum, the README and the device-run setup lines now say this (integration log section 10).
+- **The M0 work is on `main`, and the M0 gate is still pending.** On 15 October 2026 you merged `m0-integrate` (at `177ed9a`) into `main` through pull request #4 (merge commit `504fac2`, whose tree is exactly `177ed9a`'s: `evidence/M0-Integration/gate-refresh-checks.log`, part 2), before the M0 gate was approved. The merge changes no status in this summary. `m0-integrate` was then fast-forwarded to `504fac2`, the later M0 work (the Git LFS adoption and this refresh) continues on it, and it goes to `main` by a follow-up pull request. The plan, the Companion Vision addendum, the README and the device-run setup lines now say this (integration log section 10).
 - **Git LFS is adopted and verified** (your decision of 13 October 2026; Section 5.3). Its verification's verdict is accept-with-minor with no open serious finding.
 - **Plan draft 0.6** records your direction of 15 October 2026: Gloss-informed M3 and M5 interactions and a later web reader. It is an approved product direction and approves none of the pending draft 0.5 amendments (Section 3).
 - **The build Mac now has Xcode 27.1 (27A9275)**, not the pinned 27.0 (27A266a), so `12-dependency-lock` fails its toolchain check on this Mac whatever the commit; every other check it makes passes (Section 2.10). This bears on PO-35 (Section 4).
@@ -43,7 +43,7 @@ Every other criterion is passed on the host or simulator, partial, or pending a 
 
 One row per sentence of plan 21.1 (split where a gate report gives a sentence several rows), per M0 deliverable of plan 21.2, and per ADR that plan 22.4 requires. **Status** is copied from the gate report row in the last column (for M0 deliverables and ADRs, from the record named there). Status values: passed-host, passed-simulator, failed, partial, pending-device, pending-human. No row is passed on a device: no device step has run.
 
-**Checked on 19 October 2026.** `evidence/M0-Integration/commands/gate-refresh-check.py` compares the status of every row that cites a gate report with the status cell of each report row it cites, and the status of every ADR and deliverable row with the ADR's status line or the CI log it cites; every one agrees (`evidence/M0-Integration/gate-refresh-checks.log`, part 4), so no gate report status was changed. The rows it cannot check mechanically (67-70 and 81: judgements on the plan's text and on the other rows) say what they rest on. Plan draft 0.6 changed no criterion of plan 21.1, the M0 row of 21.2 or the artifacts of 22.4, so the rows are those of the first version, with their numbers.
+**Checked on 19 October 2026.** `evidence/M0-Integration/commands/gate-refresh-check.py` compares the status of every row that cites a gate report with the status cell of each report row it cites, and the status of every ADR and deliverable row with the ADR's status line or the CI log it cites; every one agrees (`evidence/M0-Integration/gate-refresh-checks.log`, part 4), so no gate report status was changed. On copies of the documents with three wrong statuses planted, it reports exactly the rows that rest on them (part 4b), so the comparison is not vacuous. The rows it cannot check mechanically (67-70 and 81: judgements on the plan's text and on the other rows) say what they rest on. Plan draft 0.6 changed no criterion of plan 21.1, the M0 row of 21.2 or the artifacts of 22.4, so the rows are those of the first version, with their numbers.
 
 ### 2.1 G0.1 EPUB/PDF capture
 
@@ -182,7 +182,7 @@ One row per sentence of plan 21.1 (split where a gate report gives a sentence se
 | 91 | The design token export from Section 4.4 | passed-host | `Contracts/design/marginalia.v1.json`; `evidence/G06-Design/export-check.log` | `G06-Design.md` part 1, "Token export with schema, fixtures, `instances.json` and a CI drift check" |
 | 92 | The other Stage 0 ADRs (ADR-0002 amendments, ADR-0007, ADR-0010, ADR-0014, ADR-0015, ADR-0016) | pending-human | `Docs/ADRs/README.md`; ADR-0002's amendments now include the Git LFS adoption (agent review and human sign-off pending) | ADR index |
 
-**Count.** Of the 92 rows: COUNT_PLACEHOLDER (counted by `evidence/M0-Integration/commands/gate-refresh-check.py`; the same counts as on 15 October 2026).
+**Count.** Of the 92 rows: passed-host 11, passed-simulator 27, partial 12, failed 5, pending-device 15, pending-human 22 (counted by `evidence/M0-Integration/commands/gate-refresh-check.py`; the same counts as on 15 October 2026).
 
 ### 2.10 The CI from a clean tree, and since
 

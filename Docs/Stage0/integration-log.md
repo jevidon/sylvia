@@ -404,4 +404,16 @@ Other documents changed with it, each to say what its source says:
 
 **Status consistency.** Every status in `M0-gate.md` Section 2 was compared mechanically with its sources by `commands/gate-refresh-check.py`: 74 gate report rows by their status cells, and 58 facts from ADR status lines and CI logs for the ADR and deliverable rows. The five rows that are judgements (67-70 and 81) are named as not checked. No gate report status disagreed, so none was edited.
 
-**Checks.** `commands/gate-refresh-checks.sh`, log `gate-refresh-checks.log`: CHECKS_PLACEHOLDER
+**Checks.** `evidence/M0-Integration/commands/gate-refresh-checks.sh`, run on `f7051cc` with no uncommitted file, 21:48-21:50 UTC on 18 October 2026 (10:48 NZDT on 19 October), at a 1-minute load of 1.55 at the start and 2.75 at the end (log `evidence/M0-Integration/gate-refresh-checks.log`; exit 0):
+
+| Part | What | Result |
+| --- | --- | --- |
+| 1 | Code since `efc9479` (`commands/gate-refresh-codetree.py`) | Only the adoption's five files changed (`.gitattributes`, `.github/workflows/ci.yml`, `Scripts/ci.d/00-git-lfs.sh`, `Scripts/ci.sh`, `Scripts/setup-repo.sh`), and each of the 527 snapshot references is an LFS pointer to exactly its bytes at `efc9479`, which are its bytes in this worktree too. Negative control: from the first complete run's commit, `4a44739`, the same check fails and names the six files `038145a` changed |
+| 2 | The merge | `504fac2`'s parents are `4c49b5b` and `177ed9a`, its tree is `177ed9a`'s (`8b14bc9`), and `504fac2`, `177ed9a` and `d8e7d39` are in the history of `m0-integrate` |
+| 3 | Git LFS | The 16 patterns, the filter in the repository's own configuration, 777 files tracked |
+| 4 | `M0-gate.md` (`commands/gate-refresh-check.py`) | 141 cited paths exist; every status agrees with its sources (74 report rows, 58 facts); 92 rows: passed-host 11, passed-simulator 27, partial 12, failed 5, pending-device 15, pending-human 22. Negative control: with three wrong statuses planted in copies, it reports exactly rows 22, 42, 66, 71, 78 and 92 |
+| 5 | The edited documents' own checks (`lfs/commands/doc-checks-before-after.sh e3e8886 HEAD`) | The amendments' checker (14 failed checks) and the runbook's correction-text check (59 of 77 texts not found) give the same output on the trees of `e3e8886` and `f7051cc`: the edits change nothing either reports. Both failed in the same way before this refresh (section 9.6) |
+| 6 | `Scripts/ci.sh contracts dependency-lock hard-rules` | `00-git-lfs`, `10-contracts` (17 schemas, 644 fixtures, 1 OpenAPI document, 1 instance), `11-capture-anchor-contracts` and `13-hard-rules` (0 findings, 50 allowed) passed; `12-dependency-lock` failed on its toolchain check alone (Xcode 27.1 installed, 27A266a pinned), every repository check passing, as at `504fac2` (section 9.3) |
+| 7 | Leftover `g05-*` directories (read-only) | 1,664, and no `g05-tests-*` directory |
+
+A first run of the script, on `bee3406`, exited 1 although every part had the result above: its merge check searched the whole log for "PROBLEM" and found the deliberate one of part 1's negative control. `f7051cc` makes that check read only its own output; the first run's log was not kept. Not done here: no complete CI run (the documents drop-ins only), no simulator, no device step, no fetch or push.

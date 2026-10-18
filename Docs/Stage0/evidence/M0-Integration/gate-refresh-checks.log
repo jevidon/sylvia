@@ -1,0 +1,285 @@
+commit: f7051cc71efb4f08bbad0cc0903175f028fa8285 (m0-integrate); uncommitted files before this run: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-18T21:48:42Z; load: 10:48  up 15 days, 20:59, 3 users, load averages: 1.55 1.65 1.70
+
+== 1. Code since the second complete CI run (efc9479)
+base efc9479be34b8e7bfcb7c1ba124bcd0e1988c5dd; HEAD f7051cc71efb4f08bbad0cc0903175f028fa8285
+changed outside __Snapshots__, with their status: A .gitattributes, M .github/workflows/ci.yml, A Scripts/ci.d/00-git-lfs.sh, M Scripts/ci.sh, A Scripts/setup-repo.sh
+changed paths: 532; outside __Snapshots__: 5: .gitattributes, .github/workflows/ci.yml, Scripts/ci.d/00-git-lfs.sh, Scripts/ci.sh, Scripts/setup-repo.sh
+snapshot references changed: 527; each an LFS pointer to its bytes at the base, and those bytes in the working tree: 527
+result: pass (0 problem(s))
+
+-- 1b. The same check from the first complete run's commit (4a44739), which 038145a's code fixes followed:
+   it must fail and name those files (the check is not vacuous)
+   PROBLEM: outside the snapshot references the changed paths are not exactly the adoption's five files: extra ['Contracts/README.md', 'Fixtures/LICENSES.md', 'Scripts/ci.d/40-g02-transfer.sh', 'Scripts/validate-contracts.py', 'Spikes/G02-Transfer/Scripts/simulator-background-run.sh', 'Spikes/G04-Audio/Sources/G04AudioKit/Persistence/DurableFile.swift'], missing []
+   result: FAIL (1 problem(s))
+
+== 2. The merge of the M0 work into main (local repository; nothing fetched)
+504fac2: 504fac2e0c37efa5b41ed4503752758b103bc00d parents 4c49b5b92dbc39d25f5d3b2002b456f45abe384c 177ed9a95dc03d03210f5be01a6c566bc5d3b365; Merge pull request #4 from jevidon/m0-integrate
+second parent of 504fac2 is 177ed9a: yes
+tree of 504fac2 equals the tree of 177ed9a: yes (8b14bc94434102ea990d02c547db51df07b9dcc8)
+504fac2 is in the history of HEAD: yes
+177ed9a is in the history of HEAD: yes
+d8e7d39 is in the history of HEAD: yes
+origin/main as this repository last fetched it (not fetched here): 504fac2e0c37efa5b41ed4503752758b103bc00d
+commits on HEAD after 504fac2: 29
+
+== 3. Git LFS state
+.gitattributes patterns (non-comment lines):
+**/__Snapshots__/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+git config --show-origin --get-regexp 'filter\.lfs|lfs\.':
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.repositoryformatversion 0
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.smudge git-lfs smudge -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.process git-lfs filter-process
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.required true
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.clean git-lfs clean -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.https://github.com/jevidon/sylvia.git/info/lfs.access basic
+git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+files tracked by LFS (git lfs ls-files): 777
+git check-attr filter on one snapshot reference and one evidence image:
+Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests/progressRule.light-default.png: filter: lfs
+Docs/Stage0/evidence/G01-EPUB/highlight-paper.png: filter: lfs
+
+== 4. M0-gate.md: paths, and statuses against the records they cite
+== paths: 141 checked
+== gate report rows
+row 1: passed-simulator | G01-EPUB.md G1: 'passed-simulator' -> agrees
+row 2: pending-device | G01-EPUB.md G2: 'pending-device' -> agrees
+row 3: passed-simulator | G01-EPUB.md G3: 'passed-simulator' -> agrees
+row 4: pending-human | G01-EPUB.md G4: 'pending-human' -> agrees
+row 5: passed-simulator | G01-EPUB.md G5: 'passed-simulator' -> agrees
+row 6: passed-simulator | G01-EPUB.md G6: 'passed-simulator' -> agrees
+row 7: passed-simulator | G01-EPUB.md G7: 'passed-simulator' -> agrees
+row 8: passed-simulator | G01-PDF.md 1: 'passed-simulator' -> agrees
+row 9: pending-device | G01-PDF.md 2: 'pending-device' -> agrees
+row 10: failed | G01-PDF.md 10c: 'failed' -> agrees
+row 11: passed-simulator | G01-EPUB.md G8: 'passed-simulator' -> agrees
+row 12: pending-human | G01-EPUB.md G9: 'pending-human' -> agrees
+row 13: passed-simulator | G01-EPUB.md G10: 'passed-simulator' -> agrees
+row 14: passed-simulator | G02-Transfer.md User-mediated trust bootstrap from iOS: 'passed-simulator' -> agrees
+row 15: pending-device | G02-Transfer.md User-mediated trust bootstrap on a physical iPho: 'pending-device' -> agrees
+row 16: passed-simulator | G02-Transfer.md Certificate pinning on iOS: 'passed-simulator' -> agrees
+row 17: partial | G02-Transfer.md Authorized ranged downloads with verified parts: 'partial' -> agrees
+row 18: partial | G02-Transfer.md Recovery after suspension or force-quit: 'partial' -> agrees
+row 19: passed-host | G02-Transfer.md Mac source mutation never yields a mixed-version: 'passed-host' -> agrees
+row 20: passed-host | G02-Transfer.md Manual-address connectivity: IPv4 and IPv6 loopb: 'passed-host' -> agrees
+row 21: passed-simulator | G02-Transfer.md Plan 15.2 Stage 0 gate, local address forms: 'passed-simulator' -> agrees
+row 22: failed | G02-Transfer.md Plan 15.2 Stage 0 gate, Tailscale address forms: 'failed' -> agrees
+row 22: failed | G02-Transfer.md T43 Tailscale address and MagicDNS name on iOS w: 'failed' -> agrees
+row 23: pending-device | G02-Transfer.md Manual-address and Tailscale connectivity betwee: 'pending-device' -> agrees
+row 24: pending-human | G02-Transfer.md Security reviewer approves the pairing protocol: 'pending-human' -> agrees
+row 25: passed-host | G02-Transfer.md No trust-all path, no ATS exception in the harne: 'passed-host' -> agrees
+row 26: passed-simulator | G03-Intake.md G1: 'passed-simulator' -> agrees
+row 27: pending-device | G03-Intake.md G2: 'pending-device' -> agrees
+row 28: pending-device | G03-Intake.md G6: 'pending-device' -> agrees
+row 29: passed-host | G03-Intake.md G3: 'passed-host' -> agrees
+row 30: passed-simulator | G03-Intake.md G4: 'passed-simulator' -> agrees
+row 31: passed-host | G03-Intake.md G5: 'passed-host' -> agrees
+row 32: passed-simulator | G03-Intake.md G7: 'passed-simulator' -> agrees
+row 33: pending-device | G03-Intake.md G8: 'pending-device' -> agrees
+row 34: partial | G03-Intake.md T42: 'partial' -> agrees
+row 35: passed-host | G03-Intake.md G9: 'passed-host' -> agrees
+row 36: pending-device | G03-Intake.md G10: 'pending-device' -> agrees
+row 37: passed-simulator | G04-Audio.md 1: 'passed-simulator' -> agrees
+row 38: pending-device | G04-Audio.md 2: 'pending-device' -> agrees
+row 39: passed-simulator | G04-Audio.md 3: 'passed-simulator' -> agrees
+row 39: passed-simulator | G04-Audio.md 11: 'passed-simulator' -> agrees
+row 40: pending-device | G04-Audio.md 12: 'pending-device' -> agrees
+row 41: passed-simulator | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 33: 'passed-simulator (opening, positions, timing); start/resume budget ...' -> agrees
+row 43: passed-simulator | G04-Audio.md 4: 'passed-simulator (with the container limits stated)' -> agrees
+row 44: passed-simulator | G04-Audio.md 5: 'passed-simulator' -> agrees
+row 45: passed-simulator | G04-Audio.md 6: 'passed-simulator' -> agrees
+row 46: passed-simulator | G04-Audio.md 7: 'passed-simulator' -> agrees
+row 47: partial | G04-Audio.md 8: 'partial' -> agrees
+row 48: passed-simulator | G04-Audio.md 18: 'passed-simulator (control: both signings; App Shortcut and the cont...' -> agrees
+row 49: pending-device | G04-Audio.md 19: 'pending-device' -> agrees
+row 50: partial | G04-Audio.md 9: 'partial' -> agrees
+row 51: partial | G05-AI.md G1: 'partial' -> agrees
+row 52: partial | G05-AI.md G2: 'partial' -> agrees
+row 53: passed-host | G05-AI.md G3: 'passed-host' -> agrees
+row 54: partial | G05-AI.md G4: 'partial' -> agrees
+row 55: passed-simulator | G05-Recovery.md 1: 'passed-simulator' -> agrees
+row 56: pending-device | G05-Recovery.md 22: 'pending-device' -> agrees
+row 57: passed-host | G05-Recovery.md 2: 'passed-host' -> agrees
+row 58: partial | G05-AI.md G6: 'partial' -> agrees
+row 59: pending-human | G05-Recovery.md 23: 'pending-human' -> agrees
+row 60: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 61: passed-simulator | G06-Design.md G0.6: every token pair's contrast verified: 'passed-simulator' -> agrees
+row 62: pending-device | G06-Design.md G0.6: type roles under Dynamic Type: 'pending-device' -> agrees
+row 63: failed | G06-Design.md Scaling through UIFontMetrics as Section 4.4.3 s: 'failed' -> agrees
+row 64: pending-device | G06-Design.md G0.6: component set viewed on a device: 'pending-device' -> agrees
+row 65: partial | G06-Design.md G0.6: token values adjusted where devices disagr: 'partial' -> agrees
+row 72: passed-simulator | G06-Design.md CI drop-in `Scripts/ci.d/21-design-catalog.sh`: 'passed-simulator' -> agrees
+row 73: pending-human | G06-Design.md Prototype matches the boards where they agree wi: 'pending-human' -> agrees
+row 74: pending-device | G06-Design.md G0.6 device review of the component set and the : 'pending-device' -> agrees
+row 79: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 80: pending-human | G06-Design.md Design review of the components and references: 'pending-human' -> agrees
+row 91: passed-host | G06-Design.md Token export with schema, fixtures: 'passed-host' -> agrees
+== ADR and deliverable rows
+row 66: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 71: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 75: passed-host | expected passed-host; 2 of 2 facts hold -> agrees
+row 76: failed | expected failed; 3 of 3 facts hold -> agrees
+row 77: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 78: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 82: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 83: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 84: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 85: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 86: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 87: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 88: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 89: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 90: passed-host | expected passed-host; 2 of 2 facts hold -> agrees
+row 92: pending-human | expected pending-human; 6 of 6 facts hold -> agrees
+== rows not checked mechanically
+row 67: pending-human | the Section 23 decisions are signed by people; nothing to read
+row 68: pending-human | a judgement for the exit review
+row 69: partial | a judgement on the amendments' text against the four gates with failed rows
+row 70: partial | summarises rows 1-65
+row 81: pending-human | an exit demonstration by people
+== summary: 92 rows; failed 5, partial 12, passed-host 11, passed-simulator 27, pending-device 15, pending-human 22; 74 report rows and 58 ADR and log facts compared; 0 problem(s)
+
+-- 4b. Negative control on copies with three planted wrong statuses: checker exit 1; rows reported as disagreeing: 22 42 66 71 78 92
+   as required (22, 42, 66, 71, 78, 92)
+
+== 5. The edited documents' own consistency checks, before (e3e8886) and after (HEAD)
+# consistency checks of the edited documents, before (e3e88868fef06822ffca0844bca0d0585722d2d0) and after (f7051cc71efb4f08bbad0cc0903175f028fa8285); Python 3.14.6
+
+== Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py
+-- on the tree of before: exit 1
+   FAIL G01-PDF.md: 15 findings, each in Section 2 or 3: 10, 11, 12, 13, 14, 15
+   FAIL G02-Transfer.md: 22 findings, each in Section 2 or 3: 21, 22
+   FAIL G03-Intake.md: 19 findings, each in Section 2 or 3: F15, F16, F17, F18, F19
+   FAIL G04-Audio.md: 9 findings, each in Section 2 or 3: 9
+   FAIL G05-Recovery.md: 12 findings, each in Section 2 or 3: F11, F12
+   FAIL G06-Design.md: 18 findings, each in Section 2 or 3: 18
+   FAIL G01-PDF.md: 8 open questions, each referenced: 6, 7, 8
+   FAIL G02-Transfer.md: 12 open questions, each referenced: 12
+   FAIL G03-Intake.md: 10 open questions, each referenced: 8, 9, 10
+   FAIL G06-Design.md: 14 open questions, each referenced: 14
+   FAIL G04-Audio.md: 7 open-question bullets (six questions and a warnings note), each matched to the entry that covers it: no single mapping: Product owner: decisions PO-1 to PO-6 (Decisions f; no single mapping: Design package (G0.6): the vocabulary has no phras; 2 mappings unused
+   FAIL Section 3.2: ADR-0001 to ADR-0014, 108 consequences, each mapped to a tag or to no change: ADR-0002: items [1, 2] against 3 bullets; ADR-0003: items [1, 2, 3, 4, 5, 6, 7] against 10 bullets; ADR-0005: items [1, 2, 3, 4, 5, 6, 7] against 10 bullets; ADR-0010: items [1, 2, 3, 4, 5, 6, 7, 8] against 13 bullets; ADR-0014: items [1, 2] against 9 bullets
+   FAIL new anchor phrases are present in the plan (28): **Status:** Draft 0.5; **Revised:** 14 October 2026
+   FAIL Section 24 is byte-identical to draft 0.4 (471b143): 7062f657073beec13b7dcd54cfa90ea69d8105eef28083fa19b44da3588c39bf
+   summary: 132 numbered findings in the eight reports; 53 amendment tags; 36 product-owner questions; 14 failed checks
+-- on the tree of after: exit 1
+   FAIL G01-PDF.md: 15 findings, each in Section 2 or 3: 10, 11, 12, 13, 14, 15
+   FAIL G02-Transfer.md: 22 findings, each in Section 2 or 3: 21, 22
+   FAIL G03-Intake.md: 19 findings, each in Section 2 or 3: F15, F16, F17, F18, F19
+   FAIL G04-Audio.md: 9 findings, each in Section 2 or 3: 9
+   FAIL G05-Recovery.md: 12 findings, each in Section 2 or 3: F11, F12
+   FAIL G06-Design.md: 18 findings, each in Section 2 or 3: 18
+   FAIL G01-PDF.md: 8 open questions, each referenced: 6, 7, 8
+   FAIL G02-Transfer.md: 12 open questions, each referenced: 12
+   FAIL G03-Intake.md: 10 open questions, each referenced: 8, 9, 10
+   FAIL G06-Design.md: 14 open questions, each referenced: 14
+   FAIL G04-Audio.md: 7 open-question bullets (six questions and a warnings note), each matched to the entry that covers it: no single mapping: Product owner: decisions PO-1 to PO-6 (Decisions f; no single mapping: Design package (G0.6): the vocabulary has no phras; 2 mappings unused
+   FAIL Section 3.2: ADR-0001 to ADR-0014, 108 consequences, each mapped to a tag or to no change: ADR-0002: items [1, 2] against 3 bullets; ADR-0003: items [1, 2, 3, 4, 5, 6, 7] against 10 bullets; ADR-0005: items [1, 2, 3, 4, 5, 6, 7] against 10 bullets; ADR-0010: items [1, 2, 3, 4, 5, 6, 7, 8] against 13 bullets; ADR-0014: items [1, 2] against 9 bullets
+   FAIL new anchor phrases are present in the plan (28): **Status:** Draft 0.5; **Revised:** 14 October 2026
+   FAIL Section 24 is byte-identical to draft 0.4 (471b143): 7062f657073beec13b7dcd54cfa90ea69d8105eef28083fa19b44da3588c39bf
+   summary: 132 numbered findings in the eight reports; 53 amendment tags; 36 product-owner questions; 14 failed checks
+-- outputs: identical (from the second line on)
+
+== Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py
+-- on the tree of before: exit 1
+   77 texts checked, 59 missing
+-- on the tree of after: exit 1
+   77 texts checked, 59 missing
+-- outputs: identical (from the second line on)
+
+RESULT: the edits change nothing either check reports
+
+== 6. Scripts/ci.sh contracts dependency-lock hard-rules
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (50s)
+==> 12-dependency-lock
+    FAIL (21s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-5/.build/ci-logs/12-dependency-lock.log
+    | ok    a product test target takes fixtures, outside headers and a transitive module alias (tests never ship): no failure
+    | ok    a product package links a library only on Linux, where no Apple SDK is involved: no failure
+    | ok    a product package links a library the inventory lists (binaries, kind linked): no failure
+    | ok    a macOS-only package used only under a macOS condition, by a macOS app target: no failure
+    | ok    an inventoried binary target with the same URL and checksum: no failure
+    | ok    a workflow action pinned to a commit and recorded as such: no failure
+    | ok    a symbolic link under Packages/ to another product file: no failure
+    | ok    a product target and package pass only flags product targets may pass: no failure
+    | ok    a tracked prefix header, bridging header and module map, definitions without transitive names, and SDKROOT set to an SDK: no failure
+    | ok    a test target passes any flag and setting (tests never ship): no failure
+    | ok    a referenced Xcode project generated from a project.yml tracked beside it: no failure
+    | self-test: 228 mutations (22 categories: binary, ci-actions, docs, flag, inventory, license-text, lock-registry, not-exact, outside-product, pin-differs, pin-missing, platform, python-tools, spike-in-product, test-in-product, test-layout, toolchain, transitive-direct, unknown-package, unlocked, vendored-asset, xcode-project) and 30 allowed changes; 109 of the 109 failure branches reached by the mutation written for them, 2 of the 2 warning branches by the allowed change written for them; 0 wrong
+    | 
+    | --- check: this repository against Docs/Licenses/inventory.json, and the installed toolchain
+    | ok    committed Xcode projects or workspaces: 0
+    | ok    locks: 15 committed, 15 registered
+    | ok    manifests: 19 read, 16 remote requirements
+    | ok    symbolic links under the product roots: 0
+    | ok    module maps read as product code: 0
+    | ok    license texts: 53 checked
+    | ok    product sources: 59 Swift and 0 C-family files checked for imports of transitive-only modules
+    | ok    binaries: 0 declared by product manifests, 0 committed under the product roots, 0 inventoried
+    | ok    vendored assets: 3 listed
+    | ok    python tools: 20 pinned, 1 recorded as unpinned (pip at any version, with a warning below 26.2.0); the virtualenv holds exactly these (pip 26.2.1)
+    | ok    workflow actions: 2 used
+    | ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+    | ok    toolchain: xcodegen --version -> Version: 2.46.0
+    | ok    acknowledgements draft: matches the inventory (235350 characters)
+    | FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'
+    | dependency lock check: 1 failure(s), 0 warning(s)
+==> 13-hard-rules
+    pass (5s)
+FAILED: 12-dependency-lock
+ci.sh exit: 1
+summary lines from the drop-ins' own logs (.build/ci-logs/):
+-- 00-git-lfs (last 4 lines)
+LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+pointer files in the working tree: none
+git lfs fsck --pointers (HEAD): Git LFS fsck OK
+00-git-lfs: pass: no file stored with Git LFS is a pointer in the working tree, and every file the LFS attributes match is committed as an LFS pointer
+-- 10-contracts (last 4 lines)
+schemas: 17  fixtures: 644  openapi: 1  instances: 1
+-- 11-capture-anchor-contracts (last 4 lines)
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete minLength
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete type
+generic bound, survived: capture-envelope#/properties/word: delete type
+result: pass
+-- 12-dependency-lock (last 4 lines)
+ok    toolchain: xcodegen --version -> Version: 2.46.0
+ok    acknowledgements draft: matches the inventory (235350 characters)
+FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'
+dependency lock check: 1 failure(s), 0 warning(s)
+-- 13-hard-rules (last 4 lines)
+| todo-in-product | 0 | 0 |
+
+result: PASS (0 finding(s), 50 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+13-hard-rules: self-test and repository audit passed; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-5/.build/ci-logs/hard-rules
+-- FAIL lines in 12-dependency-lock's log:
+FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'
+part 6: the only failure is 12-dependency-lock's toolchain check (installed Xcode 27.1, pin 27A266a), as expected on this Mac
+
+== 7. Leftover G0.5 temporary directories (read-only count; G05-AI R7-04)
+g05-* directories in the user's temporary folder: 1664
+g05-tests-* directories there: 0
+
+exit: 0
+end: 2026-10-18T21:50:06Z; load: 10:50  up 15 days, 21 hrs, 3 users, load averages: 2.75 2.14 1.89

@@ -22,7 +22,13 @@ jobs:
       SYLVIA_FIXTURE_CACHE: ${{ github.workspace }}/.fixture-cache
       SYLVIA_TOOLS_VENV: ${{ github.workspace }}/.venv-tools
     steps:
+      # lfs: true sets up Git LFS in the checkout's own configuration and downloads the LFS files: the snapshot
+      # references and evidence images (ADR-0002). Without it they would be pointer files, and Scripts/ci.sh stops at
+      # its first drop-in, 00-git-lfs. Each run downloads the current LFS files (67.6 MB when LFS was adopted), which
+      # counts toward the repository owner's Git LFS bandwidth on GitHub (ADR-0002, "Push-time cost").
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4 (v4.4.0; pinned per ADR-0014)
+        with:
+          lfs: true
 
       - name: Select pinned Xcode (ADR-0001)
         run: |

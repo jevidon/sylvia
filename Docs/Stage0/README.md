@@ -25,6 +25,8 @@ An agent review's "accept-with-minor" on an `m0-int-minors-*` branch accepts the
 
 [integration-log.md](integration-log.md) records how the gate branches were combined into one tree at M0 integration (G0.4 a day after the other seven) and how the thirteen M0 items below were merged at M0 assembly (section 7): the commit for each, the shared-file requests and their outcomes, and the checks run, including the complete CI runs from a clean tree on the assembled commits (section 7.6).
 
+**Evidence images are stored with Git LFS** since 19 October 2026, as are the snapshot references ([ADR-0002](../ADRs/0002-repository-build-and-ci.md); integration log section 9). In a checkout where Git LFS is not set up, the images under `evidence/` are small text pointer files, not images: run `Scripts/setup-repo.sh` first (`CLAUDE.md`, Setup). New evidence images (png, jpg, jpeg, gif, heic, tif, tiff, webp) are stored with LFS automatically; the logs, tables and other evidence files stay plain text in git.
+
 The M0 deliverables beyond the gates (plan 21.2), each Proposed and agent-reviewed, with human sign-off pending:
 
 - [M0-contracts.md](M0-contracts.md) records the capture-envelope and anchor contracts ([ADR-0016](../ADRs/0016-capture-envelope-and-anchors.md)): how they were checked against what the G0.1, G0.4 and G0.5 spikes write, and what was found. Evidence in `evidence/M0-contracts/`; CI `Scripts/ci.d/11-capture-anchor-contracts.sh`.

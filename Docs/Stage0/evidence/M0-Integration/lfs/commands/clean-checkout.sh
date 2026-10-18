@@ -7,21 +7,25 @@
 #                lfs-standalone-file transfer, which git-lfs uses for a local-path remote without any setting); then
 #                Scripts/setup-repo.sh, Scripts/ci.d/00-git-lfs.sh, the SHA-256 of every LFS file against the adoption
 #                manifest, git status, and Scripts/ci.sh contracts.
-#   design       in that clone: Scripts/ci.sh design (00-git-lfs, 20-design with the snapshot suite against the smudged
-#                references, 21-design-catalog) on simulators named $SIM_NAME, $SIM_NAME-SE and $SIM_NAME-iPad; then git
-#                status (the drop-ins must leave every tracked file unchanged).
+#   design       in that clone: Scripts/ci.sh $DESIGN_FILTER (default "design": 00-git-lfs, 20-design with the snapshot
+#                suite against the smudged references, 21-design-catalog) on simulators named $SIM_NAME, $SIM_NAME-SE and
+#                $SIM_NAME-iPad; then git status (the drop-ins must leave every tracked file unchanged).
 #   skip-smudge  a second clone made with GIT_LFS_SKIP_SMUDGE=1 (also set for git lfs install --local and the checkout
 #                of m0-integrate): 00-git-lfs.sh must fail with its message, Scripts/ci.sh must stop after it, and
 #                Scripts/setup-repo.sh must repair the checkout, after which 00-git-lfs.sh passes and every LFS file
 #                matches the manifest.
 #   no-setup     a third clone where Git LFS is never set up before m0-integrate is checked out (as on a Mac where
 #                nobody ran git lfs install): the same failure and the same repair.
+#   base-control a clone checked out at the base commit $BASE (default 504fac2, before the adoption) that runs
+#                Scripts/ci.d/12-dependency-lock.sh, to show whether its result depends on the adoption.
 # SIM_NAME defaults to Sylvia-M0-lfs. Writes only under <scratch-dir>; reads the source repository.
 set -uo pipefail
 src="$1"
 scratch="$(mkdir -p "$2" && cd "$2" && pwd)"
 phase="$3"
 SIM_NAME="${SIM_NAME:-Sylvia-M0-lfs}"
+DESIGN_FILTER="${DESIGN_FILTER:-design}"
+BASE="${BASE:-504fac2e0c37efa5b41ed4503752758b103bc00d}"
 manifest="Docs/Stage0/evidence/M0-Integration/lfs/lfs-manifest.sha256"
 
 run() {  # run <command...>: prints it, runs it, prints its exit status, returns it
@@ -87,7 +91,8 @@ case "$phase" in
     echo "HEAD: $(git rev-parse HEAD); simulators: $SIM_NAME, $SIM_NAME-SE, $SIM_NAME-iPad"
     echo "Xcode: $(DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}" xcodebuild -version | tr '\n' ' ')"
     echo "load: $(uptime)"
-    expect_status 0 "Scripts/ci.sh design" env SYLVIA_G06_SIM="$SIM_NAME" G02_LOOPBACK_ONLY=1 Scripts/ci.sh design
+    # shellcheck disable=SC2086  # DESIGN_FILTER is a list of filter words
+    expect_status 0 "Scripts/ci.sh $DESIGN_FILTER" env SYLVIA_G06_SIM="$SIM_NAME" G02_LOOPBACK_ONLY=1 Scripts/ci.sh $DESIGN_FILTER
     echo "load: $(uptime)"
     if clean_tree; then echo "CHECK PASS: the design drop-ins left every tracked file unchanged"; else echo "CHECK FAIL: working tree"; fi
     ;;
@@ -124,8 +129,17 @@ case "$phase" in
     if manifest_check; then echo "CHECK PASS: every LFS file matches the manifest"; else echo "CHECK FAIL: manifest"; fi
     if clean_tree; then echo "CHECK PASS: clean working tree"; else echo "CHECK FAIL: working tree"; fi
     ;;
+  base-control)
+    clone="$scratch/lfs-clone-base"
+    rm -rf "$clone"
+    expect_status 0 "git clone --no-local" git clone --no-local "$src" "$clone"
+    cd "$clone" || exit 1
+    expect_status 0 "git checkout --detach $BASE (before the adoption)" git checkout -q --detach "$BASE"
+    echo "HEAD: $(git rev-parse HEAD); .gitattributes: $(test -f .gitattributes && echo present || echo absent)"
+    run Scripts/ci.d/12-dependency-lock.sh
+    ;;
   *)
-    echo "usage: clean-checkout.sh <source-repository> <scratch-dir> clone|design|skip-smudge|no-setup" >&2
+    echo "usage: clean-checkout.sh <source-repository> <scratch-dir> clone|design|skip-smudge|no-setup|base-control" >&2
     exit 2 ;;
 esac
 echo

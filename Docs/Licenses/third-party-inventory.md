@@ -197,7 +197,7 @@ Recorded on the build Mac (`toolchain.log`). None of these ships in Sylvia.
 | Python | 3.14.6 (tools virtualenv); 3.9.6 (`/usr/bin/python3`) | Homebrew; macOS | Python-2.0 | contract and lint tooling, this check; fixture generators |
 | ffmpeg, ffprobe | 8.1.2, built with `--enable-gpl --enable-version3` and libmp3lame (LGPL-2.0-or-later), libopus (BSD-3-Clause) | Homebrew | GPL-3.0-or-later (this build) | G0.4 fixture generators and its excerpt portability check (on `m0-g04-audio`); host only, and its output is test data, not shipped |
 | OpenSSL | 3.6.3 (Homebrew, first on `PATH`); LibreSSL 3.3.6 (`/usr/bin/openssl`) | Homebrew; macOS | Apache-2.0; system | G0.2 certificates and digests; G0.1 EPUB generator |
-| git, git-lfs | 2.55.0; 3.7.1 (not used yet, ADR-0002) | Homebrew | GPL-2.0 and others; MIT | evidence scripts |
+| git, git-lfs | 2.55.0; 3.7.1 (required since 19 October 2026, ADR-0002) | Homebrew | GPL-2.0 and others; MIT | evidence scripts; git-lfs for the snapshot references and evidence images stored with Git LFS (`Scripts/setup-repo.sh`, `Scripts/ci.d/00-git-lfs.sh`) |
 | macOS tools | macOS 26.6.2 | macOS | Apple | afconvert, afinfo, shasum, unzip (Info-ZIP 6.00), rsync (openrsync), sips, plutil, perl 5.34.1, codesign, security, du, curl 8.7.1 |
 | Google Chrome | 155.0.8059.40 (it updates itself; `toolchain.log` records the version on the day) | `/Applications` | Google | `Docs/Design/render.py` only (optional) |
 | Tailscale | 1.102.4 | `/Applications` | Tailscale | `Scripts/ci.d/40-g02-transfer.sh`, only with a tailnet address (optional) |

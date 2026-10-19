@@ -111,7 +111,7 @@ python3 -I Docs/Stage0/evidence/M0-Integration/final-fix/commands/runbook-covera
   echo "-- the runbook's correction-text check on $reviewed and on HEAD (Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py, as committed at HEAD)"
 } >> "$log"
 (( cov_status != 0 )) && status=1
-cct=.build/scratch/gate-final-cct
+cct="$root/.build/scratch/gate-final-cct"
 rm -rf "$cct"; mkdir -p "$cct/before" "$cct/after"
 git archive "$reviewed" | tar -x -C "$cct/before"
 git archive HEAD | tar -x -C "$cct/after"
@@ -123,7 +123,9 @@ done
   echo "   $reviewed: exit $(cat "$cct/before.status"); $(tail -n 1 "$cct/before.out")"
   echo "   HEAD: exit $(cat "$cct/after.status"); $(tail -n 1 "$cct/after.out")"
 } >> "$log"
-if diff <(tail -n +2 "$cct/before.out") <(tail -n +2 "$cct/after.out") > /dev/null && [[ "$(cat "$cct/before.status")" == "$(cat "$cct/after.status")" ]]; then
+if [[ -s "$cct/before.out" && -s "$cct/after.out" ]] \
+   && diff <(tail -n +2 "$cct/before.out") <(tail -n +2 "$cct/after.out") > /dev/null \
+   && [[ "$(cat "$cct/before.status")" == "$(cat "$cct/after.status")" ]]; then
   echo "   the two outputs are the same (the first line, a timestamp, left out): the fix's edits change nothing it reports" >> "$log"
 else
   echo "   the outputs DIFFER:" >> "$log"

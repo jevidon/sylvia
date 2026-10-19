@@ -39,7 +39,7 @@ At M0 integration (13 October 2026) the Stage 0 contracts moved to the milestone
 
 | Contract | Stage 0 owner (wrote v1) | Owner after M0 |
 | --- | --- | --- |
-| `openapi/source-service.v1.yaml`, `transfer-manifest`, `pairing-payload`, `pair-request`, `pair-response`, `capabilities`, `catalog-page`, `device-inbox-page`, `receipt`, `receipt-ack` (moved out of the OpenAPI document's inline `ReceiptAck` on 19 October 2026, unchanged), `error` | G0.2 transfer spike | M6 Mac/LAN/cable delivery |
+| `openapi/source-service.v1.yaml`, `transfer-manifest`, `pairing-payload`, `pair-request`, `pair-response`, `capabilities`, `catalog-page`, `device-inbox-page`, `receipt`, `receipt-ack` (moved out of the OpenAPI document's inline `ReceiptAck` on 19 October 2026, unchanged; on 20 October 2026, before v1's first release, its `queue_entry_id` and `entry_state` paired, both null or both set, as the server writes them), `error` | G0.2 transfer spike | M6 Mac/LAN/cable delivery |
 | `import-handoff-manifest`, `sylviapack-manifest` | G0.3 intake spike | M2 direct ingestion (the wired-bundle UX in M6 reads `sylviapack-manifest` and asks M2 for changes) |
 | `context-pack`, `provider-config` | G0.5 AI spike | M5 contextual AI |
 | `backup-manifest` | G0.5 recovery spike | M1 durable foundation (backup infrastructure starts in M1; its user experience is accepted in M7) |
@@ -49,3 +49,5 @@ At M0 integration (13 October 2026) the Stage 0 contracts moved to the milestone
 At M0 assembly (14 October 2026), with the contract consolidation (ADR-0016) and the gates' later review rounds merged, the validator covers 17 schemas, 644 fixtures, 1 OpenAPI document and 1 listed instance (`Scripts/ci.sh contracts`); `Scripts/check-spike-anchors.py` also checks the 57 semantic-invalid fixtures of `anchor.v1` and `capture-envelope.v1`, the expected failure of each invalid one, and every contract pattern as ECMA-262.
 
 Since the M0 final fix (19 October 2026; `Docs/Stage0/integration-log.md` section 11): 18 schemas (`receipt-ack.v1` added) and 655 fixtures, 1 OpenAPI document and 1 instance; `anchor.v1` has 15 valid fixtures (three of them composed PDF selections, from the G0.1 PDF spike's `anchor-composed-samples.json`) and 20 semantic-invalid ones, `capture-envelope.v1` 31 valid, so the checker checks 59 semantic-invalid fixtures; its pattern check now also walks member names called `title` or `description`, and reads 101 patterns in 19 contract documents, `receipt-ack.v1`'s included (it had skipped the two under `title` properties of `catalog-page` and `device-inbox-page`).
+
+Since the M0 final fix's second round (20 October 2026; integration log section 12): 657 fixtures, the two new ones `receipt-ack.v1`'s mixed forms (a queue entry without its state, a state without an entry), which its schema now refuses; and the checker decides rule A3 in linear time and checks it on every run at the schema's limit of 10,000 PDF segments (ADR-0016 sections 5 and 11).

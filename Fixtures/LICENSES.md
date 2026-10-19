@@ -69,7 +69,7 @@ Generator: `Spikes/G01-PDF/Tools/make_pdf_fixtures.py` (`--check` regenerates an
 
 | Files | Generator and content |
 | --- | --- |
-| `Contracts/fixtures/{transfer-manifest,pairing-payload,pair-request,pair-response,capabilities,catalog-page,device-inbox-page,receipt,receipt-ack,error}.v1/{valid,invalid}/*.json` (67 files; `receipt-ack.v1` with 3 valid and 4 invalid added on 19 October 2026) | `Scripts/fixtures/generate-g02-transfer-contract-fixtures.sh`, deterministic; synthetic data. The G0.2 CI drop-in checks that the generator reproduces them exactly. |
+| `Contracts/fixtures/{transfer-manifest,pairing-payload,pair-request,pair-response,capabilities,catalog-page,device-inbox-page,receipt,receipt-ack,error}.v1/{valid,invalid}/*.json` (69 files; `receipt-ack.v1` with 3 valid and 4 invalid added on 19 October 2026, and 2 more invalid ones, the two mixed forms of `queue_entry_id` and `entry_state`, on 20 October 2026) | `Scripts/fixtures/generate-g02-transfer-contract-fixtures.sh`, deterministic; synthetic data. The G0.2 CI drop-in checks that the generator reproduces them exactly. |
 | `Spikes/G02-Transfer/TransferKit/Tests/SylviaTransferCoreTests/Fixtures/manifests/semantic-invalid/*.json` (14 files) | Same generator; synthetic data. |
 | `Spikes/G02-Transfer/TransferKit/Tests/SylviaTransferCoreTests/Fixtures/certs/{p256,p384,rsa2048}.der` and `.spki-sha256` | `Scripts/fixtures/generate-g02-transfer-test-certs.sh`: throwaway self-signed test certificates and their OpenSSL-computed SPKI pins. The private keys were discarded when the script ran; no key material is committed. |
 

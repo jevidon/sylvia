@@ -300,14 +300,15 @@ def main():
           "G04-Audio.md: %d open-question bullets (six questions and a warnings note), each matched to the entry that covers it"
           % len(g04_items), "; ".join(g04_problems))
 
-    # 3a. Every consequence of ADR-0001 to ADR-0014 has its numbered item in Section 3.2.
+    # 3a. Every consequence of ADR-0001 to ADR-0016 has its numbered item in Section 3.2 (ADR-0015 and ADR-0016 since
+    # 20 October 2026: the M0 final review's second round, plan R2-06 and owner-readability R6-13, found them unmapped).
     adr_cells = dict()
     for header, cells in table_rows(section_text(doc, "3.2 ADR consequences")):
         if header[0] == "ADR" and re.fullmatch(r"ADR-00\d\d", cells[0]):
             adr_cells[cells[0]] = cells[1]
     known_tags = set("A%02d" % n for n in range(1, LAST_TAG + 1))
     adr_problems, adr_items = [], 0
-    for n in range(1, 15):
+    for n in range(1, 17):
         name = "ADR-%04d" % n
         files = sorted((ROOT / "Docs/ADRs").glob("%04d-*.md" % n))
         if len(files) != 1:
@@ -327,8 +328,8 @@ def main():
             tags = set(re.findall(r"\bA\d\d\b", text)) & known_tags
             if "no change" not in text and not tags:
                 adr_problems.append("%s item %d names neither a tag nor no change" % (name, number))
-    check(len(adr_cells) == 14 and not adr_problems,
-          "Section 3.2: ADR-0001 to ADR-0014, %d consequences, each mapped to a tag or to no change" % adr_items,
+    check(len(adr_cells) == 16 and not adr_problems,
+          "Section 3.2: ADR-0001 to ADR-0016, %d consequences, each mapped to a tag or to no change" % adr_items,
           "; ".join(adr_problems))
 
     # 4. Amendment tags: the plan body, Section 6 of the amendments and Appendix D agree, tag by tag and section by section.

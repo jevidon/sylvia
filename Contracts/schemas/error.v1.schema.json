@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:sylvia:schema:error:v1",
   "title": "Source service error",
-  "description": "Body of every non-2xx response of the source service (plan 14.3, 15.3, 18.1). code is a stable machine-readable reason the client maps to a next step; message is for diagnostics and never contains secrets, tokens, file paths, titles or note text. retry_after_seconds accompanies 429 and mirrors the Retry-After header.",
+  "description": "Body of every non-2xx response of the source service (plan 14.3, 15.3, 18.1). code is a stable machine-readable reason the client maps to a next step; message is for diagnostics and never contains secrets, tokens, file paths, titles or note text. retry_after_seconds accompanies 429 (rate_limited) and 503 (preparing: a manifest still being prepared) and mirrors the Retry-After header, so it is a whole number of seconds, not milliseconds: the HTTP header's unit, an exception to the units rule of Contracts/README.md.",
   "type": "object",
   "required": ["schema_version", "error"],
   "properties": {
@@ -14,7 +14,7 @@
         "code": {
           "type": "string",
           "pattern": "^[a-z][a-z0-9_]{0,63}$",
-          "description": "Known codes: unsupported_protocol_version, not_found, method_not_allowed, invalid_id, invalid_request, invalid_cursor, invalid_part_size, token_in_query_forbidden, browser_origin_forbidden, unauthenticated, insufficient_scope, forbidden, invitation_invalid, invitation_expired, invitation_used, source_mismatch, pairing_denied, approval_timeout, rate_limited, payload_too_large, precondition_required, invalid_precondition, precondition_failed, invalid_range, multiple_ranges_unsupported, range_not_satisfiable, receipt_conflict, source_unavailable, source_changing, empty_file, item_too_large, internal_error. Clients treat unknown codes by HTTP status."
+          "description": "Known codes: unsupported_protocol_version, not_found, method_not_allowed, invalid_id, invalid_request, invalid_cursor, invalid_part_size, token_in_query_forbidden, browser_origin_forbidden, unauthenticated, insufficient_scope, forbidden, invitation_invalid, invitation_expired, invitation_used, source_mismatch, pairing_denied, approval_timeout, rate_limited, payload_too_large, precondition_required, invalid_precondition, precondition_failed, invalid_range, multiple_ranges_unsupported, range_not_satisfiable, receipt_conflict, source_unavailable, source_changing, preparing, empty_file, item_too_large, internal_error. Clients treat unknown codes by HTTP status."
         },
         "message": { "type": "string", "minLength": 1, "maxLength": 512 },
         "retryable": { "type": "boolean" },

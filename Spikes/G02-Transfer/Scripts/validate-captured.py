@@ -27,6 +27,7 @@ PREFIXES = {
     "pair-response": "pair-response",
     "pairing-payload": "pairing-payload",
     "receipt-": "receipt",
+    "receipt-ack-": "receipt-ack",
     "transfer-manifest": "transfer-manifest",
 }
 

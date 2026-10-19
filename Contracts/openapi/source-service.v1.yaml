@@ -366,7 +366,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReceiptAck"
+                $ref: "../schemas/receipt-ack.v1.schema.json"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -423,26 +423,6 @@ components:
       minLength: 36
       maxLength: 36
       pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-    ReceiptAck:
-      type: object
-      required: [schema_version, receipt_id, queue_entry_id, entry_state, duplicate]
-      properties:
-        schema_version:
-          const: 1
-        receipt_id:
-          $ref: "#/components/schemas/UUID"
-        queue_entry_id:
-          oneOf:
-            - $ref: "#/components/schemas/UUID"
-            - type: "null"
-        entry_state:
-          description: The queue entry's state after this receipt; null for a catalog download without a queue entry.
-          oneOf:
-            - enum: [queued_on_mac, observed_by_phone, downloaded_to_phone, imported_into_sylvia, import_failed]
-            - type: "null"
-        duplicate:
-          type: boolean
-          description: True when this receipt_id was already recorded with the same body.
   parameters:
     ItemID:
       name: item_id

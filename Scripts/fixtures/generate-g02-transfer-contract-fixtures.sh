@@ -114,7 +114,10 @@ def variant(src, mutate, reseal=True):
     return seal(m) if reseal else m
 
 invalid = {
-    "zero-length-asset": lambda m: (m["assets"][0].update(length=0), m["assets"][0].update(parts=[])),
+    # Only the length changes, so the fixture fails the schema's length minimum alone (Contracts/README.md: one reason
+    # per file; contracts review R1-03: with its parts emptied too it also failed parts minItems). That its parts no
+    # longer add up to the length is a code-checked rule, not a schema one.
+    "zero-length-asset": lambda m: m["assets"][0].update(length=0),
     "unsupported-major-version": lambda m: m["protocol_version"].update(major=2),
     "weak-etag": lambda m: m["assets"][0].update(etag="W/" + m["assets"][0]["etag"]),
     "missing-etag": lambda m: m["assets"][0].pop("etag"),
@@ -255,6 +258,21 @@ write(base / "invalid/queued-on-mac-is-not-a-receipt.json", {**receipt, "state":
 write(base / "invalid/import-failed-without-failure.json", {**receipt, "state": "import_failed"})
 write(base / "invalid/failure-on-success.json", {**receipt, "failure": {"code": "x", "message": "unexpected"}})
 write(base / "invalid/missing-receipt-id.json", {k: v for k, v in receipt.items() if k != "receipt_id"})
+
+# ---------------- receipt acknowledgement (the 200 body of POST /v1/receipts) ----------------
+# Its schema was inline in the OpenAPI document until the M0 final fix (contracts review R1-06).
+ack = {"schema_version": 1, "receipt_id": uid(0xa01), "queue_entry_id": uid(0xe01), "entry_state": "downloaded_to_phone",
+       "duplicate": False}
+base = contracts / "receipt-ack.v1"
+write(base / "valid/downloaded-to-phone.json", ack)
+write(base / "valid/duplicate-of-a-recorded-receipt.json", {**ack, "duplicate": True})
+write(base / "valid/catalog-download-without-queue-entry.json",
+      {**ack, "receipt_id": uid(0xa04), "queue_entry_id": None, "entry_state": None})
+write(base / "invalid/missing-duplicate.json", {k: v for k, v in ack.items() if k != "duplicate"})
+# null is written, never left out (the Swift ReceiptAck encodes both fields explicitly).
+write(base / "invalid/entry-state-left-out.json", {k: v for k, v in ack.items() if k != "entry_state"})
+write(base / "invalid/deleted-entry-state.json", {**ack, "entry_state": "deleted"})
+write(base / "invalid/uppercase-receipt-id.json", {**ack, "receipt_id": uid(0xa01).upper()})
 
 # ---------------- error ----------------
 base = contracts / "error.v1"

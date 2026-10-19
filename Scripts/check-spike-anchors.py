@@ -798,21 +798,36 @@ def ecma262_problem(pattern: str) -> str | None:
     return None
 
 
-def contract_patterns(node, where: str):
+# Keywords whose value maps member names to schemas or objects: JSON Schema's, and OpenAPI's (component names, paths,
+# status codes, media types, header names). Their keys are names, never keywords.
+NAME_MAPS = {"properties", "$defs", "definitions", "dependentSchemas", "paths", "schemas", "parameters", "responses",
+             "requestBodies", "headers", "content", "securitySchemes", "callbacks", "links", "encoding", "webhooks"}
+# Annotation and literal keywords: their values are examples or literal values, not schemas.
+ANNOTATION_KEYWORDS = {"examples", "example", "default", "const", "enum", "description", "title"}
+
+
+def contract_patterns(node, where: str, names: bool = False):
     """Every regular expression in a contract document: `pattern` keyword values and `patternProperties` names, as
-    (JSON Pointer, pattern). Example and literal values are skipped; a property named `pattern` has a schema, not a
-    string, as its value, so it is never taken for the keyword."""
+    (JSON Pointer, pattern). Annotation and literal values are skipped, but only where a keyword stands: inside a name
+    map (`properties`, `$defs`, OpenAPI's `schemas` and the like; `names` true) every key is a member name, and a
+    member called `title`, `description` or `pattern` is walked like any other (contracts review R1-04: the skip was
+    applied to member names too, so the patterns under the `title` properties of catalog-page and device-inbox-page
+    were never checked)."""
     if isinstance(node, dict):
         for key, value in node.items():
             here = f"{where}/{str(key).replace('~', '~0').replace('/', '~1')}"
-            if key == "pattern" and isinstance(value, str):
+            if names:
+                yield from contract_patterns(value, here)
+            elif key == "pattern" and isinstance(value, str):
                 yield here, value
             elif key == "patternProperties" and isinstance(value, dict):
                 for name, sub in value.items():
                     sub_where = f"{here}/{name.replace('~', '~0').replace('/', '~1')}"
                     yield sub_where + " (name)", name
                     yield from contract_patterns(sub, sub_where)
-            elif key not in {"examples", "example", "default", "const", "enum", "description", "title"}:
+            elif key in NAME_MAPS:
+                yield from contract_patterns(value, here, names=isinstance(value, dict))
+            elif key not in ANNOTATION_KEYWORDS:
                 yield from contract_patterns(value, here)
     elif isinstance(node, list):
         for i, item in enumerate(node):

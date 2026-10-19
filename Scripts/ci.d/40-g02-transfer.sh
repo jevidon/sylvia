@@ -186,7 +186,8 @@ step_host_transferkit() {
 # Payloads the host-sourceservice tests write to $evidence/captured/ (one per file, all required).
 captured_expected=(
   capabilities catalog-page device-inbox-page error-precondition-failed error-rate-limited error-unsupported-version
-  pair-request pair-response pairing-payload receipt-downloaded receipt-imported transfer-manifest
+  pair-request pair-response pairing-payload receipt-ack-catalog-download receipt-ack-duplicate receipt-downloaded
+  receipt-imported transfer-manifest
 )
 
 step_host_sourceservice() {

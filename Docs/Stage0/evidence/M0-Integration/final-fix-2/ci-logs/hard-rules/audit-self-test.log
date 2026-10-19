@@ -1,0 +1,144 @@
+self-test directory: .build/scratch/audit-self-test.TlHRb0 (removed on exit)
+--- plain directory
+root: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/.build/scratch/final-clone-2/.build/scratch/audit-self-test.TlHRb0
+file list: walk (directory walk)
+files scanned: 22 (4 binary, skipped for text rules); not scanned (hold the patterns): none
+allowlist: 1 entries
+
+FINDING ats-arbitrary-loads App/Info.plist:5: <key>NSAllowsArbitraryLoads</key><true/>
+FINDING ats-exception App/Info.plist:6: <key>NSAllowsLocalNetworking</key><true/>
+FINDING ats-exception App/project.yml:7: NSExceptionDomains:
+FINDING ats-exception App/project.yml:9: NSExceptionAllowsInsecureHTTPLoads: true
+FINDING todo-in-product Apps/Reader/Sources/ReaderView.swift:2: // TODO: wire the real store // audit-expect: todo-in-product
+FINDING todo-in-product Apps/Reader/Sources/ReaderView.swift:3: func load() { fatalError("not implemented") } // audit-expect: todo-in-product
+FINDING ats-arbitrary-loads Apps/Reader/project.json:1: {"targets": {"Reader": {"info": {"properties": {"NSAppTransportSecurity": {"NSAllowsArbitraryLoads": true}}}}}, "note": "audit-expect: ats-arbitrary-loads"}
+FINDING secret-file Config/.env.production:0: credential container file name
+FINDING secret-file Config/App.provisionprofile:0: credential container file name
+FINDING private-key-block Config/key.pem:1: PEM private key header
+FINDING secret-file Config/login.keychain-db:0: credential container file name
+FINDING secret-file Config/signing.key:0: credential container file name
+FINDING todo-in-product Packages/Thing/Sources/Thing/Thing.swift:1: /// FIXME before release // audit-expect: todo-in-product
+FINDING trust-override Sources/Inferred.swift:5: completionHandler(.useCredential, .init(trust: c.protectionSpace.serverTrust!)) // audit-expect: trust-override
+FINDING weak-tls Sources/Inferred.swift:9: func lowerNetwork() { sec_protocol_options_set_min_tls_protocol_version(tlsOptions.securityProtocolOptions, .TLSv10) } // audit-expect: weak-tls
+FINDING weak-tls Sources/Inferred.swift:11: let legacySettings = Settings(minimumTLSVersion: .tlsv11) // audit-expect: weak-tls
+FINDING weak-tls Sources/Inferred.swift:13: func legacy() { URLSessionConfiguration.ephemeral.tlsMinimumSupportedProtocol = .tlsProtocol1 } // audit-expect: weak-tls
+FINDING key-like-string Sources/Keys.swift:1: openai/anthropic-style key, 48 characters, starts 'sk-p'
+FINDING generic-secret Sources/Keys.swift:1: field 'apiKey', value 48 characters, starts 'sk-p'
+FINDING key-like-string Sources/Keys.swift:2: AWS access key ID, 20 characters, starts 'AKIA'
+FINDING generic-secret Sources/Keys.swift:7: field 'invitationSecret', value 43 characters, starts 'q7Hc'
+FINDING file-protection-none Sources/Store.swift:3: try data.write(to: url, options: .noFileProtection) // audit-expect: file-protection-none
+FINDING file-protection-none Sources/Store.swift:5: try FileManager.default.setAttributes([.protectionKey: FileProtectionType.none], ofItemAtPath: url.path) // audit-expect: file-protection-none
+FINDING keychain-accessible-always Sources/Store.swift:7: let query: [String: Any] = [kSecAttrAccessible as String: kSecAttrAccessibleAlways] // audit-expect: keychain-accessible-always
+FINDING trust-override Sources/Trust.swift:5: return (.useCredential, URLCredential(trust: c.protectionSpace.serverTrust!)) // audit-expect: trust-override
+FINDING trust-override Sources/Trust.swift:11: tls.certificateVerification = .none // audit-expect: trust-override
+FINDING weak-tls Sources/Trust.swift:9: configuration.tlsMinimumSupportedProtocolVersion = .TLSv10 // audit-expect: weak-tls
+FINDING trust-override Sources/Wrapped.swift:3: let credential = URLCredential(
+FINDING trust-override Sources/Wrapped.swift:13: h(.useCredential, .init(
+FINDING weak-tls Sources/Wrapped.swift:8: func lower() { wrappedConfiguration.tlsMinimumSupportedProtocolVersion =
+FINDING weak-tls Sources/Wrapped.swift:10: func lowerNetworkWrapped(_ options: sec_protocol_options_t) { sec_protocol_options_set_min_tls_protocol_version(
+FINDING trust-override scripts/fetch.sh:3: curl -fsSLk https://example.org/x -o x # audit-expect: trust-override
+FINDING trust-override scripts/fetch.sh:5: wget --no-check-certificate https://example.org/y # audit-expect: trust-override
+FINDING trust-override tools/probe.py:2: context = ssl._create_unverified_context()  # audit-expect: trust-override
+ALLOWED ats-exception Probe/ATS-Info.plist:1: <plist><dict><key>NSAllowsLocalNetworking</key><true/></dict></plist>  [allowlist line 1: self-test (ADR-0015): a probe plist named in the allowlist]
+ALLOWED key-like-string Sources/Keys.swift:3: openai/anthropic-style key, 47 characters, starts 'sk-t'  [canary: the value names itself a test canary, fixture or example]
+ALLOWED generic-secret Sources/Keys.swift:3: field 'testAPIKey', value 47 characters, starts 'sk-t'  [canary: the value names itself a test canary, fixture or example]
+ALLOWED key-like-string Sources/Keys.swift:4: openai/anthropic-style key, 32 characters, starts 'sk-f'  [canary: the value names itself a test canary, fixture or example]
+ALLOWED generic-secret Sources/Keys.swift:4: field 'fixtureToken', value 32 characters, starts 'sk-f'  [canary: the value names itself a test canary, fixture or example]
+
+| Rule | Findings | Allowed |
+| --- | --- | --- |
+| ats-arbitrary-loads | 2 | 0 |
+| ats-exception | 3 | 1 |
+| trust-override | 8 | 0 |
+| weak-tls | 6 | 0 |
+| file-protection-none | 2 | 0 |
+| keychain-accessible-always | 1 | 0 |
+| key-like-string | 2 | 2 |
+| private-key-block | 1 | 0 |
+| generic-secret | 2 | 2 |
+| secret-file | 4 | 0 |
+| todo-in-product | 3 | 0 |
+
+result: FAIL (34 finding(s), 5 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+
+ok: plain directory: exactly the 34 planted lines are findings
+ok: plain directory: the audit fails when there are findings
+ok: plain directory: an allowlisted probe plist is reported as allowed, not as a finding
+ok: plain directory: the two canary keys are allowed as canaries under both credential rules (4 of 4)
+ok: plain directory: the binary file is skipped and the Spikes/, test-target and Markdown lookalikes are not findings
+ok: plain directory: no matched credential value is printed (only length and first four characters)
+--- git work tree
+root: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/.build/scratch/final-clone-2/.build/scratch/audit-self-test.TlHRb0
+file list: git (git ls-files --cached --others --exclude-standard)
+files scanned: 22 (4 binary, skipped for text rules); not scanned (hold the patterns): none
+allowlist: 1 entries
+
+FINDING ats-arbitrary-loads App/Info.plist:5: <key>NSAllowsArbitraryLoads</key><true/>
+FINDING ats-exception App/Info.plist:6: <key>NSAllowsLocalNetworking</key><true/>
+FINDING ats-exception App/project.yml:7: NSExceptionDomains:
+FINDING ats-exception App/project.yml:9: NSExceptionAllowsInsecureHTTPLoads: true
+FINDING todo-in-product Apps/Reader/Sources/ReaderView.swift:2: // TODO: wire the real store // audit-expect: todo-in-product
+FINDING todo-in-product Apps/Reader/Sources/ReaderView.swift:3: func load() { fatalError("not implemented") } // audit-expect: todo-in-product
+FINDING ats-arbitrary-loads Apps/Reader/project.json:1: {"targets": {"Reader": {"info": {"properties": {"NSAppTransportSecurity": {"NSAllowsArbitraryLoads": true}}}}}, "note": "audit-expect: ats-arbitrary-loads"}
+FINDING secret-file Config/.env.production:0: credential container file name
+FINDING secret-file Config/App.provisionprofile:0: credential container file name
+FINDING private-key-block Config/key.pem:1: PEM private key header
+FINDING secret-file Config/login.keychain-db:0: credential container file name
+FINDING secret-file Config/signing.key:0: credential container file name
+FINDING todo-in-product Packages/Thing/Sources/Thing/Thing.swift:1: /// FIXME before release // audit-expect: todo-in-product
+FINDING trust-override Sources/Inferred.swift:5: completionHandler(.useCredential, .init(trust: c.protectionSpace.serverTrust!)) // audit-expect: trust-override
+FINDING weak-tls Sources/Inferred.swift:9: func lowerNetwork() { sec_protocol_options_set_min_tls_protocol_version(tlsOptions.securityProtocolOptions, .TLSv10) } // audit-expect: weak-tls
+FINDING weak-tls Sources/Inferred.swift:11: let legacySettings = Settings(minimumTLSVersion: .tlsv11) // audit-expect: weak-tls
+FINDING weak-tls Sources/Inferred.swift:13: func legacy() { URLSessionConfiguration.ephemeral.tlsMinimumSupportedProtocol = .tlsProtocol1 } // audit-expect: weak-tls
+FINDING key-like-string Sources/Keys.swift:1: openai/anthropic-style key, 48 characters, starts 'sk-p'
+FINDING generic-secret Sources/Keys.swift:1: field 'apiKey', value 48 characters, starts 'sk-p'
+FINDING key-like-string Sources/Keys.swift:2: AWS access key ID, 20 characters, starts 'AKIA'
+FINDING generic-secret Sources/Keys.swift:7: field 'invitationSecret', value 43 characters, starts 'q7Hc'
+FINDING file-protection-none Sources/Store.swift:3: try data.write(to: url, options: .noFileProtection) // audit-expect: file-protection-none
+FINDING file-protection-none Sources/Store.swift:5: try FileManager.default.setAttributes([.protectionKey: FileProtectionType.none], ofItemAtPath: url.path) // audit-expect: file-protection-none
+FINDING keychain-accessible-always Sources/Store.swift:7: let query: [String: Any] = [kSecAttrAccessible as String: kSecAttrAccessibleAlways] // audit-expect: keychain-accessible-always
+FINDING trust-override Sources/Trust.swift:5: return (.useCredential, URLCredential(trust: c.protectionSpace.serverTrust!)) // audit-expect: trust-override
+FINDING trust-override Sources/Trust.swift:11: tls.certificateVerification = .none // audit-expect: trust-override
+FINDING weak-tls Sources/Trust.swift:9: configuration.tlsMinimumSupportedProtocolVersion = .TLSv10 // audit-expect: weak-tls
+FINDING trust-override Sources/Wrapped.swift:3: let credential = URLCredential(
+FINDING trust-override Sources/Wrapped.swift:13: h(.useCredential, .init(
+FINDING weak-tls Sources/Wrapped.swift:8: func lower() { wrappedConfiguration.tlsMinimumSupportedProtocolVersion =
+FINDING weak-tls Sources/Wrapped.swift:10: func lowerNetworkWrapped(_ options: sec_protocol_options_t) { sec_protocol_options_set_min_tls_protocol_version(
+FINDING trust-override scripts/fetch.sh:3: curl -fsSLk https://example.org/x -o x # audit-expect: trust-override
+FINDING trust-override scripts/fetch.sh:5: wget --no-check-certificate https://example.org/y # audit-expect: trust-override
+FINDING trust-override tools/probe.py:2: context = ssl._create_unverified_context()  # audit-expect: trust-override
+ALLOWED ats-exception Probe/ATS-Info.plist:1: <plist><dict><key>NSAllowsLocalNetworking</key><true/></dict></plist>  [allowlist line 1: self-test (ADR-0015): a probe plist named in the allowlist]
+ALLOWED key-like-string Sources/Keys.swift:3: openai/anthropic-style key, 47 characters, starts 'sk-t'  [canary: the value names itself a test canary, fixture or example]
+ALLOWED generic-secret Sources/Keys.swift:3: field 'testAPIKey', value 47 characters, starts 'sk-t'  [canary: the value names itself a test canary, fixture or example]
+ALLOWED key-like-string Sources/Keys.swift:4: openai/anthropic-style key, 32 characters, starts 'sk-f'  [canary: the value names itself a test canary, fixture or example]
+ALLOWED generic-secret Sources/Keys.swift:4: field 'fixtureToken', value 32 characters, starts 'sk-f'  [canary: the value names itself a test canary, fixture or example]
+
+| Rule | Findings | Allowed |
+| --- | --- | --- |
+| ats-arbitrary-loads | 2 | 0 |
+| ats-exception | 3 | 1 |
+| trust-override | 8 | 0 |
+| weak-tls | 6 | 0 |
+| file-protection-none | 2 | 0 |
+| keychain-accessible-always | 1 | 0 |
+| key-like-string | 2 | 2 |
+| private-key-block | 1 | 0 |
+| generic-secret | 2 | 2 |
+| secret-file | 4 | 0 |
+| todo-in-product | 3 | 0 |
+
+result: FAIL (34 finding(s), 5 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+
+ok: git work tree: exactly the 34 planted lines are findings
+ok: git work tree: the audit fails when there are findings
+ok: git work tree: an allowlisted probe plist is reported as allowed, not as a finding
+ok: git work tree: the two canary keys are allowed as canaries under both credential rules (4 of 4)
+ok: git work tree: the binary file is skipped and the Spikes/, test-target and Markdown lookalikes are not findings
+ok: git work tree: no matched credential value is printed (only length and first four characters)
+ok: git work tree: ignored files are not listed
+ok: an allowlist entry that matches nothing is reported STALE and fails the audit
+ok: allowlisting a never-allowlistable rule is refused
+ok: an allowlist entry whose reason names no ADR is refused, and excuses nothing
+ok: a clean tree passes with no finding
+
+self-test: PASS (0 failure(s))

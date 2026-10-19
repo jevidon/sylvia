@@ -1,0 +1,59 @@
+# G0.3 host large-pack run
+date: 2026-10-19T14:31:03Z
+environment: host, macOS 26.6.2 (25G83), Apple M5 Max, 137438953472 bytes RAM
+ok       /Users/jevidon/Library/Caches/SylviaFixtures/generated/g03-intake/large.sylviapack (982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268)
+Build complete! (9.80 sec)
+
+## 1. Validate (streaming SHA-256 of every entry, no extraction)
+validate ACCEPTED: 4846059727 bytes, 7 entries, zip64_end_record=true, elapsed=1.8s, 2609 MiB/s
+  audio 4831838986 bytes sha256=b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1
+  audio 3000068 bytes sha256=ac146be5ee4fe4187582a6335d436b04aacc52e1b4e0e603296dd5d50070e7ab
+  markdown 72 bytes sha256=50c5de4981c1153ede3e7074ab4bf6ca4adc3532960c1d413dac8ce7950b3e6d
+  text 728890 bytes sha256=5da1084cb18247b7775ba562b3361a45a7f04a32f113908b9c2b6b38372d61af
+  audio 10862777 bytes sha256=dc3f1d4729eafb250e03ddee84e546a6f14debc31a4f4cbf205a022f32ed15be
+validate memory: sampled_peak_phys_footprint=5.1 MiB lifetime_peak_phys_footprint=5.1 MiB max_rss=10.2 MiB
+
+## 2. Extract while validating
+extract ACCEPTED: 4846059727 bytes, 7 entries, zip64_end_record=true, elapsed=2.1s, 2207 MiB/s
+  audio 4831838986 bytes sha256=b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1
+  audio 3000068 bytes sha256=ac146be5ee4fe4187582a6335d436b04aacc52e1b4e0e603296dd5d50070e7ab
+  markdown 72 bytes sha256=50c5de4981c1153ede3e7074ab4bf6ca4adc3532960c1d413dac8ce7950b3e6d
+  text 728890 bytes sha256=5da1084cb18247b7775ba562b3361a45a7f04a32f113908b9c2b6b38372d61af
+  audio 10862777 bytes sha256=dc3f1d4729eafb250e03ddee84e546a6f14debc31a4f4cbf205a022f32ed15be
+extract memory: sampled_peak_phys_footprint=7.8 MiB lifetime_peak_phys_footprint=7.9 MiB max_rss=14.0 MiB
+independent check: shasum of the extracted 4.5 GiB file vs the generator's source file
+  extracted=b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1
+  source   =b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1
+extracted modes:    5 -rw------- 
+
+## 3. Independent reader (Python zipfile): entry list and ZIP64 records
+  sylviapack/manifest.json: method=0 size=1825 compressed=1825 offset=0 mode=0o100644
+  sylviapack/manifest.sha256: method=0 size=65 compressed=65 offset=1879 mode=0o100644
+  content/Generated Audiobook/part-01.caf: method=0 size=4831838986 compressed=4831838986 offset=2000 mode=0o100644
+  content/Generated Audiobook/part-02.caf: method=0 size=3000068 compressed=3000068 offset=4831841075 mode=0o100644
+  content/Generated Audiobook/notes.md: method=8 size=72 compressed=72 offset=4834841212 mode=0o100644
+  content/Generated Text/chapter.txt: method=8 size=728890 compressed=354726 offset=4834841350 mode=0o100644
+  content/LibriVox Meditations/meditations-01.mp3: method=0 size=10862777 compressed=10862777 offset=4835196140 mode=0o100644
+  end record in the last 22 bytes=True comment_length=0
+  ZIP64 end-record locator directly before it=True
+
+## 4. Truncated and zero-padded copies (APFS clones)
+  ... 1/163 cut points
+  ... 26/163 cut points
+  ... 51/163 cut points
+  ... 76/163 cut points
+  ... 101/163 cut points
+  ... 126/163 cut points
+  ... 151/163 cut points
+truncation-sweep: 163 cut points x {truncated, zero-padded to full length} = 326 copies of a 4846059727-byte pack
+truncation-sweep: partial copies accepted=0; zero-padded copies byte-identical to the original (accepted, correct)=2
+truncation-sweep: rejection codes: truncated_or_not_a_pack=163, truncated_or_not_a_pack (zero-padded)=161
+truncation-sweep: slowest single rejection 0.000s
+
+## 5. Multi-GiB copy through the share extension's write routine (HandoffSession, 1 MiB buffer)
+copy-measure: 4831838986 bytes in 1.9s (2438 MiB/s), buffer 1048576 bytes
+copy-measure: phys_footprint before=1.7 MiB
+copy-measure memory: sampled_peak_phys_footprint=4.5 MiB lifetime_peak_phys_footprint=4.5 MiB max_rss=15.2 MiB
+
+Documented comparison: Apple does not publish a numeric memory limit for share extensions; see the G0.3 report.
+host large-pack run finished

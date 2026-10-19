@@ -1,0 +1,125 @@
+
+--- toolchain (2026-10-19T13:10:58Z)
+warning: Xcode build is '27A9275'; ADR-0001 pins 27A266a
+Xcode 27.1
+Build version 27A9275
+swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+
+--- design lint self-test (Scripts/lint-design.py self-test) (2026-10-19T13:10:58Z)
+self-test ok: Packages/Design/LintFixtures/violating/Bypasses.swift: 39 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Colors.swift: 15 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Fonts.swift: 13 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Literal.colorset: 1 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Multiline.swift: 44 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Phrases.swift: 22 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Strings.xcstrings: 1 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/violating/Styles.swift: 41 expected finding(s)
+self-test ok: Packages/Design/LintFixtures/clean/Clean.swift: clean
+self-test ok: target discovery (Apps and UI packages in; Domain, Design, Spikes and Tests out)
+self-test ok: lint Spikes/G06 exits 2
+self-test ok: lint Apps/Sylvia/Tests exits 2
+self-test ok: lint Packages/Design/Sources exits 2
+self-test ok: lint Apps/Missing exits 2
+self-test ok: lint Apps/Sylvia/Sources exits 1
+lint self-test: 15 sample file(s), 0 failure(s)
+
+--- design lint over product UI targets (Scripts/lint-design.py lint) (2026-10-19T13:10:58Z)
+design lint: UI targets scanned: Apps
+design lint: 16 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+design lint: 0 finding(s)
+
+--- token export drift check (sylvia-design-export check) (2026-10-19T13:10:58Z)
+Build complete! (5.74 sec)
+design export check: 52 generated files match the token definitions
+
+--- design-token fixtures: one reason per invalid fixture (Scripts/lint-design.py fixtures) (2026-10-19T13:11:10Z)
+ok   busy-state-exempted.json: one change at contrast/component_pairs; 1 error(s) all there: 'disabled' was expected
+ok   color-hex-without-hash.json: one change at color/ground/light; 1 error(s) all there: 'F4F2ED' does not match '^#[0-9A-F]{6}([0-9A-F]{2})?$'
+ok   large-text-boundary-lowered.json: one change at contrast/large_text_minimum_points; 1 error(s) all there: 10 is less than the minimum of 24
+ok   marker-label-not-uppercase.json: one change at marker/quote/label; 1 error(s) all there: 'Quote' does not match '^[A-Z][A-Z ]*$'
+ok   missing-marker-pending.json: one change at marker/pending; 1 error(s) all there: 'pending' is a required property
+ok   missing-type-role-micro.json: one change at type/micro; 1 error(s) all there: 'micro' is a required property
+ok   reading-without-user-range.json: one change at type/reading/user_range; 1 error(s) all there: 'user_range' is a required property
+ok   schema-version-2.json: one change at schema_version; 1 error(s) all there: 1 was expected
+ok   unknown-appearance-key.json: one change at color/ground/sepia; 1 error(s) all there: Additional properties are not allowed ('sepia' was unexpected)
+ok   unknown-kind-renders-as-quote.json: one change at capture_kind_mapping/unrecognized/marker; 1 error(s) all there: 'pending' was expected
+ok   vocabulary-exclamation-mark.json: one change at vocabulary/save.done; 1 error(s) all there: 'Saved!' does not match '^[^!]+$'
+ok   weakened-contrast-threshold.json: one change at contrast/minimum_ratio; 1 error(s) all there: 4 is less than the minimum of 4.5
+ok   marginalia-v1-export.json: valid
+ok   unknown-optional-top-level-field.json: valid
+design-token fixtures: 0 failure(s)
+
+--- contrast over the exported JSON (Python, Scripts/lint-design.py contrast) (2026-10-19T13:11:10Z)
+contrast: 176 measurements, 0 failing, lowest 4.52; 56 component measurements, 0 failing, 16 exempt (disabled) below the minimum
+
+--- contrast over the token definitions (Swift, sylvia-design-export contrast-table) (2026-10-19T13:11:10Z)
+wrote /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/.build/scratch/final-clone-2/.build/ci-logs/g06-design/contrast-tokens.md: 176 measurements, 0 failing; 56 component measurements, 0 failing
+
+--- snapshot references present (2026-10-19T13:11:10Z)
+527 reference images, 37900 KiB
+
+--- SylviaDesign tests on host (platform=macOS) (2026-10-19T13:11:10Z)
+✔ Test run with 59 tests in 6 suites passed after 0.065 seconds.
+✔ Test run with 51 tests in 6 suites passed after 0.157 seconds.
+** TEST SUCCEEDED **
+simulator Sylvia-M0-final-fix: 5BB75481-1294-4166-B9C4-D9071FBF3674 (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+
+--- SylviaDesign tests on simulator (id=5BB75481-1294-4166-B9C4-D9071FBF3674) (2026-10-19T13:11:33Z)
+✔ Test run with 59 tests in 6 suites passed after 0.128 seconds.
+✔ Test run with 60 tests in 6 suites passed after 0.252 seconds.
+✔ Test run with 28 tests in 4 suites passed after 63.182 seconds.
+** TEST SUCCEEDED **
+simulator reports written: t51-layout-audit-simulator.md t53-marker-pairs-simulator.md t53-pill-pairs-simulator.md t53-availability-badges-simulator.md t53-generated-frame-simulator.md t53-buttons-grayscale-simulator.md t53-rating-grayscale-simulator.md accessibility-tree-simulator.md
+
+--- negative check: changed references fail the snapshot suite (2026-10-19T13:12:53Z)
+xcodebuild exit 65; issues on the changed sample: 2; on other samples: 0
+  289425 of 289440 grey pixels differ (largest difference 221 levels)
+  Newly-taken snapshot does not match reference.
+↳ Snapshot "light-default" does not match reference.
+↳ Snapshot "light-default-gray" does not match reference.
+
+--- snapshot reference inventory (2026-10-19T13:13:50Z)
+# Snapshot references
+
+Directory: `Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests`.
+Recorded on the reference device of `RecordingDevice` (model iPhone18,3, iOS 26.5; the suite refuses to compare on any other). Compared in this run on the simulator Sylvia-M0-final-fix (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5). 527 PNG files, 37900 KiB on disk.
+
+| Sample | Files | KiB |
+| --- | --- | --- |
+| actionCards | 17 | 891 |
+| areaTitle | 17 | 312 |
+| availabilityBadges | 17 | 361 |
+| buttons | 17 | 569 |
+| captureCard-audio | 17 | 1802 |
+| captureCard-generated | 17 | 1982 |
+| captureCard-note | 17 | 1155 |
+| captureCard-quote | 17 | 2466 |
+| captureCard-word | 17 | 2460 |
+| captureSheet-audio | 17 | 1064 |
+| captureSheet-quote | 17 | 2754 |
+| captureSheet-saveStates | 17 | 590 |
+| card | 17 | 638 |
+| filterChips | 17 | 718 |
+| impactReport | 17 | 2795 |
+| inboxRows | 17 | 2786 |
+| markerRows | 17 | 2112 |
+| miniPlayer | 17 | 455 |
+| navigationBar | 17 | 185 |
+| playPauseButton | 17 | 99 |
+| progressRule | 17 | 357 |
+| rating | 17 | 250 |
+| readerChrome | 17 | 2135 |
+| readingParagraph | 17 | 3807 |
+| selectionMenu | 17 | 244 |
+| sidebar | 17 | 293 |
+| statusBanners | 17 | 1323 |
+| statusPills | 17 | 928 |
+| tabBar | 17 | 258 |
+| textField | 17 | 639 |
+| typographicCover | 17 | 375 |
+
+--- generated files unchanged by the builds (2026-10-19T13:13:51Z)
+design export check: 52 generated files match the token definitions
+
+20-design: all checks passed; outputs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/.build/scratch/final-clone-2/.build/ci-logs/g06-design

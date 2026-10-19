@@ -1,0 +1,1218 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project G03Intake.xcodeproj -scheme IntakeHarness -destination id=5BB75481-1294-4166-B9C4-D9071FBF3674 -derivedDataPath .build/DerivedData
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  ReadiumZIPFoundation: https://github.com/readium/ZIPFoundation.git @ 3.0.1
+  IntakeKit: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/.build/scratch/final-clone-2/Spikes/G03-Intake/IntakeKit
+
+2026-10-20 03:33:06.520 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:33:08.079350+1300 IntakeHarness[10684:43741215] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+Test Suite 'All tests' started at 2026-10-20 03:33:08.126.
+Test Suite 'All tests' passed at 2026-10-20 03:33:08.127.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Suite "in-app container layout (simulator)" started.
+◇ Test "Documents holds only the drop area; database, notes, knowledge and staging are private; Info.plist keys set" started.
+G03-EVIDENCE layout: documents=<app>/Documents database=<app>/Library/Application Support/Sylvia/Database/library.sqlite notes=<app>/Library/Application Support/Sylvia/Knowledge/Notes staging=<app>/Library/Application Support/Sylvia/Staging handoffInbox=<appgroup>/Intake/Handoffs
+G03-EVIDENCE layout: Documents contains 0 item(s): []
+G03-EVIDENCE layout: protection attributes (simulator): library.sqlite=none reported, library.sqlite-wal=none reported, library.sqlite-shm=none reported, Staging/=none reported, Staging/journal.json=absent, Knowledge/Notes/=none reported, Media/=none reported, <appgroup>/Intake/Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, handoff item=none reported
+G03-EVIDENCE layout: excluded from backup: Staging=true handoffInbox=true; backup-eligible: Database, Knowledge, Media
+✔ Test "Documents holds only the drop area; database, notes, knowledge and staging are private; Info.plist keys set" passed after 0.036 seconds.
+◇ Test "type resolution inside the app: what the system maps each Markdown extension to, and what intake accepts" started.
+G03-EVIDENCE types: UTType(filenameExtension: "md") in the harness app = net.daringfireball.markdown, dynamic=false
+G03-EVIDENCE types: UTType(filenameExtension: "markdown") in the harness app = dyn.ah62d4rv4ge8042pwrrwg875s, dynamic=true
+G03-EVIDENCE types: UTType(filenameExtension: "mdown") in the harness app = dyn.ah62d4rv4ge8043dts71a, dynamic=true
+✔ Test "type resolution inside the app: what the system maps each Markdown extension to, and what intake accepts" passed after 0.001 seconds.
+◇ Test "protection class of an APFS clone whose source has a different class (evidence only)" started.
+G03-EVIDENCE layout: clone protection (simulator): cloned=true sourceDir=none reported source=none reported targetDir=none reported clone=none reported
+✔ Test "protection class of an APFS clone whose source has a different class (evidence only)" passed after 0.005 seconds.
+◇ Test "removing everything in Documents (as Finder can) leaves the database untouched" started.
+✔ Test "removing everything in Documents (as Finder can) leaves the database untouched" passed after 0.003 seconds.
+✔ Suite "in-app container layout (simulator)" passed after 0.047 seconds.
+◇ Suite "large pack in the simulator (T42 simulator half)" started.
+◇ Test "validate and extract the >4 GiB pack with bounded memory" started.
+2026-10-20 03:33:08.178164+1300 IntakeHarness[10684:43741220] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+G03-EVIDENCE simulator validate: 4846059727 bytes, 7 entries, 1.9s, phys_footprint before 49.1 MiB, sampled peak 49.2 MiB (+0.1 MiB)
+G03-EVIDENCE simulator extract: 2.3s, part-01.caf 4831838986 bytes, sampled peak phys_footprint 49.1 MiB (-0.1 MiB over the pre-validation baseline); lifetime phys_footprint=49.1 MiB peak_phys_footprint=50.3 MiB max_rss=280.6 MiB
+✔ Test "validate and extract the >4 GiB pack with bounded memory" passed after 4.266 seconds.
+◇ Test "truncated and zero-padded copies of the >4 GiB pack are rejected" started.
+G03-EVIDENCE simulator truncation: 80 of 80 partial copies rejected; codes ["truncated_or_not_a_pack": 80]
+✔ Test "truncated and zero-padded copies of the >4 GiB pack are rejected" passed after 0.068 seconds.
+◇ Test "a 4.5 GiB file through the share extension's write routine into the real App Group inbox, bounded memory" started.
+G03-EVIDENCE simulator handoff copy: 4831838986 bytes in 1.9s, phys_footprint before 49.0 MiB, sampled peak 49.0 MiB (+0.0 MiB)
+✔ Test "a 4.5 GiB file through the share extension's write routine into the real App Group inbox, bounded memory" passed after 1.967 seconds.
+✔ Suite "large pack in the simulator (T42 simulator half)" passed after 6.302 seconds.
+✔ Test run with 7 tests in 2 suites passed after 6.350 seconds.
+2026-10-20 03:33:14.487 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:33:14.487 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:33:14.757 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:33:15.107602+1300 IntakeHarnessUITests-Runner[10695:43741528] [Default] Running tests...
+objc[10695]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x10a9ec310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x10a950398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'All tests' started at 2026-10-20 03:33:17.032.
+Test Suite 'IntakeHarnessUITests.xctest' started at 2026-10-20 03:33:17.032.
+Test Suite 'FilesAppUITests' started at 2026-10-20 03:33:17.032.
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppOpenWithOffersTheHarness]' started.
+    t =     0.00s Start Test at 2026-10-20 03:33:17.033
+    t =     0.09s Set Up
+    t =     0.09s Open com.jevidon.sylvia.spike.intake
+    t =     0.09s     Launch com.jevidon.sylvia.spike.intake
+2026-10-20 03:33:17.161 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:33:17.162 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:33:17.187 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.34s         Setting up automation session
+    t =     0.84s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     2.05s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =     3.12s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =     3.13s         Checking existence of `"harness.summary" StaticText`
+    t =     3.17s Terminate com.jevidon.sylvia.spike.intake:10701
+2026-10-20 03:33:20.207 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:33:20.207 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     4.25s Open com.apple.DocumentsApp
+    t =     4.26s     Launch com.apple.DocumentsApp
+    t =     4.33s         Setting up automation session
+    t =     4.78s         Wait for com.apple.DocumentsApp to idle
+    t =     6.16s Waiting 10.0s for "Browse" Button to exist
+    t =     7.23s     Checking `Expect predicate `existsNoRetry == 1` for object "Browse" Button`
+    t =     7.23s         Checking existence of `"Browse" Button`
+    t =     7.26s Tap "Browse" Button
+    t =     7.26s     Wait for com.apple.DocumentsApp to idle
+    t =     7.26s     Find the "Browse" Button
+    t =     7.28s     Check for interrupting elements affecting "Browse" Button
+    t =     7.29s     Synthesize event
+    t =     7.68s     Wait for com.apple.DocumentsApp to idle
+    t =    10.21s Tap "Browse" Button
+    t =    10.21s     Wait for com.apple.DocumentsApp to idle
+    t =    10.22s     Find the "Browse" Button
+    t =    10.24s     Check for interrupting elements affecting "Browse" Button
+    t =    10.26s     Synthesize event
+    t =    10.55s     Wait for com.apple.DocumentsApp to idle
+    t =    11.09s Waiting 10.0s for "DOC.sidebar.item.On My iPhone" Cell to exist
+    t =    12.17s     Checking `Expect predicate `existsNoRetry == 1` for object "DOC.sidebar.item.On My iPhone" Cell`
+    t =    12.17s         Checking existence of `"DOC.sidebar.item.On My iPhone" Cell`
+    t =    12.21s Tap "DOC.sidebar.item.On My iPhone" Cell
+    t =    12.21s     Wait for com.apple.DocumentsApp to idle
+    t =    12.21s     Find the "DOC.sidebar.item.On My iPhone" Cell
+    t =    12.23s     Check for interrupting elements affecting "DOC.sidebar.item.On My iPhone" Cell
+    t =    12.26s     Synthesize event
+    t =    12.54s     Wait for com.apple.DocumentsApp to idle
+    t =    13.39s Waiting 30.0s for Cell (First Match) to exist
+    t =    14.47s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =    14.47s         Checking existence of `Cell (First Match)`
+    t =    14.49s Press Cell (First Match) for 1.5 seconds
+    t =    14.49s     Wait for com.apple.DocumentsApp to idle
+    t =    14.49s     Find the Cell (First Match)
+    t =    14.51s     Check for interrupting elements affecting "G03 Files Share.epub, epub" Cell
+    t =    14.53s     Synthesize event
+    t =    16.25s     Wait for com.apple.DocumentsApp to idle
+    t =    76.27s App animations complete notification not received, will attempt to continue.
+    t =    76.27s Waiting 10.0s for "Open With" Button to exist
+    t =    77.34s     Checking `Expect predicate `existsNoRetry == 1` for object "Open With" Button`
+    t =    77.34s         Checking existence of `"Open With" Button`
+    t =    77.37s Tap "Open With" Button
+    t =    77.37s     Wait for com.apple.DocumentsApp to idle
+    t =   137.40s App animations complete notification not received, will attempt to continue.
+    t =   137.40s     Find the "Open With" Button
+    t =   137.42s     Check for interrupting elements affecting "Open With" Button
+    t =   137.44s     Synthesize event
+    t =   137.73s     Wait for com.apple.DocumentsApp to idle
+    t =   197.76s App animations complete notification not received, will attempt to continue.
+    t =   199.77s Checking existence of `"Sylvia Intake Spike" Button`
+    t =   199.80s Requesting snapshot of accessibility hierarchy for app with pid 10737
+    t =   200.00s Requesting snapshot of accessibility hierarchy for app with pid 10737
+G03-EVIDENCE files app Open With menu: Button, 0x117acee40, {{40.0, 475.4}, {250.0, 42.0}}, label: 'No Apps Available', Disabled | Button, 0x117acf200, {{40.0, 538.4}, {250.0, 42.0}}, label: 'Preview with Quick Look'
+G03-EVIDENCE files app Open With offers Sylvia Intake Spike: false
+    t =   200.05s Terminate com.apple.DocumentsApp:10737
+    t =   200.05s Unable to monitor animations
+    t =   200.05s Unable to monitor animations
+    t =   200.05s Unable to monitor animations
+    t =   201.05s Tear Down
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppOpenWithOffersTheHarness]' passed (201.082 seconds).
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppShareSheetOffersTheExtension]' started.
+    t =     0.00s Start Test at 2026-10-20 03:36:38.115
+    t =     0.01s Set Up
+    t =     0.01s Open com.jevidon.sylvia.spike.intake
+    t =     0.01s     Launch com.jevidon.sylvia.spike.intake
+2026-10-20 03:36:38.130 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:36:38.130 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:36:38.131 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.22s         Setting up automation session
+    t =     0.69s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     1.90s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =     2.97s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =     2.98s         Checking existence of `"harness.summary" StaticText`
+    t =     3.02s Terminate com.jevidon.sylvia.spike.intake:11155
+2026-10-20 03:36:41.140 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:36:41.140 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     4.11s Open com.apple.DocumentsApp
+    t =     4.11s     Launch com.apple.DocumentsApp
+    t =     4.19s         Setting up automation session
+    t =     4.60s         Wait for com.apple.DocumentsApp to idle
+    t =     5.87s Waiting 10.0s for "Browse" Button to exist
+    t =     6.94s     Checking `Expect predicate `existsNoRetry == 1` for object "Browse" Button`
+    t =     6.94s         Checking existence of `"Browse" Button`
+    t =     6.98s Tap "Browse" Button
+    t =     6.98s     Wait for com.apple.DocumentsApp to idle
+    t =     6.98s     Find the "Browse" Button
+    t =     7.00s     Check for interrupting elements affecting "Browse" Button
+    t =     7.02s     Synthesize event
+    t =     7.31s     Wait for com.apple.DocumentsApp to idle
+    t =     8.85s Tap "Browse" Button
+    t =     8.85s     Wait for com.apple.DocumentsApp to idle
+    t =     8.85s     Find the "Browse" Button
+    t =     8.88s     Check for interrupting elements affecting "Browse" Button
+    t =     8.90s     Synthesize event
+    t =     9.19s     Wait for com.apple.DocumentsApp to idle
+    t =     9.94s Waiting 10.0s for "DOC.sidebar.item.On My iPhone" Cell to exist
+    t =    11.02s     Checking `Expect predicate `existsNoRetry == 1` for object "DOC.sidebar.item.On My iPhone" Cell`
+    t =    11.02s         Checking existence of `"DOC.sidebar.item.On My iPhone" Cell`
+    t =    11.05s Tap "DOC.sidebar.item.On My iPhone" Cell
+    t =    11.05s     Wait for com.apple.DocumentsApp to idle
+    t =    11.05s     Find the "DOC.sidebar.item.On My iPhone" Cell
+    t =    11.08s     Check for interrupting elements affecting "DOC.sidebar.item.On My iPhone" Cell
+    t =    11.10s     Synthesize event
+    t =    11.39s     Wait for com.apple.DocumentsApp to idle
+    t =    12.31s Waiting 30.0s for Cell (First Match) to exist
+    t =    13.38s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =    13.38s         Checking existence of `Cell (First Match)`
+    t =    13.41s Press Cell (First Match) for 1.5 seconds
+    t =    13.41s     Wait for com.apple.DocumentsApp to idle
+    t =    13.41s     Find the Cell (First Match)
+    t =    13.43s     Check for interrupting elements affecting "G03 Files Share.epub, epub" Cell
+    t =    13.45s     Synthesize event
+    t =    15.17s     Wait for com.apple.DocumentsApp to idle
+    t =    75.19s App animations complete notification not received, will attempt to continue.
+    t =    75.19s Waiting 10.0s for "Share" Button to exist
+    t =    76.27s     Checking `Expect predicate `existsNoRetry == 1` for object "Share" Button`
+    t =    76.27s         Checking existence of `"Share" Button`
+    t =    76.29s Tap "Share" Button
+    t =    76.29s     Wait for com.apple.DocumentsApp to idle
+    t =   136.32s App animations complete notification not received, will attempt to continue.
+    t =   136.32s     Find the "Share" Button
+    t =   136.34s     Check for interrupting elements affecting "Share" Button
+    t =   136.37s     Synthesize event
+    t =   136.65s     Wait for com.apple.DocumentsApp to idle
+    t =   137.79s Waiting 15.0s for Cell (First Match) to exist
+    t =   138.86s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =   138.87s         Checking existence of `Cell (First Match)`
+    t =   138.91s Requesting snapshot of accessibility hierarchy for app with pid 11161
+    t =   139.10s Requesting snapshot of accessibility hierarchy for app with pid 11161
+G03-EVIDENCE files app share sheet (On My iPhone, G03 Files Share.epub): Cell, 0x1183cd400, {{27.3, 378.3}, {82.0, 138.3}}, identifier: 'shareCell', label: 'Sylvia Intake Spike' | Cell, 0x1183cdcc0, {{115.7, 378.3}, {82.0, 122.3}}, identifier: 'shareCell', label: 'More' | Cell, 0x1183ce6c0, {{27.3, 518.3}, {82.0, 138.3}}, identifier: 'actionGroupCell', label: 'Copy' | Cell, 0x1183cf0c0, {{115.7, 518.3}, {82.0, 138.3}}, identifier: 'actionGroupCell', label: 'Add Tags'
+G03-EVIDENCE files app share sheet offers Sylvia Intake Spike: true
+    t =   139.15s Find the Cell (First Match)
+    t =   139.18s Tap "shareCell" Cell
+    t =   139.18s     Wait for com.apple.DocumentsApp to idle
+    t =   139.18s     Find the "shareCell" Cell
+    t =   139.22s     Check for interrupting elements affecting "shareCell" Cell
+    t =   139.24s     Synthesize event
+    t =   139.54s     Wait for com.apple.DocumentsApp to idle
+    t =   139.54s Waiting 60.0s for "share.received" StaticText to exist
+    t =   140.62s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =   140.62s         Checking existence of `"share.received" StaticText`
+    t =   140.67s Find the "share.receivedDetail" StaticText
+G03-EVIDENCE files app share: extension reports '1 item(s), 997147 bytes. Open Sylvia to finish importing.'
+    t =   140.71s Find the "share.representations" StaticText
+G03-EVIDENCE files app share: Received as: items/0.epub: file_representation, in place (org.idpf.epub-container)
+    t =   140.74s Find the "share.protection" StaticText
+G03-EVIDENCE files app share: Protection: Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, items/0.epub=none reported
+    t =   140.77s Find the "share.receivedDetail" StaticText
+    t =   140.81s Tap "share.done" Button
+    t =   140.81s     Wait for com.apple.DocumentsApp to idle
+    t =   140.81s     Find the "share.done" Button
+    t =   140.85s     Check for interrupting elements affecting "share.done" Button
+    t =   140.88s     Synthesize event
+    t =   141.18s     Wait for com.apple.DocumentsApp to idle
+    t =   141.54s Terminate com.apple.DocumentsApp:11161
+    t =   142.63s Open com.jevidon.sylvia.spike.intake
+    t =   142.63s     Launch com.jevidon.sylvia.spike.intake
+2026-10-20 03:39:00.751 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:39:00.751 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:39:00.752 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =   142.85s         Setting up automation session
+    t =   143.32s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =   145.61s Checking `Expect predicate `label CONTAINS "accepted=1"` for object "harness.scanLog" StaticText`
+    t =   145.61s     Find the "harness.scanLog" StaticText
+    t =   145.65s Find the "harness.scanLog" StaticText
+    t =   145.67s Find the "harness.summary" StaticText
+G03-EVIDENCE files app share: harness scans launch requested 14:39:01.455Z, waited 0.0s, ran 0.0s -> launch: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 14:39:01.625Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0; summary jobs=1 staged=1 review=0 share=1
+    t =   145.68s Terminate com.jevidon.sylvia.spike.intake:11388
+2026-10-20 03:39:03.807 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:39:03.807 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =   146.78s Tear Down
+Test Case '-[IntakeHarnessUITests.FilesAppUITests testFilesAppShareSheetOffersTheExtension]' passed (146.813 seconds).
+Test Suite 'FilesAppUITests' passed at 2026-10-20 03:39:04.929.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 347.895 (347.897) seconds
+Test Suite 'ImportRoutesUITests' started at 2026-10-20 03:39:04.929.
+Test Case '-[IntakeHarnessUITests.ImportRoutesUITests testDocumentPickerImportsInPlaceAndFlagsTheSameFileAsDuplicate]' started.
+    t =     0.00s Start Test at 2026-10-20 03:39:04.930
+    t =     0.01s Set Up
+    t =     0.01s Open com.jevidon.sylvia.spike.intake
+    t =     0.01s     Launch com.jevidon.sylvia.spike.intake
+2026-10-20 03:39:04.942 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:39:04.942 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:39:04.944 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.22s         Setting up automation session
+    t =     0.69s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     1.90s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =     2.98s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =     2.98s         Checking existence of `"harness.summary" StaticText`
+    t =     3.02s Checking existence of `"harness.pick" Button`
+    t =     3.04s Find the "harness.pick" Button
+    t =     3.06s Checking existence of `"harness.pick" Button`
+    t =     3.07s Find the "harness.pick" Button
+    t =     3.09s Checking existence of `"harness.pick" Button`
+    t =     3.11s Find the "harness.pick" Button
+    t =     3.13s Checking existence of `"harness.pick" Button`
+    t =     3.14s Find the "harness.pick" Button
+    t =     3.17s Checking existence of `"harness.pick" Button`
+    t =     3.18s Find the "harness.pick" Button
+    t =     3.20s Checking existence of `"harness.pick" Button`
+    t =     3.21s Find the "harness.pick" Button
+    t =     3.24s Tap "harness.pick" Button
+    t =     3.24s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     3.24s     Find the "harness.pick" Button
+    t =     3.25s     Check for interrupting elements affecting "harness.pick" Button
+    t =     3.27s     Synthesize event
+    t =     3.56s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     3.93s Waiting 15.0s for "Browse" Button to exist
+    t =     5.01s     Checking `Expect predicate `existsNoRetry == 1` for object "Browse" Button`
+    t =     5.01s         Checking existence of `"Browse" Button`
+    t =     5.09s Tap "Browse" Button
+    t =     5.09s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     5.09s     Find the "Browse" Button
+    t =     5.15s     Check for interrupting elements affecting "Browse" Button
+    t =     5.19s     Synthesize event
+    t =     5.47s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     6.49s Find the "Browse" Button
+    t =     6.57s Tap "Browse" Button
+    t =     6.57s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     6.57s     Find the "Browse" Button
+    t =     6.64s     Check for interrupting elements affecting "Browse" Button
+    t =     6.67s     Synthesize event
+    t =     6.96s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     6.96s Waiting 15.0s for "DOC.sidebar.item.On My iPhone" Cell to exist
+    t =     8.04s     Checking `Expect predicate `existsNoRetry == 1` for object "DOC.sidebar.item.On My iPhone" Cell`
+    t =     8.04s         Checking existence of `"DOC.sidebar.item.On My iPhone" Cell`
+    t =     8.09s Tap "DOC.sidebar.item.On My iPhone" Cell
+    t =     8.09s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     8.10s     Find the "DOC.sidebar.item.On My iPhone" Cell
+    t =     8.14s     Check for interrupting elements affecting "DOC.sidebar.item.On My iPhone" Cell
+    t =     8.19s     Synthesize event
+    t =     8.48s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     8.48s Waiting 30.0s for Cell (First Match) to exist
+    t =     9.56s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =     9.56s         Checking existence of `Cell (First Match)`
+    t =     9.63s Tap Cell (First Match)
+    t =     9.63s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     9.63s     Find the Cell (First Match)
+    t =     9.71s     Check for interrupting elements affecting "G03 Files Share.epub, epub" Cell
+    t =     9.75s     Synthesize event
+    t =    10.04s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    10.53s Waiting 2.0s for "Open" Button to exist
+    t =    11.60s     Checking `Expect predicate `existsNoRetry == 1` for object "Open" Button`
+    t =    11.60s         Checking existence of `"Open" Button`
+    t =    11.64s         Capturing element debug description
+    t =    12.54s     Checking `Expect predicate `existsNoRetry == 1` for object "Open" Button`
+    t =    12.54s         Checking existence of `"Open" Button`
+    t =    12.58s         Capturing element debug description
+    t =    12.58s     Checking existence of `"Open" Button`
+    t =    12.62s Collecting debug information to assist test failure triage
+    t =    12.62s     Requesting snapshot of accessibility hierarchy for app with pid 11433
+    t =    13.71s Checking `Expect predicate `label CONTAINS "Picked file"` for object "harness.message" StaticText`
+    t =    13.71s     Find the "harness.message" StaticText
+    t =    13.74s Find the "harness.message" StaticText
+    t =    14.83s Checking `Expect predicate `label BEGINSWITH "pick 1:"` for object "harness.pickerDetail" StaticText`
+    t =    14.83s     Find the "harness.pickerDetail" StaticText
+    t =    14.85s Find the "harness.pickerDetail" StaticText
+G03-EVIDENCE document picker, first pick: 'Picked file staged: 1 file(s), state needs_review, 997147 bytes'; pick 1: picked from outside the app container; security-scoped access granted: true; source identity before and after the import equal (device, inode, size, modification time): true [device 16777230, inode 85635928, 997147 bytes, modified 1792420384.976462492]; source SHA-256 afterwards equals the imported bytes: true
+    t =    14.87s Checking existence of `"harness.pick" Button`
+    t =    14.88s Find the "harness.pick" Button
+    t =    14.90s Checking existence of `"harness.pick" Button`
+    t =    14.92s Find the "harness.pick" Button
+    t =    14.94s Checking existence of `"harness.pick" Button`
+    t =    14.95s Find the "harness.pick" Button
+    t =    14.97s Checking existence of `"harness.pick" Button`
+    t =    14.98s Find the "harness.pick" Button
+    t =    15.00s Checking existence of `"harness.pick" Button`
+    t =    15.01s Find the "harness.pick" Button
+    t =    15.03s Checking existence of `"harness.pick" Button`
+    t =    15.05s Find the "harness.pick" Button
+    t =    15.07s Tap "harness.pick" Button
+    t =    15.07s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    15.07s     Find the "harness.pick" Button
+    t =    15.08s     Check for interrupting elements affecting "harness.pick" Button
+    t =    15.10s     Synthesize event
+    t =    15.39s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    15.79s Waiting 15.0s for "Browse" Button to exist
+    t =    16.86s     Checking `Expect predicate `existsNoRetry == 1` for object "Browse" Button`
+    t =    16.86s         Checking existence of `"Browse" Button`
+    t =    16.94s Tap "Browse" Button
+    t =    16.94s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    16.94s     Find the "Browse" Button
+    t =    17.00s     Check for interrupting elements affecting "Browse" Button
+    t =    17.04s     Synthesize event
+    t =    17.33s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    18.34s Find the "Browse" Button
+    t =    18.42s Tap "Browse" Button
+    t =    18.43s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    18.43s     Find the "Browse" Button
+    t =    18.50s     Check for interrupting elements affecting "Browse" Button
+    t =    18.54s     Synthesize event
+    t =    18.83s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    18.83s Waiting 15.0s for "DOC.sidebar.item.On My iPhone" Cell to exist
+    t =    19.89s     Checking `Expect predicate `existsNoRetry == 1` for object "DOC.sidebar.item.On My iPhone" Cell`
+    t =    19.89s         Checking existence of `"DOC.sidebar.item.On My iPhone" Cell`
+    t =    19.94s Tap "DOC.sidebar.item.On My iPhone" Cell
+    t =    19.94s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    19.95s     Find the "DOC.sidebar.item.On My iPhone" Cell
+    t =    19.99s     Check for interrupting elements affecting "DOC.sidebar.item.On My iPhone" Cell
+    t =    20.03s     Synthesize event
+    t =    20.32s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    20.32s Waiting 30.0s for Cell (First Match) to exist
+    t =    21.40s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =    21.40s         Checking existence of `Cell (First Match)`
+    t =    21.47s Tap Cell (First Match)
+    t =    21.47s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    21.47s     Find the Cell (First Match)
+    t =    21.54s     Check for interrupting elements affecting "G03 Files Share.epub, epub" Cell
+    t =    21.57s     Synthesize event
+    t =    21.87s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    22.29s Waiting 2.0s for "Open" Button to exist
+    t =    23.32s     Checking `Expect predicate `existsNoRetry == 1` for object "Open" Button`
+    t =    23.32s         Checking existence of `"Open" Button`
+    t =    23.36s         Capturing element debug description
+    t =    24.29s     Checking `Expect predicate `existsNoRetry == 1` for object "Open" Button`
+    t =    24.29s         Checking existence of `"Open" Button`
+    t =    24.33s         Capturing element debug description
+    t =    24.33s     Checking existence of `"Open" Button`
+    t =    24.37s Collecting debug information to assist test failure triage
+    t =    24.37s     Requesting snapshot of accessibility hierarchy for app with pid 11433
+    t =    25.45s Checking `Expect predicate `label CONTAINS "Picked file"` for object "harness.message" StaticText`
+    t =    25.45s     Find the "harness.message" StaticText
+    t =    25.47s Find the "harness.message" StaticText
+    t =    26.55s Checking `Expect predicate `label BEGINSWITH "pick 2:"` for object "harness.pickerDetail" StaticText`
+    t =    26.55s     Find the "harness.pickerDetail" StaticText
+    t =    26.58s Find the "harness.pickerDetail" StaticText
+G03-EVIDENCE document picker, same file again: 'Picked file staged: 1 file(s), state needs_review, 997147 bytes'; pick 2: picked from outside the app container; security-scoped access granted: true; source identity before and after the import equal (device, inode, size, modification time): true [device 16777230, inode 85635928, 997147 bytes, modified 1792420384.976462492]; source SHA-256 afterwards equals the imported bytes: true
+    t =    26.59s Find the "harness.summary" StaticText
+G03-EVIDENCE document picker: app summary jobs=3 staged=1 review=2 share=1
+    t =    26.61s Tear Down
+Test Case '-[IntakeHarnessUITests.ImportRoutesUITests testDocumentPickerImportsInPlaceAndFlagsTheSameFileAsDuplicate]' passed (26.831 seconds).
+Test Case '-[IntakeHarnessUITests.ImportRoutesUITests testRawFileInDropAreaImportsAndStaysUntilRemoved]' started.
+    t =     0.00s Start Test at 2026-10-20 03:39:31.762
+    t =     0.02s Set Up
+    t =     0.02s Open com.jevidon.sylvia.spike.intake
+    t =     0.02s     Launch com.jevidon.sylvia.spike.intake
+    t =     0.02s         Terminate com.jevidon.sylvia.spike.intake:11433
+2026-10-20 03:39:31.790 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:39:31.791 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:39:32.875 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:39:32.875 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:39:32.876 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.33s         Setting up automation session
+    t =     1.79s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     3.00s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =     4.06s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =     4.06s         Checking existence of `"harness.summary" StaticText`
+    t =     4.10s Checking existence of `"harness.placeDropFile" Button`
+    t =     4.12s Swipe up Target Application 'com.jevidon.sylvia.spike.intake'
+    t =     4.12s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     4.12s     Find the Target Application 'com.jevidon.sylvia.spike.intake'
+    t =     4.13s     Check for interrupting elements affecting "Sylvia Intake Spike" Application
+    t =     4.15s     Synthesize event
+    t =     4.57s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     5.10s Checking existence of `"harness.placeDropFile" Button`
+    t =     5.12s Find the "harness.placeDropFile" Button
+    t =     5.15s Checking existence of `"harness.placeDropFile" Button`
+    t =     5.17s Find the "harness.placeDropFile" Button
+    t =     5.19s Checking existence of `"harness.placeDropFile" Button`
+    t =     5.21s Find the "harness.placeDropFile" Button
+    t =     5.23s Checking existence of `"harness.placeDropFile" Button`
+    t =     5.25s Find the "harness.placeDropFile" Button
+    t =     5.27s Checking existence of `"harness.placeDropFile" Button`
+    t =     5.29s Find the "harness.placeDropFile" Button
+    t =     5.31s Tap "harness.placeDropFile" Button
+    t =     5.31s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     5.31s     Find the "harness.placeDropFile" Button
+    t =     5.33s     Check for interrupting elements affecting "harness.placeDropFile" Button
+    t =     5.35s     Synthesize event
+    t =     5.64s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     6.96s Checking `Expect predicate `label CONTAINS "Placed G03 Finder Copy.epub"` for object "harness.message" StaticText`
+    t =     6.96s     Find the "harness.message" StaticText
+    t =     6.99s Find the "harness.message" StaticText
+    t =     7.00s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.02s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.04s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.06s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.08s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.10s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.13s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.14s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.17s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.18s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.21s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.22s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.25s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.27s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.29s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.31s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.33s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.35s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.37s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.39s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.41s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     7.43s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.46s Tap "harness.import.G03 Finder Copy.epub" Button
+    t =     7.46s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     7.46s     Find the "harness.import.G03 Finder Copy.epub" Button
+    t =     7.48s     Check for interrupting elements affecting "harness.import.G03 Finder Copy.epub" Button
+    t =     7.50s     Synthesize event
+    t =     7.79s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     8.84s Checking `Expect predicate `label CONTAINS "Imported G03 Finder Copy.epub"` for object "harness.message" StaticText`
+    t =     8.85s     Find the "harness.message" StaticText
+    t =     8.87s Find the "harness.message" StaticText
+G03-EVIDENCE raw drop-area file: 'Imported G03 Finder Copy.epub: 1 files, state staged, route documents_file'
+    t =     8.89s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =     8.91s Checking existence of `"harness.placeDropFile" Button`
+    t =     8.92s Find the "harness.placeDropFile" Button
+    t =     8.95s Checking existence of `"harness.placeDropFile" Button`
+    t =     8.97s Find the "harness.placeDropFile" Button
+    t =     8.99s Checking existence of `"harness.placeDropFile" Button`
+    t =     9.01s Find the "harness.placeDropFile" Button
+    t =     9.03s Checking existence of `"harness.placeDropFile" Button`
+    t =     9.05s Find the "harness.placeDropFile" Button
+    t =     9.07s Checking existence of `"harness.placeDropFile" Button`
+    t =     9.09s Find the "harness.placeDropFile" Button
+    t =     9.11s Checking existence of `"harness.placeDropFile" Button`
+    t =     9.13s Find the "harness.placeDropFile" Button
+    t =     9.16s Tap "harness.placeDropFile" Button
+    t =     9.16s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     9.16s     Find the "harness.placeDropFile" Button
+    t =     9.18s     Check for interrupting elements affecting "harness.placeDropFile" Button
+    t =     9.20s     Synthesize event
+    t =     9.49s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    10.78s Checking `Expect predicate `label CONTAINS "Placed G03 Finder Copy.epub"` for object "harness.message" StaticText`
+    t =    10.78s     Find the "harness.message" StaticText
+    t =    10.81s Find the "harness.message" StaticText
+    t =    10.83s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    10.84s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    10.87s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    10.89s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    10.91s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    10.93s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    10.95s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    10.97s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    10.99s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    11.01s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    11.03s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    11.05s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    11.07s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    11.09s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    11.11s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    11.13s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    11.16s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    11.17s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    11.20s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    11.22s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    11.24s Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    11.26s Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    11.28s Tap "harness.import.G03 Finder Copy.epub" Button
+    t =    11.28s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    11.28s     Find the "harness.import.G03 Finder Copy.epub" Button
+    t =    11.30s     Check for interrupting elements affecting "harness.import.G03 Finder Copy.epub" Button
+    t =    11.32s     Synthesize event
+    t =    11.61s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    12.67s Checking `Expect predicate `label CONTAINS "Imported G03 Finder Copy.epub"` for object "harness.message" StaticText`
+    t =    12.67s     Find the "harness.message" StaticText
+    t =    12.70s Find the "harness.message" StaticText
+G03-EVIDENCE raw drop-area file, the same bytes again: 'Imported G03 Finder Copy.epub: 1 files, state needs_review, route documents_file'
+    t =    12.72s Checking existence of `"harness.remove.G03 Finder Copy.epub" Button`
+    t =    12.74s Find the "harness.remove.G03 Finder Copy.epub" Button
+    t =    12.76s Checking existence of `"harness.remove.G03 Finder Copy.epub" Button`
+    t =    12.78s Find the "harness.remove.G03 Finder Copy.epub" Button
+    t =    12.80s Checking existence of `"harness.remove.G03 Finder Copy.epub" Button`
+    t =    12.82s Find the "harness.remove.G03 Finder Copy.epub" Button
+    t =    12.84s Checking existence of `"harness.remove.G03 Finder Copy.epub" Button`
+    t =    12.86s Find the "harness.remove.G03 Finder Copy.epub" Button
+    t =    12.88s Checking existence of `"harness.remove.G03 Finder Copy.epub" Button`
+    t =    12.90s Find the "harness.remove.G03 Finder Copy.epub" Button
+    t =    12.93s Checking existence of `"harness.remove.G03 Finder Copy.epub" Button`
+    t =    12.94s Find the "harness.remove.G03 Finder Copy.epub" Button
+    t =    12.97s Tap "harness.remove.G03 Finder Copy.epub" Button
+    t =    12.97s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    12.97s     Find the "harness.remove.G03 Finder Copy.epub" Button
+    t =    12.99s     Check for interrupting elements affecting "harness.remove.G03 Finder Copy.epub" Button
+    t =    13.01s     Synthesize event
+    t =    13.30s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    14.37s Checking `Expect predicate `exists == 0` for object "harness.import.G03 Finder Copy.epub" Button`
+    t =    14.37s     Checking existence of `"harness.import.G03 Finder Copy.epub" Button`
+    t =    14.39s Find the "harness.summary" StaticText
+G03-EVIDENCE raw drop-area file: removed by the user; app summary jobs=5 staged=2 review=3 share=1
+    t =    14.41s Tear Down
+Test Case '-[IntakeHarnessUITests.ImportRoutesUITests testRawFileInDropAreaImportsAndStaysUntilRemoved]' passed (14.636 seconds).
+Test Suite 'ImportRoutesUITests' passed at 2026-10-20 03:39:46.398.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 41.467 (41.468) seconds
+Test Suite 'ShareSheetUITests' started at 2026-10-20 03:39:46.398.
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testCancelMidCopyShowsFallbackAndClaimsNothing]' started.
+    t =     0.00s Start Test at 2026-10-20 03:39:46.399
+    t =     0.02s Set Up
+    t =     0.02s Open com.jevidon.sylvia.spike.intake
+    t =     0.02s     Launch com.jevidon.sylvia.spike.intake
+    t =     0.02s         Terminate com.jevidon.sylvia.spike.intake:11488
+2026-10-20 03:39:46.429 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:39:46.429 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:39:47.497 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:39:47.497 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:39:47.498 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.31s         Setting up automation session
+    t =     1.78s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     3.00s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =     4.04s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =     4.04s         Checking existence of `"harness.summary" StaticText`
+    t =     4.09s Find the "harness.summary" StaticText
+    t =     4.10s Checking existence of `"harness.share" Button`
+    t =     4.12s Find the "harness.share" Button
+    t =     4.14s Checking existence of `"harness.share" Button`
+    t =     4.15s Find the "harness.share" Button
+    t =     4.18s Checking existence of `"harness.share" Button`
+    t =     4.19s Find the "harness.share" Button
+    t =     4.21s Checking existence of `"harness.share" Button`
+    t =     4.22s Find the "harness.share" Button
+    t =     4.25s Tap "harness.share" Button
+    t =     4.25s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     4.25s     Find the "harness.share" Button
+    t =     4.26s     Check for interrupting elements affecting "harness.share" Button
+    t =     4.28s     Synthesize event
+    t =     4.57s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     9.19s Waiting 15.0s for Cell (First Match) to exist
+    t =    10.26s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =    10.26s         Checking existence of `Cell (First Match)`
+    t =    10.33s Find the Cell (First Match)
+    t =    10.40s Tap "shareCell" Cell
+    t =    10.40s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    10.40s     Find the "shareCell" Cell
+    t =    10.46s     Check for interrupting elements affecting "shareCell" Cell
+    t =    10.48s     Synthesize event
+    t =    10.77s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    10.77s Waiting 60.0s for "share.copying" StaticText to exist
+    t =    11.83s     Checking `Expect predicate `existsNoRetry == 1` for object "share.copying" StaticText`
+    t =    11.83s         Checking existence of `"share.copying" StaticText`
+    t =    11.88s Tap "share.cancel" Button
+    t =    11.88s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    11.88s     Find the "share.cancel" Button
+    t =    11.92s     Check for interrupting elements affecting "share.cancel" Button
+    t =    11.95s     Synthesize event
+    t =    12.25s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    12.25s Waiting 60.0s for "share.notReceived" StaticText to exist
+    t =    13.29s     Checking `Expect predicate `existsNoRetry == 1` for object "share.notReceived" StaticText`
+    t =    13.29s         Checking existence of `"share.notReceived" StaticText`
+    t =    13.34s Checking existence of `"share.received" StaticText`
+    t =    13.38s Find the "share.notReceived" StaticText
+    t =    13.41s Find the "share.reason" StaticText
+G03-EVIDENCE cancel mid-copy: extension shows 'Not received. Nothing was saved to Sylvia.' / 'The copy was cancelled.'
+    t =    13.45s Tap "share.done" Button
+    t =    13.45s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    13.45s     Find the "share.done" Button
+    t =    13.48s     Check for interrupting elements affecting "share.done" Button
+    t =    13.52s     Synthesize event
+    t =    13.81s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    14.13s Waiting 5.0s for "header.closeButton" Button to exist
+    t =    15.18s     Checking `Expect predicate `existsNoRetry == 1` for object "header.closeButton" Button`
+    t =    15.18s         Checking existence of `"header.closeButton" Button`
+    t =    15.22s Find the "header.closeButton" Button
+    t =    15.25s Tap "header.closeButton" Button
+    t =    15.25s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    15.25s     Find the "header.closeButton" Button
+    t =    15.28s     Check for interrupting elements affecting "header.closeButton" Button
+    t =    15.31s     Synthesize event
+    t =    15.60s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    16.93s Checking existence of `"harness.scan" Button`
+    t =    16.94s Find the "harness.scan" Button
+    t =    16.96s Checking existence of `"harness.scan" Button`
+    t =    16.98s Find the "harness.scan" Button
+    t =    17.00s Checking existence of `"harness.scan" Button`
+    t =    17.01s Find the "harness.scan" Button
+    t =    18.08s Checking `Expect predicate `hittable == 1` for object "harness.scan" Button`
+    t =    18.08s     Find the "harness.scan" Button
+    t =    18.10s Tap "harness.scan" Button
+    t =    18.10s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    18.11s     Find the "harness.scan" Button
+    t =    18.12s     Check for interrupting elements affecting "harness.scan" Button
+    t =    18.14s     Synthesize event
+    t =    18.43s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    21.68s Find the "harness.summary" StaticText
+    t =    21.70s Tear Down
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testCancelMidCopyShowsFallbackAndClaimsNothing]' passed (21.936 seconds).
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testCancelWhileProviderIsStillDelivering]' started.
+    t =     0.00s Start Test at 2026-10-20 03:40:08.335
+    t =     0.02s Set Up
+    t =     0.02s Open com.jevidon.sylvia.spike.intake
+    t =     0.02s     Launch com.jevidon.sylvia.spike.intake
+    t =     0.02s         Terminate com.jevidon.sylvia.spike.intake:11561
+2026-10-20 03:40:08.366 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:40:08.366 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:40:09.395 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:40:09.395 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:40:09.397 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.27s         Setting up automation session
+    t =     1.75s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     2.98s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =     4.03s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =     4.03s         Checking existence of `"harness.summary" StaticText`
+    t =     4.07s Find the "harness.summary" StaticText
+    t =     4.09s Checking existence of `"harness.shareSlow" Button`
+    t =     4.10s Swipe up Target Application 'com.jevidon.sylvia.spike.intake'
+    t =     4.10s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     4.10s     Find the Target Application 'com.jevidon.sylvia.spike.intake'
+    t =     4.12s     Check for interrupting elements affecting "Sylvia Intake Spike" Application
+    t =     4.13s     Synthesize event
+    t =     4.55s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     5.06s Checking existence of `"harness.shareSlow" Button`
+    t =     5.08s Find the "harness.shareSlow" Button
+    t =     5.10s Checking existence of `"harness.shareSlow" Button`
+    t =     5.12s Find the "harness.shareSlow" Button
+    t =     5.14s Checking existence of `"harness.shareSlow" Button`
+    t =     5.16s Find the "harness.shareSlow" Button
+    t =     5.18s Tap "harness.shareSlow" Button
+    t =     5.18s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     5.18s     Find the "harness.shareSlow" Button
+    t =     5.20s     Check for interrupting elements affecting "harness.shareSlow" Button
+    t =     5.22s     Synthesize event
+    t =     5.51s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     6.26s Waiting 15.0s for Cell (First Match) to exist
+    t =     7.28s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =     7.28s         Checking existence of `Cell (First Match)`
+    t =     7.36s Find the Cell (First Match)
+    t =     7.43s Tap "shareCell" Cell
+    t =     7.43s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     7.43s     Find the "shareCell" Cell
+    t =     7.49s     Check for interrupting elements affecting "shareCell" Cell
+    t =     7.52s     Synthesize event
+    t =     7.81s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     7.81s Waiting 60.0s for "share.copying" StaticText to exist
+    t =     8.86s     Checking `Expect predicate `existsNoRetry == 1` for object "share.copying" StaticText`
+    t =     8.86s         Checking existence of `"share.copying" StaticText`
+    t =    10.92s Find the "share.copiedBytes" StaticText
+    t =    10.96s Tap "share.cancel" Button
+    t =    10.96s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    10.96s     Find the "share.cancel" Button
+    t =    11.00s     Check for interrupting elements affecting "share.cancel" Button
+    t =    11.03s     Synthesize event
+    t =    11.32s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    11.33s Waiting 20.0s for "share.notReceived" StaticText to exist
+    t =    12.37s     Checking `Expect predicate `existsNoRetry == 1` for object "share.notReceived" StaticText`
+    t =    12.37s         Checking existence of `"share.notReceived" StaticText`
+    t =    12.42s Find the "share.reason" StaticText
+    t =    12.45s Checking existence of `"share.received" StaticText`
+    t =    12.49s Find the "share.notReceived" StaticText
+G03-EVIDENCE cancel before delivery: extension showed 'Zero KB copied' when Cancel was tapped; 'Not received. Nothing was saved to Sylvia.' / 'The copy was cancelled.' 1.5 s after the tap (provider due to deliver at 90 s)
+    t =    12.52s Tap "share.done" Button
+    t =    12.52s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    12.52s     Find the "share.done" Button
+    t =    12.56s     Check for interrupting elements affecting "share.done" Button
+    t =    12.59s     Synthesize event
+    t =    12.89s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    13.21s Waiting 5.0s for "header.closeButton" Button to exist
+    t =    14.28s     Checking `Expect predicate `existsNoRetry == 1` for object "header.closeButton" Button`
+    t =    14.28s         Checking existence of `"header.closeButton" Button`
+    t =    14.31s Find the "header.closeButton" Button
+    t =    14.34s Tap "header.closeButton" Button
+    t =    14.35s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    14.35s     Find the "header.closeButton" Button
+    t =    14.37s     Check for interrupting elements affecting "header.closeButton" Button
+    t =    14.40s     Synthesize event
+    t =    14.69s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    16.03s Checking existence of `"harness.scan" Button`
+    t =    16.05s Find the "harness.scan" Button
+    t =    16.07s Checking existence of `"harness.scan" Button`
+    t =    16.09s Find the "harness.scan" Button
+    t =    16.11s Checking existence of `"harness.scan" Button`
+    t =    16.13s Find the "harness.scan" Button
+    t =    17.21s Checking `Expect predicate `hittable == 1` for object "harness.scan" Button`
+    t =    17.21s     Find the "harness.scan" Button
+    t =    17.24s Tap "harness.scan" Button
+    t =    17.24s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    17.24s     Find the "harness.scan" Button
+    t =    17.26s     Check for interrupting elements affecting "harness.scan" Button
+    t =    17.28s     Synthesize event
+    t =    17.57s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    20.83s Find the "harness.summary" StaticText
+    t =    20.85s Checking existence of `"harness.slowProvider" StaticText`
+    t =    20.87s Find the "harness.slowProvider" StaticText
+    t =    20.89s Find the "harness.slowProvider" StaticText
+    t =    20.91s Find the "harness.summary" StaticText
+G03-EVIDENCE cancel before delivery: harness-side provider loads: load 1: started; app summary jobs=5 staged=2 review=3 share=1
+    t =    20.93s Tear Down
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testCancelWhileProviderIsStillDelivering]' passed (21.154 seconds).
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testExtensionMemoryDoesNotGrowWithFileSize]' started.
+    t =     0.00s Start Test at 2026-10-20 03:40:29.489
+    t =     0.02s Set Up
+    t =     0.02s Open com.jevidon.sylvia.spike.intake
+    t =     0.02s     Launch com.jevidon.sylvia.spike.intake
+    t =     0.02s         Terminate com.jevidon.sylvia.spike.intake:11595
+2026-10-20 03:40:29.520 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:40:29.520 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:40:30.570 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:40:30.570 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:40:30.571 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.29s         Setting up automation session
+    t =     1.76s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     2.99s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =     4.04s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =     4.04s         Checking existence of `"harness.summary" StaticText`
+    t =     4.08s Find the "harness.summary" StaticText
+    t =     4.09s Checking existence of `"harness.share" Button`
+    t =     4.11s Find the "harness.share" Button
+    t =     4.13s Checking existence of `"harness.share" Button`
+    t =     4.15s Find the "harness.share" Button
+    t =     4.17s Checking existence of `"harness.share" Button`
+    t =     4.18s Find the "harness.share" Button
+    t =     4.20s Checking existence of `"harness.share" Button`
+    t =     4.22s Find the "harness.share" Button
+    t =     4.24s Tap "harness.share" Button
+    t =     4.24s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     4.24s     Find the "harness.share" Button
+    t =     4.26s     Check for interrupting elements affecting "harness.share" Button
+    t =     4.27s     Synthesize event
+    t =     4.56s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     4.66s Waiting 15.0s for Cell (First Match) to exist
+    t =     5.70s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =     5.70s         Checking existence of `Cell (First Match)`
+    t =     5.77s Find the Cell (First Match)
+    t =     5.83s Tap "shareCell" Cell
+    t =     5.83s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     5.84s     Find the "shareCell" Cell
+    t =     5.89s     Check for interrupting elements affecting "shareCell" Cell
+    t =     5.92s     Synthesize event
+    t =     6.21s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     6.21s Waiting 600.0s for "share.received" StaticText to exist
+    t =     7.27s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =     7.27s         Checking existence of `"share.received" StaticText`
+    t =     7.32s Find the "share.peakFootprint" StaticText
+G03-EVIDENCE share 67108864 bytes: extension Extension footprint: start 25348160 bytes, peak 32049240 bytes
+    t =     7.36s Find the "share.availableMemory" StaticText
+G03-EVIDENCE share 67108864 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+    t =     7.39s Find the "share.footprintSeries" StaticText
+G03-EVIDENCE share 67108864 bytes: Footprint MiB by MiB copied: 1:26
+    t =     7.42s Find the "share.receivedDetail" StaticText
+G03-EVIDENCE share 67108864 bytes: extension reports '1 item(s), 67108864 bytes. Open Sylvia to finish importing.'
+G03-EVIDENCE share 67108864 bytes: Done tapped at 14:40:36.949Z
+    t =     7.46s Tap "share.done" Button
+    t =     7.46s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     7.46s     Find the "share.done" Button
+    t =     7.50s     Check for interrupting elements affecting "share.done" Button
+    t =     7.53s     Synthesize event
+    t =     7.82s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     9.22s Checking `Expect predicate `label CONTAINS "share=2"` for object "harness.summary" StaticText`
+    t =     9.22s     Find the "harness.summary" StaticText
+    t =     9.24s Find the "harness.scanLog" StaticText
+G03-EVIDENCE share 67108864 bytes: app scans: launch requested 14:40:31.268Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 14:40:31.439Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 14:40:37.649Z, waited 0.0s, ran 0.1s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+    t =     9.25s Terminate com.jevidon.sylvia.spike.intake:11637
+2026-10-20 03:40:38.751 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:40:38.752 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    10.34s Open com.jevidon.sylvia.spike.intake
+    t =    10.34s     Launch com.jevidon.sylvia.spike.intake
+2026-10-20 03:40:39.831 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:40:39.831 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:40:39.832 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    10.55s         Setting up automation session
+    t =    11.02s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    12.24s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =    13.29s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =    13.29s         Checking existence of `"harness.summary" StaticText`
+    t =    13.33s Find the "harness.summary" StaticText
+    t =    13.35s Checking existence of `"harness.share" Button`
+    t =    13.36s Find the "harness.share" Button
+    t =    13.38s Checking existence of `"harness.share" Button`
+    t =    13.40s Find the "harness.share" Button
+    t =    13.42s Checking existence of `"harness.share" Button`
+    t =    13.43s Find the "harness.share" Button
+    t =    13.45s Checking existence of `"harness.share" Button`
+    t =    13.47s Find the "harness.share" Button
+    t =    13.49s Tap "harness.share" Button
+    t =    13.49s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    13.49s     Find the "harness.share" Button
+    t =    13.51s     Check for interrupting elements affecting "harness.share" Button
+    t =    13.53s     Synthesize event
+    t =    13.82s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    15.35s Waiting 15.0s for Cell (First Match) to exist
+    t =    16.40s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =    16.40s         Checking existence of `Cell (First Match)`
+    t =    16.47s Find the Cell (First Match)
+    t =    16.54s Tap "shareCell" Cell
+    t =    16.54s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    16.54s     Find the "shareCell" Cell
+    t =    16.59s     Check for interrupting elements affecting "shareCell" Cell
+    t =    16.62s     Synthesize event
+    t =    16.91s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    16.91s Waiting 600.0s for "share.received" StaticText to exist
+    t =    17.99s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =    17.99s         Checking existence of `"share.received" StaticText`
+    t =    18.04s Find the "share.peakFootprint" StaticText
+G03-EVIDENCE share 1073741824 bytes: extension Extension footprint: start 25348184 bytes, peak 39602264 bytes
+    t =    18.07s Find the "share.availableMemory" StaticText
+G03-EVIDENCE share 1073741824 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+    t =    18.11s Find the "share.footprintSeries" StaticText
+G03-EVIDENCE share 1073741824 bytes: Footprint MiB by MiB copied: 1:26
+    t =    18.14s Find the "share.receivedDetail" StaticText
+G03-EVIDENCE share 1073741824 bytes: extension reports '1 item(s), 1073741824 bytes. Open Sylvia to finish importing.'
+G03-EVIDENCE share 1073741824 bytes: Done tapped at 14:40:47.665Z
+    t =    18.18s Tap "share.done" Button
+    t =    18.18s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    18.18s     Find the "share.done" Button
+    t =    18.21s     Check for interrupting elements affecting "share.done" Button
+    t =    18.25s     Synthesize event
+    t =    18.54s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    19.95s Checking `Expect predicate `label CONTAINS "share=3"` for object "harness.summary" StaticText`
+    t =    19.95s     Find the "harness.summary" StaticText
+    t =    19.97s Find the "harness.scanLog" StaticText
+G03-EVIDENCE share 1073741824 bytes: app scans: launch requested 14:40:40.511Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 14:40:40.698Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 14:40:48.365Z, waited 0.0s, ran 0.4s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+    t =    19.98s Terminate com.jevidon.sylvia.spike.intake:11649
+2026-10-20 03:40:49.482 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:40:49.482 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    21.02s Open com.jevidon.sylvia.spike.intake
+    t =    21.02s     Launch com.jevidon.sylvia.spike.intake
+2026-10-20 03:40:50.514 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:40:50.514 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:40:50.515 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    21.23s         Setting up automation session
+    t =    21.70s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    22.91s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =    23.94s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =    23.94s         Checking existence of `"harness.summary" StaticText`
+    t =    23.98s Find the "harness.summary" StaticText
+    t =    24.00s Checking existence of `"harness.share" Button`
+    t =    24.01s Find the "harness.share" Button
+    t =    24.04s Checking existence of `"harness.share" Button`
+    t =    24.05s Find the "harness.share" Button
+    t =    24.07s Checking existence of `"harness.share" Button`
+    t =    24.09s Find the "harness.share" Button
+    t =    24.11s Checking existence of `"harness.share" Button`
+    t =    24.12s Find the "harness.share" Button
+    t =    24.15s Tap "harness.share" Button
+    t =    24.15s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    24.15s     Find the "harness.share" Button
+    t =    24.16s     Check for interrupting elements affecting "harness.share" Button
+    t =    24.18s     Synthesize event
+    t =    24.47s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    30.52s Waiting 15.0s for Cell (First Match) to exist
+    t =    31.57s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =    31.57s         Checking existence of `Cell (First Match)`
+    t =    31.64s Find the Cell (First Match)
+    t =    31.70s Tap "shareCell" Cell
+    t =    31.70s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    31.71s     Find the "shareCell" Cell
+    t =    31.76s     Check for interrupting elements affecting "shareCell" Cell
+    t =    31.79s     Synthesize event
+    t =    32.08s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    32.08s Waiting 600.0s for "share.received" StaticText to exist
+    t =    33.13s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =    33.13s         Checking existence of `"share.received" StaticText`
+    t =    33.18s         Capturing element debug description
+    t =    34.14s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =    34.14s         Checking existence of `"share.received" StaticText`
+    t =    34.18s         Capturing element debug description
+    t =    35.11s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =    35.12s         Checking existence of `"share.received" StaticText`
+    t =    35.16s Find the "share.peakFootprint" StaticText
+G03-EVIDENCE share 4294967297 bytes: extension Extension footprint: start 25299008 bytes, peak 47204608 bytes
+    t =    35.19s Find the "share.availableMemory" StaticText
+G03-EVIDENCE share 4294967297 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+    t =    35.22s Find the "share.footprintSeries" StaticText
+G03-EVIDENCE share 4294967297 bytes: Footprint MiB by MiB copied: 1:26 1025:30 2049:44 3073:45
+    t =    35.26s Find the "share.receivedDetail" StaticText
+G03-EVIDENCE share 4294967297 bytes: extension reports '1 item(s), 4294967297 bytes. Open Sylvia to finish importing.'
+G03-EVIDENCE share 4294967297 bytes: Done tapped at 14:41:04.782Z
+    t =    35.29s Tap "share.done" Button
+    t =    35.29s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    35.30s     Find the "share.done" Button
+    t =    35.33s     Check for interrupting elements affecting "share.done" Button
+    t =    35.36s     Synthesize event
+    t =    35.65s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    37.04s Checking `Expect predicate `label CONTAINS "share=4"` for object "harness.summary" StaticText`
+    t =    37.04s     Find the "harness.summary" StaticText
+    t =    37.05s     Capturing element debug description
+    t =    37.11s         Requesting snapshot of accessibility hierarchy for app with pid 11662
+    t =    37.13s         Find: Descendants matching type StaticText
+    t =    37.13s         Find: Elements matching predicate '"harness.summary" IN identifiers'
+    t =    37.14s         Requesting snapshot of accessibility hierarchy for app with pid 11662
+    t =    37.16s         Find: Descendants matching type StaticText
+    t =    37.16s         Requesting snapshot of accessibility hierarchy for app with pid 11662
+    t =    38.02s Checking `Expect predicate `label CONTAINS "share=4"` for object "harness.summary" StaticText`
+    t =    38.02s     Find the "harness.summary" StaticText
+    t =    38.04s Find the "harness.scanLog" StaticText
+G03-EVIDENCE share 4294967297 bytes: app scans: launch requested 14:40:51.208Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 14:40:51.381Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 14:41:05.482Z, waited 0.0s, ran 1.5s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+    t =    38.05s Terminate com.jevidon.sylvia.spike.intake:11662
+2026-10-20 03:41:07.551 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:41:07.551 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    39.14s Open com.jevidon.sylvia.spike.intake
+    t =    39.14s     Launch com.jevidon.sylvia.spike.intake
+2026-10-20 03:41:08.632 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:41:08.632 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:41:08.633 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    39.35s         Setting up automation session
+    t =    39.83s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    41.04s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =    42.12s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =    42.12s         Checking existence of `"harness.summary" StaticText`
+    t =    42.16s Find the "harness.summary" StaticText
+    t =    42.18s Checking existence of `"harness.share" Button`
+    t =    42.19s Find the "harness.share" Button
+    t =    42.22s Checking existence of `"harness.share" Button`
+    t =    42.23s Find the "harness.share" Button
+    t =    42.25s Checking existence of `"harness.share" Button`
+    t =    42.27s Find the "harness.share" Button
+    t =    42.29s Checking existence of `"harness.share" Button`
+    t =    42.30s Find the "harness.share" Button
+    t =    42.32s Tap "harness.share" Button
+    t =    42.32s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    42.32s     Find the "harness.share" Button
+    t =    42.34s     Check for interrupting elements affecting "harness.share" Button
+    t =    42.36s     Synthesize event
+    t =    42.65s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    54.88s Waiting 15.0s for Cell (First Match) to exist
+    t =    55.95s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =    55.95s         Checking existence of `Cell (First Match)`
+    t =    56.02s Find the Cell (First Match)
+    t =    56.08s Tap "shareCell" Cell
+    t =    56.08s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    56.08s     Find the "shareCell" Cell
+    t =    56.14s     Check for interrupting elements affecting "shareCell" Cell
+    t =    56.17s     Synthesize event
+    t =    56.46s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    56.46s Waiting 600.0s for "share.received" StaticText to exist
+    t =    57.51s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =    57.51s         Checking existence of `"share.received" StaticText`
+    t =    57.56s         Capturing element debug description
+    t =    58.52s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =    58.52s         Checking existence of `"share.received" StaticText`
+    t =    58.56s         Capturing element debug description
+    t =    59.53s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =    59.53s         Checking existence of `"share.received" StaticText`
+    t =    59.56s         Capturing element debug description
+    t =    60.52s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =    60.52s         Checking existence of `"share.received" StaticText`
+    t =    60.56s         Capturing element debug description
+    t =    61.51s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =    61.51s         Checking existence of `"share.received" StaticText`
+    t =    61.55s Find the "share.peakFootprint" StaticText
+G03-EVIDENCE share 8589934593 bytes: extension Extension footprint: start 25331776 bytes, peak 47352040 bytes
+    t =    61.58s Find the "share.availableMemory" StaticText
+G03-EVIDENCE share 8589934593 bytes: Available before the memory limit at start: os_proc_available_memory 0 bytes, task_vm_info.limit_bytes_remaining 0 bytes
+    t =    61.62s Find the "share.footprintSeries" StaticText
+G03-EVIDENCE share 8589934593 bytes: Footprint MiB by MiB copied: 1:26 1025:32 2049:45 3073:45 4097:45 5121:45 6145:45 7169:45
+    t =    61.65s Find the "share.receivedDetail" StaticText
+G03-EVIDENCE share 8589934593 bytes: extension reports '1 item(s), 8589934593 bytes. Open Sylvia to finish importing.'
+G03-EVIDENCE share 8589934593 bytes: Done tapped at 14:41:31.176Z
+    t =    61.69s Tap "share.done" Button
+    t =    61.69s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    61.69s     Find the "share.done" Button
+    t =    61.72s     Check for interrupting elements affecting "share.done" Button
+    t =    61.76s     Synthesize event
+    t =    62.05s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    63.47s Checking `Expect predicate `label CONTAINS "share=5"` for object "harness.summary" StaticText`
+    t =    63.47s     Find the "harness.summary" StaticText
+    t =    63.49s     Capturing element debug description
+    t =    63.55s         Requesting snapshot of accessibility hierarchy for app with pid 11676
+    t =    63.57s         Find: Descendants matching type StaticText
+    t =    63.57s         Find: Elements matching predicate '"harness.summary" IN identifiers'
+    t =    63.57s         Requesting snapshot of accessibility hierarchy for app with pid 11676
+    t =    63.59s         Find: Descendants matching type StaticText
+    t =    63.59s         Requesting snapshot of accessibility hierarchy for app with pid 11676
+    t =    64.50s Checking `Expect predicate `label CONTAINS "share=5"` for object "harness.summary" StaticText`
+    t =    64.50s     Find the "harness.summary" StaticText
+    t =    64.51s     Capturing element debug description
+    t =    64.57s         Requesting snapshot of accessibility hierarchy for app with pid 11676
+    t =    64.59s         Find: Descendants matching type StaticText
+    t =    64.59s         Find: Elements matching predicate '"harness.summary" IN identifiers'
+    t =    64.59s         Requesting snapshot of accessibility hierarchy for app with pid 11676
+    t =    64.61s         Find: Descendants matching type StaticText
+    t =    64.61s         Requesting snapshot of accessibility hierarchy for app with pid 11676
+    t =    65.40s Checking `Expect predicate `label CONTAINS "share=5"` for object "harness.summary" StaticText`
+    t =    65.40s     Find the "harness.summary" StaticText
+    t =    65.42s     Capturing element debug description
+    t =    65.48s         Requesting snapshot of accessibility hierarchy for app with pid 11676
+    t =    65.50s         Find: Descendants matching type StaticText
+    t =    65.50s         Find: Elements matching predicate '"harness.summary" IN identifiers'
+    t =    65.51s         Requesting snapshot of accessibility hierarchy for app with pid 11676
+    t =    65.52s         Find: Descendants matching type StaticText
+    t =    65.53s         Requesting snapshot of accessibility hierarchy for app with pid 11676
+    t =    66.40s Checking `Expect predicate `label CONTAINS "share=5"` for object "harness.summary" StaticText`
+    t =    66.41s     Find the "harness.summary" StaticText
+    t =    66.43s Find the "harness.scanLog" StaticText
+G03-EVIDENCE share 8589934593 bytes: app scans: launch requested 14:41:09.332Z, waited 0.0s, ran 0.0s -> launch: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | foreground requested 14:41:09.505Z, waited 0.0s, ran 0.0s -> foreground: accepted=0 recovered=0 inProgress=0 removed=0 rejected=0 | after share requested 14:41:31.882Z, waited 0.0s, ran 3.0s -> after share: accepted=1 recovered=0 inProgress=0 removed=0 rejected=0
+    t =    66.44s Terminate com.jevidon.sylvia.spike.intake:11676
+2026-10-20 03:41:35.937 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:41:35.937 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+G03-EVIDENCE extension peak growth from 64 MiB to 8 GiB + 1 byte: 15302800 bytes; from 4 GiB + 1 to 8 GiB + 1: 147432 bytes
+    t =    67.51s Tear Down
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testExtensionMemoryDoesNotGrowWithFileSize]' passed (67.561 seconds).
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testKillExtensionMidCopyClaimsNothing]' started.
+    t =     0.00s Start Test at 2026-10-20 03:41:37.050
+    t =     0.01s Set Up
+    t =     0.01s Open com.jevidon.sylvia.spike.intake
+    t =     0.01s     Launch com.jevidon.sylvia.spike.intake
+2026-10-20 03:41:37.063 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:41:37.063 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:41:37.065 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.22s         Setting up automation session
+    t =     0.69s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     1.92s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =     2.97s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =     2.97s         Checking existence of `"harness.summary" StaticText`
+    t =     3.01s Find the "harness.summary" StaticText
+    t =     3.02s Checking existence of `"harness.share" Button`
+    t =     3.04s Find the "harness.share" Button
+    t =     3.06s Checking existence of `"harness.share" Button`
+    t =     3.07s Find the "harness.share" Button
+    t =     3.10s Checking existence of `"harness.share" Button`
+    t =     3.11s Find the "harness.share" Button
+    t =     3.13s Checking existence of `"harness.share" Button`
+    t =     3.15s Find the "harness.share" Button
+    t =     3.17s Tap "harness.share" Button
+    t =     3.17s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     3.17s     Find the "harness.share" Button
+    t =     3.18s     Check for interrupting elements affecting "harness.share" Button
+    t =     3.20s     Synthesize event
+    t =     3.49s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     8.13s Waiting 15.0s for Cell (First Match) to exist
+    t =     9.21s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =     9.21s         Checking existence of `Cell (First Match)`
+    t =     9.28s Find the Cell (First Match)
+    t =     9.34s Tap "shareCell" Cell
+    t =     9.34s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     9.34s     Find the "shareCell" Cell
+    t =     9.40s     Check for interrupting elements affecting "shareCell" Cell
+    t =     9.43s     Synthesize event
+    t =     9.72s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     9.72s Waiting 60.0s for "share.copiedBytes" StaticText to exist
+    t =    10.80s     Checking `Expect predicate `existsNoRetry == 1` for object "share.copiedBytes" StaticText`
+    t =    10.80s         Checking existence of `"share.copiedBytes" StaticText`
+    t =    10.85s Find the "share.copiedBytes" StaticText
+    t =    10.88s Find the "share.copiedBytes" StaticText
+    t =    10.92s Find the "share.copiedBytes" StaticText
+G03-EVIDENCE kill mid-copy: SIGKILL sent to IntakeShare pid(s) [11734] in simulator 5BB75481-1294-4166-B9C4-D9071FBF3674 (host-wide IntakeShare processes: 1) after '2.01 GB copied'
+    t =    12.97s Checking existence of `"share.received" StaticText`
+    t =    13.00s Checking existence of `"share.done" Button`
+    t =    13.03s Waiting 5.0s for "header.closeButton" Button to exist
+    t =    14.09s     Checking `Expect predicate `existsNoRetry == 1` for object "header.closeButton" Button`
+    t =    14.09s         Checking existence of `"header.closeButton" Button`
+    t =    14.13s Find the "header.closeButton" Button
+    t =    14.16s Tap "header.closeButton" Button
+    t =    14.16s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    14.16s     Find the "header.closeButton" Button
+    t =    14.19s     Check for interrupting elements affecting "header.closeButton" Button
+    t =    14.22s     Synthesize event
+    t =    14.51s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    15.84s Checking existence of `"harness.scan" Button`
+    t =    15.86s Find the "harness.scan" Button
+    t =    15.89s Checking existence of `"harness.scan" Button`
+    t =    15.90s Find the "harness.scan" Button
+    t =    15.93s Checking existence of `"harness.scan" Button`
+    t =    15.94s Find the "harness.scan" Button
+    t =    17.03s Checking `Expect predicate `hittable == 1` for object "harness.scan" Button`
+    t =    17.03s     Find the "harness.scan" Button
+    t =    17.06s Tap "harness.scan" Button
+    t =    17.06s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    17.06s     Find the "harness.scan" Button
+    t =    17.09s     Check for interrupting elements affecting "harness.scan" Button
+    t =    17.11s     Synthesize event
+    t =    17.40s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =    18.71s Checking `Expect predicate `label CONTAINS "manual:"` for object "harness.lastScan" StaticText`
+    t =    18.71s     Find the "harness.lastScan" StaticText
+    t =    18.73s Find the "harness.lastScan" StaticText
+    t =    18.75s Find the "harness.summary" StaticText
+G03-EVIDENCE kill mid-copy: app scan after kill: manual: accepted=0 recovered=0 inProgress=1 removed=0 rejected=0; summary jobs=9 staged=6 review=3 share=5
+    t =    18.76s Find the "harness.summary" StaticText
+    t =    18.77s Tear Down
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testKillExtensionMidCopyClaimsNothing]' passed (18.996 seconds).
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testShareIntoExtensionIsReceivedAndImported]' started.
+    t =     0.00s Start Test at 2026-10-20 03:41:56.047
+    t =     0.02s Set Up
+    t =     0.02s Open com.jevidon.sylvia.spike.intake
+    t =     0.02s     Launch com.jevidon.sylvia.spike.intake
+    t =     0.02s         Terminate com.jevidon.sylvia.spike.intake:11728
+2026-10-20 03:41:56.073 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:41:56.073 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:41:57.146 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-20 03:41:57.146 xcodebuild[10646:43740668] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-20 03:41:57.147 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.31s         Setting up automation session
+    t =     1.78s         Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     2.98s Waiting 20.0s for "harness.summary" StaticText to exist
+    t =     4.03s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.summary" StaticText`
+    t =     4.04s         Checking existence of `"harness.summary" StaticText`
+    t =     4.08s Find the "harness.summary" StaticText
+    t =     4.09s Checking existence of `"harness.share" Button`
+    t =     4.11s Find the "harness.share" Button
+    t =     4.13s Checking existence of `"harness.share" Button`
+    t =     4.14s Find the "harness.share" Button
+    t =     4.17s Checking existence of `"harness.share" Button`
+    t =     4.18s Find the "harness.share" Button
+    t =     4.20s Checking existence of `"harness.share" Button`
+    t =     4.22s Find the "harness.share" Button
+    t =     4.24s Tap "harness.share" Button
+    t =     4.24s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     4.24s     Find the "harness.share" Button
+    t =     4.25s     Check for interrupting elements affecting "harness.share" Button
+    t =     4.27s     Synthesize event
+    t =     4.56s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     5.10s Waiting 15.0s for Cell (First Match) to exist
+    t =     6.15s     Checking `Expect predicate `existsNoRetry == 1` for object Cell (First Match)`
+    t =     6.15s         Checking existence of `Cell (First Match)`
+    t =     6.22s Find the Cell (First Match)
+    t =     6.28s Tap "shareCell" Cell
+    t =     6.28s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     6.28s     Find the "shareCell" Cell
+    t =     6.34s     Check for interrupting elements affecting "shareCell" Cell
+    t =     6.37s     Synthesize event
+    t =     6.65s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     6.65s Waiting 60.0s for "share.received" StaticText to exist
+    t =     7.70s     Checking `Expect predicate `existsNoRetry == 1` for object "share.received" StaticText`
+    t =     7.70s         Checking existence of `"share.received" StaticText`
+    t =     7.75s Checking existence of `"share.peakFootprint" StaticText`
+    t =     7.79s Find the "share.peakFootprint" StaticText
+G03-EVIDENCE share 3 MiB: extension says Extension footprint: start 25331800 bytes, peak 30197848 bytes
+    t =     7.82s Find the "share.receivedDetail" StaticText
+G03-EVIDENCE share 3 MiB: extension reports '1 item(s), 3145728 bytes. Open Sylvia to finish importing.'
+    t =     7.85s Find the "share.representations" StaticText
+G03-EVIDENCE share 3 MiB: Received as: items/0.epub: file_representation, in place (org.idpf.epub-container)
+    t =     7.89s Find the "share.protection" StaticText
+G03-EVIDENCE share 3 MiB: Protection: Handoffs/=none reported, handoff directory=none reported, handoff.json=none reported, items/0.epub=none reported
+    t =     7.92s Tap "share.done" Button
+    t =     7.92s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     7.93s     Find the "share.done" Button
+    t =     7.96s     Check for interrupting elements affecting "share.done" Button
+    t =     8.00s     Synthesize event
+    t =     8.29s     Wait for com.jevidon.sylvia.spike.intake to idle
+    t =     9.67s Checking `Expect predicate `label CONTAINS "share=6"` for object "harness.summary" StaticText`
+    t =     9.67s     Find the "harness.summary" StaticText
+    t =     9.69s Find the "harness.summary" StaticText
+G03-EVIDENCE share 3 MiB: app summary after scan: jobs=10 staged=7 review=3 share=6
+    t =     9.71s Tear Down
+Test Case '-[IntakeHarnessUITests.ShareSheetUITests testShareIntoExtensionIsReceivedAndImported]' passed (9.930 seconds).
+Test Suite 'ShareSheetUITests' passed at 2026-10-20 03:42:05.976.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 139.575 (139.578) seconds
+Test Suite 'IntakeHarnessUITests.xctest' passed at 2026-10-20 03:42:05.977.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 528.937 (528.945) seconds
+Test Suite 'All tests' passed at 2026-10-20 03:42:05.978.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 528.937 (528.946) seconds
+2026-10-20 03:42:05.995 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:42:05.995 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:42:06.016 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:42:06.016 xcodebuild[10646:43740668] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-20 03:42:06.282 xcodebuild[10646:43740668] [MT] IDETestOperationsObserverDebug: 539.884 elapsed -- Testing started completed.
+2026-10-20 03:42:06.282 xcodebuild[10646:43740668] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-20 03:42:06.282 xcodebuild[10646:43740668] [MT] IDETestOperationsObserverDebug: 539.884 sec, +539.884 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/.build/scratch/final-clone-2/Spikes/G03-Intake/App/.build/DerivedData/Logs/Test/Test-IntakeHarness-2026.10.20_03-33-06-+1300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

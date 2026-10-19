@@ -1,0 +1,9 @@
+# command: Docs/Stage0/evidence/M0-Integration/commands/durable-file-protection-probe.sh
+# date: 2026-10-19T03:04:02Z; commit 1f7fab1b (plus uncommitted: 0 G0.4 files)
+# host: macOS 26.6.2 (25G83); swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+# screen lock (ioreg): IOConsoleLocked=True CGSSessionScreenIsLocked=True
+A complete: not checkable while the screen is locked (open(path: ".tmp-0A11DC56-9966-4AC6-9A67-3B2C4A919439-NSFileProtectionComplete.json", errno: 1))
+B completeUnlessOpen: write ok in B/ (directory NSURLFileProtectionCompleteUnlessOpen), read back NSURLFileProtectionCompleteUnlessOpen
+C completeUntilFirstUserAuthentication: write ok in C/ (directory NSURLFileProtectionCompleteUntilFirstUserAuthentication), read back NSURLFileProtectionCompleteUntilFirstUserAuthentication
+unmapped class: refused (protection(path: "unmapped", expected: "class A, B or C", actual: "SylviaTestUnknownProtectionClass")); directory created: false
+RESULT: INCONCLUSIVE (1 class(es) not checkable while the screen is locked; run again unlocked)

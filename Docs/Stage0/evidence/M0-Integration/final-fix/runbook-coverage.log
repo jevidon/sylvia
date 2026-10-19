@@ -1,0 +1,28 @@
+commit: e3c8659f379c8f3c86465db9f0fb1c294f85c2a8; uncommitted files: 4
+date: 2026-10-19T03:30:01Z
+
+== the runbook now
+runbook: Docs/Stage0/M0-device-runbook.md
+G0.1 EPUB (G01-EPUB.md): checklist steps 1-13 (13); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.1 PDF (G01-PDF.md): checklist steps 1-11 (11); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.2 (G02-Transfer.md): checklist steps 1-23 (23); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.3 (G03-Intake.md): checklist steps 6-32 (27); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.4 (G04-Audio.md): checklist steps 1-17 (17); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 AI (G05-AI.md): checklist steps 1-9 (9); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 recovery (G05-Recovery.md): checklist steps 1-5 (5); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [5]
+G0.6 (G06-Design.md): checklist steps 1-31 (31); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [10]
+result: pass (0 missing)
+
+== control: the runbook as reviewed (fea12c3)
+runbook: .build/scratch/runbook-fea12c3.md
+G0.1 EPUB (G01-EPUB.md): checklist steps 1-13 (13); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.1 PDF (G01-PDF.md): checklist steps 1-11 (11); not classified in Section 7: [11]; blocking but in no session: none; can wait, no session (allowed): none
+G0.2 (G02-Transfer.md): checklist steps 1-23 (23); not classified in Section 7: [22, 23]; blocking but in no session: none; can wait, no session (allowed): none
+G0.3 (G03-Intake.md): checklist steps 6-32 (27); not classified in Section 7: [28, 29, 30, 31, 32]; blocking but in no session: none; can wait, no session (allowed): none
+G0.4 (G04-Audio.md): checklist steps 1-17 (17); not classified in Section 7: [17]; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 AI (G05-AI.md): checklist steps 1-9 (9); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 recovery (G05-Recovery.md): checklist steps 1-5 (5); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [5]
+G0.6 (G06-Design.md): checklist steps 1-31 (31); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [10]
+result: FAIL (9 missing)
+
+result: pass (the runbook now covers every step; the control fails)

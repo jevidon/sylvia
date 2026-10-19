@@ -14,8 +14,15 @@ The guards, in order (each prints one "ok:" line, or the hits and exit status 1)
                     "Deliberately absent" note and ATSProbeTests' three readings of the key are not configuration.
   harness-plist     the G02TransferHarness target of iOS/project.yml uses no ATS variant plist.
   trust-credential  a server-trust credential is created exactly once, in
-                    TransferKit/Sources/SylviaTransferClient/PinnedSession.swift (PinnedTrustEvaluator.answer).
-  weak-tls          no TLS minimum below 1.2 in the Swift sources.
+                    TransferKit/Sources/SylviaTransferClient/PinnedSession.swift (PinnedTrustEvaluator.answer). Both
+                    spellings are counted: URLCredential's initializer named, and an initializer with the trust label
+                    whose type Swift infers from the completion handler (".init" and "trust:"; M0 final review round 2,
+                    CC2-03: a delegate that answers every challenge that way is a trust-all, and the guard missed it).
+  weak-tls          no TLS minimum below 1.2 in the Swift sources: URLSessionConfiguration's version property, NIOSSL's
+                    minimumTLSVersion set or passed as an argument, Network.framework's
+                    sec_protocol_options_set_min_tls_protocol_version with a 1.0 or 1.1 value (CC2-03), the
+                    deprecated SSLProtocol values (tlsProtocol1, tlsProtocol11, sslProtocol2, 3 and All) and their C
+                    names.
 
 Scanned: files with the extensions in SCANNED below the spike directory. Paths are relative to the spike directory,
 and a directory named .build, DerivedData, .swiftpm or .git below it is skipped by its name, so a checkout that itself
@@ -44,9 +51,13 @@ SCANNED = {".swift", ".yml", ".yaml", ".plist", ".json", ".xcconfig", ".entitlem
 ARBITRARY = re.compile(r"\bNSAllowsArbitraryLoads(?:InWebContent|ForMedia)?\b")
 ATS_KEYS = re.compile(r"NSAppTransportSecurity|NSAllowsLocalNetworking|NSExceptionDomains"
                       r"|NS(?:|ThirdParty|Temporary)Exception(?:AllowsInsecureHTTPLoads|MinimumTLSVersion|RequiresForwardSecrecy)")
-CREDENTIAL = re.compile(r"URLCredential\s*(?:\.init)?\s*\(\s*trust\s*:")
-WEAK_TLS = re.compile(r"tlsMinimumSupportedProtocolVersion\s*=\s*\.TLSv1[01]\b|minimumTLSVersion\s*=\s*\.tlsv1[01]?\b"
-                      r"|\btls_protocol_version_TLSv1[01]\b|\bkTLSProtocol1[01]?\b|\bkSSLProtocol(?:2|3|All)\b")
+# A credential from a server trust: URLCredential's initializer, named or with its type inferred (".init" alone).
+CREDENTIAL = re.compile(r"(?:URLCredential\s*(?:\.init)?|\.init)\s*\(\s*trust\s*:")
+# The deprecated SSLProtocol values are written with a character class, so that this file holds none of them literally.
+WEAK_TLS = re.compile(r"tlsMinimumSupportedProtocolVersion\s*=\s*\.TLSv1[01]\b|minimumTLSVersion\s*[=:]\s*\.tlsv1[01]?\b"
+                      r"|sec_protocol_options_set_min_tls_protocol_version\s*\([^)]*\.TLSv1[01]\b"
+                      r"|\btls_protocol_version_TLSv1[01]\b|\bkTLSProtocol1[01]?\b|\bkSSLProtocol(?:2|3|All)\b"
+                      r"|\.tls[P]rotocol1[01]?\b|\.ssl[P]rotocol(?:2|3|All)\b")
 PINNED_ANSWER = "TransferKit/Sources/SylviaTransferClient/PinnedSession.swift"
 ATS_VARIANT = re.compile(r"^iOS/Config/ATSVariant-[a-z-]*\.plist$")
 HARNESS_NOTE = ("iOS/Config/Harness-Info.plist", re.compile(r"^  Deliberately absent: NSAppTransportSecurity\."))
@@ -189,6 +200,30 @@ def self_test(spike: Path, scratch: Path) -> int:
         ("a TLS 1.0 minimum", [("write", "TransferKit/Sources/SylviaTransferCore/Planted.swift",
             a("import Foundation\nlet c = URLSessionConfiguration.ephemeral\nfunc f() { c.tlsMinimumSupported", "ProtocolVersion =\n    .TLSv10 }\n"))],
          {"weak-tls"}),
+        # M0 final review round 2, CC2-03: forms that compile in Swift 6 and that the guards missed.
+        ("a server-trust credential whose type Swift infers, answering every challenge", [("write",
+            "TransferKit/Sources/SylviaTransferClient/Planted.swift",
+            a("import Foundation\nfinal class Planted: NSObject, URLSessionDelegate {\n",
+              "    func urlSession(_ s: URLSession, didReceive c: URLAuthenticationChallenge,\n",
+              "                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {\n",
+              "        completionHandler(.useCredential, .in", "it(trust: c.protectionSpace.serverTrust!))\n    }\n}\n"))],
+         {"trust-credential"}),
+        ("a TLS 1.0 minimum set through Network.framework", [("write", "TransferKit/Sources/SylviaTransferCore/Planted.swift",
+            a("import Network\nlet o = NWProtocolTLS.Options()\nfunc f() {\n    sec_protocol_options_set_min_tls",
+              "_protocol_version(o.securityProtocolOptions,\n        .TLS", "v10)\n}\n"))],
+         {"weak-tls"}),
+        ("a TLS 1.1 minimum passed as an argument", [("write", "SourceService/Sources/SylviaSourceService/Planted.swift",
+            a("struct Settings { var minimumTLSVersion: Int }\nfunc f() { _ = Settings(minimumTLS", "Version: .tlsv11) }\n"))],
+         {"weak-tls"}),
+        ("a deprecated SSLProtocol minimum", [("write", "TransferKit/Sources/SylviaTransferCore/Planted.swift",
+            a("import Foundation\nlet c = URLSessionConfiguration.ephemeral\nfunc f() { c.tlsMinimumSupportedProtocol = .tls",
+              "Protocol1 }\n"))],
+         {"weak-tls"}),
+        ("TLS 1.2 minimums in the same forms are not findings", [("write", "TransferKit/Sources/SylviaTransferCore/Planted.swift",
+            a("import Network\nlet o = NWProtocolTLS.Options()\nfunc f() {\n    sec_protocol_options_set_min_tls",
+              "_protocol_version(o.securityProtocolOptions, .TLSv12)\n    _ = Settings(minimumTLSVersion: .tlsv12)\n",
+              "    c.tlsMinimumSupportedProtocol = .tlsProtocol12\n}\n"))],
+         set()),
         ("a violation inside a nested build directory is not the spike's", [("write", "TransferKit/.build/checkouts/x/Planted-Info.plist",
             plist(a("<key>NSAllows", "ArbitraryLoads</key><true/>")))], set()),
         ("an ATS key named in a Swift comment line", [("write", "TransferKit/Sources/SylviaTransferCore/Comment.swift",

@@ -16,13 +16,18 @@
 #                               NSExceptionDomains and the NSException*/NSThirdPartyException*/NSTemporaryException*
 #                               keys). Allowed only where the allowlist names the file and an ADR.
 #   trust-override              a server-trust credential or a disabled certificate check in source code:
-#                               URLCredential(trust:), SecTrustSetExceptions, a Network.framework verify block,
+#                               URLCredential(trust:) and the same initializer with its type inferred, .init(trust:)
+#                               (M0 final review round 2, CC2-03), SecTrustSetExceptions, a Network.framework verify block,
 #                               NIOSSL certificateVerification .none / .noHostnameVerification, Alamofire disabled
 #                               evaluators, allowsAnyHTTPSCertificate, kCFStreamSSLValidatesCertificateChain,
 #                               Python unverified contexts / CERT_NONE / check_hostname=False / verify=False,
 #                               SSL_VERIFY_NONE, curl -k/--insecure, wget --no-check-certificate,
 #                               NODE_TLS_REJECT_UNAUTHORIZED=0, GIT_SSL_NO_VERIFY, PYTHONHTTPSVERIFY=0.
-#   weak-tls                    a TLS minimum below 1.2 in source code (URLSession, NIOSSL, Network, Python ssl).
+#   weak-tls                    a TLS minimum below 1.2 in source code: URLSession's version property; NIOSSL's
+#                               minimumTLSVersion, set or passed as an argument; Network.framework's
+#                               sec_protocol_options_set_min_tls_protocol_version with .TLSv10 or .TLSv11 (CC2-03); the
+#                               deprecated SSLProtocol values (.tlsProtocol1, .tlsProtocol11, .sslProtocol2, 3, All) and
+#                               their C names; Python ssl's old protocol constants.
 #   file-protection-none        NSFileProtectionNone, .noFileProtection, FileProtectionType.none,
 #                               URLFileProtection.none, NSURLFileProtectionNone, a protection key set to .none.
 #   keychain-accessible-always  kSecAttrAccessibleAlways / AlwaysThisDeviceOnly. Never allowlistable.
@@ -113,6 +118,9 @@ ATS_EXCEPTION = re.compile(r"\b(NSAllowsLocalNetworking|NSExceptionDomains|NSExc
                            r"|NSTemporaryException(AllowsInsecureHTTPLoads|MinimumTLSVersion|RequiresForwardSecrecy))\b")
 TRUST = [
     re.compile(r"URLCredential\s*(\.init)?\s*\(\s*trust\s*:"),
+    # The same initializer with its type inferred, as in completionHandler(.useCredential, .init(trust: ...)) (M0 final
+    # review round 2, CC2-03).
+    re.compile(r"\.init\s*\(\s*trust\s*:"),
     re.compile(r"\bSecTrustSetExceptions\s*\("),
     re.compile(r"\bsec_protocol_options_set_verify_block\s*\("),
     re.compile(r"\bcertificateVerification\s*[:=]\s*\.(none|noHostnameVerification)\b"),
@@ -127,7 +135,11 @@ TRUST = [
 ]
 WEAK_TLS = [
     re.compile(r"tlsMinimumSupportedProtocolVersion\s*=\s*\.TLSv1[01]\b"),
-    re.compile(r"\bminimumTLSVersion\s*=\s*\.tlsv1[01]?\b"),
+    # NIOSSL's minimum set or passed as an argument (the argument form: CC2-03).
+    re.compile(r"\bminimumTLSVersion\s*[=:]\s*\.tlsv1[01]?\b"),
+    # Network.framework's minimum (CC2-03), and the deprecated SSLProtocol values in their Swift spelling.
+    re.compile(r"\bsec_protocol_options_set_min_tls_protocol_version\s*\([^)]*\.TLSv1[01]\b"),
+    re.compile(r"\.tlsProtocol1[01]?\b|\.sslProtocol(2|3|All)\b"),
     re.compile(r"\btls_protocol_version_TLSv1[01]\b|\bkTLSProtocol1[01]?\b|\bkSSLProtocol(2|3|All)\b"),
     re.compile(r"\bssl\.PROTOCOL_(TLSv1|TLSv1_1|SSLv2|SSLv3|SSLv23)\b|\bTLSVersion\.(TLSv1|TLSv1_1|SSLv3)\b"),
 ]
@@ -477,6 +489,29 @@ func wrapped(_ c: URLAuthenticationChallenge) -> URLCredential {{
 let wrappedConfiguration = URLSessionConfiguration.ephemeral
 func lower() {{ wrappedConfiguration.{k('tlsMinimumSupported','ProtocolVersion')} =
     .TLSv11 }}
+func lowerNetworkWrapped(_ options: sec_protocol_options_t) {{ {k('sec_protocol_options_set_min_tls','_protocol_version(')}
+    options, .TLSv11) }}
+func inferredWrapped(_ c: URLAuthenticationChallenge, _ h: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {{
+    h(.useCredential, {k('.in','it(')}
+        trust: c.protectionSpace.serverTrust!)) }}
+""",
+        # M0 final review round 2, CC2-03: a trust-all whose credential's type Swift infers, and TLS minimums below 1.2
+        # through Network.framework, a NIOSSL argument and the deprecated SSLProtocol values; the same calls with 1.2 are
+        # not findings.
+        "Sources/Inferred.swift": f"""import Foundation
+import Network
+final class InferredTrustAll: NSObject, URLSessionDelegate {{
+    func urlSession(_ s: URLSession, didReceive c: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {{
+        completionHandler(.useCredential, {k('.in','it(trust:')} c.protectionSpace.serverTrust!)) // audit-expect: trust-override
+    }}
+}}
+let tlsOptions = NWProtocolTLS.Options()
+func lowerNetwork() {{ {k('sec_protocol_options_set_min_tls','_protocol_version')}(tlsOptions.securityProtocolOptions, .TLSv10) }} // audit-expect: weak-tls
+func keepNetwork() {{ sec_protocol_options_set_min_tls_protocol_version(tlsOptions.securityProtocolOptions, .TLSv12) }}
+let legacySettings = Settings({k('minimumTLS','Version')}: .tlsv11) // audit-expect: weak-tls
+let modernSettings = Settings(minimumTLSVersion: .tlsv12)
+func legacy() {{ URLSessionConfiguration.ephemeral.tlsMinimumSupportedProtocol = {k('.tls','Protocol1')} }} // audit-expect: weak-tls
+func legacyModern() {{ URLSessionConfiguration.ephemeral.tlsMinimumSupportedProtocol = .tlsProtocol12 }}
 """,
         "Apps/Reader/project.json": f'{{"targets": {{"Reader": {{"info": {{"properties": {{"NSAppTransportSecurity": {{"{k("NSAllows","ArbitraryLoads")}": true}}}}}}}}}}, "note": "audit-expect: ats-arbitrary-loads"}}\n',
     }
@@ -500,6 +535,8 @@ func lower() {{ wrappedConfiguration.{k('tlsMinimumSupported','ProtocolVersion')
     expected.add(("secret-file", "Config/.env.production", 0))
     expected.add(("trust-override", "Sources/Wrapped.swift", 3))
     expected.add(("weak-tls", "Sources/Wrapped.swift", 8))
+    expected.add(("weak-tls", "Sources/Wrapped.swift", 10))
+    expected.add(("trust-override", "Sources/Wrapped.swift", 13))
     for name in ("Config/signing.key", "Config/login.keychain-db", "Config/App.provisionprofile"):
         expected.add(("secret-file", name, 0))
     return expected

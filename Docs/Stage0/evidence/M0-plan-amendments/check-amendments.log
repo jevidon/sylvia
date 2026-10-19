@@ -1,14 +1,14 @@
 # M0 plan amendments: consistency checks
-command: Docs/Stage0/evidence/M0-plan-amendments/commands/run-checks.sh cffc6f2a
-commit under test: cffc6f2a
-HEAD: cffc6f2a561a89cc4a38a0869b29251281bd2487; uncommitted paths: 0
-date (UTC): 2026-10-19T07:07:58Z
+command: Docs/Stage0/evidence/M0-plan-amendments/commands/run-checks.sh 200a686f
+commit under test: 200a686f
+HEAD: 200a686fea913e2019e000edb5de6f512858be3f; uncommitted paths: 0
+date (UTC): 2026-10-19T16:59:55Z
 host: macOS 26.6.2 (25G83), arm64; Python 3.14.6
-load: 20:07  up 16 days,  6:18, 2 users, load averages: 1.73 1.72 1.72
+load:  5:59  up 16 days, 16:10, 2 users, load averages: 3.73 3.28 2.96
 environment: host only; no simulator or device is used by these checks
 
 == Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py
-PASS cited paths exist (121 checked; the run's own log excluded)
+PASS cited paths exist (123 checked; the run's own log excluded)
 PASS G01-EPUB.md: 14 findings, each in Section 2 or 3
 PASS G01-PDF.md: 15 findings, each in Section 2 or 3
 PASS G02-Transfer.md: 22 findings, each in Section 2 or 3
@@ -26,7 +26,7 @@ PASS G05-Recovery.md: 8 open questions, each referenced
 PASS G06-Design.md: 14 open questions, each referenced
 PASS G05-AI.md: 8 open questions, each referenced
 PASS G04-Audio.md: 7 open-question bullets (six questions and a warnings note), each matched to the entry that covers it
-PASS Section 3.2: ADR-0001 to ADR-0014, 108 consequences, each mapped to a tag or to no change
+PASS Section 3.2: ADR-0001 to ADR-0016, 120 consequences, each mapped to a tag or to no change
 PASS Appendix D has the draft 0.7 entry before draft 0.6, and the draft 0.5 entry before draft 0.4
 PASS Section 6 lists tags A01-A56 (56 rows)
 PASS Appendix D lists tags A01-A56 (56 bullets)
@@ -49,7 +49,7 @@ PASS T54 names every section the 4.4.6 gaps table names (17 sections)
 PASS the milestone gating rule includes M1 in all 7 places that state it, and the earlier wording is gone
 PASS plan Sections 1-23: 104 quoted phrases, each in the design package, in the 4.4.6 gaps table or its introduction, or listed as not interface text (26)
 PASS plan: 293 table rows, none ragged
-PASS amendments: 335 table rows, none ragged
+PASS amendments: 337 table rows, none ragged
 PASS Section 2.2 is byte-identical to draft 0.4 (471b143)
 PASS Section 21.5 is byte-identical to draft 0.4 (471b143)
 PASS Section 24 is byte-identical to draft 0.6 (0ef8c39)
@@ -64,6 +64,7 @@ caught an unforced narrowing's row labelled a clarification: exit 1; failed: eve
 caught a narrowing missing from plan Appendix D's scope sentence: exit 1; failed: plan Appendix D's draft 0.5 entry names exactly the 15 Section 1 tags
 caught an ADR consequence left unnumbered: exit 1; failed: Section 3.2
 caught an ADR consequence with no destination: exit 1; failed: Section 3.2
+caught ADR-0016's row left out (20 October 2026: it was missing until then): exit 1; failed: Section 3.2
 caught a G0.4 open-question bullet left uncovered: exit 1; failed: G04-Audio.md
 caught a new quoted phrase with no vocabulary entry: exit 1; failed: plan Sections 1-23
 caught a phrase dropped from the vocabulary gaps table: exit 1; failed: plan Sections 1-23
@@ -80,7 +81,7 @@ caught the failed-gate count turned back to three (21.1): exit 1; failed: replac
 caught a new tag left out of Appendix D's draft 0.7 entry: exit 1; failed: Appendix D lists tags A01-A56 (55 bullets) | Appendix D gives A01-A53 their bullets in the draft 0.5 entry and A54-A56 in the draft 0.7 entry | each tag names the same plan sections in the text, Section 6 and Appendix D
 caught G0.4's playback-control decision left without its source: exit 1; failed: G04-Audio.md
 caught a finding the re-check added left without its row: exit 1; failed: G03-Intake.md
-summary: 21 mutations, 21 caught, 0 missed
+summary: 22 mutations, 22 caught, 0 missed
 exit status: 0
 tree after the mutation checks: 0 uncommitted paths
 
@@ -90,6 +91,6 @@ tree after the mutation checks: 0 uncommitted paths
 ==> 10-contracts
     pass (1s)
 ==> 11-capture-anchor-contracts
-    pass (51s)
+    pass (52s)
 all 3 steps passed
 exit status: 0

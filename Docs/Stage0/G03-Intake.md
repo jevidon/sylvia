@@ -195,7 +195,7 @@ The review of the round 3 fixes (round 4) found one blocker and five minor findi
 
 ## Requests to the owners of shared files
 
-This gate does not edit these files (reviews R3-03, R4-06). Counts are this branch's at commit 34fe383.
+This gate does not edit these files (reviews R3-03, R4-06). Counts are this branch's at commit 34fe383. *(Dated note, 19 October 2026: M0 assembly applied the four rows addressed to it (integration log section 7, rows 68 and 69) and request (c) to the validator's owner (row 51, `038145a`); requests (a) and (b) are deferred there.)*
 
 | File | Owner | Change requested |
 | --- | --- | --- |
@@ -221,4 +221,4 @@ This gate does not edit these files (reviews R3-03, R4-06). Counts are this bran
 7. Whether the late import (F11) recurs on a device.
 8. Product owner: raw files copied with Finder (F15). Keep the raw import, which refuses a file that changes during the import but stages a copy that paused or stopped as it is, or accept only `.sylviapack` from Finder above some size; and whether a raw file is offered for removal from Documents after its import (it stays today, backup-eligible).
 9. Owner of `Scripts/validate-contracts.py`: the three requests in "Requests to the owners of shared files" (F16 b): `$` accepting a final line feed in `pattern` and `date-time`, the lenient `uuid` check, and `load_json` stopping with a traceback on a file that is not UTF-8 or holds an over-long integer. Every contract is affected, not only G0.3's.
-10. M0 integration: the stale G0.3 fixture counts and the missing part-01.caf pin in `Fixtures/LICENSES.md`, the fixture total in `Contracts/README.md` (review R3-03), and the temporary download name in `Scripts/fixtures/fetch.sh` (review R4-06): requests above.
+10. *(Applied at M0 assembly: integration log section 7, rows 68 and 69; noted 19 October 2026.)* M0 integration: the stale G0.3 fixture counts and the missing part-01.caf pin in `Fixtures/LICENSES.md`, the fixture total in `Contracts/README.md` (review R3-03), and the temporary download name in `Scripts/fixtures/fetch.sh` (review R4-06): requests above.

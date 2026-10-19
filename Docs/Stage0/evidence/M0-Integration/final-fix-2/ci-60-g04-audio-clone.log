@@ -1,0 +1,18 @@
+command: Docs/Stage0/evidence/M0-Integration/final-fix-2/commands/ci-60-g04-audio-clone.sh /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/.build/scratch/final-clone-2 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/.build/scratch/ci-60-g04-audio-clone.log
+clone: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/.build/scratch/final-clone-2; commit: 87d9ddea56ccca4948de252128bb20f1a7517e56; uncommitted files: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+Spikes/G04-Audio/.build and .build/ci-results/g04-audio deleted in the clone before the run
+simulator: Sylvia-M0-final-fix; SYLVIA_AUDIBLE_PLAYBACK unset (every player at test volume 0.01)
+screen lock (ioreg) at the start: IOConsoleLocked=False CGSSessionScreenIsLocked=False
+default audio output (system_profiler, read-only) at the start: MacBook Pro Speakers (transport Built-in)
+start: 2026-10-19T15:24:49Z; load:  4:24  up 16 days, 14:35, 2 users, load averages: 1.88 4.29 4.49
+==> 00-git-lfs
+    pass (5s)
+==> 60-g04-audio
+    pass (5334s)
+all 2 steps passed
+ci.sh exit: 0
+end: 2026-10-19T16:53:48Z; load:  5:53  up 16 days, 16:04, 2 users, load averages: 2.85 3.34 2.90
+screen lock (ioreg) at the end: IOConsoleLocked=False CGSSessionScreenIsLocked=False
+default audio output (system_profiler, read-only) at the end: MacBook Pro Speakers (transport Built-in)
+git status --porcelain lines in the clone after the run: 0

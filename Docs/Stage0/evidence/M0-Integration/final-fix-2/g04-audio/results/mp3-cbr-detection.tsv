@@ -1,0 +1,27 @@
+# The import's per-file timing decision (ADR-0006 decision 2; review R4-01). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+# timing: estimatedCBR only for an MP3 whose every frame has one bit rate, sample rate, version and channel count, contiguous from the
+# first frame to the end of the audio (or an APEv2/ID3v1 tag), with an Info tag whose frame count matches or no tag, and whose scanned
+# audio duration agrees with AVFoundation's precise duration within three frames; precise otherwise. scan_s = the frame walk alone;
+# inspect_s = the whole import inspection. Variants are made from the fixtures in a scratch folder.
+file	codec	timing	reason	frames	bit_rates_kbps(frames)	tag	tag_frames	trailing_tags	bytes	scan_s	inspect_s	precise_ms	estimated_ms	scanned_audio_ms
+fmt-mp3-cbr.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 22971 frames, Info tag	22971	64:22971	Info	22970	-	4800489	0.004	0.006	600033	600033	600033
+fmt-mp3-chap.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 22971 frames, Info tag	22971	64:22971	Info	22970	-	4800770	0.003	0.006	600033	600033	600033
+fmt-librivox-mp3-22k.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 51922 frames, Info tag	51922	64:51922	Info	51921	-	10862777	0.007	0.009	1356251	1356304	1356304
+multi/Part 2.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 5266 frames, Info tag	5266	64:5266	Info	5265	-	1100598	0.001	0.003	137535	137535	137535
+multi/Part 1.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 6214 frames, Info tag	6214	64:6214	Info	6213	-	1298711	0.001	0.003	162299	162299	162299
+multi/Part 3.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 5745 frames, Info tag	5745	64:5745	Info	5744	-	1200699	0.001	0.003	150047	150047	150047
+multi/Part 10.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 4600 frames, Info tag	4600	64:4600	Info	4599	-	961418	0.001	0.003	120137	120137	120137
+long-mp3-cbr-10h.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 1406633 frames, Info tag	1406633	64:1406633	Info	1406632	-	293957609	0.198	0.200	36744673	36744673	36744673
+fmt-mp3-vbr-xing.mp3	.mp3	precise	variable bit rate: 9 bit rates (32-128 kb/s); a Xing tag (declares a variable bit rate; its table of contents drives estimated seeks)	22971	32:193,40:2217,48:5411,56:10068,64:3913,80:895,96:231,112:37,128:6	Xing	22970	-	4120603	0.003	0.006	600033	600033	600033
+fmt-mp3-vbr-noxing.mp3	.mp3	precise	variable bit rate: 9 bit rates (32-128 kb/s)	22970	32:193,40:2217,48:5411,56:10067,64:3913,80:895,96:231,112:37,128:6	none	-	-	4120421	0.003	0.010	600033	606224	600033
+long-mp3-vbr-10h.mp3	.mp3	precise	variable bit rate: 9 bit rates (32-128 kb/s); a Xing tag (declares a variable bit rate; its table of contents drives estimated seeks)	1406633	32:64737,40:131818,48:283152,56:507893,64:272051,80:98430,96:33014,112:12818,128:2720	Xing	1406632	-	258900276	0.185	0.187	36744673	36744673	36744673
+long-formats/long-mp3-vbr-noxing-10h.mp3	.mp3	precise	variable bit rate: 9 bit rates (32-128 kb/s)	1406632	32:64737,40:131818,48:283152,56:507892,64:272051,80:98430,96:33014,112:12818,128:2720	none	-	-	258900094	0.184	0.458	36744673	38092643	36744673
+variant: cbr-no-info-tag.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 22970 frames, no tag	22970	64:22970	none	-	-	4800281	0.003	0.011	600033	600033	600033
+variant: cbr-plus-id3v1.mp3	.mp3	estimatedCBR	constant bit rate 64 kb/s, 22971 frames, Info tag	22971	64:22971	Info	22970	ID3v1	4800617	0.003	0.006	600033	600033	600033
+variant: cbr-one-80k-frame-at-10001.mp3	.mp3	precise	variable bit rate: 2 bit rates (64-80 kb/s)	22971	64:22970,80:1	Info	22970	-	4800541	0.003	0.005	600033	600033	600033
+variant: cbr-plus-100-zero-bytes.mp3	.mp3	precise	no frame header at byte 4800489 (after frame 22971)	22971	64:22971	Info	22970	-	4800589	0.003	0.006	600033	600033	600033
+variant: cbr-then-part2-concatenated.mp3	.mp3	precise	an ID3 tag inside the audio at byte 4800489	22971	64:22971	Info	22970	-	5901087	0.003	0.005	600033	600033	600033
+fmt-m4a-aac-lc.m4a	aac 	precise	not MP3	-	-	-	-	-	4946192	-	0.007	600000	600000	-
+fmt-flac.flac	flac	precise	not MP3	-	-	-	-	-	15670386	-	0.003	600000	600085	-
+fmt-opus.ogg	opus	precise	not MP3	-	-	-	-	-	2368743	-	0.040	600000	641560	-
+fmt-wav.wav	lpcm	precise	not MP3	-	-	-	-	-	52920260	-	0.002	600000	600000	-

@@ -1,0 +1,22 @@
+# A capture of the preceding 30 s at 34200.0 s in each 10-hour file, on fresh copies (cold). export_s = the excerpt export (decode, AAC
+# encode, durable write) as the capture transaction runs it after the anchor write; preview_start_s = beginPreview() of the pending
+# source range (34192.0-34200.0 s) to its first buffer reaching the analysis tap. Errors against master-long by cross-correlation.
+# Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 2.55 2.91 3.49 (1, 5, 15 min), 1 simulators booted on the host when the test run started
+format	file	export_s	export_start_err_ms	export_end_err_ms	preview_start_s	preview_head_err_ms	load_1m
+flac	long-formats/long-flac-10h.flac	29.694	0.0	0.0	29.699	0.0	2.0
+ogg-opus	long-formats/long-opus-10h.ogg	1.344	0.0	-1.0	1.348	0.0	1.9
+opus-ext	long-formats/long-opus-10h.opus	1.068	0.0	-1.0	0.973	0.0	1.9
+mp4-flac	long-formats/long-mp4-flac-10h.m4a	0.091	0.0	0.0	0.125	0.0	1.9
+mp4-opus	long-formats/long-mp4-opus-10h.m4a	0.124	0.0	-1.0	0.109	0.0	1.9
+caf-opus	long-formats/long-caf-opus-10h.caf	0.124	0.0	-1.0	0.132	0.0	1.9
+wav	long-formats/long-wav-10h.wav	0.076	0.0	0.0	0.122	0.0	1.9
+m4a-alac	long-formats/long-m4a-alac-10h.m4a	0.103	0.0	0.0	0.120	0.0	1.9
+m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	0.093	-47.9	-47.9	0.120	-47.9	1.9
+m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	0.097	-47.9	-47.9	0.124	-47.9	2.1
+m4a-aac-lc	long-aac-10h.m4b	0.087	0.0	0.0	0.140	0.0	2.1
+mp3-cbr	long-mp3-cbr-10h.mp3	17.021	-13.1	-13.1	9.434	-13.1	2.6
+mp3-vbr-xing	long-mp3-vbr-10h.mp3	14.767	-13.1	-13.1	8.290	-13.1	2.3
+mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	15.788	-13.1	-13.1	8.764	-13.1	1.8
+export of a 30 s excerpt 9.5 h into a 10-hour file, cold: n=14 p50=0.124 p95=21.456 max=29.694 s
+pending preview start 9.5 h into a 10-hour file, cold: n=14 p50=0.136 p95=16.527 max=29.699 s
+# at the end: host load averages 1.77 2.46 3.19 (1, 5, 15 min), 1 simulators booted on the host when the test run started

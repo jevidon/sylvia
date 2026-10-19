@@ -2,8 +2,9 @@
 # Checks behind the M0 final fix's update of Docs/Stage0/M0-gate.md (integration log section 11), run on the fix's
 # last commit with no uncommitted file:
 #   Docs/Stage0/evidence/M0-Integration/final-fix/commands/gate-final-checks.sh <log>
-# 1. Code since the complete run's commit: between e3c8659 (the commit ci-final-clone.sh tested) and HEAD only files
-#    under Docs/ changed, so the complete run covers the final code. Negative control: between the reviewed commit
+# 1. Code since the complete run's commit: between e3c8659 (the commit ci-final-clone.sh tested) and HEAD only
+#    documents changed (files under Docs/, and Markdown files elsewhere, such as Contracts/README.md, which part 5's
+#    drop-ins read again), so the complete run covers the final code. Negative control: between the reviewed commit
 #    (fea12c3) and e3c8659 the same check must fail and name the fix's code files.
 # 2. The Git LFS state of the tree and of the repository configuration (read-only).
 # 3. M0-gate.md: every cited path exists, and every Section 2 status agrees with the gate report rows, ADR status
@@ -36,16 +37,17 @@ uncommitted="$(git status --porcelain | wc -l | tr -d ' ')"
   echo "start: $(date -u +%Y-%m-%dT%H:%M:%SZ); load: $(uptime)"
   echo
   echo "== 1. Files changed since the complete run's commit ($tested)"
-  outside="$(git diff --name-only "$tested" HEAD | grep -v '^Docs/' || true)"
-  echo "files changed: $(git diff --name-only "$tested" HEAD | wc -l | tr -d ' '); outside Docs/: $(printf '%s' "$outside" | grep -c . || true)"
+  outside="$(git diff --name-only "$tested" HEAD | grep -v '^Docs/' | grep -v '\.md$' || true)"
+  echo "files changed: $(git diff --name-only "$tested" HEAD | wc -l | tr -d ' '); Markdown files outside Docs/: $(git diff --name-only "$tested" HEAD | grep -v '^Docs/' | grep '\.md$' | tr '\n' ' ')"
+  echo "other files outside Docs/: $(printf '%s' "$outside" | grep -c . || true)"
   if [[ -n "$outside" ]]; then
-    echo "$outside" | sed 's/^/PROBLEM: changed outside Docs\/: /'
+    echo "$outside" | sed 's/^/PROBLEM: changed, and neither under Docs\/ nor a Markdown file: /'
   else
-    echo "only documents and evidence under Docs/ changed: the complete run covers the final code"
+    echo "only documents and evidence changed: the complete run covers the final code"
   fi
   echo "-- 1b. Negative control: from the reviewed commit ($reviewed) to $tested the same check must name code files"
-  control="$(git diff --name-only "$reviewed" "$tested" | grep -v '^Docs/' || true)"
-  echo "   files outside Docs/ changed between them: $(printf '%s\n' "$control" | grep -c . || true)"
+  control="$(git diff --name-only "$reviewed" "$tested" | grep -v '^Docs/' | grep -v '\.md$' || true)"
+  echo "   files neither under Docs/ nor Markdown changed between them: $(printf '%s\n' "$control" | grep -c . || true)"
   printf '%s\n' "$control" | sed 's/^/   /'
 } > "$log" 2>&1
 [[ -n "$outside" ]] && status=1

@@ -19,7 +19,8 @@
 #   fixtures-check        the contract fixture generator reproduces the committed fixtures exactly
 #   trust-guards          no ATS key in the harness (ATS keys only in the probe variants Config/ATSVariant-*.plist,
 #                         NSAllowsArbitraryLoads nowhere), no server-trust credential outside the pinned
-#                         answer, no TLS minimum below 1.2 in the spike                              [host]
+#                         answer, no TLS minimum below 1.2 in the spike (Scripts/trust-guards.py, after its
+#                         self-test with planted violations under a path that contains /.build/)     [host]
 #   package-locks         the XcodeGen projects' committed Package.resolved (iOS, MacIdentityProbe) pin exactly what
 #                         their local package's lock pins (TransferKit, SourceService)              [host]
 #   host-transferkit      swift test, Spikes/G02-Transfer/TransferKit (protocol core, client, background
@@ -129,38 +130,19 @@ checked_swift_test() {
 step_fixtures() { "$SYLVIA_ROOT/Scripts/fixtures/generate-g02-transfer-contract-fixtures.sh" --check; }
 
 # Static guards against a trust bypass creeping in (plan 14.3, 22.3). The behavior itself is proven by the
-# rogue-host and wrong-pin tests; these catch configuration that would weaken it.
+# rogue-host and wrong-pin tests; these catch configuration that would weaken it. Spikes/G02-Transfer/Scripts/
+# trust-guards.py reads the spike's files by their paths relative to the spike, skipping build directories by name, so
+# the guards see the same files wherever the checkout lies (M0 final review CC-01: the earlier grep dropped every hit
+# whose absolute path contained /.build/, so in a clone under .build/scratch/ they printed ok lines having seen
+# nothing). Its self-test runs first, from a copy under a path that contains /.build/, with one planted violation per
+# guard.
 step_guards() {
-  echo "environment: host; static checks over Spikes/G02-Transfer (sources, project files, plists)"
-  local hits count
-  hits="$(grep -rn 'NSAllowsArbitraryLoads' "$spike" --include='*.swift' --include='*.yml' --include='*.plist' \
-    | grep -v '/\.build/' || true)"
-  if [[ -n "$hits" ]]; then echo "NSAllowsArbitraryLoads found:"; echo "$hits"; return 1; fi
-  echo "ok: NSAllowsArbitraryLoads appears nowhere"
-  # ATS keys may appear only in the probe variants' plists, which build G02TransferATSVariant (never shipped).
-  hits="$(grep -rn -E 'NSAppTransportSecurity|NSExceptionAllowsInsecureHTTPLoads|NSExceptionMinimumTLSVersion|NSExceptionDomains|NSAllowsLocalNetworking|NSExceptionRequiresForwardSecrecy' \
-    "$spike" --include='*.swift' --include='*.yml' --include='*.plist' | grep -v '/\.build/' \
-    | grep -v '/iOS/Config/ATSVariant-[a-z-]*\.plist:' \
-    | grep -v -E '\.swift:[0-9]+:[[:space:]]*//' \
-    | grep -v -E '/iOS/Config/Harness-Info\.plist:[0-9]+:  Deliberately absent: NSAppTransportSecurity\.' \
-    | grep -v -E '/iOS/Tests/HostedUnit/ATSProbeTests\.swift:.*(forInfoDictionaryKey: "NSAppTransportSecurity"|Info.plist NSAppTransportSecurity|no NSAppTransportSecurity key)' || true)"
-  if [[ -n "$hits" ]]; then echo "ATS keys outside the probe variants:"; echo "$hits"; return 1; fi
-  echo "ok: no App Transport Security key in the harness; ATS keys only in iOS/Config/ATSVariant-*.plist (probe app); Swift comment lines that name a key are not configuration and are ignored"
-  if grep -q 'Config/ATSVariant' "$spike/iOS/project.yml" && \
-    awk '/^  G02TransferHarness:/{h=1} /^  G02TransferHostedTests:/{h=0} h' "$spike/iOS/project.yml" | grep -q 'ATSVariant'; then
-    echo "the harness target uses an ATS variant plist"; return 1
-  fi
-  echo "ok: G02TransferHarness uses Config/Harness-Info.plist only"
-  hits="$(grep -rn 'URLCredential(trust:' "$spike" --include='*.swift' | grep -v '/\.build/' || true)"
-  count="$(printf '%s' "$hits" | grep -c . || true)"
-  if [[ "$count" != 1 || "$hits" != *"/SylviaTransferClient/PinnedSession.swift:"* ]]; then
-    echo "a server-trust credential is created outside the pinned answer:"; echo "$hits"; return 1
-  fi
-  echo "ok: URLCredential(trust:) appears once, in PinnedTrustEvaluator.answer (PinnedSession.swift), used by every session"
-  hits="$(grep -rn -E 'tlsMinimumSupportedProtocolVersion *= *\.TLSv1[01]|minimumTLSVersion *= *\.tlsv1[01]?\b' "$spike" --include='*.swift' \
-    | grep -v '/\.build/' || true)"
-  if [[ -n "$hits" ]]; then echo "TLS below 1.2 allowed:"; echo "$hits"; return 1; fi
-  echo "ok: no TLS minimum below 1.2"
+  local scratch="$SYLVIA_ROOT/.build/scratch/g02-trust-guards"
+  rm -rf "$scratch"
+  mkdir -p "$scratch"
+  /usr/bin/python3 -I "$spike/Scripts/trust-guards.py" --self-test "$spike" "$scratch" || { rm -rf "$scratch"; return 1; }
+  rm -rf "$scratch"
+  /usr/bin/python3 -I "$spike/Scripts/trust-guards.py" "$spike"
 }
 
 # The two XcodeGen projects resolve their local packages themselves, so each commits its own lock (ADR-0002); it must

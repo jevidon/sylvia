@@ -10,7 +10,8 @@
 #
 # Rules (one finding per matching line):
 #   ats-arbitrary-loads         NSAllowsArbitraryLoads, ...InWebContent or ...ForMedia in a configuration file
-#                               (.plist, .yml, .yaml, .xcconfig, .entitlements). Never allowlistable.
+#                               (.plist, .yml, .yaml, .json, .xcconfig, .entitlements; .json covers an XcodeGen
+#                               project.json). Never allowlistable.
 #   ats-exception               any other ATS exception key in a configuration file (NSAllowsLocalNetworking,
 #                               NSExceptionDomains and the NSException*/NSThirdPartyException*/NSTemporaryException*
 #                               keys). Allowed only where the allowlist names the file and an ADR.
@@ -33,8 +34,10 @@
 #   generic-secret              a secret-named field (key, secret, token, password, ...) assigned a 24+ character
 #                               value with digits and letters and at least 3.5 bits of entropy per character,
 #                               in any text file. Canary-named values are allowed as above.
-#   secret-file                 a key or credential container file: *.p12, *.pfx, *.p8, *.mobileprovision, *.jks,
-#                               *.keystore, .env, .env.*, id_rsa, id_ecdsa, id_ed25519. Never allowlistable.
+#   secret-file                 a key or credential container file: *.p12, *.pfx, *.p8, *.key, *.keychain,
+#                               *.keychain-db, *.mobileprovision, *.provisionprofile, *.jks, *.keystore, .env, .env.*,
+#                               id_rsa, id_ecdsa, id_ed25519 (matched by name, so a binary key file is found too).
+#                               Never allowlistable.
 #   todo-in-product             TODO or FIXME, or a fatalError("unimplemented"/"not implemented"/"stub"), in a
 #                               product target: Apps/** and Packages/** source and configuration files, excluding
 #                               test directories (*Tests), LintFixtures and snapshot references. Spikes/ are
@@ -50,6 +53,14 @@
 # key is not configuration. Block comments and trailing comments are not stripped; a hit there must be allowlisted
 # with its reason. Credential and TODO rules read the raw text, comments included.
 #
+# Lines: the ATS, trust, TLS, protection and Keychain rules match the comment-stripped text of the whole file, so a
+# call or setting written across lines (`URLCredential(` on one line, `trust:` on the next) is found; a hit is
+# reported at the line where the match starts (M0 final review SEC-01: these rules read one line at a time). The
+# credential and TODO rules match line by line.
+#
+# Allowlist reasons: each names the ADR that justifies the exception (ADR-NNNN), and an entry whose reason names
+# none is refused (CLAUDE.md, ADR-0015 section 6; M0 final review SEC-02).
+#
 # Output never prints a matched credential: key-like and generic-secret hits show the rule, the field name, the
 # value's length and its first four characters only.
 #
@@ -61,28 +72,31 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Built-in allowlist for this repository. Format: rule | path glob (fnmatch, relative to the root) |
-# line regex (Python; "-" for any line) | reason, citing the ADR or report that justifies it.
-# An entry that matches no hit is stale and fails the audit (so the list cannot outlive the code it excuses).
+# line regex (Python; "-" for any line) | reason, naming the ADR that justifies it (ADR-NNNN; an entry without one is
+# refused). An entry that matches no hit is stale and fails the audit (so the list cannot outlive the code it excuses).
+# The G0.2 drop-in's own guard, which this list excused until 19 October 2026, now builds its patterns at run time
+# (Spikes/G02-Transfer/Scripts/trust-guards.py), so it needs no entry.
 read -r -d '' DEFAULT_ALLOWLIST <<'ALLOWLIST' || true
 ats-exception | Spikes/G02-Transfer/iOS/Config/ATSVariant-*.plist | - | ADR-0008 "App Transport Security": Info.plist variants of the never-shipped probe app G02TransferATSVariant that measured which ATS keys Tailscale address forms need; the harness has no ATS key (40-g02-transfer guards)
 ats-exception | Spikes/G05-AI/ATSProbe/App/Info-*.plist | - | ADR-0011 "ATS": never-shipped ATS probe host apps that measured cleartext to local addresses with NSAllowsLocalNetworking and CIDR exceptions
 ats-exception | Spikes/G05-AI/ATSProbe/project.yml | - | ADR-0011 "ATS": the same probe apps' XcodeGen Info.plist properties
 trust-override | Spikes/G02-Transfer/TransferKit/Sources/SylviaTransferClient/PinnedSession.swift | URLCredential\(trust: trust\) | ADR-0008 "One trust path": PinnedTrustEvaluator.answer returns the credential only after the leaf's SPKI SHA-256 equals the pin (constant-time compare); 40-g02-transfer checks it is the only one
-trust-override | Spikes/G02-Transfer/SourceService/Sources/SylviaSourceService/HTTPServer.swift | certificateVerification = \.none | ADR-0008/0009: server-side NIOSSL setting meaning "request no client certificate"; phones authenticate with a scoped bearer token and pin the server's key
-trust-override | Scripts/ci.d/40-g02-transfer.sh | URLCredential\(trust: | G0.2 CI guard that searches for this pattern; not a trust decision
+trust-override | Spikes/G02-Transfer/SourceService/Sources/SylviaSourceService/HTTPServer.swift | certificateVerification = \.none | ADR-0008, ADR-0009: server-side NIOSSL setting meaning "request no client certificate"; phones authenticate with a scoped bearer token and pin the server's key
 file-protection-none | Spikes/G05-Recovery/Sources/SylviaRecovery/FileProtection.swift | case \.none: return FileProtectionType\.none | ADR-0012: maps a file's reported class during readback so that an unprotected file is detected as a mismatch; writes nothing
 file-protection-none | Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift | noFileProtection | ADR-0012 evidence: test-only probe that the platform default class is C, writing one byte into the test's temporary directory
-key-like-string | Spikes/G05-AI/Tests/SylviaAITests/CredentialSafetyTests.swift | sk-live-abcdef0123456789 | G0.5 AI redaction test input (sequential hex digits, not a credential)
-generic-secret | Contracts/fixtures/* | - | Contract fixtures: example values, not credentials of any system (Contracts/README.md "Example IDs and digests are fixtures, not real data"); generated by Scripts/fixtures/generate-g02-transfer-contract-fixtures.sh
-generic-secret | Scripts/fixtures/generate-g02-transfer-contract-fixtures.sh | fixture only | The generator's fixed fixture values, each commented "fixture only"
+key-like-string | Spikes/G05-AI/Tests/SylviaAITests/CredentialSafetyTests.swift | sk-live-abcdef0123456789 | ADR-0011 "Credentials": G0.5 AI redaction test input (sequential hex digits, not a credential), which the test asserts is redacted
+generic-secret | Contracts/fixtures/pair-request.v1/* | "invitation_secret": "q7Hc | ADR-0008 (pairing): the G0.2 contract fixtures' fixed invitation secret, an example value of no system (Contracts/README.md "Example IDs and digests are fixtures, not real data"), written by Scripts/fixtures/generate-g02-transfer-contract-fixtures.sh
+generic-secret | Contracts/fixtures/pair-response.v1/* | "token": "Zm9y | ADR-0008 (pairing): the G0.2 contract fixtures' fixed device token, an example value of no system, written by the same generator
+generic-secret | Contracts/fixtures/pairing-payload.v1/* | "invitation_secret": "q7Hc | ADR-0008 (pairing): the same fixed invitation secret in the pairing-payload fixtures, written by the same generator
+generic-secret | Scripts/fixtures/generate-g02-transfer-contract-fixtures.sh | fixture only | ADR-0008 (pairing): the generator's fixed fixture values, each commented "fixture only"
 ALLOWLIST
 
 read -r -d '' AUDIT_PY <<'PY' || true
-import argparse, fnmatch, io, math, os, re, subprocess, sys
+import argparse, bisect, fnmatch, io, math, os, re, subprocess, sys
 
 SELF_PATHS = {"Scripts/audit-hard-rules.sh", "Scripts/ci.d/13-hard-rules.sh"}
 SKIP_DIRS = {".git", ".build", "DerivedData", ".swiftpm", "node_modules"}
-CONFIG_EXT = {".plist", ".yml", ".yaml", ".xcconfig", ".entitlements"}
+CONFIG_EXT = {".plist", ".yml", ".yaml", ".json", ".xcconfig", ".entitlements"}
 CFAMILY_EXT = {".swift", ".m", ".mm", ".h", ".c", ".cc", ".cpp", ".js", ".ts", ".go", ".java", ".kt", ".metal"}
 HASH_EXT = {".py", ".sh", ".bash", ".zsh", ".rb", ".pl"}
 PRODUCT_EXT = {".swift", ".m", ".mm", ".h", ".c", ".cc", ".cpp", ".metal", ".plist", ".yml", ".yaml",
@@ -137,8 +151,10 @@ PRIVATE_KEY = re.compile(r"-----BEGIN (?:[A-Z0-9]+ )*PRIVATE KEY-----")
 GENERIC = re.compile(r"(?i)\b([\w.-]*(?:api[_-]?key|secret|token|password|passwd|private[_-]?key|access[_-]?key|bearer)[\w-]*)"
                      r"[\"']?\s*[:=]\s*[\"']?(?:Bearer\s+)?([A-Za-z0-9+/_=.-]{24,})")
 CANARY = re.compile(r"(?i)canary|not-?a-?real|fixture|example|placeholder|dummy|fake")
-SECRET_FILE = re.compile(r"(?i)(^|/)(\.env(\..*)?|id_(rsa|ecdsa|ed25519)(\.pub)?|[^/]*\.(p12|pfx|p8|mobileprovision|jks|keystore))$")
+SECRET_FILE = re.compile(r"(?i)(^|/)(\.env(\..*)?|id_(rsa|ecdsa|ed25519)(\.pub)?"
+                         r"|[^/]*\.(p12|pfx|p8|key|keychain|keychain-db|mobileprovision|provisionprofile|jks|keystore))$")
 TODO = re.compile(r"\b(TODO|FIXME)\b|fatalError\(\s*\"(?i:unimplemented|not implemented|stub)")
+ADR_REFERENCE = re.compile(r"\bADR-\d{4}\b")
 
 
 def entropy(s):
@@ -230,21 +246,30 @@ def scan(root):
         ext = os.path.splitext(path)[1].lower()
         code = strip_comments(path, text)
         source = is_source(path, raw[0] if raw else "")
-        for number, line in enumerate(code, 1):
-            if ext in CONFIG_EXT:
-                if ATS_ARBITRARY.search(line):
-                    hits.append(("ats-arbitrary-loads", path, number, line.strip()[:160], False))
-                if ATS_EXCEPTION.search(line):
-                    hits.append(("ats-exception", path, number, line.strip()[:160], False))
-            if source or ext in CONFIG_EXT:
-                if source and any(p.search(line) for p in TRUST):
-                    hits.append(("trust-override", path, number, line.strip()[:160], False))
-                if source and any(p.search(line) for p in WEAK_TLS):
-                    hits.append(("weak-tls", path, number, line.strip()[:160], False))
-                if any(p.search(line) for p in PROTECTION):
-                    hits.append(("file-protection-none", path, number, line.strip()[:160], False))
-                if KEYCHAIN_ALWAYS.search(line):
-                    hits.append(("keychain-accessible-always", path, number, line.strip()[:160], False))
+        # The configuration and code rules read the comment-stripped text of the whole file, so a match may run across
+        # lines; each is reported once, at the line where it starts (SEC-01).
+        whole = "\n".join(code)
+        starts = [0]
+        for line in code[:-1]:
+            starts.append(starts[-1] + len(line) + 1)
+
+        def lines_matching(patterns):
+            found = set()
+            for pattern in patterns:
+                for m in pattern.finditer(whole):
+                    found.add(bisect.bisect_right(starts, m.start()))
+            return sorted(found)
+
+        checks = []
+        if ext in CONFIG_EXT:
+            checks += [("ats-arbitrary-loads", [ATS_ARBITRARY]), ("ats-exception", [ATS_EXCEPTION])]
+        if source:
+            checks += [("trust-override", TRUST), ("weak-tls", WEAK_TLS)]
+        if source or ext in CONFIG_EXT:
+            checks += [("file-protection-none", PROTECTION), ("keychain-accessible-always", [KEYCHAIN_ALWAYS])]
+        for rule, patterns in checks:
+            for number in lines_matching(patterns):
+                hits.append((rule, path, number, code[number - 1].strip()[:160], False))
         product = is_product(path)
         for number, line in enumerate(raw, 1):
             for kind, pattern in KEY_FORMATS:
@@ -281,6 +306,10 @@ def parse_allowlist(text):
             continue
         if rule in NON_ALLOWLISTABLE:
             errors.append(f"allowlist line {number}: rule {rule} can never be allowlisted (CLAUDE.md hard rule)")
+            continue
+        if not ADR_REFERENCE.search(reason):
+            errors.append(f"allowlist line {number}: the reason names no ADR (ADR-NNNN); an exception names the ADR "
+                          f"that justifies it (CLAUDE.md, ADR-0015 section 6)")
             continue
         try:
             compiled = None if regex == "-" else re.compile(regex)
@@ -436,6 +465,19 @@ func load() {{ fatalError("{k('not ','implemented')}") }} // audit-expect: todo-
         "Spikes/G99/Probe.swift": f"// {k('TO','DO')} in a never-shipped spike\n",
         "Docs/notes.md": f"We never set {k('NSAllows','ArbitraryLoads')}; {k('URLCredential','(trust:')} is pinned.\n",
         "Config/.env.production": "",
+        # SEC-01: a call and a setting written across lines (no marker: a trailing comment would break the match), and
+        # an XcodeGen project spec in JSON.
+        "Sources/Wrapped.swift": f"""import Foundation
+func wrapped(_ c: URLAuthenticationChallenge) -> URLCredential {{
+    let credential = {k('URLCredential','(')}
+        trust: c.protectionSpace.serverTrust!)
+    return credential
+}}
+let wrappedConfiguration = URLSessionConfiguration.ephemeral
+func lower() {{ wrappedConfiguration.{k('tlsMinimumSupported','ProtocolVersion')} =
+    .TLSv11 }}
+""",
+        "Apps/Reader/project.json": f'{{"targets": {{"Reader": {{"info": {{"properties": {{"NSAppTransportSecurity": {{"{k("NSAllows","ArbitraryLoads")}": true}}}}}}}}}}, "note": "audit-expect: ats-arbitrary-loads"}}\n',
     }
     for path, content in files.items():
         full = os.path.join(root, path)
@@ -444,6 +486,10 @@ func load() {{ fatalError("{k('not ','implemented')}") }} // audit-expect: todo-
             fh.write(content)
     with open(os.path.join(root, "Fixtures.bin"), "wb") as fh:
         fh.write(b"\0" + k("s", "k-", "proj-").encode() + hex32.encode())  # binary: skipped
+    # SEC-01: key and credential containers found by their names, binary or not (a DER key, a keychain, a profile).
+    for name in ("Config/signing.key", "Config/login.keychain-db", "Config/App.provisionprofile"):
+        with open(os.path.join(root, name), "wb") as fh:
+            fh.write(b"\x30\x82\x01\x00\x00" + b"\x02\x01\x00" * 4)
     expected = set()
     for path, content in files.items():
         for number, line in enumerate(content.split("\n"), 1):
@@ -451,6 +497,10 @@ func load() {{ fatalError("{k('not ','implemented')}") }} // audit-expect: todo-
                 expected.add((rule, path, number))
     expected.add(("private-key-block", "Config/key.pem", 1))
     expected.add(("secret-file", "Config/.env.production", 0))
+    expected.add(("trust-override", "Sources/Wrapped.swift", 3))
+    expected.add(("weak-tls", "Sources/Wrapped.swift", 8))
+    for name in ("Config/signing.key", "Config/login.keychain-db", "Config/App.provisionprofile"):
+        expected.add(("secret-file", name, 0))
     return expected
 
 
@@ -462,7 +512,7 @@ def self_test(root):
             failures.append(message)
 
     expected = plant(root)
-    probe_allowlist = "ats-exception | Probe/*.plist | - | self-test: a probe plist named in the allowlist\n"
+    probe_allowlist = "ats-exception | Probe/*.plist | - | self-test (ADR-0015): a probe plist named in the allowlist\n"
     for label in ("plain directory", "git work tree"):
         if label == "git work tree":
             subprocess.run(["git", "init", "-q", root], check=True)
@@ -492,11 +542,16 @@ def self_test(root):
                 fh.write("let x = 1 // " + "TO" + "DO\n")
             check(".build/leak.swift" not in [p for p in list_files(root)[1]], "git work tree: ignored files are not listed")
     buffer = io.StringIO()
-    failed, _, _, stale, _ = report(root, probe_allowlist + "trust-override | Nowhere/*.swift | - | stale entry\n", False, out=buffer)
+    failed, _, _, stale, _ = report(root, probe_allowlist + "trust-override | Nowhere/*.swift | - | stale entry (ADR-0015)\n", False, out=buffer)
     check(failed and len(stale) == 1, "an allowlist entry that matches nothing is reported STALE and fails the audit")
     buffer = io.StringIO()
-    failed, _, _, _, errors = report(root, "ats-arbitrary-loads | App/Info.plist | - | attempt\n", False, out=buffer)
+    failed, _, _, _, errors = report(root, "ats-arbitrary-loads | App/Info.plist | - | attempt (ADR-0015)\n", False, out=buffer)
     check(failed and any("can never be allowlisted" in e for e in errors), "allowlisting a never-allowlistable rule is refused")
+    buffer = io.StringIO()
+    failed, _, allowed, _, errors = report(root, "ats-exception | Probe/*.plist | - | a probe plist, with no decision record named\n", False, out=buffer)
+    check(failed and any("names no ADR" in e for e in errors)
+          and not any(h[1] == "Probe/ATS-Info.plist" for h, _ in allowed),
+          "an allowlist entry whose reason names no ADR is refused, and excuses nothing")
     # A clean tree passes.
     clean = os.path.join(root, "clean")
     os.makedirs(os.path.join(clean, "Apps", "Reader"))

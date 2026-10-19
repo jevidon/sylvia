@@ -1,5 +1,5 @@
 command: Docs/Stage0/evidence/M0-contracts/commands/negative-controls.sh
-commit: e628aebd95b691c63e12ad099387471dbf36cdc8 (uncommitted files: 0 before the clean run (clean-run.sh))
+commit: 284dd8883a15ed8651db1b1a0284b80c08a2cee4 (uncommitted files: 0 before the clean run (clean-run.sh))
 host: macOS 26.6.2 (25G83); python: Python 3.14.6
 baseline (unchanged copy): result: pass (0 problem(s))
 detected: design package export still mapping the draft's kind 'quote' to the Quote marker
@@ -74,7 +74,11 @@ detected: G0.1 EPUB anchor with UTF-16 offsets
 detected: G0.1 PDF anchor whose range no longer covers its text
     error: G0.1 PDF anchor-samples.json multiline: A2 anchors/0: segments/0/text_range: range covers 142 scalars, the text has 145
 detected: G0.1 PDF two-page selection whose exact text joins the pages with a space
-    error: G0.1 PDF anchor-samples.json multi-page: A3 anchors/0: exact_text is not the segments' texts joined with U+000A
+    error: G0.1 PDF anchor-samples.json multi-page: A3 anchors/0: exact_text is not the segments' texts in order with at most one U+000A between two
+detected: G0.1 PDF composed selection whose exact text joins its two pieces with a space
+    error: G0.1 PDF anchor-composed-samples.json two pieces on one page, two lines apart: A3 anchors/0: exact_text is not the segments' texts in order with at most one U+000A between two
+detected: G0.1 PDF composed selection across a page change whose exact text drops that page's U+000A
+    error: G0.1 PDF anchor-composed-samples.json two pieces on one page, then one on the next page: A3 anchors/0: exact_text has no U+000A between two segments on different pages
 detected: G0.1 PDF anchor with a 45-degree rotation
     error: G0.1 PDF anchor-samples.json rotate-90: anchor 0: schema: enum at /segments/0/page_rotation (allOf[pdf]/then/properties/segments/items/properties/page_rotation/enum)
     error: G0.1 PDF anchor-samples.json rotate-90: envelope: schema: enum at /anchors/0/segments/0/page_rotation (properties/anchors/items/allOf[pdf]/then/properties/segments/items/properties/page_rotation/enum)
@@ -94,6 +98,7 @@ detected: G0.5 recovery conversation note moved onto a capture: a recorded devia
     error: G0.5 recovery: recorded deviation note-on-conversation is no longer observed (update ADR-0016 section 8)
 detected: G0.5 recovery library gaining a transcript table: a recorded deviation no longer observed (review finding R2-04)
     error: G0.5 recovery: recorded deviation audio-no-transcript is no longer observed (update ADR-0016 section 8)
+work-level note for the next control: 9852833f (the earliest note with no capture and no conversation)
 detected: G0.5 recovery work-level note whose revisions skip a number (the mapped note capture is checked)
-    error: G0.5 recovery work note 3f87adf3: unrecorded difference: C6 notes/0: revisions [2], current_revision 1
-controls detected for the expected reason: 45; not detected or failed for another reason: 0
+    error: G0.5 recovery work note 9852833f: unrecorded difference: C6 notes/0: revisions [2], current_revision 1
+controls detected for the expected reason: 47; not detected or failed for another reason: 0

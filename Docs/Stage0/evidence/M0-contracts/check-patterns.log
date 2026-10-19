@@ -1,5 +1,5 @@
 node v22.23.1; python 3.14.6
-1. contract patterns: 98 in 18 documents; all compile in Python, in the checker's ECMA-262 check and in node with and without the u flag, except the 2 recorded ones, which fail in the checker and in node with and without u
+1. contract patterns: 101 in 19 documents; all compile in Python, in the checker's ECMA-262 check and in node with and without the u flag, except the 2 recorded ones, which fail in the checker and in node with and without u
    unsupported here '\\p{L}': checker refuses; node with u accepts
    unsupported here '\\P{Lu}': checker refuses; node with u accepts
    unsupported here '(?<a>x)|(?<a>y)': checker refuses; node with u refuses: Invalid regular expression: /(?<a>x)|(?<a>y)/u: Duplicate capture group name

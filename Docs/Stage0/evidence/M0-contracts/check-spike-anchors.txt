@@ -1,8 +1,9 @@
 design package: capture kinds map onto the capture markers as audio_capture -> audio, generated_answer -> generated, note -> note, text_quote -> quote, word -> word; an unknown kind is Pending, never Quote
 related contracts: answer endpoint provider kinds and classifications equal the context-pack contract's; provider-config kinds = 3 text-generation + 1 transcription; the secret-name pattern is the context-pack one written without (?i)
-patterns: 98 patterns in 18 contract documents compile in Python and as ECMA-262 with the u flag, except 2 recorded in other owners' contracts (schemas/context-pack.v1.schema.json#/$defs/notSecretName/not/pattern: (?i) is not ECMA-262; requested of M5: the form anchor.v1 $defs/not_secret_name uses; schemas/provider-config.v1.schema.json#/$defs/notSecretName/not/pattern: (?i) is not ECMA-262; requested of M5: the same names written out letter by letter)
-fixtures anchor.v1: 12 valid (pass the code rules and, unless named unknown-kind-*, the v1 writer profile); 151 invalid, each its base with the listed operations (151 with 1 operation) failing the schema with exactly the listed errors (151 with 1 error); 18 semantic-invalid, each schema-valid and breaking exactly one code-checked rule once, the one its name starts with
-fixtures capture-envelope.v1: 30 valid (pass the code rules and, unless named unknown-kind-*, the v1 writer profile); 219 invalid, each its base with the listed operations (215 with 1 operation, 4 with 2 operations) failing the schema with exactly the listed errors (219 with 1 error); 39 semantic-invalid, each schema-valid and breaking exactly one code-checked rule once, the one its name starts with
+patterns: 101 patterns in 19 contract documents compile in Python and as ECMA-262 with the u flag, except 2 recorded in other owners' contracts (schemas/context-pack.v1.schema.json#/$defs/notSecretName/not/pattern: (?i) is not ECMA-262; requested of M5: the form anchor.v1 $defs/not_secret_name uses; schemas/provider-config.v1.schema.json#/$defs/notSecretName/not/pattern: (?i) is not ECMA-262; requested of M5: the same names written out letter by letter)
+fixtures anchor.v1: 15 valid (pass the code rules and, unless named unknown-kind-*, the v1 writer profile); 151 invalid, each its base with the listed operations (151 with 1 operation) failing the schema with exactly the listed errors (151 with 1 error); 20 semantic-invalid, each schema-valid and breaking exactly one code-checked rule once, the one its name starts with
+fixtures capture-envelope.v1: 31 valid (pass the code rules and, unless named unknown-kind-*, the v1 writer profile); 219 invalid, each its base with the listed operations (215 with 1 operation, 4 with 2 operations) failing the schema with exactly the listed errors (219 with 1 error); 39 semantic-invalid, each schema-valid and breaking exactly one code-checked rule once, the one its name starts with
+rule A3 at scale: 4 anchors of 10,000 one-U+000A segments (the schema's limit) decided as expected, two refused and two accepted, the slowest in 0.045 s (indicative; limit 60 s)
   ok   G0.1 EPUB anchor-samples.json se-epub3-known-passage: 1 anchor(s), envelope text_quote
   ok   G0.1 EPUB anchor-samples.json se-epub3-across-noteref: 1 anchor(s), envelope text_quote
   ok   G0.1 EPUB anchor-samples.json se-epub3-greek: 1 anchor(s), envelope text_quote
@@ -20,23 +21,34 @@ fixtures capture-envelope.v1: 30 valid (pass the code rules and, unless named un
   ok   G0.1 PDF anchor-samples.json rotate-270-offset-cropbox: 1 anchor(s), envelope text_quote
   ok   G0.1 PDF anchor-samples.json multi-page: 1 anchor(s), envelope text_quote
   ok   G0.1 PDF anchor-samples.json unicode-multiline: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces on one page, two lines apart: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces on one line: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json three pieces on one page: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json pieces added in reverse order: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json a middle piece that ends at a line's end: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces, each ending at a line's end: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces on one page, then one on the next page: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json a piece that ends at a line's end, then one on the next page: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json pages added in reverse order: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces that touch (PDFKit merges them): 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces that overlap (PDFKit merges them): 1 anchor(s), envelope text_quote
   ok   G0.1 PDF anchor-samples.json capture_envelope_example: 1 anchor(s), envelope text_quote
   ok   G0.4 record m0-contracts-pending (3D58072B-818D-468F-8B35-D5AC8A2465FA.json): 1 anchor(s), envelope audio_capture
   ok   G0.4 record m0-contracts-failed (56962481-DBE5-4712-A50E-AF182ADD29E4.json): 1 anchor(s), envelope audio_capture
   ok   G0.4 record m0-contracts-single (732EB85E-B21C-4546-A122-D4915D6D2B95.json): 1 anchor(s), envelope audio_capture
   ok   G0.4 record m0-contracts-cross-file (B0C1C2E2-ED9E-4364-A610-E5A54A75749E.json): 1 anchor(s), envelope audio_capture
-spike output: 22 captures, 24 anchors validated (G0.1 EPUB: 7, G0.1 PDF: 11, G0.4 record: 4)
+spike output: 33 captures, 35 anchors validated (G0.1 EPUB: 7, G0.1 PDF: 22, G0.4 record: 4)
   not a capture: G0.4 record m0-contracts-bookmark (B9168DF4-3824-4B1F-9F73-0E3A4EEE38DC.json): a bookmark is a position only, not a capture in the envelope (ADR-0016)
 control: 17 of 17 G0.1 anchors fail the schema without adaptation (most common: edition_id (17); schema_version (17); work_id (17))
 G0.5 recovery library-v1.sqlite: 5 capture rows and 2 work-level note rows mapped field by field into envelopes, 1 conversation note row(s) without a v1 form; 37 of 37 recorded deviations observed, none unrecorded
   ok   G0.5 recovery capture golden-pdf-quote: text_quote, 1 anchor(s), 0 note(s); schema-valid with placeholders: yes; code rules explained by recorded deviations: A2 (pdf-range-length)
-  ok   G0.5 recovery capture golden-physical-note: note, 0 anchor(s), 1 note(s); schema-valid with placeholders: yes; code rules explained by recorded deviations: none
   ok   G0.5 recovery capture golden-epub-quote: text_quote, 1 anchor(s), 1 note(s); schema-valid with placeholders: yes; code rules explained by recorded deviations: none
   ok   G0.5 recovery capture golden-word: word, 1 anchor(s), 1 note(s); schema-valid with placeholders: yes; code rules explained by recorded deviations: none
   ok   G0.5 recovery capture golden-audio-capture: audio_capture, 1 anchor(s), 1 note(s), excerpt preserved; schema-valid with placeholders: yes; code rules explained by recorded deviations: C8 (revision-excludes-excerpt); not checked: C4, C9 (placeholder timing)
-  ok   G0.5 recovery work note 3f87adf3: as a note capture with no anchors, 1 revision(s); schema-valid with the supplied wrapper: yes
-  ok   G0.5 recovery work note 4b4f18cf: as a note capture with no anchors, 1 revision(s), in the trash; schema-valid with the supplied wrapper: yes
-  --   G0.5 recovery note 7930c5b2 on conversation d8291588: no form in the v1 envelope (recorded deviation note-on-conversation; ADR-0016 open item)
+  ok   G0.5 recovery capture golden-physical-note: note, 0 anchor(s), 1 note(s); schema-valid with placeholders: yes; code rules explained by recorded deviations: none
+  ok   G0.5 recovery work note 9852833f: as a note capture with no anchors, 1 revision(s); schema-valid with the supplied wrapper: yes
+  ok   G0.5 recovery work note 83d12460: as a note capture with no anchors, 1 revision(s), in the trash; schema-valid with the supplied wrapper: yes
+  --   G0.5 recovery note 92f7857d on conversation 7c82370f: no form in the v1 envelope (recorded deviation note-on-conversation; ADR-0016 open item)
   recorded deviation anchor-asset-nullable (ADR-0016 section 8; seen in table definitions): capture_anchor.asset_id and asset_sha256 may be NULL for every kind except audio (envelope: every anchor of a known kind names its asset and digest)
   recorded deviation anchor-edition-nullable (ADR-0016 section 8; seen in table definitions): capture_anchor.edition_id may be NULL (envelope: every anchor of a known kind names its edition)
   recorded deviation answer-state-no-cancelled (ADR-0016 section 8; seen in table definitions): message.state has no cancelled state (envelope: answer_state complete, interrupted or cancelled, from G0.5 AI's AskState)
@@ -65,9 +77,9 @@ G0.5 recovery library-v1.sqlite: 5 capture rows and 2 work-level note rows mappe
   recorded deviation no-location-origin (ADR-0016 section 8; seen in golden-audio-capture, golden-epub-quote, golden-pdf-quote, golden-physical-note, golden-word, table definitions): no column records who supplied the location label (envelope: location_label_origin, addendum 4.3)
   recorded deviation no-quote-origin (ADR-0016 section 8; seen in golden-epub-quote, golden-pdf-quote, golden-word, table definitions): no column records where quoted text came from (envelope: quoted_text_origin, plan 11.1)
   recorded deviation no-surface (ADR-0016 section 8; seen in golden-audio-capture, golden-epub-quote, golden-pdf-quote, golden-physical-note, golden-word, table definitions): no column records the capture surface (envelope: provenance.surface)
-  recorded deviation note-on-conversation (ADR-0016 section 8; seen in note 7930c5b2): a note attached to an AI conversation (note.conversation_id) has no form in the v1 envelope (open item for M1 and M5)
+  recorded deviation note-on-conversation (ADR-0016 section 8; seen in note 92f7857d): a note attached to an AI conversation (note.conversation_id) has no form in the v1 envelope (open item for M1 and M5)
   recorded deviation note-origins (ADR-0016 section 8; seen in table definitions): note_revision.origin allows transcript_correction and ai_derived (envelope notes are the user's words; a correction is transcript.corrected_text, an answer a generated_answer capture)
-  recorded deviation note-without-capture (ADR-0016 section 8; seen in note 3f87adf3, note 4b4f18cf): a note on a whole work is a note row without a capture (envelope: a note capture with no anchors, holding that note)
+  recorded deviation note-without-capture (ADR-0016 section 8; seen in note 83d12460, note 9852833f): a note on a whole work is a note row without a capture (envelope: a note capture with no anchors, holding that note)
   recorded deviation pdf-range-length (ADR-0016 section 8; seen in golden-pdf-quote): the PDF anchor's text_range [880, 939] covers 59 scalars for a 60-scalar quotation (an inclusive end, or an off-by-one; envelope ranges are half-open)
   recorded deviation pdf-reduced (ADR-0016 section 8; seen in golden-pdf-quote): a PDF locator is {page_index, page_label, rotation, rects, text_range}: no exact_text, extraction, page box, segment text, prefix, suffix, page text digest or reader locator
   recorded deviation quoted-text-allowed-on-note-and-generated (ADR-0016 section 8; seen in table definitions): the capture CHECKs refuse quoted_text only on audio captures, so a note or a generated capture may hold it (envelope: never)
@@ -75,7 +87,7 @@ G0.5 recovery library-v1.sqlite: 5 capture rows and 2 work-level note rows mappe
   recorded deviation word-no-entry (ADR-0016 section 8; seen in golden-word): a word capture has no vocabulary entry (headword, source sentence) in the capture tables
   recorded deviation word-text-optional (ADR-0016 section 8; seen in table definitions): no CHECK requires quoted_text on a word capture (envelope: a word always has it, by selection)
 adaptations applied to spike output before validation (each counted):
-    17 x envelope wrapper supplied around spike anchors (kind text_quote, ids, snapshot, provenance, times, revision)
+    28 x envelope wrapper supplied around spike anchors (kind text_quote, ids, snapshot, provenance, times, revision)
      9 x epub: asset_digest renamed asset_sha256
      9 x epub: fixture label asset_id replaced by a UUID (spike has no asset IDs)
      9 x epub: version renamed schema_version
@@ -98,8 +110,8 @@ adaptations applied to spike output before validation (each counted):
      2 x g05-recovery: work-level note wrapped in a note capture (capture ID, the work's snapshot, provenance and revision supplied; deviation note-without-capture)
      1 x pdf example: quoted_text_origin, notes, provenance, updated_at, location_label_origin supplied
      8 x pdf: null page_label omitted (no printed label)
-    11 x pdf: reader_locator restructured as reader {adapter, locator}
-    11 x pdf: version renamed schema_version
-    11 x pdf: work_id and edition_id supplied (spike records neither)
-code-checked rules: U1 every string is a sequence of Unicode scalar values (no unpaired surrogate); A1 every range has start < end; A2 a scalar range covers its text (EPUB text_offsets: the text with whitespace collapsed); A3 a PDF anchor's exact_text is its segments' texts joined with U+000A; A4 PDF segments are in document order; A5 an EPUB segment index is below its count; A6 audio ranges name distinct assets, ranges after the first start at 0, total at most 120,000 ms; A7 a PDF line rectangle lies within its page box (x + w <= 1, y + h <= 1, within 0.000001); C1 anchors name the capture's work, and its edition when they name one; C2 a selected text_quote or word equals the exact text of its EPUB, PDF or text anchors (later kinds beside them are not compared; a selection with only later kinds is not checked); a word's source sentence contains it; C3 a capture's EPUB anchors name one asset; several carry segments 0..n-1 of n in order; one carries none; C4 a preserved or removed excerpt's actual ranges name the anchor's assets in order; each is non-empty, overlaps the anchor's range at its position and starts and ends within 500 ms of it; C5 a transcript quotation equals the transcript text, and the capture has the retained excerpt the transcript is of; C6 note revisions are numbered 1..n, current_revision is n, and note IDs are unique; C7 a transcript segment never runs backwards and ends at most 1,000 ms past the excerpt it transcribes; C8 revision is at least the durable writes the capture's state implies; C9 a preserved or removed excerpt's clip offsets, frame count and read-back duration agree with its actual ranges
+    22 x pdf: reader_locator restructured as reader {adapter, locator}
+    22 x pdf: version renamed schema_version
+    22 x pdf: work_id and edition_id supplied (spike records neither)
+code-checked rules: U1 every string is a sequence of Unicode scalar values (no unpaired surrogate); A1 every range has start < end; A2 a scalar range covers its text (EPUB text_offsets: the text with whitespace collapsed); A3 a PDF anchor's exact_text is its segments' texts in document order, with nothing or one U+000A between two on one page and one U+000A between two on different pages (the reader's composition, ADR-0005); A4 PDF segments are in document order; A5 an EPUB segment index is below its count; A6 audio ranges name distinct assets, ranges after the first start at 0, total at most 120,000 ms; A7 a PDF line rectangle lies within its page box (x + w <= 1, y + h <= 1, within 0.000001); C1 anchors name the capture's work, and its edition when they name one; C2 a selected text_quote or word equals the exact text of its EPUB, PDF or text anchors (later kinds beside them are not compared; a selection with only later kinds is not checked); a word's source sentence contains it; C3 a capture's EPUB anchors name one asset; several carry segments 0..n-1 of n in order; one carries none; C4 a preserved or removed excerpt's actual ranges name the anchor's assets in order; each is non-empty, overlaps the anchor's range at its position and starts and ends within 500 ms of it; C5 a transcript quotation equals the transcript text, and the capture has the retained excerpt the transcript is of; C6 note revisions are numbered 1..n, current_revision is n, and note IDs are unique; C7 a transcript segment never runs backwards and ends at most 1,000 ms past the excerpt it transcribes; C8 revision is at least the durable writes the capture's state implies; C9 a preserved or removed excerpt's clip offsets, frame count and read-back duration agree with its actual ranges
 result: pass (0 problem(s))

@@ -1,0 +1,36 @@
+command: Docs/Stage0/evidence/M0-Integration/final-fix-2/commands/g04-output-guard-check.sh
+commit: 01ccc1b7f5d2ed17e0d5d1aac2221570215df525; uncommitted files: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 ; load:  4:25  up 16 days, 14:36, 2 users, load averages: 7.20 5.45 4.91
+
+== 1. the real probe (read-only)
+compiled with: xcrun swiftc -swift-version 6 -warnings-as-errors -O (exit 0)
+output device: MacBook Pro Speakers; transport Built-in; 48000 Hz; latency in frames: device 60, safety offset 48, stream 690, buffer 512; presentation latency 0.027 s; default output (the iOS Simulator plays through it), default system output (alerts)
+default output: MacBook Pro Speakers; transport Built-in; presentation latency 0.027 s
+exit 0
+MacBook Pro Speakers	Built-in	0.027
+--tsv exit 0
+
+== 2. the guard with stand-in probes
+-- stand-in 'built-in': exit 0
+   the default output 'MacBook Pro Speakers' (Built-in, 0.027 s) is within the limit
+   stand-in run: the guard let the run go on
+   as expected
+-- stand-in 'airplay': exit 1
+   error: the Mac's default output device is 'AirPlay' (transport AirPlay), with a presentation
+   latency of 2.012 s, above the 0.300 s this drop-in accepts. The iOS Simulator plays through that
+   as expected
+-- stand-in 'none': exit 0
+   WARN the default output's presentation latency could not be read; the clock tests' result depends on it (header)
+   stand-in run: the guard let the run go on
+   as expected
+-- stand-in 'silent': exit 0
+   WARN the default output's presentation latency could not be read; the clock tests' result depends on it (header)
+   stand-in run: the guard let the run go on
+   as expected
+
+== 3. the exit note when host-load.tsv shows a slow output during the run
+   note: at 2026-10-20T01:00:30Z the default output was AirPlay (AirPlay, presentation latency 2.012 s), above the 0.300 s limit:
+         the tests that compare the player clock with the rendered audio fail with such an output
+   as expected
+
+result: PASS

@@ -1,0 +1,115 @@
+command: Docs/Stage0/evidence/M0-Integration/final-fix-2/commands/runbook-content-check.sh
+commit: 284dd8883a15ed8651db1b1a0284b80c08a2cee4; uncommitted files: 0
+date: 2026-10-19T15:30:07Z
+
+== 1. the runbook as committed
+runbook: Docs/Stage0/M0-device-runbook.md
+== forward: each checklist step's quoted texts and counted values, in the runbook
+G01-EPUB.md: 13 steps, 38 markers: 38 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G01-PDF.md: 11 steps, 27 markers: 27 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G02-Transfer.md: 23 steps, 73 markers: 68 in the runbook, 0 in steps left to the checklist, 5 listed as not carried, 0 missing
+G03-Intake.md: 27 steps, 59 markers: 59 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G04-Audio.md: 17 steps, 117 markers: 96 in the runbook, 15 in steps left to the checklist, 6 listed as not carried, 0 missing
+G05-AI.md: 9 steps, 60 markers: 44 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+G05-Recovery.md: 5 steps, 17 markers: 16 in the runbook, 0 in steps left to the checklist, 1 listed as not carried, 0 missing
+G06-Design.md: 31 steps, 41 markers: 39 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+== reverse: each count Sections 1-7 of the runbook state, in a checklist
+  ok   pull the 35 result tables: G0.4 step 1.2's loop names 35 tables
+  ok   read back on 53 files and directories
+  ok   Test run with 3 tests in 1 suite
+  ok   Executed 0 tests
+  ok   Test run with 68 tests in 11 suites
+  ok   Test run with 1 test in 1 suite
+  own  pull the 35 result tables: the number of file names in G0.4 step 1.2's pull loop, which the checklist lists without counting them; this check counts them (its first reverse line)
+  ok   Executed 38 tests
+  ok   Test run with 4 tests in 1 suite
+result: pass (0 problem(s))
+
+== 2. control: the runbook the review read (83ee280); it must fail
+runbook: .build/scratch/runbook-content-check/runbook-83ee280.md
+== forward: each checklist step's quoted texts and counted values, in the runbook
+G01-EPUB.md: 13 steps, 38 markers: 36 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 2 missing
+  MISSING step 3: continue selection
+  MISSING step 11: Executed 38 tests, with 0 failures
+G01-PDF.md: 11 steps, 27 markers: 21 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 6 missing
+  MISSING step 1: The pond in winter ... the water
+  MISSING step 1: water
+  MISSING step 1: who stops at the shore hears it settle.
+  MISSING step 8: Page index 0 of 3
+  MISSING step 8: not run: no iPad with a pointer
+  MISSING step 10: Open … ms (digest, checks, parse); text of 1000 pages … ms; restore highlights … ms (n restored); first page drawn … ms after display began; total … ms
+G02-Transfer.md: 23 steps, 73 markers: 63 in the runbook, 0 in steps left to the checklist, 5 listed as not carried, 5 missing
+  MISSING step 10: Pair this iPhone with the Mac again. Verified parts are kept.
+  MISSING step 10: Revocation and identity change
+  MISSING step 10: error="invalid_token"
+  MISSING step 10: invalid_token
+  MISSING step 10: reason=reauthentication_required
+G03-Intake.md: 27 steps, 59 markers: 52 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 7 missing
+  MISSING step 9: The copy was cancelled.
+  MISSING step 9: Zero KB copied
+  MISSING step 18: Copying to Sylvia…
+  MISSING step 18: The copy was cancelled.
+  MISSING step 18: Zero KB copied
+  MISSING step 20: Imported large.sylviapack: 5 files, state staged, route documents_bundle
+  MISSING step 24: clone=NSFileProtectionCompleteUntilFirstUserAuthentication
+PROBLEM G04-Audio.md step 1: listed as left to the checklist, but the runbook no longer says so
+G04-Audio.md: 17 steps, 117 markers: 82 in the runbook, 15 in steps left to the checklist, 6 listed as not carried, 14 missing
+  MISSING step 2: volume=1.0 preview_volume=1.0 reason=toggle_or_launch_argument
+  MISSING step 3: Last 24 Hours
+  MISSING step 3: no unrelated background work
+  MISSING step 3: reason=itemChange
+  MISSING step 7: Skip 10 s back, 30 s ahead (change)
+  MISSING step 7: Skip 15 s back, 15 s ahead (change)
+  MISSING step 7: remote command=skipBackward mode=main status=success
+  MISSING step 7: settings skip_backward_s=10 skip_forward_s=30
+  MISSING step 12: captures=<n> newest=<origin>
+  MISSING step 12: loaded=false
+  MISSING step 12: loaded=true
+  MISSING step 12: played_since_load=false
+  MISSING step 12: state=2
+  MISSING step 12: was_playing=false
+PROBLEM G05-AI.md step 9: listed as left to the checklist, but the runbook no longer says so
+G05-AI.md: 9 steps, 60 markers: 33 in the runbook, 18 in steps left to the checklist, 0 listed as not carried, 9 missing
+  MISSING step 1: ATS-PROBE variant=… private-ip=…
+  MISSING step 1: localhost=
+  MISSING step 1: public-ip=192.0.2.1 … ats-blocked=…
+  MISSING step 2: AI failed
+  MISSING step 2: Sylvia isn't allowed to reach devices on your local network …
+  MISSING step 7: timestamps-requested=
+  MISSING step 8: Connected to {host} · user-managed · {model}
+  MISSING step 8: {host} answered the test by asking to run a tool. Sylvia never runs tools, so it can't use this route. Configure a text-only route or model for this endpoint.
+  MISSING step 8: … reported a server or gateway error (HTTP {status}). The request may or may not have been processed, so Sylvia won't send it again without asking.
+G05-Recovery.md: 5 steps, 17 markers: 10 in the runbook, 0 in steps left to the checklist, 1 listed as not carried, 6 missing
+  MISSING step 1: Test run with 68 tests in 11 suites passed
+  MISSING step 1: class B (non-default) requested: read back on 53 files and directories: ["NSFileProtectionCompleteUnlessOpen": 53]
+  MISSING step 1: class C (chosen; also the platform default) read back on 53 files and directories: ["NSFileProtectionCompleteUntilFirstUserAuthentication": 53]
+  MISSING step 1: files SQLite created in a class-B directory: probe.sqlite=NSFileProtectionCompleteUnlessOpen probe.sqlite-wal=NSFileProtectionCompleteUnlessOpen probe.sqlite-shm=NSFileProtectionCompleteUnlessOpen
+  MISSING step 2: capture save latency synchronous=FULL fullfsync=ON: n=400 p50=… p95=… p99=… max=…
+  MISSING step 4: TEST_RUNNER_SYLVIA_DEVICE_PERSIST_PROBE=clean
+G06-Design.md: 31 steps, 41 markers: 39 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+== reverse: each count Sections 1-7 of the runbook state, in a checklist
+PROBLEM the runbook says pull the 34 result tables, and G0.4 step 1.2's loop names 35
+  STALE read back on 52 files and directories: in no checklist
+  ok   Test run with 3 tests in 1 suite
+  ok   Executed 0 tests
+  STALE Test run with 58 tests in 11 suites: in no checklist
+  ok   Test run with 1 test in 1 suite
+  STALE pull the 34 result tables: in no checklist
+  STALE Executed 37 tests: in no checklist
+  ok   Test run with 4 tests in 1 suite
+result: FAIL (56 problem(s))
+control: fails, as it must (exit 1)
+
+== 3. step coverage of the runbook as committed (final-fix/commands/runbook-coverage.py)
+runbook: Docs/Stage0/M0-device-runbook.md
+G0.1 EPUB (G01-EPUB.md): checklist steps 1-13 (13); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.1 PDF (G01-PDF.md): checklist steps 1-11 (11); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.2 (G02-Transfer.md): checklist steps 1-23 (23); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.3 (G03-Intake.md): checklist steps 6-32 (27); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.4 (G04-Audio.md): checklist steps 1-17 (17); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 AI (G05-AI.md): checklist steps 1-9 (9); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 recovery (G05-Recovery.md): checklist steps 1-5 (5); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [5]
+G0.6 (G06-Design.md): checklist steps 1-31 (31); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [10]
+result: pass (0 missing)
+
+result: PASS

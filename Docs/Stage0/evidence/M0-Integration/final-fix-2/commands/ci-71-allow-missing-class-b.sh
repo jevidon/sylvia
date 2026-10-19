@@ -21,11 +21,13 @@ d = plistlib.loads(sys.stdin.buffer.read())
 users = [u for u in d.get("IOConsoleUsers", []) if u.get("kCGSSessionOnConsoleKey")]
 print("IOConsoleLocked=%s CGSSessionScreenIsLocked=%s" % (bool(d.get("IOConsoleLocked")), any(u.get("CGSSessionScreenIsLocked", False) for u in users)))'
 }
+# Counted before this run deletes or writes anything, so its own logs (in the evidence folder) are not counted.
+uncommitted="$(git -C "$root" status --porcelain | wc -l | tr -d ' ')"
 rm -rf Spikes/G05-Recovery/.build .build/g05-recovery "$logs"
 mkdir -p "$logs" "$(dirname "$console")"
 {
   echo "command: Docs/Stage0/evidence/M0-Integration/final-fix-2/commands/ci-71-allow-missing-class-b.sh $*"
-  echo "commit: $(git -C "$root" rev-parse HEAD); uncommitted files: $(git -C "$root" status --porcelain | wc -l | tr -d ' ')"
+  echo "commit: $(git -C "$root" rev-parse HEAD); uncommitted files before the run: $uncommitted"
   echo "host: macOS $(sw_vers -productVersion) ($(sw_vers -buildVersion)); $(xcodebuild -version | tr '\n' ' ')"
   echo "Spikes/G05-Recovery/.build and .build/g05-recovery deleted before the run; simulator name Sylvia-M0-final-fix (iPhone 17, iOS 26.5)"
   echo "G05_ALLOW_MISSING_CLASS_B=1; G05_LOG_DIR=$1"

@@ -78,6 +78,10 @@ loopback_only="${G02_LOOPBACK_ONLY:-0}"
 simulator="${SYLVIA_G02_SIMULATOR:-Sylvia-M0-g02-transfer}"
 failed=()
 not_run=()
+# The simulator steps' scripts boot this job's simulator and leave it booted; shut it down when the drop-in ends,
+# however it ends (M0 final review CC-05). It is found by its name and never created here.
+shutdown_own_simulator() { sylvia_sim_shutdown "$(sylvia_sim_find "$simulator")"; }
+trap shutdown_own_simulator EXIT
 
 echo "G0.2 transfer CI drop-in, $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 echo "host: macOS $(sw_vers -productVersion) ($(sw_vers -buildVersion)), $(sysctl -n machdep.cpu.brand_string)"

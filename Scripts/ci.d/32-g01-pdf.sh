@@ -42,6 +42,10 @@ echo "== simulator"
 UDID="$(sylvia_sim_udid "$SIM_NAME")"
 echo "$SIM_NAME $UDID ($SYLVIA_SIM_DEVICE_TYPE, $SYLVIA_SIM_RUNTIME)"
 sylvia_sim_boot "$UDID"
+# Each simulator is shut down when its tests are done (below); also when this script stops early (M0 final review
+# CC-05). LATEST_UDID is set once the iOS 27.0 simulator is in use.
+LATEST_UDID=""
+trap 'sylvia_sim_shutdown "$UDID" "$LATEST_UDID"' EXIT
 
 echo "== project"
 sylvia_generate "$SPIKE"

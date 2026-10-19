@@ -111,6 +111,8 @@ step "6. simulator: IntakeKit tests on iOS"
 sim_name="${G03_SIM_NAME:-Sylvia-M0-g03-intake}"
 udid="$(sylvia_sim_udid "$sim_name")"
 sylvia_sim_boot "$udid"
+# Shut it down when this script ends, however it ends (M0 final review CC-05).
+trap 'sylvia_sim_shutdown "$udid"' EXIT
 runtime="$(xcrun simctl list devices -j | /usr/bin/python3 -c '
 import json, sys
 for runtime, devices in json.load(sys.stdin)["devices"].items():

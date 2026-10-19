@@ -1,15 +1,24 @@
 # Runs the same local CI script on a GitHub-hosted macOS runner (ADR-0002).
 # Manual dispatch only: macOS minutes are billed on this private repository, and the
 # local Scripts/ci.sh run is the primary gate during Stage 0.
+#
+# Limits (ADR-0002, CI; read from GitHub's runner-image documentation on 19 October 2026, not run): the macos-26
+# image below has Xcode 26.x only, so the Xcode guard stops every dispatch until the pinned Xcode 27.0 (27A266a) is
+# available on the runner (another image, or a self-hosted runner, chosen by the owner). Even then, a dispatch with
+# empty steps (every drop-in) cannot finish on a hosted runner: the complete run took about 3 hours on the build
+# Mac (timeout-minutes is 120), the design and simulator drop-ins need the iOS 26.5 simulator runtime, the G0.4
+# fixtures need Homebrew ffmpeg (not installed here), and the fixture cache grows to about 29 GB (a standard runner
+# for a private repository has 14 GB of disk). The guards run before the checkout, so a dispatch that stops there
+# downloads no LFS object.
 name: CI
 
 on:
   workflow_dispatch:
     inputs:
       steps:
-        description: "Space-separated drop-in filters for Scripts/ci.sh (empty runs everything)"
+        description: "Space-separated drop-in filters for Scripts/ci.sh (letters, digits and hyphens). Empty runs every drop-in, which a hosted runner cannot finish (see the comment at the top)"
         required: false
-        default: "contracts design"
+        default: "contracts hard-rules design"
 
 permissions:
   contents: read
@@ -22,14 +31,7 @@ jobs:
       SYLVIA_FIXTURE_CACHE: ${{ github.workspace }}/.fixture-cache
       SYLVIA_TOOLS_VENV: ${{ github.workspace }}/.venv-tools
     steps:
-      # lfs: true sets up Git LFS in the checkout's own configuration and downloads the LFS files: the snapshot
-      # references and evidence images (ADR-0002). Without it they would be pointer files, and Scripts/ci.sh stops at
-      # its first drop-in, 00-git-lfs. Each run downloads the current LFS objects (719 objects, 65.1 MB, when LFS was
-      # adopted), which counts toward the repository owner's Git LFS bandwidth on GitHub (ADR-0002, "Push-time cost").
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4 (v4.4.0; pinned per ADR-0014)
-        with:
-          lfs: true
-
+      # The toolchain guards run first, before the checkout downloads the LFS objects (M0 final review CC-04).
       - name: Select pinned Xcode (ADR-0001)
         run: |
           set -euo pipefail
@@ -53,13 +55,33 @@ jobs:
             exit 1
           fi
 
+      # lfs: true sets up Git LFS in the checkout's own configuration and downloads the LFS files: the snapshot
+      # references and evidence images (ADR-0002). Without it they would be pointer files, and Scripts/ci.sh stops at
+      # its first drop-in, 00-git-lfs. Each run downloads the current LFS objects (719 objects, 65.1 MB, when LFS was
+      # adopted), which counts toward the repository owner's Git LFS bandwidth on GitHub (ADR-0002, "Push-time cost").
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4 (v4.4.0; pinned per ADR-0014)
+        with:
+          lfs: true
+
       - name: Tools and fixtures
         run: |
           Scripts/tools/bootstrap.sh
           Scripts/fixtures/fetch.sh
 
+      # The input reaches the shell as an environment variable, never as text in the script (GitHub's guidance on
+      # script injection; M0 final review SEC-08), and only drop-in filter words are accepted.
       - name: Run CI
-        run: Scripts/ci.sh ${{ inputs.steps }}
+        env:
+          STEPS: ${{ inputs.steps }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$STEPS" =~ ^[a-z0-9\ -]*$ ]]; then
+            echo "::error::steps may hold only drop-in filter words (lowercase letters, digits, hyphens, spaces)."
+            exit 1
+          fi
+          set -f
+          # shellcheck disable=SC2086  # one filter per word
+          Scripts/ci.sh $STEPS
 
       - name: Upload logs
         if: always()

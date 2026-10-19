@@ -46,6 +46,8 @@ PROJECT="$SPIKE/G01EPUB.xcodeproj"
 
 UDID="$(sylvia_sim_udid "$SIM_NAME")"
 sylvia_sim_boot "$UDID"
+# Shut it down when this script ends, however it ends (M0 final review CC-05).
+trap 'sylvia_sim_shutdown "$UDID"' EXIT
 echo "simulator: $SIM_NAME ($UDID), $(xcrun simctl list devices -j | /usr/bin/python3 -c '
 import json, sys
 u = sys.argv[1]

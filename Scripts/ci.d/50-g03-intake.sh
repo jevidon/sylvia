@@ -91,7 +91,7 @@ step "1. fixtures"
 
 step "2. host: IntakeKit tests (swift test)"
 logged "$logs/host-intakekit-tests.log" bash -c "cd '$kit' && swift test --force-resolved-versions"
-grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|uncoordinated writer|coordinated writer|short deflate stream|aggregate expansion:|slow but moving provider|EPUB folder|insufficient space:|cancel |coordinator cancelled|raw file|raw Finder file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:' \
+grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|uncoordinated writer|coordinated writer|short deflate stream|aggregate expansion:|slow but moving provider|progress then stall:|load progress follows|EPUB folder|insufficient space:|cancel |coordinator cancelled|raw file|raw Finder file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:' \
   "$logs/host-intakekit-tests.log" | grep -v '^◇' | sed 's/^/  /'
 check_warnings "$logs/host-intakekit-tests.log"
 
@@ -128,7 +128,7 @@ for devices in json.load(sys.stdin)["devices"].values():
 echo "simulator: $runtime ($devtype), $udid"
 logged "$logs/sim-intakekit-tests.log" bash -c "cd '$kit' && xcodebuild test -scheme IntakeKit-Package \
   -destination 'id=$udid' -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution"
-grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|aggregate expansion:|slow but moving provider|cancel |coordinator cancelled|raw file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:|\*\* TEST' \
+grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|aggregate expansion:|slow but moving provider|progress then stall:|load progress follows|cancel |coordinator cancelled|raw file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:|\*\* TEST' \
   "$logs/sim-intakekit-tests.log" | grep -v '^◇' | sed 's/^/  /'
 check_warnings "$logs/sim-intakekit-tests.log"
 

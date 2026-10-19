@@ -114,6 +114,7 @@ final class ComposedSelectionTests: XCTestCase {
         var report = ["Selections composed of several pieces (PDFSelection.add) on \(fixture): capture, JSON round trip, fresh open, "
                       + "\(Evidence.environmentLabel)"]
         var refusedByEarlierCheck = 0
+        var samples: [[String: Any]] = []
         for shape in Self.shapes {
             let selection = PDFSelection(document: source.document)
             for piece in shape.pieces {
@@ -123,7 +124,12 @@ final class ComposedSelectionTests: XCTestCase {
             let text = try XCTUnwrap(selection.string)
             // PDFKit's composition for this shape (an observation, pinned so a change in PDFKit shows here).
             XCTAssertEqual(text, shape.expectedText, "\(shape.name): PDFKit's text for the composed selection")
-            let anchor = try PDFAnchorBuilder.capture(selection: selection, in: source, extraction: extraction)
+            let anchor = try PDFAnchorBuilder.capture(selection: selection, in: source, extraction: extraction,
+                                                      assetID: Samples.assetID(fixture))
+            // The stored anchor as JSON, for the anchor contract's checks and fixtures (M0 final review R1-02: the
+            // contract's rule A3 refused these, and no sample showed it).
+            samples.append(["name": shape.name, "fixture": "Spikes/G01-PDF/Fixtures/\(fixture)", "fixture_sha256": source.sha256,
+                            "anchor": try JSONSerialization.jsonObject(with: AnchorJSON.encoder().encode(anchor))])
             XCTAssertTrue(UnicodeOffsets.scalarsEqual(anchor.exactText, text), shape.name)
             XCTAssertEqual(anchor.segments.map { [$0.pageIndex, $0.textRange.start, $0.textRange.end] },
                            shape.expectedSegments.map { [$0.page, $0.start, $0.end] }, "\(shape.name): stored segments")
@@ -148,6 +154,13 @@ final class ComposedSelectionTests: XCTestCase {
         XCTAssertEqual(refusedByEarlierCheck, 6, "the shapes the earlier check refused (R4-01)")
         report.append("\(refusedByEarlierCheck) of \(Self.shapes.count) shapes would have been refused by the earlier check; all \(Self.shapes.count) restore exactly now")
         Evidence.write("anchor-composed-selections.txt", report.joined(separator: "\n") + "\n")
+        let document: [String: Any] = [
+            "description": "Real PDF anchors of selections composed of several pieces (PDFSelection.add), one per shape of ComposedSelectionTests, each captured and restored exactly by testComposedSelectionsCaptureAndRestoreExactly. Generated; do not edit by hand.",
+            "environment": Evidence.environmentLabel,
+            "samples": samples,
+        ]
+        let data = try JSONSerialization.data(withJSONObject: document, options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes])
+        Evidence.write("anchor-composed-samples.json", String(decoding: data, as: UTF8.self) + "\n")
     }
 
     /// A selection from page index 3 to the end of page index 4's first body line ("... a long breath."), made by

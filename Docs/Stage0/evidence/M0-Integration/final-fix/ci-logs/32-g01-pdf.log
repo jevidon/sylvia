@@ -1,0 +1,146 @@
+== toolchain
+Xcode 27.1
+Build version 27A9275
+warning: Xcode build is '27A9275'; ADR-0001 pins 27A266a
+== committed fixtures regenerate byte-identically (host, python3 standard library)
+ok       labels-multipage.pdf               sha256 6ffa266bf32eea6c9bc2984d351bc55d19bd948c65714a4e6d2b9ab41d8138d1
+ok       rotated.pdf                        sha256 892a204ec897d8294fe7ae618a2b4fe276135e7be3a0b2fd020c6f67acec653c
+ok       two-column.pdf                     sha256 0ac65589469fc610ac4a5650c5732bc37c3d3d587a367afaee82b922da0165af
+ok       mixed-scanned.pdf                  sha256 1fa0c32f14825e52b04350d882471f732b475c930bd0dae50cc4e9fe0235e293
+ok       unicode.pdf                        sha256 0d2182907c8bdde33b4553c2daf267f6d6b422acaab848d5b71d5d2817a52131
+ok       encrypted-user-password.pdf        sha256 6d7bef64f1e295a8cb38e47234be09021b19030afc9dfe5bef558323b5f41315
+ok       encrypted-owner-only-nocopy.pdf    sha256 7119b57492bcebb531b5a81a0b89f36de4c7c0d7ff1423861bf31571a49d26a9
+ok       truncated.pdf                      sha256 0fc3c7bece261dc6f3228270eeaeedea86c6b1525f103e98972c81f82b923f6a
+ok       actions.pdf                        sha256 9f17e4d7a9295a348dbafe7b6206fd5140bc373f06faa1a059a60293fa13dba0
+ok       actions-nonurl.pdf                 sha256 3dcd59c685784d304990bcaa8cabcf36311cd5f3ce23244d547eac00d2b06829
+ok       actions-chained.pdf                sha256 21f8480692ca81003190b7fd496acf9255fcd9e4a73b1950daafd1c9cc3f89b4
+ok       text-layout.pdf                    sha256 cf2d5a1fa176f2cfc33ad43db210434f342d987c236f1bfa8fb3e56e37266153
+== large PDF fixture
+up to date: /Users/jevidon/Library/Caches/SylviaFixtures/generated/g01-pdf/large-1000.pdf
+== simulator
+Sylvia-M0-final-fix 280026E5-41C1-4DE3-AFE4-092E75131315 (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+== project
+== build and test (log: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/scratch/final-clone/.build/g01-pdf-logs/xcodebuild-test.log)
+load before the tests: 17:11  up 16 days,  3:21, 3 users, load averages: 17.97 7.45 5.78
+load after the tests: 17:22  up 16 days,  3:33, 3 users, load averages: 3.24 4.43 5.02
+Test Case '-[PDFAnchorKitTests.AnchorCaptureRestoreTests testCaptureAndRestoreEverySample]' passed (0.047 seconds).
+Test Case '-[PDFAnchorKitTests.AnchorCaptureRestoreTests testHighlightsAreStoredSylviaSideAndTheFileIsUnchanged]' passed (1.252 seconds).
+Test Case '-[PDFAnchorKitTests.AnchorCaptureRestoreTests testReanchoringFallbacks]' passed (0.003 seconds).
+Test Case '-[PDFAnchorKitTests.AnchorCaptureRestoreTests testSpecificFacts]' passed (0.018 seconds).
+Test Case '-[PDFAnchorKitTests.AnchorCaptureRestoreTests testWriteAnchorSamples]' passed (0.021 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 1.342 (1.343) seconds
+Test Case '-[PDFAnchorKitTests.ChainedActionTests testAuditCutsAChainPastTheDepthLimit]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.ChainedActionTests testAuditListsEveryPlaceItReads]' passed (0.002 seconds).
+Test Case '-[PDFAnchorKitTests.ChainedActionTests testAuditStopsAtCyclesAndDepthInTrees]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.ChainedActionTests testAuditStopsOnAnExponentialNextGraph]' passed (0.009 seconds).
+Test Case '-[PDFAnchorKitTests.ChainedActionTests testChainedAndAdditionalActionsOpenNothing]' passed (12.850 seconds).
+Test Case '-[PDFAnchorKitTests.ChainedActionTests testControlsWithoutInterceptorPDFKitIgnoresNextButOpensPresentedActions]' passed (40.821 seconds).
+Test Case '-[PDFAnchorKitTests.ChainedActionTests testDisplayingEditingAndClosingRunNoAdditionalAction]' passed (6.018 seconds).
+	 Executed 7 tests, with 0 failures (0 unexpected) in 59.702 (59.704) seconds
+Test Case '-[PDFAnchorKitTests.ComposedSelectionTests testComposedSelectionsCaptureAndRestoreExactly]' passed (0.025 seconds).
+Test Case '-[PDFAnchorKitTests.ComposedSelectionTests testRelocatedComposedRecordIsRebuiltAndSaved]' passed (0.004 seconds).
+Test Case '-[PDFAnchorKitTests.ComposedSelectionTests testSelectionAcrossPagesEndingAtALineEndRestoresExactly]' passed (0.007 seconds).
+Test Case '-[PDFAnchorKitTests.ComposedSelectionTests testSelectionWhoseRangesCannotGiveBackItsQuotationIsRefused]' passed (0.004 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.040 (0.041) seconds
+Test Case '-[PDFAnchorKitTests.CrossOSRestoreTests testAnchorsCapturedOnIOS26_5RestoreOnThisRuntime]' passed (0.016 seconds).
+Test Case '-[PDFAnchorKitTests.CrossOSRestoreTests testRecordPageTextOfEveryFixturePage]' passed (0.012 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.028 (0.028) seconds
+Test Case '-[PDFAnchorKitTests.ExtractionStatusTests testExtractionVersionIsRecorded]' passed (0.002 seconds).
+Test Case '-[PDFAnchorKitTests.ExtractionStatusTests testMixedDocumentKeepsTextFeaturesOnlyOnPagesWithText]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.ExtractionStatusTests testPrintedLabelsComeOnlyFromPageLabels]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.ExtractionStatusTests testTextOutsideTheCropBoxIsNotExtracted]' passed (0.001 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.005 (0.006) seconds
+Test Case '-[PDFAnchorKitTests.GeometryOverlayTests testDisplayMappingIsInvertible]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.GeometryOverlayTests testOverlayDrawsOchreFillAndUnderlineOnEveryRotation]' passed (0.354 seconds).
+Test Case '-[PDFAnchorKitTests.GeometryOverlayTests testOverlayPagesAreTheSubclass]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.GeometryOverlayTests testOverlayRectsMatchRestoredSelectionLines]' passed (0.861 seconds).
+Test Case '-[PDFAnchorKitTests.GeometryOverlayTests testPDFViewConversionMatchesPortableMapping]' passed (0.637 seconds).
+Test Case '-[PDFAnchorKitTests.GeometryOverlayTests testPDFViewDrawsPagesThroughTheOverlay]' passed (0.058 seconds).
+Test Case '-[PDFAnchorKitTests.GeometryOverlayTests testPortableDisplayMappingMatchesPDFKitTransform]' passed (0.014 seconds).
+	 Executed 7 tests, with 0 failures (0 unexpected) in 1.925 (1.927) seconds
+Test Case '-[PDFAnchorKitTests.HighlightRestoreTests testRelocatedHighlightIsDrawnAndItsNewLocationSaved]' passed (0.007 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.007 (0.007) seconds
+Test Case '-[PDFAnchorKitTests.LargePDFTimingTests testOpenAndFirstPageTimesOnLargePDF]' passed (3.339 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 3.339 (3.339) seconds
+Test Case '-[PDFAnchorKitTests.LineEndSelectionTests testSelectionsEndingAtALineBreakRestoreExactly]' passed (0.272 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.272 (0.272) seconds
+Test Case '-[PDFAnchorKitTests.LinkInterceptionTests testControlCanaryDetectorReceivesADeliberateOpen]' passed (0.062 seconds).
+Test Case '-[PDFAnchorKitTests.LinkInterceptionTests testControlPDFKitDefaultOpensURLWithoutInterceptor]' passed (3.061 seconds).
+Test Case '-[PDFAnchorKitTests.LinkInterceptionTests testControlWithoutInterceptorOpeningRunsNoOpenActionOrJavaScript]' passed (3.007 seconds).
+Test Case '-[PDFAnchorKitTests.LinkInterceptionTests testDeclaredActionsAndPolicyDecisions]' passed (0.009 seconds).
+Test Case '-[PDFAnchorKitTests.LinkInterceptionTests testInterceptorReceivesLinksAndNothingIsOpened]' passed (3.007 seconds).
+Test Case '-[PDFAnchorKitTests.LinkInterceptionTests testOpeningTheDocumentRunsNoOpenActionOrJavaScript]' passed (3.007 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 12.153 (12.154) seconds
+Test Case '-[PDFAnchorKitTests.NonURLActionTests testControlPresentedUIDetectorSeesAnAlertAndAPrintJob]' passed (0.061 seconds).
+Test Case '-[PDFAnchorKitTests.NonURLActionTests testNonURLActionsStayInsideTheViewAndOpenNothing]' passed (8.329 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 8.390 (8.391) seconds
+Test Case '-[PDFAnchorKitTests.OpenErrorTests testErrorSummaryEvidence]' passed (0.004 seconds).
+Test Case '-[PDFAnchorKitTests.OpenErrorTests testEveryTruncationPointGivesASpecificErrorAndNoCrash]' passed (0.010 seconds).
+Test Case '-[PDFAnchorKitTests.OpenErrorTests testNotAPDFEmptyMissingAndUnparseable]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.OpenErrorTests testOwnerPasswordOnlyPDFOpensButTextIsRestricted]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.OpenErrorTests testPasswordProtectedPDFIsRejectedWithoutUnlockAttempt]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.OpenErrorTests testRepeatedOpenOfBadFilesDoesNotCrashOrLoop]' passed (0.006 seconds).
+Test Case '-[PDFAnchorKitTests.OpenErrorTests testTruncatedPDFIsASpecificParseError]' passed (0.001 seconds).
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.023 (0.024) seconds
+Test Case '-[PDFAnchorKitTests.OverlayConcurrencyTests testBackgroundDrawsWhileMainThreadChangesHighlights]' passed (4.002 seconds).
+Test Case '-[PDFAnchorKitTests.OverlayConcurrencyTests testLivePDFViewDrawsWhileHighlightsAndScaleChange]' passed (6.560 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 10.561 (10.562) seconds
+Test Case '-[PDFAnchorKitTests.OverlayRedrawTests testApplyTouchesOnlyHighlightedPages]' passed (0.003 seconds).
+Test Case '-[PDFAnchorKitTests.OverlayRedrawTests testNewHighlightIsDrawnAfterSetNeedsDisplayAndSelectionIsKept]' passed (6.324 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 6.326 (6.327) seconds
+Test Case '-[PDFAnchorKitTests.PDFKitObservationTests testPageClassInstancesSkipSwiftPropertyInitializers]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.PDFKitObservationTests testRecordPDFKitBehaviourForEveryFixture]' passed (0.017 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.018 (0.019) seconds
+Test Case '-[PDFAnchorKitTests.SearchMappingTests testSearchHitsReopenAtTheRightPageAndSelection]' passed (0.012 seconds).
+Test Case '-[PDFAnchorKitTests.SearchMappingTests testSearchWithNonBMPTextAndMixedDocument]' passed (0.002 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.014 (0.014) seconds
+Test Case '-[PDFAnchorKitTests.TextLayoutTests testRotatedTextMatricesRestoreButTheUnderlineAssumesUprightText]' passed (0.024 seconds).
+Test Case '-[PDFAnchorKitTests.TextLayoutTests testScrambledStreamOrderIsExtractedInReadingOrder]' passed (0.007 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.031 (0.032) seconds
+Test Case '-[PDFAnchorKitTests.UnicodeOffsetTests testConversionOnKnownStrings]' passed (0.000 seconds).
+Test Case '-[PDFAnchorKitTests.UnicodeOffsetTests testEveryScalarRangeRoundTrips]' passed (0.001 seconds).
+Test Case '-[PDFAnchorKitTests.UnicodeOffsetTests testPDFKitRangesOnNonBMPAndCombiningText]' passed (0.002 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+Test Suite 'PDFAnchorKitTests.xctest' passed at 2026-10-19 17:13:14.397.
+	 Executed 60 tests, with 0 failures (0 unexpected) in 104.181 (104.198) seconds
+	 Executed 60 tests, with 0 failures (0 unexpected) in 104.181 (104.199) seconds
+Test Case '-[PDFSpikeHarnessUITests.AccessibilityUITests testHighlightActionsAreExposedAndAuditRuns]' passed (11.242 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 11.242 (11.243) seconds
+Test Case '-[PDFSpikeHarnessUITests.HighlightUITests testControlWithoutRedrawNewHighlightIsNotOnScreen]' passed (13.182 seconds).
+Test Case '-[PDFSpikeHarnessUITests.HighlightUITests testLineEndWordHighlightSurvivesRelaunch]' passed (22.108 seconds).
+Test Case '-[PDFSpikeHarnessUITests.HighlightUITests testRelocatedHighlightIsDrawnAndSaved]' passed (26.933 seconds).
+Test Case '-[PDFSpikeHarnessUITests.HighlightUITests testStoredHighlightIsDrawnOnScreenOnRotatedPage]' passed (8.258 seconds).
+Test Case '-[PDFSpikeHarnessUITests.HighlightUITests testTouchSelectionHighlightSurvivesRelaunch]' passed (22.190 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 92.671 (92.674) seconds
+Test Case '-[PDFSpikeHarnessUITests.LinkTapUITests testChainedAndAdditionalActionTaps]' passed (127.437 seconds).
+Test Case '-[PDFSpikeHarnessUITests.LinkTapUITests testChainedTapsWithoutInterceptorControl]' passed (115.666 seconds).
+Test Case '-[PDFSpikeHarnessUITests.LinkTapUITests testControlWithoutInterceptorPDFKitOpensTheLink]' passed (4.357 seconds).
+Test Case '-[PDFSpikeHarnessUITests.LinkTapUITests testLinkTapsAreInterceptedAndNothingOpens]' passed (12.048 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 259.509 (259.512) seconds
+Test Case '-[PDFSpikeHarnessUITests.OrientationZoomUITests testHighlightSurvivesOrientationChangeAndStaysAlignedWhenZoomed]' passed (37.566 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 37.566 (37.567) seconds
+Test Case '-[PDFSpikeHarnessUITests.SelectionGestureUITests testDragEndHandleAcrossThreeLines]' passed (33.735 seconds).
+Test Case '-[PDFSpikeHarnessUITests.SelectionGestureUITests testDragEndHandleFromLeftColumnIntoRightColumn]' passed (28.445 seconds).
+Test Case '-[PDFSpikeHarnessUITests.SelectionGestureUITests testDragEndHandleOnRotatedPages]' passed (111.867 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 174.047 (174.049) seconds
+Test Suite 'PDFSpikeHarnessUITests.xctest' passed at 2026-10-19 17:22:52.035.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 575.035 (575.048) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 575.035 (575.049) seconds
+** TEST SUCCEEDED **
+== summary: 74 passed, 0 failed, 0 skipped, 0 test-process restarts, 74 test methods in source, 0 Swift warnings
+== Thread Sanitizer: OverlayConcurrencyTests (log: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/scratch/final-clone/.build/g01-pdf-logs/xcodebuild-tsan.log)
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -project G01PDF.xcodeproj -scheme PDFSpikeHarness -destination id=280026E5-41C1-4DE3-AFE4-092E75131315 -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution -enableThreadSanitizer YES "-only-testing:PDFAnchorKitTests/OverlayConcurrencyTests"
+Test Case '-[PDFAnchorKitTests.OverlayConcurrencyTests testBackgroundDrawsWhileMainThreadChangesHighlights]' passed (4.020 seconds).
+Test Case '-[PDFAnchorKitTests.OverlayConcurrencyTests testLivePDFViewDrawsWhileHighlightsAndScaleChange]' passed (6.606 seconds).
+** TEST SUCCEEDED **
+== Thread Sanitizer summary: 2 of 2 passed, 0 sanitizer reports, xcodebuild exit 0
+== cross-OS restore: CrossOSRestoreTests on com.apple.CoreSimulator.SimRuntime.iOS-27-0 (log: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/scratch/final-clone/.build/g01-pdf-logs/xcodebuild-cross-os.log)
+Sylvia-M0-final-fix 0F4E020C-C2CA-4E9D-A06F-EF08A6845B48 (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-27-0)
+Test Case '-[PDFAnchorKitTests.CrossOSRestoreTests testAnchorsCapturedOnIOS26_5RestoreOnThisRuntime]' passed (0.028 seconds).
+Test Case '-[PDFAnchorKitTests.CrossOSRestoreTests testRecordPageTextOfEveryFixturePage]' passed (0.020 seconds).
+** TEST SUCCEEDED **
+== cross-OS summary: 2 of 2 passed, 0 failed or skipped, xcodebuild exit 0
+== page text of every fixture page: iOS 26.5 and iOS 27.0 compared
+identical: page-text-digests-iOS-26.5-23F77.txt and page-text-digests-iOS-27.0-24A434.txt, 32 pages, every line equal (32 pages of 10 fixtures; 2 fixtures do not open)
+evidence written to /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/scratch/final-clone/.build/g01-pdf-evidence
+PASS

@@ -1,0 +1,81 @@
+
+--- toolchain (2026-10-19T03:14:50Z)
+warning: Xcode build is '27A9275'; ADR-0001 pins 27A266a
+Xcode 27.1
+Build version 27A9275
+
+--- design lint over the catalog, no exemptions (Scripts/lint-design.py lint Apps/DesignCatalog) (2026-10-19T03:14:50Z)
+design lint: UI targets scanned: Apps/DesignCatalog
+design lint: 16 Swift and strings file(s) checked
+design lint: 48 permitted and 22 forbidden phrases from the export
+design lint: 0 finding(s)
+
+--- project generation and package lock (2026-10-19T03:14:50Z)
+lock matches Packages/Design/Package.resolved
+iPhone simulator Sylvia-M0-final-fix: 280026E5-41C1-4DE3-AFE4-092E75131315 (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+iPhone SE simulator Sylvia-M0-final-fix-SE: 59C94FA6-26BE-406B-887A-DB9EACDDE5D9 (com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+iPad simulator Sylvia-M0-final-fix-iPad: 1A498E9D-8B52-4147-84D7-9AE12F1ECE5A (com.apple.CoreSimulator.SimDeviceType.iPad-A16, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+
+--- build for testing (iOS simulator) (2026-10-19T03:14:51Z)
+** TEST BUILD SUCCEEDED **
+no warnings in Apps/DesignCatalog
+
+--- tests on unit-iphone-simulator (280026E5-41C1-4DE3-AFE4-092E75131315): DesignCatalogTests (2026-10-19T03:15:07Z)
+Test Case '-[DesignCatalogTests.SaveOrderingTests testAudioCaptureScreenSavesThroughTheWrite]' passed (0.025 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testCommitWritesTheRecordBeforeReturning]' passed (0.001 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testExcerptSavedOnlyAfterTheExcerptRecordIsWritten]' passed (0.541 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedCommitWritesNothing]' passed (0.004 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedDiskWriteLeavesNothingForTheNextCommit]' passed (0.002 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedExcerptIsNotSaved]' passed (0.069 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedMomentWriteSavesNothing]' passed (0.399 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testFailedSaveKeepsTheTextAndWritesNothing]' passed (0.134 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testInterruptedAnswerIsNeverComplete]' passed (2.347 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testSheetSaysSavedOnlyAfterTheWrite]' passed (0.521 seconds).
+Test Case '-[DesignCatalogTests.SaveOrderingTests testStoppedAnswerKeepsWhatArrived]' passed (1.518 seconds).
+	 Executed 11 tests, with 0 failures (0 unexpected) in 5.561 (5.565) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 5.561 (5.566) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 5.561 (5.566) seconds
+
+--- tests on ui-iphone-simulator (280026E5-41C1-4DE3-AFE4-092E75131315): DesignCatalogUITests/PhonePrototypeTests DesignCatalogUITests/CatalogGalleryTests DesignCatalogUITests/AreaNavigationTests (2026-10-19T03:15:26Z)
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testHardwareKeyboardSwitchesAreas]' passed (8.795 seconds).
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testLargeContentViewerActivatesControlsOnce]' passed (84.156 seconds).
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testLargeContentViewerOnTabBarItem]' passed (17.153 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 110.104 (110.106) seconds
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testColorPageContrastInEveryAppearance]' passed (17.763 seconds).
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testEverySamplePage]' passed (5.035 seconds).
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testIndexAndDisplaySwitches]' passed (20.450 seconds).
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testTextFieldSampleLabels]' passed (6.224 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 49.472 (49.475) seconds
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testCaptureSavesOnlyAfterTheWrite]' passed (9.927 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenAtAX5]' passed (594.557 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenInDark]' passed (318.971 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenInLight]' passed (318.152 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testFailedSaveKeepsTheText]' passed (9.163 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testInboxAttentionDotFollowsTheInbox]' passed (8.436 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testSavedSheetDismissesWithTheSameDrag]' passed (7.118 seconds).
+	 Executed 7 tests, with 0 failures (0 unexpected) in 1266.324 (1266.327) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 1425.900 (1425.910) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 1425.900 (1425.910) seconds
+
+--- tests on ui-iphone-se-simulator (59C94FA6-26BE-406B-887A-DB9EACDDE5D9): DesignCatalogUITests/PhonePrototypeTests/testEveryScreenInLight DesignCatalogUITests/PhonePrototypeTests/testEveryScreenAtAX5 DesignCatalogUITests/CatalogGalleryTests/testEverySamplePage (2026-10-19T03:39:19Z)
+Test Case '-[DesignCatalogUITests.CatalogGalleryTests testEverySamplePage]' passed (7.685 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 7.685 (7.686) seconds
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenAtAX5]' passed (663.921 seconds).
+Test Case '-[DesignCatalogUITests.PhonePrototypeTests testEveryScreenInLight]' passed (336.736 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 1000.657 (1000.658) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1008.342 (1008.344) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1008.342 (1008.345) seconds
+
+--- tests on ui-ipad-simulator (1A498E9D-8B52-4147-84D7-9AE12F1ECE5A): DesignCatalogUITests/PadLayoutTests DesignCatalogUITests/AreaNavigationTests/testHardwareKeyboardSwitchesAreas (2026-10-19T03:56:39Z)
+Test Case '-[DesignCatalogUITests.AreaNavigationTests testHardwareKeyboardSwitchesAreas]' passed (9.865 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 9.865 (9.866) seconds
+Test Case '-[DesignCatalogUITests.PadLayoutTests testRegularWidthLayout]' passed (105.535 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 105.535 (105.536) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 115.400 (115.403) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 115.400 (115.404) seconds
+
+--- evidence written by the UI tests (2026-10-19T03:59:03Z)
+196 screenshots, 21556 KiB
+every report row: 0 truncated, 0 outside
+
+21-design-catalog: all checks passed; outputs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/scratch/final-clone/.build/ci-logs/g06-design

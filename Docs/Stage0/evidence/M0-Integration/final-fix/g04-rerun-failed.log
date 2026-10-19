@@ -1,0 +1,210 @@
+clone: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/scratch/final-clone at e3c8659f379c8f3c86465db9f0fb1c294f85c2a8; uncommitted files: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+simulator: Sylvia-M0-final-fix (280026E5-41C1-4DE3-AFE4-092E75131315); test volume (SYLVIA_AUDIBLE_PLAYBACK unset)
+tests: G04AudioTests/RealAV/MutedRenderingTests/quietPlayerRenders() G04AudioTests/RealAV/RealPlaybackTests/rateAndPitch() G04AudioTests/RealAV/RealServiceTests/seekAcrossMembersAndRate() G04AudioTests/RealAV/RealServiceTests/nowPlayingAndRemoteCommands() G04AudioTests/RealAV/RealPreviewTests/previewRestoresContextAndHitsBoundaries() G04AudioTests/RealAV/BudgetTests/budgets() G04AudioTests/RealAV/SoakTests/soak()
+start: 2026-10-19T06:22:34Z; load: 19:22  up 16 days,  5:33, 2 users, load averages: 3.51 4.01 3.10
+== 2026-10-19T06:22:34Z; load: { 3.51 4.01 3.10 }
+output device: AirPlay; transport AirPlay; 44100 Hz; default-output
+output device: MacBook Pro Speakers; transport Built-in; 48000 Hz; default-system-output
+✘ Test "The test players' quiet volume leaves the analysis taps and the clock unchanged" recorded an issue at AudioOutputTests.swift:164:25: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 0.5309524218361167 at 1.0x
+✘ Test "The test players' quiet volume leaves the analysis taps and the clock unchanged" recorded an issue at AudioOutputTests.swift:164:25: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 1.1202180710480225 at 2.0x
+✘ Test "The test players' quiet volume leaves the analysis taps and the clock unchanged" recorded an issue at AudioOutputTests.swift:164:25: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 1.7224316939508222 at 3.0x
+✘ Test "The test players' quiet volume leaves the analysis taps and the clock unchanged" recorded an issue at AudioOutputTests.swift:164:25: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 0.5899038320209946 at 1.0x
+✘ Test "The test players' quiet volume leaves the analysis taps and the clock unchanged" recorded an issue at AudioOutputTests.swift:164:25: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 1.1835799631781558 at 2.0x
+✘ Test "The test players' quiet volume leaves the analysis taps and the clock unchanged" recorded an issue at AudioOutputTests.swift:164:25: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 1.7803896391840175 at 3.0x
+✘ Test "The test players' quiet volume leaves the analysis taps and the clock unchanged" failed after 49.483 seconds with 6 issues.
+✘ Suite "Quiet output leaves what the analysis taps see unchanged; muted output does not (why the tests are quiet, not muted)" failed after 49.483 seconds with 6 issues.
+✘ Test "Rate 0.5x-3x advances media time at the rate; time-domain algorithm keeps the pitch" recorded an issue at RealPlaybackTests.swift:147:21: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 0.29478220721846804 at rate 0.5
+✘ Test "Rate 0.5x-3x advances media time at the rate; time-domain algorithm keeps the pitch" recorded an issue at RealPlaybackTests.swift:147:21: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 0.5902824287976564 at rate 1.0
+✘ Test "Rate 0.5x-3x advances media time at the rate; time-domain algorithm keeps the pitch" recorded an issue at RealPlaybackTests.swift:147:21: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 1.1854197937722633 at rate 2.0
+✘ Test "Rate 0.5x-3x advances media time at the rate; time-domain algorithm keeps the pitch" recorded an issue at RealPlaybackTests.swift:147:21: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 1.7969155448053826 at rate 3.0
+✘ Test "Rate 0.5x-3x advances media time at the rate; time-domain algorithm keeps the pitch" recorded an issue at RealPlaybackTests.swift:147:21: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 0.29672036465735746 at rate 0.5
+✘ Test "Rate 0.5x-3x advances media time at the rate; time-domain algorithm keeps the pitch" recorded an issue at RealPlaybackTests.swift:147:21: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 0.6060072795041069 at rate 1.0
+✘ Test "Rate 0.5x-3x advances media time at the rate; time-domain algorithm keeps the pitch" recorded an issue at RealPlaybackTests.swift:147:21: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 1.2206623642633403 at rate 2.0
+✘ Test "Rate 0.5x-3x advances media time at the rate; time-domain algorithm keeps the pitch" recorded an issue at RealPlaybackTests.swift:147:21: Expectation failed: abs(advance - Double(rate)) <= 0.1 * Double(rate)
+↳ media advance 1.8484772838709453 at rate 3.0
+✘ Test "Rate 0.5x-3x advances media time at the rate; time-domain algorithm keeps the pitch" failed after 32.889 seconds with 8 issues.
+✘ Suite "Playback service with the real AVQueuePlayer engine (T18-T20, T22)" failed after 32.889 seconds with 8 issues.
+✘ Test "Seek into another member at 2x, 0.5x and 1x: position and rendered content agree (T20)" recorded an issue at RealServiceTests.swift:155:21: Expectation failed: advance >= Double(rate) * 0.8 && advance <= Double(rate) * 1.05
+✘ Test "Seek into another member at 2x, 0.5x and 1x: position and rendered content agree (T20)" recorded an issue at RealServiceTests.swift:155:21: Expectation failed: advance >= Double(rate) * 0.8 && advance <= Double(rate) * 1.05
+✘ Test "Seek into another member at 2x, 0.5x and 1x: position and rendered content agree (T20)" recorded an issue at RealServiceTests.swift:155:21: Expectation failed: advance >= Double(rate) * 0.8 && advance <= Double(rate) * 1.05
+✘ Test "Seek into another member at 2x, 0.5x and 1x: position and rendered content agree (T20)" recorded an issue at RealServiceTests.swift:155:21: Expectation failed: advance >= Double(rate) * 0.8 && advance <= Double(rate) * 1.05
+✘ Test "Seek into another member at 2x, 0.5x and 1x: position and rendered content agree (T20)" recorded an issue at RealServiceTests.swift:155:21: Expectation failed: advance >= Double(rate) * 0.8 && advance <= Double(rate) * 1.05
+✘ Test "Seek into another member at 2x, 0.5x and 1x: position and rendered content agree (T20)" recorded an issue at RealServiceTests.swift:155:21: Expectation failed: advance >= Double(rate) * 0.8 && advance <= Double(rate) * 1.05
+✘ Test "Seek into another member at 2x, 0.5x and 1x: position and rendered content agree (T20)" failed after 24.736 seconds with 6 issues.
+✘ Test "Now Playing info and remote commands are registered and drive the service (simulator)" recorded an issue at RealServiceTests.swift:327:13: Expectation failed: elapsed > 0.5 && elapsed < 5
+✘ Test "Now Playing info and remote commands are registered and drive the service (simulator)" failed after 1.931 seconds with 1 issue.
+✘ Suite "Playback service on the real engine (T19, T20)" failed after 26.667 seconds with 7 issues.
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" recorded an issue at RealServiceTests.swift:528:21: Expectation failed: abs(overrun) <= 500
+✘ Test "Preview of retained excerpts and of pending source ranges: main context restored, boundaries measured" failed after 89.303 seconds with 10 issues.
+✘ Suite "Capture preview on the real engine (T22)" failed after 89.304 seconds with 10 issues.
+✘ Test "Start/resume (warm, and cold resume by depth into the file) and acknowledged capture save distributions" recorded an issue at RealServiceTests.swift:785:38: Expectation failed: p.collectors[resumeMember].firstChunk(near: Double(resumePoint.ms) / 1000, after: t0, tolerance: 0.5)
+✘ Test "Start/resume (warm, and cold resume by depth into the file) and acknowledged capture save distributions" failed after 6.762 seconds with 1 issue.
+✘ Suite "Indicative budgets (simulator)" failed after 6.762 seconds with 1 issue.
+✘ Test "Two hours of media at 3x across a member boundary: content, clock, checkpoints, memory" recorded an issue at SoakTests.swift:168:13: Expectation failed: leads.allSatisfy { $0 >= 0 && $0 <= 3 }
+✘ Test "Two hours of media at 3x across a member boundary: content, clock, checkpoints, memory" recorded an issue at SoakTests.swift:181:13: Expectation failed: abs(Double(p.service.listenedMs) / 1000 - heardWall) <= 2
+✘ Test "Two hours of media at 3x across a member boundary: content, clock, checkpoints, memory" failed after 2400.374 seconds with 2 issues.
+✘ Suite "Soak: two hours of media on the real engine" failed after 2400.374 seconds with 2 issues.
+✘ Suite "Real AVFoundation (serialized)" failed after 2605.483 seconds with 34 issues.
+✘ Test run with 7 tests in 7 suites failed after 2605.483 seconds with 34 issues.
+** TEST EXECUTE FAILED **
+-- result table audio-output.txt
+# Output volume of the tests, probes and harness (quiet, 1 % volume, unless SYLVIA_AUDIBLE_PLAYBACK=1) and what the analysis taps see.
+# Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+# reference: tone-1khz-60s.m4a decoded with AVAssetReader, peak 0.0647. Time-domain pitch algorithm (the engine's).
+# Rows 'muted' and 'volume-0' are recorded only: they show why the tests are quiet rather than muted (not asserted).
+config	player_muted	player_volume	tap	rate	media_advance_per_wall_s	chunks	peak	peak_over_reference	rms	measured_tone_hz
+test (quiet)	false	0.01	pre-effects	1.0	0.531	33	0.0647	1.000	0.0442	1000.0
+test (quiet)	false	0.01	pre-effects	2.0	1.120	64	0.0646	0.998	0.0442	1000.0
+test (quiet)	false	0.01	pre-effects	3.0	1.722	97	0.0633	0.979	0.0443	1000.0
+test (quiet)	false	0.01	post-effects	1.0	0.590	32	0.0647	1.000	0.0442	999.9
+test (quiet)	false	0.01	post-effects	2.0	1.184	32	0.0645	0.997	0.0443	999.8
+test (quiet)	false	0.01	post-effects	3.0	1.780	32	0.0639	0.988	0.0443	999.9
+muted	true	0.01	post-effects	1.0	0.589	32	0.0647	1.000	0.0442	999.9
+muted	true	0.01	post-effects	2.0	1.191	33	0.0645	0.997	0.0363	671.3
+muted	true	0.01	post-effects	3.0	1.817	33	0.0639	0.988	0.0260	345.8
+volume-0	false	0.0	post-effects	1.0	0.593	33	0.0647	1.000	0.0442	999.8
+volume-0	false	0.0	post-effects	2.0	1.202	33	0.0645	0.997	0.0443	999.8
+volume-0	false	0.0	post-effects	3.0	1.792	32	0.0639	0.988	0.0443	999.9
+-- result table budgets.txt
+# Indicative budgets (plan 19.2). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 2.93 4.00 3.36 (1, 5, 15 min), 1 simulators booted on the host when the test run started
+# warm start/resume = play() to the first buffer at the position reaching the analysis tap (excludes output latency),
+# for files this process has already inspected or opened (start after a seek, resume after a pause); cold resume is below
+# at the end: host load averages 2.78 3.95 3.35 (1, 5, 15 min), 1 simulators booted on the host when the test run started
+-- result table now-playing.txt
+# Now Playing and remote commands (MPRemoteCommandCenter.shared, MPNowPlayingInfoCenter.default). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+# What the lock screen and Control Center show is a device item.
+registered=play,pause,togglePlayPause,skipForward,skipBackward,changePlaybackRate,changePlaybackPosition,nextTrack,previousTrack
+disabled: seekForward, seekBackward, bookmark, like, dislike, rating, changeRepeatMode, changeShuffleMode, language options, stop
+paused: MPNowPlayingInfoPropertyChapterCount=5 MPNowPlayingInfoPropertyChapterNumber=0 MPNowPlayingInfoPropertyDefaultPlaybackRate=1.0 MPNowPlayingInfoPropertyElapsedPlaybackTime=0.0 MPNowPlayingInfoPropertyMediaType=1 MPNowPlayingInfoPropertyPlaybackRate=0.0 playbackDuration=570.018 title=G0.4 multi-file fixture playbackState=2
+playing: playbackState=1 (recorded, not asserted: iOS derives it from the audio session)
+after play, skip, next chapter, rate 2x, position 400 s, pause: MPNowPlayingInfoPropertyChapterCount=5 MPNowPlayingInfoPropertyChapterNumber=3 MPNowPlayingInfoPropertyDefaultPlaybackRate=2.0 MPNowPlayingInfoPropertyElapsedPlaybackTime=400.0 MPNowPlayingInfoPropertyMediaType=1 MPNowPlayingInfoPropertyPlaybackRate=0.0 playbackDuration=570.018 title=G0.4 multi-file fixture playbackState=2
+during a preview of 30-60 s of member 1: MPNowPlayingInfoPropertyDefaultPlaybackRate=1.0 MPNowPlayingInfoPropertyElapsedPlaybackTime=0.0 MPNowPlayingInfoPropertyMediaType=1 MPNowPlayingInfoPropertyPlaybackRate=1.0 playbackDuration=30.0 title=G0.4 multi-file fixture playbackState=1
+during the preview: skipForward -> commandFailed; togglePlayPause -> success, preview stopped, book paused at 100166 ms of its member, session released (deactivations 1 -> 2)
+-- result table preview.txt
+# Capture preview (preview AVQueuePlayer) while the main AVQueuePlayer session is paused. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+# kind: the retained excerpt file, or the pending capture's source ranges (one segment per member file, played back to back)
+# head_err = true content position of the first rendered second minus the intended start (ms, analysis tap + cross-correlation)
+# seam_errs = for each later segment (the next member file), true content position of its first rendered second minus its intended start (ms)
+# rendered_s = seconds of each segment's intended span the tap processed (clipped at its intended end), summed; intended_s = the capture's length
+# tap_end_overrun = source time the analysis tap processed past the intended end (ms; an upper bound: the tap also processes buffers the output may never play)
+# player_end = the preview player's own time when it reached the end, minus the intended end (ms)
+# post_end_rms_ratio = loudness of the tap audio past the intended end relative to the whole run (0 = silence)
+kind	range(global ms)	segments	head_err_ms	head_peak	seam_errs_ms	rendered_s	intended_s	tap_end_overrun_ms	player_end_ms	post_end_rms_ratio	main_restored	progress_unchanged
+excerpt	135535-140035	1	-13.1	0.997	-	4.500	4.500	2373.1	1.1	0.000	true	true
+source ranges	135535-140035	2	-13.1	0.999	-13.1	4.500	4.500	2422.6	2.2	0.000	true	true
+excerpt	61234-65734	1	-13.1	0.958	-	4.500	4.500	2373.1	2.0	0.000	true	true
+source ranges	61234-65734	1	-13.1	0.959	-	4.500	4.500	2373.1	1.2	0.000	true	true
+excerpt	296734-301234	1	-13.1	1.000	-	4.500	4.500	2373.1	1.8	0.000	true	true
+source ranges	296734-301234	2	-13.1	1.000	-13.1	4.500	4.500	2408.1	1.6	0.000	true	true
+excerpt	330500-335000	1	-13.1	0.995	-	4.500	4.500	2373.1	0.9	0.000	true	true
+source ranges	330500-335000	1	-13.1	0.998	-	4.500	4.500	2373.1	1.1	0.000	true	true
+excerpt	500000-504500	1	-13.1	1.000	-	4.500	4.500	2373.1	1.5	0.000	true	true
+source ranges	500000-504500	1	-13.1	1.000	-	4.500	4.500	2373.1	1.1	0.000	true	true
+preview head |error|: n=10 p50=13.071 p95=13.084 max=13.084 ms
+preview seam |error| (pending cross-file previews): n=2 p50=13.061 p95=13.061 max=13.061 ms
+preview tap end |overrun| (upper bound): n=10 p50=2373.107 p95=2416.079 max=2422.630 ms
+preview player end |error|: n=10 p50=1.369 p95=2.123 max=2.241 ms
+-- result table rate-pitch.txt
+# Rate and pitch on tone-1khz-60s.m4a (post-effects tap). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+algorithm	rate	media_advance_per_wall_s	tap_rate_hz	measured_tone_hz
+TimeDomain	0.5	0.295	44100	999.7
+TimeDomain	1.0	0.590	44100	999.8
+TimeDomain	2.0	1.185	44100	999.8
+TimeDomain	3.0	1.797	44100	999.8
+Varispeed	0.5	0.297	44100	500.0
+Varispeed	1.0	0.606	44100	1000.0
+Varispeed	2.0	1.221	44100	1999.8
+Varispeed	3.0	1.848	44100	3000.0
+-- result table real-engine-seek-rate.txt
+# Seek across members and rate on AVQueuePlayer, with every member opened with precise timing and, second, as the import
+# opens them (estimated timing for these constant-bit-rate MP3 files; review R4-01). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+members opened: precise,precise,precise,precise
+member 3 at 20.25 s, 2.0x: media advance 0.843 s per wall s; rendered from 20.250 s for 7.99 s of source; content error -13.1 ms (peak 0.998)
+member 1 at 101.50 s, 0.5x: media advance 0.176 s per wall s; rendered from 101.500 s for 1.95 s of source; content error -13.1 ms (peak 0.998)
+member 4 at 7.00 s, 1.0x: media advance 0.398 s per wall s; rendered from 7.000 s for 3.99 s of source; content error -13.1 ms (peak 0.955)
+members opened: estimatedCBR,estimatedCBR,estimatedCBR,estimatedCBR
+member 3 at 20.25 s, 2.0x: media advance 0.840 s per wall s; rendered from 20.250 s for 7.89 s of source; content error -13.1 ms (peak 0.998)
+member 1 at 101.50 s, 0.5x: media advance 0.176 s per wall s; rendered from 101.500 s for 1.95 s of source; content error -13.1 ms (peak 0.998)
+member 4 at 7.00 s, 1.0x: media advance 0.398 s per wall s; rendered from 7.000 s for 3.99 s of source; content error -13.1 ms (peak 0.955)
+-- result table soak.txt
+# Soak: 120 min of media at 3.0x on AVQueuePlayer through the playback service. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+# edition: the last 2700 s of long-mp3-vbr-10h.mp3, then long-aac-10h.m4b (both master-long looped, so content is checked against master-long)
+# content_error_ms = true content position of the last 4 s the tap processed minus the source time the player reported for it (cross-correlation)
+# tap_lead_s = source time of the newest audio the tap processed minus the player's current time (decoding ahead of output)
+wall_s	member	player_s	global_ms	content_error_ms	peak	tap_lead_s	footprint_mb	checkpoints
+60	0	34218.252	34218252	-13.1	0.996	6.700	68.5	44
+120	0	34398.501	34398501	-13.1	0.997	6.731	41.2	88
+181	0	34578.804	34578804	-13.1	0.869	6.708	41.1	132
+241	0	34759.001	34759001	-13.1	0.998	6.791	41.0	177
+301	0	34939.308	34939308	-13.1	0.996	6.764	41.0	222
+361	0	35119.501	35119501	-13.1	0.996	6.757	41.0	266
+421	0	35299.757	35299757	-13.1	1.000	6.688	41.1	311
+481	0	35480.001	35480001	-13.1	0.995	6.724	41.1	354
+541	0	35660.304	35660305	-13.1	0.998	6.700	41.2	398
+601	0	35840.501	35840501	-13.1	0.999	6.783	41.2	442
+661	0	36020.802	36020802	-13.1	0.996	6.762	41.2	486
+721	0	36201.001	36201001	-13.1	0.997	6.750	41.2	530
+781	0	36381.263	36381263	-13.1	0.998	6.768	41.2	574
+841	0	36561.520	36561520	-13.1	0.997	6.790	41.2	618
+902	0	36741.802	36741802	-13.1	0.915	6.788	41.1	661
+962	1	170.306	36914979	0.0	0.999	6.723	41.2	703
+1022	1	350.501	37095174	0.0	0.999	6.715	41.3	748
+1082	1	530.824	37275497	0.0	0.997	6.764	41.2	793
+1142	1	711.001	37455674	0.0	0.995	6.774	41.2	837
+1202	1	891.306	37635979	0.0	0.990	6.749	41.3	881
+1262	1	1071.501	37816174	0.0	0.998	6.741	41.3	926
+1322	1	1251.805	37996479	0.0	0.998	6.716	41.3	971
+1382	1	1432.001	38176674	0.0	0.989	6.707	41.3	1015
+1442	1	1612.305	38356978	0.0	0.995	6.776	41.2	1060
+1502	1	1792.523	38537196	0.0	0.991	6.745	41.2	1105
+1563	1	1972.808	38717481	0.0	0.995	6.740	41.2	1149
+1623	1	2153.001	38897674	0.0	0.982	6.733	41.2	1193
+1683	1	2333.269	39077942	0.0	0.997	6.745	41.2	1238
+1743	1	2513.501	39258174	0.0	0.999	6.793	41.3	1282
+1803	1	2693.803	39438476	-0.0	0.986	6.770	41.3	1327
+1863	1	2874.001	39618674	0.0	0.971	6.760	41.3	1372
+1923	1	3054.334	39799007	0.0	0.986	6.799	41.3	1417
+1983	1	3234.501	39979174	0.0	0.997	6.726	41.2	1462
+2043	1	3414.803	40159476	0.0	0.996	6.703	41.2	1506
+2103	1	3595.001	40339674	-0.0	0.959	6.785	41.3	1550
+2163	1	3775.302	40519975	0.0	0.993	6.764	41.3	1595
+2223	1	3955.501	40700174	0.0	0.992	6.752	41.3	1638
+2284	1	4135.818	40880491	0.0	0.987	6.715	41.3	1682
+2344	1	4316.001	41060674	-0.0	0.867	6.719	41.3	1726
+2400	1	4485.318	41229991	0.0	0.997	6.721	41.3	1767
+played: wall 2400.1 s, media 7185.5 s (2.9939 x wall), from 34044673 to 41230153 ms global
+content error |ms| (each minute): n=40 p50=0.000 p95=13.061 max=13.061 ms
+tap lead over the player clock: n=40 p50=6.747 p95=6.791 max=6.799 s
+play() to first audio (cold seek into the 10-hour MP3): 0.309 s
+checkpoints while playing: 1766; wall gap max 3.617 s; media gap max 4500 ms; first 3.680 s after the first audio, 4327 ms of media after the start; item-change checkpoints naming member 2: 1
+final: last_ms=41230153 durable_last_ms=41230153 furthest_ms=41230152 durable_furthest_ms=41230152 listened_ms=2394034 durable_listened_ms=2394034 durable_reason=pause
+listening total: 2394.0 s; wall time from play() 2400.1 s, from the first audio 2399.8 s (the stall before the first audio is not listening)
+memory footprint: first sample 68.5 MB, last 41.3 MB, max 68.5 MB, growth -27.2 MB
+xcodebuild exit: 65
+end: 2026-10-19T07:06:08Z; load: 20:06  up 16 days,  6:16, 2 users, load averages: 1.34 1.58 1.68
+== 2026-10-19T07:06:08Z; load: { 1.34 1.58 1.68 }
+output device: AirPlay; transport AirPlay; 44100 Hz; default-output
+output device: MacBook Pro Speakers; transport Built-in; 48000 Hz; default-system-output

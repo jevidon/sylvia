@@ -1,0 +1,291 @@
+== environment
+warning: Xcode build is '27A9275'; ADR-0001 pins 27A266a
+Xcode 27.1
+Build version 27A9275
+swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+Version: 2.46.0
+ProductName:		macOS ProductVersion:		26.6.2 BuildVersion:		25G83
+load: 16:59  up 16 days,  3:09, 3 users, load averages: 5.64 5.47 4.39
+== committed generated fixtures match their generator
+g01 epub fixtures: committed archives, manifest and companions match the generator
+== host: G01EPUBCore (swift test, macOS)
+load: 16:59  up 16 days,  3:09, 3 users, load averages: 5.64 5.47 4.39
+Fetching https://github.com/scinfu/SwiftSoup.git from cache
+Fetched https://github.com/scinfu/SwiftSoup.git from cache (0.05s)
+Creating working copy for https://github.com/scinfu/SwiftSoup.git
+Working copy of https://github.com/scinfu/SwiftSoup.git resolved at 2.13.9
+Building for debugging...
+[Planning deferred tasks]
+[34 / 66]
+[35 / 67] SwiftSoup
+[47 / 120]
+[53 / 120]
+[54 / 120]
+[59 / 120]
+[63 / 120]
+[66 / 120]
+[68 / 120]
+[69 / 120]
+[88 / 120] SwiftSoup
+[89 / 120] SwiftSoup
+[97 / 121] G01EPUBCore
+[109 / 133] G01EPUBCore
+[117 / 133] G01EPUBCore
+[123 / 134] G01EPUBCoreTests-product
+[124 / 142]
+[131 / 142] G01EPUBCoreTests-product
+[136 / 142] G01EPUBCoreTests-product
+[138 / 142] G01EPUBCoreTests-product
+Build complete! (6.92 sec)
+Test Suite 'All tests' started at 2026-10-19 16:59:13.858.
+Test Suite 'All tests' passed at 2026-10-19 16:59:13.859.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Offsets, chunking and lexical search (plan 7.5, 9.1, 11.3)" started.
+◇ Suite "Publication resource policy: treatment by media type, document loads limited to the reading order" started.
+◇ Suite "Publication HTML sanitizer: canonical re-serialization, CSP, nesting and time bounds" started.
+◇ Suite "ZIP preflight (plan 8.3)" started.
+◇ Test "FTS5 phrase search over chunks maps a hit back to its block, with user input escaped" started.
+◇ Test "Chunks are 300-600 words, keep whole blocks, and split only blocks longer than 600 words" started.
+◇ Test "The hrefs of the real fixture books all become exact patterns" started.
+◇ Test "Portable anchor round-trips with snake_case keys and an opaque reader locator" started.
+◇ Test "Reading-order hrefs become exact document patterns; anything not written literally turns the restriction off" started.
+◇ Test "g01-csp-bypass.epub and g01-nesting-bypass.epub: every chapter is served safely or withheld" started.
+◇ Test "Every media type a web view can render as a document is sanitized; only known passive types pass unchanged" started.
+◇ Test "Element and attribute counts are bounded" started.
+◇ Test "U+FEFF survives at the start of a text node or attribute, as a character or a reference; U+E000 too" started.
+◇ Test "Hostile archives are rejected with the expected reason" started.
+◇ Test "A document over the time budget is withheld, never served" started.
+◇ Test "Real books: every document is served with identical text and elements" started.
+◇ Test "Names: backslash, drive letter, control characters, duplicates, ZIP encryption flag" started.
+◇ Test "Archive-valid generated fixtures pass preflight" started.
+◇ Test "Sanitizing is linear in the input, up to the 16 MiB markup limit" started.
+◇ Test "Not a ZIP at all" started.
+◇ Test "Scalar and UTF-16 offsets convert both ways around non-BMP characters" started.
+◇ Test "Placeholder patch keeps a STORED archive valid and rewrites CRC-32" started.
+◇ Test "A markup entry larger than 16 MiB is rejected even at an innocent compression ratio" started.
+◇ Test "Sanitizer workers are limited per publication; a wait for a worker counts against the budget" started.
+◇ Test "Self-closed non-void elements are closed explicitly, so an HTML5 parser does not nest what follows" started.
+◇ Test "A prefixed root comes out unprefixed in the XHTML namespace, with other prefixes kept" started.
+◇ Test "Nesting at the limit is served; deeper is withheld before any HTML parser builds the tree" started.
+◇ Test "Parser-divergence nesting: comment-wrapped and unmatched-end-tag nesting cannot reach Readium deep" started.
+◇ Test "Entry-count limit (10,000) is enforced before entries are read" started.
+◇ Test "Every committed real-world EPUB passes preflight" started.
+◇ Test "Documents that are not well-formed XHTML, or whose root is not XHTML html, are withheld" started.
+◇ Test "Named entities from the XHTML DTDs become characters; unknown entities and entity declarations are refused" started.
+◇ Test "A tree deeper in one parser than in XML is caught" started.
+◇ Test "Scripts, meta refresh, handlers and script URLs are removed; the CSP is first in head; text is untouched" started.
+◇ Test "Non-HTML documents: active content is withheld, everything else is served canonically" started.
+◇ Test "The CSP cannot be displaced: a head inside a comment, a prefixed root, a missing or late head" started.
+◇ Test case passing 1 argument name → "g01-hostile.epub" to "Archive-valid generated fixtures pass preflight" started.
+◇ Test case passing 1 argument name → "g01-unicode.epub" to "Archive-valid generated fixtures pass preflight" started.
+◇ Test case passing 1 argument name → "g01-font-obfuscated.epub" to "Archive-valid generated fixtures pass preflight" started.
+◇ Test case passing 2 arguments name → "g01-symlink.epub", expected → ["symlink"] to "Hostile archives are rejected with the expected reason" started.
+◇ Test case passing 2 arguments name → "g01-bomb.epub", expected → ["compression_ratio", "markup_too_large"] to "Hostile archives are rejected with the expected reason" started.
+◇ Test case passing 2 arguments name → "g01-bomb-lying.epub", expected → ["inconsistent_sizes"] to "Hostile archives are rejected with the expected reason" started.
+◇ Test case passing 2 arguments name → "g01-traversal.epub", expected → ["path_traversal", "absolute_path"] to "Hostile archives are rejected with the expected reason" started.
+PREFLIGHT g01-unicode.epub entries=6 violations=[]
+PREFLIGHT g01-symlink.epub violations=["symbolic link entry: OEBPS/c2.xhtml"]
+PREFLIGHT g01-hostile.epub entries=8 violations=[]
+PREFLIGHT g01-bomb.epub violations=["compression ratio 1027:1: OEBPS/c2.xhtml", "markup entry expands to 209715200 bytes: OEBPS/c2.xhtml"]
+PREFLIGHT g01-bomb-lying.epub violations=["declared sizes inconsistent (compressed 204025 > uncompressed 4096): OEBPS/c2.xhtml"]
+PREFLIGHT g01-font-obfuscated.epub entries=8 violations=[]
+PREFLIGHT g01-traversal.epub violations=["path traversal: ../g01-escape-marker.txt", "path traversal: ../../../../../../../../tmp/g01-escape-marker.txt", "absolute path: /tmp/g01-absolute-marker.txt", "path traversal: OEBPS/../../g01-escape-marker-2.txt"]
+◇ Test case passing 1 argument name → "g01-encrypted-chapter.epub" to "Archive-valid generated fixtures pass preflight" started.
+◇ Test case passing 2 arguments name → "g01-truncated.epub", expected → ["truncated"] to "Hostile archives are rejected with the expected reason" started.
+◇ Test case passing 1 argument name → "g01-adept-like.epub" to "Archive-valid generated fixtures pass preflight" started.
+◇ Test case passing 1 argument name → "g01-lcp-like.epub" to "Archive-valid generated fixtures pass preflight" started.
+◇ Test case passing 1 argument name → "g01-deep-nesting.epub" to "Archive-valid generated fixtures pass preflight" started.
+◇ Test case passing 1 argument name → "g01-nesting-limit.epub" to "Archive-valid generated fixtures pass preflight" started.
+PREFLIGHT g01-encrypted-chapter.epub entries=7 violations=[]
+PREFLIGHT g01-lcp-like.epub entries=8 violations=[]
+PREFLIGHT g01-nesting-limit.epub entries=6 violations=[]
+PREFLIGHT g01-deep-nesting.epub entries=6 violations=[]
+SQLITE version=3.51.0
+PREFLIGHT g01-truncated.epub violations=["truncated archive: no end-of-central-directory record"]
+◇ Test case passing 1 argument name → "g01-nonhtml-active.epub" to "Archive-valid generated fixtures pass preflight" started.
+PREFLIGHT g01-adept-like.epub entries=8 violations=[]
+PREFLIGHT g01-nonhtml-active.epub entries=7 violations=[]
+◇ Test case passing 1 argument name → "se-meditations.epub" to "Every committed real-world EPUB passes preflight" started.
+◇ Test case passing 1 argument name → "se-middlemarch.epub" to "Every committed real-world EPUB passes preflight" started.
+◇ Test case passing 1 argument name → "pg-walden-epub2.epub" to "Every committed real-world EPUB passes preflight" started.
+◇ Test case passing 1 argument name → "pg-walden-epub3.epub" to "Every committed real-world EPUB passes preflight" started.
+◇ Test case passing 1 argument name → "se-walden.epub" to "Every committed real-world EPUB passes preflight" started.
+✔ Test "Every media type a web view can render as a document is sanitized; only known passive types pass unchanged" passed after 0.001 seconds.
+✔ Test "Archive-valid generated fixtures pass preflight" with 9 test cases passed after 0.001 seconds.
+✔ Test "Hostile archives are rejected with the expected reason" with 5 test cases passed after 0.001 seconds.
+✔ Test "Names: backslash, drive letter, control characters, duplicates, ZIP encryption flag" passed after 0.001 seconds.
+✔ Test "Portable anchor round-trips with snake_case keys and an opaque reader locator" passed after 0.001 seconds.
+✔ Test "Not a ZIP at all" passed after 0.001 seconds.
+✔ Test "Scalar and UTF-16 offsets convert both ways around non-BMP characters" passed after 0.001 seconds.
+✔ Test "FTS5 phrase search over chunks maps a hit back to its block, with user input escaped" passed after 0.001 seconds.
+✔ Test "Placeholder patch keeps a STORED archive valid and rewrites CRC-32" passed after 0.001 seconds.
+PREFLIGHT se-walden.epub entries=41 expanded=1397480 maxRatio=6.8 largestMarkupBytes=149646 violations=[]
+CHUNKS words=[360, 40, 600, 100, 400, 290] splits=[false, false, true, true, false, false]
+✔ Test "Chunks are 300-600 words, keep whole blocks, and split only blocks longer than 600 words" passed after 0.002 seconds.
+✔ Suite "Offsets, chunking and lexical search (plan 7.5, 9.1, 11.3)" passed after 0.003 seconds.
+PREFLIGHT pg-walden-epub2.epub entries=33 expanded=792480 maxRatio=5.6 largestMarkupBytes=77725 violations=[]
+PREFLIGHT se-meditations.epub entries=36 expanded=990641 maxRatio=6.9 largestMarkupBytes=59180 violations=[]
+PREFLIGHT se-middlemarch.epub entries=121 expanded=2659506 maxRatio=10.1 largestMarkupBytes=54947 violations=[]
+PREFLIGHT pg-walden-epub3.epub entries=34 expanded=1093188 maxRatio=5.6 largestMarkupBytes=144179 violations=[]
+✔ Test "Every committed real-world EPUB passes preflight" with 5 test cases passed after 0.003 seconds.
+✔ Test "Reading-order hrefs become exact document patterns; anything not written literally turns the restriction off" passed after 0.004 seconds.
+✔ Test "Non-HTML documents: active content is withheld, everything else is served canonically" passed after 0.004 seconds.
+✔ Test "U+FEFF survives at the start of a text node or attribute, as a character or a reference; U+E000 too" passed after 0.014 seconds.
+✔ Test "Documents that are not well-formed XHTML, or whose root is not XHTML html, are withheld" passed after 0.019 seconds.
+✔ Test "Named entities from the XHTML DTDs become characters; unknown entities and entity declarations are refused" passed after 0.020 seconds.
+✔ Test "Scripts, meta refresh, handlers and script URLs are removed; the CSP is first in head; text is untouched" passed after 0.025 seconds.
+✔ Test "A prefixed root comes out unprefixed in the XHTML namespace, with other prefixes kept" passed after 0.025 seconds.
+✔ Test "Self-closed non-void elements are closed explicitly, so an HTML5 parser does not nest what follows" passed after 0.030 seconds.
+✔ Test "A document over the time budget is withheld, never served" passed after 0.033 seconds.
+✔ Test "A tree deeper in one parser than in XML is caught" passed after 0.039 seconds.
+✔ Test "The CSP cannot be displaced: a head inside a comment, a prefixed root, a missing or late head" passed after 0.041 seconds.
+✔ Test "Parser-divergence nesting: comment-wrapped and unmatched-end-tag nesting cannot reach Readium deep" passed after 0.062 seconds.
+✔ Test "Nesting at the limit is served; deeper is withheld before any HTML parser builds the tree" passed after 0.076 seconds.
+✔ Test "Entry-count limit (10,000) is enforced before entries are read" passed after 0.088 seconds.
+✔ Test "g01-csp-bypass.epub and g01-nesting-bypass.epub: every chapter is served safely or withheld" passed after 0.160 seconds.
+✔ Test "A markup entry larger than 16 MiB is rejected even at an innocent compression ratio" passed after 0.372 seconds.
+✔ Suite "ZIP preflight (plan 8.3)" passed after 0.372 seconds.
+✔ Test "The hrefs of the real fixture books all become exact patterns" passed after 0.617 seconds.
+✔ Suite "Publication resource policy: treatment by media type, document loads limited to the reading order" passed after 0.617 seconds.
+✔ Test "Element and attribute counts are bounded" passed after 0.624 seconds.
+real books (Fixtures/epub, 5 archives): 195 XHTML documents served, 0 withheld, text and element sequence identical to the original's (both read with SwiftSoup's XML parser, not the sanitizer's XMLParser); max depth 11, max elements 695, max attributes 1109, slowest 0.056 s (host, debug build)
+
+✔ Test "Real books: every document is served with identical text and elements" passed after 2.534 seconds.
+✔ Test "Sanitizer workers are limited per publication; a wait for a worker counts against the budget" passed after 4.295 seconds.
+sanitizer timing (host):
+# load average (1, 5, 15 min) at start: 5.30, 5.40, 4.38; at end: 3.54, 4.90, 4.25; 18 processors
+# pattern	input	seconds (host, debug build)	result
+script tokens in one comment	1 MiB	0.038 s	served
+script tokens in one comment	2 MiB	0.065 s	served
+script tokens in one comment	4 MiB	0.128 s	served
+script tokens in one comment	8 MiB	0.246 s	served
+script tokens in one comment	16 MiB	0.495 s	unsupported-markup
+script tokens in 1 KiB comments	1 MiB	0.032 s	served
+script tokens in 1 KiB comments	2 MiB	0.064 s	served
+script tokens in 1 KiB comments	4 MiB	0.129 s	served
+script tokens in 1 KiB comments	8 MiB	0.260 s	served
+script tokens in 1 KiB comments	16 MiB	0.520 s	served
+escaped script tokens in text	1 MiB	0.327 s	served
+escaped script tokens in text	2 MiB	0.562 s	served
+escaped script tokens in text	4 MiB	1.142 s	served
+escaped script tokens in text	8 MiB	1.767 s	served
+escaped script tokens in text	16 MiB	3.513 s	served
+named entities in text	1 MiB	0.183 s	served
+named entities in text	2 MiB	0.366 s	served
+named entities in text	4 MiB	0.722 s	served
+named entities in text	8 MiB	1.469 s	served
+named entities in text	16 MiB	2.905 s	served
+many elements with attributes	1 MiB	1.917 s	served
+many elements with attributes	2 MiB	0.285 s	unsupported-markup
+many elements with attributes	4 MiB	0.409 s	unsupported-markup
+many elements with attributes	8 MiB	0.659 s	unsupported-markup
+many elements with attributes	16 MiB	1.134 s	unsupported-markup
+256 attributes per element	1 MiB	0.151 s	unsupported-markup
+256 attributes per element	2 MiB	0.173 s	unsupported-markup
+256 attributes per element	4 MiB	0.212 s	unsupported-markup
+256 attributes per element	8 MiB	0.289 s	unsupported-markup
+256 attributes per element	16 MiB	0.442 s	unsupported-markup
+64 attributes per element	1 MiB	0.150 s	unsupported-markup
+64 attributes per element	2 MiB	0.172 s	unsupported-markup
+64 attributes per element	4 MiB	0.214 s	unsupported-markup
+64 attributes per element	8 MiB	0.302 s	unsupported-markup
+64 attributes per element	16 MiB	0.473 s	unsupported-markup
+long attribute values	1 MiB	0.140 s	served
+long attribute values	2 MiB	0.271 s	served
+long attribute values	4 MiB	0.547 s	served
+long attribute values	8 MiB	1.083 s	served
+long attribute values	16 MiB	2.141 s	served
+256 attributes per element, just under the document's attribute cap (run 1 of 3)	0.82 MiB	4.579 s	served (394 elements, 99588 attributes)
+256 attributes per element, just under the document's attribute cap (run 2 of 3)	0.82 MiB	4.536 s	served (394 elements, 99588 attributes)
+256 attributes per element, just under the document's attribute cap (run 3 of 3)	0.82 MiB	4.546 s	served (394 elements, 99588 attributes)
+one attribute per element, just under the element cap (run 1 of 3)	1.34 MiB	4.047 s	served (99995 elements, 99994 attributes)
+one attribute per element, just under the element cap (run 2 of 3)	1.34 MiB	3.995 s	served (99995 elements, 99994 attributes)
+one attribute per element, just under the element cap (run 3 of 3)	1.34 MiB	3.972 s	served (99995 elements, 99994 attributes)
+no attributes, just under the element cap (run 1 of 3)	0.76 MiB	1.954 s	served (99995 elements, 4 attributes)
+no attributes, just under the element cap (run 2 of 3)	0.76 MiB	1.960 s	served (99995 elements, 4 attributes)
+no attributes, just under the element cap (run 3 of 3)	0.76 MiB	1.972 s	served (99995 elements, 4 attributes)
+
+✔ Test "Sanitizing is linear in the input, up to the 16 MiB markup limit" passed after 57.760 seconds.
+✔ Suite "Publication HTML sanitizer: canonical re-serialization, CSP, nesting and time bounds" passed after 57.760 seconds.
+✔ Test run with 32 tests in 4 suites passed after 57.760 seconds.
+== generate the Xcode project
+simulator: Sylvia-M0-final-fix (280026E5-41C1-4DE3-AFE4-092E75131315), iOS-26-5 iPhone-17
+== build for testing (simulator)
+build warnings outside package checkouts: 0
+build warnings in package checkouts: 0
+== test (simulator): hosted unit tests and UI tests
+load: 17:00  up 16 days,  3:11, 3 users, load averages: 15.34 7.74 5.30
+Test Suite 'All tests' started at 2026-10-19 17:00:43.246.
+Test Case '-[EPUBHarnessTests.AnchorSamplesTests testCaptureAnchorSamples]' passed (12.143 seconds).
+Test Case '-[EPUBHarnessTests.AnchorStabilityTests testCaptureDoesNotMoveThePage]' passed (3.678 seconds).
+Test Case '-[EPUBHarnessTests.AnchorStabilityTests testExtractionRebuildGivesTheSameOffsets]' passed (4.087 seconds).
+Test Case '-[EPUBHarnessTests.AnchorStabilityTests testHighlightFollowsTheTextThroughSettingsAndRotation]' passed (38.534 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 46.299 (46.301) seconds
+Test Case '-[EPUBHarnessTests.CompatibilityMatrixTests testCompatibilityMatrix]' passed (5.347 seconds).
+Test Case '-[EPUBHarnessTests.ExtractionSearchTests testChunksAndALexicalHitReopenThePassage]' passed (4.358 seconds).
+Test Case '-[EPUBHarnessTests.ExtractionSearchTests testNonBMPHitOffsetsConvertAtTheAdapterBoundary]' passed (1.796 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 6.154 (6.155) seconds
+Test Case '-[EPUBHarnessTests.FootnoteTests testNoterefShowsTheNoteWithoutMoving]' passed (2.995 seconds).
+Test Case '-[EPUBHarnessTests.FootnoteTests testReturnAfterLinkRestoresTheExactPosition]' passed (5.248 seconds).
+Test Case '-[EPUBHarnessTests.FootnoteTests testTappedInternalLinkAndReturnWalkBackThroughHistory]' passed (8.631 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 16.875 (16.875) seconds
+Test Case '-[EPUBHarnessTests.HighlightDecorationTests testCrossParagraphSelectionStillDecorates]' passed (2.060 seconds).
+Test Case '-[EPUBHarnessTests.HighlightDecorationTests testDecorationRaceReadiumAloneVersusAdapter]' passed (36.473 seconds).
+Test Case '-[EPUBHarnessTests.HighlightDecorationTests testDuplicateRenderingIsRepaired]' passed (3.792 seconds).
+Test Case '-[EPUBHarnessTests.HighlightDecorationTests testOchreFillAndUnderlineInPaperAndNight]' passed (9.416 seconds).
+Test Case '-[EPUBHarnessTests.HighlightDecorationTests testRapidSettingsChangesConverge]' passed (3.095 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 54.836 (54.838) seconds
+Test Case '-[EPUBHarnessTests.NavigationSettleTests testJumpIntoAFreshResourceStaysPut]' passed (60.189 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testCSPPlacementBypassesRunNoScript]' passed (11.181 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testExcessiveNestingIsWithheldAndReported]' passed (2.961 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testFontObfuscationStillOpensAndIsDeobfuscated]' passed (1.175 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testHostileArchivesAreRejectedOrBoundedAndNothingIsWrittenOutside]' passed (0.274 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testHostilePublicationRunsNoScriptAndMakesNoRequest]' passed (30.041 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testNestingAtTheLimitIsShownAndExtracted]' passed (2.940 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testNonHTMLReadingOrderDocumentsRunNoScript]' passed (11.375 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testNonLinkNavigationsReachOnlySanitizedDeclaredDocuments]' passed (214.682 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testParserDivergenceNestingCannotReachReadium]' passed (4.778 seconds).
+Test Case '-[EPUBHarnessTests.SafetyTests testProtectedContentGivesAClearUnsupportedProtectionError]' passed (0.052 seconds).
+	 Executed 10 tests, with 0 failures (0 unexpected) in 279.459 (279.464) seconds
+Test Case '-[EPUBHarnessTests.SanitizerAtCapsTimingTests testDocumentsJustUnderTheCapsAreServedWithinTheBudget]' passed (27.863 seconds).
+Test Case '-[EPUBHarnessTests.SanitizerFidelityTests testSanitizedDocumentsShowTheSameTextInWebKit]' passed (3.352 seconds).
+Test Case '-[EPUBHarnessTests.SelectionCaptureTests testGreekSelection]' passed (2.464 seconds).
+Test Case '-[EPUBHarnessTests.SelectionCaptureTests testKnownPassageWithCurlyApostrophe]' passed (2.068 seconds).
+Test Case '-[EPUBHarnessTests.SelectionCaptureTests testLongSelectionIsNotTruncated]' passed (3.260 seconds).
+Test Case '-[EPUBHarnessTests.SelectionCaptureTests testNonBMPSelectionAndOffsetConversion]' passed (2.531 seconds).
+Test Case '-[EPUBHarnessTests.SelectionCaptureTests testQuotationAcrossResourcesBecomesOrderedAnchors]' passed (4.310 seconds).
+Test Case '-[EPUBHarnessTests.SelectionCaptureTests testSelectionAcrossAnElementBoundary]' passed (2.407 seconds).
+Test Case '-[EPUBHarnessTests.SelectionCaptureTests testSelectionRightAfterAJumpNamesTheRightResource]' passed (14.525 seconds).
+	 Executed 7 tests, with 0 failures (0 unexpected) in 31.564 (31.567) seconds
+Test Case '-[EPUBHarnessTests.TypographyTests testLiterataIsTheDefaultFaceAndActuallyLoads]' passed (2.203 seconds).
+Test Case '-[EPUBHarnessTests.TypographyTests testSizeAndLineSpacingTakeEffect]' passed (22.450 seconds).
+Test Case '-[EPUBHarnessTests.TypographyTests testSystemSerifAndSystemSans]' passed (10.966 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 35.618 (35.619) seconds
+	 Executed 38 tests, with 0 failures (0 unexpected) in 579.700 (579.718) seconds
+Test Suite 'All tests' passed at 2026-10-19 17:10:22.964.
+	 Executed 38 tests, with 0 failures (0 unexpected) in 579.700 (579.718) seconds
+Test Suite 'All tests' started at 2026-10-19 17:10:25.434.
+Test Case '-[EPUBHarnessUITests.DeepNestingUITests testAdapterKeepsSearchAlive]' passed (4.345 seconds).
+Test Case '-[EPUBHarnessUITests.DeepNestingUITests testAdapterKeepsSearchAliveOnParserDivergenceNesting]' passed (4.137 seconds).
+Test Case '-[EPUBHarnessUITests.DeepNestingUITests testAdapterKeepsTheIteratorAlive]' passed (4.152 seconds).
+Test Case '-[EPUBHarnessUITests.DeepNestingUITests testAdapterKeepsTheIteratorAliveOnParserDivergenceNesting]' passed (4.156 seconds).
+Test Case '-[EPUBHarnessUITests.DeepNestingUITests testReadiumContentIteratorAloneCrashesOnDeepNesting]' passed (6.953 seconds).
+Test Case '-[EPUBHarnessUITests.DeepNestingUITests testReadiumSearchAloneCrashesOnDeepNesting]' passed (3.880 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 27.623 (27.626) seconds
+Test Case '-[EPUBHarnessUITests.ReaderUITests testHighlightSurvivesRotationAndRelaunch]' passed (11.724 seconds).
+Test Case '-[EPUBHarnessUITests.ReaderUITests testTappingANoterefShowsTheNoteWithoutMoving]' passed (7.458 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 19.181 (19.182) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 46.805 (46.809) seconds
+Test Suite 'All tests' passed at 2026-10-19 17:11:12.244.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 46.805 (46.810) seconds
+** TEST EXECUTE SUCCEEDED **
+== crash reports for crashes during the tests
+crashes the UI tests expected and observed (pids in ui-deep-nesting.log): 2; crash reports captured during the run: 2
+  pid 31213: report: stack overflow in Readium's content iterator
+  pid 31235: report: stack overflow in Readium's content iterator
+load: 17:11  up 16 days,  3:21, 3 users, load averages: 6.49 5.03 4.93
+evidence written to /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/scratch/final-clone/Spikes/G01-EPUB/.build/evidence
+G0.1 EPUB: all checks passed

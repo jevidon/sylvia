@@ -1,0 +1,261 @@
+==> fixtures regenerate byte for byte
+anchor.v1: 15 valid, 151 invalid, 20 semantic-invalid
+capture-envelope.v1: 31 valid, 219 invalid, 39 semantic-invalid
+identical: Contracts/fixtures/anchor.v1 and Contracts/fixtures/capture-envelope.v1
+==> related contracts, patterns, fixtures and their expected failures, spike output and code-checked rules
+design package: capture kinds map onto the capture markers as audio_capture -> audio, generated_answer -> generated, note -> note, text_quote -> quote, word -> word; an unknown kind is Pending, never Quote
+related contracts: answer endpoint provider kinds and classifications equal the context-pack contract's; provider-config kinds = 3 text-generation + 1 transcription; the secret-name pattern is the context-pack one written without (?i)
+patterns: 101 patterns in 19 contract documents compile in Python and as ECMA-262 with the u flag, except 2 recorded in other owners' contracts (schemas/context-pack.v1.schema.json#/$defs/notSecretName/not/pattern: (?i) is not ECMA-262; requested of M5: the form anchor.v1 $defs/not_secret_name uses; schemas/provider-config.v1.schema.json#/$defs/notSecretName/not/pattern: (?i) is not ECMA-262; requested of M5: the same names written out letter by letter)
+fixtures anchor.v1: 15 valid (pass the code rules and, unless named unknown-kind-*, the v1 writer profile); 151 invalid, each its base with the listed operations (151 with 1 operation) failing the schema with exactly the listed errors (151 with 1 error); 20 semantic-invalid, each schema-valid and breaking exactly one code-checked rule once, the one its name starts with
+fixtures capture-envelope.v1: 31 valid (pass the code rules and, unless named unknown-kind-*, the v1 writer profile); 219 invalid, each its base with the listed operations (215 with 1 operation, 4 with 2 operations) failing the schema with exactly the listed errors (219 with 1 error); 39 semantic-invalid, each schema-valid and breaking exactly one code-checked rule once, the one its name starts with
+  ok   G0.1 EPUB anchor-samples.json se-epub3-known-passage: 1 anchor(s), envelope text_quote
+  ok   G0.1 EPUB anchor-samples.json se-epub3-across-noteref: 1 anchor(s), envelope text_quote
+  ok   G0.1 EPUB anchor-samples.json se-epub3-greek: 1 anchor(s), envelope text_quote
+  ok   G0.1 EPUB anchor-samples.json pg-epub2-walden: 1 anchor(s), envelope text_quote
+  ok   G0.1 EPUB anchor-samples.json generated-non-bmp: 1 anchor(s), envelope text_quote
+  ok   G0.1 EPUB anchor-samples.json generated-quotation-across-resources: 2 anchor(s), envelope text_quote
+  ok   G0.1 EPUB selection-samples.json quotation-across-resources: 2 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json multiline: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json cross-column: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json rotate-0: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json rotate-90: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json rotate-180: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json rotate-270: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json rotate-90-inherited: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json rotate-270-offset-cropbox: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json multi-page: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json unicode-multiline: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces on one page, two lines apart: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces on one line: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json three pieces on one page: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json pieces added in reverse order: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json a middle piece that ends at a line's end: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces, each ending at a line's end: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces on one page, then one on the next page: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json a piece that ends at a line's end, then one on the next page: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json pages added in reverse order: 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces that touch (PDFKit merges them): 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-composed-samples.json two pieces that overlap (PDFKit merges them): 1 anchor(s), envelope text_quote
+  ok   G0.1 PDF anchor-samples.json capture_envelope_example: 1 anchor(s), envelope text_quote
+  ok   G0.4 record m0-contracts-pending (3D58072B-818D-468F-8B35-D5AC8A2465FA.json): 1 anchor(s), envelope audio_capture
+  ok   G0.4 record m0-contracts-failed (56962481-DBE5-4712-A50E-AF182ADD29E4.json): 1 anchor(s), envelope audio_capture
+  ok   G0.4 record m0-contracts-single (732EB85E-B21C-4546-A122-D4915D6D2B95.json): 1 anchor(s), envelope audio_capture
+  ok   G0.4 record m0-contracts-cross-file (B0C1C2E2-ED9E-4364-A610-E5A54A75749E.json): 1 anchor(s), envelope audio_capture
+spike output: 33 captures, 35 anchors validated (G0.1 EPUB: 7, G0.1 PDF: 22, G0.4 record: 4)
+  not a capture: G0.4 record m0-contracts-bookmark (B9168DF4-3824-4B1F-9F73-0E3A4EEE38DC.json): a bookmark is a position only, not a capture in the envelope (ADR-0016)
+control: 17 of 17 G0.1 anchors fail the schema without adaptation (most common: edition_id (17); schema_version (17); work_id (17))
+G0.5 recovery library-v1.sqlite: 5 capture rows and 2 work-level note rows mapped field by field into envelopes, 1 conversation note row(s) without a v1 form; 37 of 37 recorded deviations observed, none unrecorded
+  ok   G0.5 recovery capture golden-pdf-quote: text_quote, 1 anchor(s), 0 note(s); schema-valid with placeholders: yes; code rules explained by recorded deviations: A2 (pdf-range-length)
+  ok   G0.5 recovery capture golden-epub-quote: text_quote, 1 anchor(s), 1 note(s); schema-valid with placeholders: yes; code rules explained by recorded deviations: none
+  ok   G0.5 recovery capture golden-word: word, 1 anchor(s), 1 note(s); schema-valid with placeholders: yes; code rules explained by recorded deviations: none
+  ok   G0.5 recovery capture golden-audio-capture: audio_capture, 1 anchor(s), 1 note(s), excerpt preserved; schema-valid with placeholders: yes; code rules explained by recorded deviations: C8 (revision-excludes-excerpt); not checked: C4, C9 (placeholder timing)
+  ok   G0.5 recovery capture golden-physical-note: note, 0 anchor(s), 1 note(s); schema-valid with placeholders: yes; code rules explained by recorded deviations: none
+  ok   G0.5 recovery work note 9852833f: as a note capture with no anchors, 1 revision(s); schema-valid with the supplied wrapper: yes
+  ok   G0.5 recovery work note 83d12460: as a note capture with no anchors, 1 revision(s), in the trash; schema-valid with the supplied wrapper: yes
+  --   G0.5 recovery note 92f7857d on conversation 7c82370f: no form in the v1 envelope (recorded deviation note-on-conversation; ADR-0016 open item)
+  recorded deviation anchor-asset-nullable (ADR-0016 section 8; seen in table definitions): capture_anchor.asset_id and asset_sha256 may be NULL for every kind except audio (envelope: every anchor of a known kind names its asset and digest)
+  recorded deviation anchor-edition-nullable (ADR-0016 section 8; seen in table definitions): capture_anchor.edition_id may be NULL (envelope: every anchor of a known kind names its edition)
+  recorded deviation answer-state-no-cancelled (ADR-0016 section 8; seen in table definitions): message.state has no cancelled state (envelope: answer_state complete, interrupted or cancelled, from G0.5 AI's AskState)
+  recorded deviation audio-member-sequence (ADR-0016 section 8; seen in golden-audio-capture): an audio anchor row's locator keeps member_sequence, the member's position at capture time (envelope: no member order in an anchor, so a reorder never rewrites a capture)
+  recorded deviation audio-no-text (ADR-0016 section 8; seen in table definitions): CHECK (kind <> 'audio' OR quoted_text IS NULL) refuses quoted text on every audio capture (envelope: a labelled transcript or the user's typing may supply it, plan A.1, 10.4)
+  recorded deviation audio-no-transcript (ADR-0016 section 8; seen in table definitions): no table or column keeps a transcript of an audio capture's excerpt: raw text, segments, provider, model, correction (envelope: transcript, plan 10.4)
+  recorded deviation epub-context-missing (ADR-0016 section 8; seen in golden-word): an EPUB locator without prefix and suffix (the word capture)
+  recorded deviation epub-media-type-missing (ADR-0016 section 8; seen in golden-word): an EPUB anchor with no media type at all (the word capture)
+  recorded deviation epub-media-type-opaque (ADR-0016 section 8; seen in golden-epub-quote): the EPUB resource's media type is only inside the opaque adapter_payload (Readium's type; envelope: resource_media_type)
+  recorded deviation epub-offsets-without-block (ADR-0016 section 8; seen in golden-epub-quote, golden-word): EPUB start and end in unicode_scalar with no block_index or extraction_version (envelope: text_offsets names both)
+  recorded deviation epub-reader-missing (ADR-0016 section 8; seen in golden-word): an EPUB anchor without a reader locator (the word capture)
+  recorded deviation epub-reader-unnamed (ADR-0016 section 8; seen in golden-epub-quote): Readium's locator is kept in adapter_payload without the adapter's name or version (envelope: reader.adapter, reader.adapter_version)
+  recorded deviation epub-text-as-digest (ADR-0016 section 8; seen in golden-epub-quote): an EPUB locator keeps the selected text only as exact_text_sha256 (it equals the SHA-256 of the capture's quoted_text; envelope: exact_text)
+  recorded deviation epub-text-missing (ADR-0016 section 8; seen in golden-word): an EPUB locator with neither the selected text nor its digest (the word capture)
+  recorded deviation excerpt-duration-zero (ADR-0016 section 8; seen in table definitions): clip_duration_ms may be 0 (envelope: duration_ms is at least 1)
+  recorded deviation excerpt-failure-unrecorded (ADR-0016 section 8; seen in table definitions): a failed export keeps neither its reason nor its number of attempts (envelope: failure {reason, attempts})
+  recorded deviation excerpt-file-every-state (ADR-0016 section 8; seen in table definitions): retained_excerpt requires blob_sha256, byte_count, media_type and file_extension in every export_state, pending and failed included (envelope: only a preserved or removed excerpt names a file)
+  recorded deviation excerpt-no-removed (ADR-0016 section 8; seen in table definitions): export_state has no state for an excerpt the user removed (envelope: removed, plan 17.2)
+  recorded deviation excerpt-no-timing (ADR-0016 section 8; seen in golden-audio-capture, table definitions): retained_excerpt has clip_duration_ms only: no format, sample rate, frame count, actual ranges or clip offsets (plan 7.2, 10.2)
+  recorded deviation excerpt-not-unique (ADR-0016 section 8; seen in table definitions): nothing makes retained_excerpt.capture_id unique, so a capture can have several excerpt rows (envelope: one retained_excerpt per capture)
+  recorded deviation excerpt-ranges-by-digest (ADR-0016 section 8; seen in golden-audio-capture): retained_excerpt.source_ranges_json names each range by asset digest only, without its asset ID
+  recorded deviation generated-not-linked (ADR-0016 section 8; seen in table definitions): no column links a generated capture to its conversation, answering message or context pack (envelope: generated_answer.conversation_id, message_id and context_pack_id)
+  recorded deviation id-case-unchecked (ADR-0016 section 8; seen in table definitions): the capture and note ID columns check only length(id) = 36, so an uppercase UUID (Swift's uuidString) is accepted (envelope: lowercase)
+  recorded deviation kind-names (ADR-0016 section 8; seen in golden-audio-capture, golden-epub-quote, golden-pdf-quote, table definitions): capture.kind is quote, audio or generated where the envelope and the design package use text_quote, audio_capture and generated_answer
+  recorded deviation manual-anchor (ADR-0016 section 8; seen in golden-physical-note): a typed page of a printed book is an anchor row of kind 'manual', {"page": 112, "manual": true} (envelope: no anchor; source_snapshot.location_label with origin user)
+  recorded deviation no-location-origin (ADR-0016 section 8; seen in golden-audio-capture, golden-epub-quote, golden-pdf-quote, golden-physical-note, golden-word, table definitions): no column records who supplied the location label (envelope: location_label_origin, addendum 4.3)
+  recorded deviation no-quote-origin (ADR-0016 section 8; seen in golden-epub-quote, golden-pdf-quote, golden-word, table definitions): no column records where quoted text came from (envelope: quoted_text_origin, plan 11.1)
+  recorded deviation no-surface (ADR-0016 section 8; seen in golden-audio-capture, golden-epub-quote, golden-pdf-quote, golden-physical-note, golden-word, table definitions): no column records the capture surface (envelope: provenance.surface)
+  recorded deviation note-on-conversation (ADR-0016 section 8; seen in note 92f7857d): a note attached to an AI conversation (note.conversation_id) has no form in the v1 envelope (open item for M1 and M5)
+  recorded deviation note-origins (ADR-0016 section 8; seen in table definitions): note_revision.origin allows transcript_correction and ai_derived (envelope notes are the user's words; a correction is transcript.corrected_text, an answer a generated_answer capture)
+  recorded deviation note-without-capture (ADR-0016 section 8; seen in note 83d12460, note 9852833f): a note on a whole work is a note row without a capture (envelope: a note capture with no anchors, holding that note)
+  recorded deviation pdf-range-length (ADR-0016 section 8; seen in golden-pdf-quote): the PDF anchor's text_range [880, 939] covers 59 scalars for a 60-scalar quotation (an inclusive end, or an off-by-one; envelope ranges are half-open)
+  recorded deviation pdf-reduced (ADR-0016 section 8; seen in golden-pdf-quote): a PDF locator is {page_index, page_label, rotation, rects, text_range}: no exact_text, extraction, page box, segment text, prefix, suffix, page text digest or reader locator
+  recorded deviation quoted-text-allowed-on-note-and-generated (ADR-0016 section 8; seen in table definitions): the capture CHECKs refuse quoted_text only on audio captures, so a note or a generated capture may hold it (envelope: never)
+  recorded deviation revision-excludes-excerpt (ADR-0016 section 8; seen in golden-audio-capture): capture.revision stays 1 when the capture's excerpt row is preserved (envelope: the excerpt's changes count, rule C8)
+  recorded deviation word-no-entry (ADR-0016 section 8; seen in golden-word): a word capture has no vocabulary entry (headword, source sentence) in the capture tables
+  recorded deviation word-text-optional (ADR-0016 section 8; seen in table definitions): no CHECK requires quoted_text on a word capture (envelope: a word always has it, by selection)
+adaptations applied to spike output before validation (each counted):
+    28 x envelope wrapper supplied around spike anchors (kind text_quote, ids, snapshot, provenance, times, revision)
+     9 x epub: asset_digest renamed asset_sha256
+     9 x epub: fixture label asset_id replaced by a UUID (spike has no asset IDs)
+     9 x epub: version renamed schema_version
+     9 x epub: work_id and edition_id supplied (spike records neither)
+     4 x g04: UUIDs lowercased (Swift uuidString is uppercase)
+     2 x g04: clip_start_ms supplied: the actual ranges back to back, as AACExcerptExporter writes them (spike records none)
+     2 x g04: excerpt blob_sha256 supplied from the excerpt file's bytes (spike records none)
+     2 x g04: excerpt media_type audio/mp4 supplied from its m4a format
+     2 x g04: excerpt state saved renamed preserved
+     4 x g04: kind audio renamed audio_capture (the design package's kind for the Audio marker)
+     4 x g04: origin mapped to provenance surface (and entry_point for a quick-capture intent)
+     5 x g04: range asset_sha256 supplied from the member file's bytes (spike records no digest)
+     4 x g04: revision supplied: the durable writes the probe counted for the record (spike has no revision)
+     2 x g04: single note string wrapped as note revision 1 (spike keeps one string, saved with the capture)
+     4 x g04: source_snapshot supplied (spike records none)
+     4 x g04: work_id supplied (spike records none)
+     1 x g05-recovery: EPUB exact_text taken from quoted_text, whose SHA-256 equals exact_text_sha256
+     1 x g05-recovery: PDF rotation renamed page_rotation, rects line_rects, text_range [s, e] made a unicode_scalar range
+     1 x g05-recovery: audio anchor rows assembled into one audio anchor
+     2 x g05-recovery: work-level note wrapped in a note capture (capture ID, the work's snapshot, provenance and revision supplied; deviation note-without-capture)
+     1 x pdf example: quoted_text_origin, notes, provenance, updated_at, location_label_origin supplied
+     8 x pdf: null page_label omitted (no printed label)
+    22 x pdf: reader_locator restructured as reader {adapter, locator}
+    22 x pdf: version renamed schema_version
+    22 x pdf: work_id and edition_id supplied (spike records neither)
+code-checked rules: U1 every string is a sequence of Unicode scalar values (no unpaired surrogate); A1 every range has start < end; A2 a scalar range covers its text (EPUB text_offsets: the text with whitespace collapsed); A3 a PDF anchor's exact_text is its segments' texts in document order, with nothing or one U+000A between two on one page and one U+000A between two on different pages (the reader's composition, ADR-0005); A4 PDF segments are in document order; A5 an EPUB segment index is below its count; A6 audio ranges name distinct assets, ranges after the first start at 0, total at most 120,000 ms; A7 a PDF line rectangle lies within its page box (x + w <= 1, y + h <= 1, within 0.000001); C1 anchors name the capture's work, and its edition when they name one; C2 a selected text_quote or word equals the exact text of its EPUB, PDF or text anchors (later kinds beside them are not compared; a selection with only later kinds is not checked); a word's source sentence contains it; C3 a capture's EPUB anchors name one asset; several carry segments 0..n-1 of n in order; one carries none; C4 a preserved or removed excerpt's actual ranges name the anchor's assets in order; each is non-empty, overlaps the anchor's range at its position and starts and ends within 500 ms of it; C5 a transcript quotation equals the transcript text, and the capture has the retained excerpt the transcript is of; C6 note revisions are numbered 1..n, current_revision is n, and note IDs are unique; C7 a transcript segment never runs backwards and ends at most 1,000 ms past the excerpt it transcribes; C8 revision is at least the durable writes the capture's state implies; C9 a preserved or removed excerpt's clip offsets, frame count and read-back duration agree with its actual ranges
+result: pass (0 problem(s))
+==> mutation pass: every protected schema constraint and every code-rule branch has a fixture that notices it
+load: 16:10  up 16 days,  2:21, 3 users, load averages: 2.43 1.78 1.90
+schemas: anchor, capture-envelope; code rules: surrogate_violations, anchor_violations, minimum_revision, capture_violations; baseline fixture problems: 0
+part 1, schema constraints, protected: 430 (430 noticed by a fixture, 0 survived, 0 skipped); among them single enum values in an if condition or a not: 14 (14 noticed by a fixture, 0 survived, 0 skipped); numeric types: 28 (28 noticed by a fixture, 0 survived, 0 skipped)
+part 1, generic bounds (non-numeric type, string length, maxProperties, maxItems >= 100, maximum >= 1000; reported, not required): 141 (10 noticed by a fixture, 131 survived, 0 skipped)
+part 2, code-rule checks, protected: 61 (61 noticed by a fixture, 0 survived, 0 skipped)
+noticed by crashing on a fixture rather than by an outcome: 0
+time: 53 s with 4 job(s)
+generic bound, survived: anchor#/$defs/audio/properties/ranges/items: delete type
+generic bound, survived: anchor#/$defs/audio/properties/ranges: delete maxItems
+generic bound, survived: anchor#/$defs/audio/properties/ranges: delete type
+generic bound, survived: anchor#/$defs/epub/properties/resource_href: delete maxLength
+generic bound, survived: anchor#/$defs/epub/properties/resource_href: delete minLength
+generic bound, survived: anchor#/$defs/epub/properties/resource_href: delete type
+generic bound, survived: anchor#/$defs/epub/properties/segment/properties/count: delete maximum
+generic bound, survived: anchor#/$defs/epub/properties/segment: delete type
+generic bound, survived: anchor#/$defs/epub/properties/text_offsets/properties/extraction_version: delete maxLength
+generic bound, survived: anchor#/$defs/epub/properties/text_offsets/properties/extraction_version: delete minLength
+generic bound, survived: anchor#/$defs/epub/properties/text_offsets/properties/extraction_version: delete type
+generic bound, survived: anchor#/$defs/exact_text: delete type
+generic bound, survived: anchor#/$defs/int64_non_negative: delete maximum
+generic bound, survived: anchor#/$defs/int64_positive: delete maximum
+generic bound, survived: anchor#/$defs/kind_token: delete type
+generic bound, survived: anchor#/$defs/media_type: delete maxLength
+generic bound, survived: anchor#/$defs/media_type: delete type
+generic bound, survived: anchor#/$defs/normalized_rect: delete type
+generic bound, survived: anchor#/$defs/pdf/properties/extraction/properties/extractor: delete maxLength
+generic bound, survived: anchor#/$defs/pdf/properties/extraction/properties/extractor: delete minLength
+generic bound, survived: anchor#/$defs/pdf/properties/extraction/properties/extractor: delete type
+generic bound, survived: anchor#/$defs/pdf/properties/extraction/properties/platform: delete maxLength
+generic bound, survived: anchor#/$defs/pdf/properties/extraction/properties/platform: delete minLength
+generic bound, survived: anchor#/$defs/pdf/properties/extraction/properties/platform: delete type
+generic bound, survived: anchor#/$defs/pdf/properties/extraction: delete type
+generic bound, survived: anchor#/$defs/pdf/properties/segments/items/properties/line_rects: delete maxItems
+generic bound, survived: anchor#/$defs/pdf/properties/segments/items/properties/line_rects: delete type
+generic bound, survived: anchor#/$defs/pdf/properties/segments/items/properties/page_box/properties/rect: delete type
+generic bound, survived: anchor#/$defs/pdf/properties/segments/items/properties/page_box: delete type
+generic bound, survived: anchor#/$defs/pdf/properties/segments/items/properties/page_label: delete maxLength
+generic bound, survived: anchor#/$defs/pdf/properties/segments/items: delete type
+generic bound, survived: anchor#/$defs/pdf/properties/segments: delete maxItems
+generic bound, survived: anchor#/$defs/pdf/properties/segments: delete type
+generic bound, survived: anchor#/$defs/reader/properties/adapter: delete type
+generic bound, survived: anchor#/$defs/reader/properties/adapter_version: delete maxLength
+generic bound, survived: anchor#/$defs/reader/properties/adapter_version: delete minLength
+generic bound, survived: anchor#/$defs/reader/properties/adapter_version: delete type
+generic bound, survived: anchor#/$defs/reader/properties/locator: delete type
+generic bound, survived: anchor#/$defs/reader: delete type
+generic bound, survived: anchor#/$defs/scalar_range: delete type
+generic bound, survived: anchor#/$defs/sha256: delete type
+generic bound, survived: anchor#/$defs/text/properties/source_text/properties/extraction_version: delete maxLength
+generic bound, survived: anchor#/$defs/text/properties/source_text/properties/extraction_version: delete minLength
+generic bound, survived: anchor#/$defs/text/properties/source_text/properties/extraction_version: delete type
+generic bound, survived: anchor#/$defs/text/properties/source_text: delete type
+generic bound, survived: anchor#/: delete type
+generic bound, survived: capture-envelope#/$defs/kind_token: delete type
+generic bound, survived: capture-envelope#/$defs/note/properties/revisions/items/properties/body: delete type
+generic bound, survived: capture-envelope#/$defs/note/properties/revisions/items: delete type
+generic bound, survived: capture-envelope#/$defs/note/properties/revisions: delete maxItems
+generic bound, survived: capture-envelope#/$defs/note/properties/revisions: delete type
+generic bound, survived: capture-envelope#/$defs/note: delete type
+generic bound, survived: capture-envelope#/$defs/utc_timestamp: delete type
+generic bound, survived: capture-envelope#/$defs/value_token: delete type
+generic bound, survived: capture-envelope#/: delete type
+generic bound, survived: capture-envelope#/properties/anchors: delete maxItems
+generic bound, survived: capture-envelope#/properties/anchors: delete type
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/answer_text: delete type
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/endpoint/properties/host: delete maxLength
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/endpoint/properties/host: delete minLength
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/endpoint/properties/host: delete type
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/endpoint/properties/model: delete maxLength
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/endpoint/properties/model: delete minLength
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/endpoint/properties/model: delete type
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/endpoint: delete type
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/question: delete maxLength
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/question: delete minLength
+generic bound, survived: capture-envelope#/properties/generated_answer/properties/question: delete type
+generic bound, survived: capture-envelope#/properties/generated_answer: delete type
+generic bound, survived: capture-envelope#/properties/notes: delete maxItems
+generic bound, survived: capture-envelope#/properties/notes: delete type
+generic bound, survived: capture-envelope#/properties/provenance/properties/entry_point: delete maxLength
+generic bound, survived: capture-envelope#/properties/provenance/properties/entry_point: delete minLength
+generic bound, survived: capture-envelope#/properties/provenance/properties/entry_point: delete type
+generic bound, survived: capture-envelope#/properties/provenance/properties/idempotency_key: delete maxLength
+generic bound, survived: capture-envelope#/properties/provenance/properties/idempotency_key: delete minLength
+generic bound, survived: capture-envelope#/properties/provenance/properties/idempotency_key: delete type
+generic bound, survived: capture-envelope#/properties/provenance: delete type
+generic bound, survived: capture-envelope#/properties/quoted_text: delete type
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/actual_ranges/items/properties/source_format: delete maxLength
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/actual_ranges/items/properties/source_format: delete minLength
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/actual_ranges/items/properties/source_format: delete type
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/actual_ranges/items: delete type
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/actual_ranges: delete maxItems
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/actual_ranges: delete type
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/failure/properties/reason: delete maxLength
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/failure/properties/reason: delete minLength
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/failure/properties/reason: delete type
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/failure: delete type
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/file_extension: delete type
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/format: delete maxLength
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/format: delete minLength
+generic bound, survived: capture-envelope#/properties/retained_excerpt/properties/format: delete type
+generic bound, survived: capture-envelope#/properties/retained_excerpt: delete type
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/author_display: delete maxLength
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/author_display: delete type
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/edition_identifiers/additionalProperties: delete maxLength
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/edition_identifiers/additionalProperties: delete type
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/edition_identifiers/propertyNames: delete type
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/edition_identifiers: delete maxProperties
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/edition_identifiers: delete type
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/location_label: delete maxLength
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/location_label: delete minLength
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/location_label: delete type
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/source_kind: delete type
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/title: delete maxLength
+generic bound, survived: capture-envelope#/properties/source_snapshot/properties/title: delete type
+generic bound, survived: capture-envelope#/properties/source_snapshot: delete type
+generic bound, survived: capture-envelope#/properties/transcript/properties/corrected_text: delete minLength
+generic bound, survived: capture-envelope#/properties/transcript/properties/corrected_text: delete type
+generic bound, survived: capture-envelope#/properties/transcript/properties/host: delete maxLength
+generic bound, survived: capture-envelope#/properties/transcript/properties/host: delete minLength
+generic bound, survived: capture-envelope#/properties/transcript/properties/host: delete type
+generic bound, survived: capture-envelope#/properties/transcript/properties/language: delete maxLength
+generic bound, survived: capture-envelope#/properties/transcript/properties/language: delete minLength
+generic bound, survived: capture-envelope#/properties/transcript/properties/language: delete type
+generic bound, survived: capture-envelope#/properties/transcript/properties/model: delete maxLength
+generic bound, survived: capture-envelope#/properties/transcript/properties/model: delete minLength
+generic bound, survived: capture-envelope#/properties/transcript/properties/model: delete type
+generic bound, survived: capture-envelope#/properties/transcript/properties/raw_text: delete type
+generic bound, survived: capture-envelope#/properties/transcript/properties/segments/items/properties/text: delete type
+generic bound, survived: capture-envelope#/properties/transcript/properties/segments/items: delete type
+generic bound, survived: capture-envelope#/properties/transcript/properties/segments: delete maxItems
+generic bound, survived: capture-envelope#/properties/transcript/properties/segments: delete type
+generic bound, survived: capture-envelope#/properties/transcript: delete type
+generic bound, survived: capture-envelope#/properties/word/properties/headword: delete maxLength
+generic bound, survived: capture-envelope#/properties/word/properties/headword: delete minLength
+generic bound, survived: capture-envelope#/properties/word/properties/headword: delete type
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete minLength
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete type
+generic bound, survived: capture-envelope#/properties/word: delete type
+result: pass

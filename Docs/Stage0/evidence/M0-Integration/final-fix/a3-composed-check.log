@@ -1,0 +1,38 @@
+commit: ca5054acb439bdc8e01f0fb94c5985c48b304974; uncommitted files: 0
+date: 2026-10-19T04:26:20Z; host: macOS 26.6.2 (25G83)
+checker before: check-spike-anchors-fea12c3.py; checker after: Scripts/check-spike-anchors.py
+rule A3 before: a PDF anchor's exact_text is its segments' texts joined with U+000A
+rule A3 after:  a PDF anchor's exact_text is its segments' texts in document order, with nothing or one U+000A between two on one page and one U+000A between two on different pages (the reader's composition, ADR-0005)
+--- anchor-composed-samples.json (simulator iPhone18,3 (Sylvia-M0-final-fix), iOS 26.5 (23F77))
+two pieces on one page, two lines apart: 2 segment(s), text "The pond iturning ov"; before: refused (exact_text is not the segments' texts joined with U+000A); after: accepted
+two pieces on one line: 2 segment(s), text "The p keep"; before: refused (exact_text is not the segments' texts joined with U+000A); after: accepted
+three pieces on one page: 3 segment(s), text "The pel. Uturni"; before: refused (exact_text is not the segments' texts joined with U+000A); after: accepted
+pieces added in reverse order: 2 segment(s), text "The pond iturning ov"; before: refused (exact_text is not the segments' texts joined with U+000A); after: accepted
+a middle piece that ends at a line's end: 3 segment(s), text "The pgrey ice the water\n stop"; before: refused (exact_text is not the segments' texts joined with U+000A); after: accepted
+two pieces, each ending at a line's end: 2 segment(s), text "grey ice the water\nthe night. A walker"; before: accepted; after: accepted
+two pieces on one page, then one on the next page: 3 segment(s), text "The p keep\nBody, phys"; before: refused (exact_text is not the segments' texts joined with U+000A); after: accepted
+a piece that ends at a line's end, then one on the next page: 2 segment(s), text "The pond in winter keeps its own counsel. Under a skin of grey ice the water\nBody, phys"; before: accepted; after: accepted
+pages added in reverse order: 2 segment(s), text "The pond i\nBody, phys"; before: accepted; after: accepted
+two pieces that touch (PDFKit merges them): 1 segment(s), text "The pond in winter k"; before: accepted; after: accepted
+two pieces that overlap (PDFKit merges them): 1 segment(s), text "The pond in win"; before: accepted; after: accepted
+--- anchor-samples.json (simulator iPhone18,3 (Sylvia-M0-minors-g01-pdf), iOS 26.5 (23F77))
+multiline: 1 segment(s), text "ts own counsel. Under a skin of grey ice the water\nstill moves, slowly, turning over the cold it gathered in the night. A walker\nwho stops at the"; before: accepted; after: accepted
+cross-column: 1 segment(s), text "It continues with the boats drawn up\non the gravel, each one turned over to\nkeep the rain out, their keels in a\nrow like the spines of closed books.\nRight column. The second column takes\nup the afternoo"; before: accepted; after: accepted
+rotate-0: 1 segment(s), text "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t"; before: accepted; after: accepted
+rotate-90: 1 segment(s), text "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t"; before: accepted; after: accepted
+rotate-180: 1 segment(s), text "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t"; before: accepted; after: accepted
+rotate-270: 1 segment(s), text "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t"; before: accepted; after: accepted
+rotate-90-inherited: 1 segment(s), text "in unrotated page space and\nthe page dictionary asks the viewer to turn the page for display. A highlight\nsaved here must land on t"; before: accepted; after: accepted
+rotate-270-offset-cropbox: 1 segment(s), text "ten in unrotated page\nspace and the page dictionary asks the viewer to turn the page for\ndisplay. A highlight sav"; before: accepted; after: accepted
+multi-page: 2 segment(s), text "leaves early, and in between it is careful, touching each stone as if it\nwere counting them.\nBody, physical page 5\nThe heron at the in"; before: accepted; after: accepted
+unicode-multiline: 1 segment(s), text "\ud835\udc00\ud835\udc01 end of the math line.\nDecomposed: cafe"; before: accepted; after: accepted
+real anchors: 21; refused by A3 before: 6; refused after: 0
+--- planted texts on real anchors (each must be refused after)
+two pieces on one page claiming the "\n"-joined text, which the ranges cannot give back (ADR-0005): before: accepted; after: accepted (a structural rule cannot tell this from PDFKit's kept line break; the reader's restore check, quotationMismatch, refuses it: ADR-0005)
+two pieces on one page joined by a space: before: refused; after: refused
+two pieces on one page joined by two line feeds: before: refused; after: refused
+two pieces on one page in the wrong order: before: refused; after: refused
+two pages with no line feed where the page changes: before: refused; after: refused
+two pages joined by a space: before: refused; after: refused
+result: pass
+exit: 0

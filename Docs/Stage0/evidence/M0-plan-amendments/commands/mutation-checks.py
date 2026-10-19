@@ -51,9 +51,9 @@ MUTATIONS = [
      "",
      "plan Sections 1-23"),
     ("a product-owner question renumbered", DOC,
-     "| PO-36 |",
-     "| PO-37 |",
-     "Section 4 lists PO-01 to PO-36"),
+     "| PO-44 |",
+     "| PO-45 |",
+     "Section 4 lists PO-01 to PO-44"),
     ("a tag left out of the decision register's list (A47)", DOC,
      "Collects A01, A02, A13, A14, A16, A19, A22, A23, A26, A27, A28, A40, A41, A45",
      "Collects A01, A02, A13, A14, A16, A19, A22, A23, A26, A27, A28, A40, A45",
@@ -78,6 +78,34 @@ MUTATIONS = [
      "| scope narrowing | A53 |",
      "| clarification | A53 |",
      "every Section 1.2 tag has a Section 2 row classified scope narrowing"),
+    # Added with the re-check of draft 0.5 (draft 0.7).
+    ("the bundle's completeness proof applied to raw Finder copies again (8.5)", PLAN,
+     "and validates the clone. For a bundle that is a proof of completeness: a copy still in progress fails",
+     "and validates the clone: a copy still in progress fails",
+     "replaced phrases are absent"),
+    ("the bearer-token copies said to be bounded in all again (15.4)", PLAN,
+     "the task window bounds those copies per job, and nothing bounds them across jobs yet: N jobs from one Mac "
+     "downloading at once hold up to 4N requests carrying that Mac's token. Proposed (product-owner decision pending): "
+     "the job scheduler (Section 6.4) lets two jobs download at a time and queues the rest; the alternative bounds the "
+     "outstanding tasks across all jobs. A pause",
+     "the task window bounds those copies, a pause",
+     "replaced phrases are absent"),
+    ("the failed-gate count turned back to three (21.1)", PLAN,
+     "and rows failed in four gates, each changing the approach",
+     "and rows failed in three gates, each changing the approach",
+     "replaced phrases are absent"),
+    ("a new tag left out of Appendix D's draft 0.7 entry", PLAN,
+     "- **A55** (Sections 11.1, 23.2):",
+     "- A55 (Sections 11.1, 23.2):",
+     "Appendix D lists tags A01-A56"),
+    ("G0.4's playback-control decision left without its source", DOC,
+     "| G0.4 open questions (its PO-5); row 38;",
+     "| G0.4 report (its PO-5); row 38;",
+     "G04-Audio.md: 7 open-question bullets"),
+    ("a finding the re-check added left without its row", DOC,
+     "| F15. A raw file copied with Finder is imported but never proved complete",
+     "| A raw file copied with Finder is imported but never proved complete",
+     "G03-Intake.md: 19 findings"),
 ]
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Consistency checks for the M0 plan amendments (plan draft 0.5).
+"""Consistency checks for the M0 plan amendments (plan draft 0.5, re-checked as draft 0.7).
 
 Run from the repository root with the Python standard library only:
     python3 -I Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py
@@ -16,6 +16,10 @@ STAGE0 = ROOT / "Docs/Stage0"
 PLAN = ROOT / "Docs/Sylvia_v1_iOS_Implementation_Plan.md"
 DOC = STAGE0 / "M0-plan-amendments.md"
 SELF_LOG = "evidence/M0-plan-amendments/check-amendments.log"
+# Draft 0.5 tagged A01-A53; its re-check, draft 0.7, added A54-A56 and PO-37 to PO-44.
+LAST_DRAFT_05_TAG = 53
+LAST_TAG = 56
+LAST_PO = 44
 
 # Text the plan quotes in Sections 1-23 that is not interface text, each with its reason.
 # Every other quoted phrase must be in the design package or in the 4.4.6 gaps table.
@@ -261,14 +265,15 @@ def main():
             po_sources[cells[0]] = cells[2]
     # Each bullet: its opening words, where its coverage is, and what must be there.
     g04_map = [
-        ("Product owner: approve the quick-capture narrowing", "po", ["PO-17", "PO-18", "PO-19"]),
-        ("Product owner: adopt the per-file timing mode", "po", ["PO-20"]),
+        ("Product owner: decisions PO-1 to PO-6", "po", ["PO-17", "PO-18", "PO-19", "PO-20", "PO-39"]),
         ("Technical lead (M2): whether reading a file through", "s5",
          ["reading a file through removes the MP3 first-seek cost (G0.4 open questions"]),
         ("Design package (G0.6): the vocabulary has no key for \"the book is being opened\"", "s5",
          ["G0.4 open questions: the player's `preparing` state"]),
         ("Design package (G0.6): the vocabulary has no key for \"a quick-capture surface", "s5",
          ["`audio.nothing_to_capture` and `audio.moment_not_saved` keys"]),
+        ("Design package (G0.6): the vocabulary has no phrase for the incomplete-edition warning", "s5",
+         ["the incomplete-edition warning (`audio.edition_incomplete`"]),
         ("Contract consolidation: the audio anchor", "s5", ["the audio anchor and excerpt fields (G0.4 open questions"]),
         ("Warnings:", "s3", ["| G0.4 open questions, the warnings note |"]),
     ]
@@ -300,7 +305,7 @@ def main():
     for header, cells in table_rows(section_text(doc, "3.2 ADR consequences")):
         if header[0] == "ADR" and re.fullmatch(r"ADR-00\d\d", cells[0]):
             adr_cells[cells[0]] = cells[1]
-    known_tags = set("A%02d" % n for n in range(1, 54))
+    known_tags = set("A%02d" % n for n in range(1, LAST_TAG + 1))
     adr_problems, adr_items = [], 0
     for n in range(1, 15):
         name = "ADR-%04d" % n
@@ -334,15 +339,28 @@ def main():
             table6[cells[0]] = normalize_sections(cells[2])
             table6_sources[cells[0]] = cells[3] if len(cells) > 3 else ""
     entry_match = re.search(r"\*\*Draft 0\.5 - proposed at the M0 gate, pending product-owner approval\.\*\*(.*?)\*\*Draft 0\.4 - ", plan, re.S)
-    appendix_d = dict()
-    if entry_match:
-        for tag, cell in re.findall(r"^- \*\*(A\d\d)\*\* \(([^)]*)\):", entry_match.group(1), re.M):
-            appendix_d[tag] = normalize_sections(cell)
-    check(bool(entry_match), "Appendix D has the draft 0.5 entry before draft 0.4")
-    expected = ["A%02d" % n for n in range(1, 54)]
-    check(sorted(table6) == expected, f"Section 6 lists tags A01-A53 ({len(table6)} rows)", ", ".join(sorted(set(expected) ^ set(table6))))
-    check(sorted(appendix_d) == expected, f"Appendix D lists tags A01-A53 ({len(appendix_d)} bullets)", ", ".join(sorted(set(expected) ^ set(appendix_d))))
-    check(sorted(plan_tags) == expected, f"the plan text carries every tag A01-A53 ({len(plan_tags)} tags)", ", ".join(sorted(set(expected) ^ set(plan_tags))))
+    recheck_match = re.search(r"\*\*Draft 0\.7 - draft 0\.5 re-checked at the M0 final fix, pending product-owner approval\.\*\*(.*?)\*\*Draft 0\.6 - ", plan, re.S)
+    appendix_d, by_entry = dict(), dict()
+    for name, match in (("0.5", entry_match), ("0.7", recheck_match)):
+        by_entry[name] = set()
+        if match:
+            for tag, cell in re.findall(r"^- \*\*(A\d\d)\*\* \(([^)]*)\):", match.group(1), re.M):
+                if tag in appendix_d:
+                    appendix_d[tag + " (twice)"] = set()
+                appendix_d[tag] = normalize_sections(cell)
+                by_entry[name].add(tag)
+    check(bool(entry_match) and bool(recheck_match),
+          "Appendix D has the draft 0.7 entry before draft 0.6, and the draft 0.5 entry before draft 0.4")
+    expected = ["A%02d" % n for n in range(1, LAST_TAG + 1)]
+    label = "A01-A%02d" % LAST_TAG
+    check(sorted(table6) == expected, f"Section 6 lists tags {label} ({len(table6)} rows)", ", ".join(sorted(set(expected) ^ set(table6))))
+    check(sorted(appendix_d) == expected, f"Appendix D lists tags {label} ({len(appendix_d)} bullets)", ", ".join(sorted(set(expected) ^ set(appendix_d))))
+    check(by_entry["0.5"] == set(expected[:LAST_DRAFT_05_TAG]) and by_entry["0.7"] == set(expected[LAST_DRAFT_05_TAG:]),
+          "Appendix D gives A01-A%02d their bullets in the draft 0.5 entry and A%02d-A%02d in the draft 0.7 entry"
+          % (LAST_DRAFT_05_TAG, LAST_DRAFT_05_TAG + 1, LAST_TAG),
+          "draft 0.5: %s; draft 0.7: %s" % (", ".join(sorted(by_entry["0.5"] ^ set(expected[:LAST_DRAFT_05_TAG]))),
+                                            ", ".join(sorted(by_entry["0.7"] ^ set(expected[LAST_DRAFT_05_TAG:])))))
+    check(sorted(plan_tags) == expected, f"the plan text carries every tag {label} ({len(plan_tags)} tags)", ", ".join(sorted(set(expected) ^ set(plan_tags))))
     mismatched = []
     for tag in expected:
         trio = (plan_tags.get(tag, set()), table6.get(tag, set()), appendix_d.get(tag, set()))
@@ -409,7 +427,7 @@ def main():
             if len(cells) == 6 and not unknown:
                 continue
             bad_po.append(cells[0])
-    check(ids == ["PO-%02d" % n for n in range(1, 37)], f"Section 4 lists PO-01 to PO-36 in order ({len(ids)} rows)")
+    check(ids == ["PO-%02d" % n for n in range(1, LAST_PO + 1)], f"Section 4 lists PO-01 to PO-{LAST_PO} in order ({len(ids)} rows)")
     check(not bad_po, "Section 4 rows have six cells and known tags", ", ".join(bad_po))
 
     # 7. Replaced plan text is gone and its replacement is present.
@@ -446,10 +464,37 @@ def main():
         "proposed repair path: the damaged store is moved aside",
         "content documents must be well-formed XHTML with an XHTML `html` root, declared",
         "| Security + product; before M6;",
+        # Replaced by the re-check (draft 0.7).
+        "**Status:** Draft 0.6",
+        "validates the clone: a copy still in progress fails",
+        "the task window bounds those copies, a pause",
+        "The task window bounds the outstanding tasks (four per job, proposed)",
+        "Rows failed in three gates",
+        "rows failed in three gates",
+        "the G0.1 PDF report asks for it before M1",
+        "(the G0.1 PDF report says before M1;",
+        "are being written by M0 contract consolidation",
+        "about 25-30 minutes",
+        "took about 27 seconds",
+        "about 27 s for a 10-hour",
+        "(peak 48.1 MB)",
+        "(stereo is downmixed, for speech)",
+        "the measured cost on the host is small",
+        "after scanning for 43-75 seconds",
     ]
     present = [
-        "**Status:** Draft 0.5",
-        "**Revised:** 14 October 2026",
+        "**Status:** Draft 0.7",
+        "**Revised:** 19 October 2026",
+        "**Draft 0.7 - draft 0.5 re-checked at the M0 final fix, pending product-owner approval.**",
+        "A raw file has no manifest and no end record, so nothing proves it complete",
+        "the task window bounds those copies per job, and nothing bounds them across jobs yet",
+        "nothing bounds them across jobs until the product owner chooses",
+        "Rows failed in four gates on the simulator",
+        "rows failed in four gates, each changing the approach",
+        "| A raw file copied with Finder can be staged incomplete |",
+        "| A linked dependency carries an advisory with no fixed release: marmelroy/Zip 2.1.2, CVE-2023-39135",
+        "each line rectangle of a PDF anchor also carries the line's reading direction",
+        "Text holding U+0000 cannot be stored exactly",
         "**Draft 0.5 - proposed at the M0 gate, pending product-owner approval.**",
         "| D16 - Tailscale route and ATS |",
         "| D17 - Data protection and durability |",
@@ -485,6 +530,11 @@ def main():
         "proposed repair path: the damaged store is moved aside",
         "Collects A01, A13, A14",
         "content documents must be well-formed XHTML declared as XHTML or HTML",
+        # Replaced by the re-check (draft 0.7): stale mappings and the old count.
+        "Rows failed in three gates",
+        "to restore the class-B evidence for the current code (G0.5 recovery open question 7)",
+        "(integration log row 6; open question 8)",
+        "(in progress on its own branch)",
     ]
     still = [g for g in gone if g in plan]
     lacking = [p for p in present if p not in plan]
@@ -577,14 +627,16 @@ def main():
         rows = sum(1 for _ in table_rows(text))
         check(not ragged, f"{name}: {rows} table rows, none ragged", "; ".join(ragged))
 
-    # 9. Sections left unchanged on purpose, and the budget values, equal plan draft 0.4 at commit 471b143.
+    # 9. Sections left unchanged on purpose equal their last revision by the product owner: Sections 2.2 and 21.5 and
+    # the budget values plan draft 0.4 at commit 471b143; Section 24 draft 0.6 as written on main (0ef8c39), which
+    # revised the roadmap and is merged unchanged (177ed9a).
     import hashlib
     base = [
-        ("2.2 Non-negotiable", "a0d848691c7313e03ba33b4a58650e2d394b503066c61f2783e93f542d71dd27"),
-        ("21.5 Safe scope", "d975a0694524538c7591ad98da9dfde60d94c6d4ce62b4ab06337a1fe2578923"),
-        ("24. Roadmap", "c888254cfdb36773f6ca182084aedc854ec8f9e8878f6e3495249dfad6ceaaa1"),
+        ("2.2 Non-negotiable", "a0d848691c7313e03ba33b4a58650e2d394b503066c61f2783e93f542d71dd27", "draft 0.4 (471b143)"),
+        ("21.5 Safe scope", "d975a0694524538c7591ad98da9dfde60d94c6d4ce62b4ab06337a1fe2578923", "draft 0.4 (471b143)"),
+        ("24. Roadmap", "7062f657073beec13b7dcd54cfa90ea69d8105eef28083fa19b44da3588c39bf", "draft 0.6 (0ef8c39)"),
     ]
-    for prefix, digest in base:
+    for prefix, digest, revision in base:
         lines = []
         level = None
         for line in plan.splitlines():
@@ -598,7 +650,7 @@ def main():
                     break
                 lines.append(line)
         actual = hashlib.sha256("\n".join(lines).encode()).hexdigest()
-        check(actual == digest, f"Section {prefix.split()[0].rstrip('.')} is byte-identical to draft 0.4 (471b143)", actual)
+        check(actual == digest, f"Section {prefix.split()[0].rstrip('.')} is byte-identical to {revision}", actual)
     budgets = re.findall(r"^\| [^|]+ \| ([^|]+) \|", section_text(plan, "19.2 Proposed"), re.M)[2:]
     base_budgets = ["p95 <= 2.5 seconds", "p95 <= 500 ms", "p95 <= 200 ms", "p95 <= 1.5 seconds",
                     "p95 <= 2 seconds", "<= 5 seconds", "No sustained main-thread stalls over 100 ms",

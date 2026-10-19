@@ -494,7 +494,7 @@ Each commit's message gives its reason; all but the last are work-in-progress co
 | `6e81f44e` | Fix the gate checks' correction-text comparison path |
 | `3d60175d` | Record the complete run, the G0.4 re-run and the locked recovery guard |
 
-The commit that adds this section and the last checks' log follows them.
+Four commits follow them: this section (`cffc6f2a`), the amendment checks' run on it (`752d6871`), the lock-state record extended to the last checks (`d50c3284`), and the final commit, which adds the last checks' log (`evidence/M0-Integration/final-fix/gate-final-checks.log`, run on `d50c3284`) and this sentence.
 
 ### 11.3 The complete CI run from a fresh clone
 

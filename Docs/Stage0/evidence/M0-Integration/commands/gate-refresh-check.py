@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Checks behind the 19 October 2026 refresh of Docs/Stage0/M0-gate.md (run by gate-refresh-checks.sh).
+"""Checks behind the 19 October 2026 refresh of Docs/Stage0/M0-gate.md (run by gate-refresh-checks.sh), and since the
+M0 final fix of the same day behind its update (run by final-fix/commands/gate-final-checks.sh).
 
 1. Every backticked path in the summary exists: paths are taken relative to Docs/Stage0/ first, then to the
    repository root. Bare names (no slash) are checked only when they end in .md. Tokens with spaces, wildcards,
@@ -102,8 +103,14 @@ ALL_ADRS_PENDING = (adr_says(1, "Toolchain pin proposed; awaiting") + adr_says(2
 FACTS = {
     66: ("pending-human", ALL_ADRS_PENDING),
     71: ("pending-human", adr_proposed(15) + adr_says(15, "human sign-off pending")),
-    75: ("passed-host", log_has("ci-full-clean-run-assembled.log", "==> 12-dependency-lock\n    pass")
-                        + log_has("ci-documents-final.log", "==> 12-dependency-lock\n    pass")),
+    # Row 75 (final review R1-07): passed-host under Xcode 27.0 at efc9479; on the build Mac's Xcode 27.1 the drop-in
+    # fails its toolchain check, and only that, so the row is partial until PO-35 is decided.
+    75: ("partial", log_has("ci-full-clean-run-assembled.log", "==> 12-dependency-lock\n    pass")
+                    + log_has("ci-documents-final.log", "==> 12-dependency-lock\n    pass")
+                    + log_has("ci-full-clean-run-final.log", "==> 12-dependency-lock\n    FAIL")
+                    + log_has("final-fix/ci-logs/12-dependency-lock.log",
+                              "FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'\n")
+                    + log_has("final-fix/ci-logs/12-dependency-lock.log", "dependency lock check: 1 failure(s)")),
     76: ("failed", adr_says(14, "reject", "R4-01", "R4-02")),
     77: ("pending-human", file_has("Docs/ADRs/0014-dependency-lock-and-license-inventory.md",
                                    "### 7. Decisions that need a person (pending-human)")),
@@ -117,7 +124,10 @@ FACTS = {
     88: ("pending-human", adr_proposed(12)),
     89: ("pending-human", adr_proposed(13)),
     90: ("passed-host", log_has("ci-full-clean-run-assembled.log", "==> 10-contracts\n    pass")
-                        + log_has("ci-full-clean-run-assembled.log", "==> 11-capture-anchor-contracts\n    pass")),
+                        + log_has("ci-full-clean-run-assembled.log", "==> 11-capture-anchor-contracts\n    pass")
+                        + log_has("ci-full-clean-run-final.log", "==> 10-contracts\n    pass")
+                        + log_has("ci-full-clean-run-final.log", "==> 11-capture-anchor-contracts\n    pass")
+                        + log_has("final-fix/ci-logs/10-contracts.log", "schemas: 18  fixtures: 655")),
     92: ("pending-human", adr_says(2, "pending") + adr_proposed(7, 10, 14, 15, 16)),
 }
 NOT_CHECKED = {

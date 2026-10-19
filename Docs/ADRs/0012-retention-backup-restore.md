@@ -1,7 +1,7 @@
 # ADR-0012: Retention, backup and restore
 
 - **Status:** Proposed
-- **Date:** 2026-10-06 (revised 2026-10-07 after review rounds 1 and 2, and 2026-10-13 after review rounds 3 and 4)
+- **Date:** 2026-10-06 (revised 2026-10-07 after review rounds 1 and 2, and 2026-10-13 after review rounds 3 and 4; the refusal of unsupported classes added 2026-10-19, M0 final fix)
 - **Deciders:** pending (product owner; security reviewer for the data-protection class; technical lead at the M0 gate)
 - **Plan references:** Sections 11.4, 17.1-17.5, 18.1; invariants I-02, I-08, I-09; tests T35, T44, T46, T47, T50; journey J-06; gate G0.5 ("a restore drill after source deletion")
 
@@ -55,6 +55,7 @@ At the next launch, before anything creates `Library/`, an intent left by a cras
 - Sylvia then sets and reads back the class explicitly on the database, WAL and SHM on every open.
 - Files Sylvia writes use the matching `Data.WritingOptions` and are read back. Files Sylvia copies (imported media, bundle blobs, restore copies, a snapshot put back after a failed migration) are created new with the class by `FileProtector.copyFile` and read back. `FileManager.copyItem` is not used for them: it keeps the source file's class, and on macOS an existing file's class cannot be changed afterwards (`setAttributes` leaves it unchanged, which the readback catches).
 - A mismatch is an error, never a fallback.
+- Only classes A, B and C are accepted. Any other class (the newer `completeWhenUserInactive`, a value the protector does not know, or `FileProtectionType.none`) is refused before anything is written, copied, created or changed: on the write and copy paths since M0 assembly (ADR-0015, finding TM-F1), and on the directory path and the class set on existing files since the M0 final fix (final review SEC-06). `DataProtectionTests.unsupportedClassRefused` covers all four paths for those three classes (`Docs/Stage0/integration-log.md` section 11).
 - Class A is not usable for the library even if wanted: in a class-A directory, Apple's SQLite creates the `-shm` file with class C (host observation), so the readback fails the open.
 - The iOS Simulator's readback is not faithful: directories report none, and files report class C whatever was requested. In simulator builds only, an item reporting no class is accepted; device builds require the readback to match. The class-B run is therefore host and device only.
 - On the macOS host the classes are enforced while the screen is locked: class-A files cannot be created and closed class-B files cannot be reopened, while the class-C library keeps saving (`DataProtectionTests.lockedHostEnforcement`, which runs only when the host is locked; it ran in the review-round-2 clean run, `git show 2a37a00:Docs/Stage0/evidence/G05-Recovery/logs/host-tests.log`). This is host behaviour; the iPhone's is the device checklist.

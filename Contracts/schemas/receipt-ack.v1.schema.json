@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:sylvia:schema:receipt-ack:v1",
   "title": "Delivery receipt acknowledgement",
-  "description": "Body of the 200 response to POST /v1/receipts (plan 15.3, 16.2): the Mac recorded the receipt, or had recorded the same receipt_id with the same body before (duplicate true, nothing changed). queue_entry_id and entry_state are always present and null for an item fetched from the catalog without a queue entry; entry_state is the queue entry's state after this receipt, which never moves backwards (a late downloaded_to_phone after imported_into_sylvia leaves it imported). Moved from the OpenAPI document's inline components/schemas/ReceiptAck at the M0 final fix (contracts review R1-06), unchanged.",
+  "description": "Body of the 200 response to POST /v1/receipts (plan 15.3, 16.2): the Mac recorded the receipt, or had recorded the same receipt_id with the same body before (duplicate true, nothing changed). queue_entry_id and entry_state are always present: both null for an item fetched from the catalog without a queue entry, and both set for a receipt that names one (the server sets the entry's state exactly when the receipt names an entry; the if/then/else below). entry_state is the queue entry's state after this receipt, which never moves backwards (a late downloaded_to_phone after imported_into_sylvia leaves it imported). Moved from the OpenAPI document's inline components/schemas/ReceiptAck at the M0 final fix (contracts review R1-06), unchanged; on 20 October 2026, before v1's first release (Contracts/README.md, Versioning), the pairing of queue_entry_id and entry_state, which the inline schema had left implicit, was added (M0 final review round 2, contracts R2-05).",
   "type": "object",
   "required": ["schema_version", "receipt_id", "queue_entry_id", "entry_state", "duplicate"],
   "properties": {
@@ -24,6 +24,9 @@
       "description": "True when this receipt_id was already recorded with the same body."
     }
   },
+  "if": { "properties": { "queue_entry_id": { "type": "null" } }, "required": ["queue_entry_id"] },
+  "then": { "properties": { "entry_state": { "type": "null" } } },
+  "else": { "properties": { "entry_state": { "type": "string" } } },
   "$defs": {
     "uuid": {
       "type": "string",

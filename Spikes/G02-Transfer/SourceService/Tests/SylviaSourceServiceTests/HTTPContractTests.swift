@@ -244,6 +244,31 @@ struct HTTPContractTests {
         Self.capture("receipt-ack-duplicate", again.body)
     }
 
+    /// The same body for a receipt that names a device-inbox entry (M0 final review round 2, contracts R2-05): the
+    /// server writes queue_entry_id and entry_state together, the state being the entry's after the receipt, so the
+    /// contract's other branch is checked against what the server writes and not only against hand-written fixtures.
+    @Test func receiptAcknowledgementOfAQueueEntryAsTheServerWritesIt() async throws {
+        let harness = try await Harness.make(files: ["walden.epub": Self.assetBytes])
+        defer { await harness.cleanUp() }
+        let (client, paired, token) = try await harness.pairDevice()
+        let itemID = try await harness.itemID(titled: "walden")
+        let entry = try await harness.service.send(itemID: itemID, toDevice: paired.deviceID)
+        #expect(try await client.deviceInbox().entries.map(\.queueEntryID) == [entry.queueEntryID])
+        let versionID = try #require(entry.itemVersionID)
+        let receipt = Receipt(receiptID: CanonicalID.make(), queueEntryID: entry.queueEntryID, itemID: itemID,
+                              itemVersionID: versionID, state: .downloadedToPhone, occurredAt: harness.clock.now())
+        let headers = ["Authorization": "Bearer \(token)", "Content-Type": "application/json"]
+        let response = try await harness.unauthenticatedClient().raw(method: "POST", pathAndQuery: "/v1/receipts",
+                                                                     headers: headers, body: try TransferJSON.encode(receipt))
+        #expect(response.status == 200)
+        let object = try #require(try JSONSerialization.jsonObject(with: response.body) as? [String: Any])
+        #expect(object["queue_entry_id"] as? String == entry.queueEntryID)
+        #expect(object["entry_state"] as? String == "downloaded_to_phone")
+        let ack = try TransferJSON.decode(ReceiptAck.self, from: response.body)
+        #expect(ack.entryState == .downloadedToPhone && !ack.duplicate)
+        Self.capture("receipt-ack-queue-entry", response.body)
+    }
+
     @Test func refusesWildcardBindUnlessExplicit() async throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("g02-\(UUID().uuidString)")
         defer { try? FileManager.default.removeItem(at: directory) }

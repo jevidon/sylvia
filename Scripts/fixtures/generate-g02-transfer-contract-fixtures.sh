@@ -273,6 +273,11 @@ write(base / "invalid/missing-duplicate.json", {k: v for k, v in ack.items() if 
 write(base / "invalid/entry-state-left-out.json", {k: v for k, v in ack.items() if k != "entry_state"})
 write(base / "invalid/deleted-entry-state.json", {**ack, "entry_state": "deleted"})
 write(base / "invalid/uppercase-receipt-id.json", {**ack, "receipt_id": uid(0xa01).upper()})
+# The two mixed forms the server never writes: a named entry without its state, a state without an entry (M0 final
+# review round 2, contracts R2-05).
+write(base / "invalid/queue-entry-without-entry-state.json", {**ack, "entry_state": None})
+write(base / "invalid/entry-state-without-queue-entry.json",
+      {**ack, "receipt_id": uid(0xa04), "queue_entry_id": None, "entry_state": "imported_into_sylvia"})
 
 # ---------------- error ----------------
 base = contracts / "error.v1"

@@ -36,9 +36,11 @@ G05_ALLOW_MISSING_CLASS_B=1 G05_LOG_DIR="$logs" G05_SIM_NAME=Sylvia-M0-final-fix
 status=$?
 {
   echo "ci.sh exit: $status"
-  echo "---- .build/ci-logs/71-g05-recovery.log (the drop-in's console output)"
-  cat .build/ci-logs/71-g05-recovery.log
-  echo "---- end of the drop-in's console output"
+  # The drop-in's console output repeats its step logs (G05_LOG_DIR); its step headers and verdict lines are kept here.
+  echo "---- .build/ci-logs/71-g05-recovery.log: step headers, warnings and verdict lines (the step logs hold the rest)"
+  perl -pe 's/\e\[[0-9;]*m//g' .build/ci-logs/71-g05-recovery.log \
+    | grep -E '^(=== |WARNING|FAIL|row 10|RESULT|G0\.5 recovery|simulator |chosen:|crash drill:|  [0-9]+ iterations)|Test run with|\*\* (TEST|BUILD)' || true
+  echo "---- end"
   echo "screen lock (ioreg) at the end: $(lock_state)"
   echo "end: $(date -u +%Y-%m-%dT%H:%M:%SZ); load: $(uptime)"
   echo "git status --porcelain lines after the run: $(git -C "$root" status --porcelain | wc -l | tr -d ' ')"

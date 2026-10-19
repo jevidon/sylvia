@@ -47,9 +47,13 @@ public struct ItemProviderIntake: Sendable {
     /// time limit: an iCloud download that keeps moving is never cut off). Once copying has started there is no
     /// timeout; the copy is bounded by cancellation instead.
     public var providerStallTimeout: Duration
+    /// The clock the stall timeout measures with: the continuous clock, except in the tests that measure stall
+    /// behaviour, which advance a manual clock themselves.
+    public var stallClock: StallClock
 
-    public init(providerStallTimeout: Duration = .seconds(60)) {
+    public init(providerStallTimeout: Duration = .seconds(60), stallClock: StallClock = .continuous) {
         self.providerStallTimeout = providerStallTimeout
+        self.stallClock = stallClock
     }
 
     /// Receives one shared item into the session. Throws `HandoffFailure` for anything that should produce the
@@ -107,7 +111,7 @@ public struct ItemProviderIntake: Sendable {
                                              cancellation: cancellation, progress: progress)
                 })
             }
-            gate.armStallTimeout(after: providerStallTimeout, progress: loading)
+            gate.armStallTimeout(after: providerStallTimeout, progress: loading, clock: stallClock)
             gate.armCancellation(cancellation, progress: loading)
         }
     }
@@ -136,7 +140,7 @@ public struct ItemProviderIntake: Sendable {
                                              session: session, cancellation: cancellation, progress: progress)
                 })
             }
-            gate.armStallTimeout(after: providerStallTimeout, progress: loading)
+            gate.armStallTimeout(after: providerStallTimeout, progress: loading, clock: stallClock)
             gate.armCancellation(cancellation, progress: loading)
         }
     }
@@ -191,6 +195,28 @@ public struct ItemProviderIntake: Sendable {
         let ext = url.pathExtension
         guard !ext.isEmpty, (name as NSString).pathExtension.isEmpty else { return name }
         return name + "." + ext
+    }
+}
+
+/// The time source of the provider stall timeout: the time elapsed since an origin, and a sleep. The share extension
+/// uses `.continuous`. The stall tests inject a manual clock they advance in steps, so their outcome does not depend on
+/// how the test process schedules its threads (M0 final review CC-02: with the continuous clock, a parallel test suite
+/// delayed the simulated provider by more than the tests' 500 ms timeout between two 100 ms progress steps, and two of
+/// thirteen full-suite runs failed). The product's 60 s timeout and the detector's logic are the same with either.
+public struct StallClock: Sendable {
+    public let now: @Sendable () -> Duration
+    /// Returns after the duration, or earlier if the calling task is cancelled.
+    public let sleep: @Sendable (Duration) async -> Void
+
+    public init(now: @escaping @Sendable () -> Duration, sleep: @escaping @Sendable (Duration) async -> Void) {
+        self.now = now
+        self.sleep = sleep
+    }
+
+    /// `ContinuousClock`, which keeps counting while the device sleeps.
+    public static var continuous: StallClock {
+        let origin = ContinuousClock.now
+        return StallClock(now: { ContinuousClock.now - origin }, sleep: { try? await Task.sleep(for: $0) })
     }
 }
 
@@ -299,21 +325,21 @@ final class OnceGate<T: Sendable>: @unchecked Sendable {
     /// handler reaches `beginWork` first: the timeout then neither resumes the caller nor cancels the load. (The first
     /// version checked `started` and later finished the gate unconditionally, so a delivery between the two started the
     /// copy and the share still ended as timed out while the copy wrote into a session the caller then discarded.)
-    func armStallTimeout(after duration: Duration, progress: Progress) {
+    func armStallTimeout(after duration: Duration, progress: Progress, clock: StallClock = .continuous) {
         let probe = ProgressProbe(progress)
         let task = Task { [weak self] in
             var lastValue = probe.value
-            var lastChange = ContinuousClock.now
+            var lastChange = clock.now()
             let tick = min(duration, .milliseconds(250))
             while !Task.isCancelled {
-                try? await Task.sleep(for: tick)
+                await clock.sleep(tick)
                 guard let self, !Task.isCancelled else { return }
                 if self.lock.withLock({ self.started || self.done }) { return }
                 let value = probe.value
                 if value != lastValue {
                     lastValue = value
-                    lastChange = .now
-                } else if ContinuousClock.now - lastChange >= duration {
+                    lastChange = clock.now()
+                } else if clock.now() - lastChange >= duration {
                     self.beforeStallTimeoutFires()
                     if self.finish(.failure(HandoffFailure.providerTimedOut), onlyBeforeWork: true) { probe.cancel() }
                     return

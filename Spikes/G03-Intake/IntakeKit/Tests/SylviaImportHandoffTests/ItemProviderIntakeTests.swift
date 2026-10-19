@@ -15,12 +15,13 @@ struct ItemProviderIntakeTests {
 
     /// Runs one provider through the same sequence the extension uses (ShareViewController.handOff): receive, then
     /// commit unless cancelled, or discard.
-    func share(_ provider: NSItemProvider, box: Sandbox, stall: Duration = .seconds(60),
+    func share(_ provider: NSItemProvider, box: Sandbox, stall: Duration = .seconds(60), clock: StallClock = .continuous,
                cancellation: CancellationSignal = CancellationSignal(),
                faults: any FaultInjecting = NoFaults()) async -> Outcome {
         let session = HandoffSession(environment: box.environment(faults: faults))
         do {
-            _ = try await ItemProviderIntake(providerStallTimeout: stall).receive(provider, into: session, cancellation: cancellation)
+            _ = try await ItemProviderIntake(providerStallTimeout: stall, stallClock: clock)
+                .receive(provider, into: session, cancellation: cancellation)
             return Outcome(receipt: try session.commit(isCancelled: { cancellation.isCancelled }), failure: nil)
         } catch {
             session.discard()
@@ -131,57 +132,131 @@ struct ItemProviderIntakeTests {
         try checkInvariant(outcome, box: box)
     }
 
+    /// The stall tests below move the provider's own Progress and expect the Progress that `loadFileRepresentation`
+    /// returns, which the stall timeout watches, to follow it at once (F13: only its fraction moves). This pins that
+    /// platform behaviour: the in-process load handler has run when `loadFileRepresentation` returns, and the returned
+    /// Progress's fraction follows each step of the handler's Progress with no delay.
+    @Test("platform: an in-process load handler runs before loadFileRepresentation returns, and the returned Progress follows its Progress at once (the stall tests rely on it)")
+    func loadProgressFollowsTheProvidersProgress() {
+        let provider = NSItemProvider()
+        let own = SendableProgress(Progress(totalUnitCount: 10))
+        let asked = Flag()
+        provider.registerFileRepresentation(forTypeIdentifier: UTType.pdf.identifier, fileOptions: [], visibility: .all) { _ in
+            asked.set()
+            return own.progress
+        }
+        let loading = provider.loadFileRepresentation(for: .pdf, openInPlace: true) { _, _, _ in }
+        let handlerRan = asked.isSet
+        var fractions = [loading.fractionCompleted]
+        for step in 1...3 {
+            own.progress.completedUnitCount = Int64(step)
+            fractions.append(loading.fractionCompleted)
+        }
+        print("load progress follows the provider's progress: handler ran before the call returned: \(handlerRan); fractions \(fractions); completed count \(loading.completedUnitCount)")
+        #expect(handlerRan, "the load handler had not run when loadFileRepresentation returned")
+        #expect(zip(fractions, fractions.dropFirst()).allSatisfy { $0 < $1 }, "the returned Progress did not follow each step at once: \(fractions)")
+        loading.cancel()
+    }
+
+    /// `share` with a 500 ms stall timeout on a ManualStallClock, while `drive` moves that clock and the provider.
+    /// `drive` is given a flag that is set once the share has ended. If `drive` throws (a wait that ran out), the share
+    /// is cancelled, so the test ends instead of waiting on a clock nobody moves.
+    func drivenShare(_ provider: sending NSItemProvider, box: Sandbox, clock: ManualStallClock,
+                     drive: (_ finished: Flag) async throws -> Void) async throws -> Outcome {
+        let finished = Flag()
+        let cancellation = CancellationSignal()
+        async let sharing = shareFlagged(provider, box: box, clock: clock, cancellation: cancellation, finished: finished)
+        do {
+            try await drive(finished)
+        } catch {
+            cancellation.cancel()
+            _ = await sharing
+            throw error
+        }
+        return await sharing
+    }
+
+    private func shareFlagged(_ provider: NSItemProvider, box: Sandbox, clock: ManualStallClock,
+                              cancellation: CancellationSignal, finished: Flag) async -> Outcome {
+        let outcome = await share(provider, box: box, stall: .milliseconds(500), clock: clock.clock, cancellation: cancellation)
+        finished.set()
+        return outcome
+    }
+
+    /// One step of the stall clock, then a wait until the stall timeout's task has handled it: it is asleep again, or
+    /// the share has ended.
+    func step(_ clock: ManualStallClock, by duration: Duration, finished: Flag, _ what: String) async throws {
+        clock.advance(by: duration)
+        try await waitUntil("the stall timeout handled \(what)") { clock.sleeping == 1 || finished.isSet }
+    }
+
+    /// The provider's progress and the stall timeout's clock are both moved by this test, one 100 ms step at a time, and
+    /// after each step the test waits until the timeout's task is asleep again (ManualStallClock), so the timeout sees
+    /// exactly these steps. With the continuous clock and the provider on a queue thread, this test failed when a
+    /// parallel suite delayed that thread by more than the 500 ms timeout (M0 final review CC-02).
     @Test("a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes")
     func providerSlowButMoving() async throws {
         let box = try Sandbox()
         let src = try box.source("Slow.pdf", length: 200_000)
         let provider = NSItemProvider()
-        let delivered = Flag()
+        let clock = ManualStallClock()
+        let own = SendableProgress(Progress(totalUnitCount: 30))
+        let held = CompletionHolder()
         provider.registerFileRepresentation(forTypeIdentifier: UTType.pdf.identifier, fileOptions: [], visibility: .all) { completion in
             // As an iCloud download that keeps moving: progress every 100 ms for 3 s (six times the stall timeout used
-            // below), then the file.
-            let progress = SendableProgress(Progress(totalUnitCount: 30))
-            let deliver = SendableCompletion(completion)
-            DispatchQueue.global().async {
-                for step in 1...30 {
-                    usleep(100_000)
-                    progress.progress.completedUnitCount = Int64(step)
-                }
-                delivered.set()
-                deliver.completion(src, false, nil)
-            }
-            return progress.progress
+            // below), then the file. The test makes each step and delivers the file.
+            held.keep(completion)
+            return own.progress
         }
-        let started = ContinuousClock.now
-        let outcome = await share(provider, box: box, stall: .milliseconds(500))
-        let elapsed = ContinuousClock.now - started
-        print("slow but moving provider: \(outcome.receipt != nil ? "received" : "not received: \(outcome.failure!)") after \(elapsed)")
+        let outcome = try await drivenShare(provider, box: box, clock: clock) { finished in
+            try await waitUntil("the provider was asked and the stall timeout armed") { held.completion != nil && clock.sleeping == 1 }
+            for n in 1...30 where !finished.isSet {
+                own.progress.completedUnitCount = Int64(n)
+                try await step(clock, by: .milliseconds(100), finished: finished, "progress step \(n)")
+            }
+            #expect(!finished.isSet, "the share ended before the provider delivered, at \(clock.now) of the stall clock")
+            let deliver = try #require(held.completion)
+            DispatchQueue.global().async { deliver.completion(src, false, nil) }
+        }
+        let elapsed = clock.now
+        print("slow but moving provider: \(outcome.receipt != nil ? "received" : "not received: \(outcome.failure!)") after \(elapsed) of the stall clock (progress every 100 ms of it, made by the test)")
         #expect(outcome.receipt != nil, "a provider that keeps making progress must not time out: \(String(describing: outcome.failure))")
-        #expect(delivered.isSet)
         #expect(elapsed >= .seconds(3))
         try checkInvariant(outcome, box: box)
     }
 
+    /// Driven as the test above: progress for 1 s of the stall clock, then the clock moves on in 50 ms steps with no
+    /// progress until the share ends (at most 10 s of it).
     @Test("a provider that makes progress and then stops is cut off after the stall timeout")
     func providerProgressThenStall() async throws {
         let box = try Sandbox()
         let provider = NSItemProvider()
+        let clock = ManualStallClock()
+        let own = SendableProgress(Progress(totalUnitCount: 100))
+        let asked = Flag()
         provider.registerFileRepresentation(forTypeIdentifier: UTType.pdf.identifier, fileOptions: [], visibility: .all) { _ in
-            let progress = SendableProgress(Progress(totalUnitCount: 100))
-            DispatchQueue.global().async {
-                for step in 1...10 {
-                    usleep(100_000)
-                    progress.progress.completedUnitCount = Int64(step)
-                }
-                // ... then nothing more, and no completion.
-            }
-            return progress.progress
+            asked.set()
+            return own.progress   // moved by the test for 1 s, then nothing more, and no completion
         }
-        let started = ContinuousClock.now
-        let outcome = await share(provider, box: box, stall: .milliseconds(500))
-        let elapsed = ContinuousClock.now - started
+        let outcome = try await drivenShare(provider, box: box, clock: clock) { finished in
+            try await waitUntil("the provider was asked and the stall timeout armed") { asked.isSet && clock.sleeping == 1 }
+            for n in 1...10 where !finished.isSet {
+                own.progress.completedUnitCount = Int64(n)
+                try await step(clock, by: .milliseconds(100), finished: finished, "progress step \(n)")
+            }
+            #expect(!finished.isSet, "the share ended at \(clock.now) of the stall clock, while the provider was still moving")
+            var quiet = 0
+            while !finished.isSet && quiet < 200 {
+                quiet += 1
+                try await step(clock, by: .milliseconds(50), finished: finished, "quiet step \(quiet)")
+            }
+        }
+        let elapsed = clock.now
+        print("progress then stall: \(outcome.receipt != nil ? "received" : "not received: \(outcome.failure!)") after \(elapsed) of the stall clock (last progress at 1 s)")
         #expect(outcome.failure == .providerTimedOut)
-        #expect(elapsed >= .milliseconds(1_400), "progress for 1 s kept it alive; then 0.5 s without progress: \(elapsed)")
+        // The last progress came at 1 s. The timeout sees it at its next tick (ticks are 250 ms apart) and fires at the
+        // first tick at least 0.5 s after that one: between 1.5 s and 2 s.
+        #expect(elapsed >= .milliseconds(1_500) && elapsed <= .seconds(2), "progress for 1 s kept it alive; then 0.5 s without progress: \(elapsed)")
         try checkInvariant(outcome, box: box)
     }
 

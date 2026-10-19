@@ -1,6 +1,7 @@
 import Foundation
 @testable import SylviaImportHandoff
 import SylviaIntakeCore
+import Testing
 
 /// A throwaway App Group + app container pair for one test.
 struct Sandbox {
@@ -91,4 +92,76 @@ final class Flag: @unchecked Sendable {
     private var value = false
     func set() { lock.withLock { value = true } }
     var isSet: Bool { lock.withLock { value } }
+}
+
+/// The stall timeout's clock for the stall tests (`StallClock`; M0 final review CC-02): its time moves only when the
+/// test calls `advance(by:)`, which wakes every sleeper whose deadline has come. A test moves the provider's progress
+/// and this clock step by step and waits, between steps, until the stall timeout's task is asleep again, so the timeout
+/// sees exactly the steps the test made, however the test threads are scheduled.
+final class ManualStallClock: @unchecked Sendable {
+    private let lock = NSLock()
+    private var current: Duration = .zero
+    private var nextID = 0
+    private var sleepers: [Int: (deadline: Duration, continuation: CheckedContinuation<Void, Never>)] = [:]
+
+    var clock: StallClock {
+        StallClock(now: { [self] in now }, sleep: { [self] duration in await sleep(for: duration) })
+    }
+
+    var now: Duration { lock.withLock { current } }
+    /// Tasks waiting in `sleep(for:)`.
+    var sleeping: Int { lock.withLock { sleepers.count } }
+
+    func sleep(for duration: Duration) async {
+        let id: Int = lock.withLock {
+            nextID += 1
+            return nextID
+        }
+        await withTaskCancellationHandler {
+            await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                // Under the lock, so a cancellation either finds this sleeper or is seen here (the task's flag is set
+                // before its cancellation handler runs).
+                let resumeNow: Bool = lock.withLock {
+                    if Task.isCancelled || duration <= .zero { return true }
+                    sleepers[id] = (current + duration, continuation)
+                    return false
+                }
+                if resumeNow { continuation.resume() }
+            }
+        } onCancel: {
+            let continuation = lock.withLock { sleepers.removeValue(forKey: id)?.continuation }
+            continuation?.resume()
+        }
+    }
+
+    func advance(by duration: Duration) {
+        let due: [CheckedContinuation<Void, Never>] = lock.withLock {
+            current += duration
+            let ready = sleepers.filter { $0.value.deadline <= current }
+            for key in ready.keys { sleepers[key] = nil }
+            return ready.map(\.value.continuation)
+        }
+        for continuation in due { continuation.resume() }
+    }
+}
+
+/// Waits until `condition` holds, polling every millisecond. Real time is used here only to wait for the other task
+/// to catch up, never as a measurement; after 30 s the wait records an issue and throws instead of hanging the suite.
+func waitUntil(_ what: String, _ condition: () -> Bool) async throws {
+    let started = ContinuousClock.now
+    while !condition() {
+        if ContinuousClock.now - started > .seconds(30) {
+            Issue.record("waited 30 s, and still not: \(what)")
+            throw CancellationError()
+        }
+        try await Task.sleep(for: .milliseconds(1))
+    }
+}
+
+/// The provider's completion handler, kept by its load handler until the test delivers the file.
+final class CompletionHolder: @unchecked Sendable {
+    private let lock = NSLock()
+    private var held: SendableCompletion?
+    func keep(_ completion: @escaping (URL?, Bool, (any Error)?) -> Void) { lock.withLock { held = SendableCompletion(completion) } }
+    var completion: SendableCompletion? { lock.withLock { held } }
 }

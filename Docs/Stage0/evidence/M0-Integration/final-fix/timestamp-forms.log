@@ -1,0 +1,10 @@
+command: Docs/Stage0/evidence/M0-Integration/final-fix/commands/timestamp-forms.py <root>, with the tools virtualenv; commit 1befcf72; 2026-10-19T03:33:17Z
+| Timestamp | transfer-manifest (G0.2) | receipt (G0.2) | capture-envelope | backup-manifest | context-pack | import-handoff-manifest (G0.3) | sylviapack-manifest (G0.3) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `2026-10-05T00:00:00Z` | accepted | accepted | accepted | accepted | accepted | accepted | accepted |
+| `2026-10-05T00:00:00.123456789Z` | accepted | accepted | accepted | accepted | accepted | accepted | accepted |
+| `2026-10-05T00:00:00.1234567890Z` | accepted | accepted | refused | accepted | accepted | accepted | accepted |
+| `2026-10-05t00:00:00Z` | refused | refused | refused | accepted | accepted | accepted | accepted |
+| `2026-10-05T00:00:00z` | refused | refused | refused | refused | refused | accepted | accepted |
+| `2026-10-06T15:00:00.5+13:00` | refused | refused | refused | refused | refused | accepted | accepted |
+| `2026-10-05T00:00:00+00:00` | refused | refused | refused | refused | refused | accepted | accepted |

@@ -2862,6 +2862,38 @@
     ]
   },
   {
+    "fixture": "semantic-invalid/a3-pdf-no-line-feed-where-the-page-changes.json",
+    "base": "pdf-two-pages.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/exact_text",
+        "value": "leaves early, and in between it is careful, touching each stone as if it\nwere counting them.Body, physical page 5\nThe heron at the in"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A3"
+      }
+    ]
+  },
+  {
+    "fixture": "semantic-invalid/a3-pdf-composed-pieces-out-of-order.json",
+    "base": "pdf-composed-two-pieces-on-one-page.json",
+    "ops": [
+      {
+        "op": "replace",
+        "path": "/exact_text",
+        "value": "turning ovThe pond i"
+      }
+    ],
+    "expect": [
+      {
+        "rule": "A3"
+      }
+    ]
+  },
+  {
     "fixture": "semantic-invalid/a4-pdf-second-segment-on-an-earlier-page.json",
     "base": "pdf-two-pages.json",
     "ops": [

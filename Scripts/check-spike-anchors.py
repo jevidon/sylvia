@@ -92,7 +92,8 @@ RULES = {
     "U1": "every string is a sequence of Unicode scalar values (no unpaired surrogate)",
     "A1": "every range has start < end",
     "A2": "a scalar range covers its text (EPUB text_offsets: the text with whitespace collapsed)",
-    "A3": "a PDF anchor's exact_text is its segments' texts joined with U+000A",
+    "A3": "a PDF anchor's exact_text is its segments' texts in document order, with nothing or one U+000A between two "
+          "on one page and one U+000A between two on different pages (the reader's composition, ADR-0005)",
     "A4": "PDF segments are in document order",
     "A5": "an EPUB segment index is below its count",
     "A6": "audio ranges name distinct assets, ranges after the first start at 0, total at most 120,000 ms",
@@ -177,8 +178,19 @@ def anchor_violations(anchor: dict, *, check_strings: bool = True) -> list[tuple
                 if x + w > 1 + RECT_TOLERANCE or y + h > 1 + RECT_TOLERANCE:
                     out.append(("A7", f"segments/{i}/line_rects/{j}: x + w = {x + w:.6f}, y + h = {y + h:.6f}: "
                                       f"past the page box"))
-        if anchor["exact_text"] != "\n".join(s["text"] for s in segments):
-            out.append(("A3", "exact_text is not the segments' texts joined with U+000A"))
+        # A3 (ADR-0005): exact_text is the reader's own composition of the pieces, not one fixed join. With one segment
+        # it is that segment's text; with several, their texts in document order with nothing or one U+000A between
+        # two pieces on one page (PDFKit keeps the line break after a piece that ends at a line's end) and one U+000A
+        # where the page changes. A reader restores segment by segment and keeps exact_text as the quotation; this rule
+        # refuses an exact_text no such composition of the segments gives. (Until 19 October 2026 the rule required the
+        # "\n" join, which refused six of the eleven composed selections the G0.1 PDF spike stores exactly; M0 final
+        # review R1-02.)
+        texts = [re.escape(s["text"]) for s in segments]
+        breaks = ["\n" if b["page_index"] != a["page_index"] else "\n?" for a, b in zip(segments, segments[1:])]
+        if not re.fullmatch(texts[0] + "".join("\n?" + t for t in texts[1:]), anchor["exact_text"]):
+            out.append(("A3", "exact_text is not the segments' texts in order with at most one U+000A between two"))
+        elif not re.fullmatch(texts[0] + "".join(j + t for j, t in zip(breaks, texts[1:])), anchor["exact_text"]):
+            out.append(("A3", "exact_text has no U+000A between two segments on different pages"))
         for i in range(1, len(segments)):
             a, b = segments[i - 1], segments[i]
             if b["page_index"] < a["page_index"]:
@@ -994,6 +1006,18 @@ def pdf_cases(root: Path, log: Adaptations) -> list[tuple[str, dict | None, list
         env = envelope_for_text_anchors(f"g01-pdf/{s['name']}", [anchor], s["anchor"]["exact_text"], "local_pdf",
                                         f"Page {label_text}" if label_text else None, log, work_id, edition_id)
         cases.append((f"G0.1 PDF anchor-samples.json {s['name']}", env, [anchor]))
+
+    # Selections composed of several pieces (ComposedSelectionTests, every shape it captures and restores exactly):
+    # their exact_text is PDFKit's composition, which rule A3 must accept (M0 final review R1-02).
+    composed = json.loads((root / "Docs/Stage0/evidence/G01-PDF/anchor-composed-samples.json").read_text(encoding="utf-8"))
+    for s in composed["samples"]:
+        label = s["fixture"]
+        work_id, edition_id = fixture_uuid(f"{label}/work"), fixture_uuid(f"{label}/edition")
+        anchor = adapt_pdf_anchor(s["anchor"], work_id, edition_id, log)
+        label_text = anchor["segments"][0].get("page_label")
+        env = envelope_for_text_anchors(f"g01-pdf/composed/{s['name']}", [anchor], s["anchor"]["exact_text"], "local_pdf",
+                                        f"Page {label_text}" if label_text else None, log, work_id, edition_id)
+        cases.append((f"G0.1 PDF anchor-composed-samples.json {s['name']}", env, [anchor]))
 
     # The spike's own capture-envelope example (A.1's shape). Its kind, text_quote, is already the contract's.
     example = copy.deepcopy(doc["capture_envelope_example"])

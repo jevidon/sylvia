@@ -1,0 +1,20 @@
+commit: f7140c23586770f3e1b7be574a50fa4568a15fa4; uncommitted: 0
+start: 2026-10-19T02:37:58Z; load: 15:37  up 16 days,  1:48, 3 users, load averages: 1.74 2.01 2.13
+Xcode 27.1
+Build version 27A9275
+simulator Sylvia-M0-final-fix 280026E5-41C1-4DE3-AFE4-092E75131315 (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+Test Case '-[PDFAnchorKitTests.ComposedSelectionTests testComposedSelectionsCaptureAndRestoreExactly]' passed (0.034 seconds).
+Test Case '-[PDFAnchorKitTests.ComposedSelectionTests testRelocatedComposedRecordIsRebuiltAndSaved]' passed (0.006 seconds).
+Test Case '-[PDFAnchorKitTests.ComposedSelectionTests testSelectionAcrossPagesEndingAtALineEndRestoresExactly]' passed (0.008 seconds).
+Test Case '-[PDFAnchorKitTests.ComposedSelectionTests testSelectionWhoseRangesCannotGiveBackItsQuotationIsRefused]' passed (0.005 seconds).
+** TEST SUCCEEDED **
+xcodebuild exit: 0
+end: 2026-10-19T02:38:32Z; load: 15:38  up 16 days,  1:49, 3 users, load averages: 27.12 8.62 4.55
+total 104
+drwxr-xr-x@  7 jevidon  staff    224 Oct 19 15:38 .
+drwxr-xr-x@ 17 jevidon  staff    544 Oct 19 15:38 ..
+-rw-r--r--   1 jevidon  staff  32885 Oct 19 15:38 anchor-composed-samples.json
+-rw-r--r--   1 jevidon  staff   2942 Oct 19 15:38 anchor-composed-selections.txt
+-rw-r--r--   1 jevidon  staff    757 Oct 19 15:38 anchor-cross-page-line-end.txt
+-rw-r--r--   1 jevidon  staff    476 Oct 19 15:38 anchor-quotation-mismatch.txt
+-rw-r--r--   1 jevidon  staff    645 Oct 19 15:38 highlight-restore-relocated-composed.txt

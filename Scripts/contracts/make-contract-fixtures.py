@@ -164,6 +164,14 @@ epub_leading_space["reader"]["locator"]["text"] = dict(epub_greek["reader"]["loc
 pdf_multiline = checker.adapt_pdf_anchor(pdf_samples["multiline"]["anchor"], PDF_WORK, PDF_ED, LOG)
 pdf_two_pages = checker.adapt_pdf_anchor(pdf_samples["multi-page"]["anchor"], PDF_WORK, PDF_ED, LOG)
 pdf_rotated = checker.adapt_pdf_anchor(pdf_samples["rotate-270-offset-cropbox"]["anchor"], ROT_WORK, ROT_ED, LOG)
+# Real anchors of selections composed of several pieces (G0.1 PDF ComposedSelectionTests, simulator): exact_text is
+# PDFKit's composition, pieces on one page next to each other, a piece ending at a line's end keeping that break, pages
+# joined with one U+000A (rule A3; ADR-0005; M0 final review R1-02).
+pdf_composed = {s["name"]: s for s in load("Docs/Stage0/evidence/G01-PDF/anchor-composed-samples.json")["samples"]}
+pdf_composed_one_page = checker.adapt_pdf_anchor(pdf_composed["two pieces on one page, two lines apart"]["anchor"], PDF_WORK, PDF_ED, LOG)
+pdf_composed_line_break = checker.adapt_pdf_anchor(pdf_composed["a middle piece that ends at a line's end"]["anchor"], PDF_WORK, PDF_ED, LOG)
+pdf_composed_two_pages = checker.adapt_pdf_anchor(pdf_composed["two pieces on one page, then one on the next page"]["anchor"],
+                                                  PDF_WORK, PDF_ED, LOG)
 
 # Text anchors: no spike produced one. Walden (1854) and Walking (1862), public domain.
 WALDEN_TEXT = ("I went to the woods because I wished to live deliberately, to front only the essential facts of "
@@ -225,6 +233,9 @@ anchor_valid = {
     "epub-selection-starting-at-a-space.json": epub_leading_space,
     "pdf-multiline-printed-label.json": pdf_multiline,
     "pdf-two-pages.json": pdf_two_pages,
+    "pdf-composed-two-pieces-on-one-page.json": pdf_composed_one_page,
+    "pdf-composed-piece-keeping-its-line-break.json": pdf_composed_line_break,
+    "pdf-composed-pieces-on-two-pages.json": pdf_composed_two_pages,
     "pdf-rotated-270-offset-cropbox-no-label.json": pdf_rotated,
     "text-plain.json": text_plain,
     "text-markdown-with-reader-locator.json": text_markdown,
@@ -473,6 +484,11 @@ anchor_ops = [
     sem("a2-pdf-text-range-longer-than-text.json", P, rep("/segments/1/text_range/end", 42)),
     sem("a2-text-range-shorter-than-text.json", T, rep("/text_range/end", text_plain["text_range"]["end"] - 1)),
     sem("a3-pdf-exact-text-joined-with-space.json", P, rep("/exact_text", " ".join(s["text"] for s in pdf_two_pages["segments"]))),
+    # Each branch of A3 has a fixture (commands/mutation-pass.py): no U+000A where the page changes; and, on a real
+    # composed selection, its two pieces in the wrong order.
+    sem("a3-pdf-no-line-feed-where-the-page-changes.json", P, rep("/exact_text", "".join(s["text"] for s in pdf_two_pages["segments"]))),
+    sem("a3-pdf-composed-pieces-out-of-order.json", "pdf-composed-two-pieces-on-one-page.json",
+        rep("/exact_text", "".join(s["text"] for s in reversed(pdf_composed_one_page["segments"])))),
     sem("a4-pdf-second-segment-on-an-earlier-page.json", P, rep("/segments/1/page_index", 2)),
     sem("a5-epub-segment-index-equals-count.json", "epub-first-of-two-resources.json", rep("/segment/index", 2)),
     sem("a6-audio-second-range-not-from-start.json", A, rep("/ranges/1/start_ms", 500)),
@@ -603,6 +619,11 @@ capture_valid = {
     "quote-pdf-two-pages.json": capture("quote-pdf", "text_quote", PDF_WORK, PDF_ED, [pdf_two_pages], "reader",
                                         quoted_text=pdf_two_pages["exact_text"], quoted_text_origin="selection",
                                         source_snapshot=pdf_quote_snapshot),
+    "quote-pdf-composed-selection.json": capture("quote-pdf-composed", "text_quote", PDF_WORK, PDF_ED, [pdf_composed_line_break],
+                                                 "reader", quoted_text=pdf_composed_line_break["exact_text"],
+                                                 quoted_text_origin="selection",
+                                                 source_snapshot=snapshot("Sylvia G0.1 PDF fixture: page labels",
+                                                                          "Fixture generator", "local_pdf", "Page 1", "app")),
     "quote-text-plain.json": capture("quote-text", "text_quote", WALDEN_WORK, WALDEN_TXT_ED, [text_plain], "reader",
                                      quoted_text=walden_quote, quoted_text_origin="selection", source_snapshot=walden_snap),
     "quote-typed-for-a-physical-book.json": capture(

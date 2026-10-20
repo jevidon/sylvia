@@ -93,8 +93,14 @@ settings count as every target's. `check` fails when:
   vendored-asset     a font or license file under Apps/ or Packages/ is not in the inventory, or its digest changed
   python-tools       Scripts/tools/requirements.txt differs from the inventory
   ci-actions         a workflow action is not in the inventory (or an inventory entry is unused)
-  toolchain          the Xcode pin in Scripts/lib/env.sh differs from the inventory; with --toolchain, also the
-                     installed Xcode build, Swift version or XcodeGen version, or the tools virtualenv: it must hold
+  toolchain          the Xcode pin in Scripts/lib/env.sh differs from the inventory, or another record of the pin does
+                     (ADR-0001: they change together): the Xcode guard of .github/workflows/ci.yml (every "Build
+                     version <build>", "/Applications/Xcode_<version>.app" and "Xcode <version> (<build>)" in a line
+                     that is not a comment, and at least one "Build version" there), CLAUDE.md's toolchain line
+                     ("- Xcode <version> (<build>)") or ADR-0001's toolchain table ("| Xcode | <version>, build <build>");
+                     with --toolchain, also the installed Xcode build, Swift version or XcodeGen version, each compared
+                     whole on the line that states it (so a build that only extends the pin, 27A9275a for 27A9275,
+                     fails too: review TC-02), or the tools virtualenv: it must hold
                      exactly the pinned packages at their versions, those the inventory records as unpinned (pip) at any
                      version, and nothing else (and the check must run in it); or the SDKs cannot be listed to judge
                      what a product links by name
@@ -155,7 +161,11 @@ HUMAN = 'Docs/Licenses/third-party-inventory.md'
 ADR = 'Docs/ADRs/0014-dependency-lock-and-license-inventory.md'
 REQUIREMENTS = 'Scripts/tools/requirements.txt'
 ENV_SH = 'Scripts/lib/env.sh'
-ROLES = ('product', 'product-transitive', 'test', 'spike')
+# The other records of the Xcode pin, which change together with the inventory's and env.sh's (ADR-0001; review TC-08).
+WORKFLOW = '.github/workflows/ci.yml'
+CLAUDE_MD = 'CLAUDE.md'
+ADR_0001 = 'Docs/ADRs/0001-platform-baseline-and-toolchain.md'
+ROLES =('product', 'product-transitive', 'test', 'spike')
 PLATFORMS = ('iOS', 'macOS')
 BINARY_KINDS = ('binaryTarget', 'framework', 'bundle', 'carthage', 'file', 'linked')
 SKIP_DIRS = {'.git', '.build', 'DerivedData', '.swiftpm', 'node_modules'}
@@ -1878,6 +1888,7 @@ class Checker:
     def check_toolchain(self, inv, toolchain):
         tc = inv.get('toolchain', {})
         build = tc.get('xcode', {}).get('build')
+        version = tc.get('xcode', {}).get('version')
         try:
             env = open(self.path(ENV_SH), encoding='utf-8').read()
             m = re.search(r'SYLVIA_XCODE_BUILD_PINNED="([^"]+)"', env)
@@ -1885,22 +1896,69 @@ class Checker:
                 self.fail('toolchain', ENV_SH, f'SYLVIA_XCODE_BUILD_PINNED is {m.group(1) if m else None!r}, inventory {build!r}')
         except OSError:
             self.fail('toolchain', ENV_SH, 'missing')
+        self.check_pin_records(version, build)
         if not toolchain:
             return
-        runs = [(['xcodebuild', '-version'], f'Build version {build}'),
-                (self.swift + ['--version'], f"Swift version {tc.get('swift')}"),
-                (['xcodegen', '--version'], f"Version: {tc.get('xcodegen')}")]
-        for cmd, expected in runs:
+        # Each value is compared whole, on the line of the tool's output that states it: a search for the expected text
+        # passed a build that only extends the pin ("Build version 27A9275a" contains "Build version 27A9275"), and the
+        # failure named the output's first line rather than the build (review TC-02).
+        runs = [(['xcodebuild', '-version'], 'Build version ', build),
+                (self.swift + ['--version'], 'Swift version ', tc.get('swift')),
+                (['xcodegen', '--version'], 'Version: ', tc.get('xcodegen'))]
+        for cmd, label, pinned in runs:
+            expected = f'{label}{pinned}'
             try:
                 out = self.run_tool(cmd)
             except OSError as e:
                 self.fail('toolchain', ' '.join(cmd), f'cannot run: {e}')
                 continue
-            if expected not in out:
-                first = (out.strip().splitlines() or ['(no output)'])[0]
-                self.fail('toolchain', ' '.join(cmd), f'expected {expected!r}, got {first!r}')
+            lines = [line.strip() for line in out.splitlines() if line.strip()]
+            stated = [line[line.index(label):] for line in lines if label in line]
+            if not stated or any(s != expected for s in stated):
+                got = next((s for s in stated if s != expected), lines[0] if lines else '(no output)')
+                self.fail('toolchain', ' '.join(cmd), f'expected {expected!r}, got {got!r}')
             else:
-                self.note(f'toolchain: {" ".join(cmd)} -> {expected}')
+                self.note(f'toolchain: {" ".join(cmd)} -> {stated[0]} (the pin, compared whole)')
+
+    def check_pin_records(self, version, build):
+        """The Xcode pin as the workflow's guard, CLAUDE.md's toolchain line and ADR-0001's toolchain table state it must
+        be the inventory's: ADR-0001 records the pin in those three, the inventory and Scripts/lib/env.sh, and changes
+        them together, and until review TC-08 only env.sh was compared, so a re-pin that missed the workflow's guard
+        passed every local check. The workflow's comment lines are history and are not read."""
+        def read(rel):
+            try:
+                return open(self.path(rel), encoding='utf-8').read()
+            except OSError:
+                return ''
+
+        workflow = '\n'.join(line for line in read(WORKFLOW).splitlines() if not line.lstrip().startswith('#'))
+        guard = re.findall(r'Build version ([^"\'\s]+)', workflow)
+        records = [
+            (WORKFLOW, 'Xcode guard line ("Build version <build>")', bool(guard),
+             [('the guard looks for', f'Build version {b}', f'Build version {build}') for b in guard]
+             + [('a candidate Xcode is', f'Xcode_{v}.app', f'Xcode_{version}.app')
+                for v in re.findall(r'/Applications/Xcode_([^/\s"\']+)\.app', workflow)]
+             + [('the text names', f'Xcode {v} ({b})', f'Xcode {version} ({build})')
+                for v, b in re.findall(r'\bXcode (\d+(?:\.\d+)+) \(([0-9A-Za-z]+)\)', workflow)]),
+            (CLAUDE_MD, 'toolchain line ("- Xcode <version> (<build>)")', None,
+             [('the toolchain line names', f'Xcode {v} ({b})', f'Xcode {version} ({build})')
+              for v, b in re.findall(r'^- Xcode (\S+) \(([^)\s]+)\)', read(CLAUDE_MD), re.M)]),
+            (ADR_0001, 'toolchain table row ("| Xcode | <version>, build <build>")', None,
+             [('the toolchain table names', f'{v.strip()}, build {b}', f'{version}, build {build}')
+              for v, b in re.findall(r'^\| Xcode \| ([^,|]+), build ([^\s(|,]+)', read(ADR_0001), re.M)]),
+        ]
+        agreed = []
+        for rel, what, present, pairs in records:
+            if not (pairs if present is None else present):
+                self.fail('toolchain', rel, f'has no {what}, so its record of the Xcode pin cannot be compared with the inventory')
+                continue
+            wrong = [(how, seen, want) for how, seen, want in pairs if seen != want]
+            for how, seen, want in wrong:
+                self.fail('toolchain', rel, f'{how} {seen!r}; the inventory pins {want!r} (ADR-0001: every record of the pin changes with it)')
+            if not wrong:
+                agreed.append(rel)
+        if agreed:
+            self.note(f'toolchain: the Xcode pin {version} ({build}) as stated in ' + ', '.join(agreed))
 
     def check_docs(self, packages):
         def token(s):  # s as a whole token: "apple/swift-nio" does not match "apple/swift-nio-ssl", nor 1.0.0 match 1.0.0.1
@@ -2035,7 +2093,16 @@ let package = Package(
     'Fixtures/sample.txt': 'fixture\n',
     'Scripts/tools/requirements.txt': '# pinned\nalpha==1.0\nBeta_Pkg==2.0.1\n',
     'Scripts/lib/env.sh': 'export SYLVIA_XCODE_BUILD_PINNED="27A266a"\n',
-    '.github/workflows/ci.yml': 'jobs:\n  ci:\n    steps:\n      - uses: actions/checkout@v4\n',
+    # The workflow's Xcode guard, CLAUDE.md's toolchain line and ADR-0001's table: the other records of the Xcode pin
+    # (review TC-08). The comment names an earlier pin, which the check must not read.
+    '.github/workflows/ci.yml': ('jobs:\n  ci:\n    steps:\n'
+                                 '      # Xcode 26.0 (17A100), the pin before (a comment: history, not read)\n'
+                                 '      - run: for c in /Applications/Xcode_27.0.app /Applications/Xcode.app; do '
+                                 'DEVELOPER_DIR="$c/Contents/Developer" xcodebuild -version | grep -qx "Build version 27A266a" && exit 0; '
+                                 'done; echo "::error::Xcode 27.0 (27A266a) is not installed"; exit 1\n'
+                                 '      - uses: actions/checkout@v4\n'),
+    'CLAUDE.md': '# Synthetic\n\n## Toolchain\n\n- Xcode 27.0 (27A266a), Swift 9.9 (self-test)\n- Xcode targets come from a project.yml\n',
+    'Docs/ADRs/0001-platform-baseline-and-toolchain.md': '| Item | Pinned value |\n| --- | --- |\n| Xcode | 27.0, build 27A266a (self-test) |\n',
     'Docs/Licenses/third-party-inventory.md': None,
     'Docs/ADRs/0014-dependency-lock-and-license-inventory.md': None,
 }
@@ -2083,7 +2150,7 @@ def write_base(root):
     inv = {
         'schema_version': 1,
         'roots': {'product': ['Apps', 'Packages'], 'spike': ['Spikes']},
-        'toolchain': {'xcode': {'build': '27A266a'}, 'swift': '9.9 (synthetic-9.9)', 'xcodegen': '9.9.9'},
+        'toolchain': {'xcode': {'version': '27.0', 'build': '27A266a'}, 'swift': '9.9 (synthetic-9.9)', 'xcodegen': '9.9.9'},
         'locks': [{'path': p, 'manifest': p.replace('Package.resolved', 'project.yml' if p.startswith('Apps') else 'Package.swift')} for p in LOCKS],
         'unlocked': [{'manifest': 'Spikes/Probe/project.yml', 'reason': 'local package only (self-test)'}],
         'packages': [{'name': n, 'url': v[0], 'identity': v[1], 'version': v[2], 'revision': v[3], 'role': v[4],
@@ -2369,12 +2436,42 @@ MUTATIONS = [  # (what, category, a fragment of the message that only this rule 
                 edit_json(r, INVENTORY, lambda d: d['ci_actions'].append({'uses': 'actions/cache@v4'})))),
     ('the Xcode pin in env.sh differs', 'toolchain', "'27A999z'",
      lambda r: edit(r, ENV_SH, '27A266a', '27A999z')),
-    ('the installed Xcode build differs', 'toolchain', "expected 'Build version 27A266a', got 'Xcode 27.1'",
+    ('the installed Xcode build differs (the failure names the installed build, review TC-02)', 'toolchain',
+     "expected 'Build version 27A266a', got 'Build version 27B100'",
      lambda r: tool(r, lambda d: d.update(xcodebuild='Xcode 27.1\nBuild version 27B100\n'))),
-    ('the installed Swift differs', 'toolchain', "expected 'Swift version 9.9 (synthetic-9.9)'",
+    ('the installed Xcode build only extends the pin (review TC-02)', 'toolchain',
+     "expected 'Build version 27A266a', got 'Build version 27A266ab'",
+     lambda r: tool(r, lambda d: d.update(xcodebuild='Xcode 27.0\nBuild version 27A266ab\n'))),
+    ('xcodebuild states no build', 'toolchain', "expected 'Build version 27A266a', got 'xcodebuild: error: no developer tools'",
+     lambda r: tool(r, lambda d: d.update(xcodebuild='xcodebuild: error: no developer tools\n'))),
+    ('the installed Swift differs', 'toolchain', "expected 'Swift version 9.9 (synthetic-9.9)', got 'Swift version 9.8 (synthetic-9.8)'",
      lambda r: tool(r, lambda d: d.update(swift='Apple Swift version 9.8 (synthetic-9.8)\n'))),
+    ('the installed Swift only extends the pinned version line', 'toolchain',
+     "got 'Swift version 9.9 (synthetic-9.9) with a suffix'",
+     lambda r: tool(r, lambda d: d.update(swift='Apple Swift version 9.9 (synthetic-9.9) with a suffix\n'))),
     ('the installed XcodeGen differs', 'toolchain', "expected 'Version: 9.9.9', got 'Version: 9.9.8'",
      lambda r: tool(r, lambda d: d.update(xcodegen='Version: 9.9.8\n'))),
+    ('the installed XcodeGen only extends the pin', 'toolchain', "expected 'Version: 9.9.9', got 'Version: 9.9.91'",
+     lambda r: tool(r, lambda d: d.update(xcodegen='Version: 9.9.91\n'))),
+    ("the workflow's Xcode guard looks for another build (review TC-08)", 'toolchain',
+     "the guard looks for 'Build version 27A999z'; the inventory pins 'Build version 27A266a'",
+     lambda r: edit(r, '.github/workflows/ci.yml', 'grep -qx "Build version 27A266a"', 'grep -qx "Build version 27A999z"')),
+    ("the workflow's Xcode guard looks first for another Xcode", 'toolchain',
+     "a candidate Xcode is 'Xcode_27.9.app'; the inventory pins 'Xcode_27.0.app'",
+     lambda r: edit(r, '.github/workflows/ci.yml', '/Applications/Xcode_27.0.app', '/Applications/Xcode_27.9.app')),
+    ("the workflow's error names another Xcode", 'toolchain',
+     "the text names 'Xcode 27.9 (27Z1)'; the inventory pins 'Xcode 27.0 (27A266a)'",
+     lambda r: edit(r, '.github/workflows/ci.yml', '::error::Xcode 27.0 (27A266a)', '::error::Xcode 27.9 (27Z1)')),
+    ('the workflow has no Xcode guard', 'toolchain', 'has no Xcode guard line',
+     lambda r: edit(r, '.github/workflows/ci.yml', 'grep -qx "Build version 27A266a" && exit 0; ', '')),
+    ("CLAUDE.md's toolchain line names another Xcode", 'toolchain',
+     "the toolchain line names 'Xcode 27.9 (27Z1)'; the inventory pins 'Xcode 27.0 (27A266a)'",
+     lambda r: edit(r, 'CLAUDE.md', '- Xcode 27.0 (27A266a)', '- Xcode 27.9 (27Z1)')),
+    ("CLAUDE.md has no toolchain line", 'toolchain', 'has no toolchain line',
+     lambda r: edit(r, 'CLAUDE.md', '- Xcode 27.0 (27A266a), Swift 9.9 (self-test)\n', '')),
+    ("ADR-0001's toolchain table names another Xcode", 'toolchain',
+     "the toolchain table names '27.0, build 27A999z'; the inventory pins '27.0, build 27A266a'",
+     lambda r: edit(r, 'Docs/ADRs/0001-platform-baseline-and-toolchain.md', '| Xcode | 27.0, build 27A266a', '| Xcode | 27.0, build 27A999z')),
     ('XcodeGen is not installed', 'toolchain', 'cannot run',
      lambda r: tool(r, lambda d: d.update(xcodegen=None))),
     ('the virtualenv holds another version of a pinned package', 'toolchain', 'virtualenv has alpha 1.1, inventory 1.0',

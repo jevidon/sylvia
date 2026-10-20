@@ -118,6 +118,32 @@ copy_case "6. CLAUDE.md's toolchain line names another Xcode" CLAUDE.md \
 copy_case "7. ADR-0001's toolchain table names another Xcode" Docs/ADRs/0001-platform-baseline-and-toolchain.md \
   '| Xcode | 27.1, build 27A9275' '| Xcode | 27.2, build 27C100' 1 "FAIL toolchain Docs/ADRs/0001-platform-baseline-and-toolchain.md"
 copy_case "8. the unchanged copy (the control for 4-7)" "" "" "" 0 ""
+
+echo
+echo "### C. The self-test against the earlier comparison"
+echo
+echo "== 9. a copy of the check whose tool comparison is the earlier search for the expected text in the output: its"
+echo "   self-test must fail, on the mutations of a build or version that only extends the pin"
+cp Scripts/check-dependency-lock.py "$scratch/check-substring.py"
+if python3 -I - "$scratch/check-substring.py" <<'EOF'
+import sys
+path = sys.argv[1]
+text = open(path, encoding="utf-8").read()
+new = "            if not stated or any(s != expected for s in stated):\n"
+if text.count(new) != 1:
+    sys.exit("the comparison to replace is not in the check once (this case applies to the changed check only)")
+open(path, "w", encoding="utf-8").write(text.replace(new, "            if expected not in out:\n"))
+print("comparison replaced by: if expected not in out:")
+EOF
+then
+  sylvia_python "$scratch/check-substring.py" self-test > "$scratch/selftest.out" 2>&1
+  got=$?
+  grep -E '^FAIL|^self-test:' "$scratch/selftest.out" | cut -c1-240 | sed 's/^/   /'
+  verdict "9. the self-test against the earlier comparison" 1 "$got" "$scratch/selftest.out" \
+    "FAIL  the installed Xcode build only extends the pin (review TC-02)"
+else
+  echo "NOT as expected: 9. the comparison could not be replaced"; status=1
+fi
 rm -rf "$scratch"
 echo
 echo "end: $(date -u +%Y-%m-%dT%H:%M:%SZ); load: $(uptime)"

@@ -245,6 +245,8 @@ RUNBOOK_OWN: dict[str, tuple[str, str, list[tuple[str, str]]]] = {
     "Design approves capture/accessibility flows, the Marginalia token values after G0.6, the marker set and the status vocabulary": (D,
         "plan 23.3 (Session 10)", [(PLAN, "Design approves capture/accessibility flows, the Marginalia token values after G0.6, the marker set and the status vocabulary")]),
     "Security + iOS": (D, "the owners plan 23.1 gives decision D08 (D-9)", [(PLAN, "Security + iOS")]),
+    "don't know how to pin xcode": (D, "the product owner's reply on PO-35, as ADR-0001 quotes it (D-3; added at the review of the "
+        "re-pin round, R8-03 and R8-04)", [("Docs/ADRs/0001-platform-baseline-and-toolchain.md", "\"don't know how to pin xcode\"")]),
     "only if the minimum OS's ATS behavior passes testing": (D, "plan 14.3 (D-9)", [(PLAN, "only if the minimum OS's ATS behavior passes testing")]),
     "evidence and ADRs approved": (D, "plan 21.1's exit gate (D-10)", [(PLAN, "evidence and ADRs approved")]),
     "type roles ... on the oldest supported iPhone": (D, "plan 21.1's G0.6 text, shortened (D-2)",

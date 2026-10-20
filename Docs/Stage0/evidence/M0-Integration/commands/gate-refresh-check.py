@@ -4,8 +4,11 @@ final fix of the same day behind its update (run by final-fix/commands/gate-fina
 round of 20 October 2026 behind that round's update (run by final-fix-2/commands/gate-final-checks.sh; rows 75 and 90
 read that round's complete run, ci-full-clean-run-final.log, and the first round's, moved to final-fix/), and since the
 toolchain re-pin round of 20 October 2026 behind its update (run by repin-27.1/commands/gate-repin-checks.sh): row 75
-reads the dependency lock drop-in under the new pin, and rows 66, 78 and 82 ADR-0001's new status line. Run by an
-earlier round's script on a later commit, it checks the later documents against these facts.
+reads the dependency lock drop-in under the new pin, and rows 66, 78 and 82 ADR-0001's new status line; and since the
+fix of that round's review, the same day, behind its update (run by repin-27.1/round-2/commands/gate-checks.sh): row
+75 also reads the drop-in's run on that fix's last documents commit, whose toolchain line now quotes the whole build
+line it compared. Run by an earlier round's script on a later commit, it checks the later documents against these
+facts.
 
 1. Every backticked path in the summary exists: paths are taken relative to Docs/Stage0/ first, then to the
    repository root. Bare names (no slash) are checked only when they end in .md. Tokens with spaces, wildcards,
@@ -112,7 +115,9 @@ FACTS = {
     # failed its toolchain check, and only that, in both complete runs of the M0 final fix (the first round's, final-fix/,
     # and the second round's, ci-full-clean-run-final.log and final-fix-2/), so the row was partial until PO-35 was
     # decided. Since the re-pin to 27.1 (20 October 2026) the drop-in passes, its toolchain check included, and the row
-    # is passed-host again: repin-27.1/12-dependency-lock.log, with the run before the pins changed as its control.
+    # is passed-host again: repin-27.1/12-dependency-lock.log, with the run before the pins changed as its control. Since
+    # the fix of that round's review (TC-02, TC-08) the check compares the whole build line and every record of the pin,
+    # and passed on that fix's last documents commit: repin-27.1/round-2/12-dependency-lock.log.
     75: ("passed-host", log_has("ci-full-clean-run-assembled.log", "==> 12-dependency-lock\n    pass")
                     + log_has("ci-documents-final.log", "==> 12-dependency-lock\n    pass")
                     + log_has("final-fix/ci-full-clean-run-final.log", "==> 12-dependency-lock\n    FAIL")
@@ -128,7 +133,14 @@ FACTS = {
                     + log_has("repin-27.1/12-dependency-lock-before.log", "FAIL lines in its output: 1\n")
                     + log_has("repin-27.1/12-dependency-lock.log", "toolchain: xcodebuild -version -> Build version 27A9275")
                     + log_has("repin-27.1/12-dependency-lock.log", "dependency lock check: 0 failure(s)")
-                    + log_has("repin-27.1/12-dependency-lock.log", "12-dependency-lock exit status: 0\n")),
+                    + log_has("repin-27.1/12-dependency-lock.log", "12-dependency-lock exit status: 0\n")
+                    + log_has("repin-27.1/round-2/12-dependency-lock.log",
+                              "toolchain: xcodebuild -version -> Build version 27A9275 (the pin, compared whole)")
+                    + log_has("repin-27.1/round-2/12-dependency-lock.log",
+                              "toolchain: the Xcode pin 27.1 (27A9275) as stated in .github/workflows/ci.yml, CLAUDE.md, "
+                              "Docs/ADRs/0001-platform-baseline-and-toolchain.md")
+                    + log_has("repin-27.1/round-2/12-dependency-lock.log", "dependency lock check: 0 failure(s)")
+                    + log_has("repin-27.1/round-2/12-dependency-lock.log", "12-dependency-lock exit status: 0\n")),
     76: ("failed", adr_says(14, "reject", "R4-01", "R4-02")),
     77: ("pending-human", file_has("Docs/ADRs/0014-dependency-lock-and-license-inventory.md",
                                    "### 7. Decisions that need a person (pending-human)")),

@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Checks behind the 19 October 2026 refresh of Docs/Stage0/M0-gate.md (run by gate-refresh-checks.sh), since the M0
-final fix of the same day behind its update (run by final-fix/commands/gate-final-checks.sh), and since the fix's second
+final fix of the same day behind its update (run by final-fix/commands/gate-final-checks.sh), since the fix's second
 round of 20 October 2026 behind that round's update (run by final-fix-2/commands/gate-final-checks.sh; rows 75 and 90
-read that round's complete run, ci-full-clean-run-final.log, and the first round's, moved to final-fix/).
+read that round's complete run, ci-full-clean-run-final.log, and the first round's, moved to final-fix/), and since the
+toolchain re-pin round of 20 October 2026 behind its update (run by repin-27.1/commands/gate-repin-checks.sh): row 75
+reads the dependency lock drop-in under the new pin, and rows 66, 78 and 82 ADR-0001's new status line. Run by an
+earlier round's script on a later commit, it checks the later documents against these facts.
 
 1. Every backticked path in the summary exists: paths are taken relative to Docs/Stage0/ first, then to the
    repository root. Bare names (no slash) are checked only when they end in .md. Tokens with spaces, wildcards,
@@ -100,15 +103,17 @@ def log_has(name, text):
 def file_has(path, text):
     return [(f"{path} has '{text}'", lambda: text in (ROOT / path).read_text(encoding="utf-8"))]
 
-ALL_ADRS_PENDING = (adr_says(1, "Toolchain pin proposed; awaiting") + adr_says(2, "pending")
+ALL_ADRS_PENDING = (adr_says(1, "technical-lead confirmation pending the M0 gate") + adr_says(2, "pending")
                     + adr_proposed(*range(3, 17)))
 FACTS = {
     66: ("pending-human", ALL_ADRS_PENDING),
     71: ("pending-human", adr_proposed(15) + adr_says(15, "human sign-off pending")),
     # Row 75 (final review R1-07): passed-host under Xcode 27.0 at efc9479; on the build Mac's Xcode 27.1 the drop-in
-    # fails its toolchain check, and only that, so the row is partial until PO-35 is decided. Both complete runs of the
-    # M0 final fix: the first round's (final-fix/) and the second round's (ci-full-clean-run-final.log, final-fix-2/).
-    75: ("partial", log_has("ci-full-clean-run-assembled.log", "==> 12-dependency-lock\n    pass")
+    # failed its toolchain check, and only that, in both complete runs of the M0 final fix (the first round's, final-fix/,
+    # and the second round's, ci-full-clean-run-final.log and final-fix-2/), so the row was partial until PO-35 was
+    # decided. Since the re-pin to 27.1 (20 October 2026) the drop-in passes, its toolchain check included, and the row
+    # is passed-host again: repin-27.1/12-dependency-lock.log, with the run before the pins changed as its control.
+    75: ("passed-host", log_has("ci-full-clean-run-assembled.log", "==> 12-dependency-lock\n    pass")
                     + log_has("ci-documents-final.log", "==> 12-dependency-lock\n    pass")
                     + log_has("final-fix/ci-full-clean-run-final.log", "==> 12-dependency-lock\n    FAIL")
                     + log_has("final-fix/ci-logs/12-dependency-lock.log",
@@ -117,12 +122,19 @@ FACTS = {
                     + log_has("ci-full-clean-run-final.log", "==> 12-dependency-lock\n    FAIL")
                     + log_has("final-fix-2/ci-logs/12-dependency-lock.log",
                               "FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'\n")
-                    + log_has("final-fix-2/ci-logs/12-dependency-lock.log", "dependency lock check: 1 failure(s)")),
+                    + log_has("final-fix-2/ci-logs/12-dependency-lock.log", "dependency lock check: 1 failure(s)")
+                    + log_has("repin-27.1/12-dependency-lock-before.log",
+                              "FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'\n")
+                    + log_has("repin-27.1/12-dependency-lock-before.log", "FAIL lines in its output: 1\n")
+                    + log_has("repin-27.1/12-dependency-lock.log", "toolchain: xcodebuild -version -> Build version 27A9275")
+                    + log_has("repin-27.1/12-dependency-lock.log", "dependency lock check: 0 failure(s)")
+                    + log_has("repin-27.1/12-dependency-lock.log", "12-dependency-lock exit status: 0\n")),
     76: ("failed", adr_says(14, "reject", "R4-01", "R4-02")),
     77: ("pending-human", file_has("Docs/ADRs/0014-dependency-lock-and-license-inventory.md",
                                    "### 7. Decisions that need a person (pending-human)")),
     78: ("pending-human", ALL_ADRS_PENDING),
-    82: ("pending-human", adr_says(1, "Toolchain pin proposed; awaiting")),
+    82: ("pending-human", adr_says(1, "Toolchain pin: Xcode 27.1 (27A9275), decided by the product owner on 20 October 2026")
+                          + adr_says(1, "technical-lead confirmation pending the M0 gate")),
     83: ("pending-human", adr_proposed(3)),
     84: ("pending-human", adr_proposed(4, 5)),
     85: ("pending-human", adr_proposed(6)),

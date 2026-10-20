@@ -485,7 +485,7 @@ def main():
     ]
     present = [
         "**Status:** Draft 0.7",
-        "**Revised:** 19 October 2026",
+        "**Revised:** 20 October 2026",  # 19 October until the toolchain re-pin of 20 October 2026 (PO-35, plan 6.3)
         "**Draft 0.7 - draft 0.5 re-checked at the M0 final fix, pending product-owner approval.**",
         "A raw file has no manifest and no end record, so nothing proves it complete",
         "the task window bounds those copies per job, and nothing bounds them across jobs yet",

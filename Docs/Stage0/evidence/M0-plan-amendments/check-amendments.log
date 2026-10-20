@@ -1,10 +1,10 @@
 # M0 plan amendments: consistency checks
-command: Docs/Stage0/evidence/M0-plan-amendments/commands/run-checks.sh 200a686f
-commit under test: 200a686f
-HEAD: 200a686fea913e2019e000edb5de6f512858be3f; uncommitted paths: 0
-date (UTC): 2026-10-19T16:59:55Z
+command: Docs/Stage0/evidence/M0-plan-amendments/commands/run-checks.sh 8e089470
+commit under test: 8e089470
+HEAD: 8e0894706205bf6a65e02730e35d47b64b8e461e; uncommitted paths: 0
+date (UTC): 2026-10-20T03:24:26Z
 host: macOS 26.6.2 (25G83), arm64; Python 3.14.6
-load:  5:59  up 16 days, 16:10, 2 users, load averages: 3.73 3.28 2.96
+load: 16:24  up 17 days,  2:34, 2 users, load averages: 1.92 2.23 2.12
 environment: host only; no simulator or device is used by these checks
 
 == Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py
@@ -26,7 +26,7 @@ PASS G05-Recovery.md: 8 open questions, each referenced
 PASS G06-Design.md: 14 open questions, each referenced
 PASS G05-AI.md: 8 open questions, each referenced
 PASS G04-Audio.md: 7 open-question bullets (six questions and a warnings note), each matched to the entry that covers it
-PASS Section 3.2: ADR-0001 to ADR-0016, 120 consequences, each mapped to a tag or to no change
+PASS Section 3.2: ADR-0001 to ADR-0016, 121 consequences, each mapped to a tag or to no change
 PASS Appendix D has the draft 0.7 entry before draft 0.6, and the draft 0.5 entry before draft 0.4
 PASS Section 6 lists tags A01-A56 (56 rows)
 PASS Appendix D lists tags A01-A56 (56 bullets)
@@ -87,7 +87,7 @@ tree after the mutation checks: 0 uncommitted paths
 
 == control, not required (this work changes no contract): Scripts/ci.sh contracts
 ==> 00-git-lfs
-    pass (5s)
+    pass (4s)
 ==> 10-contracts
     pass (1s)
 ==> 11-capture-anchor-contracts

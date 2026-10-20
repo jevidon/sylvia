@@ -1,10 +1,10 @@
 # M0 plan amendments: consistency checks
-command: Docs/Stage0/evidence/M0-plan-amendments/commands/run-checks.sh 8e089470
-commit under test: 8e089470
-HEAD: 8e0894706205bf6a65e02730e35d47b64b8e461e; uncommitted paths: 0
-date (UTC): 2026-10-20T03:24:26Z
+command: Docs/Stage0/evidence/M0-plan-amendments/commands/run-checks.sh 101b12e4
+commit under test: 101b12e4
+HEAD: 101b12e439cbfb3b2fd528e320f8051411a53fa3; uncommitted paths: 0
+date (UTC): 2026-10-20T04:55:43Z
 host: macOS 26.6.2 (25G83), arm64; Python 3.14.6
-load: 16:24  up 17 days,  2:34, 2 users, load averages: 1.92 2.23 2.12
+load: 17:55  up 17 days,  4:06, 2 users, load averages: 3.40 2.80 2.29
 environment: host only; no simulator or device is used by these checks
 
 == Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py
@@ -87,10 +87,10 @@ tree after the mutation checks: 0 uncommitted paths
 
 == control, not required (this work changes no contract): Scripts/ci.sh contracts
 ==> 00-git-lfs
-    pass (4s)
+    pass (5s)
 ==> 10-contracts
     pass (1s)
 ==> 11-capture-anchor-contracts
-    pass (52s)
+    pass (53s)
 all 3 steps passed
 exit status: 0

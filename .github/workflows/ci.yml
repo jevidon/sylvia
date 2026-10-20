@@ -3,8 +3,9 @@
 # local Scripts/ci.sh run is the primary gate during Stage 0.
 #
 # Limits (ADR-0002, CI; read from GitHub's runner-image documentation on 19 October 2026, not run): the macos-26
-# image below has Xcode 26.x only, so the Xcode guard stops every dispatch until the pinned Xcode 27.0 (27A266a) is
-# available on the runner (another image, or a self-hosted runner, chosen by the owner). Even then, a dispatch with
+# image below has Xcode 26.x only, so the Xcode guard stops every dispatch until the pinned Xcode, 27.1 (27A9275)
+# since 20 October 2026 (ADR-0001; 27.0, 27A266a, before), is available on the runner (another image, or a
+# self-hosted runner, chosen by the owner). Even then, a dispatch with
 # empty steps (every drop-in) cannot finish on a hosted runner: the complete run took about 3 hours on the build
 # Mac (timeout-minutes is 120), the design and simulator drop-ins need the iOS 26.5 simulator runtime, the G0.4
 # fixtures need Homebrew ffmpeg (not installed here), and the fixture cache grows to about 29 GB (a standard runner
@@ -35,13 +36,13 @@ jobs:
       - name: Select pinned Xcode (ADR-0001)
         run: |
           set -euo pipefail
-          for candidate in /Applications/Xcode_27.0.app /Applications/Xcode.app; do
-            if [[ -d "$candidate" ]] && DEVELOPER_DIR="$candidate/Contents/Developer" xcodebuild -version | grep -q "27A266a"; then
+          for candidate in /Applications/Xcode_27.1.app /Applications/Xcode.app; do
+            if [[ -d "$candidate" ]] && DEVELOPER_DIR="$candidate/Contents/Developer" xcodebuild -version | grep -qx "Build version 27A9275"; then
               echo "DEVELOPER_DIR=$candidate/Contents/Developer" >> "$GITHUB_ENV"
               exit 0
             fi
           done
-          echo "::error::Xcode 27.0 (27A266a) is not installed on this runner image; update the runner or ADR-0001."
+          echo "::error::Xcode 27.1 (27A9275), the build ADR-0001 pins, is not installed on this runner image; use a runner that has it, or change the pin with ADR-0001 (ADR-0014 section 6)."
           ls -d /Applications/Xcode* || true
           exit 1
 

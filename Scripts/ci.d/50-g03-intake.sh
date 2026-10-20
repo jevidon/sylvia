@@ -35,7 +35,8 @@
 #     download or publish a file the other is still writing. The pinned pack digest stops a wrong pack from being
 #     published, so here the effect is a failed run; the fix (download to a mktemp name, verify, then rename) is
 #     requested from fetch.sh's owner (report, "Requests to the owners of shared files").
-# Needs: Xcode 27.0, XcodeGen, Python 3, network for the package and fixture downloads, about 30 GiB free disk.
+# Needs: the Xcode ADR-0001 pins (27.1 since 20 October 2026), XcodeGen, Python 3, network for the package and fixture
+# downloads, about 30 GiB free disk.
 set -euo pipefail
 source "$(cd "$(dirname "$0")/../lib" && pwd)/env.sh"
 source "$SYLVIA_ROOT/Scripts/lib/sim.sh"

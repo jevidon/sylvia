@@ -9,7 +9,7 @@ export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Develope
 if [[ "$DEVELOPER_DIR" == */CommandLineTools* ]]; then
   export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 fi
-export SYLVIA_XCODE_BUILD_PINNED="27A266a"
+export SYLVIA_XCODE_BUILD_PINNED="27A9275"
 
 # Signing (ADR-0001). Simulator and host builds need no team.
 export SYLVIA_TEAM_ID="${SYLVIA_TEAM_ID:-A4KBDX665Z}"

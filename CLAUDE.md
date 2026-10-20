@@ -13,7 +13,7 @@ Current milestone: **M0, Stage 0 feasibility and design freeze** (plan Section 2
 
 ## Toolchain
 
-- Xcode 27.0 (27A266a), Swift 6.4, deployment targets iOS/iPadOS 26.0 and macOS 26.0 (ADR-0001).
+- Xcode 27.1 (27A9275), Swift 6.4, deployment targets iOS/iPadOS 26.0 and macOS 26.0 (ADR-0001; re-pinned from 27.0 (27A266a) by the product owner on 20 October 2026).
 - Run `source Scripts/lib/env.sh` before using `xcodebuild`, `xcrun` or `swift`. It sets `DEVELOPER_DIR`; never run `xcode-select -s`.
 - Packages: `swift-tools-version: 6.2`, Swift 6 language mode, complete strict concurrency, `.iOS(.v26), .macOS(.v26)`.
 - Xcode targets come from a `project.yml` (XcodeGen). Do not commit `.xcodeproj`. Use `sylvia_generate <dir>` from `Scripts/lib/xcodegen.sh` and build with `-disableAutomaticPackageResolution`; after changing dependencies run `sylvia_resolve <dir>` and commit `<dir>/Package.resolved` (ADR-0002).

@@ -1,0 +1,39 @@
+command: Docs/Stage0/evidence/M0-Integration/repin-27.1/commands/workflow-guard-check.sh
+commit: 92db27aa0b4297046f3bf3d7fefca46bd9967511; uncommitted paths: 4
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+date: 2026-10-20T02:48:55Z
+
+== the workflow parses (PyYAML from the tools virtualenv), and its guard step
+triggers: ['workflow_dispatch']
+steps: ['Select pinned Xcode (ADR-0001)', 'Install XcodeGen 2.46.0 (ADR-0002)', 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262', 'Tools and fixtures', 'Run CI', 'Upload logs']
+guard step position: 1 of 6 (the checkout is step 3)
+parse exit status: 0
+-- the guard's run script, as the workflow holds it:
+   | set -euo pipefail
+   | for candidate in /Applications/Xcode_27.1.app /Applications/Xcode.app; do
+   |   if [[ -d "$candidate" ]] && DEVELOPER_DIR="$candidate/Contents/Developer" xcodebuild -version | grep -qx "Build version 27A9275"; then
+   |     echo "DEVELOPER_DIR=$candidate/Contents/Developer" >> "$GITHUB_ENV"
+   |     exit 0
+   |   fi
+   | done
+   | echo "::error::Xcode 27.1 (27A9275), the build ADR-0001 pins, is not installed on this runner image; use a runner that has it, or change the pin with ADR-0001 (ADR-0014 section 6)."
+   | ls -d /Applications/Xcode* || true
+   | exit 1
+
+== 1. this Mac (Xcode 27.1, 27A9275) (expected exit status 0)
+exit status: 0; GITHUB_ENV: DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer 
+as expected
+
+== 2. a runner whose Xcode is 27.0 (27A266a): stand-in xcodebuild (expected exit status 1)
+   ::error::Xcode 27.1 (27A9275), the build ADR-0001 pins, is not installed on this runner image; use a runner that has it, or change the pin with ADR-0001 (ADR-0014 section 6).
+   /Applications/Xcode.app
+exit status: 1; GITHUB_ENV: 
+as expected
+
+== 3. a build number that only contains the pinned one (27A9275a, made up): stand-in xcodebuild (expected exit status 1)
+   ::error::Xcode 27.1 (27A9275), the build ADR-0001 pins, is not installed on this runner image; use a runner that has it, or change the pin with ADR-0001 (ADR-0014 section 6).
+   /Applications/Xcode.app
+exit status: 1; GITHUB_ENV: 
+as expected
+
+result: PASS

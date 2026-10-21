@@ -4,7 +4,7 @@ Steps that need a physical iPhone, a real network, a real model server, provider
 
 **Recording.** For every step write the date, the person, the device model and iOS version (Settings › General › About), and paste or attach the output named in the step under `Docs/Stage0/evidence/G05-AI/device/` (plain text or a screenshot under 2 MB, with keys, IP addresses beyond the first two octets and personal data removed). Then mark the step passed-device or failed below and update the report row. Name the files `step-NN-<what>.log` for command output and `step-NN-<what>.txt` for the lines you record (steps 3-9).
 
-**Setup for steps 1-4.** On the Mac, in a checkout of the M0 integration branch (`m0-integrate`, or `m0` once it is merged; record `git rev-parse HEAD`):
+**Setup for steps 1-4.** On the Mac, in a checkout of the M0 integration branch (`m0-integrate`, or `main` once the later M0 work has reached it, since pull request #4 merged `m0-integrate` up to `177ed9a` into `main` on 15 October 2026; record `git rev-parse HEAD`):
 
 ```sh
 source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh

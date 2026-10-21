@@ -1,0 +1,23 @@
+# Git LFS (ADR-0002; the product owner's decision of 13 October 2026). Snapshot test references (in any
+# __Snapshots__ directory) and Stage 0 evidence images (under Docs/Stage0/evidence/) are stored as LFS objects.
+# Every other file stays in plain git, including Docs/Design/images, Fixtures/, fonts and asset catalogs.
+# Each extension is written as a letter-case class, so an image's extension matches in any letter case on every
+# platform. The directory names are not: git matches __Snapshots__ and Docs/Stage0/evidence in another letter case
+# only where core.ignorecase is true (as on macOS), so keep these names exactly as written here.
+# Set up a clone with Scripts/setup-repo.sh; Scripts/ci.d/00-git-lfs.sh checks a checkout.
+**/__Snapshots__/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text

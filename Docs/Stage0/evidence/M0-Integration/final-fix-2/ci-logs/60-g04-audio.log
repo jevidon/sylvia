@@ -1,0 +1,19 @@
+
+== toolchain (15:02:05Z)
+host: 26.6.2 (25G83); 4:02  up 16 days, 14:12, 2 users, load averages: 1.77 2.02 3.04; simulators booted: 0
+warning: Xcode build is '27A9275'; ADR-0001 pins 27A266a
+Xcode 27.1
+Build version 27A9275
+Version: 2.46.0
+ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers
+
+== host audio output (read-only): the device the simulator plays through, and its presentation latency (limit 0.300 s) (15:02:05Z)
+output device: AirPlay; transport AirPlay; 44100 Hz; latency in frames: device 0, safety offset 0, stream 88200, buffer 512; presentation latency 2.012 s; default output (the iOS Simulator plays through it)
+output device: MacBook Pro Speakers; transport Built-in; 48000 Hz; latency in frames: device 60, safety offset 48, stream 690, buffer 512; presentation latency 0.027 s; default system output (alerts)
+default output: AirPlay; transport AirPlay; presentation latency 2.012 s
+error: the Mac's default output device is 'AirPlay' (transport AirPlay), with a presentation
+latency of 2.012 s, above the 0.300 s this drop-in accepts. The iOS Simulator plays through that
+device and an AVPlayer's clock includes its latency, so the tests that compare the player's clock with the
+rendered audio or with wall time would fail after more than an hour (seven did with an AirPlay output, 2.012 s,
+in the M0 final fix's complete run). A person sets the Mac's sound output to the built-in speakers or wired
+headphones (System Settings > Sound > Output) and runs it again; agents never change the Mac's audio device.

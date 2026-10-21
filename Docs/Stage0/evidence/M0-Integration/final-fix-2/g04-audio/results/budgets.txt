@@ -1,0 +1,196 @@
+# Indicative budgets (plan 19.2). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 1.87 2.12 2.56 (1, 5, 15 min), 1 simulators booted on the host when the test run started
+# warm start/resume = play() to the first buffer at the position reaching the analysis tap (excludes output latency),
+# for files this process has already inspected or opened (start after a seek, resume after a pause); cold resume is below
+multi-file MP3 trial 0 at 191389 ms: start 0.103 s, resume 0.006 s
+multi-file MP3 trial 1 at 117189 ms: start 0.102 s, resume 0.005 s
+multi-file MP3 trial 2 at 204010 ms: start 0.100 s, resume 0.013 s
+multi-file MP3 trial 3 at 102262 ms: start 0.099 s, resume 0.005 s
+multi-file MP3 trial 4 at 88213 ms: start 0.020 s, resume 0.010 s
+multi-file MP3 trial 5 at 160029 ms: start 0.099 s, resume 0.012 s
+multi-file MP3 trial 6 at 11570 ms: start 0.100 s, resume 0.011 s
+multi-file MP3 trial 7 at 335298 ms: start 0.098 s, resume 0.013 s
+multi-file MP3 trial 8 at 427194 ms: start 0.020 s, resume 0.013 s
+multi-file MP3 trial 9 at 307431 ms: start 0.020 s, resume 0.010 s
+LibriVox M4B trial 0 at 1751309 ms: start 0.111 s, resume 0.011 s
+LibriVox M4B trial 1 at 299667 ms: start 0.020 s, resume 0.010 s
+LibriVox M4B trial 2 at 9033163 ms: start 0.030 s, resume 0.004 s
+LibriVox M4B trial 3 at 8817651 ms: start 0.020 s, resume 0.006 s
+LibriVox M4B trial 4 at 7403915 ms: start 0.020 s, resume 0.007 s
+LibriVox M4B trial 5 at 17252481 ms: start 0.020 s, resume 0.005 s
+LibriVox M4B trial 6 at 8271871 ms: start 0.020 s, resume 0.012 s
+LibriVox M4B trial 7 at 11124577 ms: start 0.020 s, resume 0.015 s
+LibriVox M4B trial 8 at 2314960 ms: start 0.030 s, resume 0.013 s
+LibriVox M4B trial 9 at 17096184 ms: start 0.020 s, resume 0.009 s
+# cold resume: fresh copy of the file, stored checkpoint at depth_h into it, new service: load (open + zero-tolerance seek) then play()
+# every depth is measured in 3 rounds (each round runs every file and depth once, on new copies), so run-to-run variation is visible (review R3-02)
+# timing: how the member is opened (ADR-0006 decision 2). estimatedCBR = the per-file timing mode the import chooses for an MP3 it proves constant bit rate
+# (review R4-01); precise = AVURLAssetPreferPreciseDurationAndTimingKey, what the import chooses for every other file (here the AAC M4B and the VBR MP3),
+# and for the CBR files the reference without the per-file mode. load_1m = the host's 1-minute load average when the trial ended (review R4-02)
+cold_resume	file	timing	round	depth_h	checkpoint_ms	load_s	play_to_audio_s	load_plus_play_s	resumed_at_checkpoint	content_error_ms	load_1m
+# import timing decision, long-aac-10h.m4b: precise (not MP3)
+# import timing decision, long-mp3-cbr-10h.mp3: estimatedCBR (constant bit rate 64 kb/s, 1406633 frames, Info tag)
+# import timing decision, long-mp3-vbr-10h.mp3: precise (variable bit rate: 9 bit rates (32-128 kb/s); a Xing tag (declares a variable bit rate; its table of contents drives estimated seeks))
+# import timing decision, fmt-librivox-mp3-22k.mp3: estimatedCBR (constant bit rate 64 kb/s, 51922 frames, Info tag)
+# import timing decision, multi/Part 1.mp3: estimatedCBR (constant bit rate 64 kb/s, 6214 frames, Info tag)
+cold_resume	long-aac-10h.m4b	precise	0	0.33	1203400	0.042	0.097	0.139	yes	0.0	2.0
+cold_resume	long-aac-10h.m4b	precise	0	1.00	3601700	0.044	0.100	0.145	yes	0.0	2.1
+cold_resume	long-aac-10h.m4b	precise	0	1.50	5398300	0.044	0.099	0.143	yes	0.0	2.1
+cold_resume	long-aac-10h.m4b	precise	0	2.00	7204100	0.045	0.096	0.141	yes	0.0	2.0
+cold_resume	long-aac-10h.m4b	precise	0	3.01	10850000	0.044	0.097	0.141	yes	0.0	2.0
+cold_resume	long-aac-10h.m4b	precise	0	5.03	18123400	0.045	0.093	0.138	yes	0.0	2.0
+cold_resume	long-aac-10h.m4b	precise	0	7.63	27456700	0.045	0.099	0.145	yes	0.0	1.9
+cold_resume	long-aac-10h.m4b	precise	0	10.00	35987600	0.042	0.096	0.138	yes	0.0	1.9
+cold_resume	long-mp3-cbr-10h.mp3	precise	0	0.33	1203400	0.046	0.403	0.449	yes	-13.1	1.9
+cold_resume	long-mp3-cbr-10h.mp3	precise	0	1.00	3601700	0.044	1.081	1.125	yes	-13.1	2.0
+cold_resume	long-mp3-cbr-10h.mp3	precise	0	1.50	5398300	0.045	1.559	1.604	yes	-13.1	2.0
+cold_resume	long-mp3-cbr-10h.mp3	precise	0	2.00	7204100	0.043	2.051	2.094	yes	-13.1	2.0
+cold_resume	long-mp3-cbr-10h.mp3	precise	0	3.01	10850000	0.044	3.085	3.129	yes	-13.1	2.2
+cold_resume	long-mp3-cbr-10h.mp3	precise	0	5.03	18123400	0.043	5.021	5.064	yes	-13.1	2.0
+cold_resume	long-mp3-cbr-10h.mp3	precise	0	7.63	27456700	0.043	7.522	7.565	yes	-13.1	2.3
+cold_resume	long-mp3-cbr-10h.mp3	precise	0	10.00	35987600	0.045	10.064	10.109	yes	-13.1	2.8
+cold_resume	long-mp3-vbr-10h.mp3	precise	0	0.33	1203400	0.042	0.380	0.422	yes	-13.1	2.8
+cold_resume	long-mp3-vbr-10h.mp3	precise	0	1.00	3601700	0.043	0.980	1.023	yes	-13.1	3.1
+cold_resume	long-mp3-vbr-10h.mp3	precise	0	1.50	5398300	0.044	1.434	1.478	yes	-13.1	2.9
+cold_resume	long-mp3-vbr-10h.mp3	precise	0	2.00	7204100	0.043	1.909	1.953	yes	-13.1	3.3
+cold_resume	long-mp3-vbr-10h.mp3	precise	0	3.01	10850000	0.087	2.617	2.704	yes	-13.1	3.3
+cold_resume	long-mp3-vbr-10h.mp3	precise	0	5.03	18123400	0.044	4.391	4.435	yes	-13.1	3.5
+cold_resume	long-mp3-vbr-10h.mp3	precise	0	7.63	27456700	0.045	6.654	6.699	yes	-13.1	3.3
+cold_resume	long-mp3-vbr-10h.mp3	precise	0	10.00	35987600	0.045	8.676	8.721	yes	-13.1	3.3
+cold_resume	fmt-librivox-mp3-22k.mp3	precise	0	0.17	600000	0.045	0.316	0.361	yes	0.0	3.3
+cold_resume	fmt-librivox-mp3-22k.mp3	precise	0	0.37	1330000	0.043	0.520	0.563	yes	0.0	3.1
+cold_resume	multi/Part 1.mp3	precise	0	0.03	120000	0.044	0.136	0.180	yes	-13.1	3.1
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	0	0.33	1203400	0.044	0.104	0.148	yes	-13.1	3.1
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	0	1.00	3601700	0.042	0.095	0.137	yes	-13.1	3.1
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	0	1.50	5398300	0.045	0.096	0.141	yes	-13.1	3.1
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	0	2.00	7204100	0.043	0.099	0.143	yes	-13.1	3.1
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	0	3.01	10850000	0.045	0.101	0.146	yes	-13.1	3.1
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	0	5.03	18123400	0.046	0.101	0.147	yes	-13.1	3.0
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	0	7.63	27456700	0.043	0.095	0.138	yes	-13.1	3.0
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	0	10.00	35987600	0.045	0.098	0.144	yes	-13.1	2.9
+cold_resume	fmt-librivox-mp3-22k.mp3	estimatedCBR	0	0.17	600000	0.044	0.178	0.222	yes	0.0	2.9
+cold_resume	fmt-librivox-mp3-22k.mp3	estimatedCBR	0	0.37	1330000	0.045	0.173	0.218	yes	0.0	2.9
+cold_resume	multi/Part 1.mp3	estimatedCBR	0	0.03	120000	0.045	0.103	0.148	yes	-13.1	2.9
+cold_resume	long-aac-10h.m4b	precise	1	0.33	1203400	0.044	0.101	0.145	yes	0.0	2.9
+cold_resume	long-aac-10h.m4b	precise	1	1.00	3601700	0.044	0.096	0.141	yes	0.0	2.6
+cold_resume	long-aac-10h.m4b	precise	1	1.50	5398300	0.045	0.101	0.147	yes	0.0	2.6
+cold_resume	long-aac-10h.m4b	precise	1	2.00	7204100	0.044	0.100	0.144	yes	0.0	2.7
+cold_resume	long-aac-10h.m4b	precise	1	3.01	10850000	0.045	0.099	0.143	yes	0.0	2.7
+cold_resume	long-aac-10h.m4b	precise	1	5.03	18123400	0.043	0.098	0.142	yes	0.0	2.6
+cold_resume	long-aac-10h.m4b	precise	1	7.63	27456700	0.044	0.104	0.147	yes	0.0	2.6
+cold_resume	long-aac-10h.m4b	precise	1	10.00	35987600	0.044	0.103	0.147	yes	0.0	3.0
+cold_resume	long-mp3-cbr-10h.mp3	precise	1	0.33	1203400	0.045	0.407	0.452	yes	-13.1	3.0
+cold_resume	long-mp3-cbr-10h.mp3	precise	1	1.00	3601700	0.043	1.037	1.080	yes	-13.1	2.8
+cold_resume	long-mp3-cbr-10h.mp3	precise	1	1.50	5398300	0.044	1.576	1.619	yes	-13.1	2.8
+cold_resume	long-mp3-cbr-10h.mp3	precise	1	2.00	7204100	0.045	1.914	1.959	yes	-13.1	2.7
+cold_resume	long-mp3-cbr-10h.mp3	precise	1	3.01	10850000	0.045	3.047	3.092	yes	-13.1	2.5
+cold_resume	long-mp3-cbr-10h.mp3	precise	1	5.03	18123400	0.044	5.067	5.111	yes	-13.1	2.3
+cold_resume	long-mp3-cbr-10h.mp3	precise	1	7.63	27456700	0.043	7.630	7.673	yes	-13.1	1.9
+cold_resume	long-mp3-cbr-10h.mp3	precise	1	10.00	35987600	0.045	9.733	9.778	yes	-13.1	2.0
+cold_resume	long-mp3-vbr-10h.mp3	precise	1	0.33	1203400	0.045	0.390	0.435	yes	-13.1	1.8
+cold_resume	long-mp3-vbr-10h.mp3	precise	1	1.00	3601700	0.044	0.927	0.971	yes	-13.1	1.8
+cold_resume	long-mp3-vbr-10h.mp3	precise	1	1.50	5398300	0.044	1.363	1.407	yes	-13.1	2.0
+cold_resume	long-mp3-vbr-10h.mp3	precise	1	2.00	7204100	0.045	1.847	1.892	yes	-13.1	1.9
+cold_resume	long-mp3-vbr-10h.mp3	precise	1	3.01	10850000	0.045	2.727	2.772	yes	-13.1	1.7
+cold_resume	long-mp3-vbr-10h.mp3	precise	1	5.03	18123400	0.043	4.432	4.475	yes	-13.1	1.8
+cold_resume	long-mp3-vbr-10h.mp3	precise	1	7.63	27456700	0.043	6.677	6.720	yes	-13.1	2.3
+cold_resume	long-mp3-vbr-10h.mp3	precise	1	10.00	35987600	0.043	8.655	8.698	yes	-13.1	2.2
+cold_resume	fmt-librivox-mp3-22k.mp3	precise	1	0.17	600000	0.045	0.323	0.368	yes	0.0	2.2
+cold_resume	fmt-librivox-mp3-22k.mp3	precise	1	0.37	1330000	0.043	0.515	0.558	yes	0.0	2.4
+cold_resume	multi/Part 1.mp3	precise	1	0.03	120000	0.045	0.133	0.179	yes	-13.1	2.4
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	1	0.33	1203400	0.045	0.097	0.143	yes	-13.1	2.4
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	1	1.00	3601700	0.044	0.104	0.148	yes	-13.1	2.4
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	1	1.50	5398300	0.045	0.097	0.143	yes	-13.1	2.3
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	1	2.00	7204100	0.044	0.101	0.145	yes	-13.1	2.3
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	1	3.01	10850000	0.044	0.098	0.142	yes	-13.1	2.3
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	1	5.03	18123400	0.043	0.095	0.138	yes	-13.1	2.3
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	1	7.63	27456700	0.043	0.104	0.147	yes	-13.1	2.3
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	1	10.00	35987600	0.044	0.101	0.145	yes	-13.1	2.4
+cold_resume	fmt-librivox-mp3-22k.mp3	estimatedCBR	1	0.17	600000	0.045	0.176	0.222	yes	0.0	2.4
+cold_resume	fmt-librivox-mp3-22k.mp3	estimatedCBR	1	0.37	1330000	0.042	0.175	0.217	yes	0.0	2.2
+cold_resume	multi/Part 1.mp3	estimatedCBR	1	0.03	120000	0.045	0.097	0.142	yes	-13.1	2.2
+cold_resume	long-aac-10h.m4b	precise	2	0.33	1203400	0.044	0.096	0.140	yes	0.0	2.2
+cold_resume	long-aac-10h.m4b	precise	2	1.00	3601700	0.042	0.096	0.138	yes	0.0	2.2
+cold_resume	long-aac-10h.m4b	precise	2	1.50	5398300	0.044	0.101	0.145	yes	0.0	2.2
+cold_resume	long-aac-10h.m4b	precise	2	2.00	7204100	0.045	0.097	0.142	yes	0.0	2.1
+cold_resume	long-aac-10h.m4b	precise	2	3.01	10850000	0.044	0.099	0.143	yes	0.0	2.1
+cold_resume	long-aac-10h.m4b	precise	2	5.03	18123400	0.042	0.102	0.144	yes	0.0	2.0
+cold_resume	long-aac-10h.m4b	precise	2	7.63	27456700	0.043	0.095	0.138	yes	0.0	2.0
+cold_resume	long-aac-10h.m4b	precise	2	10.00	35987600	0.045	0.101	0.147	yes	0.0	2.0
+cold_resume	long-mp3-cbr-10h.mp3	precise	2	0.33	1203400	0.044	0.396	0.439	yes	-13.1	2.0
+cold_resume	long-mp3-cbr-10h.mp3	precise	2	1.00	3601700	0.046	1.064	1.110	yes	-13.1	1.9
+cold_resume	long-mp3-cbr-10h.mp3	precise	2	1.50	5398300	0.043	1.562	1.604	yes	-13.1	1.8
+cold_resume	long-mp3-cbr-10h.mp3	precise	2	2.00	7204100	0.045	2.058	2.103	yes	-13.1	1.8
+cold_resume	long-mp3-cbr-10h.mp3	precise	2	3.01	10850000	0.045	3.015	3.060	yes	-13.1	2.0
+cold_resume	long-mp3-cbr-10h.mp3	precise	2	5.03	18123400	0.042	4.967	5.009	yes	-13.1	1.8
+cold_resume	long-mp3-cbr-10h.mp3	precise	2	7.63	27456700	0.043	7.659	7.702	yes	-13.1	1.7
+cold_resume	long-mp3-cbr-10h.mp3	precise	2	10.00	35987600	0.044	9.917	9.961	yes	-13.1	1.8
+cold_resume	long-mp3-vbr-10h.mp3	precise	2	0.33	1203400	0.045	0.380	0.425	yes	-13.1	1.8
+cold_resume	long-mp3-vbr-10h.mp3	precise	2	1.00	3601700	0.043	0.892	0.935	yes	-13.1	1.8
+cold_resume	long-mp3-vbr-10h.mp3	precise	2	1.50	5398300	0.044	1.391	1.434	yes	-13.1	1.9
+cold_resume	long-mp3-vbr-10h.mp3	precise	2	2.00	7204100	0.044	1.858	1.901	yes	-13.1	1.9
+cold_resume	long-mp3-vbr-10h.mp3	precise	2	3.01	10850000	0.045	2.726	2.772	yes	-13.1	2.1
+cold_resume	long-mp3-vbr-10h.mp3	precise	2	5.03	18123400	0.044	4.509	4.553	yes	-13.1	2.0
+cold_resume	long-mp3-vbr-10h.mp3	precise	2	7.63	27456700	0.043	6.750	6.793	yes	-13.1	1.7
+cold_resume	long-mp3-vbr-10h.mp3	precise	2	10.00	35987600	0.043	8.691	8.734	yes	-13.1	1.9
+cold_resume	fmt-librivox-mp3-22k.mp3	precise	2	0.17	600000	0.044	0.328	0.372	yes	0.0	1.8
+cold_resume	fmt-librivox-mp3-22k.mp3	precise	2	0.37	1330000	0.045	0.523	0.568	yes	0.0	1.8
+cold_resume	multi/Part 1.mp3	precise	2	0.03	120000	0.045	0.133	0.178	yes	-13.1	1.7
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	2	0.33	1203400	0.045	0.101	0.146	yes	-13.1	1.7
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	2	1.00	3601700	0.044	0.104	0.148	yes	-13.1	1.7
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	2	1.50	5398300	0.044	0.102	0.146	yes	-13.1	2.0
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	2	2.00	7204100	0.045	0.098	0.143	yes	-13.1	2.0
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	2	3.01	10850000	0.043	0.103	0.147	yes	-13.1	1.8
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	2	5.03	18123400	0.045	0.103	0.148	yes	-13.1	1.8
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	2	7.63	27456700	0.042	0.096	0.137	yes	-13.1	1.8
+cold_resume	long-mp3-cbr-10h.mp3	estimatedCBR	2	10.00	35987600	0.043	0.094	0.137	yes	-13.1	1.8
+cold_resume	fmt-librivox-mp3-22k.mp3	estimatedCBR	2	0.17	600000	0.044	0.175	0.219	yes	0.0	1.8
+cold_resume	fmt-librivox-mp3-22k.mp3	estimatedCBR	2	0.37	1330000	0.044	0.177	0.221	yes	0.0	1.7
+cold_resume	multi/Part 1.mp3	estimatedCBR	2	0.03	120000	0.046	0.103	0.150	yes	-13.1	1.7
+start/resume local audio, warm (multi-file MP3 members and the LibriVox M4B; budget p95 <= 1.5 s): n=40 p50=0.017 p95=0.102 max=0.111 s
+  LibriVox M4B: resume after pause: n=10 p50=0.009 p95=0.014 max=0.015 s
+  LibriVox M4B: start after seek: n=10 p50=0.020 p95=0.075 max=0.111 s
+  multi-file MP3: resume after pause: n=10 p50=0.011 p95=0.013 max=0.013 s
+  multi-file MP3: start after seek: n=10 p50=0.099 p95=0.103 max=0.103 s
+cold resume (load + play to audio), long-aac-10h.m4b, precise (budget 1.5 s): n=24 p50=0.143 p95=0.147 max=0.147 s within_budget=24/24
+cold resume (load + play to audio), long-mp3-cbr-10h.mp3, precise (budget 1.5 s): n=24 p50=2.582 p95=9.933 max=10.109 s within_budget=6/24
+cold resume (load + play to audio), long-mp3-vbr-10h.mp3, precise (budget 1.5 s): n=24 p50=2.328 p95=8.718 max=8.734 s within_budget=9/24
+cold resume (load + play to audio), fmt-librivox-mp3-22k.mp3, precise (budget 1.5 s): n=6 p50=0.465 p95=0.567 max=0.568 s within_budget=6/6
+cold resume (load + play to audio), multi/Part 1.mp3, precise (budget 1.5 s): n=3 p50=0.179 p95=0.180 max=0.180 s within_budget=3/3
+cold resume (load + play to audio), long-mp3-cbr-10h.mp3, estimatedCBR (budget 1.5 s): n=24 p50=0.144 p95=0.148 max=0.148 s within_budget=24/24
+cold resume (load + play to audio), fmt-librivox-mp3-22k.mp3, estimatedCBR (budget 1.5 s): n=6 p50=0.220 p95=0.222 max=0.222 s within_budget=6/6
+cold resume (load + play to audio), multi/Part 1.mp3, estimatedCBR (budget 1.5 s): n=3 p50=0.148 p95=0.149 max=0.150 s within_budget=3/3
+by depth, long-mp3-cbr-10h.mp3 (precise) at 0.33 h: 0.449, 0.452, 0.439 s (min 0.439, max 0.452; within budget 3/3)
+by depth, long-mp3-cbr-10h.mp3 (precise) at 1.00 h: 1.125, 1.080, 1.110 s (min 1.080, max 1.125; within budget 3/3)
+by depth, long-mp3-cbr-10h.mp3 (precise) at 1.50 h: 1.604, 1.619, 1.604 s (min 1.604, max 1.619; within budget 0/3)
+by depth, long-mp3-cbr-10h.mp3 (precise) at 2.00 h: 2.094, 1.959, 2.103 s (min 1.959, max 2.103; within budget 0/3)
+by depth, long-mp3-cbr-10h.mp3 (precise) at 3.01 h: 3.129, 3.092, 3.060 s (min 3.060, max 3.129; within budget 0/3)
+by depth, long-mp3-cbr-10h.mp3 (precise) at 5.03 h: 5.064, 5.111, 5.009 s (min 5.009, max 5.111; within budget 0/3)
+by depth, long-mp3-cbr-10h.mp3 (precise) at 7.63 h: 7.565, 7.673, 7.702 s (min 7.565, max 7.702; within budget 0/3)
+by depth, long-mp3-cbr-10h.mp3 (precise) at 10.00 h: 10.109, 9.778, 9.961 s (min 9.778, max 10.109; within budget 0/3)
+by depth, long-mp3-vbr-10h.mp3 (precise) at 0.33 h: 0.422, 0.435, 0.425 s (min 0.422, max 0.435; within budget 3/3)
+by depth, long-mp3-vbr-10h.mp3 (precise) at 1.00 h: 1.023, 0.971, 0.935 s (min 0.935, max 1.023; within budget 3/3)
+by depth, long-mp3-vbr-10h.mp3 (precise) at 1.50 h: 1.478, 1.407, 1.434 s (min 1.407, max 1.478; within budget 3/3)
+by depth, long-mp3-vbr-10h.mp3 (precise) at 2.00 h: 1.953, 1.892, 1.901 s (min 1.892, max 1.953; within budget 0/3)
+by depth, long-mp3-vbr-10h.mp3 (precise) at 3.01 h: 2.704, 2.772, 2.772 s (min 2.704, max 2.772; within budget 0/3)
+by depth, long-mp3-vbr-10h.mp3 (precise) at 5.03 h: 4.435, 4.475, 4.553 s (min 4.435, max 4.553; within budget 0/3)
+by depth, long-mp3-vbr-10h.mp3 (precise) at 7.63 h: 6.699, 6.720, 6.793 s (min 6.699, max 6.793; within budget 0/3)
+by depth, long-mp3-vbr-10h.mp3 (precise) at 10.00 h: 8.721, 8.698, 8.734 s (min 8.698, max 8.734; within budget 0/3)
+by depth, long-mp3-cbr-10h.mp3 (estimatedCBR) at 0.33 h: 0.148, 0.143, 0.146 s (min 0.143, max 0.148; within budget 3/3)
+by depth, long-mp3-cbr-10h.mp3 (estimatedCBR) at 1.00 h: 0.137, 0.148, 0.148 s (min 0.137, max 0.148; within budget 3/3)
+by depth, long-mp3-cbr-10h.mp3 (estimatedCBR) at 1.50 h: 0.141, 0.143, 0.146 s (min 0.141, max 0.146; within budget 3/3)
+by depth, long-mp3-cbr-10h.mp3 (estimatedCBR) at 2.00 h: 0.143, 0.145, 0.143 s (min 0.143, max 0.145; within budget 3/3)
+by depth, long-mp3-cbr-10h.mp3 (estimatedCBR) at 3.01 h: 0.146, 0.142, 0.147 s (min 0.142, max 0.147; within budget 3/3)
+by depth, long-mp3-cbr-10h.mp3 (estimatedCBR) at 5.03 h: 0.147, 0.138, 0.148 s (min 0.138, max 0.148; within budget 3/3)
+by depth, long-mp3-cbr-10h.mp3 (estimatedCBR) at 7.63 h: 0.138, 0.147, 0.137 s (min 0.137, max 0.147; within budget 3/3)
+by depth, long-mp3-cbr-10h.mp3 (estimatedCBR) at 10.00 h: 0.144, 0.145, 0.137 s (min 0.137, max 0.145; within budget 3/3)
+budget crossing, long-mp3-cbr-10h.mp3, precise, round 0: between 1.00 h (1.125 s) and 1.50 h (1.604 s), interpolated 1.39 h; every deeper trial over the budget: yes; least squares over 8 trials 0.113 s + 0.991 s per hour of depth (reaches 1.5 s at 1.40 h)
+budget crossing, long-mp3-cbr-10h.mp3, precise, round 1: between 1.00 h (1.080 s) and 1.50 h (1.619 s), interpolated 1.39 h; every deeper trial over the budget: yes; least squares over 8 trials 0.123 s + 0.976 s per hour of depth (reaches 1.5 s at 1.41 h)
+budget crossing, long-mp3-cbr-10h.mp3, precise, round 2: between 1.00 h (1.110 s) and 1.50 h (1.604 s), interpolated 1.39 h; every deeper trial over the budget: yes; least squares over 8 trials 0.111 s + 0.987 s per hour of depth (reaches 1.5 s at 1.41 h)
+budget crossing, long-mp3-cbr-10h.mp3, precise, 3 rounds: interpolated between 1.39 h and 1.39 h; least squares over 24 trials 0.116 s + 0.985 s per hour of depth (reaches 1.5 s at 1.41 h)
+budget crossing, long-mp3-vbr-10h.mp3, precise, round 0: between 1.50 h (1.478 s) and 2.00 h (1.953 s), interpolated 1.52 h; every deeper trial over the budget: yes; least squares over 8 trials 0.170 s + 0.855 s per hour of depth (reaches 1.5 s at 1.56 h)
+budget crossing, long-mp3-vbr-10h.mp3, precise, round 1: between 1.50 h (1.407 s) and 2.00 h (1.892 s), interpolated 1.60 h; every deeper trial over the budget: yes; least squares over 8 trials 0.148 s + 0.858 s per hour of depth (reaches 1.5 s at 1.58 h)
+budget crossing, long-mp3-vbr-10h.mp3, precise, round 2: between 1.50 h (1.434 s) and 2.00 h (1.901 s), interpolated 1.57 h; every deeper trial over the budget: yes; least squares over 8 trials 0.140 s + 0.866 s per hour of depth (reaches 1.5 s at 1.57 h)
+budget crossing, long-mp3-vbr-10h.mp3, precise, 3 rounds: interpolated between 1.52 h and 1.60 h; least squares over 24 trials 0.153 s + 0.860 s per hour of depth (reaches 1.5 s at 1.57 h)
+content error, estimatedCBR minus precise at the same file and depth: n=33 max_abs=0.0 ms
+acknowledged capture save (budget p95 <= 200 ms): n=40 p50=7.526 p95=15.872 max=16.782 ms
+# at the end: host load averages 1.69 2.06 2.38 (1, 5, 15 min), 1 simulators booted on the host when the test run started

@@ -1,0 +1,221 @@
+# G0.4 stereo sources with distinct channels (review R6-05). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs). Budget: 500 ms.
+# Stereo master: left = master-600s.wav [0, 300 s), right = master-long.wav [1400 s, 1700 s): different speech in each channel. Fixtures: Scripts/fixtures/generate-g04-audio-stereo.sh.
+# err: content position minus intended position, ms (positive: the audio starts later in the source than intended). own: normalized correlation of a decoded or rendered channel with its own reference at that position; other: with the reference of the other channel (0: none of it).
+# w_left/w_right: least-squares weights of the left and right references in mono audio made from the source (0.5/0.5: the average of the two channels). Expected: discrete stereo own >= 0.8, |other| <= 0.2 and weights 0.4-0.6; parametric stereo (HE-AAC v2): channel identity recorded, not judged, weights 0.25-1.0 (its one-channel core).
+format	file	stereo	playable	codec	rate	channels	precise_ms	decoder_err_max_abs_ms	decoder_own_min	decoder_other_max_abs	mono_decode_w_left/w_right	player_err_max_abs_ms	player_own_min	player_other_max_abs	export_err_ms(start/end;...)	export_w_left/w_right	verdict	reasons
+mp3-cbr	st-mp3-cbr.mp3	discrete	yes	.mp3	44100	2	300000	0.0	0.987	0.012	0.475/0.473;0.475/0.475;0.475/0.473	69.7	0.981	0.025	0.0/0.0;0.0/0.0;0.0/0.0	0.473/0.470;0.474/0.469;0.473/0.470	pass	
+mp3-vbr-xing	st-mp3-vbr-xing.mp3	discrete	yes	.mp3	44100	2	300000	0.0	0.990	0.012	0.500/0.499;0.500/0.499;0.492/0.499	69.7	0.995	0.025	0.0/0.0;0.0/0.0;0.0/0.0	0.498/0.495;0.498/0.497;0.498/0.496	pass	
+mp3-vbr-noxing	st-mp3-vbr-noxing.mp3	discrete	yes	.mp3	44100	2	300042	13.1	0.986	0.012	0.500/0.499;0.499/0.499;0.487/0.499	56.6	0.995	0.025	-13.1/-13.1;-13.1/-13.1;-13.1/-13.1	0.498/0.495;0.498/0.495;0.498/0.496	pass	
+m4a-aac-lc	st-m4a-aac-lc.m4a	discrete	yes	aac 	44100	2	299975	0.0	0.990	0.012	0.499/0.495;0.501/0.496;0.498/0.495	69.7	0.983	0.026	0.0/0.0;0.0/0.0;0.0/0.0	0.498/0.492;0.497/0.493;0.498/0.493	pass	
+m4a-he-aac-v1	st-m4a-heaac-v1.m4a	discrete	yes	aac 	22050	2	300046	47.9	0.956	0.012	0.484/0.472;0.486/0.474;0.483/0.474	47.9	0.946	0.024	-47.9/-47.9;-47.9/-47.9;-47.9/-47.9	0.482/0.468;0.483/0.469;0.483/0.471	pass	
+m4a-he-aac-v2	st-m4a-heaac-v2.m4a	parametric	yes	aac 	22050	1	300046	47.9	0.550	0.701	0.907/0.772;0.952/0.730;0.849/0.704	47.9	0.361	0.889	-47.9/-47.9;-47.9/-47.9;-47.9/-47.9	0.704/0.673;0.695/0.653;0.700/0.666	pass	
+m4a-alac	st-m4a-alac.m4a	discrete	yes	alac	44100	2	300000	0.0	1.000	0.012	0.500/0.500;0.500/0.500;0.500/0.500	69.7	1.000	0.025	0.0/0.0;0.0/0.0;0.0/0.0	0.499/0.496;0.499/0.497;0.499/0.497	pass	
+flac	st-flac.flac	discrete	yes	flac	44100	2	300000	0.0	1.000	0.012	0.500/0.500;0.500/0.500;0.500/0.500	69.7	1.000	0.025	0.0/0.0;0.0/0.0;0.0/0.0	0.499/0.496;0.499/0.497;0.499/0.497	pass	
+mp4-flac	st-mp4-flac.m4a	discrete	yes	flac	44100	2	300000	0.0	1.000	0.012	0.500/0.500;0.500/0.500;0.500/0.500	69.7	1.000	0.025	0.0/0.0;0.0/0.0;0.0/0.0	0.499/0.496;0.499/0.497;0.499/0.497	pass	
+ogg-opus	st-opus.ogg	discrete	yes	opus	48000	2	300000	0.0	0.971	0.012	0.496/0.485;0.491/0.490;0.496/0.490	64.0	0.943	0.025	0.0/-1.0;0.0/-1.0;0.0/-1.0	0.491/0.484;0.495/0.486;0.493/0.485	pass	
+opus-ext	st-opus.opus	discrete	yes	opus	48000	2	300000	0.0	0.971	0.012	0.496/0.485;0.491/0.490;0.496/0.490	64.0	0.943	0.025	0.0/-1.0;0.0/-1.0;0.0/-1.0	0.491/0.484;0.495/0.486;0.493/0.485	pass	
+mp4-opus	st-mp4-opus.m4a	discrete	yes	opus	48000	2	300000	0.0	0.971	0.012	0.496/0.485;0.491/0.490;0.496/0.490	64.0	0.943	0.025	0.0/-1.0;0.0/-1.0;0.0/-1.0	0.491/0.485;0.495/0.486;0.493/0.485	pass	
+caf-opus	st-caf-opus.caf	discrete	yes	opus	48000	2	300000	0.2	0.857	0.014	0.450/0.464;0.433/0.468;0.442/0.479	64.3	0.887	0.029	0.0/-1.0;0.0/-1.0;0.0/-1.0	0.434/0.476;0.447/0.463;0.435/0.465	pass	
+wav	master-stereo-300s.wav	discrete	yes	lpcm	44100	2	300000	0.0	1.000	0.012	0.500/0.500;0.500/0.500;0.500/0.500	69.7	1.000	0.025	0.0/0.0;0.0/0.0;0.0/0.0	0.499/0.496;0.499/0.497;0.499/0.497	pass	
+# same speech in both channels: the excerpt 121.37-151.37 s against the left reference (master-600s.wav). export_gain: least-squares gain of the decoded excerpt; export_peak_ratio: its peak over the peak of the source over the same span; system_1ch_gain: the same gain for the system two-to-one conversion of the source window (AVAssetReader asked for one channel). Expected: export_gain 0.95-1.05, export_peak_ratio at most 1.1.
+same_speech_file	reported_channels	export_err_start_ms	export_gain	export_peak_ratio	system_1ch_gain	verdict
+stereo/st-dual-mono.flac	2	0.0	0.998	0.991	1.414	pass
+fmt-m4a-heaac-v2.m4a	1	-47.9	0.986	0.973	0.989	pass
+# detail
+format	check	point_s	left	right	extra
+mp3-cbr	decoder_seek	1.75	err=0.0 own=0.999 other=-0.005	err=0.0 own=0.987 other=-0.005	reported_start=1.8
+mp3-cbr	decoder_seek	37.3	err=0.0 own=0.999 other=-0.009	err=0.0 own=0.994 other=-0.009	reported_start=37.3
+mp3-cbr	decoder_seek	151.7	err=0.0 own=0.998 other=0.006	err=0.0 own=0.996 other=0.006	reported_start=151.7
+mp3-cbr	decoder_seek	271.05	err=0.0 own=0.998 other=0.012	err=0.0 own=0.994 other=0.012	reported_start=271.1
+mp3-cbr	decoder_seek	291.2	err=0.0 own=0.999 other=0.001	err=0.0 own=0.996 other=0.000	reported_start=291.2
+mp3-cbr	mono_decode	37.3	w_left=0.475	w_right=0.473	err=0.0 peak=0.998
+mp3-cbr	mono_decode	151.7	w_left=0.475	w_right=0.475	err=0.0 peak=0.999
+mp3-cbr	mono_decode	271.05	w_left=0.475	w_right=0.473	err=0.0 peak=0.995
+mp3-cbr	player_seek	37.3	err=0.0 own=1.000 other=-0.007	err=0.0 own=0.991 other=-0.008	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.102
+mp3-cbr	player_seek	151.7	err=0.0 own=0.999 other=0.006	err=0.0 own=0.997 other=0.006	start_offset_ms=69.7/69.7 reported_start=151.8 start_latency_s=0.010
+mp3-cbr	player_seek	271.05	err=0.0 own=0.998 other=0.025	err=0.0 own=0.981 other=0.025	start_offset_ms=69.7/69.7 reported_start=271.1 start_latency_s=0.014
+mp3-cbr	export	121.37-151.37	w_left=0.473	w_right=0.470	err_start=0.0 err_end=0.0 peak_start=0.995 peak_end=0.999
+mp3-cbr	export	0.0-12.5	w_left=0.474	w_right=0.469	err_start=0.0 err_end=0.0 peak_start=0.997 peak_end=0.998
+mp3-cbr	export	155.55-275.55	w_left=0.473	w_right=0.470	err_start=0.0 err_end=0.0 peak_start=0.997 peak_end=0.992
+mp3-vbr-xing	decoder_seek	1.75	err=0.0 own=0.998 other=-0.005	err=0.0 own=0.992 other=-0.005	reported_start=1.8
+mp3-vbr-xing	decoder_seek	37.3	err=0.0 own=0.999 other=-0.008	err=0.0 own=0.997 other=-0.008	reported_start=37.3
+mp3-vbr-xing	decoder_seek	151.7	err=0.0 own=0.998 other=0.005	err=0.0 own=0.995 other=0.006	reported_start=151.7
+mp3-vbr-xing	decoder_seek	271.05	err=0.0 own=0.990 other=0.012	err=0.0 own=0.997 other=0.012	reported_start=271.1
+mp3-vbr-xing	decoder_seek	291.2	err=0.0 own=0.999 other=0.000	err=0.0 own=0.998 other=0.001	reported_start=291.2
+mp3-vbr-xing	mono_decode	37.3	w_left=0.500	w_right=0.499	err=0.0 peak=0.999
+mp3-vbr-xing	mono_decode	151.7	w_left=0.500	w_right=0.499	err=0.0 peak=0.998
+mp3-vbr-xing	mono_decode	271.05	w_left=0.492	w_right=0.499	err=0.0 peak=0.990
+mp3-vbr-xing	player_seek	37.3	err=0.0 own=1.000 other=-0.007	err=0.0 own=0.997 other=-0.006	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.104
+mp3-vbr-xing	player_seek	151.7	err=0.0 own=0.999 other=0.005	err=0.0 own=0.996 other=0.006	start_offset_ms=69.7/69.7 reported_start=151.8 start_latency_s=0.015
+mp3-vbr-xing	player_seek	271.05	err=0.0 own=0.998 other=0.025	err=0.0 own=0.995 other=0.025	start_offset_ms=69.7/69.7 reported_start=271.1 start_latency_s=0.016
+mp3-vbr-xing	export	121.37-151.37	w_left=0.498	w_right=0.495	err_start=0.0 err_end=0.0 peak_start=0.994 peak_end=0.998
+mp3-vbr-xing	export	0.0-12.5	w_left=0.498	w_right=0.497	err_start=0.0 err_end=0.0 peak_start=0.998 peak_end=0.998
+mp3-vbr-xing	export	155.55-275.55	w_left=0.498	w_right=0.496	err_start=0.0 err_end=0.0 peak_start=0.998 peak_end=0.996
+mp3-vbr-noxing	decoder_seek	1.75	err=-13.1 own=0.999 other=-0.005	err=-13.1 own=0.996 other=-0.005	reported_start=1.8
+mp3-vbr-noxing	decoder_seek	37.3	err=-13.1 own=0.999 other=-0.007	err=-13.1 own=0.997 other=-0.006	reported_start=37.3
+mp3-vbr-noxing	decoder_seek	151.7	err=-13.1 own=0.998 other=0.003	err=-13.1 own=0.995 other=0.004	reported_start=151.7
+mp3-vbr-noxing	decoder_seek	271.05	err=-13.1 own=0.986 other=0.012	err=-13.1 own=0.997 other=0.012	reported_start=271.1
+mp3-vbr-noxing	decoder_seek	291.2	err=-13.1 own=0.999 other=0.000	err=-13.1 own=0.996 other=0.001	reported_start=291.2
+mp3-vbr-noxing	mono_decode	37.3	w_left=0.500	w_right=0.499	err=-13.1 peak=0.999
+mp3-vbr-noxing	mono_decode	151.7	w_left=0.499	w_right=0.499	err=-13.1 peak=0.998
+mp3-vbr-noxing	mono_decode	271.05	w_left=0.487	w_right=0.499	err=-13.1 peak=0.985
+mp3-vbr-noxing	player_seek	37.3	err=-13.1 own=1.000 other=-0.007	err=-13.1 own=0.997 other=-0.006	start_offset_ms=-13.1/-13.1 reported_start=37.3 start_latency_s=0.103
+mp3-vbr-noxing	player_seek	151.7	err=-13.1 own=0.999 other=0.005	err=-13.1 own=0.996 other=0.006	start_offset_ms=56.6/56.6 reported_start=151.8 start_latency_s=0.015
+mp3-vbr-noxing	player_seek	271.05	err=-13.1 own=0.998 other=0.024	err=-13.1 own=0.995 other=0.025	start_offset_ms=56.6/56.6 reported_start=271.1 start_latency_s=0.016
+mp3-vbr-noxing	export	121.37-151.37	w_left=0.498	w_right=0.495	err_start=-13.1 err_end=-13.1 peak_start=0.994 peak_end=0.998
+mp3-vbr-noxing	export	0.0-12.5	w_left=0.498	w_right=0.495	err_start=-13.1 err_end=-13.1 peak_start=0.998 peak_end=0.998
+mp3-vbr-noxing	export	155.55-275.55	w_left=0.498	w_right=0.496	err_start=-13.1 err_end=-13.1 peak_start=0.997 peak_end=0.996
+m4a-aac-lc	decoder_seek	1.75	err=0.0 own=0.999 other=-0.005	err=0.0 own=0.990 other=-0.006	reported_start=1.8
+m4a-aac-lc	decoder_seek	37.3	err=0.0 own=0.999 other=-0.008	err=0.0 own=0.993 other=-0.008	reported_start=37.3
+m4a-aac-lc	decoder_seek	151.7	err=0.0 own=0.999 other=0.006	err=0.0 own=0.998 other=0.007	reported_start=151.7
+m4a-aac-lc	decoder_seek	271.05	err=0.0 own=0.999 other=0.012	err=0.0 own=0.994 other=0.012	reported_start=271.1
+m4a-aac-lc	decoder_seek	291.2	err=0.0 own=1.000 other=0.001	err=0.0 own=0.999 other=0.001	reported_start=291.2
+m4a-aac-lc	mono_decode	37.3	w_left=0.499	w_right=0.495	err=0.0 peak=0.998
+m4a-aac-lc	mono_decode	151.7	w_left=0.501	w_right=0.496	err=0.0 peak=0.999
+m4a-aac-lc	mono_decode	271.05	w_left=0.498	w_right=0.495	err=0.0 peak=0.996
+m4a-aac-lc	player_seek	37.3	err=0.0 own=1.000 other=-0.006	err=0.0 own=0.987 other=-0.007	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.098
+m4a-aac-lc	player_seek	151.7	err=0.0 own=0.999 other=0.006	err=0.0 own=0.998 other=0.006	start_offset_ms=69.7/69.7 reported_start=151.8 start_latency_s=0.023
+m4a-aac-lc	player_seek	271.05	err=0.0 own=0.999 other=0.025	err=0.0 own=0.983 other=0.026	start_offset_ms=69.7/69.7 reported_start=271.1 start_latency_s=0.018
+m4a-aac-lc	export	121.37-151.37	w_left=0.498	w_right=0.492	err_start=0.0 err_end=0.0 peak_start=0.995 peak_end=0.999
+m4a-aac-lc	export	0.0-12.5	w_left=0.497	w_right=0.493	err_start=0.0 err_end=0.0 peak_start=0.997 peak_end=0.998
+m4a-aac-lc	export	155.55-275.55	w_left=0.498	w_right=0.493	err_start=0.0 err_end=0.0 peak_start=0.997 peak_end=0.993
+m4a-he-aac-v1	decoder_seek	1.75	err=-47.9 own=0.986 other=-0.008	err=-47.9 own=0.956 other=-0.005	reported_start=1.8
+m4a-he-aac-v1	decoder_seek	37.3	err=-47.9 own=0.989 other=-0.011	err=-47.9 own=0.968 other=-0.011	reported_start=37.3
+m4a-he-aac-v1	decoder_seek	151.7	err=-47.9 own=0.988 other=0.006	err=-47.9 own=0.975 other=0.005	reported_start=151.7
+m4a-he-aac-v1	decoder_seek	271.05	err=-47.9 own=0.985 other=0.011	err=-47.9 own=0.972 other=0.012	reported_start=271.1
+m4a-he-aac-v1	decoder_seek	291.2	err=-47.9 own=0.994 other=0.001	err=-47.9 own=0.978 other=-0.000	reported_start=291.2
+m4a-he-aac-v1	mono_decode	37.3	w_left=0.484	w_right=0.472	err=-47.9 peak=0.990
+m4a-he-aac-v1	mono_decode	151.7	w_left=0.486	w_right=0.474	err=-47.9 peak=0.988
+m4a-he-aac-v1	mono_decode	271.05	w_left=0.483	w_right=0.474	err=-47.9 peak=0.980
+m4a-he-aac-v1	player_seek	37.3	err=-47.9 own=0.993 other=-0.008	err=-47.9 own=0.970 other=-0.009	start_offset_ms=-47.9/-47.9 reported_start=37.3 start_latency_s=0.096
+m4a-he-aac-v1	player_seek	151.7	err=-47.9 own=0.991 other=0.006	err=-47.9 own=0.979 other=0.005	start_offset_ms=21.8/21.8 reported_start=151.8 start_latency_s=0.019
+m4a-he-aac-v1	player_seek	271.05	err=-47.9 own=0.986 other=0.022	err=-47.9 own=0.946 other=0.024	start_offset_ms=21.8/21.8 reported_start=271.1 start_latency_s=0.018
+m4a-he-aac-v1	export	121.37-151.37	w_left=0.482	w_right=0.468	err_start=-47.9 err_end=-47.9 peak_start=0.966 peak_end=0.986
+m4a-he-aac-v1	export	0.0-12.5	w_left=0.483	w_right=0.469	err_start=-47.9 err_end=-47.9 peak_start=0.981 peak_end=0.986
+m4a-he-aac-v1	export	155.55-275.55	w_left=0.483	w_right=0.471	err_start=-47.9 err_end=-47.9 peak_start=0.985 peak_end=0.976
+m4a-he-aac-v2	decoder_seek	1.75	err=-47.9 own=0.954 other=0.130	err=-47.9 own=0.553 other=0.436	reported_start=1.8
+m4a-he-aac-v2	decoder_seek	37.3	err=-47.9 own=0.920 other=0.219	err=-47.9 own=0.550 other=0.701	reported_start=37.3
+m4a-he-aac-v2	decoder_seek	151.7	err=-47.9 own=0.914 other=0.181	err=-47.9 own=0.656 other=0.688	reported_start=151.7
+m4a-he-aac-v2	decoder_seek	271.05	err=-47.9 own=0.911 other=0.132	err=-47.9 own=0.778 other=0.456	reported_start=271.1
+m4a-he-aac-v2	decoder_seek	291.2	err=-47.9 own=0.948 other=0.094	err=-47.9 own=0.772 other=0.367	reported_start=291.2
+m4a-he-aac-v2	mono_decode	37.3	w_left=0.907	w_right=0.772	err=-47.9 peak=0.984
+m4a-he-aac-v2	mono_decode	151.7	w_left=0.952	w_right=0.730	err=-47.9 peak=0.974
+m4a-he-aac-v2	mono_decode	271.05	w_left=0.849	w_right=0.704	err=-47.9 peak=0.951
+m4a-he-aac-v2	player_seek	37.3	err=-47.9 own=0.920 other=0.334	err=-47.9 own=0.361 other=0.889	start_offset_ms=-47.9/-47.9 reported_start=37.3 start_latency_s=0.095
+m4a-he-aac-v2	player_seek	151.7	err=-47.9 own=0.921 other=0.192	err=-47.9 own=0.622 other=0.734	start_offset_ms=21.8/21.8 reported_start=151.8 start_latency_s=0.019
+m4a-he-aac-v2	player_seek	271.05	err=-47.9 own=0.910 other=0.256	err=-47.9 own=0.485 other=0.675	start_offset_ms=21.8/21.8 reported_start=271.1 start_latency_s=0.015
+m4a-he-aac-v2	export	121.37-151.37	w_left=0.704	w_right=0.673	err_start=-47.9 err_end=-47.9 peak_start=0.968 peak_end=0.983
+m4a-he-aac-v2	export	0.0-12.5	w_left=0.695	w_right=0.653	err_start=-47.9 err_end=-47.9 peak_start=0.981 peak_end=0.986
+m4a-he-aac-v2	export	155.55-275.55	w_left=0.700	w_right=0.666	err_start=-47.9 err_end=-47.9 peak_start=0.976 peak_end=0.962
+m4a-alac	decoder_seek	1.75	err=0.0 own=1.000 other=-0.005	err=0.0 own=1.000 other=-0.005	reported_start=1.8
+m4a-alac	decoder_seek	37.3	err=0.0 own=1.000 other=-0.008	err=0.0 own=1.000 other=-0.008	reported_start=37.3
+m4a-alac	decoder_seek	151.7	err=0.0 own=1.000 other=0.006	err=0.0 own=1.000 other=0.006	reported_start=151.7
+m4a-alac	decoder_seek	271.05	err=0.0 own=1.000 other=0.012	err=0.0 own=1.000 other=0.012	reported_start=271.1
+m4a-alac	decoder_seek	291.2	err=0.0 own=1.000 other=0.001	err=0.0 own=1.000 other=0.001	reported_start=291.2
+m4a-alac	mono_decode	37.3	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+m4a-alac	mono_decode	151.7	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+m4a-alac	mono_decode	271.05	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+m4a-alac	player_seek	37.3	err=0.0 own=1.000 other=-0.007	err=0.0 own=1.000 other=-0.007	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.102
+m4a-alac	player_seek	151.7	err=0.0 own=1.000 other=0.006	err=0.0 own=1.000 other=0.006	start_offset_ms=69.7/69.7 reported_start=151.8 start_latency_s=0.010
+m4a-alac	player_seek	271.05	err=0.0 own=1.000 other=0.025	err=0.0 own=1.000 other=0.025	start_offset_ms=69.7/69.7 reported_start=271.1 start_latency_s=0.011
+m4a-alac	export	121.37-151.37	w_left=0.499	w_right=0.496	err_start=0.0 err_end=0.0 peak_start=0.997 peak_end=1.000
+m4a-alac	export	0.0-12.5	w_left=0.499	w_right=0.497	err_start=0.0 err_end=0.0 peak_start=0.999 peak_end=0.999
+m4a-alac	export	155.55-275.55	w_left=0.499	w_right=0.497	err_start=0.0 err_end=0.0 peak_start=0.999 peak_end=0.998
+flac	decoder_seek	1.75	err=0.0 own=1.000 other=-0.005	err=0.0 own=1.000 other=-0.005	reported_start=1.8
+flac	decoder_seek	37.3	err=0.0 own=1.000 other=-0.008	err=0.0 own=1.000 other=-0.008	reported_start=37.3
+flac	decoder_seek	151.7	err=0.0 own=1.000 other=0.006	err=0.0 own=1.000 other=0.006	reported_start=151.7
+flac	decoder_seek	271.05	err=0.0 own=1.000 other=0.012	err=0.0 own=1.000 other=0.012	reported_start=271.1
+flac	decoder_seek	291.2	err=0.0 own=1.000 other=0.001	err=0.0 own=1.000 other=0.001	reported_start=291.2
+flac	mono_decode	37.3	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+flac	mono_decode	151.7	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+flac	mono_decode	271.05	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+flac	player_seek	37.3	err=0.0 own=1.000 other=-0.007	err=0.0 own=1.000 other=-0.007	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.103
+flac	player_seek	151.7	err=0.0 own=1.000 other=0.006	err=0.0 own=1.000 other=0.006	start_offset_ms=69.7/69.7 reported_start=151.8 start_latency_s=0.014
+flac	player_seek	271.05	err=0.0 own=1.000 other=0.025	err=0.0 own=1.000 other=0.025	start_offset_ms=69.7/69.7 reported_start=271.1 start_latency_s=0.015
+flac	export	121.37-151.37	w_left=0.499	w_right=0.496	err_start=0.0 err_end=0.0 peak_start=0.997 peak_end=1.000
+flac	export	0.0-12.5	w_left=0.499	w_right=0.497	err_start=0.0 err_end=0.0 peak_start=0.999 peak_end=0.999
+flac	export	155.55-275.55	w_left=0.499	w_right=0.497	err_start=0.0 err_end=0.0 peak_start=0.999 peak_end=0.998
+mp4-flac	decoder_seek	1.75	err=0.0 own=1.000 other=-0.005	err=0.0 own=1.000 other=-0.005	reported_start=1.8
+mp4-flac	decoder_seek	37.3	err=0.0 own=1.000 other=-0.008	err=0.0 own=1.000 other=-0.008	reported_start=37.3
+mp4-flac	decoder_seek	151.7	err=0.0 own=1.000 other=0.006	err=0.0 own=1.000 other=0.006	reported_start=151.7
+mp4-flac	decoder_seek	271.05	err=0.0 own=1.000 other=0.012	err=0.0 own=1.000 other=0.012	reported_start=271.1
+mp4-flac	decoder_seek	291.2	err=0.0 own=1.000 other=0.001	err=0.0 own=1.000 other=0.001	reported_start=291.2
+mp4-flac	mono_decode	37.3	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+mp4-flac	mono_decode	151.7	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+mp4-flac	mono_decode	271.05	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+mp4-flac	player_seek	37.3	err=0.0 own=1.000 other=-0.007	err=0.0 own=1.000 other=-0.007	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.096
+mp4-flac	player_seek	151.7	err=0.0 own=1.000 other=0.006	err=0.0 own=1.000 other=0.006	start_offset_ms=69.7/69.7 reported_start=151.8 start_latency_s=0.012
+mp4-flac	player_seek	271.05	err=0.0 own=1.000 other=0.025	err=0.0 own=1.000 other=0.025	start_offset_ms=69.7/69.7 reported_start=271.1 start_latency_s=0.014
+mp4-flac	export	121.37-151.37	w_left=0.499	w_right=0.496	err_start=0.0 err_end=0.0 peak_start=0.997 peak_end=1.000
+mp4-flac	export	0.0-12.5	w_left=0.499	w_right=0.497	err_start=0.0 err_end=0.0 peak_start=0.999 peak_end=0.999
+mp4-flac	export	155.55-275.55	w_left=0.499	w_right=0.497	err_start=0.0 err_end=0.0 peak_start=0.999 peak_end=0.998
+ogg-opus	decoder_seek	1.75	err=0.0 own=0.990 other=-0.005	err=0.0 own=0.971 other=-0.005	reported_start=1.8
+ogg-opus	decoder_seek	37.3	err=0.0 own=0.991 other=-0.009	err=0.0 own=0.979 other=-0.008	reported_start=37.3
+ogg-opus	decoder_seek	151.7	err=0.0 own=0.990 other=0.005	err=0.0 own=0.979 other=0.005	reported_start=151.7
+ogg-opus	decoder_seek	271.05	err=0.0 own=0.987 other=0.012	err=0.0 own=0.980 other=0.012	reported_start=271.1
+ogg-opus	decoder_seek	291.2	err=0.0 own=0.994 other=0.001	err=0.0 own=0.986 other=0.002	reported_start=291.2
+ogg-opus	mono_decode	37.3	w_left=0.496	w_right=0.485	err=0.0 peak=0.991
+ogg-opus	mono_decode	151.7	w_left=0.491	w_right=0.490	err=0.0 peak=0.990
+ogg-opus	mono_decode	271.05	w_left=0.496	w_right=0.490	err=0.0 peak=0.983
+ogg-opus	player_seek	37.3	err=0.0 own=0.993 other=-0.009	err=0.0 own=0.976 other=-0.008	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.087
+ogg-opus	player_seek	151.7	err=-0.0 own=0.991 other=0.005	err=-0.0 own=0.980 other=0.006	start_offset_ms=64.0/64.0 reported_start=151.8 start_latency_s=0.009
+ogg-opus	player_seek	271.05	err=-0.0 own=0.987 other=0.025	err=-0.0 own=0.943 other=0.025	start_offset_ms=64.0/64.0 reported_start=271.1 start_latency_s=0.015
+ogg-opus	export	121.37-151.37	w_left=0.491	w_right=0.484	err_start=0.0 err_end=-1.0 peak_start=0.984 peak_end=0.991
+ogg-opus	export	0.0-12.5	w_left=0.495	w_right=0.486	err_start=0.0 err_end=-1.0 peak_start=0.992 peak_end=0.993
+ogg-opus	export	155.55-275.55	w_left=0.493	w_right=0.485	err_start=0.0 err_end=-1.0 peak_start=0.989 peak_end=0.981
+opus-ext	decoder_seek	1.75	err=0.0 own=0.990 other=-0.005	err=0.0 own=0.971 other=-0.005	reported_start=1.8
+opus-ext	decoder_seek	37.3	err=0.0 own=0.991 other=-0.009	err=0.0 own=0.979 other=-0.008	reported_start=37.3
+opus-ext	decoder_seek	151.7	err=0.0 own=0.990 other=0.005	err=0.0 own=0.979 other=0.005	reported_start=151.7
+opus-ext	decoder_seek	271.05	err=0.0 own=0.987 other=0.012	err=0.0 own=0.980 other=0.012	reported_start=271.1
+opus-ext	decoder_seek	291.2	err=0.0 own=0.994 other=0.001	err=0.0 own=0.986 other=0.002	reported_start=291.2
+opus-ext	mono_decode	37.3	w_left=0.496	w_right=0.485	err=0.0 peak=0.991
+opus-ext	mono_decode	151.7	w_left=0.491	w_right=0.490	err=0.0 peak=0.990
+opus-ext	mono_decode	271.05	w_left=0.496	w_right=0.490	err=0.0 peak=0.983
+opus-ext	player_seek	37.3	err=0.0 own=0.993 other=-0.010	err=0.0 own=0.976 other=-0.008	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.083
+opus-ext	player_seek	151.7	err=-0.0 own=0.991 other=0.005	err=-0.0 own=0.978 other=0.006	start_offset_ms=64.0/64.0 reported_start=151.8 start_latency_s=0.014
+opus-ext	player_seek	271.05	err=-0.0 own=0.987 other=0.025	err=-0.0 own=0.943 other=0.025	start_offset_ms=64.0/64.0 reported_start=271.1 start_latency_s=0.009
+opus-ext	export	121.37-151.37	w_left=0.491	w_right=0.484	err_start=0.0 err_end=-1.0 peak_start=0.984 peak_end=0.991
+opus-ext	export	0.0-12.5	w_left=0.495	w_right=0.486	err_start=0.0 err_end=-1.0 peak_start=0.992 peak_end=0.993
+opus-ext	export	155.55-275.55	w_left=0.493	w_right=0.485	err_start=0.0 err_end=-1.0 peak_start=0.989 peak_end=0.981
+mp4-opus	decoder_seek	1.75	err=0.0 own=0.990 other=-0.005	err=0.0 own=0.971 other=-0.005	reported_start=1.8
+mp4-opus	decoder_seek	37.3	err=0.0 own=0.991 other=-0.009	err=0.0 own=0.979 other=-0.008	reported_start=37.3
+mp4-opus	decoder_seek	151.7	err=0.0 own=0.990 other=0.005	err=0.0 own=0.979 other=0.005	reported_start=151.7
+mp4-opus	decoder_seek	271.05	err=0.0 own=0.987 other=0.012	err=0.0 own=0.980 other=0.012	reported_start=271.1
+mp4-opus	decoder_seek	291.2	err=0.0 own=0.994 other=0.001	err=0.0 own=0.986 other=0.002	reported_start=291.2
+mp4-opus	mono_decode	37.3	w_left=0.496	w_right=0.485	err=0.0 peak=0.991
+mp4-opus	mono_decode	151.7	w_left=0.491	w_right=0.490	err=0.0 peak=0.990
+mp4-opus	mono_decode	271.05	w_left=0.496	w_right=0.490	err=0.0 peak=0.984
+mp4-opus	player_seek	37.3	err=0.0 own=0.993 other=-0.010	err=0.0 own=0.976 other=-0.008	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.090
+mp4-opus	player_seek	151.7	err=-0.0 own=0.991 other=0.005	err=-0.0 own=0.978 other=0.006	start_offset_ms=64.0/64.0 reported_start=151.8 start_latency_s=0.010
+mp4-opus	player_seek	271.05	err=-0.0 own=0.987 other=0.025	err=-0.0 own=0.943 other=0.025	start_offset_ms=64.0/64.0 reported_start=271.1 start_latency_s=0.020
+mp4-opus	export	121.37-151.37	w_left=0.491	w_right=0.485	err_start=0.0 err_end=-1.0 peak_start=0.984 peak_end=0.991
+mp4-opus	export	0.0-12.5	w_left=0.495	w_right=0.486	err_start=0.0 err_end=-1.0 peak_start=0.992 peak_end=0.993
+mp4-opus	export	155.55-275.55	w_left=0.493	w_right=0.485	err_start=0.0 err_end=-1.0 peak_start=0.989 peak_end=0.981
+caf-opus	decoder_seek	1.75	err=0.0 own=0.881 other=-0.006	err=0.0 own=0.937 other=-0.003	reported_start=1.8
+caf-opus	decoder_seek	37.3	err=0.2 own=0.885 other=-0.004	err=0.0 own=0.961 other=-0.010	reported_start=37.3
+caf-opus	decoder_seek	151.7	err=0.0 own=0.857 other=0.005	err=0.0 own=0.959 other=0.006	reported_start=151.7
+caf-opus	decoder_seek	271.05	err=0.0 own=0.888 other=0.014	err=0.0 own=0.957 other=0.009	reported_start=271.1
+caf-opus	decoder_seek	291.2	err=0.1 own=0.877 other=0.002	err=0.0 own=0.972 other=0.003	reported_start=291.2
+caf-opus	mono_decode	37.3	w_left=0.450	w_right=0.464	err=0.0 peak=0.905
+caf-opus	mono_decode	151.7	w_left=0.433	w_right=0.468	err=0.0 peak=0.907
+caf-opus	mono_decode	271.05	w_left=0.442	w_right=0.479	err=0.0 peak=0.904
+caf-opus	player_seek	37.3	err=0.2 own=0.928 other=-0.007	err=0.0 own=0.956 other=-0.011	start_offset_ms=0.2/0.0 reported_start=37.3 start_latency_s=0.087
+caf-opus	player_seek	151.7	err=0.0 own=0.887 other=0.005	err=0.0 own=0.963 other=0.008	start_offset_ms=64.0/64.0 reported_start=151.8 start_latency_s=0.016
+caf-opus	player_seek	271.05	err=0.3 own=0.894 other=0.029	err=-0.0 own=0.908 other=0.018	start_offset_ms=64.3/64.0 reported_start=271.1 start_latency_s=0.016
+caf-opus	export	121.37-151.37	w_left=0.434	w_right=0.476	err_start=0.0 err_end=-1.0 peak_start=0.923 peak_end=0.917
+caf-opus	export	0.0-12.5	w_left=0.447	w_right=0.463	err_start=0.0 err_end=-1.0 peak_start=0.915 peak_end=0.924
+caf-opus	export	155.55-275.55	w_left=0.435	w_right=0.465	err_start=0.0 err_end=-1.0 peak_start=0.901 peak_end=0.907
+wav	decoder_seek	1.75	err=0.0 own=1.000 other=-0.005	err=0.0 own=1.000 other=-0.005	reported_start=1.8
+wav	decoder_seek	37.3	err=0.0 own=1.000 other=-0.008	err=0.0 own=1.000 other=-0.008	reported_start=37.3
+wav	decoder_seek	151.7	err=0.0 own=1.000 other=0.006	err=0.0 own=1.000 other=0.006	reported_start=151.7
+wav	decoder_seek	271.05	err=0.0 own=1.000 other=0.012	err=0.0 own=1.000 other=0.012	reported_start=271.1
+wav	decoder_seek	291.2	err=0.0 own=1.000 other=0.001	err=0.0 own=1.000 other=0.001	reported_start=291.2
+wav	mono_decode	37.3	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+wav	mono_decode	151.7	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+wav	mono_decode	271.05	w_left=0.500	w_right=0.500	err=0.0 peak=1.000
+wav	player_seek	37.3	err=0.0 own=1.000 other=-0.007	err=0.0 own=1.000 other=-0.007	start_offset_ms=0.0/0.0 reported_start=37.3 start_latency_s=0.097
+wav	player_seek	151.7	err=0.0 own=1.000 other=0.006	err=0.0 own=1.000 other=0.006	start_offset_ms=69.7/69.7 reported_start=151.8 start_latency_s=0.018
+wav	player_seek	271.05	err=0.0 own=1.000 other=0.025	err=0.0 own=1.000 other=0.025	start_offset_ms=69.7/69.7 reported_start=271.1 start_latency_s=0.014
+wav	export	121.37-151.37	w_left=0.499	w_right=0.496	err_start=0.0 err_end=0.0 peak_start=0.997 peak_end=1.000
+wav	export	0.0-12.5	w_left=0.499	w_right=0.497	err_start=0.0 err_end=0.0 peak_start=0.999 peak_end=0.999
+wav	export	155.55-275.55	w_left=0.499	w_right=0.497	err_start=0.0 err_end=0.0 peak_start=0.999 peak_end=0.998

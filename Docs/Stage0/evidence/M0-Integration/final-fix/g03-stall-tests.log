@@ -1,0 +1,65 @@
+commit: 6123786c13f80e077b9579959e0e34f7670c3f7d; uncommitted files: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-19T03:39:08Z; load: 16:39  up 16 days,  2:49, 3 users, load averages: 1.58 2.02 2.94
+== the suite alone, run 1 (03:39:08Z; load: { 1.58 2.02 2.94 })
+load progress follows the provider's progress: handler ran before the call returned: true; fractions [0.0, 0.05, 0.1, 0.15]; completed count 0
+progress then stall: not received: the sharing app did not provide the file in time after 1.65 seconds of the stall clock (last progress at 1 s)
+slow but moving provider: received after 3.0 seconds of the stall clock (progress every 100 ms of it, made by the test)
+✔ Test run with 23 tests in 1 suite passed after 1.481 seconds.
+== the suite alone, run 2 (03:39:13Z; load: { 2.02 2.11 2.96 })
+load progress follows the provider's progress: handler ran before the call returned: true; fractions [0.0, 0.05, 0.1, 0.15]; completed count 0
+progress then stall: not received: the sharing app did not provide the file in time after 1.65 seconds of the stall clock (last progress at 1 s)
+slow but moving provider: received after 3.0 seconds of the stall clock (progress every 100 ms of it, made by the test)
+✔ Test run with 23 tests in 1 suite passed after 1.488 seconds.
+== the suite alone, run 3 (03:39:15Z; load: { 1.94 2.09 2.95 })
+load progress follows the provider's progress: handler ran before the call returned: true; fractions [0.0, 0.05, 0.1, 0.15]; completed count 0
+progress then stall: not received: the sharing app did not provide the file in time after 1.65 seconds of the stall clock (last progress at 1 s)
+slow but moving provider: received after 3.0 seconds of the stall clock (progress every 100 ms of it, made by the test)
+✔ Test run with 23 tests in 1 suite passed after 1.481 seconds.
+== the suite alone, run 4 (03:39:18Z; load: { 1.94 2.09 2.95 })
+load progress follows the provider's progress: handler ran before the call returned: true; fractions [0.0, 0.05, 0.1, 0.15]; completed count 0
+progress then stall: not received: the sharing app did not provide the file in time after 1.65 seconds of the stall clock (last progress at 1 s)
+slow but moving provider: received after 3.0 seconds of the stall clock (progress every 100 ms of it, made by the test)
+✔ Test run with 23 tests in 1 suite passed after 1.462 seconds.
+== the suite alone, run 5 (03:39:20Z; load: { 5.22 2.77 3.19 })
+load progress follows the provider's progress: handler ran before the call returned: true; fractions [0.0, 0.05, 0.1, 0.15]; completed count 0
+progress then stall: not received: the sharing app did not provide the file in time after 1.65 seconds of the stall clock (last progress at 1 s)
+slow but moving provider: received after 3.0 seconds of the stall clock (progress every 100 ms of it, made by the test)
+✔ Test run with 23 tests in 1 suite passed after 1.390 seconds.
+== the whole IntakeKit host suite, run 1 (03:39:24Z; load: { 5.22 2.77 3.19 })
+✔ Test run with 59 tests in 5 suites passed after 21.065 seconds.
+load progress follows the provider's progress: handler ran before the call returned: true; fractions [0.0, 0.05, 0.1, 0.15]; completed count 0
+progress then stall: not received: the sharing app did not provide the file in time after 1.65 seconds of the stall clock (last progress at 1 s)
+slow but moving provider: received after 3.0 seconds of the stall clock (progress every 100 ms of it, made by the test)
+✔ Test run with 48 tests in 3 suites passed after 3.453 seconds.
+✔ Test run with 40 tests in 6 suites passed after 1.488 seconds.
+== the whole IntakeKit host suite, run 2 (03:39:51Z; load: { 20.23 6.48 4.51 })
+✔ Test run with 59 tests in 5 suites passed after 17.968 seconds.
+load progress follows the provider's progress: handler ran before the call returned: true; fractions [0.0, 0.05, 0.1, 0.15]; completed count 0
+progress then stall: not received: the sharing app did not provide the file in time after 1.65 seconds of the stall clock (last progress at 1 s)
+slow but moving provider: received after 3.0 seconds of the stall clock (progress every 100 ms of it, made by the test)
+✔ Test run with 48 tests in 3 suites passed after 3.560 seconds.
+✔ Test run with 40 tests in 6 suites passed after 1.498 seconds.
+== the whole IntakeKit host suite, run 3 (03:40:16Z; load: { 22.30 8.15 5.17 })
+✔ Test run with 59 tests in 5 suites passed after 14.877 seconds.
+load progress follows the provider's progress: handler ran before the call returned: true; fractions [0.0, 0.05, 0.1, 0.15]; completed count 0
+progress then stall: not received: the sharing app did not provide the file in time after 1.65 seconds of the stall clock (last progress at 1 s)
+slow but moving provider: received after 3.0 seconds of the stall clock (progress every 100 ms of it, made by the test)
+✔ Test run with 48 tests in 3 suites passed after 3.263 seconds.
+✔ Test run with 40 tests in 6 suites passed after 1.401 seconds.
+== control: the F13 defect (the probe ignores fractionCompleted) in a copy; both stall tests must fail
+changed lines in the copy: 1
+load progress follows the provider's progress: handler ran before the call returned: true; fractions [0.0, 0.05, 0.1, 0.15]; completed count 0
+✘ Test "a provider that makes progress and then stops is cut off after the stall timeout" recorded an issue at ItemProviderIntakeTests.swift:247:13: Expectation failed: !finished.isSet
+✘ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" recorded an issue at ItemProviderIntakeTests.swift:217:13: Expectation failed: !finished.isSet
+progress then stall: not received: the sharing app did not provide the file in time after 0.6 seconds of the stall clock (last progress at 1 s)
+slow but moving provider: not received: the sharing app did not provide the file in time after 0.6 seconds of the stall clock (progress every 100 ms of it, made by the test)
+✘ Test "a provider that makes progress and then stops is cut off after the stall timeout" recorded an issue at ItemProviderIntakeTests.swift:259:9: Expectation failed: elapsed >= .milliseconds(1_500) && elapsed <= .seconds(2)
+✘ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" recorded an issue at ItemProviderIntakeTests.swift:223:9: Expectation failed: outcome.receipt != nil
+✘ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" recorded an issue at ItemProviderIntakeTests.swift:224:9: Expectation failed: elapsed >= .seconds(3)
+✘ Test "a provider that makes progress and then stops is cut off after the stall timeout" failed after 0.075 seconds with 2 issues.
+✘ Test "a provider whose progress keeps moving is never cut off by the stall timeout, however long it takes" failed after 0.075 seconds with 3 issues.
+✘ Test run with 23 tests in 1 suite failed after 1.482 seconds with 5 issues.
+control: both stall tests failed against the F13 defect, as required
+end: 2026-10-19T03:40:51Z; load: 16:40  up 16 days,  2:51, 3 users, load averages: 17.16 8.37 5.37
+exit: 0

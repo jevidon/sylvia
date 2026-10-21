@@ -1,0 +1,18 @@
+# Cross-file excerpts (multi-file MP3 book; T21). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs)
+# requests are global ms of the edition timeline (sum of AVFoundation's precise member durations)
+# errors = true content position (cross-correlation with master-long at the member's true slice start + file-local ms) minus intended (ms)
+# member 1 Part 2.mp3: reported 137535 ms, true content 137500 ms, excess 35 ms
+# member 2 Part 1.mp3: reported 162299 ms, true content 162250 ms, excess 49 ms
+# member 3 Part 3.mp3: reported 150047 ms, true content 150000 ms, excess 47 ms
+# member 4 Part 10.mp3: reported 120137 ms, true content 120100 ms, excess 37 ms
+request	ranges(stored)	actual_ranges(stored)	head_err	seam_errs	tail_err	length_err	min_peak	status
+122535-152535 preceding30 at boundary+15s	122535-137535,0-15000	122535-137535,0-15000	-13.1	-12.8	-13.1	-0.3	0.998	Audio excerpt saved
+107635-137635 preceding30 at boundary+0.1s	107635-137535,0-100	107635-137535,0-100	-13.0		-13.4	-0.3	0.999	Audio excerpt saved
+37535-157535 extend120	37535-137535,0-20000	37535-137535,0-20000	-13.1	-12.8	-13.1	-0.3	0.998	Audio excerpt saved
+284834-314834 preceding30 at boundary+15s	147299-162299,0-15000	147299-162299,0-15000	-13.1	-12.8	-13.1	-0.2	0.997	Audio excerpt saved
+269934-299934 preceding30 at boundary+0.1s	132399-162299,0-100	132399-162299,0-100	-13.1		-13.3	-0.2	0.998	Audio excerpt saved
+199834-319834 extend120	62299-162299,0-20000	62299-162299,0-20000	-13.1	-12.8	-13.1	-0.2	0.996	Audio excerpt saved
+434881-464881 preceding30 at boundary+15s	135047-150047,0-15000	135047-150047,0-15000	-13.1	-13.1	-13.1	0.0	0.996	Audio excerpt saved
+419981-449981 preceding30 at boundary+0.1s	120147-150047,0-100	120147-150047,0-100	-13.1		-13.1	0.0	0.999	Audio excerpt saved
+349881-469881 extend120	50047-150047,0-20000	50047-150047,0-20000	-13.1	-13.1	-13.1	0.0	0.996	Audio excerpt saved
+# n=24 measurements; p50_abs=13.1 p95_abs=13.3 max_abs=13.4

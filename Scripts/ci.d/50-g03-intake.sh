@@ -35,7 +35,8 @@
 #     download or publish a file the other is still writing. The pinned pack digest stops a wrong pack from being
 #     published, so here the effect is a failed run; the fix (download to a mktemp name, verify, then rename) is
 #     requested from fetch.sh's owner (report, "Requests to the owners of shared files").
-# Needs: Xcode 27.0, XcodeGen, Python 3, network for the package and fixture downloads, about 30 GiB free disk.
+# Needs: the Xcode ADR-0001 pins (27.1 since 20 October 2026), XcodeGen, Python 3, network for the package and fixture
+# downloads, about 30 GiB free disk.
 set -euo pipefail
 source "$(cd "$(dirname "$0")/../lib" && pwd)/env.sh"
 source "$SYLVIA_ROOT/Scripts/lib/sim.sh"
@@ -91,7 +92,7 @@ step "1. fixtures"
 
 step "2. host: IntakeKit tests (swift test)"
 logged "$logs/host-intakekit-tests.log" bash -c "cd '$kit' && swift test --force-resolved-versions"
-grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|uncoordinated writer|coordinated writer|short deflate stream|aggregate expansion:|slow but moving provider|EPUB folder|insufficient space:|cancel |coordinator cancelled|raw file|raw Finder file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:' \
+grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|uncoordinated writer|coordinated writer|short deflate stream|aggregate expansion:|slow but moving provider|progress then stall:|load progress follows|EPUB folder|insufficient space:|cancel |coordinator cancelled|raw file|raw Finder file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:' \
   "$logs/host-intakekit-tests.log" | grep -v '^◇' | sed 's/^/  /'
 check_warnings "$logs/host-intakekit-tests.log"
 
@@ -111,6 +112,8 @@ step "6. simulator: IntakeKit tests on iOS"
 sim_name="${G03_SIM_NAME:-Sylvia-M0-g03-intake}"
 udid="$(sylvia_sim_udid "$sim_name")"
 sylvia_sim_boot "$udid"
+# Shut it down when this script ends, however it ends (M0 final review CC-05).
+trap 'sylvia_sim_shutdown "$udid"' EXIT
 runtime="$(xcrun simctl list devices -j | /usr/bin/python3 -c '
 import json, sys
 for runtime, devices in json.load(sys.stdin)["devices"].items():
@@ -128,7 +131,7 @@ for devices in json.load(sys.stdin)["devices"].values():
 echo "simulator: $runtime ($devtype), $udid"
 logged "$logs/sim-intakekit-tests.log" bash -c "cd '$kit' && xcodebuild test -scheme IntakeKit-Package \
   -destination 'id=$udid' -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution"
-grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|aggregate expansion:|slow but moving provider|cancel |coordinator cancelled|raw file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:|\*\* TEST' \
+grep -E 'Test run with|contract fixtures:|in-memory plain-text|direct file URL provider|aggregate expansion:|slow but moving provider|progress then stall:|load progress follows|cancel |coordinator cancelled|raw file|non-ASCII paths|canonical equivalence:|canonical twins of ASCII|contract names checked:|entry limit:|manifest size limit:|handoff.json size:|stall timeout vs|created_at continuity:|\*\* TEST' \
   "$logs/sim-intakekit-tests.log" | grep -v '^◇' | sed 's/^/  /'
 check_warnings "$logs/sim-intakekit-tests.log"
 

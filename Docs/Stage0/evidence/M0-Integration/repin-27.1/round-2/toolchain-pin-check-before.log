@@ -1,0 +1,69 @@
+command: Docs/Stage0/evidence/M0-Integration/repin-27.1/round-2/commands/toolchain-pin-check.sh
+commit: ab874af75333adb3a5690dcb8398eb93994d2dad; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+pin in Scripts/lib/env.sh: 27A9275
+start: 2026-10-20T04:21:48Z; load: 17:21  up 17 days,  3:32, 2 users, load averages: 2.04 1.96 2.52
+
+### A. The installed Xcode, with stand-ins for xcodebuild -version
+
+== 1. this Mac's Xcode, no stand-in
+   ok    toolchain: xcodebuild -version -> Build version 27A9275
+   ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+   ok    toolchain: xcodegen --version -> Version: 2.46.0
+   dependency lock check: 0 failure(s), 0 warning(s)
+exit status: 0 (expected 0)
+as expected (the output contains: -> Build version 27A9275)
+
+== 2. a build that only extends the pin: Build version 27A9275a (made up)
+stand-in xcodebuild -version prints: Xcode 27.1 Build version 27A9275a 
+   ok    toolchain: xcodebuild -version -> Build version 27A9275
+   ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+   ok    toolchain: xcodegen --version -> Version: 2.46.0
+   dependency lock check: 0 failure(s), 0 warning(s)
+exit status: 0 (expected 1)
+NOT as expected: 2. a build that only extends the pin: Build version 27A9275a (made up)
+sylvia_check_xcode with the same stand-in: returns 1; warning: Xcode build is '27A9275a'; ADR-0001 pins 27A9275 
+
+== 3. another build: Build version 27A9276 (made up)
+stand-in xcodebuild -version prints: Xcode 27.1 Build version 27A9276 
+   ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+   ok    toolchain: xcodegen --version -> Version: 2.46.0
+   FAIL toolchain xcodebuild -version: expected 'Build version 27A9275', got 'Xcode 27.1'
+   dependency lock check: 1 failure(s), 0 warning(s)
+exit status: 1 (expected 1)
+NOT as expected: 3. another build: Build version 27A9276 (made up): the output does not contain: got 'Build version 27A9276'
+sylvia_check_xcode with the same stand-in: returns 1; warning: Xcode build is '27A9276'; ADR-0001 pins 27A9275 
+
+### B. The repository's other records of the pin, on copies of the committed tree (check without --toolchain)
+
+== 4. the workflow's guard looks for another build
+changed in .github/workflows/ci.yml: 'grep -qx "Build version 27A9275"' -> 'grep -qx "Build version 27A9276"'
+   dependency lock check: 0 failure(s), 0 warning(s)
+exit status: 0 (expected 1)
+NOT as expected: 4. the workflow's guard looks for another build
+
+== 5. the workflow's guard looks first for another Xcode
+changed in .github/workflows/ci.yml: 'for candidate in /Applications/Xcode_27.1.app' -> 'for candidate in /Applications/Xcode_27.2.app'
+   dependency lock check: 0 failure(s), 0 warning(s)
+exit status: 0 (expected 1)
+NOT as expected: 5. the workflow's guard looks first for another Xcode
+
+== 6. CLAUDE.md's toolchain line names another Xcode
+changed in CLAUDE.md: '- Xcode 27.1 (27A9275), Swift 6.4' -> '- Xcode 27.2 (27C100), Swift 6.4'
+   dependency lock check: 0 failure(s), 0 warning(s)
+exit status: 0 (expected 1)
+NOT as expected: 6. CLAUDE.md's toolchain line names another Xcode
+
+== 7. ADR-0001's toolchain table names another Xcode
+changed in Docs/ADRs/0001-platform-baseline-and-toolchain.md: '| Xcode | 27.1, build 27A9275' -> '| Xcode | 27.2, build 27C100'
+   dependency lock check: 0 failure(s), 0 warning(s)
+exit status: 0 (expected 1)
+NOT as expected: 7. ADR-0001's toolchain table names another Xcode
+
+== 8. the unchanged copy (the control for 4-7)
+   dependency lock check: 0 failure(s), 0 warning(s)
+exit status: 0 (expected 0)
+as expected
+
+end: 2026-10-20T04:22:21Z; load: 17:22  up 17 days,  3:32, 2 users, load averages: 2.87 2.17 2.57
+result: FAIL

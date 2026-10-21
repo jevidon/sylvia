@@ -92,7 +92,8 @@ RULES = {
     "U1": "every string is a sequence of Unicode scalar values (no unpaired surrogate)",
     "A1": "every range has start < end",
     "A2": "a scalar range covers its text (EPUB text_offsets: the text with whitespace collapsed)",
-    "A3": "a PDF anchor's exact_text is its segments' texts joined with U+000A",
+    "A3": "a PDF anchor's exact_text is its segments' texts in document order, with nothing or one U+000A between two "
+          "on one page and one U+000A between two on different pages (the reader's composition, ADR-0005)",
     "A4": "PDF segments are in document order",
     "A5": "an EPUB segment index is below its count",
     "A6": "audio ranges name distinct assets, ranges after the first start at 0, total at most 120,000 ms",
@@ -146,6 +147,44 @@ def surrogate_violations(document, where: str = "") -> list[tuple[str, str]]:
     return out
 
 
+def pdf_composition_holds(texts: list[str], newline_required: list[bool], exact_text: str) -> bool:
+    """Rule A3's composition test: whether exact_text is texts[0], then for each later text either nothing or one
+    U+000A and that text, with the U+000A present at every boundary i where newline_required[i - 1] is true.
+
+    Linear in the lengths, whatever the texts hold. Every character a boundary can add is U+000A, so the texts' other
+    characters must appear in exact_text exactly as in their concatenation; what can differ is only the run of U+000A
+    between two of those characters (a gap). Each boundary falls in exactly one gap (the one after as many other
+    characters as the texts before it hold), and adds at most one U+000A to it. So exact_text is such a composition
+    exactly when its other characters equal the concatenation's, and in every gap it holds the concatenation's own
+    U+000A count plus at least the gap's required boundaries and at most all its boundaries. (The rule first built a
+    regular expression of the escaped texts joined by "\\n?"; with texts that are or begin with U+000A its alternatives
+    overlap, and Python's backtracking matcher then took time exponential in the number of segments to refuse a
+    schema-valid anchor: M0 final review round 2, contracts R2-01.)"""
+    def gaps(text: str) -> tuple[str, list[int]]:
+        others, runs, run = [], [], 0
+        for character in text:
+            if character == "\n":
+                run += 1
+            else:
+                runs.append(run)
+                run = 0
+                others.append(character)
+        runs.append(run)
+        return "".join(others), runs
+
+    others, own = gaps("".join(texts))
+    exact_others, found = gaps(exact_text)
+    if exact_others != others:
+        return False
+    least, most = [0] * len(own), [0] * len(own)
+    gap = len(texts[0]) - texts[0].count("\n")
+    for text, required in zip(texts[1:], newline_required):
+        most[gap] += 1
+        least[gap] += 1 if required else 0
+        gap += len(text) - text.count("\n")
+    return all(least[g] <= found[g] - own[g] <= most[g] for g in range(len(own)))
+
+
 def anchor_violations(anchor: dict, *, check_strings: bool = True) -> list[tuple[str, str]]:
     """Rules U1 and A1-A7 on one schema-valid anchor."""
     out: list[tuple[str, str]] = surrogate_violations(anchor) if check_strings else []
@@ -177,8 +216,19 @@ def anchor_violations(anchor: dict, *, check_strings: bool = True) -> list[tuple
                 if x + w > 1 + RECT_TOLERANCE or y + h > 1 + RECT_TOLERANCE:
                     out.append(("A7", f"segments/{i}/line_rects/{j}: x + w = {x + w:.6f}, y + h = {y + h:.6f}: "
                                       f"past the page box"))
-        if anchor["exact_text"] != "\n".join(s["text"] for s in segments):
-            out.append(("A3", "exact_text is not the segments' texts joined with U+000A"))
+        # A3 (ADR-0005): exact_text is the reader's own composition of the pieces, not one fixed join. With one segment
+        # it is that segment's text; with several, their texts in document order with nothing or one U+000A between
+        # two pieces on one page (PDFKit keeps the line break after a piece that ends at a line's end) and one U+000A
+        # where the page changes. A reader restores segment by segment and keeps exact_text as the quotation; this rule
+        # refuses an exact_text no such composition of the segments gives. (Until 19 October 2026 the rule required the
+        # "\n" join, which refused six of the eleven composed selections the G0.1 PDF spike stores exactly; M0 final
+        # review R1-02.) Checked in linear time by pdf_composition_holds (M0 final review round 2, contracts R2-01).
+        texts = [s["text"] for s in segments]
+        page_changes = [b["page_index"] != a["page_index"] for a, b in zip(segments, segments[1:])]
+        if not pdf_composition_holds(texts, [False] * len(page_changes), anchor["exact_text"]):
+            out.append(("A3", "exact_text is not the segments' texts in order with at most one U+000A between two"))
+        elif not pdf_composition_holds(texts, page_changes, anchor["exact_text"]):
+            out.append(("A3", "exact_text has no U+000A between two segments on different pages"))
         for i in range(1, len(segments)):
             a, b = segments[i - 1], segments[i]
             if b["page_index"] < a["page_index"]:
@@ -786,21 +836,36 @@ def ecma262_problem(pattern: str) -> str | None:
     return None
 
 
-def contract_patterns(node, where: str):
+# Keywords whose value maps member names to schemas or objects: JSON Schema's, and OpenAPI's (component names, paths,
+# status codes, media types, header names). Their keys are names, never keywords.
+NAME_MAPS = {"properties", "$defs", "definitions", "dependentSchemas", "paths", "schemas", "parameters", "responses",
+             "requestBodies", "headers", "content", "securitySchemes", "callbacks", "links", "encoding", "webhooks"}
+# Annotation and literal keywords: their values are examples or literal values, not schemas.
+ANNOTATION_KEYWORDS = {"examples", "example", "default", "const", "enum", "description", "title"}
+
+
+def contract_patterns(node, where: str, names: bool = False):
     """Every regular expression in a contract document: `pattern` keyword values and `patternProperties` names, as
-    (JSON Pointer, pattern). Example and literal values are skipped; a property named `pattern` has a schema, not a
-    string, as its value, so it is never taken for the keyword."""
+    (JSON Pointer, pattern). Annotation and literal values are skipped, but only where a keyword stands: inside a name
+    map (`properties`, `$defs`, OpenAPI's `schemas` and the like; `names` true) every key is a member name, and a
+    member called `title`, `description` or `pattern` is walked like any other (contracts review R1-04: the skip was
+    applied to member names too, so the patterns under the `title` properties of catalog-page and device-inbox-page
+    were never checked)."""
     if isinstance(node, dict):
         for key, value in node.items():
             here = f"{where}/{str(key).replace('~', '~0').replace('/', '~1')}"
-            if key == "pattern" and isinstance(value, str):
+            if names:
+                yield from contract_patterns(value, here)
+            elif key == "pattern" and isinstance(value, str):
                 yield here, value
             elif key == "patternProperties" and isinstance(value, dict):
                 for name, sub in value.items():
                     sub_where = f"{here}/{name.replace('~', '~0').replace('/', '~1')}"
                     yield sub_where + " (name)", name
                     yield from contract_patterns(sub, sub_where)
-            elif key not in {"examples", "example", "default", "const", "enum", "description", "title"}:
+            elif key in NAME_MAPS:
+                yield from contract_patterns(value, here, names=isinstance(value, dict))
+            elif key not in ANNOTATION_KEYWORDS:
                 yield from contract_patterns(value, here)
     elif isinstance(node, list):
         for i, item in enumerate(node):
@@ -994,6 +1059,18 @@ def pdf_cases(root: Path, log: Adaptations) -> list[tuple[str, dict | None, list
         env = envelope_for_text_anchors(f"g01-pdf/{s['name']}", [anchor], s["anchor"]["exact_text"], "local_pdf",
                                         f"Page {label_text}" if label_text else None, log, work_id, edition_id)
         cases.append((f"G0.1 PDF anchor-samples.json {s['name']}", env, [anchor]))
+
+    # Selections composed of several pieces (ComposedSelectionTests, every shape it captures and restores exactly):
+    # their exact_text is PDFKit's composition, which rule A3 must accept (M0 final review R1-02).
+    composed = json.loads((root / "Docs/Stage0/evidence/G01-PDF/anchor-composed-samples.json").read_text(encoding="utf-8"))
+    for s in composed["samples"]:
+        label = s["fixture"]
+        work_id, edition_id = fixture_uuid(f"{label}/work"), fixture_uuid(f"{label}/edition")
+        anchor = adapt_pdf_anchor(s["anchor"], work_id, edition_id, log)
+        label_text = anchor["segments"][0].get("page_label")
+        env = envelope_for_text_anchors(f"g01-pdf/composed/{s['name']}", [anchor], s["anchor"]["exact_text"], "local_pdf",
+                                        f"Page {label_text}" if label_text else None, log, work_id, edition_id)
+        cases.append((f"G0.1 PDF anchor-composed-samples.json {s['name']}", env, [anchor]))
 
     # The spike's own capture-envelope example (A.1's shape). Its kind, text_quote, is already the contract's.
     example = copy.deepcopy(doc["capture_envelope_example"])
@@ -1712,6 +1789,77 @@ def fixture_summary(stem: str, counts: Counter) -> str:
             f"schema-valid and breaking exactly one code-checked rule once, the one its name starts with")
 
 
+# ----------------------------------------------------------------------------------------------- A3 at scale
+
+# M0 final review round 2, contracts R2-01: the regular expression A3 used until 20 October 2026 backtracked
+# exponentially on schema-valid anchors whose segment texts are U+000A (about 3.6 times longer per two more segments:
+# 4.5 s at 30). A3_SCALE_SEGMENTS is the schema's own limit (anchor.v1 $defs/pdf/properties/segments/maxItems).
+A3_SCALE_SEGMENTS = 10_000
+A3_SCALE_TIMEOUT_S = 60
+
+
+def a3_scale_anchor(root: Path, segments: int, exact_text: str) -> dict:
+    """A PDF anchor of `segments` pieces on one page, each the one character U+000A, from the valid fixture
+    pdf-two-pages.json; every rule but A3 holds for it whatever exact_text is (A2: each range covers one scalar)."""
+    base = json.loads((root / "Contracts/fixtures/anchor.v1/valid/pdf-two-pages.json").read_text(encoding="utf-8"))
+    template = base["segments"][0]
+    anchor = copy.deepcopy(base)
+    anchor["segments"] = [{**copy.deepcopy(template), "text": "\n", "prefix": "", "suffix": "",
+                           "text_range": {"start": 2 * i, "end": 2 * i + 1, "unit": "unicode_scalar"},
+                           "line_rects": [template["line_rects"][0]]} for i in range(segments)]
+    anchor["exact_text"] = exact_text
+    return anchor
+
+
+def a3_scale_cases(segments: int) -> list[tuple[str, str, list[str]]]:
+    """(name, exact_text, the rules anchor_violations must report) for `segments` one-U+000A pieces on one page."""
+    return [
+        ("no composition: 1.5 times as many U+000A as pieces, then 'x' (the review's case)",
+         "\n" * (segments + segments // 2) + "x", ["A3"]),
+        ("one U+000A too many: twice as many as pieces", "\n" * (2 * segments), ["A3"]),
+        ("the longest composition: one U+000A at every boundary", "\n" * (2 * segments - 1), []),
+        ("the shortest composition: no U+000A added", "\n" * segments, []),
+    ]
+
+
+def a3_scale_probe(root: Path, segments: int) -> int:
+    """Run in a subprocess by a3_scale_violations: one line per case, with the rules found and the seconds taken."""
+    import time
+    for name, exact_text, _ in a3_scale_cases(segments):
+        anchor = a3_scale_anchor(root, segments, exact_text)
+        started = time.perf_counter()
+        rules = [rule for rule, _ in anchor_violations(anchor)]
+        print(json.dumps({"case": name, "rules": rules, "seconds": round(time.perf_counter() - started, 3)}))
+    return 0
+
+
+def a3_scale_violations(root: Path) -> tuple[list[str], str]:
+    """Rule A3 refuses or accepts anchors of the schema's maximum number of one-U+000A segments in linear time. Run in
+    a subprocess with a time limit, so that a matcher that backtracks again fails here instead of hanging the check."""
+    import subprocess
+    try:
+        done = subprocess.run([sys.executable, "-I", str(Path(__file__).resolve()), "--root", str(root),
+                               "--a3-scale-probe", str(A3_SCALE_SEGMENTS)],
+                              capture_output=True, text=True, timeout=A3_SCALE_TIMEOUT_S)
+    except subprocess.TimeoutExpired:
+        return ([f"rule A3 at scale: {A3_SCALE_SEGMENTS} one-U+000A segments not decided within {A3_SCALE_TIMEOUT_S} s "
+                 f"(a backtracking matcher? M0 final review round 2, contracts R2-01)"], "not decided in time")
+    if done.returncode != 0:
+        return [f"rule A3 at scale: the probe exited {done.returncode}: {done.stderr.strip()[-300:]}"], "probe failed"
+    results = [json.loads(line) for line in done.stdout.splitlines() if line.startswith("{")]
+    problems = []
+    expected = {name: rules for name, _, rules in a3_scale_cases(A3_SCALE_SEGMENTS)}
+    for result in results:
+        if result["rules"] != expected.get(result["case"]):
+            problems.append(f"rule A3 at scale: {result['case']}: rules {result['rules']}, expected {expected.get(result['case'])}")
+    if len(results) != len(expected):
+        problems.append(f"rule A3 at scale: {len(results)} results for {len(expected)} cases")
+    slowest = max((r["seconds"] for r in results), default=0.0)
+    return problems, (f"{len(results)} anchors of {A3_SCALE_SEGMENTS:,} one-U+000A segments (the schema's limit) decided "
+                      f"as expected, two refused and two accepted, the slowest in {slowest:.3f} s (indicative; limit "
+                      f"{A3_SCALE_TIMEOUT_S} s)")
+
+
 # ----------------------------------------------------------------------------------------------- main
 
 
@@ -1719,8 +1867,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--root", default=Path(__file__).resolve().parents[1], type=Path)
     parser.add_argument("--report", type=Path)
+    parser.add_argument("--a3-scale-probe", type=int, help=argparse.SUPPRESS)  # run by a3_scale_violations
     args = parser.parse_args()
     root: Path = args.root.resolve()
+    if args.a3_scale_probe:
+        return a3_scale_probe(root, args.a3_scale_probe)
     by_id = load_schemas(root)
     schemas = Schemas(by_id)
     kinds = Kinds(by_id)
@@ -1745,6 +1896,9 @@ def main() -> int:
         counts, problems = fixture_outcomes(root, stem, key, schemas, rules, profiles[key])
         lines.append(fixture_summary(stem, counts))
         failures += problems
+    problems, summary = a3_scale_violations(root)
+    failures += problems
+    lines.append(f"rule A3 at scale: {summary}")
 
     log = Adaptations()
     cases: list[tuple[str, dict | None, list[dict]]] = []

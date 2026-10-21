@@ -1,59 +1,60 @@
 # M0 plan amendments: consistency checks
-command: Docs/Stage0/evidence/M0-plan-amendments/commands/run-checks.sh 8954bf3
-commit under test: 8954bf3
-HEAD: 8954bf30ee2e467df334b100083f47b2d8471a2e; uncommitted paths: 0
-date (UTC): 2026-10-14T00:49:46Z
+command: Docs/Stage0/evidence/M0-plan-amendments/commands/run-checks.sh 101b12e4
+commit under test: 101b12e4
+HEAD: 101b12e439cbfb3b2fd528e320f8051411a53fa3; uncommitted paths: 0
+date (UTC): 2026-10-20T04:55:43Z
 host: macOS 26.6.2 (25G83), arm64; Python 3.14.6
-load: 13:49  up 11 days, 0 sec, 1 user, load averages: 6.73 6.42 7.29
+load: 17:55  up 17 days,  4:06, 2 users, load averages: 3.40 2.80 2.29
 environment: host only; no simulator or device is used by these checks
 
 == Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py
-PASS cited paths exist (101 checked; the run's own log excluded)
+PASS cited paths exist (123 checked; the run's own log excluded)
 PASS G01-EPUB.md: 14 findings, each in Section 2 or 3
-PASS G01-PDF.md: 9 findings, each in Section 2 or 3
-PASS G02-Transfer.md: 20 findings, each in Section 2 or 3
-PASS G03-Intake.md: 14 findings, each in Section 2 or 3
-PASS G04-Audio.md: 8 findings, each in Section 2 or 3
+PASS G01-PDF.md: 15 findings, each in Section 2 or 3
+PASS G02-Transfer.md: 22 findings, each in Section 2 or 3
+PASS G03-Intake.md: 19 findings, each in Section 2 or 3
+PASS G04-Audio.md: 9 findings, each in Section 2 or 3
 PASS G05-AI.md: 23 findings, each in Section 2 or 3
-PASS G05-Recovery.md: 10 findings, each in Section 2 or 3
-PASS G06-Design.md: 17 findings, each in Section 2 or 3
+PASS G05-Recovery.md: 12 findings, each in Section 2 or 3
+PASS G06-Design.md: 18 findings, each in Section 2 or 3
 PASS G06-Design.md: 13 Other-findings bullets, each in Section 3
 PASS G01-EPUB.md: 8 open questions, each referenced
-PASS G01-PDF.md: 5 open questions, each referenced
-PASS G02-Transfer.md: 11 open questions, each referenced
-PASS G03-Intake.md: 7 open questions, each referenced
+PASS G01-PDF.md: 8 open questions, each referenced
+PASS G02-Transfer.md: 12 open questions, each referenced
+PASS G03-Intake.md: 10 open questions, each referenced
 PASS G05-Recovery.md: 8 open questions, each referenced
-PASS G06-Design.md: 13 open questions, each referenced
+PASS G06-Design.md: 14 open questions, each referenced
 PASS G05-AI.md: 8 open questions, each referenced
 PASS G04-Audio.md: 7 open-question bullets (six questions and a warnings note), each matched to the entry that covers it
-PASS Section 3.2: ADR-0001 to ADR-0014, 89 consequences, each mapped to a tag or to no change
-PASS Appendix D has the draft 0.5 entry before draft 0.4
-PASS Section 6 lists tags A01-A53 (53 rows)
-PASS Appendix D lists tags A01-A53 (53 bullets)
-PASS the plan text carries every tag A01-A53 (53 tags)
+PASS Section 3.2: ADR-0001 to ADR-0016, 121 consequences, each mapped to a tag or to no change
+PASS Appendix D has the draft 0.7 entry before draft 0.6, and the draft 0.5 entry before draft 0.4
+PASS Section 6 lists tags A01-A56 (56 rows)
+PASS Appendix D lists tags A01-A56 (56 bullets)
+PASS Appendix D gives A01-A53 their bullets in the draft 0.5 entry and A54-A56 in the draft 0.7 entry
+PASS the plan text carries every tag A01-A56 (56 tags)
 PASS each tag names the same plan sections in the text, Section 6 and Appendix D
 PASS every tag is well formed
 PASS A47 collects exactly the 14 tags plan Section 23.1 carries
-PASS Section 2: 123 rows, each with six cells, a class and a known tag
+PASS Section 2: 139 rows, each with six cells, a class and a known tag
 PASS Section 1: the tags of 6 forced, 7 unforced and 2 considered-and-kept narrowings, none listed twice
 PASS every scope-narrowing row's tag (12 tags) is in Section 1.1 or 1.2
 PASS every Section 1 tag has a Section 2 row
 PASS every Section 1.2 tag has a Section 2 row classified scope narrowing
 PASS plan Appendix D's draft 0.5 entry names exactly the 15 Section 1 tags
-PASS Section 4 lists PO-01 to PO-36 in order (36 rows)
+PASS Section 4 lists PO-01 to PO-44 in order (44 rows)
 PASS Section 4 rows have six cells and known tags
-PASS replaced phrases are absent (32 from the plan, 7 from this document)
-PASS new anchor phrases are present in the plan (28)
+PASS replaced phrases are absent (48 from the plan, 11 from this document)
+PASS new anchor phrases are present in the plan (38)
 PASS T54 names every section the 4.4.6 gaps table names (17 sections)
 PASS the milestone gating rule includes M1 in all 7 places that state it, and the earlier wording is gone
 PASS plan Sections 1-23: 104 quoted phrases, each in the design package, in the 4.4.6 gaps table or its introduction, or listed as not interface text (26)
-PASS plan: 288 table rows, none ragged
-PASS amendments: 296 table rows, none ragged
+PASS plan: 293 table rows, none ragged
+PASS amendments: 337 table rows, none ragged
 PASS Section 2.2 is byte-identical to draft 0.4 (471b143)
 PASS Section 21.5 is byte-identical to draft 0.4 (471b143)
-PASS Section 24 is byte-identical to draft 0.4 (471b143)
+PASS Section 24 is byte-identical to draft 0.6 (0ef8c39)
 PASS the 10 budget values of Section 19.2 equal draft 0.4
-summary: 115 numbered findings in the eight reports; 53 amendment tags; 36 product-owner questions; 0 failed checks
+summary: 132 numbered findings in the eight reports; 56 amendment tags; 44 product-owner questions; 0 failed checks
 exit status: 0
 
 == Docs/Stage0/evidence/M0-plan-amendments/commands/mutation-checks.py (each mutation must make the checker fail)
@@ -63,22 +64,33 @@ caught an unforced narrowing's row labelled a clarification: exit 1; failed: eve
 caught a narrowing missing from plan Appendix D's scope sentence: exit 1; failed: plan Appendix D's draft 0.5 entry names exactly the 15 Section 1 tags
 caught an ADR consequence left unnumbered: exit 1; failed: Section 3.2
 caught an ADR consequence with no destination: exit 1; failed: Section 3.2
+caught ADR-0016's row left out (20 October 2026: it was missing until then): exit 1; failed: Section 3.2
 caught a G0.4 open-question bullet left uncovered: exit 1; failed: G04-Audio.md
 caught a new quoted phrase with no vocabulary entry: exit 1; failed: plan Sections 1-23
 caught a phrase dropped from the vocabulary gaps table: exit 1; failed: plan Sections 1-23
-caught a product-owner question renumbered: exit 1; failed: Section 4 lists PO-01 to PO-36 in order (36 rows)
+caught a product-owner question renumbered: exit 1; failed: Section 4 lists PO-01 to PO-44 in order (44 rows)
 caught a tag left out of the decision register's list (A47): exit 1; failed: A47 collects exactly the 14 tags plan Section 23.1 carries
 caught a gaps-table section dropped from T54: exit 1; failed: T54 names every section the 4.4.6 gaps table names (17 sections)
 caught M1's earlier exception restored in 21.2: exit 1; failed: the milestone gating rule includes M1 in all 7 places that state it, and the earlier wording is gone
 caught Appendix D's A46 summary without M1: exit 1; failed: the milestone gating rule includes M1 in all 7 places that state it, and the earlier wording is gone
-caught the narrower uncertain-5xx list restored in 14.4: exit 1; failed: replaced phrases are absent (32 from the plan, 7 from this document) | new anchor phrases are present in the plan (28)
+caught the narrower uncertain-5xx list restored in 14.4: exit 1; failed: replaced phrases are absent (48 from the plan, 11 from this document) | new anchor phrases are present in the plan (38)
 caught the EPUB-folder narrowing labelled a clarification: exit 1; failed: every Section 1.2 tag has a Section 2 row classified scope narrowing
-summary: 15 mutations, 15 caught, 0 missed
+caught the bundle's completeness proof applied to raw Finder copies again (8.5): exit 1; failed: replaced phrases are absent (48 from the plan, 11 from this document)
+caught the bearer-token copies said to be bounded in all again (15.4): exit 1; failed: replaced phrases are absent (48 from the plan, 11 from this document) | new anchor phrases are present in the plan (38)
+caught the failed-gate count turned back to three (21.1): exit 1; failed: replaced phrases are absent (48 from the plan, 11 from this document) | new anchor phrases are present in the plan (38)
+caught a new tag left out of Appendix D's draft 0.7 entry: exit 1; failed: Appendix D lists tags A01-A56 (55 bullets) | Appendix D gives A01-A53 their bullets in the draft 0.5 entry and A54-A56 in the draft 0.7 entry | each tag names the same plan sections in the text, Section 6 and Appendix D
+caught G0.4's playback-control decision left without its source: exit 1; failed: G04-Audio.md
+caught a finding the re-check added left without its row: exit 1; failed: G03-Intake.md
+summary: 22 mutations, 22 caught, 0 missed
 exit status: 0
 tree after the mutation checks: 0 uncommitted paths
 
 == control, not required (this work changes no contract): Scripts/ci.sh contracts
+==> 00-git-lfs
+    pass (5s)
 ==> 10-contracts
     pass (1s)
-all 1 steps passed
+==> 11-capture-anchor-contracts
+    pass (53s)
+all 3 steps passed
 exit status: 0

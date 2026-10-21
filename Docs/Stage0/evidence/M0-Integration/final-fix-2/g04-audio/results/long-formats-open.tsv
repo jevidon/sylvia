@@ -1,0 +1,54 @@
+# Open time against file length (review R3-01). Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs); at the start: host load averages 2.92 3.11 3.87 (1, 5, 15 min), 1 simulators booted on the host when the test run started
+# Every open on its own fresh copy of the file. inspect_s = AssetInspector.inspect (the import's first codec inspection: precise
+# duration, tracks, chapters, tags); ready_precise_s = AVPlayerItem creation to readyToPlay with AVURLAssetPreferPreciseDurationAndTimingKey
+# (the player opens every member this way on every launch, unless the import proved a constant-bit-rate MP3), the median of
+# 3 trials listed in ready_precise_trials_s; ready_estimated_s = the same without the key (1 trial).
+# Review R5-05: utc and load_1m_start/load_1m_end = the time and the host's 1-minute load average when the row's measurements began
+# and ended (open times of the scanning formats grow with the host's load; host-load.tsv has the load every 30 s).
+format	file	hours	bytes	inspect_s	ready_precise_s	ready_precise_trials_s	ready_estimated_s	precise_duration_ms	duration_error_ms	chapters	utc	load_1m_start	load_1m_end
+flac	fmt-flac.flac	0.17	15670386	0.003	0.449	0.446,0.455,0.449	0.013	600000	0	4	2026-10-19T15:33:02Z	2.9	2.9
+flac	long-formats/long-flac-3h.flac	3.00	284731653	0.004	8.050	8.108,8.050,7.736	0.013	10807249	0	5	2026-10-19T15:33:04Z	2.9	3.9
+flac	long-formats/long-flac-10h.flac	10.21	968229905	0.004	26.305	26.128,26.305,26.575	0.014	36744647	0	17	2026-10-19T15:33:28Z	3.9	4.1
+ogg-opus	fmt-opus.ogg	0.17	2368743	0.038	0.049	0.048,0.049,0.049	0.014	600000	0	4	2026-10-19T15:34:47Z	4.1	4.1
+ogg-opus	long-formats/long-opus-3h.ogg	3.00	42834682	0.424	0.443	0.434,0.460,0.443	0.014	10807249	0	5	2026-10-19T15:34:47Z	4.1	4.1
+ogg-opus	long-formats/long-opus-10h.ogg	10.21	145634993	1.116	1.138	1.138,1.172,1.093	0.013	36744647	0	17	2026-10-19T15:34:49Z	4.1	4.0
+opus-ext	fmt-opus.opus	0.17	2368743	0.038	0.045	0.044,0.045,0.050	0.013	600000	0	4	2026-10-19T15:34:53Z	4.0	4.0
+opus-ext	long-formats/long-opus-10h.opus	10.21	145634993	1.053	0.847	0.847,0.841,0.867	0.012	36744647	0	17	2026-10-19T15:34:53Z	4.0	4.3
+mp4-flac	fmt-mp4-flac.m4a	0.17	15686615	0.005	0.012	0.012,0.013,0.012	0.013	600000	0	4	2026-10-19T15:34:57Z	4.3	4.3
+mp4-flac	long-formats/long-mp4-flac-10h.m4a	10.21	969577700	0.006	0.013	0.013,0.018,0.013	0.013	36744647	0	17	2026-10-19T15:34:57Z	4.3	4.3
+mp4-opus	fmt-mp4-opus.m4a	0.17	2443773	0.005	0.012	0.012,0.012,0.012	0.013	600000	0	4	2026-10-19T15:34:57Z	4.3	4.3
+mp4-opus	long-formats/long-mp4-opus-10h.m4a	10.21	150157797	0.007	0.024	0.024,0.024,0.024	0.026	36744647	0	17	2026-10-19T15:34:57Z	4.3	4.3
+caf-opus	fmt-caf-opus.caf	0.17	2954730	0.005	0.012	0.012,0.013,0.012	0.013	600000	0	0	2026-10-19T15:34:57Z	4.3	4.3
+caf-opus	long-formats/long-caf-opus-10h.caf	10.21	180692242	0.029	0.024	0.024,0.024,0.026	0.025	36744647	0	0	2026-10-19T15:34:57Z	4.3	4.3
+wav	fmt-wav.wav	0.17	52920260	0.004	0.007	0.007,0.007,0.006	0.007	600000	0	0	2026-10-19T15:34:58Z	4.3	4.3
+wav	long-formats/long-wav-10h.wav	10.21	3240877868	0.004	0.006	0.006,0.006,0.007	0.007	36744647	0	0	2026-10-19T15:34:58Z	4.3	4.3
+m4a-alac	fmt-m4a-alac.m4a	0.17	18068333	0.004	0.013	0.013,0.013,0.013	0.014	600000	0	4	2026-10-19T15:34:58Z	4.3	4.3
+m4a-alac	long-formats/long-m4a-alac-10h.m4a	10.21	1116497621	0.006	0.013	0.011,0.014,0.013	0.012	36744647	0	17	2026-10-19T15:34:58Z	4.3	4.3
+m4a-he-aac-v1	fmt-m4a-heaac-v1.m4a	0.17	2454034	0.004	0.013	0.013,0.013,0.013	0.014	600047	47	4	2026-10-19T15:34:58Z	4.3	4.3
+m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	10.21	150148093	0.006	0.012	0.012,0.012,0.014	0.014	36744693	46	17	2026-10-19T15:34:58Z	4.3	4.3
+m4a-he-aac-v2	fmt-m4a-heaac-v2.m4a	0.17	2454033	0.005	0.013	0.012,0.013,0.014	0.014	600047	47	4	2026-10-19T15:34:58Z	4.3	4.3
+m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	10.21	150148175	0.006	0.013	0.013,0.013,0.013	0.013	36744693	46	17	2026-10-19T15:34:58Z	4.3	4.3
+m4a-aac-lc	fmt-m4a-aac-lc.m4a	0.17	4946192	0.005	0.012	0.012,0.012,0.014	0.013	600000	0	4	2026-10-19T15:34:58Z	4.3	4.3
+m4a-aac-lc	long-aac-10h.m4b	10.21	229296874	0.007	0.024	0.024,0.025,0.024	0.025	36744647	0	17	2026-10-19T15:34:58Z	4.3	4.3
+mp3-cbr	fmt-mp3-cbr.mp3	0.17	4800489	0.012	0.012	0.012,0.012,0.013	0.012	600033	33	0	2026-10-19T15:34:58Z	4.3	4.3
+mp3-cbr	long-mp3-cbr-10h.mp3	10.21	293957609	0.324	0.013	0.013,0.013,0.013	0.013	36744673	26	0	2026-10-19T15:34:58Z	4.3	4.3
+mp3-vbr-xing	fmt-mp3-vbr-xing.mp3	0.17	4120603	0.012	0.012	0.012,0.012,0.013	0.013	600033	33	0	2026-10-19T15:34:59Z	4.3	4.3
+mp3-vbr-xing	long-mp3-vbr-10h.mp3	10.21	258900276	0.324	0.012	0.012,0.013,0.012	0.006	36744673	26	0	2026-10-19T15:34:59Z	4.3	4.3
+mp3-vbr-noxing	fmt-mp3-vbr-noxing.mp3	0.17	4120421	0.139	0.136	0.135,0.137,0.136	0.013	600033	33	0	2026-10-19T15:34:59Z	4.3	4.3
+mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	10.21	258900094	7.983	7.519	7.519,7.502,7.530	0.014	36744673	26	0	2026-10-19T15:35:00Z	4.3	4.3
+# precise open growth per format: (median ready_precise at the longest file - at 600 s) / (hours difference)
+open_growth	caf-opus	0.001 s per hour of file (0.012 s at 0.17 h, 0.024 s at 10.21 h)
+open_growth	flac	2.575 s per hour of file (0.449 s at 0.17 h, 26.305 s at 10.21 h)
+open_growth	m4a-aac-lc	0.001 s per hour of file (0.012 s at 0.17 h, 0.024 s at 10.21 h)
+open_growth	m4a-alac	0.000 s per hour of file (0.013 s at 0.17 h, 0.013 s at 10.21 h)
+open_growth	m4a-he-aac-v1	-0.000 s per hour of file (0.013 s at 0.17 h, 0.012 s at 10.21 h)
+open_growth	m4a-he-aac-v2	-0.000 s per hour of file (0.013 s at 0.17 h, 0.013 s at 10.21 h)
+open_growth	mp3-cbr	0.000 s per hour of file (0.012 s at 0.17 h, 0.013 s at 10.21 h)
+open_growth	mp3-vbr-noxing	0.735 s per hour of file (0.136 s at 0.17 h, 7.519 s at 10.21 h)
+open_growth	mp3-vbr-xing	0.000 s per hour of file (0.012 s at 0.17 h, 0.012 s at 10.21 h)
+open_growth	mp4-flac	0.000 s per hour of file (0.012 s at 0.17 h, 0.013 s at 10.21 h)
+open_growth	mp4-opus	0.001 s per hour of file (0.012 s at 0.17 h, 0.024 s at 10.21 h)
+open_growth	ogg-opus	0.109 s per hour of file (0.049 s at 0.17 h, 1.138 s at 10.21 h)
+open_growth	opus-ext	0.080 s per hour of file (0.045 s at 0.17 h, 0.847 s at 10.21 h)
+open_growth	wav	-0.000 s per hour of file (0.007 s at 0.17 h, 0.006 s at 10.21 h)
+# at the end: host load averages 4.26 3.71 3.99 (1, 5, 15 min), 1 simulators booted on the host when the test run started

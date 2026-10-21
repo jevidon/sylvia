@@ -1,0 +1,49 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3; commit: 9ac7789101c1749eb8eecf051ee710d30de0533e (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T19:47:42Z; load:  8:47  up 15 days, 18:58, 3 users, load averages: 1.55 1.30 2.37
+command: Scripts/ci.sh contracts dependency-lock hard-rules
+
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (51s)
+==> 12-dependency-lock
+    FAIL (34s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/.build/ci-logs/12-dependency-lock.log
+    | ok    a product test target takes fixtures, outside headers and a transitive module alias (tests never ship): no failure
+    | ok    a product package links a library only on Linux, where no Apple SDK is involved: no failure
+    | ok    a product package links a library the inventory lists (binaries, kind linked): no failure
+    | ok    a macOS-only package used only under a macOS condition, by a macOS app target: no failure
+    | ok    an inventoried binary target with the same URL and checksum: no failure
+    | ok    a workflow action pinned to a commit and recorded as such: no failure
+    | ok    a symbolic link under Packages/ to another product file: no failure
+    | ok    a product target and package pass only flags product targets may pass: no failure
+    | ok    a tracked prefix header, bridging header and module map, definitions without transitive names, and SDKROOT set to an SDK: no failure
+    | ok    a test target passes any flag and setting (tests never ship): no failure
+    | ok    a referenced Xcode project generated from a project.yml tracked beside it: no failure
+    | self-test: 228 mutations (22 categories: binary, ci-actions, docs, flag, inventory, license-text, lock-registry, not-exact, outside-product, pin-differs, pin-missing, platform, python-tools, spike-in-product, test-in-product, test-layout, toolchain, transitive-direct, unknown-package, unlocked, vendored-asset, xcode-project) and 30 allowed changes; 109 of the 109 failure branches reached by the mutation written for them, 2 of the 2 warning branches by the allowed change written for them; 0 wrong
+    | 
+    | --- check: this repository against Docs/Licenses/inventory.json, and the installed toolchain
+    | ok    committed Xcode projects or workspaces: 0
+    | ok    locks: 15 committed, 15 registered
+    | ok    manifests: 19 read, 16 remote requirements
+    | ok    symbolic links under the product roots: 0
+    | ok    module maps read as product code: 0
+    | ok    license texts: 53 checked
+    | ok    product sources: 59 Swift and 0 C-family files checked for imports of transitive-only modules
+    | ok    binaries: 0 declared by product manifests, 0 committed under the product roots, 0 inventoried
+    | ok    vendored assets: 3 listed
+    | ok    python tools: 20 pinned, 1 recorded as unpinned (pip at any version, with a warning below 26.2.0); the virtualenv holds exactly these (pip 26.2.1)
+    | ok    workflow actions: 2 used
+    | ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+    | ok    toolchain: xcodegen --version -> Version: 2.46.0
+    | ok    acknowledgements draft: matches the inventory (235350 characters)
+    | FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'
+    | dependency lock check: 1 failure(s), 0 warning(s)
+==> 13-hard-rules
+    pass (6s)
+FAILED: 12-dependency-lock
+
+exit status: 1
+end: 2026-10-18T19:49:19Z; load:  8:49  up 15 days, 18:59, 3 users, load averages: 2.08 1.65 2.40

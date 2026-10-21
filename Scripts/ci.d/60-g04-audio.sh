@@ -28,6 +28,15 @@
 #                     applied after decoding, the time-pitch stage and the analysis taps, and the clocks are unaffected
 #                     (MutedRenderingTests, audio-output.txt; isMuted is not used because it changes the rendering).
 #
+# Host precondition (M0 final review round 2, CC2-01): the iOS Simulator plays through the Mac's default output device,
+# and an AVPlayer's clock includes that device's output latency. The drop-in reads that device and the presentation
+# latency CoreAudio reports for it (Spikes/G04-Audio/Scripts/host_audio_output.swift, read-only), records them in its log
+# and in every row of host-load.tsv, and stops at once, naming the device, when the latency is above 0.3 s: the tests
+# that compare the player's clock with the rendered audio or with wall time tolerate at most 0.5 s, and with an AirPlay
+# default output (2.012 s) seven of them failed after 77 minutes. The built-in speakers or wired headphones are well
+# below it (the built-in speakers 0.027 s on the build Mac). A person changes the output; agents never change the Mac's
+# audio device, volume or mute state, and the tests' tolerances are never widened for it.
+#
 # Exits non-zero when fixture generation, generation, a build, any test, the process-kill trial, the portability
 # check or a quick-capture UI test fails, when a quick-capture result the G0.4 report relies on is missing (the control's
 # press performed and saved in the app's process; with the team-signed build also the App Shortcut run, and the
@@ -61,6 +70,10 @@ EXCERPTS="$SYLVIA_ROOT/.build/ci-results/g04-excerpts"
 SIM_NAME="${G04_SIM_NAME:-Sylvia-M0-g04-audio}"
 BUNDLE="$SYLVIA_ROOT/.build/ci-results/g04-audio.xcresult"
 PORTABILITY_BUNDLE="$SYLVIA_ROOT/.build/ci-results/g04-audio-portability.xcresult"
+# The host precondition (header): the default output's presentation latency, in seconds, above which the drop-in stops.
+MAX_OUTPUT_LATENCY_S=0.300
+OUTPUT_PROBE="$SYLVIA_ROOT/$SPIKE/.build/host-audio-output"
+HOST_LOAD=""
 
 # Every table a full run writes. The run fails if one is missing or older than the run.
 EXPECTED_TABLES=(
@@ -83,6 +96,12 @@ UDID=""
 SAMPLER_PID=""
 cleanup() {
   if [[ -n "$SAMPLER_PID" ]]; then kill "$SAMPLER_PID" >/dev/null 2>&1 || true; fi
+  # Name the output device if it changed to a slow one during the run (CC2-01): the clock tests fail with it.
+  if [[ -s "${HOST_LOAD:-}" ]]; then
+    awk -F'\t' -v limit="$MAX_OUTPUT_LATENCY_S" 'NR > 2 && $8 != "unknown" && $8 + 0 > limit + 0 {
+        print "note: at " $1 " the default output was " $6 " (" $7 ", presentation latency " $8 " s), above the " limit " s limit:"
+        print "      the tests that compare the player clock with the rendered audio fail with such an output"; exit }' "$HOST_LOAD"
+  fi
   if [[ -n "$UDID" && "${G04_KEEP_SIM:-0}" != "1" ]]; then
     xcrun simctl shutdown "$UDID" >/dev/null 2>&1 || true
     echo "simulator $SIM_NAME ($UDID) shut down on exit (G04_KEEP_SIM=1 keeps it booted)"
@@ -99,6 +118,29 @@ sylvia_check_xcode || true
 xcodebuild -version
 xcodegen --version
 ffmpeg -version | head -1
+
+step "host audio output (read-only): the device the simulator plays through, and its presentation latency (limit $MAX_OUTPUT_LATENCY_S s)"
+mkdir -p "$(dirname "$OUTPUT_PROBE")"
+xcrun swiftc -swift-version 6 -warnings-as-errors -O -o "$OUTPUT_PROBE" "$SPIKE/Scripts/host_audio_output.swift"
+"$OUTPUT_PROBE" || true
+IFS=$'\t' read -r OUTPUT_NAME OUTPUT_TRANSPORT OUTPUT_LATENCY < <("$OUTPUT_PROBE" --tsv || true) || true
+if [[ -z "${OUTPUT_LATENCY:-}" || "$OUTPUT_LATENCY" == "unknown" ]]; then
+  echo "WARN the default output's presentation latency could not be read; the clock tests' result depends on it (header)"
+elif awk -v latency="$OUTPUT_LATENCY" -v limit="$MAX_OUTPUT_LATENCY_S" 'BEGIN { exit !(latency + 0 > limit + 0) }'; then
+  if [[ "${G04_SKIP_REALAV:-0}" == "1" ]]; then
+    echo "note: the default output's latency is above the limit; G04_SKIP_REALAV=1 runs none of the clock tests"
+  else
+    echo "error: the Mac's default output device is '$OUTPUT_NAME' (transport $OUTPUT_TRANSPORT), with a presentation"
+    echo "latency of $OUTPUT_LATENCY s, above the $MAX_OUTPUT_LATENCY_S s this drop-in accepts. The iOS Simulator plays through that"
+    echo "device and an AVPlayer's clock includes its latency, so the tests that compare the player's clock with the"
+    echo "rendered audio or with wall time would fail after more than an hour (seven did with an AirPlay output, 2.012 s,"
+    echo "in the M0 final fix's complete run). A person sets the Mac's sound output to the built-in speakers or wired"
+    echo "headphones (System Settings > Sound > Output) and runs it again; agents never change the Mac's audio device."
+    exit 1
+  fi
+else
+  echo "the default output '$OUTPUT_NAME' ($OUTPUT_TRANSPORT, $OUTPUT_LATENCY s) is within the limit"
+fi
 
 # Quiet (1 % volume) unless SYLVIA_AUDIBLE_PLAYBACK=1 (passed to the test processes and the harness launches below).
 if [[ "${SYLVIA_AUDIBLE_PLAYBACK:-0}" == "1" ]]; then AUDIBLE=1; else AUDIBLE=0; fi
@@ -234,13 +276,15 @@ xcrun simctl list devices | grep "$UDID"
 # jobs' simulators). One row every 30 s until the drop-in exits; the timing tables also record the load per trial.
 HOST_LOAD="$RESULTS/host-load.tsv"
 {
-  echo "# Host load during this run of Scripts/ci.d/60-g04-audio.sh: one sample every 30 s (uptime load averages; simulators booted on the host, this job's included)."
-  printf 'utc\tload_1m\tload_5m\tload_15m\tbooted_simulators\n'
+  echo "# Host load during this run of Scripts/ci.d/60-g04-audio.sh: one sample every 30 s (uptime load averages; simulators booted on the host, this job's included; the Mac's default output device, its transport and CoreAudio's presentation latency in seconds, read-only, M0 final review round 2 CC2-01)."
+  printf 'utc\tload_1m\tload_5m\tload_15m\tbooted_simulators\tdefault_output\toutput_transport\toutput_latency_s\n'
 } > "$HOST_LOAD"
 (
   while true; do
     read -r l1 l5 l15 < <(sysctl -n vm.loadavg | tr -d '{}')
-    printf '%s\t%s\t%s\t%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$l1" "$l5" "$l15" "$(booted_simulators)" >> "$HOST_LOAD"
+    output="$("$OUTPUT_PROBE" --tsv 2>/dev/null || true)"
+    [[ -n "$output" ]] || output="$(printf 'unknown\tunknown\tunknown')"
+    printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$l1" "$l5" "$l15" "$(booted_simulators)" "$output" >> "$HOST_LOAD"
     sleep 30
   done
 ) &

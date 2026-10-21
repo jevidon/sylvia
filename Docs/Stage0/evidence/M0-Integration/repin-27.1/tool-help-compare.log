@@ -1,0 +1,25 @@
+command: Docs/Stage0/evidence/M0-Integration/repin-27.1/commands/tool-help-compare.sh
+commit: dc81fcea885cc1c8c326e541b889090bc5d3df4a; uncommitted paths: 1
+date: 2026-10-20T02:42:29Z; load: 15:42  up 17 days,  1:53, 2 users, load averages: 9.70 5.41 3.72
+tool-help.sh exit status: 0; output: Docs/Stage0/evidence/M0-Integration/repin-27.1/tool-help-27.1.txt
+
+== diff (the committed output under Xcode 27.0, then this one under 27.1)
+2,3c2,3
+< # recorded 2026-10-14T06:46:22Z on host macOS 26.6.2 (25G83), Xcode 27.0 Build version 27A266a 
+< # commit: 498691cddc9e7093549c84fc7171ac29e20dc7a5
+---
+> # recorded 2026-10-20T02:42:29Z on host macOS 26.6.2 (25G83), Xcode 27.1 Build version 27A9275 
+> # commit: dc81fcea885cc1c8c326e541b889090bc5d3df4a
+325c325,329
+<                           Arguments to pass to the remote application.
+---
+>                           Arguments to pass to the remote process.
+>         Precede these arguments with '--' if any of them would otherwise be
+>         interpreted as an argument to devicectl itself. The first '--' on the
+>         command line ends devicectl's own arguments and is not passed along; a
+>         later one is passed to the other process unchanged.
+421c425
+< # devicectl version: 642.16
+---
+> # devicectl version: 651.13.5
+diff exit status: 1 (1: the outputs differ; each difference is listed above)

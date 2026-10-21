@@ -1,0 +1,95 @@
+command: Docs/Stage0/evidence/M0-Integration/final-fix-2/commands/guard-controls.sh
+commit: 01ccc1b7f5d2ed17e0d5d1aac2221570215df525; uncommitted files: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 ; load:  4:25  up 16 days, 14:35, 2 users, load averages: 8.39 5.54 4.92
+
+== 1. the planted forms typecheck in Swift 6 (xcrun swiftc -typecheck -swift-version 6, host)
+typecheck: exit 0 (each form compiles)
+  planted.swift:10:89: warning: 'TLSv10' was deprecated in macOS 12.0: Use tls_protocol_version_TLSv12 or tls_protocol_version_TLSv13 instead. [#DeprecatedDeclaration]
+     |                                                                                         `- warning: 'TLSv10' was deprecated in macOS 12.0: Use tls_protocol_version_TLSv12 or tls_protocol_version_TLSv13 instead. [#DeprecatedDeclaration]
+  planted.swift:13:50: warning: 'tlsProtocol1' was deprecated in macOS 10.15 [#DeprecatedDeclaration]
+     |                                                  `- warning: 'tlsProtocol1' was deprecated in macOS 10.15 [#DeprecatedDeclaration]
+
+== 2. the self-tests of the current guards
+self-test: copies of the scanned files under tg-current/.build/self-test/Spikes/G02-Transfer (the path contains /.build/)
+ok: the unchanged copy, under a path that contains /.build/: passes
+ok: NSAllowsArbitraryLoads in a planted plist: fails arbitrary-loads, ats-keys
+ok: an ATS key in a planted plist: fails ats-keys
+ok: an ATS key in a JSON project spec: fails ats-keys
+ok: the harness target given an ATS variant plist: fails harness-plist
+ok: a second server-trust credential written across two lines: fails trust-credential
+ok: a TLS 1.0 minimum: fails weak-tls
+ok: a server-trust credential whose type Swift infers, answering every challenge: fails trust-credential
+ok: a TLS 1.0 minimum set through Network.framework: fails weak-tls
+ok: a TLS 1.1 minimum passed as an argument: fails weak-tls
+ok: a deprecated SSLProtocol minimum: fails weak-tls
+ok: TLS 1.2 minimums in the same forms are not findings: passes
+ok: a violation inside a nested build directory is not the spike's: passes
+ok: an ATS key named in a Swift comment line: passes
+self-test: PASS (14 cases, 0 failure(s))
+trust-guards.py --self-test exit: 0
+self-test directory: .build/scratch/audit-self-test.Ud58kj (removed on exit)
+ok: plain directory: exactly the 34 planted lines are findings
+ok: plain directory: the audit fails when there are findings
+ok: plain directory: an allowlisted probe plist is reported as allowed, not as a finding
+ok: plain directory: the two canary keys are allowed as canaries under both credential rules (4 of 4)
+ok: plain directory: the binary file is skipped and the Spikes/, test-target and Markdown lookalikes are not findings
+ok: plain directory: no matched credential value is printed (only length and first four characters)
+ok: git work tree: exactly the 34 planted lines are findings
+ok: git work tree: the audit fails when there are findings
+ok: git work tree: an allowlisted probe plist is reported as allowed, not as a finding
+ok: git work tree: the two canary keys are allowed as canaries under both credential rules (4 of 4)
+ok: git work tree: the binary file is skipped and the Spikes/, test-target and Markdown lookalikes are not findings
+ok: git work tree: no matched credential value is printed (only length and first four characters)
+ok: git work tree: ignored files are not listed
+ok: an allowlist entry that matches nothing is reported STALE and fails the audit
+ok: allowlisting a never-allowlistable rule is refused
+ok: an allowlist entry whose reason names no ADR is refused, and excuses nothing
+ok: a clean tree passes with no finding
+self-test: PASS (0 failure(s))
+audit-hard-rules.sh self-test exit: 0
+
+== 3a. trust-guards.py with the patterns of 83ee280 put back: the new cases must fail the self-test
+self-test: copies of the scanned files under tg-old/.build/self-test/Spikes/G02-Transfer (the path contains /.build/)
+ok: the unchanged copy, under a path that contains /.build/: passes
+ok: NSAllowsArbitraryLoads in a planted plist: fails arbitrary-loads, ats-keys
+ok: an ATS key in a planted plist: fails ats-keys
+ok: an ATS key in a JSON project spec: fails ats-keys
+ok: the harness target given an ATS variant plist: fails harness-plist
+ok: a second server-trust credential written across two lines: fails trust-credential
+ok: a TLS 1.0 minimum: fails weak-tls
+FAIL: a server-trust credential whose type Swift infers, answering every challenge: passes (expected to fail trust-credential)
+FAIL: a TLS 1.0 minimum set through Network.framework: passes (expected to fail weak-tls)
+FAIL: a TLS 1.1 minimum passed as an argument: passes (expected to fail weak-tls)
+FAIL: a deprecated SSLProtocol minimum: passes (expected to fail weak-tls)
+ok: TLS 1.2 minimums in the same forms are not findings: passes
+ok: a violation inside a nested build directory is not the spike's: passes
+ok: an ATS key named in a Swift comment line: passes
+self-test: FAIL (14 cases, 4 failure(s))
+self-test exit with the old patterns: 1
+control: as expected, exactly the 4 new cases fail with the old patterns
+
+== 3b. audit-hard-rules.sh with the patterns of 83ee280 put back: the new planted lines must be missing
+self-test directory: .build/scratch/audit-self-test.a1jN2q (removed on exit)
+FAIL: plain directory: exactly the 34 planted lines are findings; missing [('trust-override', 'Sources/Inferred.swift', 5), ('trust-override', 'Sources/Wrapped.swift', 13), ('weak-tls', 'Sources/Inferred.swift', 9), ('weak-tls', 'Sources/Inferred.swift', 11), ('weak-tls', 'Sources/Inferred.swift', 13), ('weak-tls', 'Sources/Wrapped.swift', 10)]; unexpected []
+ok: plain directory: the audit fails when there are findings
+ok: plain directory: an allowlisted probe plist is reported as allowed, not as a finding
+ok: plain directory: the two canary keys are allowed as canaries under both credential rules (4 of 4)
+ok: plain directory: the binary file is skipped and the Spikes/, test-target and Markdown lookalikes are not findings
+ok: plain directory: no matched credential value is printed (only length and first four characters)
+FAIL: git work tree: exactly the 34 planted lines are findings; missing [('trust-override', 'Sources/Inferred.swift', 5), ('trust-override', 'Sources/Wrapped.swift', 13), ('weak-tls', 'Sources/Inferred.swift', 9), ('weak-tls', 'Sources/Inferred.swift', 11), ('weak-tls', 'Sources/Inferred.swift', 13), ('weak-tls', 'Sources/Wrapped.swift', 10)]; unexpected []
+ok: git work tree: the audit fails when there are findings
+ok: git work tree: an allowlisted probe plist is reported as allowed, not as a finding
+ok: git work tree: the two canary keys are allowed as canaries under both credential rules (4 of 4)
+ok: git work tree: the binary file is skipped and the Spikes/, test-target and Markdown lookalikes are not findings
+ok: git work tree: no matched credential value is printed (only length and first four characters)
+ok: git work tree: ignored files are not listed
+ok: an allowlist entry that matches nothing is reported STALE and fails the audit
+ok: allowlisting a never-allowlistable rule is refused
+ok: an allowlist entry whose reason names no ADR is refused, and excuses nothing
+ok: a clean tree passes with no finding
+self-test: FAIL (2 failure(s))
+self-test exit with the old patterns: 1
+first 'missing' list: missing [('trust-override', 'Sources/Inferred.swift', 5), ('trust-override', 'Sources/Wrapped.swift', 13), ('weak-tls', 'Sources/Inferred.swift', 9), ('weak-tls', 'Sources/Inferred.swift', 11), ('weak-tls', 'Sources/Inferred.swift', 13), ('weak-tls', 'Sources/Wrapped.swift', 10)]
+control: as expected, exactly the 6 new planted lines are missed with the old patterns
+
+result: PASS

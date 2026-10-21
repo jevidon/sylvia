@@ -1,0 +1,35 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3; commit: 9ac7789101c1749eb8eecf051ee710d30de0533e (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T19:46:21Z; load:  8:46  up 15 days, 18:56, 3 users, load averages: 1.36 1.25 2.47
+command: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/Docs/Stage0/evidence/M0-Integration/lfs/commands/base-reflog.sh 504fac2e0c37efa5b41ed4503752758b103bc00d adab8e2a3b69671ddabe7963793f41a828620ffb wf_a2c53b6f-8a6-1
+
+# reflog around the adoption's base 504fac2e0c37efa5b41ed4503752758b103bc00d (2026-10-18T19:46:21Z); git version 2.55.0
+
+$ git log -1 --format='%H parents: %P; %s' 504fac2e0c37efa5b41ed4503752758b103bc00d
+504fac2e0c37efa5b41ed4503752758b103bc00d parents: 4c49b5b92dbc39d25f5d3b2002b456f45abe384c 177ed9a95dc03d03210f5be01a6c566bc5d3b365; Merge pull request #4 from jevidon/m0-integrate
+
+$ git reflog show --date=iso-local m0-integrate, from the entry of the adoption commit to the entry before the base's
+adab8e2 m0-integrate@{2026-10-19 06:02:29 +1300}: commit: Track snapshot and evidence images with Git LFS
+504fac2 m0-integrate@{2026-10-19 05:45:59 +1300}: branch: Reset to 504fac2
+177ed9a m0-integrate@{2026-10-15 16:19:29 +1300}: commit (merge): Merge main into m0-integrate: Gloss UX and roadmap revision, README
+
+$ git reflog show --date=iso-local origin/main (latest 3)
+504fac2 origin/main@{2026-10-19 05:45:37 +1300}: fetch -q origin: fast-forward
+4c49b5b origin/main@{2026-10-15 12:53:41 +1300}: fetch -q origin: fast-forward
+e5f0f5e origin/main@{2026-10-15 12:46:02 +1300}: fetch origin main: fast-forward
+
+$ git reflog show --date=iso-local origin/m0-integrate (latest 2)
+177ed9a origin/m0-integrate@{2026-10-15 16:24:07 +1300}: update by push
+d8e7d39 origin/m0-integrate@{2026-10-15 12:16:14 +1300}: update by push
+
+$ git reflog show --date=iso-local worktrees/wf_a2c53b6f-8a6-1/HEAD (oldest 3 entries: the worktree's creation and first checkout)
+504fac2 worktrees/wf_a2c53b6f-8a6-1/HEAD@{2026-10-19 05:47:14 +1300}: checkout: moving from worktree-wf_a2c53b6f-8a6-1 to m0-integrate
+504fac2 worktrees/wf_a2c53b6f-8a6-1/HEAD@{2026-10-19 05:46:51 +1300}: reset: moving to HEAD
+504fac2 worktrees/wf_a2c53b6f-8a6-1/HEAD@{2026-10-19 05:46:51 +1300}: 
+
+first parent 4c49b5b92dbc39d25f5d3b2002b456f45abe384c: Merge pull request #3 from jevidon/codex/readme-platform-vision
+second parent 177ed9a95dc03d03210f5be01a6c566bc5d3b365: Merge main into m0-integrate: Gloss UX and roadmap revision, README
+the second parent is an ancestor of the base: moving m0-integrate from it to the base only adds commits
+
+exit status: 0
+end: 2026-10-18T19:46:21Z; load:  8:46  up 15 days, 18:56, 3 users, load averages: 1.36 1.25 2.47

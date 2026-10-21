@@ -15,6 +15,7 @@ inputs=(
   Contracts/schemas Contracts/openapi Contracts/design Contracts/fixtures/anchor.v1 Contracts/fixtures/capture-envelope.v1
   Docs/Stage0/evidence/G01-EPUB/anchor-samples.json Docs/Stage0/evidence/G01-EPUB/selection-samples.json
   Docs/Stage0/evidence/G01-PDF/anchor-samples.json Docs/Stage0/evidence/M0-contracts/g04-capture-records
+  Docs/Stage0/evidence/G01-PDF/anchor-composed-samples.json
   Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Fixtures/library-v1.sqlite
 )
 
@@ -218,6 +219,14 @@ control "G0.1 PDF anchor whose range no longer covers its text" "A2" \
 control "G0.1 PDF two-page selection whose exact text joins the pages with a space" "A3" \
   "edit('Docs/Stage0/evidence/G01-PDF/anchor-samples.json', lambda d: d['samples'][8]['anchor'].update(exact_text=' '.join(s['text'] for s in d['samples'][8]['anchor']['segments'])))"
 
+# The composed selections the G0.1 PDF spike stores (anchor-composed-samples.json, read by the checker since the M0 final
+# fix; an input of these controls since its second review round, contracts R2-02), against each branch of rule A3.
+control "G0.1 PDF composed selection whose exact text joins its two pieces with a space" "anchor-composed-samples.json two pieces on one page, two lines apart: A3" \
+  "edit('Docs/Stage0/evidence/G01-PDF/anchor-composed-samples.json', lambda d: d['samples'][0]['anchor'].update(exact_text=' '.join(s['text'] for s in d['samples'][0]['anchor']['segments'])))"
+
+control "G0.1 PDF composed selection across a page change whose exact text drops that page's U+000A" "exact_text has no U+000A between two segments on different pages" \
+  "edit('Docs/Stage0/evidence/G01-PDF/anchor-composed-samples.json', lambda d: d['samples'][6]['anchor'].update(exact_text=d['samples'][6]['anchor']['exact_text'].replace('\\nBody', 'Body')))"
+
 control "G0.1 PDF anchor with a 45-degree rotation" "page_rotation" \
   "edit('Docs/Stage0/evidence/G01-PDF/anchor-samples.json', lambda d: d['samples'][3]['anchor']['segments'][0].update(page_rotation=45))"
 
@@ -246,8 +255,15 @@ control "G0.5 recovery conversation note moved onto a capture: a recorded deviat
 control "G0.5 recovery library gaining a transcript table: a recorded deviation no longer observed (review finding R2-04)" "recorded deviation audio-no-transcript is no longer observed" \
   "recovery('CREATE TABLE capture_transcript (capture_id TEXT NOT NULL, raw_text TEXT NOT NULL)')"
 
-control "G0.5 recovery work-level note whose revisions skip a number (the mapped note capture is checked)" "work note 3f87adf3: unrecorded difference: C6" \
-  "recovery(\"UPDATE note_revision SET revision = 2 WHERE note_id = '3f87adf3-064c-4d68-a504-e9b4f2dcd857'\")"
+# The work-level note is chosen by query (a note on a whole work: no capture and no conversation; the earliest), not by
+# a fixed ID: the library was regenerated at M0 assembly, its notes got new IDs, and this control, which named the old
+# one, changed nothing from then until the M0 final review's second round found it (contracts R2-02).
+work_note="$(sqlite3 -readonly "$SYLVIA_ROOT/Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Fixtures/library-v1.sqlite" \
+  "SELECT id FROM note WHERE capture_id IS NULL AND conversation_id IS NULL ORDER BY created_at_ms, id LIMIT 1")"
+[[ "$work_note" =~ ^[0-9a-f-]{36}$ ]] || { echo "PROBLEM: no work-level note in the G0.5 recovery library"; exit 1; }
+echo "work-level note for the next control: ${work_note:0:8} (the earliest note with no capture and no conversation)"
+control "G0.5 recovery work-level note whose revisions skip a number (the mapped note capture is checked)" "work note ${work_note:0:8}: unrecorded difference: C6" \
+  "recovery(\"UPDATE note_revision SET revision = 2 WHERE note_id = '$work_note'\")"
 
 rm -rf "$scratch"
 echo "controls detected for the expected reason: $detected; not detected or failed for another reason: $failed"

@@ -221,6 +221,54 @@ struct HTTPContractTests {
                 == [".hidden.epub", "Meditations", "empty.txt", "walden.epub"])
     }
 
+    /// The 200 body of POST /v1/receipts as the server writes it (receipt-ack.v1; M0 final review, contracts R1-06):
+    /// for a catalog download without a queue entry, queue_entry_id and entry_state are written as null, not left out;
+    /// the same receipt again is acknowledged as a duplicate and changes nothing.
+    @Test func receiptAcknowledgementsAsTheServerWritesThem() async throws {
+        let (harness, client, token) = try await setUp()
+        defer { await harness.cleanUp() }
+        let item = try #require(try await client.catalog().items.first { $0.title == "walden" })
+        let manifest = try await client.manifest(itemID: item.itemID)
+        let receipt = Receipt(receiptID: CanonicalID.make(), queueEntryID: nil, itemID: item.itemID,
+                              itemVersionID: manifest.itemVersionID, state: .downloadedToPhone, occurredAt: harness.clock.now())
+        let headers = ["Authorization": "Bearer \(token)", "Content-Type": "application/json"]
+        let raw = harness.unauthenticatedClient()
+        let first = try await raw.raw(method: "POST", pathAndQuery: "/v1/receipts", headers: headers, body: try TransferJSON.encode(receipt))
+        let again = try await raw.raw(method: "POST", pathAndQuery: "/v1/receipts", headers: headers, body: try TransferJSON.encode(receipt))
+        #expect(first.status == 200 && again.status == 200)
+        let object = try #require(try JSONSerialization.jsonObject(with: first.body) as? [String: Any])
+        #expect(object["queue_entry_id"] is NSNull && object["entry_state"] is NSNull, "nulls are written, not left out")
+        #expect(try TransferJSON.decode(ReceiptAck.self, from: first.body).duplicate == false)
+        #expect(try TransferJSON.decode(ReceiptAck.self, from: again.body).duplicate == true)
+        Self.capture("receipt-ack-catalog-download", first.body)
+        Self.capture("receipt-ack-duplicate", again.body)
+    }
+
+    /// The same body for a receipt that names a device-inbox entry (M0 final review round 2, contracts R2-05): the
+    /// server writes queue_entry_id and entry_state together, the state being the entry's after the receipt, so the
+    /// contract's other branch is checked against what the server writes and not only against hand-written fixtures.
+    @Test func receiptAcknowledgementOfAQueueEntryAsTheServerWritesIt() async throws {
+        let harness = try await Harness.make(files: ["walden.epub": Self.assetBytes])
+        defer { await harness.cleanUp() }
+        let (client, paired, token) = try await harness.pairDevice()
+        let itemID = try await harness.itemID(titled: "walden")
+        let entry = try await harness.service.send(itemID: itemID, toDevice: paired.deviceID)
+        #expect(try await client.deviceInbox().entries.map(\.queueEntryID) == [entry.queueEntryID])
+        let versionID = try #require(entry.itemVersionID)
+        let receipt = Receipt(receiptID: CanonicalID.make(), queueEntryID: entry.queueEntryID, itemID: itemID,
+                              itemVersionID: versionID, state: .downloadedToPhone, occurredAt: harness.clock.now())
+        let headers = ["Authorization": "Bearer \(token)", "Content-Type": "application/json"]
+        let response = try await harness.unauthenticatedClient().raw(method: "POST", pathAndQuery: "/v1/receipts",
+                                                                     headers: headers, body: try TransferJSON.encode(receipt))
+        #expect(response.status == 200)
+        let object = try #require(try JSONSerialization.jsonObject(with: response.body) as? [String: Any])
+        #expect(object["queue_entry_id"] as? String == entry.queueEntryID)
+        #expect(object["entry_state"] as? String == "downloaded_to_phone")
+        let ack = try TransferJSON.decode(ReceiptAck.self, from: response.body)
+        #expect(ack.entryState == .downloadedToPhone && !ack.duplicate)
+        Self.capture("receipt-ack-queue-entry", response.body)
+    }
+
     @Test func refusesWildcardBindUnlessExplicit() async throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("g02-\(UUID().uuidString)")
         defer { try? FileManager.default.removeItem(at: directory) }

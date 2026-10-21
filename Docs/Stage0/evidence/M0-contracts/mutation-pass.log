@@ -1,13 +1,13 @@
-command: Docs/Stage0/evidence/M0-contracts/commands/mutation-pass.py --jobs 4 (run by Scripts/ci.d/11-capture-anchor-contracts.sh)
-commit: e628aebd95b691c63e12ad099387471dbf36cdc8 (uncommitted files before the clean run: 0)
+command: Scripts/contracts/mutation-pass.py --jobs 4 (run by Scripts/ci.d/11-capture-anchor-contracts.sh)
+commit: 284dd8883a15ed8651db1b1a0284b80c08a2cee4 (uncommitted files before the clean run: 0)
 (the time below was measured while other agents shared this Mac: indicative only)
-load: 19:28  up 10 days,  5:38, 1 user, load averages: 10.91 18.92 25.98
+load:  4:33  up 16 days, 14:43, 2 users, load averages: 2.92 3.11 3.87
 schemas: anchor, capture-envelope; code rules: surrogate_violations, anchor_violations, minimum_revision, capture_violations; baseline fixture problems: 0
 part 1, schema constraints, protected: 430 (430 noticed by a fixture, 0 survived, 0 skipped); among them single enum values in an if condition or a not: 14 (14 noticed by a fixture, 0 survived, 0 skipped); numeric types: 28 (28 noticed by a fixture, 0 survived, 0 skipped)
 part 1, generic bounds (non-numeric type, string length, maxProperties, maxItems >= 100, maximum >= 1000; reported, not required): 141 (10 noticed by a fixture, 131 survived, 0 skipped)
-part 2, code-rule checks, protected: 60 (60 noticed by a fixture, 0 survived, 0 skipped)
+part 2, code-rule checks, protected: 61 (61 noticed by a fixture, 0 survived, 0 skipped)
 noticed by crashing on a fixture rather than by an outcome: 0
-time: 77 s with 4 job(s)
+time: 55 s with 4 job(s)
 generic bound, survived: anchor#/$defs/audio/properties/ranges/items: delete type
 generic bound, survived: anchor#/$defs/audio/properties/ranges: delete maxItems
 generic bound, survived: anchor#/$defs/audio/properties/ranges: delete type

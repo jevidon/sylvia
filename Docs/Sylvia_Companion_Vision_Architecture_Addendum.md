@@ -2,7 +2,7 @@
 ## Companion vision and architectural guardrails
 
 **Prepared:** 12 October 2026  
-**Revised:** 15 October 2026 (sequencing aligned with the standalone Gloss UX and roadmap revision)\
+**Revised:** 19 October 2026 (15 October: sequencing aligned with the standalone Gloss UX and roadmap revision; 19 October: the current planning reference records that the M0 work was merged into main)\
 **Status:** Proposed architecture addendum for review, not an expanded V1 implementation mandate  
 **Baseline reviewed:** *Sylvia_v1_iOS_Implementation_Plan.md*, team-review draft 0.1, 5 October 2026  
 **Scope authority:** The latest user direction is to keep V1 at its current scope. Nothing here promotes a deferred capability into V1 or resolves an existing open decision about AI, transfer, platform support or release delivery.
@@ -11,7 +11,7 @@
 
 This is a standalone supplement. It does not overwrite the original implementation plan. The baseline's relevant architecture and roadmap sections were reviewed; no application repository, runtime, connector or migration has been audited or tested for this addendum.
 
-**Current planning reference:** the 15 October implementation-plan revision adds Gloss-informed M3/M5 passage interactions and a later web reader while keeping native iOS/iPadOS V1 first. The native feasibility components, contracts and design prototype reviewed on `m0-integrate` remain separate, unmerged work linked in plan [P3]; their integration and M0 approvals are not part of this documentation revision. This update does not expand the future capture capabilities below.
+**Current planning reference:** the 15 October implementation-plan revision adds Gloss-informed M3/M5 passage interactions and a later web reader while keeping native iOS/iPadOS V1 first. The native feasibility components, contracts and design prototype reviewed on `m0-integrate`, linked in plan [P3], were merged into main on 15 October 2026 as the M0 feasibility work; the M0 gate is pending approval, and its approvals are not part of this documentation revision. This update does not expand the future capture capabilities below.
 
 ---
 

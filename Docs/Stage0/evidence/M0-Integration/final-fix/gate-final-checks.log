@@ -1,0 +1,279 @@
+commit: d50c328428bcbd434c45fea2cd22e9f2052f6cce (m0-integrate); uncommitted files before this run: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-19T07:09:24Z; load: 20:09  up 16 days,  6:19, 2 users, load averages: 3.04 2.24 1.93
+
+== 1. Files changed since the complete run's commit (e3c8659f379c8f3c86465db9f0fb1c294f85c2a8)
+files changed: 84; Markdown files outside Docs/: Contracts/README.md Fixtures/LICENSES.md 
+other files outside Docs/: 0
+only documents and evidence changed: the complete run covers the final code
+-- 1b. Negative control: from the reviewed commit (fea12c38dea8373e71cfd9708367d12129c7a698) to e3c8659f379c8f3c86465db9f0fb1c294f85c2a8 the same check must name code files
+   files neither under Docs/ nor Markdown changed between them: 43
+   .github/workflows/ci.yml
+   Contracts/fixtures/anchor.v1/mutations.json
+   Contracts/fixtures/anchor.v1/semantic-invalid/a3-pdf-composed-pieces-out-of-order.json
+   Contracts/fixtures/anchor.v1/semantic-invalid/a3-pdf-no-line-feed-where-the-page-changes.json
+   Contracts/fixtures/anchor.v1/valid/pdf-composed-piece-keeping-its-line-break.json
+   Contracts/fixtures/anchor.v1/valid/pdf-composed-pieces-on-two-pages.json
+   Contracts/fixtures/anchor.v1/valid/pdf-composed-two-pieces-on-one-page.json
+   Contracts/fixtures/capture-envelope.v1/valid/quote-pdf-composed-selection.json
+   Contracts/fixtures/receipt-ack.v1/invalid/deleted-entry-state.json
+   Contracts/fixtures/receipt-ack.v1/invalid/entry-state-left-out.json
+   Contracts/fixtures/receipt-ack.v1/invalid/missing-duplicate.json
+   Contracts/fixtures/receipt-ack.v1/invalid/uppercase-receipt-id.json
+   Contracts/fixtures/receipt-ack.v1/valid/catalog-download-without-queue-entry.json
+   Contracts/fixtures/receipt-ack.v1/valid/downloaded-to-phone.json
+   Contracts/fixtures/receipt-ack.v1/valid/duplicate-of-a-recorded-receipt.json
+   Contracts/fixtures/transfer-manifest.v1/invalid/zero-length-asset.json
+   Contracts/openapi/source-service.v1.yaml
+   Contracts/schemas/anchor.v1.schema.json
+   Contracts/schemas/backup-manifest.v1.schema.json
+   Contracts/schemas/error.v1.schema.json
+   Contracts/schemas/receipt-ack.v1.schema.json
+   Scripts/audit-hard-rules.sh
+   Scripts/check-spike-anchors.py
+   Scripts/ci.d/20-design.sh
+   Scripts/ci.d/21-design-catalog.sh
+   Scripts/ci.d/31-g01-epub.sh
+   Scripts/ci.d/32-g01-pdf.sh
+   Scripts/ci.d/40-g02-transfer.sh
+   Scripts/ci.d/50-g03-intake.sh
+   Scripts/ci.d/70-g05-ai.sh
+   Scripts/contracts/make-contract-fixtures.py
+   Scripts/fixtures/generate-g02-transfer-contract-fixtures.sh
+   Scripts/lib/sim.sh
+   Spikes/G01-PDF/Tests/Unit/ComposedSelectionTests.swift
+   Spikes/G02-Transfer/Scripts/trust-guards.py
+   Spikes/G02-Transfer/Scripts/validate-captured.py
+   Spikes/G02-Transfer/SourceService/Tests/SylviaSourceServiceTests/HTTPContractTests.swift
+   Spikes/G03-Intake/IntakeKit/Sources/SylviaImportHandoff/ItemProviderIntake.swift
+   Spikes/G03-Intake/IntakeKit/Tests/SylviaImportHandoffTests/ItemProviderIntakeTests.swift
+   Spikes/G03-Intake/IntakeKit/Tests/SylviaImportHandoffTests/Support.swift
+   Spikes/G05-Recovery/Scripts/check_manifest_contract.py
+   Spikes/G05-Recovery/Sources/SylviaRecovery/FileProtection.swift
+   Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift
+
+== 2. Git LFS state
+.gitattributes patterns (non-comment lines):
+**/__Snapshots__/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+git config --show-origin --get-regexp 'filter\.lfs|lfs\.':
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.repositoryformatversion 0
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.smudge git-lfs smudge -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.process git-lfs filter-process
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.required true
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.clean git-lfs clean -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.https://github.com/jevidon/sylvia.git/info/lfs.access basic
+git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+files tracked by LFS (git lfs ls-files): 777
+
+== 3. M0-gate.md: paths, and statuses against the records they cite
+== paths: 162 checked
+== gate report rows
+row 1: passed-simulator | G01-EPUB.md G1: 'passed-simulator' -> agrees
+row 2: pending-device | G01-EPUB.md G2: 'pending-device' -> agrees
+row 3: passed-simulator | G01-EPUB.md G3: 'passed-simulator' -> agrees
+row 4: pending-human | G01-EPUB.md G4: 'pending-human' -> agrees
+row 5: passed-simulator | G01-EPUB.md G5: 'passed-simulator' -> agrees
+row 6: passed-simulator | G01-EPUB.md G6: 'passed-simulator' -> agrees
+row 7: passed-simulator | G01-EPUB.md G7: 'passed-simulator' -> agrees
+row 8: passed-simulator | G01-PDF.md 1: 'passed-simulator' -> agrees
+row 9: pending-device | G01-PDF.md 2: 'pending-device' -> agrees
+row 10: failed | G01-PDF.md 10c: 'failed' -> agrees
+row 11: passed-simulator | G01-EPUB.md G8: 'passed-simulator' -> agrees
+row 12: pending-human | G01-EPUB.md G9: 'pending-human' -> agrees
+row 13: passed-simulator | G01-EPUB.md G10: 'passed-simulator' -> agrees
+row 14: passed-simulator | G02-Transfer.md User-mediated trust bootstrap from iOS: 'passed-simulator' -> agrees
+row 15: pending-device | G02-Transfer.md User-mediated trust bootstrap on a physical iPho: 'pending-device' -> agrees
+row 16: passed-simulator | G02-Transfer.md Certificate pinning on iOS: 'passed-simulator' -> agrees
+row 17: partial | G02-Transfer.md Authorized ranged downloads with verified parts: 'partial' -> agrees
+row 18: partial | G02-Transfer.md Recovery after suspension or force-quit: 'partial' -> agrees
+row 19: passed-host | G02-Transfer.md Mac source mutation never yields a mixed-version: 'passed-host' -> agrees
+row 20: passed-host | G02-Transfer.md Manual-address connectivity: IPv4 and IPv6 loopb: 'passed-host' -> agrees
+row 21: passed-simulator | G02-Transfer.md Plan 15.2 Stage 0 gate, local address forms: 'passed-simulator' -> agrees
+row 22: failed | G02-Transfer.md Plan 15.2 Stage 0 gate, Tailscale address forms: 'failed' -> agrees
+row 22: failed | G02-Transfer.md T43 Tailscale address and MagicDNS name on iOS w: 'failed' -> agrees
+row 23: pending-device | G02-Transfer.md Manual-address and Tailscale connectivity betwee: 'pending-device' -> agrees
+row 24: pending-human | G02-Transfer.md Security reviewer approves the pairing protocol: 'pending-human' -> agrees
+row 25: passed-host | G02-Transfer.md No trust-all path, no ATS exception in the harne: 'passed-host' -> agrees
+row 26: passed-simulator | G03-Intake.md G1: 'passed-simulator' -> agrees
+row 27: pending-device | G03-Intake.md G2: 'pending-device' -> agrees
+row 28: pending-device | G03-Intake.md G6: 'pending-device' -> agrees
+row 29: passed-host | G03-Intake.md G3: 'passed-host' -> agrees
+row 30: passed-simulator | G03-Intake.md G4: 'passed-simulator' -> agrees
+row 31: passed-host | G03-Intake.md G5: 'passed-host' -> agrees
+row 32: passed-simulator | G03-Intake.md G7: 'passed-simulator' -> agrees
+row 33: pending-device | G03-Intake.md G8: 'pending-device' -> agrees
+row 34: partial | G03-Intake.md T42: 'partial' -> agrees
+row 35: passed-host | G03-Intake.md G9: 'passed-host' -> agrees
+row 36: pending-device | G03-Intake.md G10: 'pending-device' -> agrees
+row 37: passed-simulator | G04-Audio.md 1: 'passed-simulator' -> agrees
+row 38: pending-device | G04-Audio.md 2: 'pending-device' -> agrees
+row 39: passed-simulator | G04-Audio.md 3: 'passed-simulator' -> agrees
+row 39: passed-simulator | G04-Audio.md 11: 'passed-simulator' -> agrees
+row 40: pending-device | G04-Audio.md 12: 'pending-device' -> agrees
+row 41: passed-simulator | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 33: 'passed-simulator (opening, positions, timing); start/resume budget ...' -> agrees
+row 43: passed-simulator | G04-Audio.md 4: 'passed-simulator (with the container limits stated)' -> agrees
+row 44: passed-simulator | G04-Audio.md 5: 'passed-simulator' -> agrees
+row 45: passed-simulator | G04-Audio.md 6: 'passed-simulator' -> agrees
+row 46: passed-simulator | G04-Audio.md 7: 'passed-simulator' -> agrees
+row 47: partial | G04-Audio.md 8: 'partial' -> agrees
+row 48: passed-simulator | G04-Audio.md 18: 'passed-simulator (control: both signings; App Shortcut and the cont...' -> agrees
+row 49: pending-device | G04-Audio.md 19: 'pending-device' -> agrees
+row 50: partial | G04-Audio.md 9: 'partial' -> agrees
+row 51: partial | G05-AI.md G1: 'partial' -> agrees
+row 52: partial | G05-AI.md G2: 'partial' -> agrees
+row 53: passed-host | G05-AI.md G3: 'passed-host' -> agrees
+row 54: partial | G05-AI.md G4: 'partial' -> agrees
+row 55: passed-simulator | G05-Recovery.md 1: 'passed-simulator' -> agrees
+row 56: pending-device | G05-Recovery.md 22: 'pending-device' -> agrees
+row 57: passed-host | G05-Recovery.md 2: 'passed-host' -> agrees
+row 58: partial | G05-AI.md G6: 'partial' -> agrees
+row 59: pending-human | G05-Recovery.md 23: 'pending-human' -> agrees
+row 60: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 61: passed-simulator | G06-Design.md G0.6: every token pair's contrast verified: 'passed-simulator' -> agrees
+row 62: pending-device | G06-Design.md G0.6: type roles under Dynamic Type: 'pending-device' -> agrees
+row 63: failed | G06-Design.md Scaling through UIFontMetrics as Section 4.4.3 s: 'failed' -> agrees
+row 64: pending-device | G06-Design.md G0.6: component set viewed on a device: 'pending-device' -> agrees
+row 65: partial | G06-Design.md G0.6: token values adjusted where devices disagr: 'partial' -> agrees
+row 72: passed-simulator | G06-Design.md CI drop-in `Scripts/ci.d/21-design-catalog.sh`: 'passed-simulator' -> agrees
+row 73: pending-human | G06-Design.md Prototype matches the boards where they agree wi: 'pending-human' -> agrees
+row 74: pending-device | G06-Design.md G0.6 device review of the component set and the : 'pending-device' -> agrees
+row 79: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 80: pending-human | G06-Design.md Design review of the components and references: 'pending-human' -> agrees
+row 91: passed-host | G06-Design.md Token export with schema, fixtures: 'passed-host' -> agrees
+== ADR and deliverable rows
+row 66: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 71: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 75: partial | expected partial; 5 of 5 facts hold -> agrees
+row 76: failed | expected failed; 3 of 3 facts hold -> agrees
+row 77: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 78: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 82: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 83: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 84: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 85: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 86: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 87: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 88: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 89: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 90: passed-host | expected passed-host; 5 of 5 facts hold -> agrees
+row 92: pending-human | expected pending-human; 6 of 6 facts hold -> agrees
+== rows not checked mechanically
+row 67: pending-human | the Section 23 decisions are signed by people; nothing to read
+row 68: pending-human | a judgement for the exit review
+row 69: partial | a judgement on the amendments' text against the four gates with failed rows
+row 70: partial | summarises rows 1-65
+row 81: pending-human | an exit demonstration by people
+== summary: 92 rows; failed 5, partial 13, passed-host 10, passed-simulator 27, pending-device 15, pending-human 22; 74 report rows and 64 ADR and log facts compared; 0 problem(s)
+
+-- 3b. Negative control on copies with three planted wrong statuses: checker exit 1; rows reported as disagreeing: 22 42 66 71 78 92
+   as required (22, 42, 66, 71, 78, 92)
+
+== 4. The documents' own consistency checks
+-- the plan amendments' checker (Docs/Stage0/evidence/M0-plan-amendments/commands/check-amendments.py)
+summary: 132 numbered findings in the eight reports; 56 amendment tags; 44 product-owner questions; 0 failed checks
+exit: 0
+-- the runbook's step coverage (final-fix/commands/runbook-coverage.py)
+G0.5 recovery (G05-Recovery.md): checklist steps 1-5 (5); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [5]
+G0.6 (G06-Design.md): checklist steps 1-31 (31); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [10]
+result: pass (0 missing)
+exit: 0
+-- the runbook's correction-text check on fea12c38dea8373e71cfd9708367d12129c7a698 and on HEAD (Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py, as committed at HEAD)
+   fea12c38dea8373e71cfd9708367d12129c7a698: exit 1; 77 texts checked, 59 missing
+   HEAD: exit 1; 77 texts checked, 59 missing
+   the two outputs are the same (the first line, a timestamp, left out): the fix's edits change nothing it reports
+
+== 5. Scripts/ci.sh contracts dependency-lock hard-rules
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (52s)
+==> 12-dependency-lock
+    FAIL (29s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/ci-logs/12-dependency-lock.log
+    | ok    a product test target takes fixtures, outside headers and a transitive module alias (tests never ship): no failure
+    | ok    a product package links a library only on Linux, where no Apple SDK is involved: no failure
+    | ok    a product package links a library the inventory lists (binaries, kind linked): no failure
+    | ok    a macOS-only package used only under a macOS condition, by a macOS app target: no failure
+    | ok    an inventoried binary target with the same URL and checksum: no failure
+    | ok    a workflow action pinned to a commit and recorded as such: no failure
+    | ok    a symbolic link under Packages/ to another product file: no failure
+    | ok    a product target and package pass only flags product targets may pass: no failure
+    | ok    a tracked prefix header, bridging header and module map, definitions without transitive names, and SDKROOT set to an SDK: no failure
+    | ok    a test target passes any flag and setting (tests never ship): no failure
+    | ok    a referenced Xcode project generated from a project.yml tracked beside it: no failure
+    | self-test: 228 mutations (22 categories: binary, ci-actions, docs, flag, inventory, license-text, lock-registry, not-exact, outside-product, pin-differs, pin-missing, platform, python-tools, spike-in-product, test-in-product, test-layout, toolchain, transitive-direct, unknown-package, unlocked, vendored-asset, xcode-project) and 30 allowed changes; 109 of the 109 failure branches reached by the mutation written for them, 2 of the 2 warning branches by the allowed change written for them; 0 wrong
+    | 
+    | --- check: this repository against Docs/Licenses/inventory.json, and the installed toolchain
+    | ok    committed Xcode projects or workspaces: 0
+    | ok    locks: 15 committed, 15 registered
+    | ok    manifests: 19 read, 16 remote requirements
+    | ok    symbolic links under the product roots: 0
+    | ok    module maps read as product code: 0
+    | ok    license texts: 53 checked
+    | ok    product sources: 59 Swift and 0 C-family files checked for imports of transitive-only modules
+    | ok    binaries: 0 declared by product manifests, 0 committed under the product roots, 0 inventoried
+    | ok    vendored assets: 3 listed
+    | ok    python tools: 20 pinned, 1 recorded as unpinned (pip at any version, with a warning below 26.2.0); the virtualenv holds exactly these (pip 26.2.1)
+    | ok    workflow actions: 2 used
+    | ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+    | ok    toolchain: xcodegen --version -> Version: 2.46.0
+    | ok    acknowledgements draft: matches the inventory (235350 characters)
+    | FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'
+    | dependency lock check: 1 failure(s), 0 warning(s)
+==> 13-hard-rules
+    pass (5s)
+FAILED: 12-dependency-lock
+ci.sh exit: 1
+summary lines from the drop-ins' own logs (.build/ci-logs/):
+-- 00-git-lfs (last 4 lines)
+LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+pointer files in the working tree: none
+git lfs fsck --pointers (HEAD): Git LFS fsck OK
+00-git-lfs: pass: no file stored with Git LFS is a pointer in the working tree, and every file the LFS attributes match is committed as an LFS pointer
+-- 10-contracts (last 4 lines)
+schemas: 18  fixtures: 655  openapi: 1  instances: 1
+-- 11-capture-anchor-contracts (last 4 lines)
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete minLength
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete type
+generic bound, survived: capture-envelope#/properties/word: delete type
+result: pass
+-- 12-dependency-lock (last 4 lines)
+ok    toolchain: xcodegen --version -> Version: 2.46.0
+ok    acknowledgements draft: matches the inventory (235350 characters)
+FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'
+dependency lock check: 1 failure(s), 0 warning(s)
+-- 13-hard-rules (last 4 lines)
+| todo-in-product | 0 | 0 |
+
+result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+13-hard-rules: self-test and repository audit passed; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/ci-logs/hard-rules
+-- the audit's result line:
+result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+-- FAIL lines in 12-dependency-lock's log:
+FAIL toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Xcode 27.1'
+part 5: the only failure is 12-dependency-lock's toolchain check (installed Xcode 27.1, pin 27A266a), as expected on this Mac
+
+== 6. Leftover G0.5 temporary directories (read-only count; G05-AI R7-04)
+g05-* directories in the user's temporary folder: 1664
+g05-tests-* directories there: 0
+
+exit: 0
+end: 2026-10-19T07:11:00Z; load: 20:11  up 16 days,  6:21, 2 users, load averages: 3.56 2.76 2.16

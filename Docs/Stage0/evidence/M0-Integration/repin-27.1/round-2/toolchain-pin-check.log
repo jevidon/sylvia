@@ -1,0 +1,88 @@
+command: Docs/Stage0/evidence/M0-Integration/repin-27.1/round-2/commands/toolchain-pin-check.sh
+commit: 101b12e439cbfb3b2fd528e320f8051411a53fa3; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+pin in Scripts/lib/env.sh: 27A9275
+start: 2026-10-20T04:54:49Z; load: 17:54  up 17 days,  4:05, 2 users, load averages: 3.98 2.73 2.24
+
+### A. The installed Xcode, with stand-ins for xcodebuild -version
+
+== 1. this Mac's Xcode, no stand-in
+   ok    toolchain: the Xcode pin 27.1 (27A9275) as stated in .github/workflows/ci.yml, CLAUDE.md, Docs/ADRs/0001-platform-baseline-and-toolchain.md
+   ok    toolchain: xcodebuild -version -> Build version 27A9275 (the pin, compared whole)
+   ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1) (the pin, compared whole)
+   ok    toolchain: xcodegen --version -> Version: 2.46.0 (the pin, compared whole)
+   dependency lock check: 0 failure(s), 0 warning(s)
+exit status: 0 (expected 0)
+as expected (the output contains: -> Build version 27A9275)
+
+== 2. a build that only extends the pin: Build version 27A9275a (made up)
+stand-in xcodebuild -version prints: Xcode 27.1 Build version 27A9275a 
+   ok    toolchain: the Xcode pin 27.1 (27A9275) as stated in .github/workflows/ci.yml, CLAUDE.md, Docs/ADRs/0001-platform-baseline-and-toolchain.md
+   ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1) (the pin, compared whole)
+   ok    toolchain: xcodegen --version -> Version: 2.46.0 (the pin, compared whole)
+   FAIL toolchain xcodebuild -version: expected 'Build version 27A9275', got 'Build version 27A9275a'
+   dependency lock check: 1 failure(s), 0 warning(s)
+exit status: 1 (expected 1)
+as expected (the output contains: got 'Build version 27A9275a')
+sylvia_check_xcode with the same stand-in: returns 1; warning: Xcode build is '27A9275a'; ADR-0001 pins 27A9275 
+
+== 3. another build: Build version 27A9276 (made up)
+stand-in xcodebuild -version prints: Xcode 27.1 Build version 27A9276 
+   ok    toolchain: the Xcode pin 27.1 (27A9275) as stated in .github/workflows/ci.yml, CLAUDE.md, Docs/ADRs/0001-platform-baseline-and-toolchain.md
+   ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1) (the pin, compared whole)
+   ok    toolchain: xcodegen --version -> Version: 2.46.0 (the pin, compared whole)
+   FAIL toolchain xcodebuild -version: expected 'Build version 27A9275', got 'Build version 27A9276'
+   dependency lock check: 1 failure(s), 0 warning(s)
+exit status: 1 (expected 1)
+as expected (the output contains: got 'Build version 27A9276')
+sylvia_check_xcode with the same stand-in: returns 1; warning: Xcode build is '27A9276'; ADR-0001 pins 27A9275 
+
+### B. The repository's other records of the pin, on copies of the committed tree (check without --toolchain)
+
+== 4. the workflow's guard looks for another build
+changed in .github/workflows/ci.yml: 'grep -qx "Build version 27A9275"' -> 'grep -qx "Build version 27A9276"'
+   FAIL toolchain .github/workflows/ci.yml: the guard looks for 'Build version 27A9276'; the inventory pins 'Build version 27A9275' (ADR-0001: every record of the pin changes with it)
+   dependency lock check: 1 failure(s), 0 warning(s)
+exit status: 1 (expected 1)
+as expected (the output contains: FAIL toolchain .github/workflows/ci.yml)
+
+== 5. the workflow's guard looks first for another Xcode
+changed in .github/workflows/ci.yml: 'for candidate in /Applications/Xcode_27.1.app' -> 'for candidate in /Applications/Xcode_27.2.app'
+   FAIL toolchain .github/workflows/ci.yml: a candidate Xcode is 'Xcode_27.2.app'; the inventory pins 'Xcode_27.1.app' (ADR-0001: every record of the pin changes with it)
+   dependency lock check: 1 failure(s), 0 warning(s)
+exit status: 1 (expected 1)
+as expected (the output contains: FAIL toolchain .github/workflows/ci.yml)
+
+== 6. CLAUDE.md's toolchain line names another Xcode
+changed in CLAUDE.md: '- Xcode 27.1 (27A9275), Swift 6.4' -> '- Xcode 27.2 (27C100), Swift 6.4'
+   FAIL toolchain CLAUDE.md: the toolchain line names 'Xcode 27.2 (27C100)'; the inventory pins 'Xcode 27.1 (27A9275)' (ADR-0001: every record of the pin changes with it)
+   dependency lock check: 1 failure(s), 0 warning(s)
+exit status: 1 (expected 1)
+as expected (the output contains: FAIL toolchain CLAUDE.md)
+
+== 7. ADR-0001's toolchain table names another Xcode
+changed in Docs/ADRs/0001-platform-baseline-and-toolchain.md: '| Xcode | 27.1, build 27A9275' -> '| Xcode | 27.2, build 27C100'
+   FAIL toolchain Docs/ADRs/0001-platform-baseline-and-toolchain.md: the toolchain table names '27.2, build 27C100'; the inventory pins '27.1, build 27A9275' (ADR-0001: every record of the pin changes with it)
+   dependency lock check: 1 failure(s), 0 warning(s)
+exit status: 1 (expected 1)
+as expected (the output contains: FAIL toolchain Docs/ADRs/0001-platform-baseline-and-toolchain.md)
+
+== 8. the unchanged copy (the control for 4-7)
+   dependency lock check: 0 failure(s), 0 warning(s)
+exit status: 0 (expected 0)
+as expected
+
+### C. The self-test against the earlier comparison
+
+== 9. a copy of the check whose tool comparison is the earlier search for the expected text in the output: its
+   self-test must fail, on the mutations of a build or version that only extends the pin
+comparison replaced by: if expected not in out:
+   FAIL  the installed Xcode build only extends the pin (review TC-02): expected toolchain with "expected 'Build version 27A266a', got 'Build version 27A266ab'"; got:
+   FAIL  the installed Swift only extends the pinned version line: expected toolchain with "got 'Swift version 9.9 (synthetic-9.9) with a suffix'"; got:
+   FAIL  the installed XcodeGen only extends the pin: expected toolchain with "expected 'Version: 9.9.9', got 'Version: 9.9.91'"; got:
+   self-test: 239 mutations (22 categories: binary, ci-actions, docs, flag, inventory, license-text, lock-registry, not-exact, outside-product, pin-differs, pin-missing, platform, python-tools, spike-in-product, test-in-product, test-layout, t
+exit status: 1 (expected 1)
+as expected (the output contains: FAIL  the installed Xcode build only extends the pin (review TC-02))
+
+end: 2026-10-20T04:55:36Z; load: 17:55  up 17 days,  4:06, 2 users, load averages: 3.43 2.79 2.29
+result: PASS

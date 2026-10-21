@@ -265,24 +265,39 @@ struct DataProtectionTests {
         }
     }
 
-    @Test("a class without a protected writing option is refused before anything is written (ADR-0015 TM-F1)")
+    @Test("a class without a protected writing option is refused before anything is written or changed, on every path (ADR-0015 TM-F1)")
     func unsupportedClassRefused() throws {
         let scratch = try Scratch()
         let source = scratch.url.appending(path: "source.bin")
         let payload = Data("payload".utf8)
         try payload.write(to: source)
+        // An existing file of class C, whose class `protect` must leave as it is.
+        let existing = scratch.url.appending(path: "existing.bin")
+        try FileProtector.library.write(payload, to: existing)
+        let existingClass = try FileProtector.library.protectionClass(of: existing)
         // Classes other than A, B and C (iOS 17's class for files closed while the user is inactive,
-        // and a class this SDK does not know) used to map to an unprotected write.
-        for value in ["NSFileProtectionCompleteWhenUserInactive", "SylviaTestUnknownProtectionClass"] {
-            let protector = FileProtector(protection: FileProtectionType(rawValue: value))
+        // a class this SDK does not know, and no protection at all) used to map to an unprotected
+        // write, and the directory and protect paths passed them on (M0 final review SEC-06).
+        let none = FileProtectionType.none // refused on every path (SEC-06)
+        let classes = [FileProtectionType(rawValue: "NSFileProtectionCompleteWhenUserInactive"),
+                       FileProtectionType(rawValue: "SylviaTestUnknownProtectionClass"), none]
+        for protection in classes {
+            let value = protection.rawValue
+            let protector = FileProtector(protection: protection)
             let target = scratch.url.appending(path: "target-\(value).bin")
             #expect(throws: ProtectionError.unsupportedClass(value)) { try protector.write(payload, to: target) }
             #expect(!FileManager.default.fileExists(atPath: target.path), "write left \(target.lastPathComponent)")
             let copied = scratch.url.appending(path: "copied-\(value).bin")
             #expect(throws: ProtectionError.unsupportedClass(value)) { try protector.copyFile(from: source, to: copied) }
             #expect(!FileManager.default.fileExists(atPath: copied.path), "copy left \(copied.lastPathComponent)")
+            let directory = scratch.url.appending(path: "dir-\(value)/inner")
+            #expect(throws: ProtectionError.unsupportedClass(value)) { try protector.ensureDirectory(directory) }
+            #expect(!FileManager.default.fileExists(atPath: directory.deletingLastPathComponent().path),
+                    "ensureDirectory created \(directory.deletingLastPathComponent().lastPathComponent)")
+            #expect(throws: ProtectionError.unsupportedClass(value)) { try protector.protect(existing) }
+            #expect(try FileProtector.library.protectionClass(of: existing) == existingClass, "protect changed the class")
         }
-        evidence("TM-F1: classes other than A, B and C are refused by write and copyFile and leave no file")
+        evidence("TM-F1: classes other than A, B and C (and no protection) are refused by write, copyFile, ensureDirectory and protect, which leave no file and change no class")
     }
 
     @Test("staging (Staging/ and Staging/Persistence/), recovery and restore work are excluded from device backup; the library is not")

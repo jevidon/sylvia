@@ -14,15 +14,16 @@
     "spike": "Stage 0 evaluation only. Must not appear in any manifest or lock under Apps/ or Packages/."
   },
   "toolchain": {
-    "xcode": {"version": "27.0", "build": "27A266a"},
+    "xcode": {"version": "27.1", "build": "27A9275"},
+    "xcode_pin_history": "27.0 (27A266a) from kickoff, 6 October 2026, with its toolchain log Docs/Stage0/evidence/M0-dependencies/toolchain.log; 27.1 (27A9275) since 20 October 2026, the product owner's decision of PO-35 (D-3) as ADR-0001 records the reading of the owner's reply, after the build Mac's Xcode updated itself from the App Store on 18 October 2026 at 07:28 NZDT (ADR-0001); whether 27A9275 is the non-beta release awaits a check of Apple's release notes (ADR-0001, open items)",
     "swift": "6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
     "xcodegen": "2.46.0",
-    "sdks": ["iOS 27.0", "iOS Simulator 27.0", "macOS 27.0"],
+    "sdks": ["iOS 27.1", "iOS Simulator 27.1", "macOS 27.0"],
     "simulator_runtimes": ["iOS 26.5 (23F77)", "iOS 27.0 (24A434)"],
     "deployment_targets": {"iOS": "26.0", "macOS": "26.0"},
     "host": "macOS 26.6.2 (25G83), Apple M5 Max",
     "owning_adr": "0001",
-    "evidence": "Docs/Stage0/evidence/M0-dependencies/toolchain.log"
+    "evidence": "Docs/Stage0/evidence/M0-Integration/repin-27.1/toolchain-27.1.log"
   },
   "locks": [
     {"path": "Apps/DesignCatalog/Package.resolved", "manifest": "Apps/DesignCatalog/project.yml", "note": "A copy of Packages/Design/Package.resolved, which sylvia_generate installs into the generated project: Xcode writes no lock for a project whose only package is local (ADR-0013)."},
@@ -813,7 +814,7 @@
     {"uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02", "workflow": ".github/workflows/ci.yml", "license": "MIT (Copyright (c) 2018 GitHub, Inc. and contributors, read at the v4 tag)", "pinned_to_commit": true, "release": "v4.6.2, the release the v4 tag named on 13 October 2026 (GitHub tags API, advisories-search.log)", "advisories": "None at v4.6.2 (GitHub Advisory Database; OSV lists none for any version). See advisories.md.", "owner": "workflow owner (ADR-0002); pinned to the release SHA at M0 assembly (14 October 2026), as ADR-0014 requested"}
   ],
   "host_tools": [
-    {"name": "Xcode", "version": "27.0 (27A266a), Swift 6.4", "source": "/Applications/Xcode.app (DEVELOPER_DIR)", "license": "Apple Xcode and SDK agreement", "used_by": "every build and test", "required": true},
+    {"name": "Xcode", "version": "27.1 (27A9275), Swift 6.4 (27.0 (27A266a) until 20 October 2026: ADR-0001)", "source": "/Applications/Xcode.app (DEVELOPER_DIR)", "license": "Apple Xcode and SDK agreement", "used_by": "every build and test", "required": true},
     {"name": "XcodeGen", "version": "2.46.0", "source": "Homebrew", "license": "MIT", "used_by": "Scripts/lib/xcodegen.sh (every Xcode project)", "required": true},
     {"name": "Python (tools virtualenv)", "version": "3.14.6", "source": "Homebrew python@3.14", "license": "Python-2.0", "used_by": "contract validation, design lint, this checker", "required": true},
     {"name": "/usr/bin/python3", "version": "3.9.6", "source": "macOS (Command Line Tools)", "license": "Python-2.0", "used_by": "fixture generators and several CI drop-ins that name it", "required": true},
@@ -821,7 +822,7 @@
     {"name": "OpenSSL", "version": "3.6.3", "source": "Homebrew openssl@3 (first openssl on PATH)", "license": "Apache-2.0", "used_by": "G0.2 test certificates and digests", "required": true},
     {"name": "LibreSSL /usr/bin/openssl", "version": "3.3.6", "source": "macOS", "license": "OpenSSL/ISC (system component)", "used_by": "G0.1 EPUB fixture generator", "required": true},
     {"name": "git", "version": "2.55.0", "source": "Homebrew", "license": "GPL-2.0-only and others", "used_by": "evidence scripts", "required": true},
-    {"name": "git-lfs", "version": "3.7.1", "source": "Homebrew", "license": "MIT", "used_by": "nothing yet (LFS deferred, ADR-0002)", "required": false},
+    {"name": "git-lfs", "version": "3.7.1", "source": "Homebrew", "license": "MIT", "used_by": "snapshot references and Stage 0 evidence images, stored with Git LFS since 19 October 2026 (ADR-0002): the repository-local filter and hooks, Scripts/setup-repo.sh, Scripts/ci.d/00-git-lfs.sh", "required": true},
     {"name": "macOS system tools", "version": "macOS 26.6.2 (25G83)", "source": "macOS", "license": "Apple", "used_by": "afconvert, afinfo, shasum, unzip (Info-ZIP 6.00), rsync (openrsync), sips, plutil, perl 5.34.1, codesign, security and du (the G0.4 drop-in), curl 8.7.1, dd, ifconfig", "required": true},
     {"name": "Google Chrome", "version": "155.0.8059.40 (toolchain.log; Chrome updates itself, so this is the version on the day the log was written)", "source": "/Applications", "license": "Google Chrome terms", "used_by": "Docs/Design/render.py only (design boards load Literata from Google Fonts)", "required": false},
     {"name": "Tailscale", "version": "1.102.4", "source": "/Applications", "license": "Tailscale terms", "used_by": "Scripts/ci.d/40-g02-transfer.sh, only when a tailnet address is present", "required": false}

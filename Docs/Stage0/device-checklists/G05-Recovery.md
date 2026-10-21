@@ -6,7 +6,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 
 **Setup:**
 
-- On the build Mac, check out the M0 integration branch (`m0-integrate`, or `m0` once it is merged; record `git rev-parse HEAD`) and run `Scripts/fixtures/fetch.sh`. No fixtures are needed beyond the committed ones.
+- On the build Mac, check out the M0 integration branch (`m0-integrate`, or `main` once the later M0 work has reached it, since pull request #4 merged `m0-integrate` up to `177ed9a` into `main` on 15 October 2026; record `git rev-parse HEAD`) and run `Scripts/fixtures/fetch.sh`. No fixtures are needed beyond the committed ones.
 - Find the device ID with `xcrun devicectl list devices`. Use the Identifier only when it is the device's UDID (copy the identifier alone); if devicectl shows an ECID or a CoreDevice identifier instead, take the UDID from Xcode > Window > Devices and Simulators > the device > Identifier: `xcodebuild -destination id=` needs the UDID.
 - All commands run from `Spikes/G05-Recovery` with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
 - Test runs need signing for the device: add `-allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z` (the second flag registers a device the team has not registered; it takes effect only with the first).
@@ -27,7 +27,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
    ```
 
 2. Expected:
-   - `Test run with 67 tests in 11 suites passed` (the five macOS-only tests, the three SIGKILL drills, the real full-volume test and the locked-host observation, are not built for iOS). This is the simulator's count in the review-round-4 clean run; the device builds the same tests.
+   - `Test run with 68 tests in 11 suites passed` (the five macOS-only tests, the three SIGKILL drills, the real full-volume test and the locked-host observation, are not built for iOS). This is the simulator's count on the current code: 68 in M0 assembly's re-run (`Docs/Stage0/evidence/M0-Integration/ci-71-g05-recovery-unlocked-dropin.log`) and in the M0 final fix's second round (`Docs/Stage0/evidence/M0-Integration/final-fix-2/g05-recovery/simulator-tests.log`); the review-round-4 clean run had 67, the count this line gave until 20 October 2026 (M0 final review round 2, evidence R2-01). The device builds the same tests.
    - Exactly four skipped tests, each with its reason printed: the device lock probe (step 3 runs it), the device persistence probe (step 4 runs it), and the two contract-fixture tests (`ManifestContractTests`), which read `Contracts/` from the Mac's checkout and cannot on the phone (the host and simulator runs cover them). Every other test, including the parameterized ones, shows `passed`.
    - The test `a file with the wrong class is detected, never silently accepted` **runs** on the device (it is skipped only in the simulator) and passes. Record whether its evidence line says the class change was "applied and verified" or "refused"; either passes, but note which.
    - The test `with non-default class B supplied in StoreOptions, every file and directory carries class B` **runs** on the device (it is skipped only in the simulator and on a locked Mac) and passes.

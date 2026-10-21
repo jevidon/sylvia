@@ -1,0 +1,60 @@
+# Image inventory at 504fac2e0c37efa5b41ed4503752758b103bc00d
+written 2026-10-18T16:58:43Z by Docs/Stage0/evidence/M0-Integration/lfs/commands/image_inventory.py; git version 2.55.0
+tracked files at the commit: 2918; image files (png, jpg, jpeg, gif, heic, tif, tiff, webp, any case): 802; other image-like files (svg, bmp, ico, icns, heif, avif): 2; PDFs (documents, not images, plain git): 12
+
+| Class | Files | Bytes | Largest | Stored |
+| --- | --- | --- | --- | --- |
+| snapshot | 527 | 37703582 | 368357 | Git LFS |
+| evidence | 250 | 29875981 | 450566 | Git LFS |
+| plain | 27 | 5967053 | 1407487 | plain git |
+| to be tracked by LFS (snapshot + evidence) | 777 | 67579563 | 450566 | Git LFS |
+
+By extension (class, extension: files, bytes):
+  evidence, png: 250 files, 29875981 bytes
+  plain, png: 25 files, 5953264 bytes
+  plain, svg: 2 files, 13789 bytes
+  snapshot, png: 527 files, 37703582 bytes
+
+By folder (class, folder: files, bytes):
+  evidence, Docs/Stage0/evidence/G01-EPUB: 11 files, 501139 bytes
+  evidence, Docs/Stage0/evidence/G01-PDF: 27 files, 5913337 bytes
+  evidence, Docs/Stage0/evidence/G04-Audio: 14 files, 1754208 bytes
+  evidence, Docs/Stage0/evidence/G06-Design: 198 files, 21707297 bytes
+  plain, Docs/Design/images: 25 files, 5953264 bytes
+  plain, Packages/Design/Sources/SylviaDesign/Resources/Symbols.xcassets/sylvia.capture.symbolset: 1 files, 8966 bytes
+  plain, Packages/Design/Sources/SylviaDesign/Resources/Symbols.xcassets/sylvia.prompt.symbolset: 1 files, 4823 bytes
+  snapshot, Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests: 527 files, 37703582 bytes
+
+Plain git (not tracked by LFS), each with its reason:
+  Docs/Design/images/AskAI.png (218317 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/AudioCapture.png (146643 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/CaptureSheet.png (171882 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/GrayAskAI.png (181260 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/GrayInbox.png (141104 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/GrayLibrary.png (136352 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/GrayPlayer.png (102184 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/GrayReader.png (202727 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/GrayTablet.png (330692 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/GrayThoughts.png (150216 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/IPadReader.png (394836 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/Inbox.png (168184 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/InboxRowsA.png (156781 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/InboxRowsB.png (164617 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/Library.png (161550 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/MacCompanion.png (344350 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/Main.png (1407487 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/Onboarding.png (147003 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/PairMac.png (192901 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/Player.png (111316 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/Reader.png (248863 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/ReaderDark.png (178424 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/Storage.png (148405 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/Thoughts.png (179949 bytes): design board image (Docs/Design/images)
+  Docs/Design/images/WorkDetail.png (167221 bytes): design board image (Docs/Design/images)
+  Packages/Design/Sources/SylviaDesign/Resources/Symbols.xcassets/sylvia.capture.symbolset/sylvia.capture.svg (8966 bytes): asset catalog image
+  Packages/Design/Sources/SylviaDesign/Resources/Symbols.xcassets/sylvia.prompt.symbolset/sylvia.prompt.svg (4823 bytes): asset catalog image
+
+Checks: every image is a regular file blob; none is already an LFS pointer; every snapshot and evidence image starts with its format signature.
+passed: 804 image files checked, 777 real images to be tracked by LFS, 0 LFS pointers at the commit
+
+manifest: lfs-manifest.sha256, 777 lines, SHA-256 of each blob at 504fac2e0c37efa5b41ed4503752758b103bc00d (verify a checkout with: shasum -a 256 -c lfs-manifest.sha256, from the repository root)

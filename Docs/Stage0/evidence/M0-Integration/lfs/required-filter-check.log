@@ -1,0 +1,23 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1; commit: 77d6cf7806ad59154973f457ed9674a6147bac7b (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T18:04:53Z; load:  7:04  up 15 days, 17:15, 3 users, load averages: 3.31 5.88 6.33
+command: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/Docs/Stage0/evidence/M0-Integration/lfs/commands/required-filter-check.sh /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-required-filter
+
+repository /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-required-filter/repo: a.png committed as an LFS pointer (a.png); filter.lfs.required=true
+PATH=/Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/lfs-required-filter/bin:/usr/bin:/bin: git-lfs not found
+$ git add b.png (a new image)
+git-lfs filter-process: git-lfs: command not found
+error: could not read greeting from subprocess 'git-lfs filter-process'
+error: initialization for subprocess 'git-lfs filter-process' failed
+fatal: b.png: clean filter 'lfs' failed
+[exit 128]; staged: 
+$ git checkout -- a.png (after deleting it from the working tree)
+git-lfs filter-process: git-lfs: command not found
+error: could not read greeting from subprocess 'git-lfs filter-process'
+error: initialization for subprocess 'git-lfs filter-process' failed
+fatal: a.png: smudge filter lfs failed
+[exit 128]; a.png in the working tree: absent
+RESULT: PASS: without git-lfs, adding and checking out an LFS file both fail and write nothing
+
+exit status: 0
+end: 2026-10-18T18:04:53Z; load:  7:04  up 15 days, 17:15, 3 users, load averages: 3.31 5.88 6.33

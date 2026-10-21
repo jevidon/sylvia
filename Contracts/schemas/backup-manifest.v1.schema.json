@@ -238,7 +238,7 @@
       ]
     },
     "relative_path": {
-      "description": "Relative path inside the backup: '/'-separated ASCII components, each starting with a letter or digit and using only letters, digits, '.', '_' and '-'. No absolute paths, '.', '..', backslashes or empty components.",
+      "description": "Relative path inside the backup: '/'-separated ASCII components, each starting with a letter or digit and using only letters, digits, '.', '_' and '-'. No absolute paths, '.', '..', backslashes or empty components. Defence in depth: every role v1 defines constrains its path more tightly ($defs/file, allOf), so a path that breaks this pattern breaks its role's rule too, and the invalid path fixtures fail both rules (Spikes/G05-Recovery/Scripts/check_manifest_contract.py requires exactly those two); this pattern alone binds only a role added later without a path rule of its own.",
       "type": "string",
       "maxLength": 512,
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}(/[A-Za-z0-9][A-Za-z0-9._-]{0,127}){0,7}$"

@@ -8,7 +8,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 
 ## Setup
 
-1. On the build Mac, from the repository root (the M0 integration branch, `m0-integrate`, which holds this gate's round-6 work since M0 assembly, or `m0` once it is merged; record `git rev-parse HEAD`; `m0-g04-audio` lacks round 6's stereo fixtures, quick-capture rule and playback controls, so the steps below fail or test older behaviour there):
+1. On the build Mac, from the repository root (the M0 integration branch, `m0-integrate`, which holds this gate's round-6 work since M0 assembly, or `main` once the later M0 work has reached it, since pull request #4 merged `m0-integrate` up to `177ed9a` into `main` on 15 October 2026; record `git rev-parse HEAD`; `m0-g04-audio` lacks round 6's stereo fixtures, quick-capture rule and playback controls, so the steps below fail or test older behaviour there):
 
    ```sh
    source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh

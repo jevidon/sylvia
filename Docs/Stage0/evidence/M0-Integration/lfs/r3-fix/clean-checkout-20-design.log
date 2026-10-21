@@ -1,0 +1,28 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3; commit: 9ac7789101c1749eb8eecf051ee710d30de0533e (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T19:51:23Z; load:  8:51  up 15 days, 19:01, 3 users, load averages: 3.21 2.25 2.53
+command: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/Docs/Stage0/evidence/M0-Integration/lfs/commands/clean-checkout.sh /Users/jevidon/Git/sylvia /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-3/.build/scratch/r3-clones design
+
+# clean-checkout.sh phase design (2026-10-18T19:51:23Z); source /Users/jevidon/Git/sylvia (m0-integrate at 9ac7789101c1749eb8eecf051ee710d30de0533e)
+git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3); git config --global --list: fatal: unable to read config file '/Users/jevidon/.gitconfig': No such file or directory
+
+HEAD: 9ac7789101c1749eb8eecf051ee710d30de0533e; simulators: Sylvia-M0-lfs-fix, Sylvia-M0-lfs-fix-SE, Sylvia-M0-lfs-fix-iPad
+Xcode: Xcode 27.1 Build version 27A9275 
+load:  8:51  up 15 days, 19:01, 3 users, load averages: 3.21 2.25 2.53
+$ env SYLVIA_G06_SIM=Sylvia-M0-lfs-fix G02_LOOPBACK_ONLY=1 Scripts/ci.sh 20-design
+==> 00-git-lfs
+    pass (5s)
+==> 20-design
+    pass (182s)
+all 2 steps passed
+[exit 0]
+CHECK PASS: Scripts/ci.sh 20-design (exit 0)
+
+load:  8:54  up 15 days, 19:05, 3 users, load averages: 17.08 11.13 6.28
+git status --porcelain: (nothing: the working tree matches HEAD)
+CHECK PASS: the design drop-ins left every tracked file unchanged
+
+# phase design done (2026-10-18T19:54:30Z); checks failed: see CHECK FAIL lines (none means all passed)
+
+exit status: 0
+end: 2026-10-18T19:54:30Z; load:  8:54  up 15 days, 19:05, 3 users, load averages: 17.08 11.13 6.28

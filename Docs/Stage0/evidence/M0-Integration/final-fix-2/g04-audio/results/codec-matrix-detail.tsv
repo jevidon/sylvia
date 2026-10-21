@@ -1,0 +1,257 @@
+format	check	point_s	error_ms	peak	extra
+mp3-cbr	chapters	-	-	-	expected=none-in-file indefinite_ends_closed_at_duration=0 reported=
+mp3-cbr	decoder_seek	1.75	-13.1	0.999	reported_start=1.8
+mp3-cbr	decoder_seek	37.3	-13.1	1.000	reported_start=37.3
+mp3-cbr	decoder_seek	151.7	-13.1	1.000	reported_start=151.7
+mp3-cbr	decoder_seek	333.3	-13.1	0.998	reported_start=333.3
+mp3-cbr	decoder_seek	471.05	-13.1	1.000	reported_start=471.1
+mp3-cbr	decoder_seek	587.2	-13.1	0.984	reported_start=587.2
+mp3-cbr	player_seek	37.3	start_offset=-13.1 steady=-13.1	steady_peak=1.000	first_buffer_error=-643.7 (peak 0.272) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.093 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+mp3-cbr	player_seek	333.3	start_offset=56.6 steady=-13.1	steady_peak=0.997	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.018 chunks=39.9006+4096 333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096
+mp3-cbr	player_seek	587.2	start_offset=56.6 steady=-13.1	steady_peak=0.999	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.021 chunks=587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096 587.5483+4096
+mp3-cbr	player_seek_estimated_timing	37.3	start_offset=-13.1	-	seek_s=0.000 start_latency_s=0.102 chunks=37.3000+4096 37.39
+mp3-cbr	player_seek_estimated_timing	333.3	start_offset=56.6	-	seek_s=0.000 start_latency_s=0.012 chunks=39.9006+4096 333.3
+mp3-cbr	player_seek_estimated_timing	587.2	start_offset=56.6	-	seek_s=0.000 start_latency_s=0.011 chunks=587.2000+4096 587.
+mp3-cbr	export	221.37-251.37	-13.1/-13.1	0.998	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=294973
+mp3-cbr	export	0.0-12.5	-13.1/-13.1	0.999	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154528
+mp3-cbr	export	455.55-575.55	-13.1/-13.1	0.997	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=1008824
+mp3-vbr-xing	chapters	-	-	-	expected=none-in-file indefinite_ends_closed_at_duration=0 reported=
+mp3-vbr-xing	decoder_seek	1.75	-13.1	0.998	reported_start=1.8
+mp3-vbr-xing	decoder_seek	37.3	-13.1	0.999	reported_start=37.3
+mp3-vbr-xing	decoder_seek	151.7	-13.1	0.999	reported_start=151.7
+mp3-vbr-xing	decoder_seek	333.3	-13.1	0.997	reported_start=333.3
+mp3-vbr-xing	decoder_seek	471.05	-13.1	1.000	reported_start=471.1
+mp3-vbr-xing	decoder_seek	587.2	-13.1	0.984	reported_start=587.2
+mp3-vbr-xing	player_seek	37.3	start_offset=-13.1 steady=-13.1	steady_peak=0.999	first_buffer_error=678.4 (peak 0.689) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.101 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+mp3-vbr-xing	player_seek	333.3	start_offset=56.6 steady=-13.1	steady_peak=0.997	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.016 chunks=39.9006+4096 333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096
+mp3-vbr-xing	player_seek	587.2	start_offset=56.6 steady=-13.1	steady_peak=0.999	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.013 chunks=335.7845+4096 587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096
+mp3-vbr-xing	player_seek_estimated_timing	37.3	start_offset=-561.6	-	seek_s=0.000 start_latency_s=0.099 chunks=37.3000+4096 37.39
+mp3-vbr-xing	player_seek_estimated_timing	333.3	start_offset=-47.9	-	seek_s=0.000 start_latency_s=0.014 chunks=39.9006+4096 333.3
+mp3-vbr-xing	player_seek_estimated_timing	587.2	start_offset=291.7	-	seek_s=0.000 start_latency_s=0.013 chunks=335.7845+4096 587.
+mp3-vbr-xing	export	221.37-251.37	-13.1/-13.1	0.998	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=292345
+mp3-vbr-xing	export	0.0-12.5	-13.1/-13.1	0.999	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154801
+mp3-vbr-xing	export	455.55-575.55	-13.1/-13.1	0.995	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=999201
+mp3-vbr-noxing	chapters	-	-	-	expected=none-in-file indefinite_ends_closed_at_duration=0 reported=
+mp3-vbr-noxing	decoder_seek	1.75	-13.1	0.998	reported_start=1.8
+mp3-vbr-noxing	decoder_seek	37.3	-13.1	0.999	reported_start=37.3
+mp3-vbr-noxing	decoder_seek	151.7	-13.1	0.999	reported_start=151.7
+mp3-vbr-noxing	decoder_seek	333.3	-13.1	0.997	reported_start=333.3
+mp3-vbr-noxing	decoder_seek	471.05	-13.1	1.000	reported_start=471.1
+mp3-vbr-noxing	decoder_seek	587.2	-13.1	0.984	reported_start=587.2
+mp3-vbr-noxing	player_seek	37.3	start_offset=-13.1 steady=-13.1	steady_peak=0.999	first_buffer_error=678.4 (peak 0.689) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.098 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+mp3-vbr-noxing	player_seek	333.3	start_offset=56.6 steady=-13.1	steady_peak=0.997	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.011 chunks=333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096 333.6483+4096
+mp3-vbr-noxing	player_seek	587.2	start_offset=56.6 steady=-13.1	steady_peak=0.999	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.010 chunks=587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096 587.5483+4096
+mp3-vbr-noxing	player_seek_estimated_timing	37.3	start_offset=-326.5	-	seek_s=0.000 start_latency_s=0.099 chunks=37.3000+4096 37.39
+mp3-vbr-noxing	player_seek_estimated_timing	333.3	start_offset=752.5	-	seek_s=0.000 start_latency_s=0.014 chunks=39.9006+4096 333.3
+mp3-vbr-noxing	player_seek_estimated_timing	587.2	start_offset=-1733.4	-	seek_s=0.000 start_latency_s=0.016 chunks=335.7845+4096 587.
+mp3-vbr-noxing	export	221.37-251.37	-13.1/-13.1	0.998	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=292345
+mp3-vbr-noxing	export	0.0-12.5	-13.1/-13.1	0.999	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154801
+mp3-vbr-noxing	export	455.55-575.55	-13.1/-13.1	0.995	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=999201
+mp3-id3-chap	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=0 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600000
+mp3-id3-chap	decoder_seek	1.75	-13.1	0.999	reported_start=1.8
+mp3-id3-chap	decoder_seek	37.3	-13.1	1.000	reported_start=37.3
+mp3-id3-chap	decoder_seek	151.7	-13.1	1.000	reported_start=151.7
+mp3-id3-chap	decoder_seek	333.3	-13.1	0.998	reported_start=333.3
+mp3-id3-chap	decoder_seek	471.05	-13.1	1.000	reported_start=471.1
+mp3-id3-chap	decoder_seek	587.2	-13.1	0.984	reported_start=587.2
+mp3-id3-chap	player_seek	37.3	start_offset=-13.1 steady=-13.1	steady_peak=1.000	first_buffer_error=-643.7 (peak 0.272) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.101 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+mp3-id3-chap	player_seek	333.3	start_offset=56.6 steady=-13.1	steady_peak=0.997	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.012 chunks=333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096 333.6483+4096
+mp3-id3-chap	player_seek	587.2	start_offset=56.6 steady=-13.1	steady_peak=0.999	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.013 chunks=335.7845+4096 587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096
+mp3-id3-chap	player_seek_estimated_timing	37.3	start_offset=-13.1	-	seek_s=0.000 start_latency_s=0.100 chunks=37.3000+4096 37.39
+mp3-id3-chap	player_seek_estimated_timing	333.3	start_offset=56.6	-	seek_s=0.000 start_latency_s=0.009 chunks=333.3000+4096 333.
+mp3-id3-chap	player_seek_estimated_timing	587.2	start_offset=56.6	-	seek_s=0.000 start_latency_s=0.011 chunks=587.2000+4096 587.
+mp3-id3-chap	export	221.37-251.37	-13.1/-13.1	0.998	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=294973
+mp3-id3-chap	export	0.0-12.5	-13.1/-13.1	0.999	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154528
+mp3-id3-chap	export	455.55-575.55	-13.1/-13.1	0.997	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=1008824
+mp3-librivox-22k	chapters	-	-	-	expected=none-in-file indefinite_ends_closed_at_duration=0 reported=
+mp3-librivox-22k	decoder_seek	1.75	-0.1	1.000	reported_start=1.8
+mp3-librivox-22k	decoder_seek	37.3	-0.0	1.000	reported_start=37.3
+mp3-librivox-22k	decoder_seek	151.7	-0.0	1.000	reported_start=151.7
+mp3-librivox-22k	decoder_seek	333.3	-0.0	1.000	reported_start=333.3
+mp3-librivox-22k	decoder_seek	471.05	-0.1	1.000	reported_start=471.1
+mp3-librivox-22k	decoder_seek	587.2	-0.0	1.000	reported_start=587.2
+mp3-librivox-22k	player_seek	37.3	start_offset=0.0 steady=0.0	steady_peak=1.000	first_buffer_error=0.0 (peak 0.960) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.169 chunks=37.3000+3794 37.4721+3794 37.6441+3794 37.8162+3794 37.9883+3794 38.1603+3794
+mp3-librivox-22k	player_seek	333.3	start_offset=125.6 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.014 chunks=39.8810+3794 333.3000+3794 333.3000+3794 333.4256+3794 333.5977+3794 333.7698+3794
+mp3-librivox-22k	player_seek	587.2	start_offset=125.6 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.016 chunks=335.6624+3794 587.2000+3794 587.2000+3794 587.3256+3794 587.4977+3794 587.6698+3794
+mp3-librivox-22k	player_seek_estimated_timing	37.3	start_offset=0.0	-	seek_s=0.000 start_latency_s=0.171 chunks=37.3000+3794 37.47
+mp3-librivox-22k	player_seek_estimated_timing	333.3	start_offset=125.6	-	seek_s=0.000 start_latency_s=0.009 chunks=333.3000+3794 333.
+mp3-librivox-22k	player_seek_estimated_timing	587.2	start_offset=125.6	-	seek_s=0.000 start_latency_s=0.010 chunks=587.2000+3794 587.
+mp3-librivox-22k	export	221.37-251.37	-0.1/-2.2	0.999	length_error_ms=-2.1 claimed_start_offset_ms=0.0 output_duration_ms=29998 bytes=290979
+mp3-librivox-22k	export	0.0-12.5	-0.0/-0.0	1.000	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=155643
+mp3-librivox-22k	export	455.55-575.55	-0.1/-2.2	0.999	length_error_ms=-2.1 claimed_start_offset_ms=0.0 output_duration_ms=119998 bytes=1001117
+m4a-aac-lc	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=0 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600000
+m4a-aac-lc	decoder_seek	1.75	0.0	0.999	reported_start=1.8
+m4a-aac-lc	decoder_seek	37.3	0.0	0.999	reported_start=37.3
+m4a-aac-lc	decoder_seek	151.7	0.0	0.999	reported_start=151.7
+m4a-aac-lc	decoder_seek	333.3	0.0	0.999	reported_start=333.3
+m4a-aac-lc	decoder_seek	471.05	0.0	1.000	reported_start=471.1
+m4a-aac-lc	decoder_seek	587.2	0.0	0.999	reported_start=587.2
+m4a-aac-lc	player_seek	37.3	start_offset=0.0 steady=0.0	steady_peak=0.999	first_buffer_error=0.0 (peak 0.975) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.100 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+m4a-aac-lc	player_seek	333.3	start_offset=69.7 steady=0.0	steady_peak=0.998	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.017 chunks=39.9006+4096 333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096
+m4a-aac-lc	player_seek	587.2	start_offset=69.7 steady=0.0	steady_peak=0.999	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.020 chunks=335.7845+4096 587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096
+m4a-aac-lc	player_seek_estimated_timing	37.3	start_offset=0.0	-	seek_s=0.000 start_latency_s=0.098 chunks=37.3000+4096 37.39
+m4a-aac-lc	player_seek_estimated_timing	333.3	start_offset=69.7	-	seek_s=0.000 start_latency_s=0.014 chunks=39.9006+4096 333.3
+m4a-aac-lc	player_seek_estimated_timing	587.2	start_offset=69.7	-	seek_s=0.000 start_latency_s=0.014 chunks=335.7845+4096 587.
+m4a-aac-lc	export	221.37-251.37	0.0/0.0	0.999	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=294370
+m4a-aac-lc	export	0.0-12.5	0.0/0.0	0.999	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154748
+m4a-aac-lc	export	455.55-575.55	0.0/0.0	0.997	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=1009027
+m4a-he-aac-v1	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=0 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600047
+m4a-he-aac-v1	decoder_seek	1.75	-47.9	0.992	reported_start=1.8
+m4a-he-aac-v1	decoder_seek	37.3	-47.9	0.995	reported_start=37.3
+m4a-he-aac-v1	decoder_seek	151.7	-47.9	0.994	reported_start=151.7
+m4a-he-aac-v1	decoder_seek	333.3	-47.9	0.988	reported_start=333.3
+m4a-he-aac-v1	decoder_seek	471.05	-47.9	0.998	reported_start=471.1
+m4a-he-aac-v1	decoder_seek	587.2	-47.9	0.994	reported_start=587.2
+m4a-he-aac-v1	player_seek	37.3	start_offset=-47.9 steady=-47.9	steady_peak=0.995	first_buffer_error=-77.6 (peak 0.509) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.097 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+m4a-he-aac-v1	player_seek	333.3	start_offset=21.8 steady=-47.9	steady_peak=0.988	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.022 chunks=333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096 333.6483+4096
+m4a-he-aac-v1	player_seek	587.2	start_offset=21.8 steady=-47.9	steady_peak=0.994	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.021 chunks=335.7845+4096 587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096
+m4a-he-aac-v1	player_seek_estimated_timing	37.3	start_offset=-47.9	-	seek_s=0.000 start_latency_s=0.094 chunks=37.3000+4096 37.39
+m4a-he-aac-v1	player_seek_estimated_timing	333.3	start_offset=21.8	-	seek_s=0.000 start_latency_s=0.016 chunks=39.9006+4096 333.3
+m4a-he-aac-v1	player_seek_estimated_timing	587.2	start_offset=21.8	-	seek_s=0.000 start_latency_s=0.015 chunks=335.7845+4096 587.
+m4a-he-aac-v1	export	221.37-251.37	-47.9/-47.9	0.992	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=294892
+m4a-he-aac-v1	export	0.0-12.5	-47.9/-47.9	0.994	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=160052
+m4a-he-aac-v1	export	455.55-575.55	-47.9/-47.9	0.985	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=1009584
+m4a-he-aac-v2	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=0 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600047
+m4a-he-aac-v2	decoder_seek	1.75	-47.9	0.992	reported_start=1.8
+m4a-he-aac-v2	decoder_seek	37.3	-47.9	0.994	reported_start=37.3
+m4a-he-aac-v2	decoder_seek	151.7	-47.9	0.994	reported_start=151.7
+m4a-he-aac-v2	decoder_seek	333.3	-47.9	0.987	reported_start=333.3
+m4a-he-aac-v2	decoder_seek	471.05	-47.9	0.998	reported_start=471.1
+m4a-he-aac-v2	decoder_seek	587.2	-47.9	0.995	reported_start=587.2
+m4a-he-aac-v2	player_seek	37.3	start_offset=-47.9 steady=-47.9	steady_peak=0.994	first_buffer_error=-77.6 (peak 0.495) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.095 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+m4a-he-aac-v2	player_seek	333.3	start_offset=21.8 steady=-47.9	steady_peak=0.987	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.020 chunks=39.9006+4096 333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096
+m4a-he-aac-v2	player_seek	587.2	start_offset=21.8 steady=-47.9	steady_peak=0.995	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.013 chunks=335.7845+4096 587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096
+m4a-he-aac-v2	player_seek_estimated_timing	37.3	start_offset=-47.9	-	seek_s=0.000 start_latency_s=0.096 chunks=37.3000+4096 37.39
+m4a-he-aac-v2	player_seek_estimated_timing	333.3	start_offset=21.8	-	seek_s=0.000 start_latency_s=0.012 chunks=333.3000+4096 333.
+m4a-he-aac-v2	player_seek_estimated_timing	587.2	start_offset=21.8	-	seek_s=0.000 start_latency_s=0.017 chunks=335.7845+4096 587.
+m4a-he-aac-v2	export	221.37-251.37	-47.9/-47.9	0.992	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=294253
+m4a-he-aac-v2	export	0.0-12.5	-47.9/-47.9	0.994	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=160482
+m4a-he-aac-v2	export	455.55-575.55	-47.9/-47.9	0.986	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=1003845
+m4a-alac	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=0 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600000
+m4a-alac	decoder_seek	1.75	0.0	1.000	reported_start=1.8
+m4a-alac	decoder_seek	37.3	0.0	1.000	reported_start=37.3
+m4a-alac	decoder_seek	151.7	0.0	1.000	reported_start=151.7
+m4a-alac	decoder_seek	333.3	0.0	1.000	reported_start=333.3
+m4a-alac	decoder_seek	471.05	0.0	1.000	reported_start=471.1
+m4a-alac	decoder_seek	587.2	0.0	1.000	reported_start=587.2
+m4a-alac	player_seek	37.3	start_offset=0.0 steady=0.0	steady_peak=1.000	first_buffer_error=0.0 (peak 1.000) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.102 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+m4a-alac	player_seek	333.3	start_offset=69.7 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.018 chunks=39.9006+4096 333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096
+m4a-alac	player_seek	587.2	start_offset=69.7 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.012 chunks=587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096 587.5483+4096
+m4a-alac	player_seek_estimated_timing	37.3	start_offset=0.0	-	seek_s=0.000 start_latency_s=0.107 chunks=37.3000+4096 37.39
+m4a-alac	player_seek_estimated_timing	333.3	start_offset=69.7	-	seek_s=0.000 start_latency_s=0.017 chunks=39.9006+4096 333.3
+m4a-alac	player_seek_estimated_timing	587.2	start_offset=69.7	-	seek_s=0.000 start_latency_s=0.021 chunks=335.7845+4096 587.
+m4a-alac	export	221.37-251.37	0.0/0.0	1.000	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=295119
+m4a-alac	export	0.0-12.5	0.0/0.0	1.000	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154705
+m4a-alac	export	455.55-575.55	0.0/0.0	0.998	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=1005900
+flac	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=1 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600000
+flac	decoder_seek	1.75	0.0	1.000	reported_start=1.8
+flac	decoder_seek	37.3	0.0	1.000	reported_start=37.3
+flac	decoder_seek	151.7	0.0	1.000	reported_start=151.7
+flac	decoder_seek	333.3	0.0	1.000	reported_start=333.3
+flac	decoder_seek	471.05	0.0	1.000	reported_start=471.1
+flac	decoder_seek	587.2	0.0	1.000	reported_start=587.2
+flac	player_seek	37.3	start_offset=0.0 steady=0.0	steady_peak=1.000	first_buffer_error=0.0 (peak 1.000) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.103 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+flac	player_seek	333.3	start_offset=69.7 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.017 chunks=39.9006+4096 333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096
+flac	player_seek	587.2	start_offset=69.7 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.016 chunks=335.7845+4096 587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096
+flac	player_seek_estimated_timing	37.3	start_offset=917.6	-	seek_s=0.000 start_latency_s=0.096 chunks=37.3000+4096 37.39
+flac	player_seek_estimated_timing	333.3	start_offset=-2859.1	-	seek_s=0.000 start_latency_s=0.014 chunks=39.9006+4096 333.3
+flac	player_seek_estimated_timing	587.2	start_offset=-1201.1	-	seek_s=0.000 start_latency_s=0.012 chunks=335.7845+4096 587.
+flac	export	221.37-251.37	0.0/0.0	1.000	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=295119
+flac	export	0.0-12.5	0.0/0.0	1.000	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154705
+flac	export	455.55-575.55	0.0/0.0	0.998	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=1005900
+mp4-flac	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=0 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600000
+mp4-flac	decoder_seek	1.75	0.0	1.000	reported_start=1.8
+mp4-flac	decoder_seek	37.3	0.0	1.000	reported_start=37.3
+mp4-flac	decoder_seek	151.7	0.0	1.000	reported_start=151.7
+mp4-flac	decoder_seek	333.3	0.0	1.000	reported_start=333.3
+mp4-flac	decoder_seek	471.05	0.0	1.000	reported_start=471.1
+mp4-flac	decoder_seek	587.2	0.0	1.000	reported_start=587.2
+mp4-flac	player_seek	37.3	start_offset=0.0 steady=0.0	steady_peak=1.000	first_buffer_error=0.0 (peak 1.000) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.096 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+mp4-flac	player_seek	333.3	start_offset=69.7 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.012 chunks=333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096 333.6483+4096
+mp4-flac	player_seek	587.2	start_offset=69.7 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.015 chunks=335.7845+4096 587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096
+mp4-flac	player_seek_estimated_timing	37.3	start_offset=0.0	-	seek_s=0.000 start_latency_s=0.098 chunks=37.3000+4096 37.39
+mp4-flac	player_seek_estimated_timing	333.3	start_offset=69.7	-	seek_s=0.000 start_latency_s=0.018 chunks=39.9006+4096 333.3
+mp4-flac	player_seek_estimated_timing	587.2	start_offset=69.7	-	seek_s=0.000 start_latency_s=0.019 chunks=335.7845+4096 587.
+mp4-flac	export	221.37-251.37	0.0/0.0	1.000	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=295119
+mp4-flac	export	0.0-12.5	0.0/0.0	1.000	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154705
+mp4-flac	export	455.55-575.55	0.0/0.0	0.998	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=1005900
+ogg-opus	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=1 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600000
+ogg-opus	decoder_seek	1.75	0.0	0.991	reported_start=1.8
+ogg-opus	decoder_seek	37.3	0.0	0.997	reported_start=37.3
+ogg-opus	decoder_seek	151.7	0.0	0.995	reported_start=151.7
+ogg-opus	decoder_seek	333.3	0.0	0.981	reported_start=333.3
+ogg-opus	decoder_seek	471.05	0.0	0.999	reported_start=471.1
+ogg-opus	decoder_seek	587.2	0.0	0.994	reported_start=587.2
+ogg-opus	player_seek	37.3	start_offset=0.0 steady=0.0	steady_peak=0.997	first_buffer_error=0.0 (peak 0.858) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.084 chunks=37.3000+4096 37.3853+4096 37.4707+4096 37.5560+4096 37.6413+4096 37.7267+4096
+ogg-opus	player_seek	333.3	start_offset=64.0 steady=0.0	steady_peak=0.975	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.013 chunks=39.8600+4096 333.3000+4096 333.3000+4096 333.3640+4096 333.4493+4096 333.5347+4096
+ogg-opus	player_seek	587.2	start_offset=64.0 steady=0.0	steady_peak=0.995	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.017 chunks=335.7533+4096 587.2000+4096 587.2000+4096 587.2640+4096 587.3493+4096 587.4347+4096
+ogg-opus	player_seek_estimated_timing	37.3	start_offset=-1253.5	-	seek_s=0.000 start_latency_s=0.092 chunks=37.3000+4096 37.38
+ogg-opus	player_seek_estimated_timing	333.3	start_offset=-67.8	-	seek_s=0.000 start_latency_s=0.018 chunks=39.8600+4096 333.3
+ogg-opus	player_seek_estimated_timing	587.2	start_offset=-2000.6	-	seek_s=0.000 start_latency_s=0.015 chunks=335.7533+4096 587.
+ogg-opus	export	221.37-251.37	0.0/-1.0	0.990	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=29999 bytes=293870
+ogg-opus	export	0.0-12.5	0.0/-1.0	0.997	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=12499 bytes=158270
+ogg-opus	export	455.55-575.55	0.0/-1.0	0.974	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=119999 bytes=1006940
+opus-ext	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=1 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600000
+opus-ext	decoder_seek	1.75	0.0	0.991	reported_start=1.8
+opus-ext	decoder_seek	37.3	0.0	0.997	reported_start=37.3
+opus-ext	decoder_seek	151.7	0.0	0.995	reported_start=151.7
+opus-ext	decoder_seek	333.3	0.0	0.981	reported_start=333.3
+opus-ext	decoder_seek	471.05	0.0	0.999	reported_start=471.1
+opus-ext	decoder_seek	587.2	0.0	0.994	reported_start=587.2
+opus-ext	player_seek	37.3	start_offset=0.0 steady=0.0	steady_peak=0.997	first_buffer_error=0.0 (peak 0.858) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.090 chunks=37.3000+4096 37.3853+4096 37.4707+4096 37.5560+4096 37.6413+4096 37.7267+4096
+opus-ext	player_seek	333.3	start_offset=64.0 steady=0.0	steady_peak=0.975	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.012 chunks=333.3000+4096 333.3000+4096 333.3640+4096 333.4493+4096 333.5347+4096 333.6200+4096
+opus-ext	player_seek	587.2	start_offset=64.0 steady=0.0	steady_peak=0.995	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.020 chunks=335.7533+4096 587.2000+4096 587.2000+4096 587.2640+4096 587.3493+4096 587.4347+4096
+opus-ext	player_seek_estimated_timing	37.3	start_offset=-1253.5	-	seek_s=0.000 start_latency_s=0.092 chunks=37.3000+4096 37.38
+opus-ext	player_seek_estimated_timing	333.3	start_offset=-67.8	-	seek_s=0.000 start_latency_s=0.019 chunks=39.8600+4096 333.3
+opus-ext	player_seek_estimated_timing	587.2	start_offset=-2000.6	-	seek_s=0.000 start_latency_s=0.014 chunks=335.7533+4096 587.
+opus-ext	export	221.37-251.37	0.0/-1.0	0.990	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=29999 bytes=293870
+opus-ext	export	0.0-12.5	0.0/-1.0	0.997	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=12499 bytes=158270
+opus-ext	export	455.55-575.55	0.0/-1.0	0.974	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=119999 bytes=1006940
+mp4-opus	chapters	-	-	-	expected=exact indefinite_ends_closed_at_duration=0 reported=Opening@0-95500; Chapter Two@95500-241250; Chapter Three@241250-400000; Chapter Four@400000-600000
+mp4-opus	decoder_seek	1.75	0.0	0.991	reported_start=1.8
+mp4-opus	decoder_seek	37.3	0.0	0.997	reported_start=37.3
+mp4-opus	decoder_seek	151.7	0.0	0.995	reported_start=151.7
+mp4-opus	decoder_seek	333.3	0.0	0.981	reported_start=333.3
+mp4-opus	decoder_seek	471.05	0.0	0.999	reported_start=471.1
+mp4-opus	decoder_seek	587.2	0.0	0.995	reported_start=587.2
+mp4-opus	player_seek	37.3	start_offset=0.0 steady=0.0	steady_peak=0.997	first_buffer_error=0.0 (peak 0.864) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.084 chunks=37.3000+4096 37.3853+4096 37.4707+4096 37.5560+4096 37.6413+4096 37.7267+4096
+mp4-opus	player_seek	333.3	start_offset=64.0 steady=0.0	steady_peak=0.975	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.014 chunks=39.8600+4096 333.3000+4096 333.3000+4096 333.3640+4096 333.4493+4096 333.5347+4096
+mp4-opus	player_seek	587.2	start_offset=64.0 steady=0.0	steady_peak=0.995	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.019 chunks=335.8387+4096 587.2000+4096 587.2000+4096 587.2640+4096 587.3493+4096 587.4347+4096
+mp4-opus	player_seek_estimated_timing	37.3	start_offset=0.0	-	seek_s=0.000 start_latency_s=0.089 chunks=37.3000+4096 37.38
+mp4-opus	player_seek_estimated_timing	333.3	start_offset=64.0	-	seek_s=0.000 start_latency_s=0.020 chunks=39.8600+4096 333.3
+mp4-opus	player_seek_estimated_timing	587.2	start_offset=64.0	-	seek_s=0.000 start_latency_s=0.014 chunks=335.7533+4096 587.
+mp4-opus	export	221.37-251.37	0.0/-1.0	0.990	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=29999 bytes=293862
+mp4-opus	export	0.0-12.5	0.0/-1.0	0.997	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=12499 bytes=158270
+mp4-opus	export	455.55-575.55	0.0/-1.0	0.974	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=119999 bytes=1006932
+caf-opus	chapters	-	-	-	expected=none-in-file indefinite_ends_closed_at_duration=0 reported=
+caf-opus	decoder_seek	1.75	0.0	0.882	reported_start=1.8
+caf-opus	decoder_seek	37.3	0.2	0.932	reported_start=37.3
+caf-opus	decoder_seek	151.7	0.0	0.892	reported_start=151.7
+caf-opus	decoder_seek	333.3	0.0	0.865	reported_start=333.3
+caf-opus	decoder_seek	471.05	0.3	0.913	reported_start=471.1
+caf-opus	decoder_seek	587.2	0.2	0.917	reported_start=587.2
+caf-opus	player_seek	37.3	start_offset=0.2 steady=0.2	steady_peak=0.932	first_buffer_error=0.0 (peak 0.743) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.084 chunks=37.3000+4096 37.3853+4096 37.4707+4096 37.5560+4096 37.6413+4096 37.7267+4096
+caf-opus	player_seek	333.3	start_offset=64.0 steady=0.0	steady_peak=0.839	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.012 chunks=39.8600+4096 333.3000+4096 333.3000+4096 333.3640+4096 333.4493+4096 333.5347+4096
+caf-opus	player_seek	587.2	start_offset=64.2 steady=0.2	steady_peak=0.919	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.009 chunks=587.2000+4096 587.2000+4096 587.2640+4096 587.3493+4096 587.4347+4096 587.5200+4096
+caf-opus	player_seek_estimated_timing	37.3	start_offset=0.2	-	seek_s=0.000 start_latency_s=0.090 chunks=37.3000+4096 37.38
+caf-opus	player_seek_estimated_timing	333.3	start_offset=64.0	-	seek_s=0.000 start_latency_s=0.009 chunks=333.3000+4096 333.
+caf-opus	player_seek_estimated_timing	587.2	start_offset=64.2	-	seek_s=0.000 start_latency_s=0.012 chunks=587.2000+4096 587.
+caf-opus	export	221.37-251.37	0.0/-0.8	0.909	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=29999 bytes=294437
+caf-opus	export	0.0-12.5	0.1/-0.9	0.924	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=12499 bytes=158106
+caf-opus	export	455.55-575.55	0.0/-0.9	0.874	length_error_ms=-1.0 claimed_start_offset_ms=0.0 output_duration_ms=119999 bytes=1001643
+wav	chapters	-	-	-	expected=not-read indefinite_ends_closed_at_duration=0 reported=
+wav	decoder_seek	1.75	0.0	1.000	reported_start=1.8
+wav	decoder_seek	37.3	0.0	1.000	reported_start=37.3
+wav	decoder_seek	151.7	0.0	1.000	reported_start=151.7
+wav	decoder_seek	333.3	0.0	1.000	reported_start=333.3
+wav	decoder_seek	471.05	0.0	1.000	reported_start=471.1
+wav	decoder_seek	587.2	0.0	1.000	reported_start=587.2
+wav	player_seek	37.3	start_offset=0.0 steady=0.0	steady_peak=1.000	first_buffer_error=0.0 (peak 1.000) steady_reported=37.3 current_after_seek=37.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.103 chunks=37.3000+4096 37.3929+4096 37.4858+4096 37.5786+4096 37.6715+4096 37.7644+4096
+wav	player_seek	333.3	start_offset=69.7 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=333.4 current_after_seek=333.3 finished=true preroll_buffers_before_target=0 seek_s=0.000 start_latency_s=0.011 chunks=333.3000+4096 333.3000+4096 333.3000+4096 333.3697+4096 333.4625+4096 333.5554+4096
+wav	player_seek	587.2	start_offset=69.7 steady=0.0	steady_peak=1.000	first_buffer_error=-1000.0 (peak 0.000) steady_reported=587.3 current_after_seek=587.2 finished=true preroll_buffers_before_target=1 seek_s=0.000 start_latency_s=0.015 chunks=335.7845+4096 587.2000+4096 587.2000+4096 587.2697+4096 587.3625+4096 587.4554+4096
+wav	player_seek_estimated_timing	37.3	start_offset=0.0	-	seek_s=0.000 start_latency_s=0.103 chunks=37.3000+4096 37.39
+wav	player_seek_estimated_timing	333.3	start_offset=69.7	-	seek_s=0.000 start_latency_s=0.020 chunks=39.9935+4096 333.3
+wav	player_seek_estimated_timing	587.2	start_offset=69.7	-	seek_s=0.000 start_latency_s=0.012 chunks=587.2000+4096 587.
+wav	export	221.37-251.37	0.0/0.0	1.000	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=30000 bytes=295119
+wav	export	0.0-12.5	0.0/0.0	1.000	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=12500 bytes=154705
+wav	export	455.55-575.55	0.0/0.0	0.998	length_error_ms=0.0 claimed_start_offset_ms=0.0 output_duration_ms=120000 bytes=1005900

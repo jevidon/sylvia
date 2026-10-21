@@ -1,0 +1,69 @@
+command: Docs/Stage0/evidence/M0-Integration/final-fix-2/commands/ci-71-allow-missing-class-b.sh Docs/Stage0/evidence/M0-Integration/final-fix-2/g05-recovery Docs/Stage0/evidence/M0-Integration/final-fix-2/ci-71-g05-recovery-locked.log
+commit: c4fbfbdbd7d8c9da70a7a35deff598eab28741d0; uncommitted files before the run: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+Spikes/G05-Recovery/.build and .build/g05-recovery deleted before the run; simulator name Sylvia-M0-final-fix (iPhone 17, iOS 26.5)
+G05_ALLOW_MISSING_CLASS_B=1; G05_LOG_DIR=Docs/Stage0/evidence/M0-Integration/final-fix-2/g05-recovery
+screen lock (ioreg) at the start: IOConsoleLocked=False CGSSessionScreenIsLocked=False
+start: 2026-10-19T15:14:00Z; load:  4:14  up 16 days, 14:24, 2 users, load averages: 2.90 3.52 3.78
+==> 00-git-lfs
+    pass (6s)
+==> 71-g05-recovery
+    pass (348s)
+all 2 steps passed
+ci.sh exit: 0
+---- .build/ci-logs/71-g05-recovery.log: step headers, warnings and verdict lines (the step logs hold the rest)
+=== 1. toolchain
+=== 2. host build
+=== 3. host tests
+✔ Test run with 73 tests in 11 suites passed after 17.712 seconds.
+row 10 evidence present: class-B readback and inheritance lines found in host-tests.log
+=== 4. crash drill, chosen durability, 900 iterations
+crash drill: environment host (macOS), seed 20261006, 900 iterations, 12 items per child
+  100 iterations, 855 acknowledged, 0 failures
+  200 iterations, 1437 acknowledged, 0 failures
+  300 iterations, 2014 acknowledged, 0 failures
+  400 iterations, 2651 acknowledged, 0 failures
+  500 iterations, 3336 acknowledged, 0 failures
+  600 iterations, 3945 acknowledged, 0 failures
+  700 iterations, 4455 acknowledged, 0 failures
+  800 iterations, 5089 acknowledged, 0 failures
+  900 iterations, 5666 acknowledged, 0 failures
+RESULT: PASS
+=== 5. crash drill, synchronous=OFF (limit of a process-kill drill)
+crash drill: environment host (macOS), seed 20261006, 150 iterations, 12 items per child
+  100 iterations, 1103 acknowledged, 0 failures
+RESULT: PASS
+=== 6. capture save latency
+chosen: synchronous=FULL fullfsync=ON: n=2000 p50=0.779 ms p95=1.315 ms p99=2.702 ms max=10.194 ms
+RESULT: PASS (chosen p95 1.315125 ms <= 200 ms)
+=== 7. restore drill
+RESULT: PASS (49 checks)
+=== 8. restore crash drill, 300 iterations
+  50 iterations, 0 failures
+  100 iterations, 0 failures
+  150 iterations, 0 failures
+  200 iterations, 0 failures
+  250 iterations, 0 failures
+  300 iterations, 0 failures
+RESULT: PASS
+=== 9. migration put-back crash drill, 240 iterations
+  40 iterations, 0 failures
+  80 iterations, 0 failures
+  120 iterations, 0 failures
+  160 iterations, 0 failures
+  200 iterations, 0 failures
+  240 iterations, 0 failures
+RESULT: PASS
+=== 10. backup-manifest contract
+RESULT: PASS
+=== 11. simulator tests (Sylvia-M0-final-fix)
+✔ Test run with 68 tests in 11 suites passed after 14.631 seconds.
+** TEST SUCCEEDED **
+simulator Sylvia-M0-final-fix shut down
+=== 12. iOS device build (library, and the tests unsigned so the device checklist can run them)
+** TEST BUILD SUCCEEDED **
+G0.5 recovery: all steps passed (logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-20/Docs/Stage0/evidence/M0-Integration/final-fix-2/g05-recovery)
+---- end
+screen lock (ioreg) at the end: IOConsoleLocked=False CGSSessionScreenIsLocked=False
+end: 2026-10-19T15:19:55Z; load:  4:19  up 16 days, 14:30, 2 users, load averages: 14.85 7.56 5.31
+git status --porcelain lines after the run: 2

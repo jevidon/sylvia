@@ -106,6 +106,8 @@ require_suites "$EVIDENCE/test-host.log" "Component logic"
 
 UDID="$(sylvia_sim_udid "$SIM_NAME")"
 echo "simulator $SIM_NAME: $UDID ($SYLVIA_SIM_DEVICE_TYPE, $SYLVIA_SIM_RUNTIME)"
+# The test runs boot it; shut it down when this script ends, however it ends (M0 final review CC-05).
+trap 'sylvia_sim_shutdown "$UDID"' EXIT
 SIM_REPORTS=(t51-layout-audit-simulator.md t53-marker-pairs-simulator.md t53-pill-pairs-simulator.md
              t53-availability-badges-simulator.md t53-generated-frame-simulator.md
              t53-buttons-grayscale-simulator.md t53-rating-grayscale-simulator.md accessibility-tree-simulator.md)
@@ -129,7 +131,7 @@ negative_sources=("$SNAPSHOTS/rating.dark-default.png" "$SNAPSHOTS/rating.dark-d
 backup_dir="$(mktemp -d "${TMPDIR:-/tmp}/g06-references.XXXXXX")"
 for t in "${negative_targets[@]}"; do cp "$t" "$backup_dir/"; done
 restore() { for t in "${negative_targets[@]}"; do cp "$backup_dir/$(basename "$t")" "$t"; done; rm -rf "$backup_dir"; }
-trap restore EXIT
+trap 'restore; sylvia_sim_shutdown "$UDID"' EXIT
 for i in 0 1; do cp "${negative_sources[$i]}" "${negative_targets[$i]}"; done
 negative_log="$EVIDENCE/snapshot-negative-check-simulator.log"
 negative_status=0
@@ -138,7 +140,7 @@ negative_status=0
     -disableAutomaticPackageResolution -only-testing:SylviaDesignSnapshotTests/ComponentSnapshotTests) \
     >"$negative_log" 2>&1 || negative_status=$?
 restore
-trap - EXIT
+trap 'sylvia_sim_shutdown "$UDID"' EXIT
 failures="$(grep -E "✘ Test .*recorded an issue" "$negative_log" | grep -c '"rating"' || true)"
 others="$(grep -E "✘ Test .*recorded an issue" "$negative_log" | grep -vc '"rating"' || true)"
 echo "xcodebuild exit $negative_status; issues on the changed sample: $failures; on other samples: $others"

@@ -5,7 +5,7 @@ Everything third-party in Sylvia's tree at M0 integration (13 October 2026; revi
 - **Machine-readable source:** [`inventory.json`](inventory.json). `Scripts/check-dependency-lock.py` (CI drop-in `Scripts/ci.d/12-dependency-lock.sh`) fails when the repository and the inventory disagree, including when this page lacks a package's name, version and revision.
 - **License texts:** [`texts/`](texts), copied from each package checkout at its pinned revision (digests checked in CI), or fetched or extracted where the package has none; provenance below.
 - **Acknowledgements draft:** [`acknowledgements-draft.md`](acknowledgements-draft.md), generated from the inventory.
-- **Evidence:** `Docs/Stage0/evidence/M0-dependencies/` (logs and the commands that wrote them), all on the host: macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.0 (27A266a). No simulator was booted and no device was used: the iOS builds in `linkage.log` target a generic iOS Simulator destination.
+- **Evidence:** `Docs/Stage0/evidence/M0-dependencies/` (logs and the commands that wrote them), all on the host: macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.0 (27A266a), the pinned Xcode when they were written. No simulator was booted and no device was used: the iOS builds in `linkage.log` target a generic iOS Simulator destination. Since 20 October 2026 the pin is Xcode 27.1 (27A9275), the product owner's decision of PO-35 as ADR-0001 records the reading of the owner's reply; the re-pin's toolchain log, the comparison of 27.1's build-setting specifications with 27.0's (identical output) and the dependency lock check passing under the new pin are in `Docs/Stage0/evidence/M0-Integration/repin-27.1/` (the toolchain row below).
 
 ## At a glance
 
@@ -192,12 +192,12 @@ Recorded on the build Mac (`toolchain.log`). None of these ships in Sylvia.
 
 | Tool | Version | Source | License | Used by |
 | --- | --- | --- | --- | --- |
-| Xcode | 27.0 (27A266a); Swift 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1); SDKs iOS, iOS Simulator and macOS 27.0; runtimes iOS 26.5 (23F77) and 27.0 (24A434) | `/Applications/Xcode.app` | Apple | every build (ADR-0001); CI checks the build and Swift version |
+| Xcode | 27.1 (27A9275) since 20 October 2026 (27.0 (27A266a) until then; ADR-0001, PO-35); Swift 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1), the same in both; SDKs iOS and iOS Simulator 27.1, macOS 27.0; runtimes iOS 26.5 (23F77) and 27.0 (24A434) (`Docs/Stage0/evidence/M0-Integration/repin-27.1/toolchain-27.1.log`) | `/Applications/Xcode.app` | Apple | every build (ADR-0001); CI checks the build and Swift version |
 | XcodeGen | 2.46.0 | Homebrew | MIT | every Xcode project; CI checks the version. `exactVersion:` and `version:` give exact requirements (`xcodegen-requirements.log`) |
 | Python | 3.14.6 (tools virtualenv); 3.9.6 (`/usr/bin/python3`) | Homebrew; macOS | Python-2.0 | contract and lint tooling, this check; fixture generators |
 | ffmpeg, ffprobe | 8.1.2, built with `--enable-gpl --enable-version3` and libmp3lame (LGPL-2.0-or-later), libopus (BSD-3-Clause) | Homebrew | GPL-3.0-or-later (this build) | G0.4 fixture generators and its excerpt portability check (on `m0-g04-audio`); host only, and its output is test data, not shipped |
 | OpenSSL | 3.6.3 (Homebrew, first on `PATH`); LibreSSL 3.3.6 (`/usr/bin/openssl`) | Homebrew; macOS | Apache-2.0; system | G0.2 certificates and digests; G0.1 EPUB generator |
-| git, git-lfs | 2.55.0; 3.7.1 (not used yet, ADR-0002) | Homebrew | GPL-2.0 and others; MIT | evidence scripts |
+| git, git-lfs | 2.55.0; 3.7.1 (required since 19 October 2026, ADR-0002) | Homebrew | GPL-2.0 and others; MIT | evidence scripts; git-lfs for the snapshot references and evidence images stored with Git LFS (`Scripts/setup-repo.sh`, `Scripts/ci.d/00-git-lfs.sh`) |
 | macOS tools | macOS 26.6.2 | macOS | Apple | afconvert, afinfo, shasum, unzip (Info-ZIP 6.00), rsync (openrsync), sips, plutil, perl 5.34.1, codesign, security, du, curl 8.7.1 |
 | Google Chrome | 155.0.8059.40 (it updates itself; `toolchain.log` records the version on the day) | `/Applications` | Google | `Docs/Design/render.py` only (optional) |
 | Tailscale | 1.102.4 | `/Applications` | Tailscale | `Scripts/ci.d/40-g02-transfer.sh`, only with a tailnet address (optional) |
@@ -209,6 +209,14 @@ Recorded on the build Mac (`toolchain.log`). None of these ships in Sylvia.
 ## Fixture sources
 
 `Fixtures/LICENSES.md` was cross-checked against the committed files (`fixtures-crosscheck.log`): every SHA-256 it states matches its file (7 committed fixtures, 10 G0.1 PDFs, the G0.5 library, both Literata fonts), the three cache files' digests are pinned in their generators, the 17 G0.1 EPUBs match `MANIFEST.tsv`, every count and size it gives matches, every committed EPUB, PDF, audio, database, certificate and font file is named in it, and its fetched-file list equals `Scripts/fixtures/manifest.tsv`. No private key is committed. Sources are public domain (LibriVox, Project Gutenberg texts, Standard Ebooks texts with CC0 contributions) or generated. Two notes stay with that file's owner: the Project Gutenberg files carry the Project Gutenberg License (the file says so, and that they must be replaced or complied with before any public distribution), and G0.4's generated fixtures are listed when `m0-g04-audio` is merged (the rows requested are in the next section; written at that merge on 14 October 2026).
+
+## Design references (not dependencies)
+
+Recorded on 19 October 2026 from the plan (Appendix B [S25], Sections 4.1, 13.1 and 24). A design reference informs how Sylvia is designed; nothing from it is copied into the tree, required by a manifest, pinned by a lock or linked into a build, so it is not in `inventory.json` and the CI check does not read it.
+
+| Reference | Read at | What it informs | Why it is not a dependency |
+| --- | --- | --- | --- |
+| Gloss, `github.com/Nutlope/gloss` | commit `54b13b8` (`54b13b8882d8a109132c5b2045acd6b45628563d`), reviewed on 15 October 2026 for the plan's draft 0.6 | M3 and M5 interaction design (passage preview while writing, Explain and Simplify question starters, follow-ups, citation evidence previews), the later web reader, and article-extraction approaches to evaluate for post-V1 Phase A (plan Sections 4.1, 13.1 and 24) | The plan records that this snapshot declares no reuse license (Appendix B [S25]; Section 24), so its source, assets, prompts and evaluation cases are not copied, and interaction ideas are implemented independently. Any direct reuse first needs a suitable license or explicit permission, recorded through ADR-0014's update procedure before adoption (plan Sections 18 and 22). Not re-checked here: the license statement is the plan's, read at that commit on 15 October 2026 |
 
 ## G0.4 audio
 
@@ -236,7 +244,7 @@ All under `Docs/Stage0/evidence/M0-dependencies/`; each log names the command (i
 | `fixtures-crosscheck.log` | `Fixtures/LICENSES.md` against the files |
 | `advisories.md`, `advisories-search.log`, `vendored-advisories.log` | The advisory searches: by hand (12 October); version-exact with positive controls (13 October), with each package repository's published advisories and NVD's keyword search added in review round 3; and the vendored code by version, revision, keyword and repository (review rounds 2 and 3) |
 | `readium-css-provenance.log` | The readium-css commit the bundled stylesheets come from, found by git blob id, and its LICENSE fetched there (review round 3) |
-| `xcode-settings.log` | The build settings Xcode 27.0's specifications pass to the compiler and linker, and how the check treats each (review round 3) |
+| `xcode-settings.log` | The build settings Xcode 27.0's specifications pass to the compiler and linker, and how the check treats each (review round 3). Xcode 27.1's give the same output, line for line (20 October 2026, at the re-pin: `Docs/Stage0/evidence/M0-Integration/repin-27.1/xcode-settings-compare.log`) |
 | `round1-reproductions.log` | Review round 1's reproductions (and the further routes the fix closes), each run against a copy of the committed tree: the check must report each, and must stay silent on the allowed changes |
 | `round2-reproductions.log` | Review round 2's reproductions: each R2-02 route against copies of the committed tree, with what the reviewed commit's check reported for the same change; proof that each hidden import compiles; the limits ADR-0014 lists, unreported; and `Scripts/ci.sh dependency-lock` with a virtualenv made as `bootstrap.sh` makes one (R2-01) |
 | `round3-reproductions.log` | Review round 3's reproductions: each flag, setting and search-path route of R3-01 and the committed Xcode project of R3-04 against copies of the committed tree, with what the reviewed check reported; proof that each route compiles; a limit, unreported; what a passing `Scripts/ci.sh` run shows of the pip warning, with and without the requested change (R3-05); and the fixes behind the round 3 advisory verdicts, as ancestors of the pinned revisions |

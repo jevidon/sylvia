@@ -1,0 +1,60 @@
+# Summary of the SylviaDesign simulator tests in the clean-checkout design run (clone of 28d7501, Scripts/ci.sh design,
+# simulator Sylvia-M0-lfs, iPhone 17, iOS 26.5, Xcode 27.1 27A9275). The lines matching "(✔|✘) (Suite|Test run with)",
+# the snapshot tests' lines and "issue", taken with grep from the drop-in's test-simulator.log (in the clone's
+# .build/ci-logs/g06-design/, 553,316 bytes, not kept). That log has no line with ✘.
+
+  swift-issue-reporting: https://github.com/pointfreeco/swift-issue-reporting @ 2.1.1
+✔ Suite "Contrast (plan 4.4.2, 22.2)" passed after 0.027 seconds.
+✔ Suite "Color tokens (plan 4.4.2)" passed after 0.026 seconds.
+✔ Suite "Type roles (plan 4.4.3)" passed after 0.017 seconds.
+✔ Suite "Marker set (plan 4.4.5, Appendix A.1)" passed after 0.031 seconds.
+✔ Suite "Status vocabulary (plan 4.4.6, T54)" passed after 0.043 seconds.
+✔ Suite "Token export (plan 4.4.9, Appendix A.5)" passed after 0.091 seconds.
+✔ Test run with 59 tests in 6 suites passed after 0.101 seconds.
+✔ Suite "String Catalog vocabulary (plan 4.4.6, 4.4.9)" passed after 0.008 seconds.
+✔ Suite "SwiftUI type role modifier" passed after 0.264 seconds.
+✔ Suite "Custom symbols and marker glyphs (plan 4.4.5)" passed after 0.264 seconds.
+✔ Suite "Asset catalog colors and contrast (G0.6)" passed after 0.264 seconds.
+✔ Suite "Type roles on the platform (plan 4.4.3, 4.4.8)" passed after 0.264 seconds.
+✔ Suite "Component logic" passed after 0.264 seconds.
+✔ Test run with 60 tests in 6 suites passed after 0.265 seconds.
+◇ Test "Recorded on the reference simulator" started.
+◇ Test "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "buttons" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "statusPills" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "availabilityBadges" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "markerRows" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.note" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.audio" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.word" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.quote" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "progressRule" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "navigationBar" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "miniPlayer" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureSheet.quote" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureSheet.audio" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureSheet.saveStates" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "tabBar" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "rating" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "selectionMenu" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "impactReport" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "readerChrome" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "card" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "typographicCover" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "captureCard.generated" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "inboxRows" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "areaTitle" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "filterChips" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "statusBanners" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "sidebar" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "actionCards" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "playPauseButton" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "textField" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+◇ Test case passing 1 argument name → "readingParagraph" to "Snapshots in four appearances, two text sizes, grayscale and Bold Text" started.
+​✔ Test "Recorded on the reference simulator" passed after 44.743 seconds.
+​​​​​​​​​​​​​​​​​​✔ Suite "T53 grayscale proxies" passed after 67.375 seconds.
+✔ Test "Snapshots in four appearances, two text sizes, grayscale and Bold Text" with 31 test cases passed after 67.374 seconds.
+✔ Suite "T51 layout at the largest accessibility size" passed after 67.376 seconds.
+✔ Suite "Component snapshots (T51, T53)" passed after 67.376 seconds.
+✔ Suite "Accessibility tree" passed after 67.375 seconds.
+✔ Test run with 28 tests in 4 suites passed after 67.376 seconds.

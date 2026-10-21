@@ -67,9 +67,19 @@ public struct FileProtector: Sendable {
         }
     }
 
+    /// Refuses any class other than A, B and C, on the directory and protect paths as `writingOptions`
+    /// does on the write and copy paths, before anything is created or changed. Without it a protector
+    /// built with another class (`StoreOptions.protector` is public) would create directories, and set
+    /// the class of the database files, with that class and then verify against it (M0 final review
+    /// SEC-06; TM-F1 had closed only the write and copy paths).
+    func requireSupportedClass() throws {
+        _ = try writingOptions
+    }
+
     /// Creates the directory (and parents) with the protection class, or applies the class if it
     /// already exists.
     public func ensureDirectory(_ url: URL) throws {
+        try requireSupportedClass()
         let fm = FileManager.default
         var isDirectory: ObjCBool = false
         if fm.fileExists(atPath: url.path, isDirectory: &isDirectory) {
@@ -84,6 +94,7 @@ public struct FileProtector: Sendable {
 
     /// Sets the class on an existing file or directory and verifies it.
     public func protect(_ url: URL) throws {
+        try requireSupportedClass()
         if try protectionClass(of: url) == protection { return }
         do {
             try FileManager.default.setAttributes([.protectionKey: protection], ofItemAtPath: url.path)

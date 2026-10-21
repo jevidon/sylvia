@@ -1,0 +1,20 @@
+# G0.4 codec matrix. Environment: simulator iPhone18,3, iOS 26.5 (23F77), Debug build, output at 1 % volume (quiet test runs). Budget: 500 ms.
+# errors in ms; positive = audio starts/ends later in the source than intended; peak = normalized correlation
+format	file	playable	codec	rate	ch	precise_ms	estimated_ms	chapters_expected	chapters	chapter_source	decoder_seek_max_abs_ms	decoder_seek_min_peak	player_start_offset_max_abs_ms	player_steady_clock_error_max_abs_ms	player_seek_to_audio_max_ms	estimated_timing_player_start_offset_max_abs_ms	export_errors_ms(start/end;...)	export_min_peak	verdict	reasons
+mp3-cbr	fmt-mp3-cbr.mp3	yes	.mp3	44100	1	600033	600033	none-in-file	0	none	13.1	0.984	56.6	13.1	93.3	56.6	-13.1/-13.1;-13.1/-13.1;-13.1/-13.1	0.997	pass	
+mp3-vbr-xing	fmt-mp3-vbr-xing.mp3	yes	.mp3	44100	1	600033	600033	none-in-file	0	none	13.1	0.984	56.6	13.1	101.1	561.6	-13.1/-13.1;-13.1/-13.1;-13.1/-13.1	0.995	pass	
+mp3-vbr-noxing	fmt-mp3-vbr-noxing.mp3	yes	.mp3	44100	1	600033	606224	none-in-file	0	none	13.1	0.984	56.6	13.1	98.4	1733.4	-13.1/-13.1;-13.1/-13.1;-13.1/-13.1	0.995	pass	
+mp3-id3-chap	fmt-mp3-chap.mp3	yes	.mp3	44100	1	600033	600033	exact	4	avFoundation	13.1	0.984	56.6	13.1	101.0	56.6	-13.1/-13.1;-13.1/-13.1;-13.1/-13.1	0.997	pass	
+mp3-librivox-22k	fmt-librivox-mp3-22k.mp3	yes	.mp3	22050	1	1356251	1356304	none-in-file	0	none	0.1	1.000	125.6	0.0	168.6	125.6	-0.1/-2.2;-0.0/-0.0;-0.1/-2.2	0.999	pass	
+m4a-aac-lc	fmt-m4a-aac-lc.m4a	yes	aac 	44100	1	600000	600000	exact	4	avFoundation	0.0	0.999	69.7	0.0	100.1	69.7	0.0/0.0;0.0/0.0;0.0/0.0	0.997	pass	
+m4a-he-aac-v1	fmt-m4a-heaac-v1.m4a	yes	aac 	22050	1	600047	600047	exact	4	avFoundation	47.9	0.988	47.9	47.9	96.5	47.9	-47.9/-47.9;-47.9/-47.9;-47.9/-47.9	0.985	pass	
+m4a-he-aac-v2	fmt-m4a-heaac-v2.m4a	yes	aac 	22050	1	600047	600047	exact	4	avFoundation	47.9	0.987	47.9	47.9	95.2	47.9	-47.9/-47.9;-47.9/-47.9;-47.9/-47.9	0.986	pass	
+m4a-alac	fmt-m4a-alac.m4a	yes	alac	44100	1	600000	600000	exact	4	avFoundation	0.0	1.000	69.7	0.0	102.2	69.7	0.0/0.0;0.0/0.0;0.0/0.0	0.998	pass	
+flac	fmt-flac.flac	yes	flac	44100	1	600000	600085	exact	4	avFoundation	0.0	1.000	69.7	0.0	102.7	2859.1	0.0/0.0;0.0/0.0;0.0/0.0	0.998	pass	
+mp4-flac	fmt-mp4-flac.m4a	yes	flac	44100	1	600000	600000	exact	4	avFoundation	0.0	1.000	69.7	0.0	96.1	69.7	0.0/0.0;0.0/0.0;0.0/0.0	0.998	pass	
+ogg-opus	fmt-opus.ogg	yes	opus	48000	1	600000	641560	exact	4	avFoundation	0.0	0.981	64.0	0.0	84.0	2000.6	0.0/-1.0;0.0/-1.0;0.0/-1.0	0.974	pass	
+opus-ext	fmt-opus.opus	yes	opus	48000	1	600000	641560	exact	4	avFoundation	0.0	0.981	64.0	0.0	89.7	2000.6	0.0/-1.0;0.0/-1.0;0.0/-1.0	0.974	pass	
+webm-opus	fmt-webm-opus.webm	no	-	-	-	-	-	not-read	0	-	-	-	-	-	-	-	-	-	unsupported	inspect threw: Error Domain=AVFoundationErrorDomain Code=-11828 "Cannot Open" UserInfo={NSUnderlyingError=0x10c8b8210 {Error Domain=NSOSStatusErrorDomain Code=-12847 "(null)"}, NSLocalizedFailureReason=This media format is not supported., AVErrorFailedDependenciesKey=( Duration ), NSURL=file:///Users/jevidon/Library/Caches/SylviaFixtures/generated/g04-audio/fmt-webm-opus.webm, NSLocalizedDescription=Cannot Open}
+mp4-opus	fmt-mp4-opus.m4a	yes	opus	48000	1	600000	600000	exact	4	avFoundation	0.0	0.981	64.0	0.0	83.5	64.0	0.0/-1.0;0.0/-1.0;0.0/-1.0	0.974	pass	
+caf-opus	fmt-caf-opus.caf	yes	opus	48000	1	600000	600000	none-in-file	0	none	0.3	0.865	64.2	0.2	83.9	64.2	0.0/-0.8;0.1/-0.9;0.0/-0.9	0.874	pass	
+wav	fmt-wav.wav	yes	lpcm	44100	1	600000	600000	not-read	0	none	0.0	1.000	69.7	0.0	102.8	69.7	0.0/0.0;0.0/0.0;0.0/0.0	0.998	pass	

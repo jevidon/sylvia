@@ -1,0 +1,31 @@
+checkout: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1; commit: 77d6cf7806ad59154973f457ed9674a6147bac7b (m0-integrate); uncommitted files: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max
+start: 2026-10-18T18:02:39Z; load:  7:02  up 15 days, 17:13, 3 users, load averages: 3.56 7.08 6.76
+command: Scripts/ci.d/00-git-lfs.sh
+
+00-git-lfs 2026-10-18T18:02:39Z at commit 77d6cf7806ad59154973f457ed9674a6147bac7b
+
+--- self-test (Scripts/ci.d/00-git-lfs.sh --self-test shows each case's output)
+self-test: temporary repository /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1/.build/scratch/ci-00-git-lfs.SPSce6/repo with this repository's .gitattributes (git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3))
+self-test: 1, a correct checkout: the check passed, as it must
+self-test: 2, pointer text in a plain-git file (outside the LFS patterns) is not reported: the check passed, as it must
+self-test: 3, a snapshot reference left as a pointer file: the check failed, as it must (its output names Scripts/setup-repo.sh and "Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests/sample.light-default.png")
+self-test: 4, an evidence photo (.JPG) left as a pointer file: the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G02-Transfer/DEVICE-PHOTO.JPG")
+self-test: 5, a pointer file added at a new path (staged, not committed): the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G01-PDF/copied-from-another-checkout.png")
+self-test: 6, a pointer file that only the LFS attribute catches (git lfs ls-files does not list it): the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G01-EPUB/staged-without-lfs.png")
+self-test: 7, a pointer committed outside the LFS patterns (only git lfs ls-files catches it): the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Design/images/committed-as-a-pointer.png")
+self-test: 8, the repository-local LFS filter not configured: the check failed, as it must (its output names Scripts/setup-repo.sh and "repository-local Git LFS filter is not configured")
+self-test: 9, git-lfs not installed: the check failed, as it must (its output names Scripts/setup-repo.sh and "git-lfs is not installed")
+self-test: 10, an image committed as a plain git blob: the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G06-Design/committed-without-lfs.png")
+self-test: passed (10 cases)
+
+--- this checkout
+repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-1 (git directory /Users/jevidon/Git/sylvia/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.git/config (clean, smudge, process, required)
+LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+pointer files in the working tree: none
+git lfs fsck --pointers (HEAD): Git LFS fsck OK
+00-git-lfs: pass: no file stored with Git LFS is a pointer in the working tree, and every file the LFS attributes match is committed as an LFS pointer
+
+exit status: 0
+end: 2026-10-18T18:02:44Z; load:  7:02  up 15 days, 17:13, 3 users, load averages: 3.56 7.08 6.76

@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "capture_id": "be77c4a4-867c-54b2-ada2-9521a33ba0b4",
+  "work_id": "7dc21cb2-fe2a-5654-9f63-9c8f63a1937f",
+  "edition_id": "dcd17d6c-383f-5f97-a511-f3b7a2743f5b",
+  "kind": "text_quote",
+  "quoted_text": "The pgrey ice the water\n stop",
+  "quoted_text_origin": "selection",
+  "source_snapshot": {
+    "title": "Sylvia G0.1 PDF fixture: page labels",
+    "author_display": "Fixture generator",
+    "source_kind": "local_pdf",
+    "location_label": "Page 1",
+    "location_label_origin": "app"
+  },
+  "anchors": [
+    {
+      "asset_id": "00000000-0000-4000-8000-000000000001",
+      "asset_sha256": "6ffa266bf32eea6c9bc2984d351bc55d19bd948c65714a4e6d2b9ab41d8138d1",
+      "exact_text": "The pgrey ice the water\n stop",
+      "extraction": {
+        "adapter_version": 1,
+        "extractor": "pdfkit.PDFPage.string",
+        "platform": "iOS 26.5 (23F77)"
+      },
+      "kind": "pdf",
+      "segments": [
+        {
+          "line_rects": [
+            [
+              0.117647,
+              0.880644,
+              0.045959,
+              0.013889
+            ]
+          ],
+          "page_box": {
+            "name": "crop",
+            "rect": [
+              0,
+              0,
+              612,
+              792
+            ]
+          },
+          "page_index": 3,
+          "page_label": "1",
+          "page_rotation": 0,
+          "page_text_sha256": "a4746ee93c002a1122b57c8fb100a7a44d2d5700b22cd541f84ad01634e6d570",
+          "prefix": "Body, physical page 4\n",
+          "suffix": "ond in winter keeps its own coun",
+          "text": "The p",
+          "text_range": {
+            "end": 27,
+            "start": 22,
+            "unit": "unicode_scalar"
+          }
+        },
+        {
+          "line_rects": [
+            [
+              0.582181,
+              0.880644,
+              0.14185,
+              0.013889
+            ]
+          ],
+          "page_box": {
+            "name": "crop",
+            "rect": [
+              0,
+              0,
+              612,
+              792
+            ]
+          },
+          "page_index": 3,
+          "page_label": "1",
+          "page_rotation": 0,
+          "page_text_sha256": "a4746ee93c002a1122b57c8fb100a7a44d2d5700b22cd541f84ad01634e6d570",
+          "prefix": "ts own counsel. Under a skin of ",
+          "suffix": "\nstill moves, slowly, turning ov",
+          "text": "grey ice the water",
+          "text_range": {
+            "end": 98,
+            "start": 80,
+            "unit": "unicode_scalar"
+          }
+        },
+        {
+          "line_rects": [
+            [
+              0.150611,
+              0.842765,
+              0.038967,
+              0.013889
+            ]
+          ],
+          "page_box": {
+            "name": "crop",
+            "rect": [
+              0,
+              0,
+              612,
+              792
+            ]
+          },
+          "page_index": 3,
+          "page_label": "1",
+          "page_rotation": 0,
+          "page_text_sha256": "a4746ee93c002a1122b57c8fb100a7a44d2d5700b22cd541f84ad01634e6d570",
+          "prefix": "hered in the night. A walker\nwho",
+          "suffix": "s at the shore hears it settle.\n",
+          "text": " stop",
+          "text_range": {
+            "end": 185,
+            "start": 180,
+            "unit": "unicode_scalar"
+          }
+        }
+      ],
+      "schema_version": 1,
+      "reader": {
+        "adapter": "pdfkit",
+        "locator": {
+          "utf16_ranges": [
+            {
+              "length": 5,
+              "location": 22,
+              "page_index": 3
+            },
+            {
+              "length": 18,
+              "location": 80,
+              "page_index": 3
+            },
+            {
+              "length": 5,
+              "location": 180,
+              "page_index": 3
+            }
+          ]
+        }
+      },
+      "work_id": "7dc21cb2-fe2a-5654-9f63-9c8f63a1937f",
+      "edition_id": "dcd17d6c-383f-5f97-a511-f3b7a2743f5b"
+    }
+  ],
+  "notes": [],
+  "provenance": {
+    "surface": "reader",
+    "idempotency_key": "fixture-quote-pdf-composed"
+  },
+  "created_at": "2026-10-13T08:00:00Z",
+  "updated_at": "2026-10-13T08:00:00Z",
+  "revision": 1
+}

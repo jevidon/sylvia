@@ -1,0 +1,47 @@
+commit: 6cea6510f45506871d4dedc9d41d31b0b8ea97bc; uncommitted files: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-19T04:54:56Z; load: 17:54  up 16 days,  4:05, 3 users, load averages: 3.62 3.50 4.65
+
+== 1. G0.2 trust guards: the self-test, then a copy with the absolute-path filter
+self-test: copies of the scanned files under /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/scratch/guard-controls/tg/.build/self-test/Spikes/G02-Transfer (the path contains /.build/)
+ok: the unchanged copy, under a path that contains /.build/: passes
+ok: NSAllowsArbitraryLoads in a planted plist: fails arbitrary-loads, ats-keys
+ok: an ATS key in a planted plist: fails ats-keys
+ok: an ATS key in a JSON project spec: fails ats-keys
+ok: the harness target given an ATS variant plist: fails harness-plist
+ok: a second server-trust credential written across two lines: fails trust-credential
+ok: a TLS 1.0 minimum: fails weak-tls
+ok: a violation inside a nested build directory is not the spike's: passes
+ok: an ATS key named in a Swift comment line: passes
+self-test: PASS (9 cases, 0 failure(s))
+exit: 0
+-- the copy differs in 1 added line: if "/.build/" in directory + "/": continue
+self-test: copies of the scanned files under /Users/jevidon/Git/sylvia/.claude/worktrees/wf_a2c53b6f-8a6-13/.build/scratch/guard-controls/tg-mutant/.build/self-test/Spikes/G02-Transfer (the path contains /.build/)
+FAIL: the unchanged copy, under a path that contains /.build/: fails trust-credential (expected to pass)
+FAIL: NSAllowsArbitraryLoads in a planted plist: fails trust-credential (expected to fail arbitrary-loads, ats-keys)
+FAIL: an ATS key in a planted plist: fails trust-credential (expected to fail ats-keys)
+FAIL: an ATS key in a JSON project spec: fails trust-credential (expected to fail ats-keys)
+FAIL: the harness target given an ATS variant plist: fails harness-plist, trust-credential (expected to fail harness-plist)
+ok: a second server-trust credential written across two lines: fails trust-credential
+FAIL: a TLS 1.0 minimum: fails trust-credential (expected to fail weak-tls)
+FAIL: a violation inside a nested build directory is not the spike's: fails trust-credential (expected to pass)
+FAIL: an ATS key named in a Swift comment line: fails trust-credential (expected to pass)
+self-test: FAIL (9 cases, 8 failure(s))
+exit: 1
+control: the copy with the old filter fails the self-test, as required
+
+== 2. G0.5 recovery protector: unsupportedClassRefused, then a copy without the guard on the directory and protect paths
+✔ Test "a class without a protected writing option is refused before anything is written or changed, on every path (ADR-0015 TM-F1)" passed after 0.005 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.005 seconds.
+exit: 0
+-- the copy: 'try requireSupportedClass()' calls 2 before, 0 after
+✘ Test "a class without a protected writing option is refused before anything is written or changed, on every path (ADR-0015 TM-F1)" failed after 0.006 seconds with 9 issues.
+✘ Test "a class without a protected writing option is refused before anything is written or changed, on every path (ADR-0015 TM-F1)" recorded an issue at DataProtectionTests.swift:294:13
+✘ Test "a class without a protected writing option is refused before anything is written or changed, on every path (ADR-0015 TM-F1)" recorded an issue at DataProtectionTests.swift:295:13
+✘ Test "a class without a protected writing option is refused before anything is written or changed, on every path (ADR-0015 TM-F1)" recorded an issue at DataProtectionTests.swift:297:13
+✘ Test run with 1 test in 1 suite failed after 0.006 seconds with 9 issues.
+exit: 1
+control: the copy without the guard fails unsupportedClassRefused, as required
+
+end: 2026-10-19T04:55:16Z; load: 17:55  up 16 days,  4:05, 3 users, load averages: 5.44 3.89 4.77
+exit: 0

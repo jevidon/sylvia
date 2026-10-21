@@ -73,6 +73,10 @@ PAD_UDID="$(sylvia_sim_udid "$PAD_SIM" "$PAD_TYPE")"
 echo "iPhone simulator $PHONE_SIM: $PHONE_UDID ($SYLVIA_SIM_DEVICE_TYPE, $SYLVIA_SIM_RUNTIME)"
 echo "iPhone SE simulator $SE_SIM: $SE_UDID ($SE_TYPE, $SYLVIA_SIM_RUNTIME)"
 echo "iPad simulator $PAD_SIM: $PAD_UDID ($PAD_TYPE, $SYLVIA_SIM_RUNTIME)"
+# Each simulator is shut down after its last tests, and all three when this script ends, however it ends, so no idle
+# simulator keeps loading the shared Mac during later drop-ins (M0 final review CC-05).
+SIMS_TRAP='sylvia_sim_shutdown "$PHONE_UDID" "$SE_UDID" "$PAD_UDID"'
+trap "$SIMS_TRAP" EXIT
 
 step "build for testing (iOS simulator)"
 build_log="$EVIDENCE/catalog-build-simulator.log"
@@ -162,20 +166,23 @@ UI=DesignCatalogUITests
 run_ui_tests unit-iphone-simulator "$PHONE_UDID" iphone "iPhone 17" 11 DesignCatalogTests
 lcv_helper "$PHONE_UDID" &
 LCV_PID=$!
-trap 'kill "$LCV_PID" 2>/dev/null || true' EXIT
+trap 'kill "$LCV_PID" 2>/dev/null || true; '"$SIMS_TRAP" EXIT
 ui_status=0
 run_ui_tests ui-iphone-simulator "$PHONE_UDID" iphone "iPhone 17" 14 $UI/PhonePrototypeTests $UI/CatalogGalleryTests \
   $UI/AreaNavigationTests || ui_status=$?
 kill "$LCV_PID" 2>/dev/null || true
 wait "$LCV_PID" 2>/dev/null || true
-trap - EXIT
+trap "$SIMS_TRAP" EXIT
 rm -rf "$EVIDENCE/.lcv"
 (( ui_status == 0 )) || exit "$ui_status"
+sylvia_sim_shutdown "$PHONE_UDID"
 run_ui_tests ui-iphone-se-simulator "$SE_UDID" iphone-se "iPhone SE (3rd generation)" 3 \
   $UI/PhonePrototypeTests/testEveryScreenInLight $UI/PhonePrototypeTests/testEveryScreenAtAX5 \
   $UI/CatalogGalleryTests/testEverySamplePage
+sylvia_sim_shutdown "$SE_UDID"
 run_ui_tests ui-ipad-simulator "$PAD_UDID" ipad "iPad (A16)" 2 $UI/PadLayoutTests \
   $UI/AreaNavigationTests/testHardwareKeyboardSwitchesAreas
+sylvia_sim_shutdown "$PAD_UDID"
 
 step "evidence written by the UI tests"
 for report in ui-prototype-iphone-light-simulator.md ui-prototype-iphone-dark-simulator.md \

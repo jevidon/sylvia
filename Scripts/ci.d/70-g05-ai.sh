@@ -126,6 +126,8 @@ echo "fixtures reproduce: context-pack.v1 and provider-config.v1 identical to a 
 echo "== simulator: $SIM_NAME"
 UDID="$(sylvia_sim_udid "$SIM_NAME")"
 sylvia_sim_boot "$UDID"
+# Shut it down when this script ends, however it ends (M0 final review CC-05).
+trap 'sylvia_sim_shutdown "$UDID"' EXIT
 xcrun simctl list devices | grep "$UDID"
 
 echo "== simulator: package tests"

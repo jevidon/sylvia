@@ -1,0 +1,54 @@
+G0.2 transfer CI drop-in, 2026-10-19T14:22:49Z
+host: macOS 26.6.2 (25G83), Apple M5 Max
+xcode: Xcode 27.1 Build version 27A9275 
+warning: Xcode build is '27A9275'; ADR-0001 pins 27A266a
+results: .build/ci-results/g02-transfer; loopback only: yes
+swift: swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+== contracts
+   pass (1 s) - .build/ci-results/g02-transfer/ci/contracts.log
+== fixtures-check
+   pass (0 s) - .build/ci-results/g02-transfer/ci/fixtures-check.log
+== trust-guards
+   pass (1 s) - .build/ci-results/g02-transfer/ci/trust-guards.log
+== package-locks
+   pass (1 s) - .build/ci-results/g02-transfer/ci/package-locks.log
+== host-transferkit
+   pass (10 s) - .build/ci-results/g02-transfer/ci/host-transferkit.log
+== host-sourceservice
+   pass (61 s) - .build/ci-results/g02-transfer/ci/host-sourceservice.log
+== captured-payloads
+   pass (0 s) - .build/ci-results/g02-transfer/ci/captured-payloads.log
+== large-5gib
+   pass (33 s) - .build/ci-results/g02-transfer/ci/large-5gib.log
+== cli-loopback-ipv4
+   pass (8 s) - .build/ci-results/g02-transfer/ci/cli-loopback-ipv4.log
+== cli-loopback-ipv6
+   pass (4 s) - .build/ci-results/g02-transfer/ci/cli-loopback-ipv6.log
+== cli-lan
+   NOT RUN: G02_LOOPBACK_ONLY=1: every test server binds to loopback only
+== cli-tailscale-ip
+   NOT RUN: G02_LOOPBACK_ONLY=1: every test server binds to loopback only
+== cli-tailscale-magicdns
+   NOT RUN: G02_LOOPBACK_ONLY=1: every test server binds to loopback only
+== cli-qr
+   pass (2 s) - .build/ci-results/g02-transfer/ci/cli-qr.log
+== cli-logging-recipe
+   pass (5 s) - .build/ci-results/g02-transfer/ci/cli-logging-recipe.log
+== mac-identity-signed
+   NOT RUN: code signing for team A4KBDX665Z is unavailable on this Mac (.build/ci-results/g02-transfer/keychain-identity-signed.log)
+== simulator
+   pass (31 s) - .build/ci-results/g02-transfer/ci/simulator.log
+== simulator-pairing
+   pass (7 s) - .build/ci-results/g02-transfer/ci/simulator-pairing.log
+== simulator-background
+   pass (35 s) - .build/ci-results/g02-transfer/ci/simulator-background.log
+   NOT RUN within simulator-background: bonjourBrowseFindsResolvesAndPinsTheSource (G02_LOOPBACK_ONLY=1: every test server binds to loopback only; the Bonjour registration is then local to this Mac, which the simulator does not browse)
+== simulator-pairing-entry
+   pass (52 s) - .build/ci-results/g02-transfer/ci/simulator-pairing-entry.log
+== simulator-ats-device-recipe
+   NOT RUN: G02_LOOPBACK_ONLY=1: every test server binds to loopback only (the device recipe probes the LAN address)
+== simulator-relaunch
+   pass (191 s) - .build/ci-results/g02-transfer/ci/simulator-relaunch.log
+
+not run on this Mac (see each log for the reason): cli-lan cli-tailscale-ip cli-tailscale-magicdns mac-identity-signed simulator-bonjour-browse simulator-ats-device-recipe
+all G0.2 transfer steps passed

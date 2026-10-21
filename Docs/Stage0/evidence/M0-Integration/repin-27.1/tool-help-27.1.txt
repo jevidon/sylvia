@@ -1,0 +1,449 @@
+# tool help read for the M0 device runbook
+# recorded 2026-10-20T02:42:29Z on host macOS 26.6.2 (25G83), Xcode 27.1 Build version 27A9275 
+# commit: dc81fcea885cc1c8c326e541b889090bc5d3df4a
+
+## xcodebuild -help: the provisioning flags
+-allowProvisioningUpdates                                Allow xcodebuild to communicate with the Apple Developer website. For automatically signed targets, xcodebuild will create and update profiles, app IDs, and certificates. For manually signed targets, xcodebuild will download missing or updated provisioning profiles. Requires a developer account to have been added in Xcode's Accounts settings or an App Store Connect authentication key to be specified via the -authenticationKeyPath, -authenticationKeyID, and -authenticationKeyIssuerID parameters.
+-allowProvisioningDeviceRegistration                     Allow xcodebuild to register your destination device on the developer portal if necessary. This flag only takes effect if -allowProvisioningUpdates is also passed.
+
+## xcrun devicectl list devices --help
+OVERVIEW: Lists devices that CoreDevice knows about
+
+The 'Identifier' column shows each device's UDID, falling back to its ECID and
+then to its CoreDevice identifier, annotated with which kind of identifier is
+shown. Any of these can be passed to a command's --device option. Pass
+'--columns "CoreDevice ID"' to also show the CoreDevice identifier, or filter
+on it with '--filter "coreDeviceID = <identifier>"'. It also remains available
+in JSON output as 'identifier'.
+
+In JSON output, the legacy 'tags' key has been removed, and the
+'hardwareProperties', 'deviceProperties', and 'connectionProperties' keys are
+deprecated in favor of the 'properties' dictionary and will be removed in a
+future release. Pass --omit-deprecated-fields-in-json to omit the deprecated
+keys now.
+
+USAGE: devicectl list devices [--search <search>] [--filter <filter>] [--sort-by <sort-by>] [--columns <columns> ...] [--hide-default-columns] [--hide-headers] [--verbose] [--quiet] [--timeout <seconds>] [--json-output <path>] [--omit-deprecated-fields-in-json] [--log-output <path>]
+
+FILTERING OPTIONS:
+  -s, --search <search>   A plain-text search string used to filter results.
+        Performs a case-insensitive substring match across all columns. Rows
+        where any column contains the search string are included in the output.
+         This searches all possible columns, not just visible ones.
+
+        E.g. `--search iPhone` or `-s mac`
+
+        For advanced filtering with specific fields and operators, use
+        `--filter` instead.
+  --filter <filter>       An NSPredicate expression used to filter the list of
+                          items shown.
+        The attribute name can be a column title from the table-based output or
+        a field identifier from the JSON output. Nested JSON objects are
+        addressed with a dotted path; for example, a device's 'properties'
+        dictionary is filtered as 'properties.<category>.<field>'.
+
+        The available fields depend on the item being listed. To discover every
+        field you can filter on, run the command with '--json-output -' and
+        inspect the JSON for a single item; any field is addressable by name
+        (nested fields via a dotted path). The column titles from the default
+        table output are also accepted.
+
+        Common operators: = (equals), CONTAINS, BEGINSWITH, ENDSWITH, AND, OR,
+        NOT.
+
+        Examples:
+          --filter "Name CONTAINS 'iPhone'"
+          --filter "Identifier = '00008101-000A0C123456001E'"
+          --filter "Platform BEGINSWITH 'mac'"
+          --filter "Name CONTAINS 'iPad' AND State = 'available'"
+          --filter "properties.state.visibilityClass =
+        'devicesBeingProvisioned'"
+
+        For simple text matching across all columns, use `--search` instead.
+  --sort-by <sort-by>     If specified, a column title by which to sort
+                          results. An unrecognized value is reported as an
+                          error.
+  --columns <columns>     If specified, additional data columns to print.
+                          Specify '*' (in quotes) for all data columns.
+        A value can be a column title from the default table output or a field
+        identifier from the JSON output. Nested JSON objects are addressed with
+        a dotted path; for example, a device's 'properties' dictionary provides
+        columns like 'properties.state.visibilityClass'. To discover the
+        available fields, run the command with '--json-output -' and inspect
+        the JSON for a single item. An unrecognized value is reported as an
+        error.
+  --hide-default-columns  Hide default data columns and only print those
+                          specified with --columns.
+  --hide-headers          Hide data column headers.
+
+
+## xcrun devicectl device copy to --help
+OVERVIEW: Copy a file or directory to the device.
+
+Copies a file or directory to the device, skipping files that have not been
+modified.
+
+USAGE: devicectl device copy to [<options>] --device <uuid|ecid|serial_number|udid|name|dns_name> --source <source> ... --domain-type <domain-type>
+
+DEVICE OPTIONS:
+  -d, --device <uuid|ecid|serial_number|udid|name|dns_name>
+                          The identifier, ECID, serial number, UDID,
+                          user-provided name, or DNS name of the device.
+
+FILE COPY OPTIONS:
+  --source <source>       The path of the item to be transferred to the device.
+        This flag can be passed multiple times to provide multiple items to
+        transfer.
+
+BASE FILE TRANSFER OPTIONS:
+  --destination <destination>
+                          The location to which the item should be copied.
+  -u, --user <user>       The name of the user we should target. Only relevant
+                          for certain domains.
+  --domain-type <domain-type>
+                          The file service domain. Valid values are: temporary,
+                          appDataContainer, appGroupDataContainer,
+                          systemCrashLogs. You must specify a valid domain and
+                          identifier pair. Certain domains must be accompanied
+                          by an identifier that provides additional context.
+                          For example, if the domain is an app data container,
+                          the identifier is the bundle ID of the app. For
+                          temporary directories, the identifier is a unique
+                          client-provided string which is used to get your own
+                          space, separate from those of other clients.
+  --domain-identifier <domain-identifier>
+                          A unique string used to provide additional context to
+                          the domain.
+  -r, --remove-existing-content <remove-existing-content>
+                          Whether to remove files from the destination
+                          directory on the device. Only used when transferring
+                          directories. (default: false)
+
+
+## xcrun devicectl device copy from --help
+OVERVIEW: Receive a file from the remote device.
+
+Copies data from the device, providing domain-specific information (see
+arguments below for more information).
+
+USAGE: devicectl device copy from [<options>] --device <uuid|ecid|serial_number|udid|name|dns_name> --source <source> --domain-type <domain-type>
+
+DEVICE OPTIONS:
+  -d, --device <uuid|ecid|serial_number|udid|name|dns_name>
+                          The identifier, ECID, serial number, UDID,
+                          user-provided name, or DNS name of the device.
+
+FILE RECEIVE OPTIONS:
+  --source <source>       The item which should be received.
+
+BASE FILE TRANSFER OPTIONS:
+  --destination <destination>
+                          The location to which the item should be copied.
+  -u, --user <user>       The name of the user we should target. Only relevant
+                          for certain domains.
+  --domain-type <domain-type>
+                          The file service domain. Valid values are: temporary,
+                          appDataContainer, appGroupDataContainer,
+                          systemCrashLogs. You must specify a valid domain and
+                          identifier pair. Certain domains must be accompanied
+                          by an identifier that provides additional context.
+                          For example, if the domain is an app data container,
+                          the identifier is the bundle ID of the app. For
+                          temporary directories, the identifier is a unique
+                          client-provided string which is used to get your own
+                          space, separate from those of other clients.
+  --domain-identifier <domain-identifier>
+                          A unique string used to provide additional context to
+                          the domain.
+  -r, --remove-existing-content <remove-existing-content>
+                          Whether to remove files from the destination
+                          directory on the device. Only used when transferring
+                          directories. (default: false)
+
+
+## xcrun devicectl device info apps --help
+OVERVIEW: List apps installed on the device.
+
+This command prints the list of apps that are installed on the device.
+
+USAGE: devicectl device info apps [<options>] --device <uuid|ecid|serial_number|udid|name|dns_name>
+
+DEVICE OPTIONS:
+  -d, --device <uuid|ecid|serial_number|udid|name|dns_name>
+                          The identifier, ECID, serial number, UDID,
+                          user-provided name, or DNS name of the device.
+
+COMMAND OPTIONS:
+  --include-app-clips/--no-include-app-clips
+                          Display App Clip apps. (default:
+                          --no-include-app-clips)
+        This has no effect on non-iOS platforms.
+  --include-removable-apps/--no-include-removable-apps
+                          Display apps that can be removed. (default:
+                          --include-removable-apps)
+        On embedded platforms The value of this property will be `true` for all
+        3rd party applications
+        and for the subset of system applications that have opted into app
+        deletion.
+
+        On macOS, we consider apps that cannot be deleted without disabling SIP
+        or without re-blessing the signed system volume to be non-deleteable.
+
+        Such apps exist on the signed system volume and have a URL prefixed
+        with `/System`.
+  --include-default-apps/--no-include-default-apps
+                          Display default apps. (default:
+                          --no-include-default-apps)
+        An app is considered "default" if it is not a developer app. By
+        default, only
+        developer apps are included.
+  --require-container-access
+                          Only display apps with accessible data containers.
+        Container access requires the app to be:
+        - Third-party (not system app)
+        - Installed via Xcode (profile validated)
+        - Not enterprise signed
+
+        On internal builds with DDI mounted, more apps are accessible.
+  --include-app-group-identifiers
+                          Include app group identifiers for
+                          container-accessible apps.
+        When enabled, each container-accessible app will include
+        the list of app groups it belongs to.
+  --include-container-paths
+                          Include container paths for container-accessible apps.
+        When enabled, each container-accessible app will include
+        its data container path, bundle container path, and
+        group container paths.
+  --include-all-apps      Display all apps.
+        Same as using:
+        --include-app-clips
+        --include-default-apps
+        --include-removable-apps
+
+        Other filtering options are ignored.
+  --bundle-id <bundle identifier>
+                          Display apps matching the given bundle identifier
+                          exactly.
+
+FILTERING OPTIONS:
+  -s, --search <search>   A plain-text search string used to filter results.
+        Performs a case-insensitive substring match across all columns. Rows
+        where any column contains the search string are included in the output.
+         This searches all possible columns, not just visible ones.
+
+        E.g. `--search iPhone` or `-s mac`
+
+        For advanced filtering with specific fields and operators, use
+        `--filter` instead.
+  --filter <filter>       An NSPredicate expression used to filter the list of
+                          items shown.
+        The attribute name can be a column title from the table-based output or
+        a field identifier from the JSON output. Nested JSON objects are
+        addressed with a dotted path; for example, a device's 'properties'
+        dictionary is filtered as 'properties.<category>.<field>'.
+
+        The available fields depend on the item being listed. To discover every
+        field you can filter on, run the command with '--json-output -' and
+        inspect the JSON for a single item; any field is addressable by name
+        (nested fields via a dotted path). The column titles from the default
+        table output are also accepted.
+
+        Common operators: = (equals), CONTAINS, BEGINSWITH, ENDSWITH, AND, OR,
+        NOT.
+
+        Examples:
+          --filter "Name CONTAINS 'iPhone'"
+          --filter "Identifier = '00008101-000A0C123456001E'"
+          --filter "Platform BEGINSWITH 'mac'"
+          --filter "Name CONTAINS 'iPad' AND State = 'available'"
+          --filter "properties.state.visibilityClass =
+        'devicesBeingProvisioned'"
+
+        For simple text matching across all columns, use `--search` instead.
+  --sort-by <sort-by>     If specified, a column title by which to sort
+                          results. An unrecognized value is reported as an
+                          error.
+  --columns <columns>     If specified, additional data columns to print.
+                          Specify '*' (in quotes) for all data columns.
+        A value can be a column title from the default table output or a field
+        identifier from the JSON output. Nested JSON objects are addressed with
+        a dotted path; for example, a device's 'properties' dictionary provides
+        columns like 'properties.state.visibilityClass'. To discover the
+        available fields, run the command with '--json-output -' and inspect
+        the JSON for a single item. An unrecognized value is reported as an
+        error.
+  --hide-default-columns  Hide default data columns and only print those
+                          specified with --columns.
+  --hide-headers          Hide data column headers.
+
+
+## xcrun devicectl device process launch --help
+OVERVIEW: Launch a remote application.
+
+This command launches an application on a device and passes it specific
+arguments.
+
+If you want to set environment variables in the resulting environment, set them
+in the calling environment with a DEVICECTL_CHILD_ prefix.
+
+Once the application has launched, you can attach to it using LLDB. For
+example, if you have an iPhone named 'iPhone' connected to your Mac, and your
+application running on the iPhone has the process identifier of 10684, you can
+debug your application using the following steps:
+
+$ xcrun lldb
+(lldb) device select iPhone
+(lldb) device process attach -p 10684
+
+See LLDB's help for information about all supported commands.
+
+--console bridges the app's stdout to devicectl's stdout, so '--json-output -'
+is not supported with --console; pass '--json-output <path>' instead.
+
+USAGE: devicectl device process launch [<options>] --device <uuid|ecid|serial_number|udid|name|dns_name> <bundle-identifier-or-path> [<command-line-arguments> ...]
+
+DEVICE OPTIONS:
+  -d, --device <uuid|ecid|serial_number|udid|name|dns_name>
+                          The identifier, ECID, serial number, UDID,
+                          user-provided name, or DNS name of the device.
+
+COMMAND OPTIONS:
+  -u, --user <user>       The user ID or name to run as.
+  -e, --environment-variables <environment-variables>
+                          A JSON-encoded dictionary of environment variables
+                          and their values to provide to the process.
+        Keys and values must be strings.
+        Example: '{"PATH": "/usr/local/bin", "REPORTTIME": "2", "LANG":
+        "en_US.UTF-8"}'
+
+        Note: Using the environment-variables flag will override the caller
+        environment variables prefixed with DEVICECTL_CHILD_.
+  <bundle-identifier-or-path>
+                          The bundle identifier of or path to the remote
+                          application.
+  <command-line-arguments>
+                          Arguments to pass to the remote process.
+        Precede these arguments with '--' if any of them would otherwise be
+        interpreted as an argument to devicectl itself. The first '--' on the
+        command line ends devicectl's own arguments and is not passed along; a
+        later one is passed to the other process unchanged.
+  --start-stopped         Launches the app in a suspended state, waiting for a
+                          debugger.
+  --working-directory <working-directory>
+                          The initial working directory for the spawned process.
+  --arch <arch>           The architecture slice to prefer when launching the
+                          application.
+  --payload-url <payload-url>
+                          A URL to pass to the application for it to open
+                          during launch.
+  --activate/--no-activate
+                          Launches the application in the foreground. (default:
+                          --activate)
+        Whether or not to activate the application when starting it. Not
+        supported on all platforms.
+  --terminate-existing    Terminates any already-running instances of the app
+                          prior to launch. Not supported on all platforms.
+  --display <display>     The unique identifier of the display to launch the
+                          app on.
+        Use 'devicectl device info displays' to list available displays and
+        their unique identifiers. Not supported on all platforms.
+  --launch-persistent-identifier <launch-persistent-identifier>
+                          The base64-encoded Launch Services persistent
+                          identifier of a recently installed app.
+        This is the 'launchServicesIdentifier' value returned by 'devicectl
+        device install app'. It allows the system to synchronize the
+        distributed knowledge of an app installation.
+  --console               Attaches the application to the console and waits for
+                          it to exit.
+        devicectl will wait for the app to terminate. Catchable signals sent to
+        devicectl are forwarded to the app. If the app is not already running,
+        its standard streams will be connected to devicectl's standard streams.
+
+
+## xcrun devicectl device process signal --help
+OVERVIEW: Send a signal to a process on a device.
+
+This command attempts to send a signal to a process on a device.
+
+USAGE: devicectl device process signal --device <uuid|ecid|serial_number|udid|name|dns_name> --pid <pid> --signal <signal> [--verbose] [--quiet] [--timeout <seconds>] [--json-output <path>] [--omit-deprecated-fields-in-json] [--log-output <path>]
+
+DEVICE OPTIONS:
+  -d, --device <uuid|ecid|serial_number|udid|name|dns_name>
+                          The identifier, ECID, serial number, UDID,
+                          user-provided name, or DNS name of the device.
+
+COMMAND OPTIONS:
+  -p, --pid <pid>         The process identifier to send a signal to.
+  -s, --signal <signal>   The signal to send to a process. See 'man signal' for
+                          a list of signals.
+
+
+## xcrun devicectl device install app --help
+OVERVIEW: Installs an app.
+
+This command installs an app bundle (with a .app extension) on the device.
+
+USAGE: devicectl device install app --device <uuid|ecid|serial_number|udid|name|dns_name> <path> [--columns <columns> ...] [--hide-default-columns] [--hide-headers] [--verbose] [--quiet] [--timeout <seconds>] [--json-output <path>] [--omit-deprecated-fields-in-json] [--log-output <path>]
+
+DEVICE OPTIONS:
+  -d, --device <uuid|ecid|serial_number|udid|name|dns_name>
+                          The identifier, ECID, serial number, UDID,
+                          user-provided name, or DNS name of the device.
+
+COMMAND OPTIONS:
+  <path>                  The path to the application to be installed on the
+                          device
+
+FORMATTING OPTIONS:
+  --columns <columns>     If specified, additional data columns to print.
+                          Specify '*' (in quotes) for all data columns.
+        A value can be a column title from the default table output or a field
+        identifier from the JSON output. Nested JSON objects are addressed with
+        a dotted path; for example, a device's 'properties' dictionary provides
+        columns like 'properties.state.visibilityClass'. To discover the
+        available fields, run the command with '--json-output -' and inspect
+        the JSON for a single item. An unrecognized value is reported as an
+        error.
+  --hide-default-columns  Hide default data columns and only print those
+                          specified with --columns.
+  --hide-headers          Hide data column headers.
+
+
+## devicectl device process launch: the app's arguments (parse-only, no --device; runbook 3.15)
+# as the checklist writes it: xcrun devicectl device process launch com.jevidon.sylvia.spike.g04audio -g04AutoPlay YES
+Error: The value 'YES' is invalid for '-t <seconds>'
+Help:  -t <seconds>  The overall command timeout in seconds. If this limit is exceeded the command is abandoned as a failure.
+Usage: devicectl [--verbose] [--quiet] [--timeout <seconds>] [--json-output <path>] [--omit-deprecated-fields-in-json] [--log-output <path>] <subcommand>
+  See 'devicectl --help' for more information.
+# exit status 64
+# with -- before them: xcrun devicectl device process launch com.jevidon.sylvia.spike.g04audio -- -g04AutoPlay YES
+Error: Missing expected argument '--device <uuid|ecid|serial_number|udid|name|dns_name>'
+Help:  --device <uuid|ecid|serial_number|udid|name|dns_name>  The identifier, ECID, serial number, UDID, user-provided name, or DNS name of the device.
+Usage: devicectl device process launch [<options>] --device <uuid|ecid|serial_number|udid|name|dns_name> <bundle-identifier-or-path> [<command-line-arguments> ...]
+  See 'devicectl device process launch --help' for more information.
+# exit status 64
+# devicectl version: 651.13.5
+
+## perl: redaction of IPv4 addresses and tailnet names (runbook Section 2 and Session 4), on sample lines
+# before:
+listening: 192.168.1.20:47800 100.101.102.103:47800
+endpoints in pairing payload: mac.tail1a2b3.ts.net:47800
+{"event":"endpoint_preferred","host":"10.0.0.5","port":"47800"}
+iOS 26.7 (23H24); Xcode 27.0; part 3 of 320
+# after (perl -pi -e, as the runbook gives it):
+listening: 192.168.x.x:47800 100.101.x.x:47800
+endpoints in pairing payload: mac.[tailnet].ts.net:47800
+{"event":"endpoint_preferred","host":"10.0.x.x","port":"47800"}
+iOS 26.7 (23H24); Xcode 27.0; part 3 of 320
+
+## man cp: the -c option (APFS clones; runbook Session 4)
+     -c    copy files using clonefile(2).  Note that if the source and target
+	   are on different filesystems, or the target filesystem does not
+	   support cloning, cp will fallback to using copyfile(2) instead to
+	   ensure the copy still succeeds.
+
+
+## zsh: the exit status of a command run by caffeinate, through tee (runbook 0.8; commands/zsh-exit-status.zsh)
+pipestatus after 'caffeinate -i sh -c exit-3 | tee': 3 0 (the first is the stand-in's status)
+status of the same pipeline ($?): 0 (the status of tee)
+status of the same pipeline with setopt pipefail: 3

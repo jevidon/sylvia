@@ -1,9 +1,9 @@
-commit: 7d6965eb6a775b89b4ad9d8ef70bdab84e3a2023 (m0-decisions); uncommitted files before this run: 0
+commit: df91a24238a74ba02d0bdb0f69d4152c13960d80 (m0-decisions); uncommitted files before this run: 0
 host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
-start: 2026-10-22T17:45:19Z; load:  6:45  up 19 days, 16:55, 3 users, load averages: 4.39 3.93 2.99
+start: 2026-10-22T17:50:30Z; load:  6:50  up 19 days, 17:01, 3 users, load averages: 4.67 4.25 3.41
 
 == 1. Files changed since a1ea66d2f8949652a3de2de2b0ae6cea1c841364, the commit the review read
--- 1a. 32 files: 15 of them this follow-up's evidence, 31 under Docs/ in all, 1 README.md
+-- 1a. 33 files: 16 of them this follow-up's evidence, 32 under Docs/ in all, 1 README.md
    the documents changed, outside this follow-up's evidence:
    Docs/ADRs/0001-platform-baseline-and-toolchain.md
    Docs/ADRs/0002-repository-build-and-ci.md
@@ -240,7 +240,7 @@ exit: 0
 ==> 00-git-lfs
     pass (5s)
 ==> 10-contracts
-    pass (1s)
+    pass (0s)
 ==> 11-capture-anchor-contracts
     pass (54s)
 ==> 12-dependency-lock
@@ -288,4 +288,4 @@ g05-* directories in the user's temporary folder: 1664
 g05-tests-* directories there: 0
 
 exit: 0
-end: 2026-10-22T17:46:49Z; load:  6:46  up 19 days, 16:57, 3 users, load averages: 4.67 4.22 3.19
+end: 2026-10-22T17:52:00Z; load:  6:52  up 19 days, 17:02, 3 users, load averages: 4.29 4.34 3.53

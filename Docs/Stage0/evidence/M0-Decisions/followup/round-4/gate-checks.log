@@ -1,9 +1,9 @@
-commit: af7c9603b3c9ef8aa21abf708937429cd158ee14 (m0-decisions); uncommitted files before this run: 0
+commit: 847fa4a7e027a9aa272b64180856532df817e5bc (m0-decisions); uncommitted files before this run: 0
 host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
-start: 2026-10-22T20:45:28Z; load:  9:45  up 19 days, 19:56, 3 users, load averages: 4.03 4.09 3.56
+start: 2026-10-22T20:52:19Z; load:  9:52  up 19 days, 20:02, 3 users, load averages: 4.12 4.35 3.91
 
 == 1. Files changed since 11f41be59083493109290cc7542cb91f00804981, the follow-up's second fix, from which this fix starts
--- 1a. 22 files: 14 of them this fix's evidence, 22 under Docs/ in all
+-- 1a. 23 files: 15 of them this fix's evidence, 23 under Docs/ in all
    the documents changed, outside this fix's evidence:
    Docs/ADRs/0014-dependency-lock-and-license-inventory.md
    Docs/ADRs/0015-threat-model.md
@@ -268,7 +268,7 @@ exit: 0
    answered OWN4-06: item 1, Section 7, run 1, 0.3 and the session log have CLAUDE.md corrected and committed on m0-decisions, before any merge into main
    answered OWN4-07: item 4, Section 7, the runbook's Session 10 and ADR-0014 give resolve-locks.sh first, a folder of its own for the logs and the update of ADR-0014; the committed log is still Xcode 27.0's and no 27.1 run exists
    answered OWN4-08: item 3 lists G0.5 AI step 9.2's wording review with its two decisions and D03's outcome; the opening names D03's outcome
-   answered OWN4-09: item 1 (its longest step 296 words) and 0.3 are numbered checklists without their history notes, item 3 a list by role, run 1 and the bullet on main without theirs, and item 74 holds them
+   answered OWN4-09: item 1 (its longest step 297 words) and 0.3 are numbered checklists without their history notes, item 3 a list by role, run 1 and the bullet on main without theirs, and item 74 holds them
    open     HON-11: CLAUDE.md's milestone paragraph still says the M0 work is combined on `m0-integrate`: left for the product owner, who commits the change on m0-decisions (M0-gate.md Section 1, item 1, step 2)
    result: pass (0 of the nine not answered)
 exit: 0
@@ -327,13 +327,13 @@ exit: 1
 ==> 00-git-lfs
     pass (5s)
 ==> 10-contracts
-    pass (1s)
+    pass (0s)
 ==> 11-capture-anchor-contracts
-    pass (53s)
+    pass (54s)
 ==> 12-dependency-lock
     pass (21s)
 ==> 13-hard-rules
-    pass (7s)
+    pass (6s)
 all 5 steps passed
 ci.sh exit: 0
 summary lines from the drop-ins' own logs (.build/ci-logs/):
@@ -375,4 +375,4 @@ g05-* directories in the user's temporary folder: 1664
 g05-tests-* directories there: 0
 
 exit: 0
-end: 2026-10-22T20:47:01Z; load:  9:47  up 19 days, 19:57, 3 users, load averages: 5.19 4.58 3.81
+end: 2026-10-22T20:53:52Z; load:  9:53  up 19 days, 20:04, 3 users, load averages: 4.86 4.63 4.07

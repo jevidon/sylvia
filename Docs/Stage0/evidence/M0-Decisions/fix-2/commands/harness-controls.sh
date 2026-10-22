@@ -34,13 +34,16 @@ out=Docs/Stage0/evidence/M0-Decisions/fix-2/harness-controls
 copy="$root/.build/scratch/fix2-controls"
 H="$copy/Spikes/G05-Recovery/LockHarness"
 bundle=com.jevidon.sylvia.spike.g05lockharness
+# Counted before this run deletes or writes anything, so its own logs are not counted (the first run counted its own
+# console.log: harness-controls-first-run/console.log reads 1 for it).
+uncommitted="$(git status --porcelain | wc -l | tr -d ' ')"
 rm -rf "$out" "$copy"
 mkdir -p "$out" "$copy"
 console="$out/console.log"
 status=0
 {
   echo "command: Docs/Stage0/evidence/M0-Decisions/fix-2/commands/harness-controls.sh"
-  echo "commit: $(git rev-parse HEAD) ($(git rev-parse --abbrev-ref HEAD)); uncommitted files: $(git status --porcelain | wc -l | tr -d ' ')"
+  echo "commit: $(git rev-parse HEAD) ($(git rev-parse --abbrev-ref HEAD)); uncommitted files before the run: $uncommitted"
   echo "host: macOS $(sw_vers -productVersion) ($(sw_vers -buildVersion)), $(sysctl -n machdep.cpu.brand_string); $(xcodebuild -version | tr '\n' ' ')"
   echo "copy: git archive HEAD Spikes/G05-Recovery into .build/scratch/fix2-controls (the working tree is not changed)"
   echo "screen lock (ioreg) at the start: $(lock_state)"

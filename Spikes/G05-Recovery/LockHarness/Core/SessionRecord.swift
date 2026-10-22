@@ -13,12 +13,14 @@ public struct SessionRecord: Codable, Sendable, Equatable {
     /// Items 0..<acknowledged are acknowledged: each was committed and read back with its exact content. Counts every
     /// run's items, since a run continues the library the previous one left.
     public var acknowledged: Int
-    /// Attempts of this run that were not acknowledged, or whose class-C file or protection check failed.
+    /// Attempts of this run that were not acknowledged, or whose class-C file, protection check or write of this record
+    /// failed (a failed write of the record is counted in memory and saved with the next record that can be written;
+    /// since 22 October 2026, review H-02 of the decisions round).
     public var failures: Int
     /// Attempts made while `isProtectedDataAvailable` was false (the phone locked).
     public var lockedAttempts: Int
     public var lockedFailures: Int
-    /// Attempts made while the class-A canary was unreadable.
+    /// Attempts made while the class-A canary existed and could not be read (an absent canary is not counted).
     public var classAUnreadable: Int
     public var gaps: Int
     public var longestGap: TimeInterval

@@ -121,8 +121,17 @@ public final class ClassACanary: CanaryProbe {
         return true
     }
 
-    public func isReadable() -> Bool {
-        (try? Data(contentsOf: paths.canary)) != nil
+    /// Absent only when the read reports no such file; any other error (a class key that is not available reads as
+    /// `NSFileReadNoPermissionError` over `EPERM`) is `unreadable`, so a locked phone is never recorded as absent.
+    public func state() -> CanaryState {
+        do {
+            _ = try Data(contentsOf: paths.canary)
+            return .readable
+        } catch let error as CocoaError where error.code == .fileReadNoSuchFile {
+            return .absent
+        } catch {
+            return .unreadable
+        }
     }
 }
 

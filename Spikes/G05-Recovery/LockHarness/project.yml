@@ -3,7 +3,10 @@
 # An iPhone app that keeps running while the phone is locked by playing a quiet tone (UIBackgroundModes audio; player
 # volume 0.01 unless SYLVIA_AUDIBLE_PLAYBACK=1, never muted), saves to the spike's class-C library on a timer, reads
 # each save back and logs every attempt to a class-C log file and the unified log. Its logic is in Core/ and is tested
-# on the simulator by the unit tests in Tests/ (no host app; they compile Core/ themselves).
+# on the simulator by the unit tests in Tests/ (no host app; they compile Core/ themselves); the app itself is checked
+# on the simulator by the UI smoke test in UITests/ (since 22 October 2026: review H-05 of the decisions round).
+# TARGETED_DEVICE_FAMILY is set on each target: XcodeGen's target default ("1,2") overrides a project-level value, so
+# until 22 October 2026 the app was built for iPhone and iPad (review H-08); it is an iPhone app.
 #   source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh; sylvia_generate Spikes/G05-Recovery/LockHarness
 # Package.resolved beside this file is a copy of ../Package.resolved (the package's lock), which sylvia_generate
 # installs into the generated project; Scripts/ci.d/71-g05-recovery.sh checks that it pins exactly what that lock pins.
@@ -24,7 +27,6 @@ settings:
     SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY: YES
     SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
     IPHONEOS_DEPLOYMENT_TARGET: "26.0"
-    TARGETED_DEVICE_FAMILY: "1"
     DEVELOPMENT_TEAM: A4KBDX665Z
     CODE_SIGN_STYLE: Automatic
     CURRENT_PROJECT_VERSION: 1
@@ -51,6 +53,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g05lockharness
+        TARGETED_DEVICE_FAMILY: "1"
   G05LockHarnessTests:
     type: bundle.unit-test
     platform: iOS
@@ -62,14 +65,29 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g05lockharness.tests
         GENERATE_INFOPLIST_FILE: YES
+        TARGETED_DEVICE_FAMILY: "1"
+  G05LockHarnessUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: G05LockHarness
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g05lockharness.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: G05LockHarness
+        TARGETED_DEVICE_FAMILY: "1"
 schemes:
   G05LockHarness:
     build:
       targets:
         G05LockHarness: all
         G05LockHarnessTests: [test]
+        G05LockHarnessUITests: [test]
     test:
       config: Debug
       targets:
         - G05LockHarnessTests
+        - G05LockHarnessUITests
       gatherCoverageData: false

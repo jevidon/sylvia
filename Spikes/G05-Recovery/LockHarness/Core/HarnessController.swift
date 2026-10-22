@@ -84,7 +84,13 @@ public final class HarnessController {
 
     /// Records the launch, how the previous run ended, and a full check of the library it left. Called once per
     /// process, from the app delegate, for a launch in the foreground or in the background alike.
-    public func launch(state: String? = nil) {
+    ///
+    /// The launch line records no application state: in a scene-based app the state reads `background` until the
+    /// first scene connects, whether a person opened the app or iOS launched it in the background, so it cannot tell
+    /// the two apart. The `event name=app-state` lines that follow record the first activation of a launch a person
+    /// made (`state=foreground`, then `state=active`). Until 22 October 2026 (review H-03 of the decisions round)
+    /// the line had a `state` field, `background` for every launch on a device.
+    public func launch() {
         guard !launched else { return }
         launched = true
         if let tail = try? environment.sink.readTail(maxLines: Self.recentLimit) {
@@ -94,9 +100,8 @@ public final class HarnessController {
         let boot = environment.bootTime.bootTime()
         emit("launch", [
             ("platform", environment.platform),
-            ("state", state ?? environment.appState.stateName),
             ("protectedDataAvailable", "\(environment.protectedData.isProtectedDataAvailable)"),
-            ("classA", environment.canary.isReadable() ? "readable" : "unreadable"),
+            ("classA", environment.canary.state().rawValue),
             ("boot", boot.map(HarnessLog.timestamp) ?? "unknown"),
             ("sinceBoot", boot.map { HarnessLog.seconds(now.timeIntervalSince($0)) } ?? "unknown"),
             ("interval", HarnessLog.seconds(configuration.interval)),
@@ -200,7 +205,7 @@ public final class HarnessController {
         lastAttemptAt = now
         r.attempts += 1
         let protectedData = environment.protectedData.isProtectedDataAvailable
-        let classA = environment.canary.isReadable()
+        let classA = environment.canary.state()
         let item = r.acknowledged
         var errors: [(String, any Error)] = []
         var notes: [String] = []
@@ -251,15 +256,25 @@ public final class HarnessController {
             r.lockedAttempts += 1
             if failed { r.lockedFailures += 1 }
         }
-        if !classA { r.classAUnreadable += 1 }
+        if classA == .unreadable { r.classAUnreadable += 1 }
         r.lastRecordAt = now
         record = r
         let session = saveRecord(r, errors: &errors)
+        // The run's record is one of the attempt's class-C writes: when it fails, the attempt failed too. The record
+        // just written (or not) cannot count its own failure, so the failure is counted in memory, where the screen
+        // and the `stop` line show it, and saved with the next record that can be written; the attempt line's
+        // `session=failed` records it at once. Until 22 October 2026 (review H-02 of the decisions round) such an
+        // attempt was not counted as failed.
+        if session != "ok" && !failed {
+            r.failures += 1
+            if !protectedData { r.lockedFailures += 1 }
+            record = r
+        }
 
         var fields: [(String, String)] = [
             ("run", r.run), ("n", "\(r.attempts)"), ("t", HarnessLog.seconds(now.timeIntervalSince(r.startedAt))),
             ("app", environment.appState.stateName), ("protectedDataAvailable", "\(protectedData)"),
-            ("classA", classA ? "readable" : "unreadable"), ("item", "\(item)"), ("save", save), ("readback", readBack),
+            ("classA", classA.rawValue), ("item", "\(item)"), ("save", save), ("readback", readBack),
             ("file", file), ("classes", classes.compact), ("session", session), ("acknowledged", "\(r.acknowledged)"),
         ]
         fields += errorFields(errors)
@@ -300,7 +315,7 @@ public final class HarnessController {
         emit("background-refresh", [
             ("app", environment.appState.stateName),
             ("protectedDataAvailable", "\(environment.protectedData.isProtectedDataAvailable)"),
-            ("classA", environment.canary.isReadable() ? "readable" : "unreadable"),
+            ("classA", environment.canary.state().rawValue),
             ("runState", runState.rawValue),
         ])
         var passed = true
@@ -355,6 +370,10 @@ public final class HarnessController {
 
     // MARK: Internals
 
+    /// Without a readable run record (`acknowledged` nil) no item can be checked, only the library's integrity, its
+    /// foreign keys and the classes: a check that finds those intact is recorded as `result=library-only`, never as
+    /// `ok`, and the screen says so. Until 22 October 2026 (review H-07 of the decisions round) it was recorded as
+    /// `result=ok` and "Last check: passed". Returns whether every check it could make passed.
     @discardableResult
     private func verify(acknowledged: Int?, run: String?, closeAfter: Bool) -> Bool {
         let wasOpen = environment.store.isOpen
@@ -364,11 +383,14 @@ public final class HarnessController {
             let report = try environment.store.verify(acknowledged: acknowledged ?? 0)
             let classes = environment.inspector.inspect(full: true)
             let passed = report.passed && classes.mismatches.isEmpty
-            lastVerifyResult = passed ? "passed" : "FAILED"
+            let result = !passed ? "FAILED" : acknowledged == nil ? "library-only" : "ok"
+            lastVerifyResult = !passed ? "FAILED"
+                : acknowledged == nil ? "library only (no run record, so no item was checked)" : "passed"
             var reasons = report.failures.prefix(5).map { $0 }
             if report.integrity != ["ok"] { reasons.append("integrity: " + report.integrity.prefix(3).joined(separator: "; ")) }
+            if passed && acknowledged == nil { reasons.append("no run record: no acknowledged item was checked") }
             emit("verify", [
-                ("result", passed ? "ok" : "FAILED"), ("run", run ?? "-"),
+                ("result", result), ("run", run ?? "-"),
                 ("acknowledged", acknowledged.map(String.init) ?? "unknown"),
                 ("libraryCaptures", "\(report.libraryCaptures)"),
                 ("extra", acknowledged.map { "\(report.libraryCaptures - $0)" } ?? "unknown"),

@@ -30,11 +30,12 @@ struct ControllerTests {
     func firstLaunch() throws {
         let rig = Rig()
         let controller = try rig.newProcess()
-        controller.launch(state: "active")
+        controller.launch()
         let launch = try #require(rig.fileLines("launch").first)
         #expect(launch["platform"] == "simulated-device")
-        #expect(launch["state"] == "active")
+        #expect(launch["state"] == nil, "no application state at launch: it reads background until a scene connects (H-03)")
         #expect(launch["protectedDataAvailable"] == "true")
+        #expect(launch["classA"] == "absent", "no canary before the first Start: absent, not unreadable (H-04)")
         #expect(launch["protection"] == classC)
         #expect(launch["sinceBoot"] == "86400.0")
         #expect(launch["boot"] == "2026-10-21T09:00:00.000Z")
@@ -159,7 +160,7 @@ struct ControllerTests {
 
         rig.device.restart(offFor: 40)
         let second = try rig.newProcess()
-        second.launch(state: "background")
+        second.launch()
         let passed = second.backgroundRefresh()
 
         #expect(!passed)
@@ -169,7 +170,7 @@ struct ControllerTests {
         #expect(!rig.store.isOpen)
         #expect(second.runState == .idle)
         let launch = try #require(rig.mirrorLines("launch").last)
-        #expect(launch["state"] == "background")
+        #expect(launch["state"] == nil)
         #expect(launch["protectedDataAvailable"] == "false")
         #expect(launch["classA"] == "unreadable")
         #expect(launch["sinceBoot"] == "20.0")
@@ -194,7 +195,7 @@ struct ControllerTests {
         rig.ticks(first, 4)
         rig.device.restart(offFor: 40)
         let second = try rig.newProcess()
-        second.launch(state: "background")
+        second.launch()
         second.backgroundRefresh()
         let kept = rig.mirror.lines.suffix(second.pendingLineCount)
         let countBefore = rig.sink.lines.count
@@ -231,7 +232,7 @@ struct ControllerTests {
                 "the first process's launch, the second's (written late) and its one recheck: no second recheck")
 
         let third = try rig.newProcess()
-        third.launch(state: "active")
+        third.launch()
         let previous = try #require(rig.fileLines("previous-session").last)
         #expect(previous["when"] == "launch")
         #expect(previous["result"] == "ended-by-restart")
@@ -255,7 +256,7 @@ struct ControllerTests {
         rig.device.stateName = "active"
 
         let second = try rig.newProcess()
-        second.launch(state: "active")
+        second.launch()
         let previous = try #require(rig.fileLines("previous-session").last)
         #expect(previous["result"] == "ended-by-restart")
         #expect(previous["run"] == run)
@@ -436,6 +437,118 @@ struct ControllerTests {
         expectHonest(rig)
     }
 
+    @Test("a write of the run's record that fails while locked fails the attempt: counted on the screen at once, and saved with the next record that can be written (review H-02)")
+    func sessionWriteFailsWhileLocked() throws {
+        let rig = Rig()
+        rig.sessions.failWhileLocked = true
+        let controller = try rig.newProcess()
+        controller.launch()
+        controller.start()
+        rig.ticks(controller, 3)
+        rig.device.lock = .lockedAfterFirstUnlock
+        rig.device.stateName = "background"
+        controller.protectedDataWillBecomeUnavailable()
+        rig.ticks(controller, 150)
+
+        let locked = rig.fileLines("attempt").filter { $0["protectedDataAvailable"] == "false" }
+        #expect(locked.count == 150)
+        #expect(locked.allSatisfy { $0["session"] == "failed" && $0["save"] == "saved" && $0["readback"] == "equal"
+            && $0["file"] == "ok" && $0["classes"] == "ok" && $0["error"] == "session:NSPOSIXErrorDomain:28" })
+        let inMemory = try #require(controller.record)
+        #expect(inMemory.failures == 150)
+        #expect(inMemory.lockedAttempts == 150)
+        #expect(inMemory.lockedFailures == 150)
+        #expect(inMemory.acknowledged == 153, "each capture itself was durable and exact")
+        #expect(controller.statusLine.contains("150 failed, 150 while locked (150 failed)"))
+        #expect(rig.sessions.stored?.attempts == 3, "no record could be written while locked")
+        #expect(rig.sessions.stored?.lockedFailures == 0)
+
+        rig.device.lock = .unlocked
+        rig.device.stateName = "active"
+        controller.protectedDataDidBecomeAvailable()
+        rig.ticks(controller, 1)
+        let stored = try #require(rig.sessions.stored)
+        #expect(stored.attempts == 154)
+        #expect(stored.failures == 150, "the next record written carries the failures")
+        #expect(stored.lockedAttempts == 150)
+        #expect(stored.lockedFailures == 150)
+        controller.stop()
+        let stop = try #require(rig.fileLines("stop").last)
+        #expect(stop["failures"] == "150")
+        #expect(stop["lockedFailures"] == "150")
+        expectHonest(rig)
+    }
+
+    @Test("a failed write of the record in an attempt that failed anyway is one failure, not two")
+    func sessionWriteFailsInAFailedAttempt() throws {
+        let rig = Rig()
+        rig.store.corrupt = [0]
+        rig.sessions.failWhileLocked = true
+        let controller = try rig.newProcess()
+        controller.launch()
+        controller.start()
+        rig.device.lock = .lockedAfterFirstUnlock
+        rig.ticks(controller, 2)
+        #expect(rig.fileLines("attempt").allSatisfy { $0["readback"] == "differs" && $0["session"] == "failed" })
+        #expect(controller.record?.failures == 2)
+        #expect(controller.record?.lockedFailures == 2)
+    }
+
+    @Test("a check without a readable run record is library-only, never ok or passed: no acknowledged item could be checked (review H-07)")
+    func checkWithoutRecordIsLibraryOnly() throws {
+        let rig = Rig()
+        let first = try rig.newProcess()
+        first.launch()
+        first.start()
+        rig.ticks(first, 5)
+        first.stop()
+        rig.sessions.damaged = true
+        rig.store.corrupt = [2]
+        rig.store.committed[2] = false
+        rig.device.advance(30)
+
+        let second = try rig.newProcess()
+        second.launch()
+        let previous = try #require(rig.fileLines("previous-session").last)
+        #expect(previous["result"] == "unreadable")
+        #expect(previous["error"] == "NSCocoaErrorDomain:4864")
+        let verify = try #require(rig.fileLines("verify").last)
+        #expect(verify["result"] == "library-only")
+        #expect(verify["acknowledged"] == "unknown")
+        #expect(verify["extra"] == "unknown")
+        #expect(verify["reason"]?.contains("no run record: no acknowledged item was checked") == true)
+        #expect(second.statusLine == "Idle. No run recorded. Last check: library only (no run record, so no item was checked).")
+        #expect(second.verifyNow(), "the checks it could make passed")
+        #expect(rig.fileLines("verify").last?["result"] == "library-only")
+
+        rig.store.integrity = ["row 3 missing from index"]
+        #expect(!second.verifyNow())
+        #expect(rig.fileLines("verify").last?["result"] == "FAILED")
+        #expect(second.statusLine.hasSuffix("Last check: FAILED."))
+    }
+
+    @Test("a canary that could not be made is absent, never counted as unreadable: a missing canary cannot detect the lock (review H-04)")
+    func absentCanaryIsNotCountedAsLocked() throws {
+        let rig = Rig()
+        let controller = try rig.newProcess()
+        controller.launch()
+        rig.device.lock = .lockedAfterFirstUnlock
+        controller.start()
+        #expect(rig.fileLines("start").last?["canary"] == "failed")
+        rig.ticks(controller, 5)
+        #expect(rig.fileLines("attempt").allSatisfy { $0["classA"] == "absent" && $0["save"] == "saved" })
+        #expect(controller.record?.classAUnreadable == 0)
+        #expect(controller.record?.lockedAttempts == 5)
+        rig.device.lock = .unlocked
+        controller.stop()
+        controller.start()
+        #expect(rig.fileLines("start").last?["canary"] == "created")
+        rig.device.lock = .lockedAfterFirstUnlock
+        rig.ticks(controller, 3)
+        #expect(rig.fileLines("attempt").suffix(3).allSatisfy { $0["classA"] == "unreadable" })
+        #expect(controller.record?.classAUnreadable == 3)
+    }
+
     @Test("a library that cannot be opened: the start and each attempt record the open's error, the open is tried again at every attempt, and the run continues once it opens")
     func libraryUnavailableAtStart() throws {
         let rig = Rig()
@@ -473,7 +586,7 @@ struct ControllerTests {
         rig.ticks(first, 3)
         rig.device.restart(offFor: 40)
         let second = try rig.newProcess()
-        second.launch(state: "background")
+        second.launch()
         #expect(second.record == nil)
         rig.device.lock = .unlocked
         second.start()
@@ -567,7 +680,7 @@ struct ControllerTests {
         let controller = HarnessController(configuration: try HarnessConfiguration(pendingLimit: 3), environment: rig.environment,
                                            autoTick: false)
         rig.device.lock = .beforeFirstUnlock
-        controller.launch(state: "background")
+        controller.launch()
         controller.appStateChanged(to: "background")
         controller.appStateChanged(to: "background")
         #expect(controller.pendingLineCount == 3)

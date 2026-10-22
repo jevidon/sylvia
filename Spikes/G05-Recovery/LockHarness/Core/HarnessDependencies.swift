@@ -112,12 +112,23 @@ public protocol SessionStore: AnyObject {
     func save(_ record: SessionRecord) throws
 }
 
+/// What a read of the class-A canary found.
+public enum CanaryState: String, Sendable, Equatable {
+    case readable
+    /// The canary exists and could not be read: its class key is not available (the phone is locked).
+    case unreadable
+    /// There is no canary yet (no run has started in this installation, or its creation failed): nothing about the
+    /// lock can be read from it. Until 22 October 2026 (review H-04 of the decisions round) this was recorded as
+    /// `unreadable`, so a launch before the first Start read `classA=unreadable` while the phone was unlocked.
+    case absent
+}
+
 /// A class-A file whose readability tells whether the phone is locked (unreadable about 10 s after it locks).
 @MainActor
 public protocol CanaryProbe: AnyObject {
     /// Creates the canary unless it exists; true when it was created now.
     func ensureCreated() throws -> Bool
-    func isReadable() -> Bool
+    func state() -> CanaryState
 }
 
 /// A class-C file the harness rewrites and reads back on every attempt, besides the library.

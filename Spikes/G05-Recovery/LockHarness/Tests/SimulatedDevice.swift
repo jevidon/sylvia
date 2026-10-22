@@ -140,16 +140,23 @@ final class FakeSessions: SessionStore {
     let device: SimulatedDevice
     var stored: SessionRecord?
     var saves = 0
+    /// Writes of the record fail while the phone is locked, class C still available (a store that fails on its own,
+    /// for example a full disk; review H-02 of the decisions round).
+    var failWhileLocked = false
+    /// The next load finds a damaged record (it cannot be decoded).
+    var damaged = false
 
     init(device: SimulatedDevice) { self.device = device }
 
     func load() throws -> SessionRecord? {
         try device.requireClassC()
+        if damaged { throw CocoaError(.coderReadCorrupt) }
         return stored
     }
 
     func save(_ record: SessionRecord) throws {
         try device.requireClassC()
+        if failWhileLocked && !device.isProtectedDataAvailable { throw NSError(domain: NSPOSIXErrorDomain, code: Int(ENOSPC)) }
         saves += 1
         stored = record
     }
@@ -169,7 +176,10 @@ final class FakeCanary: CanaryProbe {
         return true
     }
 
-    func isReadable() -> Bool { exists && device.classAAvailable }
+    func state() -> CanaryState {
+        guard exists else { return .absent }
+        return device.classAAvailable ? .readable : .unreadable
+    }
 }
 
 @MainActor

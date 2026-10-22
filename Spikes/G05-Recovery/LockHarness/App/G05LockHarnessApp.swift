@@ -48,7 +48,9 @@ final class HarnessAppDelegate: NSObject, UIApplicationDelegate {
             }
         }
         observe()
-        controller.launch(state: UIKitSystem.name(of: application.applicationState))
+        // No application state is recorded here: in this scene-based app it reads background until the first scene
+        // connects, for a launch a person made too (review H-03); the app-state events that follow record it.
+        controller.launch()
         return true
     }
 

@@ -103,9 +103,10 @@ struct ProductionFileTests {
         #expect(try probe.writeAndRead("attempt 2"))
 
         let canary = ClassACanary(paths: root.paths)
+        #expect(canary.state() == .absent, "no canary before the first Start: absent, not unreadable (review H-04)")
         #expect(try canary.ensureCreated())
         #expect(try !canary.ensureCreated(), "made once")
-        #expect(canary.isReadable(), "the simulator never locks")
+        #expect(canary.state() == .readable, "the simulator never locks")
     }
 
     @Test("every production component asks for class C, from the configuration; only the canary asks for class A")
@@ -163,7 +164,7 @@ struct ProductionFileTests {
                 scheduler: FakeScheduler(), platform: "simulator")
         }
         let first = HarnessController(configuration: configuration, environment: environment(), autoTick: false)
-        first.launch(state: "active")
+        first.launch()
         first.start()
         for _ in 0..<6 {
             device.advance(2)
@@ -174,7 +175,7 @@ struct ProductionFileTests {
 
         device.advance(60)
         let second = HarnessController(configuration: configuration, environment: environment(), autoTick: false)
-        second.launch(state: "active")
+        second.launch()
         let lines = try String(contentsOf: root.paths.log, encoding: .utf8).split(separator: "\n").map { HarnessLog.fields(of: String($0)) }
         let attempts = lines.filter { $0["event"] == "attempt" }
         #expect(attempts.count == 6)

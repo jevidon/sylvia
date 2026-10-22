@@ -14,7 +14,9 @@ baseline in Section 1.1:
   step to the checklist while the harness was being built on another branch).
 - RUNBOOK_OWN gains plan 19.1's sentence on the baseline device, which Section 1.1 quotes ("is an iPhone 11 Pro: the
   product owner chose the iPhone 11 family on 22 October 2026"), read in the plan (draft 0.8).
-The Stage 0 round's version, run on the runbook as assembled, reports exactly those changes (the runner's control p).
+The Stage 0 round's version, run on the runbook as assembled, reports exactly those changes (the runner's control o;
+until 22 October 2026 this line said control p, which is 6.1's lockedFailures mutation: the review of the decisions
+round, its finding CHK-03; a correction of this docstring only).
 
 The Stage 0 round's version (22 October 2026, the records of the product owner's M0 decisions) replaced
 Docs/Stage0/evidence/M0-Integration/repin-27.1/round-2/commands/runbook-content-check.py. Its comparison was that

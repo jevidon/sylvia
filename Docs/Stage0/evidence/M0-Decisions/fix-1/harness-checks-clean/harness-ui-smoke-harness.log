@@ -1,0 +1,31 @@
+2026-10-22T09:53:02.562Z launch platform=simulator protectedDataAvailable=true classA=absent boot=2026-10-03T00:49:57.383Z sinceBoot=1674185.1 interval=2.0 gapThreshold=5.0 protection=NSFileProtectionCompleteUntilFirstUserAuthentication
+2026-10-22T09:53:02.567Z previous-session when=launch result=none
+2026-10-22T09:53:02.571Z refresh result=not-scheduled:BGTaskSchedulerErrorDomain:1
+2026-10-22T09:53:02.606Z event name=app-state state=foreground
+2026-10-22T09:53:02.756Z event name=app-state state=active
+2026-10-22T09:53:06.410Z start run=8fe3b7ff item=0 interval=2.0 volume=0.01 volumeReason=test-volume audio=playing protection=NSFileProtectionCompleteUntilFirstUserAuthentication durability=journal_mode=wal,synchronous=FULL,fullfsync=1,checkpoint_fullfsync=1 store=open canary=created session=ok
+2026-10-22T09:53:08.554Z attempt run=8fe3b7ff n=1 t=2.3 app=active protectedDataAvailable=true classA=readable item=0 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=1
+2026-10-22T09:53:10.699Z attempt run=8fe3b7ff n=2 t=4.4 app=active protectedDataAvailable=true classA=readable item=1 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=2
+2026-10-22T09:53:12.720Z attempt run=8fe3b7ff n=3 t=6.5 app=active protectedDataAvailable=true classA=readable item=2 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=3
+2026-10-22T09:53:14.790Z attempt run=8fe3b7ff n=4 t=8.5 app=active protectedDataAvailable=true classA=readable item=3 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=4
+2026-10-22T09:53:15.149Z event name=app-state state=resigning-active
+2026-10-22T09:53:15.783Z event name=app-state state=background
+2026-10-22T09:53:16.909Z attempt run=8fe3b7ff n=5 t=10.7 app=background protectedDataAvailable=true classA=readable item=4 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=5
+2026-10-22T09:53:18.993Z attempt run=8fe3b7ff n=6 t=12.7 app=background protectedDataAvailable=true classA=readable item=5 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=6
+2026-10-22T09:53:21.026Z attempt run=8fe3b7ff n=7 t=14.8 app=background protectedDataAvailable=true classA=readable item=6 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=7
+2026-10-22T09:53:23.148Z attempt run=8fe3b7ff n=8 t=16.9 app=background protectedDataAvailable=true classA=readable item=7 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=8
+2026-10-22T09:53:25.249Z attempt run=8fe3b7ff n=9 t=19.0 app=background protectedDataAvailable=true classA=readable item=8 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=9
+2026-10-22T09:53:27.304Z attempt run=8fe3b7ff n=10 t=21.0 app=background protectedDataAvailable=true classA=readable item=9 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=10
+2026-10-22T09:53:29.353Z attempt run=8fe3b7ff n=11 t=23.1 app=background protectedDataAvailable=true classA=readable item=10 save=saved readback=equal file=ok classes=simulator-unverified session=ok acknowledged=11
+2026-10-22T09:53:29.367Z event name=app-state state=foreground
+2026-10-22T09:53:29.620Z event name=app-state state=active
+2026-10-22T09:53:30.708Z stop run=8fe3b7ff attempts=11 acknowledged=11 failures=0 lockedAttempts=0 lockedFailures=0 classAUnreadable=0 gaps=0 longestGap=0.0 session=ok
+2026-10-22T09:53:30.714Z verify result=ok run=8fe3b7ff acknowledged=11 libraryCaptures=11 extra=0 integrity=ok foreignKeyViolations=0 failures=0 classes=simulator-unverified
+2026-10-22T09:53:30.718Z verify-classes Sylvia=none-reported Library=none-reported installation.json=NSFileProtectionCompleteUntilFirstUserAuthentication G05LockHarness=none-reported library.sqlite=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-wal=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-shm=NSFileProtectionCompleteUntilFirstUserAuthentication harness.log=NSFileProtectionCompleteUntilFirstUserAuthentication session.json=NSFileProtectionCompleteUntilFirstUserAuthentication probe.bin=NSFileProtectionCompleteUntilFirstUserAuthentication class-a-canary.bin=NSFileProtectionCompleteUntilFirstUserAuthentication
+2026-10-22T09:53:32.643Z launch platform=simulator protectedDataAvailable=true classA=readable boot=2026-10-03T00:49:57.383Z sinceBoot=1674215.3 interval=2.0 gapThreshold=5.0 protection=NSFileProtectionCompleteUntilFirstUserAuthentication
+2026-10-22T09:53:32.648Z previous-session when=launch result=stopped-cleanly run=8fe3b7ff attempts=11 acknowledged=11 failures=0 lockedAttempts=0 lockedFailures=0 classAUnreadable=0 gaps=0 longestGap=0.0 lastRecord=2026-10-22T09:53:30.699Z
+2026-10-22T09:53:32.679Z verify result=ok run=8fe3b7ff acknowledged=11 libraryCaptures=11 extra=0 integrity=ok foreignKeyViolations=0 failures=0 classes=simulator-unverified
+2026-10-22T09:53:32.683Z verify-classes Sylvia=none-reported Library=none-reported installation.json=NSFileProtectionCompleteUntilFirstUserAuthentication G05LockHarness=none-reported library.sqlite=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-wal=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-shm=NSFileProtectionCompleteUntilFirstUserAuthentication harness.log=NSFileProtectionCompleteUntilFirstUserAuthentication session.json=NSFileProtectionCompleteUntilFirstUserAuthentication probe.bin=NSFileProtectionCompleteUntilFirstUserAuthentication class-a-canary.bin=NSFileProtectionCompleteUntilFirstUserAuthentication
+2026-10-22T09:53:32.688Z refresh result=not-scheduled:BGTaskSchedulerErrorDomain:1
+2026-10-22T09:53:32.721Z event name=app-state state=foreground
+2026-10-22T09:53:32.859Z event name=app-state state=active

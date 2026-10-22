@@ -1,0 +1,67 @@
+command: Docs/Stage0/evidence/M0-Decisions/fix-1/commands/run-harness-checks-clean.sh harness-checks-clean
+commit: 713d99b1adef27210afa43f7d346eac9b6adf090 (m0-decisions); uncommitted files before the run: 1
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+deleted before the run: Spikes/G05-Recovery/LockHarness/.build; simulator name Sylvia-M0-dec-fix-1 (iPhone 17, iOS 26.5)
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-22T09:52:29Z; load: 22:52  up 19 days,  9:03, 3 users, load averages: 4.29 3.58 3.73
+---- harness-checks.sh output: step headers, results and verdict lines (the whole output is in the step logs)
+=== 13. harness lock: LockHarness/Package.resolved pins what ../Package.resolved pins
+ok: LockHarness/Package.resolved pins exactly what ../Package.resolved pins: grdb.swift 7.11.1 b83108d10f42680d78f23fe4d4d80fc88dab3212
+originHash equal
+=== 14. harness unit tests and the app's UI smoke test on the simulator (Sylvia-M0-dec-fix-1)
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 ; load: 9.95 4.91 4.20
+✔ Test run with 47 tests in 4 suites passed after 0.903 seconds.
+Test Suite 'LockHarnessSmokeUITests' passed at 2026-10-22 22:53:36.222.
+** TEST SUCCEEDED **
+lines: 31; events: attempt 11, event 8, launch 2, previous-session 2, refresh 2, start 1, stop 1, verify 2, verify-classes 2
+ok    two launches, one Start and one Stop, in that order: launch, start, stop, launch
+ok    no launch line records an application state (H-03: it reads background until a scene connects)
+ok    the first launch: platform=simulator protectedDataAvailable=true classA=absent (no canary before Start: H-04)
+ok    the second launch: classA=readable (the canary exists, and the simulator never locks)
+ok    the first launch's activation is recorded (event name=app-state state=active) before the Start
+ok    the start line: volume=0.01 (test volume) audio=playing store=open canary=created session=ok, class C, D17's durability
+ok    at least 10 attempts, numbered from 1 without a break (11)
+ok    every attempt: save=saved readback=equal file=ok session=ok classes=simulator-unverified classA=readable
+ok    at least 5 attempts made in the background, the tone keeping the app running (7)
+ok    no pause between attempts above the 5 s gap threshold (between 2.0 and 2.2 s)
+ok    no gap line
+ok    the run went to the background and came back (app-state events)
+ok    the stop line: failures=0 gaps=0 lockedAttempts=0 session=ok, its attempts the attempt lines' count
+ok    the check after Stop: verify result=ok acknowledged=11 extra=0 integrity=ok foreignKeyViolations=0 failures=0
+ok    the second launch reads the run as stopped-cleanly (previous-session when=launch)
+ok    the second launch's check of the library: verify result=ok acknowledged=11 extra=0
+recorded, not checked: refresh results not-scheduled:BGTaskSchedulerErrorDomain:1 (BGTaskScheduler is not available in the simulator)
+result: PASS
+simulator Sylvia-M0-dec-fix-1 shut down
+=== 15. harness app for a generic iOS device (Debug; automatic signing for team A4KBDX665Z; build only)
+** BUILD SUCCEEDED **
+# The harness app built for a generic iOS device (Debug, automatic signing). Host macOS 26.6.2 (25G83), Xcode 27.1 (27A9275).
+# Build only: nothing is installed on or run on a device (device checklist step 3 installs it).
+== G05LockHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g05lockharness
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+profile TeamIdentifier:0=A4KBDX665Z
+profile ExpirationDate=Tue Aug 17 04:53:58 NZST 2027
+-- entitlements (codesign -d --entitlements)
+"application-identifier" => "A4KBDX665Z.com.jevidon.sylvia.spike.g05lockharness"
+"com.apple.developer.team-identifier" => "A4KBDX665Z"
+"get-task-allow" => true
+-- Info.plist of the built app (plutil -p): background modes and the refresh task
+"BGTaskSchedulerPermittedIdentifiers" => [
+0 => "com.jevidon.sylvia.spike.g05lockharness.refresh"
+]
+"UIBackgroundModes" => [
+0 => "audio"
+1 => "fetch"
+]
+-- UIDeviceFamily of the built app (plutil -extract): [1] (1 is iPhone, 2 is iPad)
+G0.5 recovery lock harness: steps 13-15 passed (logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-11/Docs/Stage0/evidence/M0-Decisions/fix-1/harness-checks-clean)
+---- end
+harness-checks.sh exit: 0
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-22T09:53:48Z; load: 22:53  up 19 days,  9:04, 3 users, load averages: 9.84 6.00 4.67
+git status --porcelain lines after the run: 2

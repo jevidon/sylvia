@@ -3,7 +3,7 @@
 Everything here is **pending**. None of it has been run; nothing in it is inferred from the simulator results in `Docs/Stage0/G01-EPUB.md`.
 
 - **Harness:** `Spikes/G01-EPUB` (app `EPUBHarness`, bundle id `com.jevidon.sylvia.spike.epub`, display name "Sylvia EPUB Spike"). Without launch arguments it lists every bundled fixture; tap one to open it.
-- **Devices:** the iPhone 17 Pro (iPhone18,1, iOS 26.7) recorded in ADR-0001 for every step. Repeat steps 1, 6, 11 and 12 on the iPhone 12-class baseline, and steps 1, 6 and 11 on an iPad, once they are available (ADR-0001 open item; report open question 8).
+- **Devices:** the iPhone 17 Pro (iPhone18,1, iOS 26.7) recorded in ADR-0001 for every step. Repeat steps 1, 6, 11 and 12 on the oldest supported iPhone, and steps 1, 6 and 11 on an iPad, once they are available (ADR-0001 open item; report open question 8). *(22 October 2026: the oldest supported iPhone is the product owner's iPhone 11 Pro, decision D-1 (b); until then this line named the iPhone 12-class baseline. These repeats can wait for M3: `Docs/Stage0/M0-device-runbook.md` Section 7.)*
 - **Where to record:** create `Docs/Stage0/evidence/G01-EPUB/device/` and write one `step-NN.md` per step with: date, tester, device model and identifier, iOS version and build, harness commit (`git rev-parse HEAD`), build configuration, the result (**passed-device** or **failed**), what was seen, and screenshots or screen recordings (under 2 MB each; PNG or MP4). Then change the step's status in the table of `Docs/Stage0/G01-EPUB.md` from pending-device or pending-human to passed-device or failed, with the link.
 
 ## Install the harness on the device

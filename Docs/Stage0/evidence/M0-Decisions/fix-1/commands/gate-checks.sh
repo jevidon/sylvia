@@ -5,7 +5,8 @@
 #   Docs/Stage0/evidence/M0-Decisions/fix-1/commands/gate-checks.sh <log>
 # 1. What the fix changed since the commit the review read (88d4e1c7): every file, by kind; outside Docs/, CLAUDE.md
 #    and README.md only the lock harness (Spikes/G05-Recovery/LockHarness) and Scripts/ci.d/71-g05-recovery.sh, whose
-#    changed lines must all be comment lines (the drop-in's code is unchanged; its steps 13-15 run the harness's script).
+#    changed lines must all be comment lines (the drop-in's code is unchanged; its steps 13-15 run the harness's script);
+#    and no code, script, contract, fixture or workflow changed after 713d99b1, the commit of the fix's from-clean runs.
 # 2. The Git LFS state of the tree and of the repository configuration (read-only), and the LFS files of HEAD against
 #    those of 4c73da57 (main after pull request #5): the runbook's D-8 says m0-decisions adds none.
 # 3. M0-gate.md: every cited path exists and every Section 2 status agrees with the gate report rows, ADR status lines
@@ -59,6 +60,12 @@ noncomment="$(printf '%s\n' "$dropin_lines" | grep . | grep -v -E '^[+-]#' || tr
   echo "-- 1b. Scripts/ci.d/71-g05-recovery.sh: $(printf '%s\n' "$dropin_lines" | grep -c .) changed lines, $( [[ -z "$noncomment" ]] && echo "every one a comment line (the drop-in's code is unchanged)" || echo "PROBLEM, not all comments: $noncomment")"
 } >> "$log"
 [[ -n "$noncomment" ]] && status=1
+harness_runs=713d99b1adef27210afa43f7d346eac9b6adf090   # the commit of the fix's from-clean runs (fix-1/dropin-clean, harness-checks-clean)
+since_runs="$(git diff --name-only "$harness_runs" HEAD -- Spikes Scripts Contracts Fixtures Apps Packages .github)"
+{
+  echo "-- 1c. code, scripts, contracts, fixtures and the workflow changed since ${harness_runs:0:8}, the commit of the fix's from-clean runs: $( [[ -z "$since_runs" ]] && echo "none, so those runs tested this code" || echo "PROBLEM: $since_runs")"
+} >> "$log"
+[[ -n "$since_runs" ]] && status=1
 {
   echo
   echo "== 2. Git LFS state"

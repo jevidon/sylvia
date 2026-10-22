@@ -1,0 +1,23 @@
+command: Docs/Stage0/evidence/M0-Decisions/harness/commands/checks.sh checks-final (check-dependency-lock.py check --toolchain on a copy of the tracked files with the requested inventory changes)
+commit: 6324f46e10fc1aff76d9527dc47336e9fa6833be; uncommitted files: 1
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+date: 2026-10-22T07:41:38Z; load: 3.47 2.78 3.13
+
+ok    committed Xcode projects or workspaces: 0
+ok    locks: 16 committed, 16 registered
+ok    manifests: 20 read, 16 remote requirements
+ok    symbolic links under the product roots: 0
+ok    module maps read as product code: 0
+ok    license texts: 53 checked
+ok    product sources: 59 Swift and 0 C-family files checked for imports of transitive-only modules
+ok    binaries: 0 declared by product manifests, 0 committed under the product roots, 0 inventoried
+ok    vendored assets: 3 listed
+ok    python tools: 20 pinned, 1 recorded as unpinned (pip at any version, with a warning below 26.2.0); the virtualenv holds exactly these (pip 26.2.1)
+ok    workflow actions: 2 used
+ok    toolchain: the Xcode pin 27.1 (27A9275) as stated in .github/workflows/ci.yml, CLAUDE.md, Docs/ADRs/0001-platform-baseline-and-toolchain.md
+ok    toolchain: xcodebuild -version -> Build version 27A9275 (the pin, compared whole)
+ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1) (the pin, compared whole)
+ok    toolchain: xcodegen --version -> Version: 2.46.0 (the pin, compared whole)
+ok    acknowledgements draft: matches the inventory (235350 characters)
+dependency lock check: 0 failure(s), 0 warning(s)
+exit: 0

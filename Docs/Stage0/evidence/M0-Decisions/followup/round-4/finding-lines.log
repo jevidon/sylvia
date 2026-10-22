@@ -1,0 +1,45 @@
+command: python3 -I Docs/Stage0/evidence/M0-Decisions/followup/round-4/commands/finding-lines.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_90af3f3d-daf-7
+commit: ff3781b394a2a767f74dcc17c15816f5739b6e9c; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-22T20:44:57Z; load:  9:44  up 19 days, 19:55, 3 users, load averages: 5.16 4.27 3.60
+
+cited lines read at 19489f10033e6b79d7509d9041c76850b0006703 (the commit tested) and at 11f41be59083493109290cc7542cb91f00804981 (the fix's starting commit)
+match    OWN4-01 Docs/Stage0/M0-gate.md:41: 'release owner (item 6) and technical lead (item 7)'; at 11f41be5 that line holds it
+match    OWN4-01 Docs/Stage0/M0-gate.md:223: '6 (release owner) and 7 (technical lead) wait for your sign-offs in Session 10'; at 11f41be5 that line holds it
+match    OWN4-01 Docs/Stage0/M0-gate.md:42: 'under Xcode 27.1'; at 11f41be5 that line holds it
+match    OWN4-01 Docs/Stage0/M0-gate.md:42: 'ask Readium to drop marmelroy/Zip or move to a fixed fork (item 4)'; at 11f41be5 that line does not
+match    OWN4-01 Docs/Stage0/M0-gate.md:429: 'And run `linkage.sh` under Xcode 27.1'; at 11f41be5 that line holds it
+match    OWN4-01 Docs/Stage0/M0-device-runbook.md:980: '(its section 7, items 4, 5 and 9)'; at 11f41be5 that line holds it
+match    OWN4-01 Docs/Stage0/M0-device-runbook.md:1012: '**Technical lead and QA: you** (about 2 h each)'; at 11f41be5 that line holds it
+match    OWN4-01 Docs/Stage0/M0-device-runbook.md:1014: 'design, and the release owner.'; at 11f41be5 that line holds it
+match    OWN4-01 Docs/Stage0/M0-gate.md:33: 'as release owner (distribution and privacy declarations)'; at 11f41be5 that line holds it
+match    OWN4-02 Docs/Stage0/M0-device-runbook.md:160: '(its harness, spike or drop-in)'; at 11f41be5 that line holds it
+match    OWN4-02 Docs/Stage0/M0-device-runbook.md:160: 'HEAD -- Docs/Stage0/device-checklists Spikes Scripts/ci.d`'; at 11f41be5 that line holds it
+match    OWN4-02 Docs/Stage0/M0-gate.md:16: '(its harness, spike or drop-in)'; at 11f41be5 that line holds it
+match    OWN4-02 Docs/Stage0/M0-gate.md:16: '<the new one> -- Docs/Stage0/device-checklists Spikes Scripts/ci.d`'; at 11f41be5 that line holds it
+match    OWN4-03 Docs/Stage0/M0-device-runbook.md:160: 'or by pull request for `main`), between sessions'; at 11f41be5 that line does not
+match    OWN4-03 Docs/Stage0/M0-gate.md:37: 'merge that branch into the branch you build from'; at 11f41be5 that line does not
+match    OWN4-03 Docs/ADRs/0002-repository-build-and-ci.md:41: 'The rule stays for every other milestone branch'; at 11f41be5 that line does not
+match    OWN4-04 Docs/ADRs/0015-threat-model.md:301: 'Sessions 0.7, 0.8, 1.1-1.3, 4 and 6.1-6.5, and G0.1 EPUB steps 11 and 13)'; at 11f41be5 that line holds it
+match    OWN4-04 Docs/ADRs/0015-threat-model.md:304: 'before the M1 app target is created, or before any product target links Readium if that comes first'; at 11f41be5 that line holds it
+match    OWN4-05 Docs/Stage0/M0-device-runbook.md:974: "Session 2's steps 11 and 13"; at 11f41be5 that line holds it
+match    OWN4-06 Docs/Stage0/M0-gate.md:14: 'change its milestone paragraph, or ask for the change'; at 11f41be5 that line holds it
+match    OWN4-06 Docs/Stage0/M0-gate.md:590: 'for example to "were combined on `m0-integrate`'; at 11f41be5 that line does not
+match    OWN4-06 Docs/Stage0/M0-device-runbook.md:123: 'change its milestone paragraph, or ask for the change'; at 11f41be5 that line holds it
+match    OWN4-07 Docs/Stage0/M0-gate.md:42: 'run `evidence/M0-dependencies/commands/linkage.sh` under Xcode 27.1'; at 11f41be5 that line holds it
+match    OWN4-07 Docs/Stage0/M0-gate.md:429: 'And run `linkage.sh` under Xcode 27.1'; at 11f41be5 that line holds it
+match    OWN4-07 Docs/Stage0/M0-gate.md:584: '**What remains, in order:**'; at 11f41be5 that line does not
+match    OWN4-08 Docs/Stage0/M0-gate.md:33: '**3. Then your sign-offs**'; at 11f41be5 that line holds it
+match    OWN4-08 Docs/Stage0/M0-gate.md:403: '| G0.5 AI | 1-4, 5-7, 9.2, 9.3 on B'; at 11f41be5 that line holds it
+match    OWN4-08 Docs/Stage0/M0-device-runbook.md:993: 'Also yours: G0.5 AI step 9.2, the wording review'; at 11f41be5 that line holds it
+match    OWN4-08 Docs/Stage0/M0-gate.md:10: 'It waits on no decision of yours'; at 11f41be5 that line does not
+match    OWN4-08 Docs/Stage0/M0-gate.md:582: 'It waits on no decision of yours'; at 11f41be5 that line does not
+match    OWN4-09 Docs/Stage0/M0-gate.md:14: '**1. Before the first session**'; at 11f41be5 that line holds it
+match    OWN4-09 Docs/Stage0/M0-gate.md:33: '**3. Then your sign-offs**'; at 11f41be5 that line holds it
+match    OWN4-09 Docs/Stage0/M0-gate.md:91: "after the exit review, as ADR-0002's rule has it, unless you decide"; at 11f41be5 that line holds it
+match    OWN4-09 Docs/Stage0/M0-gate.md:91: 'and since your answer of the same day, before the exit review too'; at 11f41be5 that line holds it
+match    OWN4-09 Docs/Stage0/M0-device-runbook.md:160: '**0.3 Commit**'; at 11f41be5 that line holds it
+result: 35 of 35 cited lines hold their text at 19489f10
+
+exit status: 0
+end: 2026-10-22T20:44:58Z; load:  9:44  up 19 days, 19:55, 3 users, load averages: 4.90 4.24 3.59

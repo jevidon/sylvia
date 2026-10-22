@@ -1,0 +1,24 @@
+# The harness app built for a generic iOS device (Debug, automatic signing). Host macOS 26.6.2 (25G83), Xcode 27.1 (27A9275).
+# Build only: nothing is installed on or run on a device (device checklist step 3 installs it).
+== G05LockHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g05lockharness
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+profile TeamIdentifier:0=A4KBDX665Z
+profile ExpirationDate=Tue Aug 17 04:53:58 NZST 2027
+-- entitlements (codesign -d --entitlements)
+"application-identifier" => "A4KBDX665Z.com.jevidon.sylvia.spike.g05lockharness"
+"com.apple.developer.team-identifier" => "A4KBDX665Z"
+"get-task-allow" => true
+-- Info.plist of the built app (plutil -p): background modes and the refresh task
+"BGTaskSchedulerPermittedIdentifiers" => [
+0 => "com.jevidon.sylvia.spike.g05lockharness.refresh"
+]
+"UIBackgroundModes" => [
+0 => "audio"
+1 => "fetch"
+]
+-- UIDeviceFamily of the built app (plutil -extract): [1] (1 is iPhone, 2 is iPad)

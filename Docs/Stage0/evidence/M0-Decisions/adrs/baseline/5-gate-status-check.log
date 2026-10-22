@@ -1,0 +1,109 @@
+command: Docs/Stage0/evidence/M0-Decisions/adrs/commands/adr-checks.sh
+part: 5. Docs/Stage0/evidence/M0-Integration/commands/gate-refresh-check.py
+commit: 2b0bd4e498afeccfee533e8600403c6260aad01a; uncommitted paths: 0
+date (UTC): 2026-10-22T06:29:41Z
+host: macOS 26.6.2 (25G83), arm64; Xcode 27.1 Build version 27A9275 
+load: 19:29  up 19 days,  5:40, 3 users, load averages: 3.20 2.59 2.36
+environment: host only; no simulator or device
+
+== paths: 215 checked
+== gate report rows
+row 1: passed-simulator | G01-EPUB.md G1: 'passed-simulator' -> agrees
+row 2: pending-device | G01-EPUB.md G2: 'pending-device' -> agrees
+row 3: passed-simulator | G01-EPUB.md G3: 'passed-simulator' -> agrees
+row 4: pending-human | G01-EPUB.md G4: 'pending-human' -> agrees
+row 5: passed-simulator | G01-EPUB.md G5: 'passed-simulator' -> agrees
+row 6: passed-simulator | G01-EPUB.md G6: 'passed-simulator' -> agrees
+row 7: passed-simulator | G01-EPUB.md G7: 'passed-simulator' -> agrees
+row 8: passed-simulator | G01-PDF.md 1: 'passed-simulator' -> agrees
+row 9: pending-device | G01-PDF.md 2: 'pending-device' -> agrees
+row 10: failed | G01-PDF.md 10c: 'failed' -> agrees
+row 11: passed-simulator | G01-EPUB.md G8: 'passed-simulator' -> agrees
+row 12: pending-human | G01-EPUB.md G9: 'pending-human' -> agrees
+row 13: passed-simulator | G01-EPUB.md G10: 'passed-simulator' -> agrees
+row 14: passed-simulator | G02-Transfer.md User-mediated trust bootstrap from iOS: 'passed-simulator' -> agrees
+row 15: pending-device | G02-Transfer.md User-mediated trust bootstrap on a physical iPho: 'pending-device' -> agrees
+row 16: passed-simulator | G02-Transfer.md Certificate pinning on iOS: 'passed-simulator' -> agrees
+row 17: partial | G02-Transfer.md Authorized ranged downloads with verified parts: 'partial' -> agrees
+row 18: partial | G02-Transfer.md Recovery after suspension or force-quit: 'partial' -> agrees
+row 19: passed-host | G02-Transfer.md Mac source mutation never yields a mixed-version: 'passed-host' -> agrees
+row 20: passed-host | G02-Transfer.md Manual-address connectivity: IPv4 and IPv6 loopb: 'passed-host' -> agrees
+row 21: passed-simulator | G02-Transfer.md Plan 15.2 Stage 0 gate, local address forms: 'passed-simulator' -> agrees
+row 22: failed | G02-Transfer.md Plan 15.2 Stage 0 gate, Tailscale address forms: 'failed' -> agrees
+row 22: failed | G02-Transfer.md T43 Tailscale address and MagicDNS name on iOS w: 'failed' -> agrees
+row 23: pending-device | G02-Transfer.md Manual-address and Tailscale connectivity betwee: 'pending-device' -> agrees
+row 24: pending-human | G02-Transfer.md Security reviewer approves the pairing protocol: 'pending-human' -> agrees
+row 25: passed-host | G02-Transfer.md No trust-all path, no ATS exception in the harne: 'passed-host' -> agrees
+row 26: passed-simulator | G03-Intake.md G1: 'passed-simulator' -> agrees
+row 27: pending-device | G03-Intake.md G2: 'pending-device' -> agrees
+row 28: pending-device | G03-Intake.md G6: 'pending-device' -> agrees
+row 29: passed-host | G03-Intake.md G3: 'passed-host' -> agrees
+row 30: passed-simulator | G03-Intake.md G4: 'passed-simulator' -> agrees
+row 31: passed-host | G03-Intake.md G5: 'passed-host' -> agrees
+row 32: passed-simulator | G03-Intake.md G7: 'passed-simulator' -> agrees
+row 33: pending-device | G03-Intake.md G8: 'pending-device' -> agrees
+row 34: partial | G03-Intake.md T42: 'partial' -> agrees
+row 35: passed-host | G03-Intake.md G9: 'passed-host' -> agrees
+row 36: pending-device | G03-Intake.md G10: 'pending-device' -> agrees
+row 37: passed-simulator | G04-Audio.md 1: 'passed-simulator' -> agrees
+row 38: pending-device | G04-Audio.md 2: 'pending-device' -> agrees
+row 39: passed-simulator | G04-Audio.md 3: 'passed-simulator' -> agrees
+row 39: passed-simulator | G04-Audio.md 11: 'passed-simulator' -> agrees
+row 40: pending-device | G04-Audio.md 12: 'pending-device' -> agrees
+row 41: passed-simulator | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 33: 'passed-simulator (opening, positions, timing); start/resume budget ...' -> agrees
+row 43: passed-simulator | G04-Audio.md 4: 'passed-simulator (with the container limits stated)' -> agrees
+row 44: passed-simulator | G04-Audio.md 5: 'passed-simulator' -> agrees
+row 45: passed-simulator | G04-Audio.md 6: 'passed-simulator' -> agrees
+row 46: passed-simulator | G04-Audio.md 7: 'passed-simulator' -> agrees
+row 47: partial | G04-Audio.md 8: 'partial' -> agrees
+row 48: passed-simulator | G04-Audio.md 18: 'passed-simulator (control: both signings; App Shortcut and the cont...' -> agrees
+row 49: pending-device | G04-Audio.md 19: 'pending-device' -> agrees
+row 50: partial | G04-Audio.md 9: 'partial' -> agrees
+row 51: partial | G05-AI.md G1: 'partial' -> agrees
+row 52: partial | G05-AI.md G2: 'partial' -> agrees
+row 53: passed-host | G05-AI.md G3: 'passed-host' -> agrees
+row 54: partial | G05-AI.md G4: 'partial' -> agrees
+row 55: passed-simulator | G05-Recovery.md 1: 'passed-simulator' -> agrees
+row 56: pending-device | G05-Recovery.md 22: 'pending-device' -> agrees
+row 57: passed-host | G05-Recovery.md 2: 'passed-host' -> agrees
+row 58: partial | G05-AI.md G6: 'partial' -> agrees
+row 59: pending-human | G05-Recovery.md 23: 'pending-human' -> agrees
+row 60: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 61: passed-simulator | G06-Design.md G0.6: every token pair's contrast verified: 'passed-simulator' -> agrees
+row 62: pending-device | G06-Design.md G0.6: type roles under Dynamic Type: 'pending-device' -> agrees
+row 63: failed | G06-Design.md Scaling through UIFontMetrics as Section 4.4.3 s: 'failed' -> agrees
+row 64: pending-device | G06-Design.md G0.6: component set viewed on a device: 'pending-device' -> agrees
+row 65: partial | G06-Design.md G0.6: token values adjusted where devices disagr: 'partial' -> agrees
+row 72: passed-simulator | G06-Design.md CI drop-in `Scripts/ci.d/21-design-catalog.sh`: 'passed-simulator' -> agrees
+row 73: pending-human | G06-Design.md Prototype matches the boards where they agree wi: 'pending-human' -> agrees
+row 74: pending-device | G06-Design.md G0.6 device review of the component set and the : 'pending-device' -> agrees
+row 79: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 80: pending-human | G06-Design.md Design review of the components and references: 'pending-human' -> agrees
+row 91: passed-host | G06-Design.md Token export with schema, fixtures: 'passed-host' -> agrees
+== ADR and deliverable rows
+row 66: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 71: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 75: passed-host | expected passed-host; 17 of 17 facts hold -> agrees
+row 76: failed | expected failed; 3 of 3 facts hold -> agrees
+row 77: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 78: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 82: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 83: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 84: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 85: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 86: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 87: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 88: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 89: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 90: passed-host | expected passed-host; 8 of 8 facts hold -> agrees
+row 92: pending-human | expected pending-human; 6 of 6 facts hold -> agrees
+== rows not checked mechanically
+row 67: pending-human | the Section 23 decisions are signed by people; nothing to read
+row 68: pending-human | a judgement for the exit review
+row 69: partial | a judgement on the amendments' text against the four gates with failed rows
+row 70: partial | summarises rows 1-65
+row 81: pending-human | an exit demonstration by people
+== summary: 92 rows; failed 5, partial 12, passed-host 11, passed-simulator 27, pending-device 15, pending-human 22; 74 report rows and 80 ADR and log facts compared; 0 problem(s)
+exit status: 0

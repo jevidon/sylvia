@@ -1,0 +1,526 @@
+Building for debugging...
+[Pre-planning 1 / 273]
+Build complete! (0.40 sec)
+Test Suite 'All tests' started at 2026-10-22 21:08:38.978.
+Test Suite 'All tests' passed at 2026-10-22 21:08:38.979.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Schema, identity and mutation rules (plan 7.2, 7.3)" started.
+◇ Suite "Media removal keeps knowledge (I-02, T44, plan 12, 17.2)" started.
+◇ Suite "Backup manifest reader agrees with the contract (Contracts/schemas/backup-manifest.v1)" started.
+◇ Suite "Migrations (plan 7.4, T45)" started.
+◇ Suite "Durable saves (I-03, T02, plan 19.2)" started.
+◇ Suite "Backup export (plan 17.3, 17.4, T35, T47)" started.
+◇ Test "every user-effective date column is paired with a precision column and checked by RowCheck" started.
+◇ Test "revision-checked note edits: a stale editor cannot overwrite a later edit (T26)" started.
+◇ Test "fresh library: all migrations, WAL, foreign keys on, every table STRICT" started.
+◇ Suite "Device persistence probe (T50 reboot, physical device only)" started.
+◇ Suite "Data protection classes (plan 18.1, T50 partial)" started.
+◇ Test "every valid contract fixture passes the reader's manifest stage" started.
+◇ Suite "Restore (plan 17.4, T35, T46, T47, J-06)" started.
+◇ Test "committed v1 fixture upgrades to v2 with a recovery snapshot, integrity and foreign-key checks" started.
+◇ Suite "Device lock probe (T50, physical device only)" started.
+◇ Suite "Migration put-back (plan 7.4, T45)" started.
+◇ Test "a file deleted behind the library's back reads as unavailable; orphan media is swept" started.
+◇ Test "finding F12: GRDB writes and reads TEXT as C strings, so text with U+0000 is refused before saving and by RowCheck" started.
+◇ Test "media removal can never cascade into knowledge: deleting media rows is refused (RESTRICT)" started.
+◇ Test "rating: 1-10 half-stars, null clears, 0 and 11 rejected by code and by the schema" started.
+◇ Test "no column can hold a credential (secrets are Keychain-only, plan 17.1)" started.
+◇ Test "re-importing the same bytes restores availability without a duplicate asset or work (J-04)" started.
+◇ Test "removing all original media for a work keeps ledger, rating, recommendations, quotes, notes, excerpts and AI evidence" started.
+◇ Test "STRICT typing, 64-bit sizes, digests and effective-date precision are enforced" started.
+◇ Test "a library from a newer build is refused without changes" started.
+◇ Test "a pending excerpt blocks removal unless the user chooses to remove anyway (T23 guard)" started.
+◇ Test "insufficient space: migration refused, library logically unchanged, no snapshot written" started.
+◇ Test "every invalid contract fixture is rejected by the reader for its one reason" started.
+◇ Test "ChangeJournal: one ordered local sequence, written in the mutation's transaction" started.
+◇ Test "a migration that throws: snapshot put back, data readable for export, retry succeeds" started.
+◇ Test "a migration that silently loses rows is caught by the post-migration count check" started.
+◇ Test "a value the migration cannot convert fails it instead of being dropped" started.
+◇ Test "capture save is one transaction with anchors, note, ledger and journal; idempotent (T02)" started.
+◇ Test "Markdown holds every conversation message: work-linked, capture-linked only, and linked to neither" started.
+◇ Test "T47: cleanup racing an export cannot remove a leased excerpt; the bundle still has it" started.
+➜ Test "write, verify or clean the persistent class-C library used by device checklist step 4" skipped: "needs a physical device and SYLVIA_DEVICE_PERSIST_PROBE=write|verify|clean (device checklist step 4)"
+◇ Test "export: manifest, consistent snapshot, portable JSON and Markdown, verified digests, no WAL files" started.
+◇ Test "the library records the class SQLite's files had before Sylvia set it explicitly" started.
+◇ Test "T47: export while another task keeps writing gets one consistent snapshot boundary" started.
+◇ Test "database, WAL, SHM, directories, blobs, covers, media, snapshots, bundles and restored files carry the chosen class C" started.
+◇ Test "an excerpt missing from disk fails the export instead of producing an incomplete bundle" started.
+◇ Test "a class without a protected writing option is refused before anything is written or changed, on every path (ADR-0015 TM-F1)" started.
+➜ Test "SQLite-created WAL and SHM inherit the directory's class (class-B and class-A control directories)" skipped: "class A/B keys are unavailable (host screen locked), so SQLite cannot open files in class-A or class-B directories now"
+◇ Test "storage full during a capture save: nothing half-written, earlier saves intact, retry saves once (simulated with max_page_count)" started.
+◇ Test "the writer runs WAL + synchronous=FULL + fullfsync, read back after open" started.
+◇ Test "a file with the wrong class is detected, never silently accepted" started.
+◇ Test "host screen locked: the class-C library keeps saving; class A cannot be created and closed class-B files cannot be reopened" started.
+◇ Test "storage full on a real volume: the WAL append fails, nothing half-written, earlier saves intact after reopen, retry saves once" started.
+➜ Test "with non-default class B supplied in StoreOptions, every file and directory carries class B" skipped: "class A/B keys are unavailable (host screen locked): closed class-B files cannot be reopened, so the flow cannot run with class B now; see lockedHostEnforcement"
+◇ Test "staging (Staging/ and Staging/Persistence/), recovery and restore work are excluded from device backup; the library is not" started.
+◇ Test "a preparation abandoned by a crash is cleared at the next launch, and the library is untouched" started.
+◇ Test "finding: GRDB's DatabasePool resets synchronous to NORMAL after prepareDatabase" started.
+◇ Test "J-06: originals that were on the source device are restored as at-source or unavailable records, never as on-device" started.
+◇ Test "SIGKILL crash drill (short run; the CI drill runs many hundreds of kills)" started.
+◇ Test "untrusted databases are opened in SQLite's defensive mode with trusted_schema off" started.
+◇ Test "capture save latency against the 200 ms p95 budget (indicative)" started.
+◇ Test "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" started.
+◇ Test "insufficient space refuses a restore before anything is copied" started.
+◇ Test "a backup from an older library schema (v1) is migrated in the temporary library before the swap" started.
+◇ Test "reconcile rolls back to the pre-restore copy if both libraries are missing" started.
+◇ Test "restore replaces the active library only with confirmation and keeps a pre-restore copy" started.
+◇ Test "restore drill after source deletion (J-06, T35)" started.
+◇ Test "the reference schema equals a real library's schema for every migration prefix" started.
+➜ Test "class-C library stays writable while locked; class-A canary does not" skipped: "needs a physical device, a person to lock it, and SYLVIA_DEVICE_LOCK_PROBE=1"
+◇ Test "T47: SIGKILL during prepare or the swap leaves exactly the old or the restored library (short run; CI runs 300)" started.
+◇ Test "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" started.
+◇ Test "an installation record that exists but cannot be read or decoded is an error, never a new device identity" started.
+◇ Test "T46: corrupt, truncated, newer and malicious backups are rejected without touching the library" started.
+◇ Test "a restore intent that exists but cannot be read (stand-in for before first unlock) fails the open and changes nothing" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] GRDB 7.11.1 binds "before\u{0}after" as 6265666F7265 ("before": cut off at the NUL) and reads the stored 12 bytes 6265666F7265006166746572 as "before"
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture absolute-path.json: rejected: unsafe path in manifest: /etc/passwd
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract valid fixtures accepted by the Swift reader: empty-library-complete.json, knowledge-backup-media-excluded.json
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture backslash-path.json: rejected: unsafe path in manifest: export\markdown\x.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture blob-path-not-digest.json: rejected: path blobs/excerpts/clip.mp3 is not allowed for role retained_excerpt
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture complete-with-excluded-media.json: rejected: invalid manifest field: complete
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture cover-unsupported-extension.json: rejected: path blobs/covers/9c1e5a7b3d2f4e6a8c0b1d3f5e7a9c2b4d6f8a0c1e3b5d7f9a2c4e6b8d0f1a3c.gif is not allowed for role cover_thumbnail
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture database-role-on-other-path.json: rejected: path export/other.sqlite is not allowed for role database_snapshot
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture dot-component-path.json: rejected: unsafe path in manifest: export/markdown/../../x.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture duplicate-migration.json: rejected: invalid manifest field: library.migrations
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture encryption-claimed.json: rejected: invalid manifest field: encryption
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture incomplete-without-excluded-media.json: rejected: invalid manifest field: complete
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture missing-originating-device.json: rejected: manifest.json is unreadable: DecodingError.keyNotFound: Key 'originating_device_id' not found in keyed decoding container. Debug description: No value associated with key CodingKeys(stringValue: "originating_device_id", intValue:
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture negative-byte-count.json: rejected: invalid manifest field: files.byte_count
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture newer-manifest-version.json: rejected: backup manifest version 2 is not supported
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture no-database-snapshot.json: rejected: expected exactly one database snapshot, found 0
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture non-utc-created-at.json: rejected: invalid manifest field: created_at
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture path-traversal.json: rejected: unsafe path in manifest: ../outside.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture unknown-snapshot-method.json: rejected: invalid manifest field: snapshot.method
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture unknown-storage-class.json: rejected: invalid manifest field: included_classes
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture uppercase-digest.json: rejected: invalid manifest field: files.sha256
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] contract invalid fixture uppercase-uuid.json: rejected: invalid manifest field: backup_id
+◇ Test "a different pre-state takes a new snapshot; the put-back then removes the older snapshot and failed copy" started.
+◇ Test "SIGKILL at every put-back step and at random times never leaves an empty or partial library (short run; CI runs 240)" started.
+◇ Test "a put-back intent that cannot be read (stand-in for before first unlock) or is invalid fails the open and changes nothing" started.
+◇ Test "a put-back that still cannot finish at the next open (the disk is still full) fails with the typed migrationPutBackPending error" started.
+◇ Test "the content digest sees every stored byte: text after a NUL, invalid UTF-8 and value types change it; row order does not (review round 4)" started.
+◇ Test "repeated failing launches reuse one pre-migration snapshot and keep one failed copy; success removes the failed copy (review round 3)" started.
+◇ Test "a pre-state that differs only after an embedded NUL takes a new snapshot instead of reusing the old one (review round 4)" started.
+◇ Test "an injected ENOSPC at each fallible file operation of a put-back leaves a state the next open finishes" started.
+◇ Test "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+◇ Test "an injected ENOSPC during the put-back fails the open with the intent kept; the next open finishes it" started.
+◇ Test "a new installation still gets a new library" started.
+◇ Test "pruning keeps the snapshot and failed copy a pre-restore copy's pending intent names, and removes nothing if that intent is unreadable" started.
+◇ Test "abandoned files in Staging/Persistence/ are removed at launch, and intake's state elsewhere in Staging/ is never touched; a pending put-back keeps and uses its staged copy" started.
+◇ Test "a restore over a library whose put-back is pending replaces it; the pending intent moves with the old library" started.
+◇ Test "the review's probe: library files moved aside with no intent; the open refuses instead of creating an empty library" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] text with U+0000 refused before writing (capture quote, comment, note), nothing written; RowCheck on a library holding a NUL and invalid UTF-8: ["capture.quoted_text rowid 1: text is not valid UTF-8", "note_revision.body rowid 1: text contains a NUL character"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] v1 fixture upgraded: v1-initial -> v2-rating-review-note -> v2-recommendation-date-precision -> v2-edition-cover-thumbnail; snapshot pre-migration-1792656519161-d0f86f30.sqlite
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] TM-F1: classes other than A, B and C (and no protection) are refused by write, copyFile, ensureDirectory and protect, which leave no file and change no class
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] library files before explicit set: library.sqlite=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-shm=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-wal=NSFileProtectionCompleteUntilFirstUserAuthentication
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] writer pragmas: journal_mode=wal synchronous=FULL fullfsync=1 checkpoint_fullfsync=1
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] SQLite 3.51.0; DEFAULT_CKPTFULLFSYNC DEFAULT_SYNCHRONOUS=2 DEFAULT_WAL_SYNCHRONOUS=1 ENABLE_FTS5
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] impact report for Meditations: RemovalImpact(assetCount: 4, bytesFreed: 7864320, captures: 3, notes: 3, ledgerEvents: 5, recommendations: 2, hasRating: true, excerptsPreserved: 1, excerptsPending: 0, contextEvidence: 1, sharedWithOtherWorks: 0)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] file written with .noFileProtection into the test's temporary directory reports: NSFileProtectionCompleteUntilFirstUserAuthentication
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] changing an existing file's class with setAttributes: refused (protection: cannot apply class to weak.bin: Error Domain=NSCocoaErrorDomain Code=257 "The file “weak.bin” couldn’t be opened because you don’t have permission to view it." UserInfo={NSFilePath=/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/mismatchDetected-F280B7A5/ClassB/weak.bin, NSURL=file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/mismatchDetected-F280B7A5/ClassB/weak.bin, NSUnderlyingError=0x9cf471a10 {Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"}}); the class is fixed at creation here
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] schema accepts started_date 'banana' with precision day; RowCheck reports: consumption_run.started_date rowid 3: 'banana' is not a date of precision day
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] synchronous after prepareDatabase(FULL) on a DatabasePool writer: 1 (1 = NORMAL)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] default GRDB connection: SQLITE_DBCONFIG_DEFENSIVE=1 trusted_schema=1; untrusted configuration sets 1 and 0
+◇ Test case passing 1 argument kind → "not json" to "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" started.
+◇ Test case passing 1 argument kind → "{"id":"x"}" to "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" started.
+◇ Test case passing 1 argument kind → "traversal" to "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] host screen locked: class-C library saved and reopened 5 captures; class-A file refused (You don’t have permission to save the file “a.bin” in the folder “ClassA”.); class-B file created (NSFileProtectionCompleteUnlessOpen) then refused (errno 1)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] save with storage full: 13 (database or disk is full) at 89 pages
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] Markdown conversations: 5 messages, 0 missing; files ["conversations-without-a-work.md", "degard-s-field-notes-edition-38c57db1.md", "meditations-8806c86d.md", "walden-or-life-in-the-woods-3a0b7137.md"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] export: 8 files, counts 161 rows, manifest sha256 32d03856f2a1dfc239744c0833d1ce3fd4964603da0ce7b211903fe3bd2685b8
+◇ Test case passing 1 argument step → .intentWritten to "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" started.
+◇ Test case passing 1 argument step → .activeMovedAside to "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] class C (chosen; also the platform default) read back on 53 files and directories: ["NSFileProtectionCompleteUntilFirstUserAuthentication": 53]
+◇ Test case passing 1 argument step → .restoredMovedIn to "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" started.
+◇ Test case passing 1 argument kind → "unreadable" to "an installation record that exists but cannot be read or decoded is an error, never a new device identity" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] real full volume (64 MiB APFS disk image, filler 62857216 bytes, last fill error: The file couldn’t be saved because there isn’t enough space., 774144 bytes reported free), saving a capture with a 8250000-byte note: save -> 13 (database or disk is full) (extended 13 (database or disk is full)): database or disk is full
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore intent "{\"id\":\"x\"}": open refused: restore intent is not valid; nothing was changed
+◇ Test case passing 1 argument kind → "garbage" to "an installation record that exists but cannot be read or decoded is an error, never a new device identity" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore of a bundle exported with 5 originals on the device: 5 locations converted, availability [(key: "not on this device · from mac_source", value: 3), (key: "record only", value: 3)]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore intent "not json": open refused: restore intent is not valid; nothing was changed
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] installation record unreadable: open refused: installation.json exists but cannot be read: The file “installation.json” couldn’t be opened because you don’t have permission to view it.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore intent "traversal": open refused: restore intent is not valid; nothing was changed
+✔ Test "every valid contract fixture passes the reader's manifest stage" passed after 4.839 seconds.
+✔ Test "every invalid contract fixture is rejected by the reader for its one reason" passed after 4.839 seconds.
+✔ Test "insufficient space: migration refused, library logically unchanged, no snapshot written" passed after 4.839 seconds.
+✔ Test "fresh library: all migrations, WAL, foreign keys on, every table STRICT" passed after 4.861 seconds.
+◇ Test case passing 1 argument kind → "unreadable" to "a put-back intent that cannot be read (stand-in for before first unlock) or is invalid fails the open and changes nothing" started.
+◇ Test case passing 1 argument kind → "not json" to "a put-back intent that cannot be read (stand-in for before first unlock) or is invalid fails the open and changes nothing" started.
+◇ Test case passing 1 argument kind → "traversal" to "a put-back intent that cannot be read (stand-in for before first unlock) or is invalid fails the open and changes nothing" started.
+◇ Test case passing 1 argument step → .staged to "a put-back that still cannot finish at the next open (the disk is still full) fails with the typed migrationPutBackPending error" started.
+◇ Test case passing 1 argument step → .databaseMovedAside to "a put-back that still cannot finish at the next open (the disk is still full) fails with the typed migrationPutBackPending error" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] installation record garbage: open refused: installation.json exists but is not a valid installation record
+◇ Test case passing 1 argument step → .snapshotMovedIn to "a put-back that still cannot finish at the next open (the disk is still full) fails with the typed migrationPutBackPending error" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back intent unreadable: open refused: migration put-back intent exists but cannot be read; nothing was changed
+◇ Test case passing 1 argument step → .intentRemoved to "a put-back that still cannot finish at the next open (the disk is still full) fails with the typed migrationPutBackPending error" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore drill
+PASS corpus has every knowledge table populated
+PASS media removal leaves every knowledge row unchanged (T44)
+PASS no asset is on the device after removal — 0 on device
+PASS Media directory is empty after removal
+PASS export bundle validates
+PASS manifest lists every original as excluded media and does not claim completeness — 6 excluded, complete=false
+PASS manifest originating device is the source installation
+PASS bundle holds every canonical cover thumbnail after source deletion — 2 covers
+PASS secret canary absent from bundle — sk-SYLVIA-CA…
+PASS secret canary absent from bundle — pair-SYLVIA-…
+PASS no absolute installation path in bundle
+PASS fresh installation starts empty
+PASS restore without confirmation is refused
+PASS integrity_check ok after restore — ok
+PASS foreign_key_check clean after restore — 0 violations
+PASS count work — before 3, after 3
+PASS count contributor — before 4, after 4
+PASS count work_contributor — before 4, after 4
+PASS count edition — before 6, after 6
+PASS count asset — before 6, after 6
+PASS count edition_asset — before 6, after 6
+PASS count consumption_run — before 4, after 4
+PASS count rating — before 2, after 2
+PASS count recommendation_event — before 3, after 3
+PASS count capture — before 5, after 5
+PASS count capture_anchor — before 6, after 6
+PASS count conversation — before 1, after 1
+PASS count context_pack — before 1, after 1
+PASS count context_evidence — before 2, after 2
+PASS count message — before 3, after 3
+PASS count note — before 7, after 7
+PASS count note_revision — before 9, after 9
+PASS count retained_excerpt — before 1, after 1
+PASS count ledger_event — before 9, after 9
+PASS every knowledge row restored byte-for-byte (works, editions, anchors, notes and revisions, ledger, rating, recommendations, captures, excerpts, conversations, context evidence)
+PASS restored dump digest equals source — a335d7f381d5c85b0fb97c6e7e7029d79ba6d74a6b92a72b8191bc3e755d4fec
+PASS retained excerpt audio restored with its digest
+PASS canonical cover thumbnails restored with their digests and edition references (plan 17.3) — med-epub=jpg digest ok; walden-epub=png digest ok
+PASS missing originals resolve as unavailable records, not errors — med-audio-1=not on this device · from mac_source; med-audio-2=not on this device · from mac_source; med-epub=record only; med-pdf=record only; walden-audio=not on this device · from mac_source; walden-epub=record only
+PASS every anchor still binds to its asset digest
+PASS 64-bit asset size survives (5 GiB + 7) — 5368709127
+PASS Markdown export contains every quote exactly
+PASS Markdown export contains every current note — 6 notes
+PASS Markdown export contains every conversation message — 3 messages
+PASS Markdown export contains every context evidence text — 2 evidence items
+PASS portable JSON alone reproduces every knowledge row
+PASS restored installation keeps its own device identity
+PASS no retention leases carried over
+PASS restored database, WAL, SHM, excerpt and covers read back the library protection class — library.sqlite=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-wal=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-shm=NSFileProtectionCompleteUntilFirstUserAuthentication 7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3=NSFileProtectionCompleteUntilFirstUserAuthentication b4e50ad1784915f0625e46b6f8f63943879f93fb7878fd2342c94786b85d0ef2.jpg=NSFileProtectionCompleteUntilFirstUserAuthentication a533ac5b8b5700b1ba69957a3503cafd403f6d8437ee2a1a171b34b4d6abd13d.png=NSFileProtectionCompleteUntilFirstUserAuthentication
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back intent not json: open refused: migration put-back intent is not valid; nothing was changed
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] crash after intentWritten: reconcile -> keptExistingLibrary; library works ["Active library work"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back still failing at the next open (staged): putting the pre-migration snapshot back could not finish (put-back staged simulated: No space left on device (errno 28)); the library was not opened and the put-back intent was kept, so the next open resumes it
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] crash after activeMovedAside: reconcile -> completedRestore; library works ["Meditations", "Walden; or, Life in the Woods", "Ødegård’s Field Notes — 東京 edition"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back intent traversal: open refused: migration put-back intent is not valid; nothing was changed
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back still failing at the next open (databaseMovedAside): putting the pre-migration snapshot back could not finish (put-back databaseMovedAside simulated: No space left on device (errno 28)); the library was not opened and the put-back intent was kept, so the next open resumes it
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] content digest: the review's probe (GRDB decodes both as ["\"a\""]) now differs; invalid UTF-8 61FF and 61FE (decoded alike as ["\"a�\""]) differ; integer 42 and text '42' differ; row order does not matter
+◇ Test case passing 1 argument path → "in the failing open" to "an injected ENOSPC at each fallible file operation of a put-back leaves a state the next open finishes" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back still failing at the next open (snapshotMovedIn): putting the pre-migration snapshot back could not finish (put-back snapshotMovedIn simulated: No space left on device (errno 28)); the library was not opened and the put-back intent was kept, so the next open resumes it
+◇ Test case passing 1 argument path → "at the next open, with -wal and -shm" to "an injected ENOSPC at each fallible file operation of a put-back leaves a state the next open finishes" started.
+◇ Test case passing 1 argument path → "at the next open, with -wal, -shm and an earlier partial copy" to "an injected ENOSPC at each fallible file operation of a put-back leaves a state the next open finishes" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] changed pre-state: Recovery/ ["failed-984b099e-aaec-46f2-9359-5885dd720f34", "pre-migration-1792656523936-984b099e.sqlite"] replaced by ["failed-6bd31b80-359a-4ce7-8774-440c29a4a200", "pre-migration-1792656524313-6bd31b80.sqlite"]
+◇ Test case passing 1 argument step → .intentWritten to "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+◇ Test case passing 1 argument step → .migrationChecked to "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+◇ Test case passing 1 argument step → .migrationFailed to "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+◇ Test case passing 1 argument step → .staged to "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back still failing at the next open (intentRemoved): putting the pre-migration snapshot back could not finish (put-back intentRemoved simulated: No space left on device (errno 28)); the library was not opened and the put-back intent was kept, so the next open resumes it
+◇ Test case passing 1 argument step → .databaseMovedAside to "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+◇ Test case passing 1 argument step → .walMovedAside to "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back crash after intentWritten: intent on disk true, library.sqlite present true
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back crash after migrationFailed: intent on disk true, library.sqlite present true
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back crash after staged: intent on disk true, library.sqlite present true
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back crash after migrationChecked: intent on disk true, library.sqlite present true
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back crash after databaseMovedAside: intent on disk true, library.sqlite present false
+◇ Test case passing 1 argument step → .shmMovedAside to "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+◇ Test case passing 1 argument step → .snapshotMovedIn to "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] pre-state changed only after an embedded NUL (GRDB decodes the title alike): Recovery/ ["failed-e6f9d833-f14e-489f-8cee-b5bf6dac6348", "pre-migration-1792656524855-e6f9d833.sqlite"] replaced by ["failed-34adbdf0-7597-4f5c-8c1d-18b875984d2f", "pre-migration-1792656525384-34adbdf0.sqlite"], and the put-back library equals the changed pre-state
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back crash after walMovedAside: intent on disk true, library.sqlite present false
+◇ Test case passing 1 argument step → .intentRemoved to "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" started.
+◇ Test case passing 1 argument step → .staged to "an injected ENOSPC during the put-back fails the open with the intent kept; the next open finishes it" started.
+◇ Test case passing 1 argument step → .databaseMovedAside to "an injected ENOSPC during the put-back fails the open with the intent kept; the next open finishes it" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] 4 failing launches of a 352256-byte v1 library: Recovery/ bytes 770248 / 774344 / 774344 / 774344; snapshots used 1, failed copies created 4, Recovery/ holds 2 items after each launch
+◇ Test case passing 1 argument step → .snapshotMovedIn to "an injected ENOSPC during the put-back fails the open with the intent kept; the next open finishes it" started.
+◇ Test case passing 1 argument step → .intentRemoved to "an injected ENOSPC during the put-back fails the open with the intent kept; the next open finishes it" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] successful migration after the failures reused pre-migration-1792656524815-677fabcd.sqlite and removed ["failed-0be1dc40-da5b-4c38-88bb-a0ff98fa1916"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] crash after restoredMovedIn: reconcile -> completedRestore; library works ["Meditations", "Walden; or, Life in the Woods", "Ødegård’s Field Notes — 東京 edition"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back crash after shmMovedAside: intent on disk true, library.sqlite present false
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back I/O error at staged: migration v2-recommendation-date-precision failed: injected fault during v2-recommendation-date-precision; putting the pre-migration snapshot back did not finish (put-back staged simulated: No space left on device (errno 28)); the next open finishes it; restored from snapshot: false
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back I/O error at databaseMovedAside: migration v2-recommendation-date-precision failed: injected fault during v2-recommendation-date-precision; putting the pre-migration snapshot back did not finish (put-back databaseMovedAside simulated: No space left on device (errno 28)); the next open finishes it; restored from snapshot: false
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back crash after intentRemoved: intent on disk false, library.sqlite present true
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back crash after snapshotMovedIn: intent on disk true, library.sqlite present true
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected newer-manifest-version: backup manifest version 2 is not supported
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back I/O error at snapshotMovedIn: migration v2-recommendation-date-precision failed: injected fault during v2-recommendation-date-precision; putting the pre-migration snapshot back did not finish (put-back snapshotMovedIn simulated: No space left on device (errno 28)); the next open finishes it; restored from snapshot: false
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] unreadable restore intent: open refused: restore intent exists but cannot be read; nothing was changed
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected newer-library-schema-in-manifest: backup was written by a newer Sylvia (library schema 3, this build supports 2; unknown migrations: v3-future)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back I/O error at intentRemoved: migration v2-recommendation-date-precision failed: injected fault during v2-recommendation-date-precision; putting the pre-migration snapshot back did not finish (put-back intentRemoved simulated: No space left on device (errno 28)); the next open finishes it; restored from snapshot: false
+◇ Test case passing 1 argument kind → "installation record" to "the review's probe: library files moved aside with no intent; the open refuses instead of creating an empty library" started.
+◇ Test case passing 1 argument kind → "recovery copies only" to "the review's probe: library files moved aside with no intent; the open refuses instead of creating an empty library" started.
+✔ Test "every user-effective date column is paired with a precision column and checked by RowCheck" passed after 8.100 seconds.
+✔ Test "no column can hold a credential (secrets are Keychain-only, plan 17.1)" passed after 8.100 seconds.
+✔ Test "finding F12: GRDB writes and reads TEXT as C strings, so text with U+0000 is refused before saving and by RowCheck" passed after 8.100 seconds.
+✔ Test "committed v1 fixture upgrades to v2 with a recovery snapshot, integrity and foreign-key checks" passed after 8.100 seconds.
+✔ Test "a migration that silently loses rows is caught by the post-migration count check" passed after 8.100 seconds.
+✔ Suite "Device persistence probe (T50 reboot, physical device only)" passed after 8.101 seconds.
+✔ Test "capture save is one transaction with anchors, note, ledger and journal; idempotent (T02)" passed after 8.100 seconds.
+✔ Test "a value the migration cannot convert fails it instead of being dropped" passed after 8.101 seconds.
+✔ Test "a migration that throws: snapshot put back, data readable for export, retry succeeds" passed after 8.101 seconds.
+✔ Test "a class without a protected writing option is refused before anything is written or changed, on every path (ADR-0015 TM-F1)" passed after 8.100 seconds.
+✔ Test "the library records the class SQLite's files had before Sylvia set it explicitly" passed after 8.101 seconds.
+✔ Test "the writer runs WAL + synchronous=FULL + fullfsync, read back after open" passed after 8.100 seconds.
+✔ Test "ChangeJournal: one ordered local sequence, written in the mutation's transaction" passed after 8.101 seconds.
+✔ Test "removing all original media for a work keeps ledger, rating, recommendations, quotes, notes, excerpts and AI evidence" passed after 8.101 seconds.
+✔ Test "a file with the wrong class is detected, never silently accepted" passed after 8.100 seconds.
+✔ Test "a library from a newer build is refused without changes" passed after 8.101 seconds.
+✔ Test "media removal can never cascade into knowledge: deleting media rows is refused (RESTRICT)" passed after 8.101 seconds.
+✔ Test "a file deleted behind the library's back reads as unavailable; orphan media is swept" passed after 8.101 seconds.
+✔ Test "rating: 1-10 half-stars, null clears, 0 and 11 rejected by code and by the schema" passed after 8.101 seconds.
+✔ Test "finding: GRDB's DatabasePool resets synchronous to NORMAL after prepareDatabase" passed after 8.100 seconds.
+✔ Test "a pending excerpt blocks removal unless the user chooses to remove anyway (T23 guard)" passed after 8.101 seconds.
+✔ Test "untrusted databases are opened in SQLite's defensive mode with trusted_schema off" passed after 8.100 seconds.
+✔ Test "STRICT typing, 64-bit sizes, digests and effective-date precision are enforced" passed after 8.101 seconds.
+✔ Test "revision-checked note edits: a stale editor cannot overwrite a later edit (T26)" passed after 8.101 seconds.
+✔ Test "re-importing the same bytes restores availability without a duplicate asset or work (J-04)" passed after 8.101 seconds.
+✔ Test "host screen locked: the class-C library keeps saving; class A cannot be created and closed class-B files cannot be reopened" passed after 8.101 seconds.
+✔ Test "staging (Staging/ and Staging/Persistence/), recovery and restore work are excluded from device backup; the library is not" passed after 8.101 seconds.
+✔ Test "storage full during a capture save: nothing half-written, earlier saves intact, retry saves once (simulated with max_page_count)" passed after 8.101 seconds.
+✔ Test "Markdown holds every conversation message: work-linked, capture-linked only, and linked to neither" passed after 8.101 seconds.
+✔ Test "T47: cleanup racing an export cannot remove a leased excerpt; the bundle still has it" passed after 8.101 seconds.
+✔ Suite "Device lock probe (T50, physical device only)" passed after 8.102 seconds.
+✔ Test "an excerpt missing from disk fails the export instead of producing an incomplete bundle" passed after 8.101 seconds.
+✔ Test "export: manifest, consistent snapshot, portable JSON and Markdown, verified digests, no WAL files" passed after 8.101 seconds.
+✔ Test "the reference schema equals a real library's schema for every migration prefix" passed after 8.101 seconds.
+✔ Test "database, WAL, SHM, directories, blobs, covers, media, snapshots, bundles and restored files carry the chosen class C" passed after 8.101 seconds.
+✔ Test "a backup from an older library schema (v1) is migrated in the temporary library before the swap" passed after 8.101 seconds.
+✔ Test "storage full on a real volume: the WAL append fails, nothing half-written, earlier saves intact after reopen, retry saves once" passed after 8.101 seconds.
+✔ Test "insufficient space refuses a restore before anything is copied" passed after 8.101 seconds.
+✔ Test "an installation record that exists but cannot be read or decoded is an error, never a new device identity" with 2 test cases passed after 8.101 seconds.
+✔ Test "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" with 3 test cases passed after 8.102 seconds.
+✔ Test "a preparation abandoned by a crash is cleared at the next launch, and the library is untouched" passed after 8.102 seconds.
+✔ Test "J-06: originals that were on the source device are restored as at-source or unavailable records, never as on-device" passed after 8.102 seconds.
+✔ Test "reconcile rolls back to the pre-restore copy if both libraries are missing" passed after 8.102 seconds.
+✔ Test "restore replaces the active library only with confirmation and keeps a pre-restore copy" passed after 8.102 seconds.
+✔ Test "restore drill after source deletion (J-06, T35)" passed after 8.102 seconds.
+✔ Test "the content digest sees every stored byte: text after a NUL, invalid UTF-8 and value types change it; row order does not (review round 4)" passed after 7.918 seconds.
+✔ Test "a put-back intent that cannot be read (stand-in for before first unlock) or is invalid fails the open and changes nothing" with 3 test cases passed after 7.919 seconds.
+✔ Test "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" with 3 test cases passed after 8.102 seconds.
+✔ Test "a put-back that still cannot finish at the next open (the disk is still full) fails with the typed migrationPutBackPending error" with 4 test cases passed after 7.919 seconds.
+✔ Test "a different pre-state takes a new snapshot; the put-back then removes the older snapshot and failed copy" passed after 7.940 seconds.
+✔ Test "a crash after any step of a guarded migration or its put-back never leaves an empty or partial library" with 9 test cases passed after 7.918 seconds.
+✔ Test "a pre-state that differs only after an embedded NUL takes a new snapshot instead of reusing the old one (review round 4)" passed after 7.918 seconds.
+✔ Test "repeated failing launches reuse one pre-migration snapshot and keep one failed copy; success removes the failed copy (review round 3)" passed after 7.919 seconds.
+✔ Test "a new installation still gets a new library" passed after 7.918 seconds.
+✔ Suite "Backup manifest reader agrees with the contract (Contracts/schemas/backup-manifest.v1)" passed after 8.103 seconds.
+✔ Suite "Migrations (plan 7.4, T45)" passed after 8.103 seconds.
+✔ Suite "Schema, identity and mutation rules (plan 7.2, 7.3)" passed after 8.103 seconds.
+✔ Suite "Data protection classes (plan 18.1, T50 partial)" passed after 8.103 seconds.
+✔ Suite "Media removal keeps knowledge (I-02, T44, plan 12, 17.2)" passed after 8.103 seconds.
+✔ Test "a restore intent that exists but cannot be read (stand-in for before first unlock) fails the open and changes nothing" passed after 8.248 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected newer-library-schema-in-database: backup was written by a newer Sylvia (library schema 2, this build supports 2; unknown migrations: v3-future)
+✔ Test "an injected ENOSPC during the put-back fails the open with the intent kept; the next open finishes it" with 4 test cases passed after 8.132 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected truncated-database: size mismatch for database/library.sqlite: manifest 352256, file 176128
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected bit-flip-in-database: SHA-256 mismatch for database/library.sqlite
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] library.sqlite missing (installation record): open refused with libraryMissing; 3 captures readable in Recovery/failed-probe
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] library.sqlite missing (recovery copies only): open refused with libraryMissing; 3 captures readable in Recovery/failed-probe
+✔ Test "the review's probe: library files moved aside with no intent; the open refuses instead of creating an empty library" with 2 test cases passed after 8.346 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected corrupt-database-with-matching-digest: database snapshot failed checks: *** in database main ***
+Tree 4 page 4: free space corruption
+Tree 5 page 5 cell 254: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 253: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 252: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 251: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 250: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 249: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 248: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 247: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 246: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 245: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 244: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 243: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 242: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 241: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 240: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 239: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 238: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 237: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 236: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 235: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 234: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 233: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 232: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 231: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 230: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 229: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 228: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 227: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 226: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 225: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 224: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 223: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 222: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 221: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 220: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 219: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 218: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 217: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 216: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 215: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 214: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 213: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 212: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 211: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 210: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 209: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 208: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 207: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 206: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 205: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 204: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 203: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 202: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 201: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 200: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 199: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 198: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 197: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 196: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 195: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 194: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 193: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 192: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 191: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 190: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 189: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 188: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 187: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 186: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 185: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 184: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 183: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 182: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 181: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 180: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 179: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 178: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 177: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 176: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 175: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 174: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 173: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 172: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 171: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 170: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 169: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 168: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 167: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 166: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 165: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 164: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 163: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 162: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 161: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 160: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 159: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 158: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 157: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 156: Offset 0 out of range 3974..4092
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected not-a-database: database snapshot failed checks: SQLite error 26: file is not a database - while executing `SELECT * FROM sqlite_master LIMIT 1`
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected foreign-key-violation-with-matching-digest: database snapshot has 1 foreign key violations
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected count-mismatch: row count for capture: manifest 4, database 5
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-traversal: unsafe path in manifest: ../outside.txt
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] Staging/Persistence/ at launch: 7 abandoned entries (3289213 bytes: a media copy, a snapshot and its journal, a temp file, put-back copies of another intent, a directory) removed; with a put-back pending, the same removed and its staged copy moved in without a second copy of the snapshot. Intake's state in Staging/ (ADR-0010: 18 entries, Abandoned, Extracting, Rejected, Staged, ce05d858-d364-4f11-b99d-299ee89e60af.tmp, journal.json, putback-62eb952f-52d0-4476-b24e-f30c23b1ab61.sqlite.partial at the top level) byte for byte unchanged by both opens and the migration
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-absolute: unsafe path in manifest: /etc/passwd
+✔ Test "abandoned files in Staging/Persistence/ are removed at launch, and intake's state elsewhere in Staging/ is never touched; a pending put-back keeps and uses its staged copy" passed after 9.476 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-nested-traversal: unsafe path in manifest: blobs/excerpts/../../../x
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] export during edits: 48 capture+note transaction pairs by the concurrent writer; journal entries written during each export [61, 33, 53, 45]; snapshot boundaries [78, 142, 172, 228]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-backslash: unsafe path in manifest: blobs\excerpts\x
+✔ Test "T47: export while another task keeps writing gets one consistent snapshot boundary" passed after 9.884 seconds.
+✔ Suite "Backup export (plan 17.3, 17.4, T35, T47)" passed after 9.884 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-hidden: unsafe path in manifest: .hidden/x
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-unicode: unsafe path in manifest: export/markdown/café.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] prune with a pending intent in a pre-restore copy: kept ["failed-0ecee01b-ab81-4a5d-9fa0-fa4b60311fe6", "pre-migration-1792656528605-0ecee01b.sqlite"], removed ["failed-00000000-0000-4000-8000-000000000000", "pre-migration-1-00000000.sqlite"]; with that intent unreadable: removed nothing (a put-back intent in pre-restore-612c36b2-c5f9-464f-bbd2-e472eb685f7c cannot be read; nothing was removed)
+✔ Test "pruning keeps the snapshot and failed copy a pre-restore copy's pending intent names, and removes nothing if that intent is unreadable" passed after 9.922 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected symlink-to-outside: symbolic link in bundle: export/markdown/link.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected symlinked-directory: symbolic link in bundle: export/markdown/degard-s-field-notes-edition-053fae31.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unlisted-file: file not listed in manifest: export/extra.txt
+✔ Test "a restore over a library whose put-back is pending replaces it; the pending intent moves with the old library" passed after 10.139 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected missing-blob-file: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected blob-dropped-from-manifest: blob 7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f referenced by the snapshot is missing
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreferenced-blob: blob c38f4cf7cc9dcd7fe82d188289eb56e45ea62c0f9b89432e778544055e60bf97 is not referenced by the snapshot
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected duplicate-path: duplicate path in manifest: export/library.json
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected role-mismatch: path export/library.json is not allowed for role database_snapshot
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected missing-manifest: manifest.json is missing
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected garbage-manifest: manifest.json is unreadable: not a JSON object
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected oversized-manifest: manifest.json is too large (4194305 bytes)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected complete-claim-with-excluded-media: invalid manifest field: complete
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected complete-claim-hiding-excluded-media: excluded_media does not match the snapshot's assets: snapshot has 6 assets, manifest lists 0 (6 unlisted, 0 not in the snapshot, or details differ)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected excluded-media-wrong-digest: excluded_media does not match the snapshot's assets: snapshot has 6 assets, manifest lists 6 (0 unlisted, 0 not in the snapshot, or details differ)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected excluded-media-asset-missing: excluded_media does not match the snapshot's assets: snapshot has 6 assets, manifest lists 5 (1 unlisted, 0 not in the snapshot, or details differ)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected trigger-deleting-knowledge: database snapshot schema does not match this build's schema for its migrations: unexpected trigger evil
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected view: database snapshot schema does not match this build's schema for its migrations: unexpected view peek
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected extra-table: database snapshot schema does not match this build's schema for its migrations: unexpected table unexpected_table
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected rating-without-strict-or-check: database snapshot schema does not match this build's schema for its migrations: altered table rating
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected capture-anchor-cascade-from-asset: database snapshot schema does not match this build's schema for its migrations: altered table capture_anchor
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected dropped-index: database snapshot schema does not match this build's schema for its migrations: missing index capture_work
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-not-a-date: database snapshot has values this build rejects: consumption_run.started_date rowid 1: 'banana' is not a date of precision day; consumption_run.started_date rowid 2: 'banana' is not a date of precision day; consumption_run.started_date rowid 3: 'banana' is not a date of precision day; consumption_run.started_date rowid 4: 'banana' is not a date of precision day
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-not-its-precision: database snapshot has values this build rejects: ledger_event.effective_date rowid 1: '2019-02-30' is not a date of precision year; ledger_event.effective_date rowid 2: '2019-02-30' is not a date of precision year; ledger_event.effective_date rowid 3: '2019-02-30' is not a date of precision year; ledger_event.effective_date rowid 4: '2019-02-30' is not a date of precision year; ledger_event.effective_date rowid 5: '2019-02-30' is not a date of precision year
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-impossible-day: database snapshot has values this build rejects: edition.published_date rowid 1: '2019-02-30' is not a date of precision day; edition.published_date rowid 4: '2019-02-30' is not a date of precision day; edition.published_date rowid 6: '2019-02-30' is not a date of precision day
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected recommendation-date-not-a-date: database snapshot has values this build rejects: recommendation_event.event_date rowid 1: '2024-13' is not a date of precision month; recommendation_event.event_date rowid 2: '2024-13' is not a date of precision month; recommendation_event.event_date rowid 3: '2024-13' is not a date of precision month
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected journal-sequence-near-int64-max: database snapshot has values this build rejects: sqlite_sequence for change_journal is 9223372036854775787, the highest journal entry is 72
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected journal-sequence-extra-entry: database snapshot has values this build rejects: sqlite_sequence has an entry for 'work'
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] crash drill (short)
+durability: synchronous=FULL fullfsync=ON
+iterations: 60
+SIGKILLs by mode: after-ack=20 in-tx=20 random=20
+kills while a write transaction was open, in-flight item absent after reopen (in-tx mode): 20
+in-tx kills that landed after the commit instead: 0
+children that finished before the kill: 0
+acknowledged items: 146
+committed but unacknowledged items (allowed; UI never said Saved; retry deduplicated): 1
+retries answered 'already saved' instead of duplicating: 2
+captures in library: 147
+failures: 0
+✔ Test "SIGKILL crash drill (short run; the CI drill runs many hundreds of kills)" passed after 12.962 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-plus-sign-year: database snapshot has values this build rejects: ledger_event.effective_date rowid 1: '+019' is not a date of precision year; ledger_event.effective_date rowid 2: '+019' is not a date of precision year; ledger_event.effective_date rowid 3: '+019' is not a date of precision year; ledger_event.effective_date rowid 4: '+019' is not a date of precision year; ledger_event.effective_date rowid 5: '+019' is not a date of precision year
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-plus-sign-day: database snapshot has values this build rejects: consumption_run.started_date rowid 1: '2019-+1-+5' is not a date of precision day; consumption_run.started_date rowid 2: '2019-+1-+5' is not a date of precision day; consumption_run.started_date rowid 3: '2019-+1-+5' is not a date of precision day; consumption_run.started_date rowid 4: '2019-+1-+5' is not a date of precision day
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected note-current-revision-stale: database snapshot has values this build rejects: note rowid 1: current_revision 1 but 3 revisions numbered 1...3; revisions must be exactly 1...current_revision
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected note-current-revision-int64-max: database snapshot has values this build rejects: note rowid 1: current_revision 9223372036854775807 but 3 revisions numbered 1...3; revisions must be exactly 1...current_revision; note.current_revision rowid 1: 9223372036854775807 is outside ±(2^53 - 1)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected note-current-revision-dangling: database snapshot has values this build rejects: note rowid 1: current_revision 77 but 3 revisions numbered 1...3; revisions must be exactly 1...current_revision
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected note-revisions-not-from-one: database snapshot has values this build rejects: note rowid 1: current_revision 3 but 2 revisions numbered 2...3; revisions must be exactly 1...current_revision
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] capture save latency synchronous=FULL fullfsync=ON: n=400 p50=8.515 ms p95=26.032 ms p99=41.845 ms max=79.802 ms
+✔ Test "capture save latency against the 200 ms p95 budget (indicative)" passed after 13.784 seconds.
+✔ Suite "Durable saves (I-03, T02, plan 19.2)" passed after 13.785 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected work-metadata-revision-2-pow-53: database snapshot has values this build rejects: work.metadata_revision rowid 1: 9007199254740992 is outside ±(2^53 - 1)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected edition-asset-timeline-revision-int64-max: database snapshot has values this build rejects: edition_asset.timeline_revision rowid 1: 9223372036854775807 is outside ±(2^53 - 1)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected work-created-at-int64-min: database snapshot has values this build rejects: work.created_at_ms rowid 1: -9223372036854775808 is outside ±(2^53 - 1)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected text-with-nul: database snapshot has values this build rejects: note_revision.body rowid 1: text contains a NUL character
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected text-invalid-utf8: database snapshot has values this build rejects: capture.quoted_text rowid 4: text is not valid UTF-8
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreferenced-cover: blob fc3a494786859dfa3d96c098f36d4ba6f4c9880593f0f93e8606cda47fb64894 is not referenced by the snapshot
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected cover-dropped-from-manifest: blob a533ac5b8b5700b1ba69957a3503cafd403f6d8437ee2a1a171b34b4d6abd13d referenced by the snapshot is missing
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreadable-directory-with-unlisted-file: not a .sylviabackup bundle: cannot read export/zz-unreadable
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back in the failing open: 19 fallible operations, each failed in turn with an injected ENOSPC and finished by the next open (the snapshot never beside the old -wal or -shm; every row intact after migrating): copy the snapshot into Staging; flush the staged copy; publish the staged copy; flush Staging after staging; create failed-<id>; move library.sqlite aside; flush failed-<id> after moving library.sqlite; flush Library after moving library.sqlite; move library.sqlite-wal aside; flush failed-<id> after moving library.sqlite-wal; flush Library after moving library.sqlite-wal; move library.sqlite-shm aside; flush failed-<id> after moving library.sqlite-shm; flush Library after moving library.sqlite-shm; move the staged copy into Library; flush Library after the move in; flush Staging after the move in; remove the intent; flush Library after removing the intent; complete despite the error (only the flush after removing the intent failed): ["flush Library after removing the intent"]
+✔ Test "T46: corrupt, truncated, newer and malicious backups are rejected without touching the library" passed after 15.187 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back at the next open, with -wal and -shm: 19 fallible operations, each failed in turn with an injected ENOSPC and finished by the next open (the snapshot never beside the old -wal or -shm; every row intact after migrating): copy the snapshot into Staging; flush the staged copy; publish the staged copy; flush Staging after staging; create failed-<id>; move library.sqlite aside; flush failed-<id> after moving library.sqlite; flush Library after moving library.sqlite; move library.sqlite-wal aside; flush failed-<id> after moving library.sqlite-wal; flush Library after moving library.sqlite-wal; move library.sqlite-shm aside; flush failed-<id> after moving library.sqlite-shm; flush Library after moving library.sqlite-shm; move the staged copy into Library; flush Library after the move in; flush Staging after the move in; remove the intent; flush Library after removing the intent; complete despite the error (only the flush after removing the intent failed): ["flush Library after removing the intent"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back at the next open, with -wal, -shm and an earlier partial copy: 20 fallible operations, each failed in turn with an injected ENOSPC and finished by the next open (the snapshot never beside the old -wal or -shm; every row intact after migrating): remove an earlier partial copy; copy the snapshot into Staging; flush the staged copy; publish the staged copy; flush Staging after staging; create failed-<id>; move library.sqlite aside; flush failed-<id> after moving library.sqlite; flush Library after moving library.sqlite; move library.sqlite-wal aside; flush failed-<id> after moving library.sqlite-wal; flush Library after moving library.sqlite-wal; move library.sqlite-shm aside; flush failed-<id> after moving library.sqlite-shm; flush Library after moving library.sqlite-shm; move the staged copy into Library; flush Library after the move in; flush Staging after the move in; remove the intent; flush Library after removing the intent; complete despite the error (only the flush after removing the intent failed): ["flush Library after removing the intent"]
+✔ Test "an injected ENOSPC at each fallible file operation of a put-back leaves a state the next open finishes" with 3 test cases passed after 15.353 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore crash drill (short)
+iterations: 30
+measured unkilled run: prepare 276.2 ms, commit (swap) 182.3 ms
+SIGKILLs by window: commit=15 prepare=15
+SIGKILLs by the last step the child reported: COMMIT=4, PREPARE=13, STEP activeMovedAside=4, STEP intentWritten=5, STEP restoredMovedIn=4
+children that finished before the kill: 0
+library after reopen: old library kept=18 restored library=12
+launch reconciliation: completedRestore=8 keptExistingLibrary=1 nothingToDo=21
+failures: 0
+✔ Test "T47: SIGKILL during prepare or the swap leaves exactly the old or the restored library (short run; CI runs 300)" passed after 15.667 seconds.
+✔ Suite "Restore (plan 17.4, T35, T46, T47, J-06)" passed after 15.668 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] migration put-back crash drill (short)
+iterations: 24
+measured unkilled run (open, snapshot, failed migration, put-back): 527.5 ms
+SIGKILLs by plan: delay databaseMovedAside=1, delay intentWritten=1, delay migrationFailed=1, delay shmMovedAside=1, delay snapshotMovedIn=1, delay staged=1, delay walMovedAside=1, pause databaseMovedAside=1, pause intentRemoved=1, pause intentWritten=1, pause migrationFailed=1, pause shmMovedAside=1, pause snapshotMovedIn=1, pause staged=1, pause walMovedAside=1, random=3
+SIGKILLs by the last line the child printed: OPEN=1, STEP databaseMovedAside=2, STEP intentRemoved=2, STEP intentWritten=2, STEP migrationFailed=3, STEP shmMovedAside=2, STEP snapshotMovedIn=2, STEP staged=2, STEP walMovedAside=2
+children that finished before the kill: 6
+first reopen: migrated=9 put back, then migrated at the next open=15
+failures: 0
+✔ Test "SIGKILL at every put-back step and at random times never leaves an empty or partial library (short run; CI runs 240)" passed after 17.267 seconds.
+✔ Suite "Migration put-back (plan 7.4, T45)" passed after 17.429 seconds.
+✔ Test run with 73 tests in 11 suites passed after 17.429 seconds.

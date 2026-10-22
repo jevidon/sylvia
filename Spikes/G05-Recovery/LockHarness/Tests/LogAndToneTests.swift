@@ -107,18 +107,21 @@ struct ToneTests {
         #expect(samples.count % QuietTone.samplesPerCycle == 0, "the loop's end meets its start")
     }
 
-    @Test("the player plays the tone at the test volume 0.01, unmuted, and stops (simulator; plays through the Mac's output at 1 %)")
+    @Test("the player plays the tone at the test volume 0.01, unmuted, in the playback category, and stops (simulator; plays through the Mac's output at 1 %)")
     @MainActor
     func playsQuietly() async throws {
         let player = TonePlayer()
+        #expect(player.category == nil)
         try player.start(volume: HarnessVolume.quiet)
         defer { player.stop() }
         #expect(player.isPlaying)
         #expect(player.playerVolume == 0.01)
+        #expect(player.category == AVAudioSession.Category.playback.rawValue, "the session's category, read back (review R2-H-03)")
         try await Task.sleep(for: .milliseconds(300))
         #expect(player.isPlaying)
         player.stop()
         #expect(!player.isPlaying)
         #expect(player.playerVolume == nil)
+        #expect(player.category == nil)
     }
 }

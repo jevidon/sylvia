@@ -41,9 +41,11 @@ public enum QuietTone {
     }
 }
 
-/// Plays the quiet tone in a loop with the `.playback` session, so iOS keeps the harness running in the background and
-/// while the phone is locked (UIBackgroundModes audio). The volume is the player's (`AVAudioPlayer.volume`), injected
-/// by the configuration: 0.01 unless SYLVIA_AUDIBLE_PLAYBACK=1. It never mutes, and never touches the phone's volume.
+/// Plays the quiet tone in a loop with the `.playback` session, the category that keeps playing in the background and
+/// while the phone is locked (UIBackgroundModes audio), so that iOS keeps the harness running then: that is the design's
+/// intent, which only a locked phone can show (device checklist step 3; the simulator keeps an app running in the
+/// background without the tone too). The volume is the player's (`AVAudioPlayer.volume`), injected by the
+/// configuration: 0.01 unless SYLVIA_AUDIBLE_PLAYBACK=1. It never mutes, and never touches the phone's volume.
 /// Interruptions (a call, Siri, another app's audio) and route changes are reported; after an interruption ends, or
 /// when a route change stops the player, it resumes.
 @MainActor
@@ -52,6 +54,7 @@ public final class TonePlayer: KeepAlivePlayer {
     private var player: AVAudioPlayer?
     private var volume: Float = HarnessVolume.quiet
     private var observers: [any NSObjectProtocol] = []
+    public private(set) var category: String?
 
     public init() {}
 
@@ -65,6 +68,7 @@ public final class TonePlayer: KeepAlivePlayer {
         let session = AVAudioSession.sharedInstance()
         try session.setCategory(.playback, mode: .default, options: [])
         try session.setActive(true)
+        category = session.category.rawValue
         try startPlayer()
         observe(session)
     }
@@ -72,6 +76,7 @@ public final class TonePlayer: KeepAlivePlayer {
     public func stop() {
         observers.forEach(NotificationCenter.default.removeObserver)
         observers.removeAll()
+        category = nil
         guard let player else { return }
         player.stop()
         self.player = nil

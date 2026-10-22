@@ -2,8 +2,9 @@ import Foundation
 import Observation
 
 /// The locked-device harness (T50; G0.5 recovery device checklist step 3; PO-23 option (b), product owner, 22 October
-/// 2026). While a run is active it plays a quiet tone, so iOS keeps the process running with the phone locked
-/// (UIBackgroundModes audio), and every `interval` seconds it makes one attempt: a durable capture save in the spike's
+/// 2026). While a run is active it plays a quiet tone, meant to keep the process running with the phone locked
+/// (UIBackgroundModes audio; whether iOS does is what the device run shows, and a `gap` line records a suspension), and
+/// every `interval` seconds it makes one attempt: a durable capture save in the spike's
 /// class-C library (D17: WAL, synchronous=FULL, fullfsync), its read-back, a class-C file write and read-back, and a
 /// readback of the files' protection classes. Each attempt, event and check becomes one line in a class-C log file
 /// (`HarnessLog`), which the harness can write while the phone is locked after the first unlock, and in the unified
@@ -18,7 +19,8 @@ import Observation
 ///   harness asks for or sets is class C (the class-A canary aside): there is no fallback to another class, and a
 ///   failed write is never retried with one.
 /// * A line that cannot be written (the log file is class C, unreadable before the first unlock) is kept, in order,
-///   and written with `written-late=<time>` once the file can be written; it goes to the unified log at once.
+///   and written with `written-late=<time>` once the file can be written; it goes to the unified log at once. The
+///   sink's `append` throws only when none of its lines is in the file (`LogSink`), so each line is written once.
 /// * A pause between attempts longer than the gap threshold is recorded as a `gap`: the process was suspended.
 @MainActor
 @Observable
@@ -169,6 +171,10 @@ public final class HarnessController {
             audio = "failed"
             errors.append(("audio", error))
         }
+        // The audio session's category as read back (since 22 October 2026, review R2-H-03 of the decisions round's
+        // fix): the simulator keeps the app running in the background whatever the category, so a category that does
+        // not play in the background would show only here before the device run.
+        let audioCategory = environment.player.category ?? "-"
 
         let run = String(UUID().uuidString.prefix(8)).lowercased()
         let newRecord = SessionRecord(run: run, bootTime: environment.bootTime.bootTime(), startedAt: now,
@@ -181,7 +187,8 @@ public final class HarnessController {
         var fields: [(String, String)] = [
             ("run", run), ("item", "\(newRecord.acknowledged)"), ("interval", HarnessLog.seconds(configuration.interval)),
             ("volume", String(format: "%.2f", configuration.volume)), ("volumeReason", configuration.volumeReason),
-            ("audio", audio), ("protection", configuration.protection.rawValue), ("durability", durability),
+            ("audio", audio), ("audioCategory", audioCategory), ("protection", configuration.protection.rawValue),
+            ("durability", durability),
             ("store", store), ("canary", canary), ("session", session),
         ]
         fields += errorFields(errors)

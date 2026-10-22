@@ -218,16 +218,38 @@ final class FakePlayer: KeepAlivePlayer {
     var startedVolumes: [Float] = []
     var stops = 0
     var startError: (any Error)?
+    /// The category the session reads back once started (the tone's, unless a test sets another).
+    var startedCategory = "AVAudioSessionCategoryPlayback"
+    private(set) var category: String?
 
     func start(volume: Float) throws {
         if let startError { throw startError }
         startedVolumes.append(volume)
+        category = startedCategory
         isPlaying = true
     }
 
     func stop() {
         stops += 1
+        category = nil
         isPlaying = false
+    }
+}
+
+/// Lets a test make the log file's flush fail (`FileLogSink`'s injected flush), as an I/O error on a device would.
+@MainActor
+final class FlushSwitch {
+    /// How many of the next flushes fail.
+    var failuresLeft = 0
+    var failures = 0
+
+    func flush(_ handle: FileHandle) throws {
+        if failuresLeft > 0 {
+            failuresLeft -= 1
+            failures += 1
+            throw NSError(domain: NSPOSIXErrorDomain, code: Int(EIO))
+        }
+        try FileLogSink.fullSync(handle)
     }
 }
 

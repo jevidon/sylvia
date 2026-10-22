@@ -109,6 +109,60 @@ struct ProductionFileTests {
         #expect(canary.state() == .readable, "the simulator never locks")
     }
 
+    @Test("an append whose flush fails is cut back out of the log file and throws; nothing of it stays, and the retry writes it once (review R2-H-04)")
+    func failedAppendIsUndone() throws {
+        let root = Root()
+        let configuration = try HarnessConfiguration()
+        let flush = FlushSwitch()
+        let sink = FileLogSink(paths: root.paths, configuration: configuration, flush: flush.flush)
+        try sink.append(["first line"])
+        flush.failuresLeft = 1
+        #expect(throws: (any Error).self) { try sink.append(["second line", "third line"]) }
+        #expect(flush.failures == 1)
+        #expect(try String(contentsOf: sink.fileURL, encoding: .utf8) == "first line\n", "nothing of the failed append stays")
+        try sink.append(["second line", "third line"])
+        #expect(try String(contentsOf: sink.fileURL, encoding: .utf8) == "first line\nsecond line\nthird line\n")
+    }
+
+    @Test("a run whose log file fails to flush at three attempts writes every line once: those three later, marked written-late, none twice (review R2-H-04)")
+    func failedFlushesWriteEachLineOnce() throws {
+        let root = Root()
+        let configuration = try HarnessConfiguration()
+        let device = SimulatedDevice()
+        let mirror = FakeMirror()
+        let flush = FlushSwitch()
+        let environment = HarnessEnvironment(
+            clock: device, protectedData: device, bootTime: device, appState: device, player: FakePlayer(),
+            store: LibraryHarnessStore(layout: root.layout, configuration: configuration),
+            sink: FileLogSink(paths: root.paths, configuration: configuration, flush: flush.flush), mirror: mirror,
+            sessions: SessionFileStore(paths: root.paths, configuration: configuration),
+            canary: ClassACanary(paths: root.paths), probe: ClassCFileProbe(paths: root.paths, configuration: configuration),
+            inspector: FileProtectionInspector(paths: root.paths, layout: root.layout, configuration: configuration),
+            scheduler: FakeScheduler(), platform: "simulator")
+        let controller = HarnessController(configuration: configuration, environment: environment, autoTick: false)
+        controller.launch()
+        controller.start()
+        for attempt in 1...10 {
+            if attempt == 4 { flush.failuresLeft = 3 }
+            device.advance(2)
+            controller.tick()
+        }
+        controller.stop()
+
+        #expect(flush.failures == 3)
+        #expect(controller.pendingLineCount == 0)
+        let lines = try String(contentsOf: root.paths.log, encoding: .utf8).split(separator: "\n").map(String.init)
+        let parsed = lines.map(HarnessLog.fields(of:))
+        let attempts = parsed.filter { $0["event"] == "attempt" }
+        #expect(attempts.map { $0["n"] ?? "" } == (1...10).map(String.init), "each attempt once, in order")
+        #expect(attempts.filter { $0["written-late"] != nil }.map { $0["n"] ?? "" } == ["4", "5", "6"])
+        #expect(Set(lines).count == lines.count, "no line twice")
+        let events = parsed.filter { $0["event"] == "event" }.map { $0["name"] ?? "" }
+        #expect(events == ["log-file-unwritable", "log-file-writable-again"])
+        #expect(lines.count == mirror.lines.count, "every line once in the file, as in the unified log")
+        #expect(parsed.last { $0["event"] == "verify" }?["result"] == "ok")
+    }
+
     @Test("every production component asks for class C, from the configuration; only the canary asks for class A")
     func classes() throws {
         let root = Root()

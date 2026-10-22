@@ -10,8 +10,12 @@
 #       of the device run on a simulated phone. The UI smoke test (since 22 October 2026: review H-05 of the decisions
 #       round) runs the app itself from a new installation: launch, Start, 14 s in the background, back, Stop, and a
 #       second launch; then the app's harness.log is copied out of the simulator and every line of that run checked
-#       (harness-ui-smoke-check.log), and the app is uninstalled. The tone plays at the test volume, 0.01. The
-#       simulator cannot lock, and its protection readback is not faithful, so nothing here is device evidence.
+#       (harness-ui-smoke-check.log), and the app is uninstalled. The tone plays at the test volume, 0.01, and the start
+#       line records its session's category, which the check requires to be playback (since 23 October 2026, review
+#       R2-H-03 of the decisions round's fix). The simulator keeps the app running in the background with or without
+#       the tone, so the attempts made there are not evidence that the tone keeps it running; the simulator cannot lock,
+#       never posts the protected-data notifications, and its protection readback is not faithful, so nothing here is
+#       device evidence.
 #   15. the app for a generic iOS device, Debug, signed automatically for team $SYLVIA_TEAM_ID with what is on this
 #       host (no -allowProvisioningUpdates: nothing contacts Apple's developer service). Build only: nothing is
 #       installed on or run on a device. Without an Apple Development identity on the host it is an unsigned compile
@@ -139,10 +143,12 @@ if len(launches) == 2 and len(starts) == 1 and len(stops) == 1:
     expect(any(having(l, event="event", name="app-state", state="active") for l in lines[launches[0]:starts[0]]),
            "the first launch's activation is recorded (event name=app-state state=active) before the Start")
     start = lines[starts[0]]
-    expect(having(start, volume="0.01", volumeReason="test-volume", audio="playing", store="open", canary="created",
+    expect(having(start, volume="0.01", volumeReason="test-volume", audio="playing",
+                  audioCategory="AVAudioSessionCategoryPlayback", store="open", canary="created",
                   session="ok", protection="NSFileProtectionCompleteUntilFirstUserAuthentication",
                   durability="journal_mode=wal,synchronous=FULL,fullfsync=1,checkpoint_fullfsync=1"),
-           "the start line: volume=0.01 (test volume) audio=playing store=open canary=created session=ok, class C, D17's durability")
+           "the start line: volume=0.01 (test volume) audio=playing audioCategory=AVAudioSessionCategoryPlayback (the "
+           "category that plays in the background, read back) store=open canary=created session=ok, class C, D17's durability")
     run = start.get("run")
     expect(len(attempts) >= 10 and [a.get("n") for a in attempts] == [str(i) for i in range(1, len(attempts) + 1)],
            "at least 10 attempts, numbered from 1 without a break (%d)" % len(attempts))
@@ -150,7 +156,9 @@ if len(launches) == 2 and len(starts) == 1 and len(stops) == 1:
                       protectedDataAvailable="true", classA="readable") for a in attempts),
            "every attempt: save=saved readback=equal file=ok session=ok classes=simulator-unverified classA=readable")
     background = [a for a in attempts if a.get("app") == "background"]
-    expect(len(background) >= 5, "at least 5 attempts made in the background, the tone keeping the app running (%d)" % len(background))
+    expect(len(background) >= 5, "at least 5 attempts made in the background: the ticker and the writes work there (the "
+           "simulator keeps the app running in the background with or without the tone, so this is not the tone's effect, "
+           "which only device step 3 shows) (%d)" % len(background))
     times = [float(a["t"]) for a in attempts]
     deltas = [b - a for a, b in zip(times, times[1:])]
     expect(bool(deltas) and max(deltas) <= 5.0,

@@ -2,11 +2,19 @@ import XCTest
 
 /// A smoke run of the app itself on the simulator (review H-05 of the decisions round, 22 October 2026). The unit tests
 /// compile `Core/` only, so this is the check that `App/` works before the device run: the app delegate and its
-/// notification wiring, the background refresh registration, the real 2 s ticker, the tone in an app process (it keeps
-/// the app running in the background) and the screen. It launches the app, starts a run, sends the app to the
-/// background for 14 s, brings it back, stops the run, and launches the app again. Its assertions read the screen's
-/// status line; `Scripts/harness-checks.sh` then copies the app's `harness.log` out of the simulator and checks every
-/// line of the run (step 14).
+/// app-state notifications, the background refresh registration, the real 2 s ticker, the tone in an app process (its
+/// start, its volume and its session's category, which the start line records) and the screen. It launches the app,
+/// starts a run, sends the app to the background for 14 s, brings it back, stops the run, and launches the app again.
+/// Its assertions read the screen's status line; `Scripts/harness-checks.sh` then copies the app's `harness.log` out of
+/// the simulator and checks every line of the run (step 14).
+///
+/// What it cannot show: that the tone keeps the app running in the background. Under XCUITest the simulator keeps the
+/// app running there with no tone at all (review R2-H-03 of the decisions round's fix, from a reviewer's control with a
+/// player that played nothing; the fix's own control is `Docs/Stage0/evidence/M0-Decisions/fix-2/silent-control/`), so
+/// the attempts it counts there show the ticker and the writes, not the tone's effect, which only a locked phone shows
+/// (device checklist step 3). Nor does it post the protected-data notifications, which a simulator never sends; their
+/// wiring is checked only by reading `App/G05LockHarnessApp.swift`. (Until 23 October 2026 this comment said the tone
+/// keeps the app running here.)
 ///
 /// The simulator cannot lock, and its protection readback is not faithful: nothing here is device evidence (device
 /// checklist step 3 is). The tone plays at the configuration's test volume, 0.01: the app is launched with
@@ -87,7 +95,8 @@ final class LockHarnessSmokeUITests: XCTestCase {
         XCTAssertEqual(running.failed, 0, running.text)
         XCTAssertEqual(running.gaps, 0, running.text)
 
-        // In the background the tone keeps the app running: the attempts go on, 2 s apart, with no gap.
+        // In the background the attempts go on, 2 s apart, with no gap: the ticker and the writes work there. The
+        // simulator keeps the app running in the background with or without the tone, so this is not the tone's effect.
         XCUIDevice.shared.press(.home)
         pause(14)
         app.activate()
@@ -96,7 +105,7 @@ final class LockHarnessSmokeUITests: XCTestCase {
         }))
         XCTAssertGreaterThanOrEqual(back.attempts, running.attempts + 6, "about 7 attempts in 14 s: \(back.text)")
         XCTAssertEqual(back.failed, 0, back.text)
-        XCTAssertEqual(back.gaps, 0, "no gap: the app was not suspended in the background: \(back.text)")
+        XCTAssertEqual(back.gaps, 0, "no gap: the simulator did not suspend the app in the background: \(back.text)")
 
         tapWhenHittable(app.buttons["harness.stop"], timeout: 20, "Stop")
         let stopped = try XCTUnwrap(Status(waitForStatus(app, timeout: 20, "the stopped run and its check") {

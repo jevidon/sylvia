@@ -1,6 +1,7 @@
 # G0.5 recovery: the locked-device harness for T50 (device checklist Docs/Stage0/device-checklists/G05-Recovery.md,
 # step 3; PO-23 option (b), product owner, 22 October 2026). Stage 0 evidence code, never shipped (ADR-0002).
-# An iPhone app that keeps running while the phone is locked by playing a quiet tone (UIBackgroundModes audio; player
+# An iPhone app meant to keep running while the phone is locked by playing a quiet tone (UIBackgroundModes audio;
+# whether iOS keeps it running is what the device run shows; player
 # volume 0.01 unless SYLVIA_AUDIBLE_PLAYBACK=1, never muted), saves to the spike's class-C library on a timer, reads
 # each save back and logs every attempt to a class-C log file and the unified log. Its logic is in Core/ and is tested
 # on the simulator by the unit tests in Tests/ (no host app; they compile Core/ themselves); the app itself is checked

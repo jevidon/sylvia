@@ -27,16 +27,39 @@ public struct HarnessPaths: Sendable {
     public var canary: URL { directory.appending(path: "class-a-canary.bin", directoryHint: .notDirectory) }
 }
 
-/// The log file: class C, created with the class and read back, each append flushed with `F_FULLFSYNC` before it
-/// returns, so a line in the file was on stable storage when the next attempt began.
+/// The log file: class C, created with the class and read back (`FileProtector.write` removes a new file whose class
+/// does not read back), each append flushed with `F_FULLFSYNC` before it returns, so a line in the file was on stable
+/// storage when the next attempt began.
+///
+/// `append` throws only when none of its lines is in the file (`LogSink`): a write or flush that fails is undone, the
+/// file cut back to its length before the append, so the controller, which keeps the lines of a failed append and
+/// writes them later, writes each line once. (Only if that cut fails too can the lines stay and be written again.) The
+/// class of the existing file is read back with every attempt by the inspector, which records a class that differs as
+/// `classes=differs:harness.log=<class>` and fails the attempt. Until 22 October 2026 (review R2-H-04 of the decisions
+/// round's fix) `append` read the class back after writing and flushing, and threw when it differed: the lines were
+/// then in the file, and the controller wrote them again, marked `written-late=`, with every later line.
 @MainActor
 public final class FileLogSink: LogSink {
     public let paths: HarnessPaths
     public let protector: FileProtector
+    /// Flushes the appended lines to stable storage; the tests replace it to make a flush fail.
+    let flush: @MainActor (FileHandle) throws -> Void
 
-    public init(paths: HarnessPaths, configuration: HarnessConfiguration) {
+    public convenience init(paths: HarnessPaths, configuration: HarnessConfiguration) {
+        self.init(paths: paths, configuration: configuration, flush: FileLogSink.fullSync)
+    }
+
+    init(paths: HarnessPaths, configuration: HarnessConfiguration, flush: @escaping @MainActor (FileHandle) throws -> Void) {
         self.paths = paths
         self.protector = FileProtector(protection: configuration.protection)
+        self.flush = flush
+    }
+
+    /// `F_FULLFSYNC`, or `fsync` where the file system does not support it.
+    static func fullSync(_ handle: FileHandle) throws {
+        if fcntl(handle.fileDescriptor, F_FULLFSYNC) != 0 {
+            try handle.synchronize()
+        }
     }
 
     public var fileURL: URL { paths.log }
@@ -49,12 +72,14 @@ public final class FileLogSink: LogSink {
         }
         let handle = try FileHandle(forWritingTo: paths.log)
         defer { try? handle.close() }
-        try handle.seekToEnd()
-        try handle.write(contentsOf: Data(lines.map { $0 + "\n" }.joined().utf8))
-        if fcntl(handle.fileDescriptor, F_FULLFSYNC) != 0 {
-            try handle.synchronize()
+        let length = try handle.seekToEnd()
+        do {
+            try handle.write(contentsOf: Data(lines.map { $0 + "\n" }.joined().utf8))
+            try flush(handle)
+        } catch {
+            try? handle.truncate(atOffset: length)
+            throw error
         }
-        try protector.verify(paths.log)
     }
 
     public func readTail(maxLines: Int) throws -> [String] {

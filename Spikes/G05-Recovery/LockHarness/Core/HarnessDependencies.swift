@@ -31,13 +31,19 @@ public protocol AppStateSource: AnyObject {
     var stateName: String { get }
 }
 
-/// The quiet tone that keeps the process running while the phone is locked (UIBackgroundModes audio).
+/// The quiet tone meant to keep the process running while the phone is locked (UIBackgroundModes audio). Whether iOS
+/// does keep it running on a locked phone is what device checklist step 3 shows; the simulator keeps an app running in
+/// the background with or without the tone, so no simulator run shows it.
 @MainActor
 public protocol KeepAlivePlayer: AnyObject {
     /// Starts playing at `volume` (0.01 unless SYLVIA_AUDIBLE_PLAYBACK=1); never mutes.
     func start(volume: Float) throws
     func stop()
     var isPlaying: Bool { get }
+    /// The audio session's category as read back after `start` (`AVAudioSessionCategoryPlayback` for the tone), nil
+    /// before it: recorded on the `start` line, so a category that does not play in the background shows there
+    /// (since 22 October 2026, review R2-H-03 of the decisions round's fix).
+    var category: String? { get }
     /// Interruptions, resumptions and route changes, as words for the log.
     var onEvent: (@MainActor (String) -> Void)? { get set }
 }
@@ -92,6 +98,9 @@ public protocol HarnessStore: AnyObject {
 /// The harness's log file (class C, appended and flushed line by line).
 @MainActor
 public protocol LogSink: AnyObject {
+    /// Appends the lines and flushes them. Throws only when none of them is in the file: the controller then keeps
+    /// them and writes them once, later, marked `written-late=`. A sink must not throw after its lines are in the file,
+    /// or the controller writes them again (review R2-H-04 of the decisions round's fix, 22 October 2026).
     func append(_ lines: [String]) throws
     func readTail(maxLines: Int) throws -> [String]
     var fileURL: URL { get }

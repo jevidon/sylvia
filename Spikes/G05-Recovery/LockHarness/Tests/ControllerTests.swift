@@ -481,6 +481,8 @@ struct ControllerTests {
         rig.ticks(second, 1)
         #expect(rig.fileLines("attempt").last?["item"] == "3")
         #expect(rig.fileLines("attempt").last?["save"] == "saved")
+        second.protectedDataDidBecomeAvailable()
+        #expect(rig.fileLines("previous-session").count == 2, "the run's start replaced the launch's recheck")
     }
 
     @Test("an expired background refresh is recorded")

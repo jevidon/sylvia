@@ -17,18 +17,19 @@
 3. After at least 10 `attempt` lines, lock the phone, put it face down and leave it untouched for at least 5 minutes: no calls, no Siri, no other audio.
 4. Restart it without unlocking: hold the side button and either volume button, slide to power off, and power on as soon as the screen is black. If iOS asks for the passcode before it powers off, enter it and say so in the record. Note the time it powered off, and leave it locked for at least 2 minutes after the Lock Screen appears.
 5. Unlock, the first unlock since the restart, and open G05 Lock from the Home Screen.
-6. Record (the second command asks for your Mac password; in zsh `log` is a shell command, so its path is given):
+6. Record (the two `sudo` commands ask for your Mac password; in zsh `log` is a shell command, so its path is given):
 
    ```sh
    D=Docs/Stage0/evidence/G05-Recovery/device
    xcrun devicectl device copy from --device "$DEVICE_ID" --domain-type appDataContainer \
      --domain-identifier com.jevidon.sylvia.spike.g05lockharness \
      --source "Library/Application Support/G05LockHarness/harness.log" --destination "$D/step-3-harness.log"
+   mkdir -p .build/scratch
    sudo /usr/bin/log collect --device-udid "$DEVICE_ID" --last 2h \
      --predicate 'subsystem == "com.jevidon.sylvia.spike.g05lockharness"' --output .build/scratch/step-3.logarchive
    /usr/bin/log show --style compact --predicate 'subsystem == "com.jevidon.sylvia.spike.g05lockharness"' \
      .build/scratch/step-3.logarchive > "$D/step-3-unified-log.txt"
-   rm -rf .build/scratch/step-3.logarchive
+   sudo rm -rf .build/scratch/step-3.logarchive   # root's, from sudo; never kept: it can hold more than the harness's lines
    xcrun devicectl device info files --device "$DEVICE_ID" --domain-type systemCrashLogs > "$D/step-3-crash-logs.txt"
    ```
 

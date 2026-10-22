@@ -137,8 +137,10 @@ public final class HarnessController {
         guard runState != .running else { return }
         let now = environment.clock.now()
         var errors: [(String, any Error)] = []
-        // A run continues the library the last one left; its record may have been unreadable at launch.
+        // A run continues the library the last one left; its record may have been unreadable at launch. Once a run
+        // starts, that launch's check is not made again: the run's own attempts and checks take its place.
         if record == nil, let loaded = try? environment.sessions.load() { record = loaded }
+        recheckPreviousSession = false
 
         let canary: String
         do { canary = try environment.canary.ensureCreated() ? "created" : "present" } catch {

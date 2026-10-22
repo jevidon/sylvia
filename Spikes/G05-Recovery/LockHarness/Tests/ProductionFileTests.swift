@@ -1,4 +1,5 @@
 import Foundation
+import GRDB
 import SylviaRecovery
 import Testing
 
@@ -40,6 +41,25 @@ struct ProductionFileTests {
         #expect(throws: HarnessError.storeNotOpen) { try store.save(item: 5) }
         _ = try store.open()
         #expect(try store.verify(acknowledged: 5).passed, "every acknowledged item is there after a reopen")
+        store.close()
+    }
+
+    @Test("the read-back is byte for byte: a stored quotation that differs only in Unicode composition is not equal")
+    func readBackIsByteExact() throws {
+        let root = Root()
+        let store = LibraryHarnessStore(layout: root.layout, configuration: try HarnessConfiguration())
+        _ = try store.open()
+        _ = try store.save(item: 0)
+        #expect(try store.readBack(item: 0) == .equal)
+        let composed = CrashDrill.quote(0).precomposedStringWithCanonicalMapping
+        #expect(composed == CrashDrill.quote(0), "Swift's String equality takes the two as equal")
+        #expect(Array(composed.utf8) != Array(CrashDrill.quote(0).utf8), "their bytes differ")
+        let other = try DatabaseQueue(path: root.layout.databaseURL.path)
+        try other.write { db in
+            try db.execute(sql: "UPDATE capture SET quoted_text = ? WHERE idempotency_key = ?", arguments: [composed, CrashDrill.key(0)])
+        }
+        try other.close()
+        #expect(try store.readBack(item: 0) == .differs)
         store.close()
     }
 

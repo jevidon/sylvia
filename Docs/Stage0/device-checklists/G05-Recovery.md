@@ -2,7 +2,7 @@
 
 Status of every step: **pending** (not run). Stage 0 agents did not use the physical iPhone; this checklist is for the serialized device run.
 
-**Device:** iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24), Developer Mode on (ADR-0001). Repeat steps 1-4 on device A, the oldest supported iPhone: the iPhone 11 Pro (iPhone12,3; A13), with the owner's iPhone 11 (iPhone12,1; A13) as a second phone of the same chip (decision D-1 (b), product owner, 22 October 2026; until then this line asked for the iPhone 12-class baseline, which no one had). On A, steps 1-2 block M0 and steps 3-4 can wait for M1 (runbook Section 7). Record A's results with `-A` in each file name (for example `step-1-A-tests.log`).
+**Device:** iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24), Developer Mode on (ADR-0001). Repeat steps 1-4 on device A, the oldest supported iPhone: the iPhone 11 Pro (iPhone12,3; A13), with the owner's iPhone 11 (iPhone12,1; A13) as a second phone of the same chip (decision D-1 (b), product owner, 22 October 2026; until then this line asked for the iPhone 12-class baseline, which was not available). On A, steps 1-2 block M0 and steps 3-4 can wait for M1 (runbook Section 7). Record A's results with `-A` in each file name (for example `step-1-A-tests.log`).
 
 **Step 3 uses the lock harness** (since 22 October 2026): the product owner decided to build the background-audio harness in Stage 0, before the device run, so that step 3 is conclusive the first time (PO-23 option (b), product owner, 22 October 2026; G0.5 recovery finding F5). Until then step 3 ran the XCTest probe `DeviceLockProbeTests`, which runs inside the test runner that iOS may suspend when the phone locks.
 
@@ -16,7 +16,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 **Recording:**
 
 - Save every console output as plain text under `Docs/Stage0/evidence/G05-Recovery/device/` with the step number in the file name, for example `device/step-1-tests.log`.
-- In `Docs/Stage0/G05-Recovery.md`, change the step's row from pending-device to passed-device or failed, with the date, device model and iOS build.
+- In `Docs/Stage0/G05-Recovery.md`, change the step's row from pending-device to passed-device or failed, with the date, device model and iOS build (step 3: rows 9 and 26).
 - Never edit an expected result to match what happened. A different result is a failure, recorded as one.
 
 ## 1. Test suite on the device (T45, T46, T47, T35 on device; protection readback, including the non-default class)
@@ -62,24 +62,26 @@ The lock harness, the app "G05 Lock" (`Spikes/G05-Recovery/LockHarness`), stays 
    ```
 
    Expected: `** BUILD SUCCEEDED **` and "G05 Lock" on the Home Screen.
-2. On the phone: Settings > General > Background App Refresh on, with G05 Lock on in its list, and Low Power Mode off (both only for the optional launch before the first unlock, item 7). Nothing else playing audio.
+2. On the phone: Settings > General > Background App Refresh on, with G05 Lock on in its list, and Low Power Mode off (both only for the launch before the first unlock that iOS may make, item 8). Nothing else playing audio.
 3. Start. Open G05 Lock from the Home Screen, not with Xcode's Run: a debugger attached keeps an app running when iOS would suspend it, so the step would show nothing. Tap Start. Expected on the screen, newest line first: a `start` line with `volume=0.01`, `audio=playing`, `protection=NSFileProtectionCompleteUntilFirstUserAuthentication`, `durability=journal_mode=wal,synchronous=FULL,fullfsync=1,checkpoint_fullfsync=1` and `store=open`, then an `attempt` line every 2 s with `protectedDataAvailable=true`, `classA=readable`, `save=saved`, `readback=equal`, `file=ok` and `classes=ok`. Note the time.
 4. Lock for 5 minutes. After at least 10 `attempt` lines, press the side button. Put the phone face down and leave it untouched for at least 5 minutes (raising it or looking at it can unlock it with Face ID); no calls, no Siri, no other audio.
 5. Restart without unlocking. Hold the side button and either volume button, slide to power off, and as soon as the screen is black, hold the side button until the Apple logo shows. If iOS asks for the passcode before it powers off, enter it and say so in the record: the unlock this step is about is the first one after the restart. Note the time it powered off. Leave the phone locked for at least 2 minutes after the Lock Screen appears.
 6. Unlock, the first unlock since the restart, and open G05 Lock from the Home Screen. It records the launch, how the run ended, and its check of the library.
-7. Record, from `Spikes/G05-Recovery` (the second command needs your Mac password; in zsh `log` is a shell command, so give its path):
+7. Record, from `Spikes/G05-Recovery` (the two `sudo` commands ask for your Mac password; in zsh `log` is a shell command, so its path is given):
 
    ```sh
    xcrun devicectl device copy from --device <device-id> --domain-type appDataContainer \
      --domain-identifier com.jevidon.sylvia.spike.g05lockharness \
      --source "Library/Application Support/G05LockHarness/harness.log" --destination step-3-harness.log
+   mkdir -p .build
    sudo /usr/bin/log collect --device-udid <device-id> --last 2h \
-     --predicate 'subsystem == "com.jevidon.sylvia.spike.g05lockharness"' --output step-3.logarchive
-   /usr/bin/log show --style compact --predicate 'subsystem == "com.jevidon.sylvia.spike.g05lockharness"' step-3.logarchive > step-3-unified-log.txt
+     --predicate 'subsystem == "com.jevidon.sylvia.spike.g05lockharness"' --output .build/step-3.logarchive
+   /usr/bin/log show --style compact --predicate 'subsystem == "com.jevidon.sylvia.spike.g05lockharness"' .build/step-3.logarchive > step-3-unified-log.txt
+   sudo rm -rf .build/step-3.logarchive
    xcrun devicectl device info files --device <device-id> --domain-type systemCrashLogs > step-3-crash-logs.txt
    ```
 
-   Delete `step-3.logarchive` once `step-3-unified-log.txt` is written; never commit it (an archive can hold more of the phone's logs than the harness's). The harness's Export log button shares the same `harness.log`, for example by AirDrop, if devicectl cannot copy it. If devicectl refuses the systemCrashLogs domain, look in Settings > Privacy & Security > Analytics & Improvements > Analytics Data instead and write what is there into `step-3-crash-logs.txt`.
+   The archive is written in the spike's ignored `.build` folder and deleted (it belongs to root, hence `sudo rm`) once `step-3-unified-log.txt` is written: never keep or commit it, since an archive can hold more of the phone's logs than the harness's. The harness's Export log button shares the same `harness.log`, for example by AirDrop, if devicectl cannot copy it. If devicectl refuses the systemCrashLogs domain, look in Settings > Privacy & Security > Analytics & Improvements > Analytics Data instead and write what is there into `step-3-crash-logs.txt`.
 8. Expected:
    - In `step-3-harness.log`, every `attempt` line of the run after its `event name=protected-data-will-become-unavailable` line has `save=saved` (or `save=already-saved`), `readback=equal`, `file=ok` and `classes=ok`, and there is no `gap` line.
    - The `previous-session` line after the restart has `result=ended-by-restart`, `lockedFailures=0` and `gaps=0`; its `lockedAttempts` and `classAUnreadable` are at least 120 each (5 minutes at one attempt every 2 s, less the 10 s before class A locks), and its `lastRecordToBoot` is at most 120 (seconds: the run was still running when the phone powered off).

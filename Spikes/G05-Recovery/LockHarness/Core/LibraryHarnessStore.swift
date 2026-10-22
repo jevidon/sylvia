@@ -76,7 +76,11 @@ public final class LibraryHarnessStore: HarnessStore {
         let copies: Int = row["copies"]
         let quote: String? = row["quote"]
         let note: String? = row["note"]
-        return copies == 1 && quote == CrashDrill.quote(item) && note == CrashDrill.comment(item) ? .equal : .differs
+        // Byte for byte: Swift's String equality would take canonically equivalent text as equal (plan 18.1), and the
+        // quotation holds a decomposed accent.
+        let exact = quote.map { Array($0.utf8) } == Array(CrashDrill.quote(item).utf8)
+            && note.map { Array($0.utf8) } == Array(CrashDrill.comment(item).utf8)
+        return copies == 1 && exact ? .equal : .differs
     }
 
     public func verify(acknowledged: Int) throws -> VerifyReport {

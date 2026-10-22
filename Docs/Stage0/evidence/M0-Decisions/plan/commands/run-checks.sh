@@ -42,13 +42,31 @@ old_out="$(python3 -I Docs/Stage0/evidence/M0-plan-amendments/commands/check-ame
 old_status=$?
 printf '%s\n' "$old_out" | grep -E '^FAIL |^summary:'
 echo "exit status: $old_status"
-expected_fails="FAIL new anchor phrases are present in the plan
-FAIL the milestone gating rule includes M1 in all"
-actual_fails="$(printf '%s\n' "$old_out" | grep -E '^FAIL ' | cut -c1-48)"
-expected_cut="$(printf '%s\n' "$expected_fails" | cut -c1-48)"
-if [[ $old_status -eq 1 && "$actual_fails" == "$expected_cut" ]]; then
+# Exact comparison: two failed checks; the first lists exactly the ten draft 0.7 phrases the decisions replaced, the
+# second names only the 21.2 M1 row. (A first version of this comparison cut each line to 48 characters and failed
+# on a trailing space although the failures were exactly these: its run on 66237abc printed a PROBLEM line wrongly.)
+printf '%s\n' "$old_out" | python3 -I -c '
+import sys
+fails = [line[5:] for line in sys.stdin.read().splitlines() if line.startswith("FAIL ")]
+anchors = {"**Status:** Draft 0.7", "**Revised:** 20 October 2026",
+           "the task window bounds those copies per job, and nothing bounds them across jobs yet",
+           "nothing bounds them across jobs until the product owner chooses",
+           "**Per-file timing mode (proposed, pending product-owner approval).**",
+           "**Import remux (proposed, pending product-owner approval).**",
+           "Which hosts count as local is proposed",
+           "Every narrowing of release scope in draft 0.5 is a proposal.",
+           "approving draft 0.5 does not by itself approve it",
+           "Proposed for the job store (product-owner decision pending)"}
+head = "new anchor phrases are present in the plan (38): "
+gating = "the milestone gating rule includes M1 in all 7 places that state it, and the earlier wording is gone: plan 21.2 M1 row"
+ok = (len(fails) == 2 and fails[0].startswith(head) and set(fails[0][len(head):].split("; ")) == anchors
+      and fails[1] == gating)
+sys.exit(0 if ok else 1)
+'
+exact=$?
+if [[ $old_status -eq 1 && $exact -eq 0 ]]; then
   control_old=0
-  echo "control: the draft 0.7 checker fails on exactly those two checks, as it must"
+  echo "control: the draft 0.7 checker fails on exactly those two checks, listing exactly the ten replaced phrases and the 21.2 M1 row, as it must"
 else
   control_old=1
   echo "PROBLEM: the draft 0.7 checker's failures are not exactly the two expected"

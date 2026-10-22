@@ -1,10 +1,10 @@
 command: Scripts/ci.d/13-hard-rules.sh
-commit: 96832c670593550d47d7ebe3112687e3a12111c5; uncommitted paths: 0
+commit: 31cc4d77df46d54efd66bdaca24a4135c235df7c; uncommitted paths: 0
 host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
-start: 2026-10-22T06:58:17Z; load: 19:58  up 19 days,  6:08, 3 users, load averages: 6.16 6.86 5.44
+start: 2026-10-22T07:04:29Z; load: 20:04  up 19 days,  6:15, 3 users, load averages: 13.19 14.50 9.78
 
 environment: host (macOS 26.6.2 25G83), Python 3.9.6
-commit: 96832c670593550d47d7ebe3112687e3a12111c5
+commit: 31cc4d77df46d54efd66bdaca24a4135c235df7c
 
 --- self-test (Scripts/audit-hard-rules.sh self-test)
 ok: git work tree: the audit fails when there are findings
@@ -23,7 +23,7 @@ self-test: PASS (0 failure(s))
 --- repository audit (Scripts/audit-hard-rules.sh)
 root: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-1
 file list: git (git ls-files --cached --others --exclude-standard)
-files scanned: 3233 (835 binary, skipped for text rules); not scanned (hold the patterns): Scripts/audit-hard-rules.sh, Scripts/ci.d/13-hard-rules.sh
+files scanned: 3246 (835 binary, skipped for text rules); not scanned (hold the patterns): Scripts/audit-hard-rules.sh, Scripts/ci.d/13-hard-rules.sh
 allowlist: 13 entries
 | Rule | Findings | Allowed |
 | --- | --- | --- |
@@ -43,4 +43,4 @@ result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist e
 13-hard-rules: self-test and repository audit passed; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-1/.build/ci-logs/hard-rules
 
 exit status: 0
-end: 2026-10-22T06:58:23Z; load: 19:58  up 19 days,  6:08, 3 users, load averages: 5.82 6.78 5.42
+end: 2026-10-22T07:04:35Z; load: 20:04  up 19 days,  6:15, 3 users, load averages: 12.77 14.39 9.77

@@ -1,14 +1,14 @@
 # M0 plan amendments and decisions: consistency checks (plan draft 0.8)
-command: Docs/Stage0/evidence/M0-Decisions/plan/commands/run-checks.sh 96832c67
-commit under test: 96832c67
-HEAD: 96832c670593550d47d7ebe3112687e3a12111c5; uncommitted paths: 0
-date (UTC): 2026-10-22T06:56:12Z
+command: Docs/Stage0/evidence/M0-Decisions/plan/commands/run-checks.sh 31cc4d77
+commit under test: 31cc4d77
+HEAD: 31cc4d77df46d54efd66bdaca24a4135c235df7c; uncommitted paths: 0
+date (UTC): 2026-10-22T07:01:43Z
 host: macOS 26.6.2 (25G83), arm64; Python 3.14.6
-load: 19:56  up 19 days,  6:06, 3 users, load averages: 6.90 6.98 5.25
+load: 20:01  up 19 days,  6:12, 3 users, load averages: 6.91 8.94 6.76
 environment: host only; no simulator or device is used by these checks
 
 == Docs/Stage0/evidence/M0-Decisions/plan/commands/check-amendments.py
-PASS cited paths exist (125 checked; the run's own log excluded)
+PASS cited paths exist (127 checked; the run's own log excluded)
 PASS G01-EPUB.md: 14 findings, each in Section 2 or 3
 PASS G01-PDF.md: 15 findings, each in Section 2 or 3
 PASS G02-Transfer.md: 22 findings, each in Section 2 or 3
@@ -119,6 +119,6 @@ control: the draft 0.7 checker fails on exactly those two checks, listing exactl
 ==> 10-contracts
     pass (1s)
 ==> 11-capture-anchor-contracts
-    pass (57s)
+    pass (78s)
 all 3 steps passed
 exit status: 0

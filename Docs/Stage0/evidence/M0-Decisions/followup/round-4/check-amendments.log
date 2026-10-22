@@ -1,10 +1,10 @@
 # M0 plan amendments and decisions: consistency checks (plan draft 0.8 as revised and corrected on 23 October 2026, the follow-up's fix's checker)
-command: Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/run-checks.sh ff3781b3
-commit under test: ff3781b3
-HEAD: ff3781b394a2a767f74dcc17c15816f5739b6e9c; uncommitted paths: 0
-date (UTC): 2026-10-22T20:43:45Z
+command: Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/run-checks.sh a3fb137e
+commit under test: a3fb137e
+HEAD: a3fb137ec0fb2d9cb618ceb38e8862d6fd9e3b3d; uncommitted paths: 0
+date (UTC): 2026-10-22T20:50:38Z
 host: macOS 26.6.2 (25G83), arm64; Python 3.14.6
-load:  9:43  up 19 days, 19:54, 3 users, load averages: 3.99 3.85 3.41
+load:  9:50  up 19 days, 20:01, 3 users, load averages: 4.06 4.25 3.82
 environment: host only; no simulator or device is used by these checks
 
 == Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/check-amendments.py
@@ -166,6 +166,6 @@ control 3: the draft 0.7 checker fails on exactly those two checks, listing exac
 ==> 10-contracts
     pass (1s)
 ==> 11-capture-anchor-contracts
-    pass (53s)
+    pass (54s)
 all 3 steps passed
 exit status: 0

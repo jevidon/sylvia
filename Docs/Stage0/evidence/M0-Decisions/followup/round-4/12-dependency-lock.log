@@ -1,11 +1,11 @@
 command: Scripts/ci.d/12-dependency-lock.sh
-commit: ff3781b394a2a767f74dcc17c15816f5739b6e9c; uncommitted paths: 0
+commit: a3fb137ec0fb2d9cb618ceb38e8862d6fd9e3b3d; uncommitted paths: 0
 host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
-start: 2026-10-22T20:43:00Z; load:  9:43  up 19 days, 19:53, 3 users, load averages: 4.96 3.98 3.42
+start: 2026-10-22T20:49:59Z; load:  9:49  up 19 days, 20 hrs, 3 users, load averages: 5.00 4.44 3.86
 
-12-dependency-lock 2026-10-22T20:43:00Z at commit ff3781b394a2a767f74dcc17c15816f5739b6e9c
+12-dependency-lock 2026-10-22T20:49:59Z at commit a3fb137ec0fb2d9cb618ceb38e8862d6fd9e3b3d
 host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
-load:  9:43  up 19 days, 19:53, 3 users, load averages: 4.96 3.98 3.42
+load:  9:49  up 19 days, 20 hrs, 3 users, load averages: 5.00 4.44 3.86
 
 --- self-test: synthetic trees, one per failure the check claims to detect
 ok    the clean synthetic tree passes, toolchain checks included (committed Xcode projects or workspaces: 0; locks: 3 committed, 3 registered; manifests: 4 read, 4 remote requirements; symbolic links under the product roots: 0; module maps read as product code: 0; license texts: 5 checked; product sources: 3 Swift and 0 C-family files checked for imports of transitive-only modules; binaries: 0 declared by product manifests, 0 committed under the product roots, 0 inventoried; vendored assets: 2 listed; python tools: 2 pinned, 1 recorded as unpinned (pip at any version, with a warning below 26.2.0); the virtualenv holds exactly these (pip 26.2.1); workflow actions: 1 used; on a tag under a recorded exemption: actions/checkout@v4; toolchain: the Xcode pin 27.0 (27A266a) as stated in .github/workflows/ci.yml, CLAUDE.md, Docs/ADRs/0001-platform-baseline-and-toolchain.md; toolchain: xcodebuild -version -> Build version 27A266a (the pin, compared whole); toolchain: xcrun swift --version -> Swift version 9.9 (synthetic-9.9) (the pin, compared whole); toolchain: xcodegen --version -> Version: 9.9.9 (the pin, compared whole); acknowledgements draft: matches the inventory (549 characters))
@@ -36,7 +36,7 @@ ok    a product target compiles sources from Spikes/ (sources path): spike-in-pr
 ok    a product target compiles sources from Spikes/ (sources as a string): spike-in-product Apps/App/project.yml: names '../../Spikes/S/Sources', which resolves to Spikes/S/Sources under Spikes; Spikes code is never shipped
 ok    a product target names Spikes/ with another capitalization: spike-in-product Apps/App/project.yml: names '../../spikes/S/Sources/S', which resolves to spikes/S/Sources/S under Spikes; Spikes code is never ship
 ok    a product target copies Spikes/ files as a resource folder: spike-in-product Apps/App/project.yml: names '../../Spikes/S/include', which resolves to Spikes/S/include under Spikes; Spikes code is never shipped
-ok    a product build setting searches Spikes/ through $(SRCROOT): spike-in-product Apps/App/project.yml: names '/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/dependency-lock-self-test-eipjgzhv/m027/Apps/App/../..
+ok    a product build setting searches Spikes/ through $(SRCROOT): spike-in-product Apps/App/project.yml: names '/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/dependency-lock-self-test-38txqafs/m027/Apps/App/../..
 ok    a product build script copies from Spikes/: spike-in-product Apps/App/project.yml: names '../../Spikes/S', which resolves to Spikes/S under Spikes; Spikes code is never shipped
 ok    a product Package.swift passes a flag into Spikes/: spike-in-product Packages/Good/Package.swift: names '../../Spikes/S/include', which resolves to Spikes/S/include under Spikes; Spikes code is never shipped
 ok    a symbolic link under Packages/ points into Spikes/: spike-in-product Packages/Good/Sources/Good/Linked.swift: is a symbolic link to Spikes/S/Sources/S/S.swift, under Spikes, which is never shipped
@@ -143,7 +143,7 @@ ok    the inventory's lock list for a package misses a lock that pins it: lock-r
 ok    the inventory lists a lock that is not registered: lock-registry Docs/Licenses/inventory.json: acme/A lists Spikes/Gone/Package.resolved, which is not a registered lock
 ok    a project.yml is not a YAML mapping: inventory Spikes/Probe/project.yml: cannot read the manifest: not a YAML mapping
 ok    the inventory's direct_in misses a manifest that requires the package: lock-registry Spikes/S/Package.swift: requires acme/S, but the inventory's direct_in for it does not list this manifest
-ok    a local package that a project depends on cannot be read: inventory Spikes/Probe/project.yml: cannot follow its local packages: swift package dump-package failed: ipjgzhv/m134/Spikes/S/Package.swift:3:44:
+ok    a local package that a project depends on cannot be read: inventory Spikes/Probe/project.yml: cannot follow its local packages: swift package dump-package failed: 8txqafs/m134/Spikes/S/Package.swift:3:44:
 ok    an exemption names a manifest that is not committed: lock-registry Docs/Licenses/inventory.json: unlocked entry for 'Spikes/Gone/project.yml', which is not a committed manifest
 ok    an exemption gives no reason: inventory Docs/Licenses/inventory.json: unlocked entry for 'Spikes/Probe/project.yml' gives no reason
 ok    a product package aliases a transitive module (-module-alias in unsafeFlags): transitive-direct Packages/Good/Package.swift: aliases BModule (Alias=BModule), a module of acme/B, which product code may use only through the package that 
@@ -300,4 +300,4 @@ ok    acknowledgements draft: matches the inventory (236499 characters)
 dependency lock check: 0 failure(s), 0 warning(s)
 
 exit status: 0
-end: 2026-10-22T20:43:35Z; load:  9:43  up 19 days, 19:54, 3 users, load averages: 4.17 3.88 3.41
+end: 2026-10-22T20:50:27Z; load:  9:50  up 19 days, 20:01, 3 users, load averages: 3.99 4.24 3.81

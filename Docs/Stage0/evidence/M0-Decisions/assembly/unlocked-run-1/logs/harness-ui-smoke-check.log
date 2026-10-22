@@ -1,0 +1,19 @@
+lines: 31; events: attempt 11, event 8, launch 2, previous-session 2, refresh 2, start 1, stop 1, verify 2, verify-classes 2
+ok    two launches, one Start and one Stop, in that order: launch, start, stop, launch
+ok    no launch line records an application state (H-03: it reads background until a scene connects)
+ok    the first launch: platform=simulator protectedDataAvailable=true classA=absent (no canary before Start: H-04)
+ok    the second launch: classA=readable (the canary exists, and the simulator never locks)
+ok    the first launch's activation is recorded (event name=app-state state=active) before the Start
+ok    the start line: volume=0.01 (test volume) audio=playing audioCategory=AVAudioSessionCategoryPlayback (the category that plays in the background, read back) store=open canary=created session=ok, class C, D17's durability
+ok    at least 10 attempts, numbered from 1 without a break (11)
+ok    every attempt: save=saved readback=equal file=ok session=ok classes=simulator-unverified classA=readable
+ok    at least 5 attempts made in the background: the ticker and the writes work there (the simulator keeps the app running in the background with or without the tone, so this is not the tone's effect, which only device step 3 shows) (7)
+ok    no pause between attempts above the 5 s gap threshold (between 2.0 and 2.1 s)
+ok    no gap line
+ok    the run went to the background and came back (app-state events)
+ok    the stop line: failures=0 gaps=0 lockedAttempts=0 session=ok, its attempts the attempt lines' count
+ok    the check after Stop: verify result=ok acknowledged=11 extra=0 integrity=ok foreignKeyViolations=0 failures=0
+ok    the second launch reads the run as stopped-cleanly (previous-session when=launch)
+ok    the second launch's check of the library: verify result=ok acknowledged=11 extra=0
+recorded, not checked: refresh results not-scheduled:BGTaskSchedulerErrorDomain:1 (BGTaskScheduler is not available in the simulator)
+result: PASS

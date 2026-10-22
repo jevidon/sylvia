@@ -1200,7 +1200,7 @@ An agent review read the follow-up of section 20, and the workflow relayed its f
 
 ### 21.3 Commits
 
-The fix's documents, the new version of the amendments' checker with its mutations and runner, the recheck of the review's findings, the gate checks and the LFS checkout's log are in the fix's last documents commit, which the logs of 21.4's documents checks name; then come the commit that adds those logs and the commit that adds the gate checks' log.
+The fix's documents, the new version of the amendments' checker with its mutations and runner, the recheck of the review's findings, the gate checks and the LFS checkout's log came in `b2f1e2e3`, and a first set of the documents checks passed on it (their logs added by `a505bc31`, kept in the history). The gate checks then did not start: their script, one folder deeper than the follow-up's, took the repository root one folder too high, at `Docs/`, so every path failed; the run wrote no log, only scratch files under `Docs/.build/`, which are ignored and were deleted. The next commit corrects that line and this paragraph, and is the fix's last documents commit, which the logs of 21.4's documents checks name; then come the commit that adds those logs and the commit that adds the gate checks' log.
 
 ### 21.4 Checks
 

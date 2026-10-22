@@ -29,7 +29,7 @@
 # No simulator is created or used, nothing plays audio, nothing is fetched or pushed, and nothing is written outside
 # .build/ and the log. Exit status 1 if any part fails.
 set -u
-root="$(cd "$(dirname "$0")/../../../../../.." && pwd)"
+root="$(cd "$(dirname "$0")/../../../../../../.." && pwd)"  # seven folders up: one deeper than the follow-up's
 log="$1"
 cd "$root" || exit 1
 source Scripts/lib/env.sh

@@ -227,9 +227,9 @@ Scripts/ci.sh contracts dependency-lock hard-rules >> "$log" 2>&1 || ci_status=$
   grep -E '^result:' .build/ci-logs/hard-rules/audit-repository.log || echo "(none)"
   echo "-- FAIL lines in 12-dependency-lock's log:"
   grep -E '^FAIL ' .build/ci-logs/12-dependency-lock.log || echo "(none)"
-  echo "-- its toolchain lines, and its lines on the lock harness's lock:"
+  echo "-- its toolchain lines, and its count of the committed and registered locks (the lock harness's among them):"
   grep -E '^ok    toolchain:' .build/ci-logs/12-dependency-lock.log || echo "(none)"
-  grep -E 'LockHarness' .build/ci-logs/12-dependency-lock.log | head -n 5 || true
+  grep -E '^ok    locks:' .build/ci-logs/12-dependency-lock.log || echo "(none)"
 } >> "$log" 2>&1
 (( ci_status != 0 )) && { echo "part 5: a drop-in failed (above)" >> "$log"; status=1; }
 {

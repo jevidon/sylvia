@@ -1,10 +1,10 @@
 command: Scripts/ci.d/13-hard-rules.sh
-commit: 13dec66a44bdc0e790c960b7daffdfd51108706c; uncommitted paths: 0
+commit: 7c9da9a1c9351318785310573a946aca17fcac95; uncommitted paths: 0
 host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
-start: 2026-10-22T17:49:04Z; load:  6:49  up 19 days, 16:59, 3 users, load averages: 3.84 3.99 3.24
+start: 2026-10-22T17:54:06Z; load:  6:54  up 19 days, 17:04, 3 users, load averages: 3.63 4.04 3.52
 
 environment: host (macOS 26.6.2 25G83), Python 3.9.6
-commit: 13dec66a44bdc0e790c960b7daffdfd51108706c
+commit: 7c9da9a1c9351318785310573a946aca17fcac95
 
 --- self-test (Scripts/audit-hard-rules.sh self-test)
 ok: git work tree: the audit fails when there are findings
@@ -43,4 +43,4 @@ result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist e
 13-hard-rules: self-test and repository audit passed; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_90af3f3d-daf-1/.build/ci-logs/hard-rules
 
 exit status: 0
-end: 2026-10-22T17:49:10Z; load:  6:49  up 19 days, 16:59, 3 users, load averages: 3.93 4.00 3.25
+end: 2026-10-22T17:54:13Z; load:  6:54  up 19 days, 17:04, 3 users, load averages: 3.58 4.03 3.52

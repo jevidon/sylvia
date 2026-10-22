@@ -2,7 +2,7 @@
 
 Status of every step: **pending** (not run). Stage 0 agents did not use the physical iPhone; this checklist is for the serialized device run.
 
-**Device:** iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24), Developer Mode on (ADR-0001). Repeat steps 1-4 on device A, the oldest supported iPhone: the iPhone 11 Pro (iPhone12,3; A13), with the owner's iPhone 11 (iPhone12,1; A13) as a second phone of the same chip (decision D-1 (b), product owner, 22 October 2026; until then this line asked for the iPhone 12-class baseline, which was not available). On A, steps 1-2 block M0 and steps 3-4 can wait for M1 (runbook Section 7). Record A's results with `-A` in each file name (for example `step-1-A-tests.log`).
+**Device:** iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24), Developer Mode on (ADR-0001). Repeat steps 1-4 on device A, the oldest supported iPhone: the iPhone 11 Pro (iPhone12,3 expected, confirmed in runbook Session 0.4; A13), with the owner's iPhone 11 (iPhone12,1 expected; A13) as a second phone of the same chip (decision D-1 (b), product owner, 22 October 2026; until then this line asked for the iPhone 12-class baseline, which was not available). On A, steps 1-2 block M0 (runbook 8.10, before the M0 exit) and steps 3-4 can wait for M1 (runbook Section 7). Record A's results with `-A` in each file name (for example `step-1-A-tests.log`).
 
 **Step 3 uses the lock harness** (since 22 October 2026): the product owner decided to build the background-audio harness in Stage 0, before the device run, so that step 3 is conclusive the first time (PO-23 option (b), product owner, 22 October 2026; G0.5 recovery finding F5). Until then step 3 ran the XCTest probe `DeviceLockProbeTests`, which runs inside the test runner that iOS may suspend when the phone locks.
 

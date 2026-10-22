@@ -35,7 +35,7 @@ Revision is the first 12 characters of the pinned commit; `inventory.json` has t
 | marmelroy/Zip | 2.1.2 | `67fa55813b9e` | product-transitive | iOS: EPUB harness (2) | MIT; Minizip zlib; crypt.h Info-ZIP | G01-EPUB |
 | readium/GCDWebServer | 4.0.1 | `584db89a4c3c` | product-transitive | not linked (2) | BSD-3-Clause-style | G01-EPUB |
 | stephencelis/SQLite.swift | 0.16.0 | `964c300fb073` | product-transitive | not linked (2) | MIT | G01-EPUB |
-| groue/GRDB.swift | 7.11.1 | `b83108d10f42` | product | host: recovery tool (3); iOS: recovery test bundle only (4); no M0 iOS app links it yet | MIT | G05-AI, G05-AI/ATSProbe, G05-Recovery |
+| groue/GRDB.swift | 7.11.1 | `b83108d10f42` | product | host: recovery tool (3); iOS: recovery test bundle (4), and since 22 October 2026 the G0.5 recovery lock harness app (never shipped; not measured) | MIT | G05-AI, G05-AI/ATSProbe, G05-Recovery, G05-Recovery/LockHarness |
 | pointfreeco/swift-snapshot-testing | 1.19.6 | `28e5de025e3f` | test | tests only; absent from the design catalog app (6) | MIT | Packages/Design, Apps/DesignCatalog |
 | pointfreeco/swift-custom-dump | 1.7.3 | `4fb9e7cbb4b8` | test | tests only; absent from the design catalog app (6) | MIT | Packages/Design, Apps/DesignCatalog |
 | pointfreeco/swift-issue-reporting | 2.1.1 | `75b000cea2ca` | test | tests only; absent from the design catalog app (6) | MIT | Packages/Design, Apps/DesignCatalog |
@@ -52,7 +52,7 @@ Revision is the first 12 characters of the pinned commit; `inventory.json` has t
 
 Two packages share the identity `zipfoundation` (readium's fork and upstream), so they can never be in one graph (ADR-0010); the inventory keys packages by URL. Readium's manifest also declares apple/swift-docc-plugin, which no target uses: SwiftPM never resolves it.
 
-**Locks** (full paths in `inventory.json`): `Apps/DesignCatalog`, `Packages/Design`, `Spikes/G01-EPUB`, `Spikes/G01-EPUB/Core`, `Spikes/G02-Transfer/MacIdentityProbe`, `Spikes/G02-Transfer/SourceService`, `Spikes/G02-Transfer/TransferKit`, `Spikes/G02-Transfer/iOS`, `Spikes/G03-Intake/App`, `Spikes/G03-Intake/IntakeKit`, `Spikes/G03-Intake/ZipEval/Readium`, `Spikes/G03-Intake/ZipEval/Upstream`, `Spikes/G05-AI`, `Spikes/G05-AI/ATSProbe`, `Spikes/G05-Recovery`, each `Package.resolved` beside its manifest. `Apps/DesignCatalog/Package.resolved` is a copy of the design package's lock: Xcode writes no lock for a project whose only package is local, and `sylvia_generate` installs the committed copy. G0.2's `MacIdentityProbe` and `iOS` locks are copies of `SourceService`'s and `TransferKit`'s for the same reason; G0.2 committed them on `m0-int-minors-g02-transfer`, merged at M0 assembly (14 October 2026), when their exemptions below were removed.
+**Locks** (full paths in `inventory.json`): `Apps/DesignCatalog`, `Packages/Design`, `Spikes/G01-EPUB`, `Spikes/G01-EPUB/Core`, `Spikes/G02-Transfer/MacIdentityProbe`, `Spikes/G02-Transfer/SourceService`, `Spikes/G02-Transfer/TransferKit`, `Spikes/G02-Transfer/iOS`, `Spikes/G03-Intake/App`, `Spikes/G03-Intake/IntakeKit`, `Spikes/G03-Intake/ZipEval/Readium`, `Spikes/G03-Intake/ZipEval/Upstream`, `Spikes/G05-AI`, `Spikes/G05-AI/ATSProbe`, `Spikes/G05-Recovery`, `Spikes/G05-Recovery/LockHarness`, each `Package.resolved` beside its manifest. `Apps/DesignCatalog/Package.resolved` is a copy of the design package's lock: Xcode writes no lock for a project whose only package is local, and `sylvia_generate` installs the committed copy. G0.2's `MacIdentityProbe` and `iOS` locks are copies of `SourceService`'s and `TransferKit`'s for the same reason; G0.2 committed them on `m0-int-minors-g02-transfer`, merged at M0 assembly (14 October 2026), when their exemptions below were removed. The G0.5 recovery lock harness's lock (`Spikes/G05-Recovery/LockHarness`, 22 October 2026) is a copy of `Spikes/G05-Recovery`'s for the same reason.
 
 **Without a lock** (exempted in `inventory.json`, Spikes only):
 
@@ -78,7 +78,7 @@ Every requirement below is `exact:` (Package.swift) or `exactVersion:` (project.
 | `Spikes/G03-Intake/ZipEval/IdentityProbe/Package.swift` | swift-toolkit 3.11.0, weichsel/ZIPFoundation 0.9.20 | `IdentityProbe` (never resolves) |
 | `Spikes/G05-AI/Package.swift` | GRDB 7.11.1 | `SylviaContext` |
 | `Spikes/G05-Recovery/Package.swift` | GRDB 7.11.1 | `SylviaRecovery`, `g05-recovery-tool`, `SylviaRecoveryTests` (test) |
-| Other project files (G01-PDF, G02 iOS and MacIdentityProbe, G03 App, G05 ATSProbe) and `ZipEval/Common` | none remote | |
+| Other project files (G01-PDF, G02 iOS and MacIdentityProbe, G03 App, G05 ATSProbe, G05 recovery LockHarness) and `ZipEval/Common` | none remote | |
 
 ## Licenses and obligations
 

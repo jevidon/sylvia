@@ -1,0 +1,74 @@
+# G0.5 recovery: the locked-device harness for T50 (device checklist Docs/Stage0/device-checklists/G05-Recovery.md,
+# step 3; PO-23 option (b), product owner, 22 October 2026). Stage 0 evidence code, never shipped (ADR-0002).
+# An iPhone app that keeps running while the phone is locked by playing a quiet tone (UIBackgroundModes audio; player
+# volume 0.01 unless SYLVIA_AUDIBLE_PLAYBACK=1, never muted), saves to the spike's class-C library on a timer, reads
+# each save back and logs every attempt to a class-C log file and the unified log. Its logic is in Core/ and is tested
+# on the simulator by the unit tests in Tests/ (no host app; they compile Core/ themselves).
+#   source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh; sylvia_generate Spikes/G05-Recovery/LockHarness
+# Package.resolved beside this file is a copy of ../Package.resolved (the package's lock), which sylvia_generate
+# installs into the generated project; Scripts/ci.d/71-g05-recovery.sh checks that it pins exactly what that lock pins.
+name: G05LockHarness
+options:
+  bundleIdPrefix: com.jevidon.sylvia.spike
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+packages:
+  G05Recovery:
+    path: ..
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY: YES
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    DEVELOPMENT_TEAM: A4KBDX665Z
+    CODE_SIGN_STYLE: Automatic
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: "0.1"
+targets:
+  G05LockHarness:
+    type: application
+    platform: iOS
+    sources: [App, Core]
+    dependencies:
+      - package: G05Recovery
+        product: SylviaRecovery
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: G05 Lock
+        UIBackgroundModes: [audio, fetch]
+        BGTaskSchedulerPermittedIdentifiers: [com.jevidon.sylvia.spike.g05lockharness.refresh]
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g05lockharness
+  G05LockHarnessTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests, Core]
+    dependencies:
+      - package: G05Recovery
+        product: SylviaRecovery
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.g05lockharness.tests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  G05LockHarness:
+    build:
+      targets:
+        G05LockHarness: all
+        G05LockHarnessTests: [test]
+    test:
+      config: Debug
+      targets:
+        - G05LockHarnessTests
+      gatherCoverageData: false

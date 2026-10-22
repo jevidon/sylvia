@@ -106,14 +106,14 @@ Status values: passed-host, passed-simulator, passed-device, failed, partial, pe
 
 ## Open questions
 
-1. Product owner: is fixed layout out of the V1 compatibility subset? The adapter refuses it now.
-2. Product owner: accept the limits that are spike proposals (preflight: 16 MiB per markup entry, 256 MiB per entry, 100:1 ratio above 1 MiB; sanitizer: nesting 256, 100,000 elements per document, 256 attributes per element, 100,000 attributes per document, 20 s per document, two sanitizer workers per open publication) and the narrowing of the subset to well-formed XHTML declared as XHTML or HTML (F13, F14)?
-3. Product owner: should a quotation that crosses chapters be offered in V1 (F8), or is storage support enough for now?
+1. Product owner: is fixed layout out of the V1 compatibility subset? The adapter refuses it now. *(Decided by the product owner on 22 October 2026: out of V1, refused with a specific message, PO-01 (a); `M0-gate.md` Section 4.1.)*
+2. Product owner: accept the limits that are spike proposals (preflight: 16 MiB per markup entry, 256 MiB per entry, 100:1 ratio above 1 MiB; sanitizer: nesting 256, 100,000 elements per document, 256 attributes per element, 100,000 attributes per document, 20 s per document, two sanitizer workers per open publication) and the narrowing of the subset to well-formed XHTML declared as XHTML or HTML (F13, F14)? *(Decided by the product owner on 22 October 2026: accepted as configurable V1 defaults, rechecked against a larger real-book sample in M3, PO-02 (a); if a phone takes longer than 20 s for documents near the caps, the choice between lower caps and a longer budget comes back to the product owner (open question 8); `M0-gate.md` Section 4.1.)*
+3. Product owner: should a quotation that crosses chapters be offered in V1 (F8), or is storage support enough for now? *(Decided by the product owner on 22 October 2026: offered, through an action that extends a quotation into the next chapter, PO-03 (a); `M0-gate.md` Section 4.1.)*
 4. Who reports F1, F4, F6 and F14 to Readium, and does Sylvia carry the adapter workarounds until a fixed release is pinned?
-5. Should the reader keep the reading position by text through settings changes (F9)?
-6. Security reviewer: approve the safety configuration in ADR-0004 (agent-reviewed; human sign-off pending).
+5. Should the reader keep the reading position by text through settings changes (F9)? *(Decided by the product owner on 22 October 2026: yes: the adapter returns to the text first in view, an M3 behaviour with its own test, PO-04 (a); `M0-gate.md` Section 4.1.)*
+6. Security reviewer: approve the safety configuration in ADR-0004 (agent-reviewed; human sign-off pending). *(22 October 2026: the product owner signs the security review personally, once the device steps it rests on have run (checklist steps 11 and 13); until then it stays pending.)*
 7. The Project Gutenberg fixtures carry the Project Gutenberg License (see `Fixtures/LICENSES.md`); replace them before any public distribution.
-8. The iPhone 12-class baseline device and an iPad are still unavailable (ADR-0001); open time, memory and the sanitizer's time for documents near its caps (checklist step 11) on them are unknown. If a phone takes longer than 20 s for those documents, the product owner decides between lower caps and a longer budget (the budget is not relaxed to make a test pass).
+8. The iPhone 12-class baseline device and an iPad are still unavailable (ADR-0001); open time, memory and the sanitizer's time for documents near its caps (checklist step 11) on them are unknown. If a phone takes longer than 20 s for those documents, the product owner decides between lower caps and a longer budget (the budget is not relaxed to make a test pass). *(22 October 2026: the oldest supported iPhone is now the product owner's iPhone 11 Pro, decision D-1 (b); the repeats of checklist steps 1, 6, 11 and 12 on it, and of 1, 6 and 11 on an iPad, can wait for M3, `M0-device-runbook.md` Section 7.)*
 
 ## Generated fixtures
 

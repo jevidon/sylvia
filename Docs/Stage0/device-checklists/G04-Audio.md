@@ -2,7 +2,7 @@
 
 Status of every step: **pending** (not run). Stage 0 agents did not use the physical iPhone; this checklist is for the serialized device run. Nothing here may be inferred from the simulator results.
 
-**Device:** iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24), Developer Mode on (ADR-0001). Repeat steps 1, 3, 8-13 and 15 on the iPhone 12-class baseline when one is available (it has no Action button: skip step 11 there); ADR-0007's open item asks for steps 8-13 there.
+**Device:** iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24), Developer Mode on (ADR-0001). Repeat steps 1, 3, 8-13 and 15 on the oldest supported iPhone when one is available (it has no Action button: skip step 11 there); ADR-0007's open item asks for steps 8-13 there. *(22 October 2026: the oldest supported iPhone is the product owner's iPhone 11 Pro, decision D-1 (b); until then this line named the iPhone 12-class baseline. Steps 8-10, 12 and 13 on it block the M0 exit; steps 1, 3 and 15 on it can wait for M4: `Docs/Stage0/M0-device-runbook.md` 8.9 and Section 7.)*
 
 **Accessories:** wired or Bluetooth headphones (step 4), a second phone to place a call (step 5), a Bluetooth speaker or headset (step 6).
 
@@ -280,6 +280,8 @@ The simulator trial killed the harness with SIGKILL from the host (`process-kill
 5. Once more, but instead of the signal, open the app switcher and swipe the harness away while it plays. The system makes it inactive first, so a lifecycle checkpoint is expected: the resumed position is within 5,000 ms behind the last `position` line.
 
 ## 17. Sleep timer and rewind after a long pause (plan 10.1; review R6-02; ADR-0006 decisions 19 and 20)
+
+*(22 October 2026: the product owner decided the product's defaults, PO-39: the rewind after a long pause is on by default and graduated, about 10 s after a pause of a few minutes rising to about 60 s after a day, with a brief notice that offers Undo, and can be turned off in Settings; M4 sets its exact steps within those bounds. This step still tests the spike's rule with the harness's own setting, which starts off and is turned on below.)*
 
 The rules are unit-tested over a fake engine and a manual clock (`PlaybackControlsTests`). What only the device shows is that the timer fires while the phone is locked (it is checked at every player tick, which keeps coming while the book plays in the background, as the checkpoints of step 3 do), what the Lock Screen shows afterwards, and whether music the book interrupted stays silent. The harness controls are in its Playback settings section; neither setting is kept across launches.
 

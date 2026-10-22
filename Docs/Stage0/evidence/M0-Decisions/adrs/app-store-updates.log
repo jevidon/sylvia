@@ -1,0 +1,18 @@
+command: Docs/Stage0/evidence/M0-Decisions/adrs/commands/app-store-updates.sh
+date (UTC): 2026-10-22T06:30:52Z
+host: macOS 26.6.2 (25G83), arm64
+
+== defaults read /Library/Preferences/com.apple.commerce AutoUpdate
+0
+exit status: 0
+
+== defaults read /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallAppUpdates
+2026-10-22 19:30:52.954 defaults[95525:48031877] 
+The domain/default pair of (/Library/Preferences/com.apple.SoftwareUpdate, AutomaticallyInstallAppUpdates) does not exist
+exit status: 1
+
+== the installed Xcode
+Xcode 27.1
+Build version 27A9275
+exit status: 0
+Xcode.app modified: Oct 18 07:28:54 2026

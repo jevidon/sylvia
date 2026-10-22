@@ -1,0 +1,43 @@
+command: Docs/Stage0/evidence/M0-Decisions/adrs/commands/adr-checks.sh
+part: 1. Scripts/ci.sh contracts dependency-lock hard-rules
+commit: 2b0bd4e498afeccfee533e8600403c6260aad01a; uncommitted paths: 0
+date (UTC): 2026-10-22T06:27:22Z
+host: macOS 26.6.2 (25G83), arm64; Xcode 27.1 Build version 27A9275 
+load: 19:27  up 19 days,  5:37, 3 users, load averages: 1.72 2.01 2.14
+environment: host only; no simulator or device
+
+==> 00-git-lfs
+    FAIL (5s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-2/.build/ci-logs/00-git-lfs.log
+    | self-test: 6, a pointer file that only the LFS attribute catches (git lfs ls-files does not list it): the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G01-EPUB/staged-without-lfs.png")
+    | self-test: 7, a pointer committed outside the LFS patterns (only git lfs ls-files catches it): the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Design/images/committed-as-a-pointer.png")
+    | self-test: 8, the repository-local LFS filter not configured: the check failed, as it must (its output names Scripts/setup-repo.sh and "repository-local Git LFS filter is not configured")
+    | self-test: 9, git-lfs not installed: the check failed, as it must (its output names Scripts/setup-repo.sh and "git-lfs is not installed")
+    | self-test: 10, an image committed as a plain git blob: the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G06-Design/committed-without-lfs.png")
+    | self-test: passed (10 cases)
+    | 
+    | --- this checkout
+    | repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-2 (git directory /Users/jevidon/Git/sylvia/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+    | repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.git/config (clean, smudge, process, required)
+    | LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+    | FAIL: files stored with Git LFS are still LFS pointer files in the working tree, not the files themselves (777):
+    |     Docs/Stage0/evidence/G01-EPUB/anchor-rotate-landscape.png
+    |     Docs/Stage0/evidence/G01-EPUB/anchor-theme-Night.png
+    |     Docs/Stage0/evidence/G01-EPUB/highlight-night.png
+    |     Docs/Stage0/evidence/G01-EPUB/highlight-paper.png
+    |     Docs/Stage0/evidence/G01-EPUB/typeface-literata.png
+    |     Docs/Stage0/evidence/G01-EPUB/typeface-systemSans.png
+    |     Docs/Stage0/evidence/G01-EPUB/typeface-systemSerif.png
+    |     Docs/Stage0/evidence/G01-EPUB/ui-anchor-1-created.png
+    |     Docs/Stage0/evidence/G01-EPUB/ui-anchor-2-landscape.png
+    |     Docs/Stage0/evidence/G01-EPUB/ui-anchor-3-relaunched.png
+    |     ... and 767 more
+    | git lfs fsck --pointers (HEAD): Git LFS fsck OK
+    | 
+    | 00-git-lfs: FAIL (pointers). What to do:
+    |   Run Scripts/setup-repo.sh from the repository root. It runs 'git lfs install --local', which writes the LFS filter into this
+    |   repository's own configuration (/Users/jevidon/Git/sylvia/.git/config, never your global one), and 'git lfs pull', which replaces the
+    |   pointer files with the files. A pointer file means the checkout was made without git-lfs, before the filter
+    |   was set up, or with GIT_LFS_SKIP_SMUDGE set.
+FAILED: 00-git-lfs, a check of the checkout itself; no other drop-in was run. Fix the checkout as its message says.
+exit status: 1
+load at the end: 19:27  up 19 days,  5:38, 3 users, load averages: 1.74 2.01 2.14

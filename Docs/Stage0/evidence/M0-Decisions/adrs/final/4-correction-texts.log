@@ -1,0 +1,88 @@
+command: Docs/Stage0/evidence/M0-Decisions/adrs/commands/adr-checks.sh
+part: 4. Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py
+commit: 967206df15b73647d82639352afbcf62fd3eff6b; uncommitted paths: 0
+date (UTC): 2026-10-22T06:57:12Z
+host: macOS 26.6.2 (25G83), arm64; Xcode 27.1 Build version 27A9275 
+load: 19:57  up 19 days,  6:07, 3 users, load averages: 7.56 7.20 5.44
+environment: host only; no simulator or device
+
+# texts that Section 8 of the M0 device runbook replaces; checked 2026-10-22T06:57:12Z from the repository root (the commit is in clean-run.log)
+C2   MISSING x0 Docs/Stage0/device-checklists/G01-EPUB.md: Long-press the word "governor" in "From my governor, to be neither of 
+C2   MISSING x0 Docs/Stage0/device-checklists/G01-EPUB.md: the row reads "Quote: From my governor, … gladiators' fights"
+C3   MISSING x0 Docs/Stage0/device-checklists/G01-EPUB.md: (compare with the specimen in `Docs/Design/`)
+C4   MISSING x0 Docs/Stage0/device-checklists/G01-EPUB.md: Repeat steps 1, 6 and 11 on the iPhone 12-class baseline and an iPad o
+C5   MISSING x0 Docs/Stage0/G01-EPUB.md: Status values: passed-host, passed-simulator, failed, partial, pending
+C10  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: On the phone, open the part 2 harness pairing screen and paste the pri
+C11  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: `sylvia-source --root <any folder> --lan --port <P2> --ephemeral-ident
+C13  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: (scheme `G02TransferATSVariant`, build setting `G02_ATS_VARIANT=tailne
+C14  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: `sylvia-test-source --root <folder with the 5 GiB file> --lan --test-l
+C15  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: Fresh install of the harness. Tap "Browse the local network" before pa
+C15  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: screenshots of the error and of the successful retry
+C16  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: the transfer finishes with the pinned digest and "Imported" once.
+C16  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: the transfer finishes and is imported once.
+C16  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: **Expected after the import:**
+C17  ok      x1 Docs/Stage0/device-checklists/G02-Transfer.md: earlier the agreement was not accepted: `Docs/Stage0/evidence/G02-Tran
+C17  MISSING x0 Docs/Stage0/G02-Transfer.md: Every phone step needs code signing for the team, which this Mac could
+C18  MISSING x0 Docs/Stage0/device-checklists/G03-Intake.md: -derivedDataPath Spikes/G03-Intake/App/.build/DerivedData-device -allo
+C20  MISSING x0 Docs/Stage0/device-checklists/G03-Intake.md: In Files, open an EPUB and use Share > **Open in Sylvia Intake Spike**
+C21  MISSING x0 Docs/Stage0/device-checklists/G03-Intake.md: "Opened file staged: 5 file(s), state staged"
+C22  MISSING x0 Docs/Stage0/device-checklists/G04-Audio.md: (copy the four `multi/*.mp3` fixtures into `Documents/G04Book` instead
+C22  MISSING x0 Docs/Stage0/device-checklists/G04-Audio.md: With the LibriVox M4B in the book folder (step 2)
+C23  MISSING x0 Docs/Stage0/G04-Audio.md: The device equivalent is checklist step 16.
+C23  MISSING x0 Docs/Stage0/G04-Audio.md: Device: steps 1, 1.5 and 14.
+C24  ok      x1 Docs/Stage0/device-checklists/G05-AI.md: -only-testing:ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnoth
+C26  MISSING x0 Docs/Stage0/device-checklists/G05-AI.md: <signing flags> | tee ats-device.log
+C26  MISSING x0 Docs/Stage0/device-checklists/G05-AI.md: <signing flags> | tee lan-allowed.log
+C26  MISSING x0 Docs/Stage0/device-checklists/G05-AI.md: (log to `lan-denied.log`)
+C28  ok      x1 Docs/Stage0/device-checklists/G06-Design.md: On the iPhone 12-class baseline (iOS 26.x), Settings > Display & Brigh
+C30  MISSING x0 Docs/Stage0/device-checklists/G04-Audio.md: (branch `m0` after integration, or `m0-g04-audio`)
+C30  MISSING x0 Docs/Stage0/device-checklists/G05-AI.md: in a checkout of branch `m0` (or the G0.5 branch before integration)
+C30  MISSING x0 Docs/Stage0/device-checklists/G05-Recovery.md: check out the branch
+C31  MISSING x0 Docs/Stage0/device-checklists/G01-EPUB.md: the result (**pass** or **fail**)
+C31  MISSING x0 Docs/Stage0/device-checklists/G01-PDF.md: pass/fail
+C31  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: pass or fail
+C31  MISSING x0 Docs/Stage0/device-checklists/G03-Intake.md: write PASS or FAIL
+C31  MISSING x0 Docs/Stage0/device-checklists/G04-Audio.md: from pending-device to passed or failed
+C31  MISSING x0 Docs/Stage0/device-checklists/G05-AI.md: mark the step passed or failed
+C31  MISSING x0 Docs/Stage0/device-checklists/G05-Recovery.md: from pending to passed or failed
+C31  MISSING x0 Docs/Stage0/device-checklists/G06-Design.md: pass or fail
+C31  MISSING x0 Docs/Stage0/G05-AI.md: Status values: passed-host, passed-simulator, partial, pending-device,
+C34  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: the phone reports the same SHA-256 as `shasum -a 256 <file>` on the Ma
+C34  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: the final file's SHA-256 is `d2383fe38d8033b62ef9e6222756369fab813d2c6
+C35  ok      x1 Docs/Stage0/device-checklists/G02-Transfer.md: `devices` the phone's device ID
+C35  ok      x1 Docs/Stage0/device-checklists/G02-Transfer.md: run `revoke <device-id>` on the Mac
+C36  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: Pair again; then stop the source, delete its identity (`--state` direc
+C37  MISSING x0 Docs/Stage0/device-checklists/G02-Transfer.md: Share the 5 GiB generated file (`Scripts/fixtures/generate-g02-transfe
+C39  MISSING x0 Docs/Stage0/device-checklists/G03-Intake.md: Put `Fixtures/epub/se-walden.epub` in On My iPhone (AirDrop it or use 
+C39  MISSING x0 Docs/Stage0/device-checklists/G03-Intake.md: one MP3 excerpt from `Fixtures/audio/`
+C40  MISSING x0 Docs/Stage0/device-checklists/G04-Audio.md: Run it twice more with the phone on a charger and not in Low Power Mod
+C40  MISSING x0 Docs/Stage0/device-checklists/G05-Recovery.md: Run step 1 two more times with the phone on a charger and not in Low P
+C41  MISSING x0 Docs/Stage0/device-checklists/G05-Recovery.md: Record all four p95 values.
+C42  MISSING x0 Docs/Stage0/device-checklists/G05-Recovery.md: (the bundle ID is in step 4.1's log)
+C43  MISSING x0 Docs/Stage0/device-checklists/G06-Design.md: (3) the primary button is a dark grey block, distinct from ink text an
+C45  MISSING x0 Docs/Stage0/device-checklists/G04-Audio.md: `-allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z`
+C45  MISSING x0 Docs/Stage0/device-checklists/G05-Recovery.md: `-allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z`
+C45  MISSING x0 Docs/Stage0/device-checklists/G05-AI.md: -allowProvisioningUpdates` to each `xcodebuild` command
+C46  ok      x1 Spikes/G02-Transfer/Scripts/mac-identity-probe-run.sh: -disableAutomaticPackageResolution -allowProvisioningUpdates
+C46  ok      x1 Spikes/G02-Transfer/Scripts/mac-identity-probe-run.sh: -allowProvisioningUpdates (automatic signing
+C47  MISSING x0 Docs/ADRs/0009-transfer-protocol.md: - Device run of the part 2 checklist steps (13 to 19, and 21 added in 
+C47  ok      x1 Docs/Stage0/G02-Transfer.md: Which error iOS reports for its own failed write: checklist step 21.
+C47  MISSING x0 Docs/Stage0/G02-Transfer.md: is written as device steps 4, 6, 8, 9, 13 to 19 and 21 (a full phone d
+C48  MISSING x0 Docs/Stage0/device-checklists/G05-AI.md: Run, on an iPhone with iOS 26.0-26.x if available (record the exact ve
+C48  MISSING x0 Docs/Stage0/G05-AI.md: | D1 | ATS behaviour on a device with the minimum OS | pending-device 
+C49  MISSING x0 Docs/ADRs/0011-ai-providers-context-and-privacy.md: - **Pending (human):** a real local model server, Hermes or another ga
+C49  MISSING x0 Docs/ADRs/0011-ai-providers-context-and-privacy.md: - Human runs (steps 5-8): real local server, gateway, live first-party
+C49  ok      x1 Docs/Stage0/G05-AI.md: | P2 | Hermes or another gateway | pending-human | checklist step 8 |
+C50  MISSING x0 Docs/ADRs/0013-design-language.md: - Devices: checklist steps 1-21 and the part 3 review steps 22-31, on 
+C51  ok      x1 Docs/Stage0/G06-Design.md: Checklist steps 13, 14, 23, 24 and 27 on the oldest supported iPhone (
+C51  ok      x1 Docs/Stage0/G06-Design.md: oldest supported iPhone, iPhone 17 Pro, iPad
+C51  ok      x1 Docs/ADRs/0001-platform-baseline-and-toolchain.md: - Product owner: an iPhone 12-class device and an iPad for G0.6 and th
+C52  MISSING x0 Docs/Stage0/device-checklists/G04-Audio.md: Repeat steps 1, 3, 9-13 and 15 on the iPhone 12-class baseline when on
+C53  MISSING x0 Docs/Stage0/device-checklists/G04-Audio.md: xcrun devicectl device process launch --device <device-id> com.jevidon
+C54  MISSING x0 Docs/Stage0/device-checklists/G04-Audio.md: Keep the phone unlocked, on a charger, with auto-lock set to Never for
+C55  MISSING x0 Docs/ADRs/0010-intake-handoff-and-wired-bundles.md: Whether an iCloud download reports its progress through this Progress 
+C56  ok      x1 Docs/Stage0/device-checklists/G03-Intake.md: Run on both when available.
+C56  MISSING x0 Docs/ADRs/0010-intake-handoff-and-wired-bundles.md: - Device runs in `Docs/Stage0/device-checklists/G03-Intake.md`, in par
+C56  ok      x1 Docs/Stage0/G03-Intake.md: the share extension's real memory limit and peak on the iPhone 17 Pro 
+77 texts checked, 63 missing
+exit status: 1

@@ -1,0 +1,21 @@
+command: Docs/Stage0/evidence/M0-Decisions/adrs/commands/adr-checks.sh
+part: 1. Scripts/ci.sh contracts dependency-lock hard-rules
+commit: 2b0bd4e498afeccfee533e8600403c6260aad01a; uncommitted paths: 0
+date (UTC): 2026-10-22T06:28:01Z
+host: macOS 26.6.2 (25G83), arm64; Xcode 27.1 Build version 27A9275 
+load: 19:28  up 19 days,  5:38, 3 users, load averages: 2.23 2.10 2.17
+environment: host only; no simulator or device
+
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (52s)
+==> 12-dependency-lock
+    pass (34s)
+==> 13-hard-rules
+    pass (6s)
+all 5 steps passed
+exit status: 0
+load at the end: 19:29  up 19 days,  5:40, 3 users, load averages: 3.20 2.59 2.36

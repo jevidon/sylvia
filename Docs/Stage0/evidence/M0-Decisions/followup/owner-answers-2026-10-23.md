@@ -11,7 +11,7 @@ This record is Markdown, not JSON as the first fix's record of the decision page
 > H-1's one-off exception also covers pull request #5 and the merge of m0-decisions into main before the M0 exit. The branch rule stays; M0 stays formally pending until the device sessions and sign-offs.
 
 - **Settles:** ADR-0002's open items (whether pull request #5 is covered by H-1's exception; whether a merge of `m0-decisions` into `main` before the M0 exit review would be); `M0-gate.md` Section 1, item 4 (Merges), and Section 6.3, item 1.
-- **Recorded in:** ADR-0002 (status, date, Deciders, Branches, Open items); the ADR index; `M0-gate.md` (Sections 1, 2.9 row 92, 6.3 item 1, 7 and 8); the runbook (header, run 1, 0.3); its session log (row 1); the Stage 0 README; the repository README; the integration log (section 20, and dated notes in 17.5, 18.5 and 19.5).
+- **Recorded in:** ADR-0002 (status, date, Deciders, Branches, Open items); the ADR index; `M0-gate.md` (Sections 1, 2.9 row 92, 6.3 item 1, 7 and 8); the runbook (header, run 1, 0.3); its session log (row 1); the Stage 0 README; the repository README; the integration log (section 20, and dated notes in 17.5, 18.5 and 19.5). *(Dated note, the follow-up's fix, 23 October 2026: agent work is merged into `m0-decisions`, never straight into `main` before the exit, which the answer does not cover (integration log section 21, FID4-02).)*
 
 ## 2. PO-12's two open parts: the sources file and the import ledger
 
@@ -26,7 +26,7 @@ This record is Markdown, not JSON as the first fix's record of the decision page
 
 - **Settles:** ADR-0014 section 7, items 1, 2, 3 and 8 (counsel's part); plan 23.1's D13 row (its pending text); `M0-plan-amendments.md` PO-41 to PO-44; `M0-gate.md` Sections 1 (item 4, Counsel), 3 (D13), 4.1, 4.2 and 7 (item 4).
 - **Recorded in:** ADR-0014 (status, Deciders, sections 4 and 7, Open items); the ADR index; the plan (23.1 D13, Appendix D); `M0-plan-amendments.md` (header, Section 4); `M0-gate.md` (Sections 1, 2.8 row 77, 3, 4, 5.4 and 7); the integration log.
-- **Not changed:** `Docs/Licenses/inventory.json` and the acknowledgements draft it generates keep their markings for counsel ("pending counsel", "Pending (not yet decided)"): the lawyer's review they wait for is still to come, before any public App Store release, and `12-dependency-lock` requires the draft to equal what the inventory generates.
+- **Not changed:** `Docs/Licenses/inventory.json` and the acknowledgements draft it generates keep their markings for counsel ("pending counsel", "Pending (not yet decided)"): the lawyer's review they wait for is still to come, before any public App Store release, and `12-dependency-lock` requires the draft to equal what the inventory generates. *(Dated note, the follow-up's fix, 23 October 2026: changed: the inventory and the draft now record the answer beside their marks and name the notices the OpenDyslexic fonts still lack; and the records no longer read the answer as covering the Mac companion's notarized builds, which it does not name (integration log section 21, FID4-01 and FID4-05).)*
 
 ## 4. The iPad for Session 9
 
@@ -34,7 +34,7 @@ This record is Markdown, not JSON as the first fix's record of the decision page
 
 - **Settles:** `M0-gate.md` Section 1, item 1 (an iPad, if you do not have one); the runbook's 1.1 row C and run 1; ADR-0001's open item and Test devices; plan 19.1, 21.1 and the device-evidence risk row; the G0.6 checklist's device line C.
 - **Recorded in:** `M0-gate.md` (Sections 1 and 4.3); the runbook (header, 1.1, run 1, 0.4, D-1); its session log (row 1); the G0.6 checklist (header, device line C); ADR-0001 (Test devices, Open items); the plan (19.1, 21.1, 23.2, Appendix D); `G01-EPUB.md` (open question 8); the integration log.
-- **Still to record:** the iPad's model, identifier and iPadOS version and build, at the runbook's Session 0.4.
+- **Still to record:** the iPad's model, identifier and iPadOS version and build, at the runbook's Session 0.4. *(Dated note, the follow-up's fix, 23 October 2026: and, before Session 0, a check that it runs iPadOS 26 or later; the records no longer state its iPadOS, which the answer did not give (integration log section 21, FID4-03).)*
 
 ## 5. Three readings of the decisions of 22 October 2026
 

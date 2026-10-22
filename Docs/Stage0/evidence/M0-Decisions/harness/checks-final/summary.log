@@ -1,0 +1,8 @@
+1 Scripts/ci.sh contracts: passed
+2 13-hard-rules: passed
+3a runbook as committed: content check FAILED as expected, only on G0.5 recovery step 3 (35 checklist markers not in the runbook yet, 2 XCTest-probe markers left in its 6.1); step coverage passed
+3b runbook with the requested changes: content check and step coverage passed
+4a 12-dependency-lock as committed: FAILED as expected, only on the harness's lock not yet registered in the inventory (2 failure lines)
+4b dependency lock with the requested inventory changes: passed
+5 harness linkage: recorded (information)
+problems: 0

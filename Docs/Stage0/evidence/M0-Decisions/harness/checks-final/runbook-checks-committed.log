@@ -1,0 +1,72 @@
+command: Docs/Stage0/evidence/M0-Decisions/harness/commands/checks.sh checks-final (runbook content check and step coverage, the runbook as committed)
+commit: 6324f46e10fc1aff76d9527dc47336e9fa6833be; uncommitted files: 1
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+date: 2026-10-22T07:41:09Z; load: 4.34 2.85 3.17
+
+runbook: Docs/Stage0/M0-device-runbook.md
+== forward: each checklist step's markers, in the runbook
+G01-EPUB.md: 13 steps, 38 markers: 38 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G01-PDF.md: 11 steps, 27 markers: 26 in the runbook, 0 in steps left to the checklist, 1 listed as not carried, 0 missing
+G02-Transfer.md: 23 steps, 76 markers: 68 in the runbook, 0 in steps left to the checklist, 8 listed as not carried, 0 missing
+G03-Intake.md: 27 steps, 59 markers: 59 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G04-Audio.md: 17 steps, 121 markers: 100 in the runbook, 15 in steps left to the checklist, 6 listed as not carried, 0 missing
+G05-AI.md: 9 steps, 73 markers: 57 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+G05-Recovery.md: 5 steps, 54 markers: 17 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 35 missing
+  MISSING step 3: G05 Lock
+  MISSING step 3: audio=playing
+  MISSING step 3: class-a-canary.bin=NSFileProtectionComplete
+  MISSING step 3: classA=readable
+  MISSING step 3: classes=differs:
+  MISSING step 3: classes=ok
+  MISSING step 3: durability=journal_mode=wal,synchronous=FULL,fullfsync=1,checkpoint_fullfsync=1
+  MISSING step 3: event name=audio
+  MISSING step 3: event name=protected-data-did-become-available
+  MISSING step 3: event name=protected-data-will-become-unavailable
+  MISSING step 3: extra=0
+  MISSING step 3: extra=1
+  MISSING step 3: failures=0
+  MISSING step 3: file=failed
+  MISSING step 3: file=ok
+  MISSING step 3: foreignKeyViolations=0
+  MISSING step 3: gaps=0
+  MISSING step 3: integrity=ok
+  MISSING step 3: lockedFailures=0
+  MISSING step 3: not observed
+  MISSING step 3: not observed: iOS did not launch the harness before the first unlock
+  MISSING step 3: observed before the first unlock
+  MISSING step 3: protection=NSFileProtectionCompleteUntilFirstUserAuthentication
+  MISSING step 3: readback=differs
+  MISSING step 3: readback=equal
+  MISSING step 3: readback=failed
+  MISSING step 3: result=could-not-read
+  MISSING step 3: result=ended-by-restart
+  MISSING step 3: result=ok
+  MISSING step 3: result=unreadable
+  MISSING step 3: save=already-saved
+  MISSING step 3: save=failed
+  MISSING step 3: save=saved
+  MISSING step 3: store=open
+  MISSING step 3: written-late=
+G06-Design.md: 31 steps, 41 markers: 39 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+  NOT_CARRIED: 19 entries: 7 a placeholder the runbook fills in; 5 the checklist's history, or a simulator result it quotes; 2 said in other words in the runbook; 2 a description of a log's format, not an expected value; 1 the expected result of a step that can wait for a later milestone; 2 a detail of a review done from the checklist
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  UNLISTED step 6.1 (G05-Recovery.md): classA_readable=false
+  UNLISTED step 6.1 (G05-Recovery.md): classC_save=ok
+  408 in its gate's checklist; 20 in a checklist (no gate named); 82 listed as the runbook's own (by kind: document 26, external 1, harness 37, runbook 11, tool 7)
+  59 source fragments of 63 entries looked up in their files
+  RUNBOOK_OWN: 63 entries: 55 with a source whose fragment is read in its file; 8 without one, checked only for being in the runbook (external 1, runbook 7)
+  ok   pull the 35 result tables: G0.4 step 1.2's loop names 35 tables
+result: FAIL (37 problem(s))
+content exit: 1
+
+runbook: Docs/Stage0/M0-device-runbook.md
+G0.1 EPUB (G01-EPUB.md): checklist steps 1-13 (13); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.1 PDF (G01-PDF.md): checklist steps 1-11 (11); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.2 (G02-Transfer.md): checklist steps 1-23 (23); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.3 (G03-Intake.md): checklist steps 6-32 (27); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.4 (G04-Audio.md): checklist steps 1-17 (17); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 AI (G05-AI.md): checklist steps 1-9 (9); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 recovery (G05-Recovery.md): checklist steps 1-5 (5); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [5]
+G0.6 (G06-Design.md): checklist steps 1-31 (31); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [10]
+result: pass (0 missing)
+coverage exit: 0

@@ -1,10 +1,10 @@
 # M0 plan amendments and decisions: consistency checks (plan draft 0.8, the fix round's checker)
-command: Docs/Stage0/evidence/M0-Decisions/fix-1/commands/run-checks.sh a53a07e2
-commit under test: a53a07e2
-HEAD: a53a07e2791a58716c4a16f44fdca3629c93545b; uncommitted paths: 0
-date (UTC): 2026-10-22T10:10:48Z
+command: Docs/Stage0/evidence/M0-Decisions/fix-1/commands/run-checks.sh cb04cd06
+commit under test: cb04cd06
+HEAD: cb04cd066e1212b8f0b6209cca4daab1e6636b60; uncommitted paths: 0
+date (UTC): 2026-10-22T10:17:17Z
 host: macOS 26.6.2 (25G83), arm64; Python 3.14.6
-load: 23:10  up 19 days,  9:21, 3 users, load averages: 3.46 2.73 2.96
+load: 23:17  up 19 days,  9:27, 3 users, load averages: 3.44 3.15 3.11
 environment: host only; no simulator or device is used by these checks
 
 == Docs/Stage0/evidence/M0-Decisions/fix-1/commands/check-amendments.py
@@ -124,8 +124,8 @@ control: the draft 0.7 checker fails on exactly those two checks, listing exactl
 ==> 00-git-lfs
     pass (5s)
 ==> 10-contracts
-    pass (1s)
+    pass (0s)
 ==> 11-capture-anchor-contracts
-    pass (53s)
+    pass (54s)
 all 3 steps passed
 exit status: 0

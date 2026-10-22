@@ -1,0 +1,11 @@
+command: Docs/Stage0/evidence/M0-Decisions/harness/commands/checks.sh checks (the harness app's SQLite linkage (information))
+commit: cd6402853fb0cc607c4eebfd8d4945a68b2656e1; uncommitted files: 1
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+date: 2026-10-22T07:17:21Z; load: 3.88 6.05 7.08
+
+otool -L G05LockHarness.debug.dylib, SQLite lines:
+	/usr/lib/libsqlite3.dylib (compatibility version 9.0.0, current version 406.0.0)
+sqlite3_* symbols the dylib defines (nm -m, __TEXT,__text external): 0
+two of its undefined sqlite3_* references:
+                 (undefined) external _sqlite3_open_v2 (from libsqlite3)
+                 (undefined) external _sqlite3_prepare_v3 (from libsqlite3)

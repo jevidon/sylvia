@@ -49,6 +49,7 @@ public final class HarnessController {
     @ObservationIgnored private var lastAttemptAt: Date?
     @ObservationIgnored private var tickTask: Task<Void, Never>?
     @ObservationIgnored private var launched = false
+    @ObservationIgnored private var recheckPreviousSession = false
 
     /// `autoTick` false leaves the attempts to the caller (tests call `tick()` with their own clock).
     public init(configuration: HarnessConfiguration, environment: HarnessEnvironment, autoTick: Bool = true) {
@@ -102,16 +103,24 @@ public final class HarnessController {
             ("gapThreshold", HarnessLog.seconds(configuration.gapThreshold)),
             ("protection", configuration.protection.rawValue),
         ])
+        checkPreviousSession(when: "launch")
+        emit("refresh", [("result", environment.scheduler.schedule())])
+    }
+
+    /// Reads how the previous run ended and checks the library it left. When its record cannot be read (class C before
+    /// the first unlock), the check is made again, once, when protected data next becomes available.
+    private func checkPreviousSession(when: String) {
         let previous: PreviousSession
         var reason: String?
         do {
-            previous = PreviousSession.classify(try environment.sessions.load(), currentBoot: boot)
+            previous = PreviousSession.classify(try environment.sessions.load(), currentBoot: environment.bootTime.bootTime())
         } catch {
             previous = .unreadable(code: HarnessLog.code(error), reason: HarnessLog.reason(error))
             reason = HarnessLog.reason(error)
         }
-        emit("previous-session", previous.fields, reason: reason)
-        record = previous.record
+        recheckPreviousSession = previous.result == "unreadable"
+        emit("previous-session", [("when", when)] + previous.fields, reason: reason)
+        if runState != .running { record = previous.record }
         switch previous {
         case .none:
             break
@@ -120,7 +129,6 @@ public final class HarnessController {
         default:
             verify(acknowledged: previous.record?.acknowledged, run: previous.record?.run, closeAfter: true)
         }
-        emit("refresh", [("result", environment.scheduler.schedule())])
     }
 
     // MARK: Run
@@ -129,6 +137,8 @@ public final class HarnessController {
         guard runState != .running else { return }
         let now = environment.clock.now()
         var errors: [(String, any Error)] = []
+        // A run continues the library the last one left; its record may have been unreadable at launch.
+        if record == nil, let loaded = try? environment.sessions.load() { record = loaded }
 
         let canary: String
         do { canary = try environment.canary.ensureCreated() ? "created" : "present" } catch {
@@ -193,23 +203,34 @@ public final class HarnessController {
         var errors: [(String, any Error)] = []
         var notes: [String] = []
 
+        // A library that could not be opened is opened again at every attempt; its error is the attempt's.
         var save = "failed"
         var readBack = "not-attempted"
         var acknowledgedNow = false
-        do {
-            if !environment.store.isOpen { _ = try environment.store.open() }
-            save = try environment.store.save(item: item).rawValue
+        var open = environment.store.isOpen
+        if !open {
             do {
-                let result = try environment.store.readBack(item: item)
-                readBack = result.rawValue
-                acknowledgedNow = result == .equal
-                if result != .equal { notes.append("readback: item \(item) \(result.rawValue)") }
+                _ = try environment.store.open()
+                open = true
             } catch {
-                readBack = "failed"
-                errors.append(("readback", error))
+                errors.append(("open", error))
             }
-        } catch {
-            errors.append(("save", error))
+        }
+        if open {
+            do {
+                save = try environment.store.save(item: item).rawValue
+                do {
+                    let result = try environment.store.readBack(item: item)
+                    readBack = result.rawValue
+                    acknowledgedNow = result == .equal
+                    if result != .equal { notes.append("readback: item \(item) \(result.rawValue)") }
+                } catch {
+                    readBack = "failed"
+                    errors.append(("readback", error))
+                }
+            } catch {
+                errors.append(("save", error))
+            }
         }
 
         var file = "failed"
@@ -304,11 +325,13 @@ public final class HarnessController {
                        ("app", environment.appState.stateName)])
     }
 
-    /// Also the moment buffered lines can first be written after a restart (the first unlock).
+    /// Also the moment buffered lines can first be written after a restart (the first unlock), and the previous run's
+    /// record read, if this process could not read it at its launch.
     public func protectedDataDidBecomeAvailable() {
         emit("event", [("name", "protected-data-did-become-available"),
                        ("protectedDataAvailable", "\(environment.protectedData.isProtectedDataAvailable)"),
                        ("app", environment.appState.stateName)])
+        if recheckPreviousSession { checkPreviousSession(when: "protected-data-available") }
     }
 
     public func appStateChanged(to state: String) {
@@ -321,6 +344,11 @@ public final class HarnessController {
 
     public func willTerminate() {
         emit("event", [("name", "will-terminate"), ("runState", runState.rawValue)])
+    }
+
+    /// iOS ended the background refresh's time before the harness said it was done.
+    public func backgroundRefreshExpired() {
+        emit("event", [("name", "background-refresh-expired"), ("runState", runState.rawValue)])
     }
 
     // MARK: Internals

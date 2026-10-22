@@ -40,7 +40,8 @@ final class HarnessAppDelegate: NSObject, UIApplicationDelegate {
                     return
                 }
                 task.expirationHandler = { [weak self] in
-                    MainActor.assumeIsolated { self?.controller.audioEvent("background-refresh-expired") }
+                    // The handler's queue is not documented; the controller is used on the main actor only.
+                    Task { @MainActor in self?.controller.backgroundRefreshExpired() }
                 }
                 let passed = self.controller.backgroundRefresh()
                 task.setTaskCompleted(success: passed)

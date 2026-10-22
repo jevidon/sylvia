@@ -130,7 +130,7 @@ public protocol FileProbe: AnyObject {
 public struct ProtectionItem: Sendable, Equatable {
     public var name: String
     public var expected: String
-    /// The class read back, `none reported`, or `unreadable (<code>)`.
+    /// The class read back, `none-reported`, or `unreadable(<code>)`.
     public var actual: String
     public var matches: Bool
 

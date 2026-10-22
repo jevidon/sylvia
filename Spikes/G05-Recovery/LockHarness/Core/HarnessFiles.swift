@@ -180,7 +180,7 @@ public final class FileProtectionInspector: ProtectionInspector {
         for (name, url, expected) in items where FileManager.default.fileExists(atPath: url.path) {
             let actual: String
             do {
-                actual = try reader.protectionClass(of: url)?.rawValue ?? "none reported"
+                actual = try reader.protectionClass(of: url)?.rawValue ?? "none-reported"
             } catch {
                 actual = "unreadable(\(HarnessLog.code(error)))"
             }

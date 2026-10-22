@@ -217,12 +217,23 @@ struct ControllerTests {
             #expect(writtenAt == "2026-10-22T09:02:08.000Z", "written at the first unlock")
         }
         let after = written.filter { !$0.contains(" written-late=") }.map(HarnessLog.fields(of:))
-        #expect(after.map { $0["name"] } == ["log-file-writable-again", "protected-data-did-become-available"])
+        #expect(after.map { $0["event"] ?? "" } == ["event", "event", "previous-session", "verify", "verify-classes"])
+        #expect(after.prefix(2).map { $0["name"] } == ["log-file-writable-again", "protected-data-did-become-available"])
         #expect(after.first?["writtenLate"] == "\(late.count)")
+        // The record that was unreadable at the launch is read now, once, and the library checked.
+        #expect(after[2]["when"] == "protected-data-available")
+        #expect(after[2]["result"] == "ended-by-restart")
+        #expect(after[3]["result"] == "ok")
+        #expect(after[3]["acknowledged"] == "4")
+        #expect(second.record?.acknowledged == 4)
+        second.protectedDataDidBecomeAvailable()
+        #expect(rig.fileLines("previous-session").map { $0["result"] } == ["none", "unreadable", "ended-by-restart"],
+                "the first process's launch, the second's (written late) and its one recheck: no second recheck")
 
         let third = try rig.newProcess()
         third.launch(state: "active")
         let previous = try #require(rig.fileLines("previous-session").last)
+        #expect(previous["when"] == "launch")
         #expect(previous["result"] == "ended-by-restart")
         #expect(rig.fileLines("verify").last?["result"] == "ok")
         #expect(rig.fileLines("verify").last?["acknowledged"] == "4")
@@ -423,6 +434,62 @@ struct ControllerTests {
         #expect(rig.store.committed.keys.sorted() == [0, 1, 2, 3])
         #expect(controller.pendingLineCount == 0)
         expectHonest(rig)
+    }
+
+    @Test("a library that cannot be opened: the start and each attempt record the open's error, the open is tried again at every attempt, and the run continues once it opens")
+    func libraryUnavailableAtStart() throws {
+        let rig = Rig()
+        let controller = try rig.newProcess()
+        controller.launch()
+        rig.device.lock = .beforeFirstUnlock
+        controller.start()
+        let start = try #require(rig.mirrorLines("start").last)
+        #expect(start["store"] == "failed")
+        #expect(start["canary"] == "failed")
+        #expect(start["session"] == "failed")
+        #expect(start["error"] == "canary:NSCocoaErrorDomain:513/NSPOSIXErrorDomain:1,open:NSCocoaErrorDomain:513/NSPOSIXErrorDomain:1,session:NSCocoaErrorDomain:513/NSPOSIXErrorDomain:1")
+        #expect(controller.runState == .running)
+        rig.ticks(controller, 2)
+        let failed = rig.mirrorLines("attempt")
+        #expect(failed.allSatisfy { $0["save"] == "failed" && $0["readback"] == "not-attempted" && $0["item"] == "0"
+            && $0["error"]?.hasPrefix("open:NSCocoaErrorDomain:513") == true })
+        #expect(rig.store.openAttempts == 3)
+        rig.device.lock = .unlocked
+        rig.ticks(controller, 1)
+        let attempt = try #require(rig.fileLines("attempt").last)
+        #expect(attempt["save"] == "saved")
+        #expect(attempt["readback"] == "equal")
+        #expect(attempt["item"] == "0")
+        #expect(rig.store.opens == 1)
+        expectHonest(rig)
+    }
+
+    @Test("a Start after a launch that could not read the last run's record reads it then, and continues the library")
+    func startAfterUnreadableLaunch() throws {
+        let rig = Rig()
+        let first = try rig.newProcess()
+        first.launch()
+        first.start()
+        rig.ticks(first, 3)
+        rig.device.restart(offFor: 40)
+        let second = try rig.newProcess()
+        second.launch(state: "background")
+        #expect(second.record == nil)
+        rig.device.lock = .unlocked
+        second.start()
+        #expect(rig.fileLines("start").last?["item"] == "3")
+        rig.ticks(second, 1)
+        #expect(rig.fileLines("attempt").last?["item"] == "3")
+        #expect(rig.fileLines("attempt").last?["save"] == "saved")
+    }
+
+    @Test("an expired background refresh is recorded")
+    func refreshExpired() throws {
+        let rig = Rig()
+        let controller = try rig.newProcess()
+        controller.launch()
+        controller.backgroundRefreshExpired()
+        #expect(rig.fileLines("event").last?["name"] == "background-refresh-expired")
     }
 
     @Test("a tone that cannot start is recorded; the run still makes its attempts")

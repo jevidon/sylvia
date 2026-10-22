@@ -21,8 +21,10 @@
 #  12. library and test build for iOS devices (generic/platform=iOS, unsigned)
 #  13-15. the locked-device harness (Spikes/G05-Recovery/LockHarness; T50, device checklist step 3; PO-23 option (b),
 #      product owner, 22 October 2026), by Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh: its lock against
-#      the package's (13), its unit tests on the same simulator, shut down when they end (14), and the app built for a
-#      generic iOS device, Debug, signed automatically for team $SYLVIA_TEAM_ID with what is on this host, build only (15).
+#      the package's (13), its unit tests and a UI smoke test of the app on the same simulator, shut down when they end,
+#      the app's own log of the smoke run checked line by line (14; the smoke test since 22 October 2026, review H-05
+#      of the decisions round), and the app built for a generic iOS device, Debug, iPhone only, signed automatically
+#      for team $SYLVIA_TEAM_ID with what is on this host, build only (15).
 #      That script can also be run alone; it then checks the harness only and is not a run of this drop-in.
 # Logs of each step go to $G05_LOG_DIR (default .build/g05-recovery/logs under the repository).
 set -euo pipefail

@@ -179,7 +179,7 @@ The signed probe (`Spikes/G02-Transfer/MacIdentityProbe`) could not be signed on
 
 ### 21. A full phone during a background download (plan 15.4; review finding R2-02)
 
-*(22 October 2026: this step is M6's, not M0's: the product owner accepted runbook correction C47 with decision D-6; ADR-0009's owner moves it there.)*
+*(22 October 2026: this step is M6's, not M0's: the product owner accepted runbook correction C47 with decision D-6, and ADR-0009 says so, C47 applied there the same day (until the review of the decisions round this note said ADR-0009's owner would move it: its finding HON-10).)*
 
 For a background session the system writes each 16 MiB part into the app's container itself before the app sees it. When that write fails on a full phone the task ends with an error and the app never gets the file; the client classifies such errors as this phone's storage (`insufficient_space` at once when out of space or when less free space than a part remains, otherwise `storage_unavailable` after retries), never "Make sure the Mac is awake". On the host this was tested with an injected task error and a substituted free-space figure (`background-host/system-download-not-stored-*.log`) and with a really full disk image for the app's own writes (`background-host/full-phone-storage.log`); which error iOS reports for its own failed write is unknown until this step.
 

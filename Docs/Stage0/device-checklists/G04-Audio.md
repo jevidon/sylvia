@@ -8,7 +8,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 
 ## Setup
 
-1. On the build Mac, from the repository root (the M0 integration branch, `m0-integrate`, which holds this gate's round-6 work since M0 assembly, or `main` once the later M0 work has reached it, since pull request #4 merged `m0-integrate` up to `177ed9a` into `main` on 15 October 2026; record `git rev-parse HEAD`; `m0-g04-audio` lacks round 6's stereo fixtures, quick-capture rule and playback controls, so the steps below fail or test older behaviour there):
+1. On the build Mac, from the repository root (the commit that holds this gate's round-6 work and the records of the decisions: `main` once `m0-decisions` is merged into it, or `m0-decisions` until then, as runbook 0.3 says; `m0-integrate`, and `main` up to pull request #5, hold neither the lock harness nor the records of the product owner's decisions of 22 October 2026, so this checklist's steps are older there (until 22 October 2026, after the review of the decisions round, this line named `m0-integrate`: its findings OWN-01 and H-01); record `git rev-parse HEAD`; `m0-g04-audio` lacks round 6's stereo fixtures, quick-capture rule and playback controls, so the steps below fail or test older behaviour there):
 
    ```sh
    source Scripts/lib/env.sh; source Scripts/lib/xcodegen.sh

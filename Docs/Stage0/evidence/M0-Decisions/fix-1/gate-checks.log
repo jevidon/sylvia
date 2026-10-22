@@ -1,9 +1,9 @@
-commit: b050b0ca740af6e38d9346a00cf67d958d1fb4ca (m0-decisions); uncommitted files before this run: 0
+commit: 4f225ba2145a4e45f7c39ad102ab2115c5be7760 (m0-decisions); uncommitted files before this run: 0
 host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
-start: 2026-10-22T10:12:07Z; load: 23:12  up 19 days,  9:22, 3 users, load averages: 3.88 3.09 3.08
+start: 2026-10-22T10:18:41Z; load: 23:18  up 19 days,  9:29, 3 users, load averages: 3.56 3.36 3.20
 
 == 1. Files changed since 88d4e1c719415af899a289251c39b7c568cea96b, the commit the review read
--- 1a. 71 files: 35 of them this fix's evidence, 58 under Docs/ in all, 1 of CLAUDE.md and README.md, and outside them:
+-- 1a. 72 files: 36 of them this fix's evidence, 59 under Docs/ in all, 1 of CLAUDE.md and README.md, and outside them:
    Scripts/ci.d/71-g05-recovery.sh
    Spikes/G05-Recovery/LockHarness/App/G05LockHarnessApp.swift
    Spikes/G05-Recovery/LockHarness/Core/HarnessController.swift
@@ -238,9 +238,9 @@ exit: 0
 ==> 11-capture-anchor-contracts
     pass (53s)
 ==> 12-dependency-lock
-    pass (20s)
+    pass (21s)
 ==> 13-hard-rules
-    pass (7s)
+    pass (6s)
 all 5 steps passed
 ci.sh exit: 0
 summary lines from the drop-ins' own logs (.build/ci-logs/):
@@ -282,4 +282,4 @@ g05-* directories in the user's temporary folder: 1664
 g05-tests-* directories there: 0
 
 exit: 0
-end: 2026-10-22T10:13:38Z; load: 23:13  up 19 days,  9:24, 3 users, load averages: 4.11 3.42 3.21
+end: 2026-10-22T10:20:10Z; load: 23:20  up 19 days,  9:30, 3 users, load averages: 4.31 3.71 3.35

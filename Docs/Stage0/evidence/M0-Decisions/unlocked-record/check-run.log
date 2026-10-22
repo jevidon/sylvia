@@ -1,0 +1,44 @@
+command: python3 -I Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/check-run.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_79cfa66f-313-1
+commit: 3ad7b2cebfe2bb1e793200fe77dfc27c9ffa855f; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-22T23:23:53Z; load: 12:23  up 19 days, 22:34, 3 users, load averages: 5.13 3.65 3.37
+
+run folder: Docs/Stage0/evidence/M0-Decisions/assembly/unlocked-run-1
+ok      command: run-dropin-clean.sh unlocked-run-1
+ok      commit 9cdb0a02 on m0-decisions, 0 uncommitted files before the run
+ok      host: macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275)
+ok      deleted before the run: the spike's, the harness's and the drop-in's build products
+ok      simulator Sylvia-M0-dec-assembly (iPhone 17, iOS 26.5)
+ok      the screen unlocked at the start (ioreg)
+ok      the screen unlocked at the end (ioreg)
+ok      start 2026-10-22T22:36:32Z, one-minute load 2.96
+ok      end 2026-10-22T22:44:05Z, one-minute load 18.06
+ok      ci.sh ran 00-git-lfs and 71-g05-recovery, both passing
+ok      71-g05-recovery passed in 447 s
+ok      all 2 steps passed; ci.sh exit: 0
+ok      the guard's line: row 10 evidence present (console and drop-in log)
+ok      no missing-evidence line (no FAIL, no WARNING) in the drop-in's log
+ok      the wrapper itself never sets G05_ALLOW_MISSING_CLASS_B (it appears only in its comments)
+ok      host-tests.log: class B read back on 53 files and directories
+ok      host-tests.log: the files SQLite creates in a class-B directory are class B
+ok      73 host tests passed
+ok      68 simulator tests passed
+ok      the lock harness's 49 tests passed
+ok      two simulator test runs succeeded (the package's and the harness's)
+ok      crash drill, chosen durability: 900 iterations, 0 failures
+ok      crash drill, synchronous=OFF: 150 iterations, 0 failures
+ok      restore drill: 49 checks passed
+ok      restore crash drill: 300 iterations, 0 failures
+ok      migration put-back crash drill: 240 iterations, 0 failures
+ok      save latency: passed (indicative)
+ok      backup-manifest contract check passed
+ok      the iOS device build of step 12 (TEST BUILD SUCCEEDED)
+ok      step 13: the harness's lock pins exactly what the package's pins, the same origin hash
+ok      step 14: the UI smoke check passed, 11 attempts, 7 in the background, no gap, at the test volume
+ok      step 15: the app built for a generic iOS device and signed for team A4KBDX665Z, iPhone only (build only)
+ok      the closing lines: lock harness steps 13-15 passed, and all steps passed
+ok      after the run: one git status line (this folder, untracked)
+result: pass (0 fact(s) not as the records state them)
+
+exit status: 0
+end: 2026-10-22T23:23:53Z; load: 12:23  up 19 days, 22:34, 3 users, load averages: 5.13 3.65 3.37

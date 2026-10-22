@@ -4,9 +4,13 @@
 # (git archive HEAD Spikes/G05-Recovery, into .build/scratch/fix2-controls; the working tree is never changed), on this
 # round's simulator, Sylvia-M0-dec-fix-2 (iPhone 17, iOS 26.5). The copy's unit tests run first, unchanged, and must
 # all pass; then each control changes one thing in the copy, runs, and puts the file back:
-#   A. FileLogSink without the cut-back of a failed append (its `try? handle.truncate(atOffset: length)` line removed):
-#      its lines are then in the file when it throws, the case of review R2-H-04. Exactly the two R2-H-04 unit tests
-#      must fail, and no other.
+#   A. FileLogSink without the cut-back of a failed append (its `try? handle.truncate(atOffset: length)` line replaced
+#      by `_ = length`, so the copy still compiles with warnings as errors): its lines are then in the file when it
+#      throws, the case of review R2-H-04. Exactly the two R2-H-04 unit tests must fail, and no other. (The first run
+#      of this script removed the line, so `length` was unused and the copy did not compile; that run's summary and
+#      control A's log are kept in fix-2/harness-controls-first-run/.)
+# Every control, and the baseline, must have run the whole unit test bundle (a "Test run with 49 tests in 4 suites"
+# line), so a copy that does not compile can never read as a control passed.
 #   B. TonePlayer.start with the ambient category in place of playback. Exactly the tone's unit test must fail, on the
 #      category it reads back (review R2-H-03: the start line records the category, and the smoke check requires it).
 #   C. The app with a player that plays nothing (a SilentPlayer in place of TonePlayer in the production
@@ -82,7 +86,10 @@ expect_failures() {  # <name> <log> <expected failed test names, one per line>
     if [[ -n "$got" ]]; then printf '%s\n' "$got" | sed 's/^/   /'; else echo "   (none)"; fi
     grep -E '^(✔|✘) Test run with' "$log" | sed 's/^/   /'
   } >> "$console"
-  if [[ "$got" == "$expected" ]]; then
+  if ! grep -qE '^(✔|✘) Test run with 49 tests in 4 suites ' "$log"; then
+    echo "   NOT as required: the unit tests did not run (no \"Test run with 49 tests in 4 suites\" line; see $(basename "$log"))" >> "$console"
+    status=1
+  elif [[ "$got" == "$expected" ]]; then
     echo "   as required" >> "$console"
   else
     echo "   NOT as required; expected exactly:" >> "$console"
@@ -97,7 +104,8 @@ expect_failures "baseline (the copy unchanged; every test must pass)" "$out/base
 files="$H/Core/HarnessFiles.swift"
 cp "$files" "$copy/HarnessFiles.swift.orig"
 edit "$files" "            try? handle.truncate(atOffset: length)
-" "" || { echo "FAIL: control A's edit" >> "$console"; exit 1; }
+" "            _ = length
+" || { echo "FAIL: control A's edit" >> "$console"; exit 1; }
 expect_failures "A (FileLogSink keeps the lines of a failed append in the file: review R2-H-04)" "$out/A.log" \
   "$(printf '%s\n' \
     "a run whose log file fails to flush at three attempts writes every line once: those three later, marked written-late, none twice (review R2-H-04)" \

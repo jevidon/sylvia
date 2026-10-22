@@ -1,0 +1,32 @@
+command: Docs/Stage0/evidence/M0-Decisions/fix-2/commands/harness-controls.sh
+commit: 4470fb3a51d7d1f1160c3a273e2d87953b3d5d47 (m0-decisions); uncommitted files: 1
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+copy: git archive HEAD Spikes/G05-Recovery into .build/scratch/fix2-controls (the working tree is not changed)
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-22T11:09:25Z; load:  0:09  up 19 days, 10:19, 3 users, load averages: 8.28 7.68 5.73
+simulator: Sylvia-M0-dec-fix-2 2E58F17B-55A9-4305-8164-9D82E26F874B (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+
+-- baseline (the copy unchanged; every test must pass): tests that failed:
+   (none)
+   ✔ Test run with 49 tests in 4 suites passed after 1.182 seconds.
+   as required
+-- A (FileLogSink keeps the lines of a failed append in the file: review R2-H-04): tests that failed:
+   (none)
+   NOT as required; expected exactly:
+   a run whose log file fails to flush at three attempts writes every line once: those three later, marked written-late, none twice (review R2-H-04)
+   an append whose flush fails is cut back out of the log file and throws; nothing of it stays, and the retry writes it once (review R2-H-04)
+-- B (TonePlayer in the ambient category: review R2-H-03): tests that failed:
+   the player plays the tone at the test volume 0.01, unmuted, in the playback category, and stops (simulator; plays through the Mac's output at 1 %)
+   ✘ Test run with 49 tests in 4 suites failed after 1.072 seconds with 1 issue.
+   as required
+
+-- C (a player that plays nothing; 90 s in the background): xcodebuild exit 0; Test Suite 'LockHarnessSmokeUITests' passed at 2026-10-23 00:11:50.279.
+   the start line: audio=not-playing audioCategory=- volume=0.01
+   attempts: 48, 43 of them with app=background (n=5 to n=47), every attempt save=saved
+   seconds between attempts: 2.0 to 2.2; in the background: 2.0 to 2.2; gap lines: 0
+   reading: the simulator kept the app making its attempts in the background, 2 s apart, with no tone
+
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-22T11:11:50Z; load:  0:11  up 19 days, 10:22, 3 users, load averages: 4.31 7.21 5.92
+git status --porcelain lines after the run: 1
+exit: 1

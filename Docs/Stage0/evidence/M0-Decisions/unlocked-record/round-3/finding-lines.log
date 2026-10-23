@@ -1,0 +1,41 @@
+command: python3 -I Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-3/commands/finding-lines.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_79cfa66f-313-5
+commit: cfba972fc67a6d527c81e621bd888f1cf79caefc; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-23T01:25:42Z; load: 14:25  up 20 days, 36 mins, 3 users, load averages: 4.89 3.81 3.19
+
+cited lines read at 26530d4933c070c2c154a9116ef6f7fdd0415363 (the commit tested) and at 91c3b46a1e034563ca9a6df9a77d5c736d202303 (the record's last commit, before its fix)
+match    UNL2-01 Docs/Stage0/integration-log.md:979: "Both say what changed on 22 October 2026 (the lock harness's steps 13-15, which no run of "; at 91c3b46a that line holds it
+match    UNL2-01 Docs/Stage0/integration-log.md:1003: "Section 1 no longer says the assembly ran every check or that G0.5 recovery's drop-in pass"; at 91c3b46a that line holds it
+match    UNL2-01 Docs/Stage0/integration-log.md:986: '| HON-6, CHK-07:'; at 91c3b46a that line holds it
+match    UNL2-01 Docs/Stage0/integration-log.md:986: '*(dated note, 23 October 2026: that run was made by a waiter of the orchestrating session '; at 91c3b46a that line does not
+match    UNL2-01 Docs/Stage0/integration-log.md:1146: '| OWN3-06:'; at 91c3b46a that line holds it
+match    UNL2-01 Docs/Stage0/integration-log.md:1146: "*(dated note, 23 October 2026: 0.8's run was made by a waiter of the orchestrating session"; at 91c3b46a that line does not
+match    UNL2-01 Docs/Stage0/integration-log.md:1419: 'said that no run of the whole drop-in had passed since 22 October 2026'; at 91c3b46a that line holds it
+match    UNL2-01 Docs/Stage0/integration-log.md:1419: "Each of the fifteen now has its dated note, and the fix's recheck sweeps this log and ever"; at 91c3b46a that line does not
+match    UNL2-01 Docs/Stage0/integration-log.md:1470: 'its sweep finds 23 texts in the records that give the run as pending, still to run or the '; at 91c3b46a that line does not
+match    UNL2-01 Docs/Stage0/M0-gate.md:677: '*(Dated note, 23 October 2026: not every record.'; at 91c3b46a that line does not
+match    UNL2-01 Docs/Stage0/M0-gate.md:677: 'each now has its dated note: item 94.)*'; at 91c3b46a that line does not
+match    UNL2-01 Docs/Stage0/M0-gate.md:682: 'for any text that still gives the run as pending, still to run or yours with no dated note'; at 91c3b46a that line does not
+match    UNL2-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/README.md:3: 'a recheck that sweeps the integration log and every evidence README for any text left with'; at 91c3b46a that line does not
+match    UNL2-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/README.md:14: "for any text that gives the run as pending, still to run or the owner's with no dated note"; at 91c3b46a that line absent
+match    UNL2-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/recheck-unl.py:161: 'STALE = re.compile('; at 91c3b46a that line absent
+match    UNL2-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/recheck-unl.py:168: 'no run of the whole drop-in has passed since|'; at 91c3b46a that line absent
+match    UNL2-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/recheck-unl.py:169: 'has it run once more")'; at 91c3b46a that line absent
+match    UNL2-02 Docs/Stage0/integration-log.md:1389: "it stays the runbook's 0.8, for the owner, in Session 0. *(Dated note, 23 October 2026: a "; at 91c3b46a that line holds it
+match    UNL2-02 Docs/Stage0/evidence/M0-Decisions/followup/round-5/README.md:18: "it stays the runbook's 0.8, for the owner; *dated note, 23 October 2026: a waiter of the o"; at 91c3b46a that line holds it
+match    UNL2-03 Docs/Stage0/M0-gate.md:279: '(the last bullet of this section, where that run, on `9cdb0a02`, passed)'; at 91c3b46a that line holds it
+match    UNL2-03 Docs/Stage0/M0-gate.md:291: 'on `9cdb0a02` (22 October 2026, 22:36-22:44 UTC; the last bullet of this section)'; at 91c3b46a that line holds it
+match    UNL2-03 Docs/Stage0/M0-gate.md:292: '- **G0.5 recovery with the lock harness (22 October 2026).**'; at 91c3b46a that line holds it
+match    UNL2-03 Docs/Stage0/M0-gate.md:292: '**With the screen unlocked, the whole drop-in passed'; at 91c3b46a that line holds it
+match    UNL2-03 Docs/Stage0/M0-gate.md:293: '- **Not run anywhere by agents:**'; at 91c3b46a that line holds it
+match    UNL2-03 Docs/Stage0/M0-gate.md:294: "- **The evidence folder's name.**"; at 91c3b46a that line holds it
+match    UNL2-01 Docs/Stage0/integration-log.md:979: the fix's STALE patterns (15 alternatives) do not match it; it names 9cdb0a02: False
+match    UNL2-01 Docs/Stage0/integration-log.md:1003: the fix's STALE patterns (15 alternatives) do not match it; it names 9cdb0a02: False
+match    UNL2-02 the fifteen notes: 8 in the integration log's lists (lines 887, 962, 1045, 1116, 1174, 1226, 1277, 1333) and 5 in the evidence READMEs' Not run lines say "0.8 is the owner's again only if what the drop-in builds, copies or runs changes after that commit"; the rows of HON-6 and OWN3-06 (lines 986, 1146) say when 0.8 asks for the run again
+match    UNL2-02 Docs/Stage0/integration-log.md:1389: its note says what remains for the owner: False
+match    UNL2-02 Docs/Stage0/evidence/M0-Decisions/followup/round-5/README.md:18: its note says what remains for the owner: False
+match    UNL2-03 at e3af4842: the pointer 2 times in Section 2.10 (at its parent 0); the bullets after the lock harness's: ['Not run anywhere by agents:', "The evidence folder's name."]
+result: 31 of 31 cited lines and claims hold at 26530d49
+
+exit status: 0
+end: 2026-10-23T01:25:42Z; load: 14:25  up 20 days, 36 mins, 3 users, load averages: 4.89 3.81 3.19

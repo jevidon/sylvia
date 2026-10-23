@@ -1,0 +1,188 @@
+[
+ {
+  "run": "wf_9ea3b4d5-f4f",
+  "seq": 14,
+  "label": "minors-g04-audio:author",
+  "result": {
+   "branch": "m0-int-minors-g04-audio",
+   "commit": "d0c612031d2e0e625ea3a26fef134876d390cd54",
+   "summary": "The branch already had WIP commits from an agent that stopped on an expired sign-in. That agent's fixes for R6-01 to R6-06 were in the code, but the report and ADR-0006 still cited round 5's numbers in many places. I treated that work as unreviewed and re-checked it.\n\nWhat I did:\n- Reviewed every change since 471b143: the quick-capture rule (hasPlayedSinceLoad with the .surface entry), the plan 10.1 controls in PlaybackService, the stereo averaging in PCMDecoder, the UI-test capture counts, the stereo generator and the drop-in. I found no code defect, so Spikes/ is unchanged in this pass. The only script change is three size comments in Scripts/ci.d/60-g04-audio.sh (8.6 to 8.7 GB, 8.4 to 8.5 GB).\n- Re-ran the R6-01 mutation check on my own simulator: with the rule switched off the test fails with 4 issues; restored, 14 of 14 pass (mutation-check-r6-01.txt).\n- Regenerated the stereo fixtures twice into a scratch fixture cache. Both runs match each other, the shared cache and the earlier log (fixture-generation-stereo.log).\n- Re-ran the clean CI run from deleted DerivedData on the erased simulator Sylvia-M0-minors-g04-audio, with G04_DEVICE_FIXTURES=1, after Scripts/fixtures/fetch.sh. It tested commit d64b0fb, and nothing under Spikes or Scripts changed after it. Result: g04 exit 0 (5437 s), contracts exit 0, 152 tests in 26 suites passed, 42 tables written, quick capture met every requirement in both signings. There were 5 known issues, all start/resume budget misses. This run includes one Ogg Opus .ogg cold resume at 10.2 h that took 1.60 s. The 1-minute host load was 3.5-46.9.\n- Updated the report, ADR-0006, ADR-0007, the device checklist and PROGRESS.md to match the final tables, with earlier runs kept as labelled history.\n- Recomputed figures that span several runs: the MP3-without-header length limit is 1.4-1.8 h, not 1.4-1.7 h (round 5's own data exceeded 1.7); native FLAC is 25-31 min; Ogg Opus is 66 of 84 trials within the budget over seven runs; the stall rate is 1 in 14 codec-matrix runs.\n- Checked the screenshots with local text recognition. They show that Control Center displays no text after a saved or a refused press, and that the Shortcuts app showed \"Moment saved \u00b7 preserving audio\" after the team-signed App Shortcut run. I added that to row 18 and ADR-0007.\n- Other fixes: findings 8 and 9 were out of order; the checklist pointed at the old branch m0-g04-audio and gave a stale bundle size.\n\nThen I committed, detached HEAD, and deleted DerivedData, .build/ci-results and the simulator.\n\nKey paths: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-3/Docs/Stage0/G04-Audio.md, Docs/ADRs/0006-audio-playback-and-excerpts.md, Docs/ADRs/0007-quick-capture-evaluation.md, Docs/Stage0/device-checklists/G04-Audio.md, Docs/Stage0/evidence/G04-Audio/{ci-clean-run.log,results/,mutation-check-r6-01.txt,fixture-generation-stereo.log,PROGRESS.md}.",
+   "criteria": [
+    {
+     "criterion": "R6-01: device checklist step 12's expected result no longer depends on the harness's start-up race",
+     "status": "passed-simulator",
+     "evidence": "A quick-capture surface captures only a moment heard in the app process (QuickCaptureCoordinator .surface entry and PlaybackService.hasPlayedSinceLoad; ADR-0007 decision 2). QuickCaptureTests.aColdLaunchHasNothingToCaptureWhicheverWayTheStartupRaceGoes covers the intent arriving before, during and after the restore. I re-ran the mutation check in this pass: with the rule off, 4 issues; restored, 14/14 pass (Docs/Stage0/evidence/G04-Audio/mutation-check-r6-01.txt). Final clean run, sections 4 and 5 of results/quick-capture-simulator-adhoc.txt and -signed.txt: the cold-launch press and the press on the restored, unplayed book both answered result=nothing_to_capture loaded=true played_since_load=false, wrote no record, and the counts were consistent, in both signings. Step 12 now states a race-independent expected result. Behaviour on a locked phone stays pending-device (checklist step 12)."
+    },
+    {
+     "criterion": "R6-02: ADR-0006 covers the plan 10.1 sleep timer, configurable skip, rewind after a long pause and incomplete-edition warning",
+     "status": "passed-simulator",
+     "evidence": "ADR-0006 decisions 18-21 and PO-5. Prototyped in PlaybackService, NowPlayingController and the harness Playback settings. The 10 PlaybackControlsTests passed in the final clean run (ci-clean-run.log, suite 'Playback controls: skip intervals, sleep timer, resume rewind, incomplete edition (unit)'). The hardware parts (Lock Screen skip intervals; sleep timer and rewind while locked) are pending-device: checklist steps 7.4 and 17."
+    },
+    {
+     "criterion": "R6-03: shared-change requests recorded on the branch, complete and current",
+     "status": "passed-host",
+     "evidence": "The report's 'Shared-file requests' table lists rows 1-5 with their integration-log outcomes (rows 25-29) and the open round-6 rows 6-11. This pass updated row 9 to the final run's screenshots: 14 PNG, 1,754,208 bytes, largest 241,516. PROGRESS.md 'Next' points to the table, and the same requests are in shared_changes_requested. The requests themselves await the integration owner."
+    },
+    {
+     "criterion": "R6-04: the decisions the product owner must approve are surfaced instead of hidden in long paragraphs",
+     "status": "passed-host",
+     "evidence": "A 'Decisions for the product owner' table (PO-1 to PO-6, each with options, proposal and evidence) opens the report; ADR-0006 lists PO-1 to PO-5 and ADR-0007 holds PO-6. Rows 2, 8, 9, 21, 22, 33, 35, 37 and 38 and the findings cite them. This pass corrected the PO-3 limits to the recomputed 25-31 minutes and 1.4-1.8 hours. The decisions themselves are pending-human (product owner)."
+    },
+    {
+     "criterion": "R6-05: a stereo source with distinct channels in the format matrix",
+     "status": "passed-simulator",
+     "evidence": "Scripts/fixtures/generate-g04-audio-stereo.sh makes 15 files (144,591,691 bytes). I regenerated them twice in a scratch cache; the digests match each other and the shared cache (fixture-generation-stereo.log). In the final clean run StereoChannelTests passed every format (results/stereo-channels.tsv). Discrete stereo: own-channel correlation at least 0.857 and other-channel at most 0.029, within 47.9 ms (decoder) and 69.7 ms (player). HE-AAC v2 is parametric and is recorded, not judged. The averaged downmix gives weights 0.43-0.50; speech that is the same in both channels keeps gain 0.998, against 1.414 for the system two-to-one conversion (ADR-0006 decision 13, PO-4). The device re-run is checklist step 1."
+    },
+    {
+     "criterion": "R6-06: quick-capture UI tests report capture counts that agree with the recorded result",
+     "status": "passed-simulator",
+     "evidence": "The harness shows captures=<n> newest=<origin>, the UI tests read it (CaptureSummary), and quick_capture_simulator_attempt.sh check_counts fails unless the change equals the captures the harness logged as saved. Final clean run: every phase in both signings reports 'consistent', e.g. 0->1 for the control press and 1->1 for the presses with nothing heard (results/quick-capture-simulator-*.txt)."
+    },
+    {
+     "criterion": "Gate CI drop-in 60-g04-audio re-run from clean, ci-clean-run.log overwritten",
+     "status": "passed-simulator",
+     "evidence": "Docs/Stage0/evidence/G04-Audio/ci-clean-run.log. Before the run: DerivedData and earlier CI outputs deleted, simulator Sylvia-M0-minors-g04-audio (iPhone 17, iOS 26.5) erased, fetch.sh verified the downloads. Commit under test d64b0fb with 0 uncommitted files. g04 exit 0 (5437 s), contracts exit 0, 152 tests in 26 suites passed with 5 known budget issues, 42 tables, 22:34-00:05 UTC. Host 1-minute load 3.5-46.9, so timings are indicative only. git diff d64b0fb HEAD -- Spikes Scripts is empty."
+    },
+    {
+     "criterion": "Device steps (locked playback, routes, calls, lock-screen controls, quick capture while locked, codec matrix on hardware)",
+     "status": "pending-device",
+     "evidence": "Docs/Stage0/device-checklists/G04-Audio.md steps 1-17. Not run: Stage 0 agents may not use the physical iPhone."
+    }
+   ],
+   "ci": {
+    "script": "bash .build/scratch/clean-run.sh: deletes Spikes/G04-Audio/.build/DerivedData, .build/ci-logs and .build/ci-results, erases the simulator Sylvia-M0-minors-g04-audio, runs Scripts/fixtures/fetch.sh editations, then G04_SIM_NAME=Sylvia-M0-minors-g04-audio G04_RESULTS_DIR=Docs/Stage0/evidence/G04-Audio/results G04_DEVICE_FIXTURES=1 Scripts/ci.sh g04 (Scripts/ci.d/60-g04-audio.sh), then Scripts/ci.sh contracts; writes Docs/Stage0/evidence/G04-Audio/ci-clean-run.log",
+    "result": "pass: g04 exit 0 (5437 s), contracts exit 0 (15 schemas, 188 fixtures). 152 tests in 26 suites passed with 5 known start/resume budget issues (seek latency in the 10-hour MP3s; long-format cold resume for native FLAC, MP3 without a header and Ogg .ogg; precise MP3 cold resume beyond 0.33 h). The process-kill trial lost 0.16-3.27 s (budget 5 s). The ffmpeg portability check passed. Quick capture met every requirement in both signings. 42 tables written. Players at 1 % volume. Host 1-minute load 3.5-46.9, so timings are indicative only."
+   },
+   "plan_findings": [
+    "Plan 10.1 sleep timer, configurable skip intervals, rewind after a long pause and incomplete-edition warning now have rules (ADR-0006 decisions 18-21). Their defaults need the product owner (PO-5), and the status vocabulary has no phrase for the incomplete-edition warning (proposed key audio.edition_incomplete).",
+    "Plan 3.3/10.5 quick capture: an app the system cold-launches to perform the intent cannot know 'the moment'. The proposed rule, capture only a moment heard in the app process, is part of the narrowing PO-6.",
+    "Plan 19.2 start/resume p95 1.5 s still fails on the simulator for long files on precise timing. VBR MP3 is over the budget beyond about 1-1.8 h of depth (this run CBR 1.11-1.46 h, VBR 1.26-1.61 h without the per-file mode). Native FLAC fails beyond about 25-31 min of file length and MP3 without a header beyond about 1.4-1.8 h. Ogg Opus is at the edge at 10 h: 66 of 84 trials within over seven runs, and 1 of 6 .ogg trials over in this run. Mitigations are PO-2 (per-file timing mode) and PO-3 (import remux).",
+    "The previous documents understated the MP3-without-header limit as 1.4-1.7 h; round 5's own data gives 1.8 h. Recomputed over rounds 3-6 as 1.4-1.8 h.",
+    "Stereo: AVAssetReader's one-channel output is an equal-power sum, so speech that is the same in both channels comes out 3 dB louder. Excerpts now average the channels (PO-4). HE-AAC v2 cannot keep two different channels apart."
+   ],
+   "shared_changes_requested": [
+    "Fixtures/LICENSES.md: add the fourth G0.4 generator, Scripts/fixtures/generate-g04-audio-stereo.sh. It writes 15 files, 144,591,691 bytes, to $SYLVIA_FIXTURE_CACHE/generated/g04-audio/stereo/ (not committed). The files are made from the same LibriVox masters: a 300 s stereo master with section 01 on the left and section 02 on the right, its encodes, and a FLAC with the left channel in both. Digests are in its manifest.tsv and in Docs/Stage0/evidence/G04-Audio/fixture-generation-stereo.log (two identical generations). Report shared-file row 6.",
+    "ADR-0002, Tooling and Consequences: name generate-g04-audio-stereo.sh beside the other three G0.4 generators (same tools: ffmpeg, ffprobe, afconvert). Report row 7.",
+    "SylviaDesign vocabulary (owner of integration-log row 27, with design review): add the proposed key audio.edition_incomplete for the plan 10.1 incomplete-edition warning (ADR-0006 decision 21). audio.nothing_to_capture now also covers 'nothing heard in the app' (ADR-0007 decision 2). Report row 8.",
+    "ADR-0002 binary-file measurement and integration log section 4: G0.4's evidence images are now 14 PNG in the final commit, 1,754,208 bytes, largest 241,516, all under Docs/Stage0/evidence/G04-Audio/results/ (the merge measured 12, 1,259,167 bytes, largest 222,609). Report row 9.",
+    "Docs/ADRs/README.md: ADR-0006's status should name product-owner decisions PO-1 to PO-5, adding mono excerpts and playback-control defaults to the codec list, per-file timing mode and import remux. Report row 10.",
+    "Docs/Stage0/integration-log.md section 2 row 8: record the review-6 finding IDs R6-01 to R6-06, which the second integration did not have, and their fixes on m0-int-minors-g04-audio. Report row 11."
+   ],
+   "dependencies_added": [],
+   "committed_fixtures": [],
+   "open_questions": [
+    "Product owner: decisions PO-1 to PO-6 (top of Docs/Stage0/G04-Audio.md): release codec list, per-file timing mode, import remux and its storage choice, mono excerpts, playback-control defaults, and the quick-capture narrowing including 'captures only a moment heard in the app'.",
+    "SylviaDesign owner with design review: vocabulary keys audio.nothing_to_capture, audio.moment_not_saved, a key for the player's preparing state, and audio.edition_incomplete.",
+    "Serialized device run of checklist steps 1-17 on the iPhone 17 Pro, later also the iPhone 12-class baseline. The provisional codec list becomes the release list only after step 1.",
+    "Technical lead (M2): does reading a file through before its first precise seek remove the MP3 first-seek cost after a relaunch? It has not been measured.",
+    "Integration owner: decide shared-file requests 6-11 in the report's Shared-file requests table."
+   ]
+  }
+ },
+ {
+  "run": "wf_9ea3b4d5-f4f",
+  "seq": 22,
+  "label": "minors-g04-audio:review-1",
+  "result": {
+   "verdict": "accept-with-minor",
+   "commit_reviewed": "d0c612031d2e0e625ea3a26fef134876d390cd54",
+   "rerun": {
+    "command": "bash .build/scratch/review-clean-run.sh on detached m0-int-minors-g04-audio = d0c6120, 0 uncommitted files. The script deletes Spikes/G04-Audio/.build/DerivedData, .build/ci-logs and .build/ci-results (0 DerivedData directories left), creates and erases my simulator Sylvia-M0-review-minors-g04-audio-1 (A91DE9B4..., iPhone 17, iOS 26.5), runs Scripts/fixtures/fetch.sh, then G04_SIM_NAME=Sylvia-M0-review-minors-g04-audio-1 G04_DEVICE_FIXTURES=1 Scripts/ci.sh g04 (result tables go to .build/ci-results, so the committed evidence is not overwritten), then Scripts/ci.sh contracts. Run 01:25-02:55 UTC. Follow-up checks: .build/scratch/stereo-regen.sh (generate-g04-audio-stereo.sh --force into a scratch SYLVIA_FIXTURE_CACHE), .build/scratch/mutation.sh (the R6-01 mutation re-check), and .build/scratch/probe.sh (a temporary reviewer probe test, removed afterwards; git status clean).",
+    "result": "PASS. g04 exit 0 in 5,406 s; contracts exit 0 (15 schemas, 188 fixtures, 1 OpenAPI, 1 instance). 152 tests in 26 suites passed with 5 known issues, the same budget misses the report records: the 10-hour MP3 seek latency, precise MP3 cold resume, and long-format cold resume for FLAC, MP3 without a header and Ogg .ogg (5 of 6 within, worst 1.513 s). Other drop-in phases: process-kill loss 0.20-3.29 s; ffmpeg portability 1 of 1 passed. Quick capture met every requirement in both signings, the counts were consistent in all 8 phases, and all four nothing-heard presses answered result=nothing_to_capture loaded=true played_since_load=false. 42 tables written; the 8.7 GB fixture bundle matched 62 manifest digests. The stereo table is identical to the committed one. My figures fall inside the documented ranges: CBR crossing 1.47-1.48 h, VBR 1.66-1.67 h, open-limit FLAC about 30 min, MP3 without a header 1.72 h, Ogg 11.8 h. Host 1-minute load 4.8-80.3 with 1-2 simulators booted, so timings are indicative only; all players at 1 % volume. Follow-up checks: the stereo regeneration gave a manifest identical to the shared cache and to fixture-generation-stereo.log (15 files, 144,591,691 bytes). The mutation re-check reproduced the claim: with the rule off, 14 tests and 4 issues (xcodebuild 65); file restored byte-identically, 14 of 14 pass. The probe demonstrated finding R7-01 (xcodebuild 65). Afterwards I deleted the simulator, DerivedData, .build/ci-results and the scratch fixture cache."
+   },
+   "findings": [
+    {
+     "id": "R7-01",
+     "severity": "minor",
+     "title": "After a long pause, the rewind can move the book back into a missing member, and playback then does not start",
+     "location": "Spikes/G04-Audio/Sources/G04AudioKit/Playback/PlaybackService.swift:346-364 and :374-380 (resumeRewindTarget, the rewind task); Docs/ADRs/0006-audio-playback-and-excerpts.md:69 (decision 20)",
+     "detail": "What is wrong: resumeRewindTarget() computes max(0, here - M) and does not check whether that point is in a member that can play. The rewind task seeks there and calls startMain(), which returns without playing at .segmentUnavailable or .failed. Decision 20 says only 'clamped at the start of the edition' and 'no rewind ... at a blocked segment'; the second rule covers a book already parked at a block, not a rewind that crosses into one. This contradicts decision 7 ('playback elsewhere in the edition is unaffected') and decision 21 ('Playback blocks only those segments').\n\nHow I know: a temporary probe test, not committed, run on my simulator by .build/scratch/probe.sh. Setup: Harness(missing: [0]) with members of 60, 90 and 30 s, the first not on this device; seek to 65,000 ms; setResumeRewind(after 300 s, back 10 s); play 2 s; pause at 67,000 ms; wait 400 s; play. Output: 'status=segmentUnavailable(memberIndex: 0) position_ms=57000 engine_playing=false last_checkpoint=resumeRewind last_checkpoint_ms=57000'. A second Play gives the same status, still not playing; xcodebuild exit 65.\n\nWhy it matters: a listener resuming an incomplete edition within M seconds after a missing member gets no playback, and the durable checkpoint moves to the blocked point, so a relaunch also resumes there. PlaybackControlsTests.resumeRewindExceptionsAndCancellation only covers a book that is already at a block.\n\nFix: clamp the rewind target to the start of the run of playable members that contains the current position (at least the start of the current member when the previous one is in unavailableMembers). Say so in decision 20 and add a test like the probe. No gate result changes, because this is a Stage 0 prototype of a control outside the gate brief. But decision 20 should not be approved or built in M4 as written."
+    },
+    {
+     "id": "R7-02",
+     "severity": "minor",
+     "title": "The Ogg Opus count '66 of 84 trials over seven runs' leaves out a committed run the report itself cites",
+     "location": "Docs/Stage0/G04-Audio.md:71 (row 21) and :92 (finding 1); Docs/ADRs/0006-audio-playback-and-excerpts.md:92; Docs/Stage0/evidence/G04-Audio/PROGRESS.md:200-201",
+     "detail": "How I know: I recounted every committed cold-resume table with git show <commit>:Docs/Stage0/evidence/G04-Audio/results/long-formats-cold-resume.tsv (.build/scratch/opus-trials.sh), plus long-formats-cold-resume-earlier-run.tsv. Ogg Opus trials within 1.5 s, per run: earlier-run 9/12, 0086b10 12/12, 29bc5c4 7/12, 943d5e7 3/12, round 4 12/12, round 5 12/12, eb7db57 12/12, final 11/12. The documents' 66/84 is that list without 0086b10. The omission is inherited from round 5's '43 of 60 over five runs'.\n\nWhy it matters: the report's Evidence paragraph cites 0086b10's tables as an earlier run 'kept for run-to-run variation', and the stall statistic counts 0086b10 among the 'three while fixing round 3'. Including it gives 78 of 96 over eight runs; the .ogg p95 range of 1.26-1.90 s does not change. The open-time slopes quoted 'over six runs' also leave out 0086b10, but its values (FLAC 2.97, MP3 without a header 0.83, Ogg 0.12/0.10 s per hour) fall inside the stated ranges, so those ranges hold. The conclusion, Ogg Opus at the edge of the budget, is unchanged.\n\nFix: count 0086b10, or say which runs are counted and why one is left out."
+    },
+    {
+     "id": "R7-03",
+     "severity": "minor",
+     "title": "PO-6 and ADR-0007 do not tell the product owner what the new quick-capture rule means for an app iOS has terminated, or offer an alternative rule",
+     "location": "Docs/ADRs/0007-quick-capture-evaluation.md:21 (decision 2), :56-70 (Consequences, Alternatives considered); Docs/Stage0/G04-Audio.md:19 (PO-6)",
+     "detail": "What is wrong: with decision 2 ('captures only a moment heard in the app process'), what happens when a listener pauses and later presses the Lock Screen control depends on whether iOS kept the suspended app. If it did, the press saves a capture. If iOS terminated the app (memory pressure, a crash, a reboot), the system launches a new process and the press answers nothing_to_capture. That happens even though the stored checkpoint, which now records savedAtUnixMs, says where and when the listener stopped. The listener cannot see whether the process survived. Neither ADR-0007's Consequences nor its Alternatives, nor the PO-6 row ('captures only a moment heard in the app'), mention this. There is another rule that is also free of the start-up race: wait for the restore, then accept the restored position when its checkpoint is recent.\n\nAlso overstated: the author's plan finding says 'an app the system cold-launches to perform the intent cannot know the moment'. It does know the restored checkpoint; excluding it is a product choice.\n\nFix: state this consequence and the alternative in ADR-0007 and among the PO-6 options, so the product owner decides knowingly. Device checklist step 12.1 already covers the force-quit case."
+    },
+    {
+     "id": "R7-04",
+     "severity": "minor",
+     "title": "The shared-file request table misses two stale shared texts",
+     "location": "Docs/Stage0/G04-Audio.md:127-128 (requests 10 and 11); Docs/ADRs/README.md (ADR-0007 row); Docs/Stage0/integration-log.md section 6 (G0.4 bullet)",
+     "detail": "1. ADR-0007's status now reads 'Proposed; product-owner decision PO-6 ... and the device run pending'. The ADR index row, owned by integration, still reads 'Proposed; device run pending (...)', and no request asks to update it; request 10 covers only ADR-0006's row.\n\n2. Integration-log section 6 still says review 6's finding IDs 'were not given to the second integration'. It lists the G0.4 product-owner decisions as 'release codec list, per-file timing mode, import remux, mono excerpts', without the playback-control defaults (PO-5). Request 11 covers only section 2, row 8.\n\nFix: add both items to the request table and to the 'Next' section of PROGRESS.md."
+    },
+    {
+     "id": "R7-05",
+     "severity": "minor",
+     "title": "The R6-04 evidence says rows 22 and 37 cite the product-owner decisions, but they do not; the long rows also grew",
+     "location": "Docs/Stage0/G04-Audio.md rows 22 (line 72) and 37 (line 87); row 21 (line 71); the author's R6-04 criterion",
+     "detail": "The author's result says 'Rows 2, 8, 9, 21, 22, 33, 35, 37 and 38 and the findings cite them'. I scanned every result row for PO-n with awk. Rows 2, 8, 9, 21, 33, 35 and 38 cite one. Row 22 (the per-file timing evidence behind PO-2) and row 37 (the stereo downmix evidence behind PO-4) cite none.\n\nThe rows the R6-04 location pointed at also grew, measured against 471b143: row 21 from 8,214 to 9,271 characters, row 18 from 3,651 to 5,352. The finding itself is met, because the decisions now open the report and ADR-0006 in their own table.\n\nFix: add '(PO-2)' to row 22 and '(PO-4)' to row 37, and consider splitting row 21."
+    },
+    {
+     "id": "R7-06",
+     "severity": "minor",
+     "title": "Changed skip intervals are not checked on the real command center",
+     "location": "Spikes/G04-Audio/Tests/G04AudioTests/PlaybackControlsTests.swift:31; Spikes/G04-Audio/Tests/G04AudioTests/RealServiceTests.swift:280; Docs/ADRs/0006-audio-playback-and-excerpts.md:67 (decision 18)",
+     "detail": "Decision 18 and row 38 say Now Playing advertises the listener's intervals as MPSkipIntervalCommand.preferredIntervals and refreshes them on every update.\n\nThe proof does not reach that property. remoteSkipCommandsUseAndAdvertiseTheIntervals builds NowPlayingController(publishesToSystem: false) and checks only the controller's snapshot fields, which are copied from the service, not read back from MPRemoteCommandCenter. The only check on the real command center (RealServiceTests.swift:280) asserts the default [15].\n\napplySkipIntervals() is simple, and checklist step 7.4 looks at the Lock Screen, so a changed interval is proven only in the snapshot.\n\nFix: in the real Now Playing test, set intervals of 10 and 30 s, call update(), and assert skipBackwardCommand.preferredIntervals == [10] and skipForwardCommand.preferredIntervals == [30]."
+    }
+   ],
+   "claims_verified": [
+    "Every file changed since 471b143 is in G0.4's own paths: Spikes/G04-Audio, Scripts/ci.d/60-g04-audio.sh, the new Scripts/fixtures/generate-g04-audio-stereo.sh, Docs/Stage0/G04-Audio.md, the device checklist, evidence/G04-Audio, ADR-0006 and ADR-0007. No shared file was edited. The commit messages follow the required format and trailer.",
+    "The final clean run tested d64b0fb (log header). git diff --stat d64b0fb HEAD -- Spikes Scripts is empty, Spikes is unchanged since e7a87a2, and the only script change between e7a87a2 and d64b0fb is 3 comment lines in the drop-in.",
+    "My own clean run of d0c6120 reproduces the committed result. For counts, phases and load, see 'rerun'.",
+    "R6-01: the mutation check reproduced. With the rule off: 14 tests, 4 issues (QuickCaptureTests.swift:178 twice, 199, 211), exit 65. Restored byte-identically (cmp): 14 of 14 pass.",
+    "R6-01 evidence: in both committed quick-capture files and in my run, the cold-launch press and the press on the restored book answered nothing_to_capture loaded=true played_since_load=false. In the committed files the capture line comes before the harness's 'loaded' line, so the intent arrived during the restore. The checklist's step 12 expectation no longer depends on that race.",
+    "R6-06: every phase prints 'consistent' counts. Local Vision text recognition of the harness screenshots shows captures=1, 2 and 3 as logged.",
+    "Screenshot claims hold: 14 PNG, 1,754,208 bytes, largest 241,516, real PNGs with no git attributes. Text recognition shows 'Moment saved \u00b7 preserving audio' in Shortcuts after the team-signed run and 'Unable to run App Shortcut' after the ad-hoc run, and Control Center shows no text after a saved or a refused press.",
+    "R6-05: the stereo generator is deterministic. My --force regeneration matches the shared cache and fixture-generation-stereo.log, 15 files, 144,591,691 bytes, and the stamp's script SHA matches the committed generator. The stereo-channels.tsv figures (own correlation at least 0.857, other at most 0.029, 47.9/69.7 ms, weights 0.43-0.50, gain 0.998 against 1.414, HE-AAC v2 recorded as parametric) match the table and my run.",
+    "Cross-run limits recomputed from every committed long-formats-open.tsv: native FLAC 25.4-30.6 min, MP3 without a header 1.41-1.80 h (round 5 alone gives 1.80 h, so the 1.4-1.7 h correction is right), Ogg .ogg 9.0-12.4 h. The .ogg p95 range is 1.26-1.90 s.",
+    "Final-run figures match the committed tables (budgets.txt, long-formats-*.tsv, host-load.tsv, process-kill-relaunch.txt, soak.txt, codec-matrix.tsv, preview-end-formats.tsv, audio-output.txt):\n- MP3 budget crossing: CBR 1.11-1.46 h, VBR 1.26-1.61 h; slopes 1.035 and 0.831 s per hour.\n- Cold resume: per-file mode (estimated CBR) 0.14-0.15 s; FLAC 28.1-30.4 s; MP3 without a header 9.0-9.5 s; Ogg .ogg 1.30-1.60 s; .opus 0.99-1.22 s.\n- Capture save p95 11.6 ms.\n- Host load 3.5-46.9 over 177 samples, 1-2 simulators booted.\n- Process-kill loss 0.16-3.27 s.\n- Soak: 1,762 checkpoints, gaps 1.62 s and 4,501 ms, memory 30.1 MB lower at the end.\n- Codec matrix: worst 47.9 / 125.6 / 172.4 ms.\n- Preview player end within 2.627 ms.\n- Muted player: 665 and 332 Hz.",
+    "The report, ADR-0006, ADR-0007, the checklist and PROGRESS.md are consistent with the code and the final tables:\n- the PO-1 to PO-6 table is present in the report, ADR-0006 lists PO-1 to PO-5 and ADR-0007 holds PO-6;\n- decisions 13 and 18-21 match PCMDecoder and PlaybackService;\n- shared-file requests 1-11 are present;\n- checklist steps 1, 7.4, 12 and 17 match the harness's log formats and buttons;\n- no stale 8.6/8.4 GB, 40/41-table, 140-test, 13-test or 1.4-1.7 h figures remain.",
+    "Quiet audio holds: every test player comes from TestAudio, including the new StereoPlayerProbe, and the drop-in's check passes. A harness the system launches logs volume=0.01 reason=default. Every harness launch in both quick-capture runs logged 0.01.",
+    "No TODO, stub, NSAllowsArbitraryLoads or committed key in the changed files. The design lint excludes Spikes/.",
+    "The author's simulator Sylvia-M0-minors-g04-audio no longer exists. 152 tests in 26 suites, with QuickCaptureTests at 14, PlaybackControlsTests at 10 and 4 UI tests, matches the code and both logs."
+   ],
+   "gate_gaps": [],
+   "previous_findings_status": [
+    {
+     "id": "R6-01",
+     "resolved": true,
+     "note": "Quick-capture surfaces now capture only a moment heard in the app process (.surface entry, hasPlayedSinceLoad). The cold-launch unit test covers the intent arriving before, during and after the restore; I reproduced the mutation check. My clean run's UI phases answered nothing_to_capture in both signings, and checklist step 12 now states a result that does not depend on the race. Remaining documentation gap: what the rule means after iOS terminates the app (R7-03)."
+    },
+    {
+     "id": "R6-02",
+     "resolved": true,
+     "note": "ADR-0006 decisions 18-21 and PO-5 now cover the sleep timer, skip intervals, rewind after a long pause and the incomplete-edition warning. They are prototyped and 10 unit tests pass (also in my run); the hardware parts are checklist steps 7.4 and 17. New edge-case defect found: the rewind can land in a missing member and leave the book stopped (R7-01). A changed skip interval is not checked on the real command center (R7-06)."
+    },
+    {
+     "id": "R6-03",
+     "resolved": true,
+     "note": "The report's 'Shared-file requests' table lists rows 1-5 with their integration outcomes and open rows 6-11, and PROGRESS.md points to it. The row-9 PNG figures are correct. It misses the ADR-0007 index row and integration-log section 6 (R7-04)."
+    },
+    {
+     "id": "R6-04",
+     "resolved": true,
+     "note": "A PO-1 to PO-6 table (options, proposal, evidence) now opens the report, and ADR-0006 and ADR-0007 list the same decisions. The author's claim that rows 22 and 37 cite them is wrong, and rows 21 and 18 grew longer (R7-05). The decisions themselves are pending the product owner."
+    },
+    {
+     "id": "R6-05",
+     "resolved": true,
+     "note": "A fourth generator makes 15 stereo files with distinct channels; I reproduced it byte-identically. StereoChannelTests passed with identical figures in my run. The excerpt downmix now averages the two channels (gain 0.998, against 1.414 before). The device re-run is checklist step 1."
+    },
+    {
+     "id": "R6-06",
+     "resolved": true,
+     "note": "The harness shows captures=<n>, the UI tests read it, and the quick-capture script fails unless the change equals the saved captures in the harness log. All 8 phases were consistent in the committed run and in mine, and text recognition of the screenshots confirms the counts."
+    }
+   ]
+  }
+ }
+]

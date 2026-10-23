@@ -4,6 +4,7 @@
 - **Date:** 2026-10-13; the product owner's decisions of 2026-10-22 recorded
 - **Deciders:** pending: the product owner, who approves the record once Session 10's review of it is recorded (D-6, decided 22 October 2026), and who decided its part of the residual risks marked "owner decision" on 22 October 2026; the security reviewer for the model, the controls and the accepted residual risks, and the technical lead for the milestone assignments. Sylvia is a solo project, so the product owner gives both sign-offs personally, each recorded only once the evidence it rests on exists. (Until 22 October 2026: all pending.)
 - **Plan references:** Sections 2.2 (I-03, I-04, I-07, I-08, I-09), 8.3-8.5, 14.2-14.5, 15.2-15.5, 16, 17, 18.1, 18.2, 19.4, 21.2 (M0 deliverable "threat model"), 22.2, 22.3; tests T07-T09, T12, T13, T16, T17, T24, T25, T31, T33, T35-T50; ADR-0003, ADR-0004, ADR-0005, ADR-0006 and ADR-0007 (on `m0-g04-audio`), ADR-0008 to ADR-0012, ADR-0014
+- **Review record:** the threat item's author result and its one review round, in two lenses, handed over on 24 October 2026 from the orchestrating session's workflow journals (agent reviews; human sign-off pending): both lenses accepted `6bb2b9e8` with 16 minor findings between them, left open at the merge and not written up in this record (its section 5 holds the model's own findings, TM-F1 to TM-F6): [`Docs/Stage0/evidence/M0-Integration/item-reviews/threat.md`](../Stage0/evidence/M0-Integration/item-reviews/threat.md)
 
 ## Context
 

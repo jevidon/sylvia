@@ -1,0 +1,8 @@
+base: .build/scratch/exit-reviews-logs/gate-checks-at-5aec2518.log: commit: 5aec2518c90427a283d9c8195e11bb9ab23e5d12 (HEAD); uncommitted files before this run: 0
+head: .build/scratch/exit-reviews-logs/gate-checks.log: commit: 480d1757f94da220c73e13f833ef16f70c3631ea (m0-exit-reviews); uncommitted files before this run: 0
+lines reporting a problem, a failed control or a failed recheck: 56 in the base log, 56 in the head log
+the base log's lines on CLAUDE.md that report a problem:
+        PROBLEM: changed outside Docs/: CLAUDE.md
+        -- 1c. CLAUDE.md since 26530d49: PROBLEM, changed
+the head log's last exit line: exit: 1 (1, from 1b and 1c, as in the base log)
+result: pass

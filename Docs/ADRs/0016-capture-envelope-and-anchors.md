@@ -7,6 +7,7 @@
 - **Contracts:** `Contracts/schemas/anchor.v1.schema.json` (`urn:sylvia:schema:anchor:v1`), `Contracts/schemas/capture-envelope.v1.schema.json` (`urn:sylvia:schema:capture-envelope:v1`), fixtures in `Contracts/fixtures/{anchor,capture-envelope}.v1/`
 - **Checks:** `Scripts/check-spike-anchors.py`, the fixture generator and the mutation pass, all run by `Scripts/ci.d/11-capture-anchor-contracts.sh` (section 10)
 - **Report:** `Docs/Stage0/M0-contracts.md`; evidence in `Docs/Stage0/evidence/M0-contracts/`
+- **Review record:** the contracts item's author, review and fix rounds, handed over on 24 October 2026 from the orchestrating session's workflow journals (agent reviews; human sign-off pending): its final review, round 3 in two lenses, accepted `ef0d5de6` with 16 minor findings left open at the merge: [`Docs/Stage0/evidence/M0-Integration/item-reviews/contracts.md`](../Stage0/evidence/M0-Integration/item-reviews/contracts.md)
 
 ## Context
 

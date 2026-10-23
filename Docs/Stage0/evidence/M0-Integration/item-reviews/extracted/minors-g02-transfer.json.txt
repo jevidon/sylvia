@@ -1,0 +1,230 @@
+[
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 22,
+  "label": "minors-g02-transfer:author",
+  "result": {
+   "branch": "m0-int-minors-g02-transfer",
+   "commit": "c83a3b9ff051aa023391c16904ca075de4ab52dd",
+   "summary": "Round 3 closed for G0.2 Transfer on branch m0-int-minors-g02-transfer, from b354dc7. HEAD is detached at c83a3b9.\n\nA stopped agent had left five WIP commits. I re-checked all of them as unreviewed. Its code held up: R3-01 reservation in reconcile(), --qr drawing, logging-source recipe check, device-ats-probe.sh. Its documents had gaps, which I fixed:\n- ADR-0008 had no round 3 change. It still said the QR code is not drawn, that the four-task window bounds token copies, and stated the ATS conclusions without \"simulator\". Its transport section also contradicted its own Tailscale ATS result.\n- The QR test called a payload \"the largest the protocol allows\" when it was not. A link at the protocol's limits (3,633 characters) is longer than a QR code holds. The test now shows it is refused and the source falls back to the code and link.\n- Report finding 22 cited a check time and a part-commit time from a test log the re-runs had overwritten. Those figures are removed, and its development-run timing now cites a kept log.\n- The reservation was described as \"one part per outstanding task\"; the code reserves one part per window slot.\n- The rounds 1 and 2 clean-run step counts were wrong: 18 steps with 17 passing, not \"18 of 19\".\n- The step 19 column figure, the \"0.4 s\" relaunch timing, the 403 wording and the launch-reconciliation bullet were updated to the code and evidence.\n\nAdded so a recurrence of the round 3 budget failure can be diagnosed:\n- the imported event now logs import_ms;\n- the 5 GiB logs say what the slowest jobViews() call returned, plus the load averages;\n- the CI step deletes old 5 GiB logs first and prints them even when a test fails.\n\nClosed the M0 integration open item for this gate: Spikes/G02-Transfer/MacIdentityProbe/Package.resolved and Spikes/G02-Transfer/iOS/Package.resolved are now committed. Each pins exactly what SourceService's or TransferKit's lock pins, and a new CI step, package-locks, compares them.\n\nClean run from deleted build products with a recreated simulator, at commit 41b93e7 (load average 132 at the start): contracts pass, and 21 of the G0.2 drop-in's 22 steps pass. mac-identity-signed did not run because Xcode reports \"No Accounts\". The 5 GiB budgets held at load averages of 92 to 159. Only documents and evidence summaries changed after that run.\n\nKey files:\n- /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-9/Docs/Stage0/G02-Transfer.md (findings 21 and 22)\n- /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-9/Docs/ADRs/0008-pairing-and-transport-security.md\n- /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-9/Docs/ADRs/0009-transfer-protocol.md\n- /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-9/Docs/Stage0/device-checklists/G02-Transfer.md (steps 10, 13, 19, 22, 23 and \"the logging source\")\n- /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-9/Docs/Stage0/evidence/G02-Transfer/ci-clean-run.log\n- /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-9/Docs/Stage0/evidence/G02-Transfer/PROGRESS.md",
+   "criteria": [
+    {
+     "criterion": "R3-01: launch reconciliation runs the plan 15.4 reservation before its own part requests",
+     "status": "passed-host",
+     "evidence": "BackgroundTransferCoordinator.start reads availableSpace() before reconcile takes the lock; spaceShortfallLocked runs per job before plan.enqueue. Host test relaunchWithTooLittleSpacePausesBeforeAnyRequest, clean run at 41b93e7: background-host/relaunch-low-space.log shows launch_reconciliation enqueued=0, blocked=insufficient_space, 0 requests after the relaunch, and resume fetching only missing parts. The same test fails on the round 2 code: review/round3-before-fix.log. Docs now say the reservation is 'one part per window slot'."
+    },
+    {
+     "criterion": "R3-02: checklist step 10 expects what an owner revocation actually produces",
+     "status": "passed-simulator",
+     "evidence": "Step 10.2 now expects 'Pair this iPhone with the Mac again. Verified parts are kept.' (reauthentication_required), which equals PauseReason.nextStep. The Router answers a revoked token 401 invalid_token, and the OpenAPI document says so too. simulator/background-revoked.log (clean run) shows that exact next step; background-host/revoked-credential.log shows 401 leading to reauthentication_required. ADR-0009's failure table now says revocation is 401 and 403 is only insufficient_scope. Running step 10 on a phone is still pending-device."
+    },
+    {
+     "criterion": "R3-03: the pairing code, fingerprint and prompt stay visible and out of the attached request log",
+     "status": "passed-host",
+     "evidence": "The checklist's 'logging source' command line (tee /dev/tty, then a line-buffered sed that redacts into source.log) replaces the redirect in steps 8, 9, 13-16, 21 and 22. Run as written on a pseudo-terminal with sylvia-fetch standing in for the phone: code, fingerprint prompt and QR shown on the terminal and 'y' answered there; source.log holds the request log and two redacted lines, with no code, link or QR. Evidence: cli-logging-source-recipe.log, CI step cli-logging-recipe."
+    },
+    {
+     "criterion": "R3-04 (documents): holding the background-events completion is no longer claimed to stop suspension",
+     "status": "passed-host",
+     "evidence": "ADR-0009 and the coordinator comments now say the completion is held until the check publishes but buys no background time; if the app is suspended first, the next launch repeats the check from the journal. The holding itself is asserted by fiveGiBThroughTheBackgroundClientWithARelaunch: faults/large-5GiB-background-client.log says 'held, then called after assembly_verified'. Report open question 12 and an ADR-0009 open item cover beginBackgroundTask or BGProcessingTask for M1."
+    },
+    {
+     "criterion": "R3-04 (measurement): can a 5 GiB full-file check finish during a background relaunch on a locked phone",
+     "status": "pending-device",
+     "evidence": "New checklist step 22 records assembly_started and assembly_verified with app_state, staging_checked and the number of launches needed. It needs a physical iPhone. A host run under load shows the check can stretch to 29 s (review/round3-5gib-dev-run.log)."
+    },
+    {
+     "criterion": "R3-05: no bound on outstanding tasks (and token copies) across jobs",
+     "status": "pending-human",
+     "evidence": "Documented, not built: choosing two downloading jobs or a cross-job task cap is the product owner's decision, and the review named recording it as the alternative fix. ADR-0009 'Concurrency' records the per-job reading of plan 6.4 and 15.4 and that httpMaximumConnectionsPerHost belongs to the shared session. ADR-0008's token sentence now says the window bounds copies per job only, so N jobs hold up to 4N. Report open question 3 and the ADR-0008 and ADR-0009 open items record the decision."
+    },
+    {
+     "criterion": "R3-06(a): ATS conclusions labelled simulator, and a device recipe for confirming them",
+     "status": "passed-simulator",
+     "evidence": "Report findings 2 and 3, the Tailscale 'failed' row and ADR-0008's ATS conclusions and transport section now say 'simulator'. Scripts/device-ats-probe.sh (checklist step 23) runs ATSProbeTests with inline inputs and without loopback forms. CI step simulator-ats-device-recipe ran it on the simulator: ats/device-recipe-on-simulator.log, PASS for the LAN address and the .local name."
+    },
+    {
+     "criterion": "R3-06(a): pinned HTTPS and cleartext per address form on a physical phone",
+     "status": "pending-device",
+     "evidence": "Checklist step 23 (and step 6 for Tailscale): needs a signed build on the iPhone. Signing is still unavailable ('No Accounts')."
+    },
+    {
+     "criterion": "R3-06(b): the local-network row no longer reads as if a real denial was detected",
+     "status": "passed-host",
+     "evidence": "The row is now 'Classification around a substituted local-network check ... No real denial ran'. Evidence: background-host/local-network-check-denied.log, -not-denied.log and LocalNetworkProbeTests in ci/host-transferkit.log. The real denial is a separate pending-device row (steps 4 and 18)."
+    },
+    {
+     "criterion": "R3-06(c): ADR-0009's 5 GiB evidence gives each budget as the test asserts it",
+     "status": "passed-host",
+     "evidence": "ADR-0009 Evidence states under 250 ms for polls during 'assembling' and under 1 s from the relaunch to the import, matching LargeTransferTests' #expect lines. Clean run (faults/large-5GiB-background-client.log, load average about 100): slowest poll during assembly 1.4 ms, slowest overall 27 ms, returned while the job was downloading; import_ms 4 ms."
+    },
+    {
+     "criterion": "Gate gap: the Mac source draws the pairing QR code",
+     "status": "passed-host",
+     "evidence": "sylvia-source --qr draws the link on /dev/tty only. cli-qr-code.log: Vision decodes the drawing to exactly the link for 1, 4 and 8 endpoints; a link at the protocol's limits (3,633 characters, more than the 2,953 bytes a level-L QR code holds) is refused and the source prints the code and link. cli-qr-terminal.log: drawn on the terminal and not in redirected output; not drawn without a controlling terminal."
+    },
+    {
+     "criterion": "Gate gap: scanning the QR code with the phone's camera",
+     "status": "pending-device",
+     "evidence": "Checklist step 19 (DataScannerViewController needs a camera)."
+    },
+    {
+     "criterion": "Gate gap: Tailscale and MagicDNS address forms (plan 15.2 Stage 0 gate)",
+     "status": "pending-human",
+     "evidence": "Still 'failed' on the simulator without an ATS exception (ats/ats-probe-none.log, simulator/background-address-forms.log, regenerated in the clean run). Which of ADR-0008 options 1 to 3 to take is for the security reviewer and product owner (report open question 1)."
+    },
+    {
+     "criterion": "Gate gap: Mac identity key in the data protection keychain from a signed app",
+     "status": "pending-human",
+     "evidence": "Retried in the clean run: Xcode reports 'No Accounts' for team A4KBDX665Z (keychain-identity-signed.log; CI step mac-identity-signed not run). The account holder must add the team account and accept the license agreement (checklist step 20)."
+    },
+    {
+     "criterion": "Gate gap: security review of the pairing protocol",
+     "status": "pending-human",
+     "evidence": "Checklist step 12; ADR-0008 Deciders still pending. Agent reviews do not replace this sign-off."
+    },
+    {
+     "criterion": "Unfixed item from the last fixer: part commits and the import hold the coordinator lock",
+     "status": "pending-device",
+     "evidence": "Not a review finding. New diagnostics: import_ms and what the slowest poll returned. Clean run: commit_ms median 11, max 19 ms; import 4 ms. Report findings 20 and 22 record it, and checklist step 11 (oldest iPhone) now records commit_ms and import_ms."
+    },
+    {
+     "criterion": "M0 integration open item for G0.2: package locks for the XcodeGen projects",
+     "status": "passed-host",
+     "evidence": "MacIdentityProbe/Package.resolved and iOS/Package.resolved committed. Xcode kept each seeded lock unchanged; the clean run's builds resolved exactly those pins with -disableAutomaticPackageResolution and left them unchanged (package-locks.log). CI step package-locks compares them with SourceService's and TransferKit's locks and failed when one pin was changed on a copy."
+    },
+    {
+     "criterion": "CI drop-in 40-g02-transfer from a clean state; ci-clean-run.log overwritten",
+     "status": "passed-simulator",
+     "evidence": "ci-clean-run.log: commit 41b93e7 with 0 uncommitted paths, build products deleted, simulator Sylvia-M0-minors-g02-transfer recreated; contracts pass and 21 of 22 G0.2 steps pass on host and simulator, mac-identity-signed not run (signing). Load average 132 at the start and 26 at the end. No warnings from Sylvia code. The first round 3 clean run's failure is kept as review/round3-first-clean-run-failed.log (finding 22)."
+    }
+   ],
+   "ci": {
+    "script": "SYLVIA_G02_SIMULATOR=Sylvia-M0-minors-g02-transfer Scripts/ci.sh contracts g02-transfer, run from deleted build products with this job's simulator recreated (scratch wrapper .build/scratch/clean-run.sh); output copied to Docs/Stage0/evidence/G02-Transfer/ci-clean-run.log",
+    "result": "pass at commit 41b93e7: 10-contracts passes (15 schemas, 188 fixtures); 40-g02-transfer passes 21 of 22 steps; mac-identity-signed not run because Xcode reports 'No Accounts' for team A4KBDX665Z. Load average 132 at the start and 26 at the end; the 5 GiB step ran at load averages of 92 to 159 and met its budgets. Only documents and evidence summaries changed after the run."
+   },
+   "plan_findings": [
+    "Plan 6.4 ('two network transfers by default') and 15.4 ('two in-flight transfers and bounded queued parts'): the spike bounds outstanding tasks per job (window 4) and connections per host (2, one session for all jobs), but not the number of downloading jobs, so N jobs hold up to 4N token-carrying requests in nsurlsessiond. The product scheduler (M1) must choose a cross-job bound (report open question 3).",
+    "Plan 15.1 and XFER-04 (Tailscale address or MagicDNS name): with the self-signed pinned identity and no ATS key, both fail on the iOS 26.5 simulator after the pin matches (-1200). A decision among ADR-0008 options 1 to 3 is needed before XFER-04 is promised; a phone must confirm (checklist steps 6, 23).",
+    "Plan 15.2 (copyable code or link, optionally a QR code): the pairing payload allows codes up to 4,096 characters, but a level-L QR code holds at most 2,953 bytes. Links with many long endpoint names (for example 8 names of 253 characters, 3,633 characters) cannot be shown as a QR code; the source falls back to the code and link. Typical links (1 to 4 addresses) fit in about 90 to 105 terminal columns.",
+    "Plan 6.4 and I-10 (background execution): the full-file SHA-256 of a 5 GiB item took 2.1 to 2.3 s on a quiet host but 29 s under heavy CPU contention. A background relaunch on a phone may not finish it, and holding the background-events completion buys no time. Whether M1 needs beginBackgroundTask or BGProcessingTask around assembly, re-hash and receipts depends on checklist step 22."
+   ],
+   "shared_changes_requested": [
+    "Docs/ADRs/0014-dependency-lock-and-license-inventory.md: line 58 says the two G0.2 Xcode projects have no committed lock and that Xcode writes none. Both now commit one: Spikes/G02-Transfer/MacIdentityProbe/Package.resolved pins exactly what SourceService/Package.resolved pins (including swift-atomics 1.3.1, swift-collections 1.7.1, swift-system 1.8.1), and Spikes/G02-Transfer/iOS/Package.resolved pins what TransferKit/Package.resolved pins (swift-asn1 1.7.3). Xcode keeps a seeded lock unchanged. CI step package-locks compares them. Please update line 58 and close the open item on line 67 (owner G0.2), citing Docs/Stage0/evidence/G02-Transfer/package-locks.log and ci/package-locks.log.",
+    "Docs/Stage0/integration-log.md section 6 'G0.2' open item (MacIdentityProbe has no committed lock; iOS has no lock): closed by the same commits, with the same evidence.",
+    "Docs/Stage0/README.md, G0.2 row 'Final review (agent)': the review 3 minor findings R3-01 to R3-06 are now fixed or handed to device and human steps on m0-int-minors-g02-transfer at c83a3b9, pending the next review and integration. The two failed rows (Tailscale address forms) are unchanged."
+   ],
+   "dependencies_added": [],
+   "committed_fixtures": [],
+   "open_questions": [
+    "Product owner: for the cross-job bound on transfers (plan 6.4), should the scheduler allow two downloading jobs at a time with the rest queued, or cap outstanding tasks across all jobs? (Report open question 3, finding R3-05.)",
+    "Security reviewer and product owner: which Tailscale option: a scoped NSExceptionDomains exception, a publicly trusted MagicDNS certificate, or no Tailscale route in v1 (changing XFER-04)? (ADR-0008, report open question 1.)",
+    "Account holder: add team A4KBDX665Z's account to Xcode on the build Mac (it still reports 'No Accounts' on 13 October 2026) and accept the Program License Agreement. Until then the signed identity probe (step 20) and every phone step cannot run.",
+    "Technical lead: move the part commit (16 MiB copy, hash, barrier) and the import's file work off the coordinator lock? Host times are small (commit max 19 ms, import 4 ms in the clean run), but one under-load run saw a 2.1 s wait whose cause was not kept. The new import_ms and slowest-poll diagnostics will show it next time (findings 20, 22; checklist step 11).",
+    "Product owner: should the companion limit pairing payloads (number or length of endpoint names) so the pairing link always fits a QR code, or is falling back to code and link acceptable?"
+   ]
+  }
+ },
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 30,
+  "label": "minors-g02-transfer:review-1",
+  "result": {
+   "verdict": "accept-with-minor",
+   "commit_reviewed": "c83a3b9ff051aa023391c16904ca075de4ab52dd",
+   "rerun": {
+    "command": "In a fresh worktree detached at c83a3b9: deleted .build/ci-logs, .build/DerivedData, the g02 scratch folders, Spikes/G02-Transfer/{SourceService,TransferKit,iOS,MacIdentityProbe}/.build and both generated .xcodeproj, then `SYLVIA_G02_SIMULATOR=Sylvia-M0-review-minors-g02-transfer-1 Scripts/ci.sh contracts g02-transfer` (wrapper .build/scratch/review-ci.sh; the simulator was created by the run and deleted afterwards). Extra checks: relaunchWithTooLittleSpace against the b354dc7 coordinator in a scratch copy; seeded-lock experiment for MacIdentityProbe; the package-locks comparison on a changed copy; a QR orientation script; 8 pseudo-terminal runs of the logging-source pipeline.",
+    "result": "PASS from clean. Run 2026-10-12T22:22:39Z to 22:32:17Z, load 13.55 at the start and 17.32 at the end, 0 uncommitted paths. contracts passed (15 schemas, 188 fixtures). 40-g02-transfer passed in 577 s: 21 of 22 steps passed, and mac-identity-signed was NOT RUN (Xcode again reported 'No Accounts' and 'No profiles'). SourceService ran 65 tests and TransferKit 76; both new tests passed. 5 GiB background client at a load of about 17: full-file check 2133 ms, slowest poll 21.9 ms, slowest poll during assembly 7.5 ms, commit_ms max 18, import_ms 6. These are consistent with the committed figures. cli-qr-code.log, cli-qr-terminal.log, cli-logging-source-recipe.log and ci/package-locks.log regenerated byte-identical to the committed files. No compiler warnings from Sylvia code. Before-fix check: the R3-01 test failed with the same 9 issues as review/round3-before-fix.log (enqueued 1, no block, job downloading, 1 request). The worktree was restored to HEAD (git status clean), and build products, DerivedData and the simulator were deleted. Disclosure: one of my commands wrote its output to /Users/jevidon/Git/sylvia/.build-r301-placeholder outside this worktree by mistake. I moved it into this worktree's .build/scratch within a minute; nothing else was written outside the worktree."
+   },
+   "findings": [
+    {
+     "id": "R4-01",
+     "severity": "minor",
+     "title": "The step 23 recipe prints 'PASS (every form behaved as on the simulator)' without checking cleartext for the LAN and .local forms",
+     "location": "Spikes/G02-Transfer/iOS/Tests/HostedUnit/ATSProbeTests.swift:129-131 (cleartext is asserted only for tailnet forms, lines 144 and 148); Spikes/G02-Transfer/Scripts/device-ats-probe.sh:111-116; Docs/Stage0/device-checklists/G02-Transfer.md:205 (step 23.4)",
+     "detail": "What is wrong: step 23 is the recipe R3-06(a) asked for, to confirm on a phone that cleartext HTTP to the LAN address and the .local name loads with no ATS key (report finding 3; ADR-0008 'What this means'). For non-tailnet forms, ATSProbeTests asserts only `#expect(fg.ok && bg.ok, ...)`. The cleartext outcome is logged but never checked. device-ats-probe.sh prints `RESULT: PASS (every form behaved as on the simulator)` whenever xcodebuild exits 0.\n\nThe failure case: a phone that blocks cleartext to the LAN or .local address still produces that PASS line. Step 23.4 tells the tester that PASS means all of the expectations held, and that only 'any other result is a finding'.\n\nHow I know: code reading. In the regenerated ats/device-recipe-on-simulator.log the per-form lines say 'cleartext HTTP: loaded (HTTP 200)', but PASS comes only from the test's exit status.\n\nWhy minor: no decision depends on it, because ADR-0008 keeps the https-only rule whatever the phone shows, and the per-form lines are in the log. The verdict line still states more than was checked, the same kind of defect as R3-06(b).\n\nFix: assert `clear.hasPrefix(\"loaded\")` for the local forms (the simulator result), so that a difference fails the run and the script prints its 'did not hold' line. Alternatively, have the script check each form's cleartext line before it prints PASS."
+    },
+    {
+     "id": "R4-02",
+     "severity": "minor",
+     "title": "Step 22 locks the phone at about 300 of 320 parts, so it will probably measure discretionary task scheduling, not the full-file check in a background relaunch",
+     "location": "Docs/Stage0/device-checklists/G02-Transfer.md:192 (step 22.2); BackgroundTransferCoordinator.swift:38 (window = 4), 957-965 and 1003-1012 (new tasks come from delegate callbacks); Docs/Stage0/G02-Transfer.md:144 (finding 4)",
+     "detail": "What is wrong: with a window of 4, at most 4 of the roughly 20 remaining parts have tasks created in the foreground when the phone is locked. The other roughly 16 are requested by topUpLocked during background relaunches. Report finding 4 records that, on the simulator, tasks created during a background relaunch opened no connection in 59 s and the system did not wake the app again; Apple treats such tasks as discretionary. The last parts may therefore wait until the app is opened. Assembly would then start in the foreground, and step 22 would record 'assembly only after opening' for a reason unrelated to whether a background relaunch can finish a 5 GiB check, which is the question R3-04 raised.\n\nWhy minor: the step still records useful data (app states and the number of launches), and it is pending-device.\n\nFix: lock only when every remaining part already has a task created in the foreground (at most `window` parts left; for example 316 of 320 verified with 4 outstanding), and record the charging and Wi-Fi state, which affect discretionary scheduling. The 300-of-320 run can stay as a second variant."
+    },
+    {
+     "id": "R4-03",
+     "severity": "minor",
+     "title": "Several new sentences go beyond the evidence: load labels and the CPU-contention cause, suspend versus terminate, and 'run as written'",
+     "location": "Docs/Stage0/device-checklists/G02-Transfer.md:189 (step 22 intro); Docs/Stage0/G02-Transfer.md:163 (finding 22) and 132 (row 'Device checklist command lines run as written'); Docs/ADRs/0009-transfer-protocol.md:106 and the report's 5 GiB row",
+     "detail": "(a) Step 22 says the check takes '2.1 to 2.3 s on the build Mac when it was lightly loaded, and 29 s once under heavy parallel load'. Finding 22 says 'CPU contention slows the full-file check itself'. The evidence contradicts both:\n- The clean run's check took 2261 ms at a 1-minute load of 108.5 falling to 92.5 (faults/large-5GiB-background-client.log).\n- Round 3 repeat run 3 took 2331 ms at a load of 86 falling to 60.\n- The 29 s development run had a load that rose only from 20 to 67 (review/round3-5gib-dev-run.log).\n- The cited log contains only the 29 s run.\nThe cause of the 29 s is unknown and should be stated as unknown.\n\n(b) ADR-0009:106 and the report row say that if iOS suspends the app before the check ends, 'the next launch re-hashes the verified parts and repeats the check'. An app that is only suspended continues the running check when it next runs. A re-hash and a repeated check at the next launch happen only if the app is terminated.\n\n(c) The report row says 'Device checklist command lines run as written'. The recipe check ran the logging-source line bound to loopback (no --lan) with --state and --ephemeral-identity, which cli-logging-source-recipe.log discloses, and it ran the ATS recipe against a simulator. 'Run with the deviations listed in the log' would be accurate."
+    },
+    {
+     "id": "R4-04",
+     "severity": "minor",
+     "title": "The new CI step simulator-ats-device-recipe fails the whole drop-in on a Mac without an en0 IPv4 address, and prints the stale committed log",
+     "location": "Scripts/ci.d/40-g02-transfer.sh:270-278 and 375 (no LAN guard), compared with 320-325 (cli-lan uses not_run_step); Spikes/G02-Transfer/Scripts/device-ats-probe.sh:45 (exit 2 before `: > \"$log\"`)",
+     "detail": "What is wrong: device-ats-probe.sh exits 2 when en0 has no IPv4 address, and the step then returns 1. Before round 3 the drop-in passed on such a Mac: cli-lan is listed as NOT RUN, and simulator-background lists missing forms as 'not available on this Mac (not run)'. The script exits before it truncates LOG, so the step's failure path runs `cat` on the stale committed ats/device-recipe-on-simulator.log. A FAIL would then print an old 'RESULT: PASS' log.\n\nFix: use the drop-in's existing `lan` check: `not_run_step simulator-ats-device-recipe \"en0 has no IPv4 address\"`. Also truncate or write LOG before any early exit."
+    },
+    {
+     "id": "R4-05",
+     "severity": "minor",
+     "title": "The plan 15.4 reservation is per job and does not count other active jobs, and the new R3-05 'Concurrency' decision does not mention it",
+     "location": "BackgroundTransferCoordinator.swift:538-547 (spaceShortfallLocked uses only this job's remaining bytes) and 407-413 (each job is checked against the same `available`); Docs/ADRs/0009-transfer-protocol.md:94 (Concurrency); plan 15.4",
+     "detail": "What is wrong: each job reserves its remaining bytes plus 4 parts against the same free-space figure. Staging files are sparse, so another job's future writes do not reduce `available`. Two jobs that each need 3 GB therefore both pass with 4 GB free, then exhaust the disk.\n\nCorrectness holds: ENOSPC still pauses the jobs with verified parts kept, and this behaviour predates round 3. But the ADR's promise that the reservation pauses the job before any request holds only per job. ADR-0009 'Concurrency' and report open question 3 now record the unbounded number of downloading jobs as a product decision without saying that the reservation must become cross-job too.\n\nFix: add that to the Concurrency paragraph and open question 3, or sum the remaining bytes of all downloading jobs in spaceShortfallLocked."
+    }
+   ],
+   "claims_verified": [
+    "HEAD after `git checkout --detach m0-int-minors-g02-transfer` is c83a3b9ff051aa023391c16904ca075de4ab52dd, the commit the author reported. The diff from b354dc7 touches only gate-owned paths: ADR-0008, ADR-0009, the G02 report, checklist and evidence, Scripts/ci.d/40-g02-transfer.sh and Spikes/G02-Transfer/**. All 11 commits carry the Co-Authored-By trailer. After the clean-run commit 41b93e7, only documents and evidence changed (66bd65d, a3e69b2, and c83a3b9 = PROGRESS.md only).",
+    "The clean run from deleted build products at c83a3b9 with my own simulator passes: contracts plus 21 of 22 G0.2 steps, with mac-identity-signed NOT RUN ('No Accounts'). The committed ci-clean-run.log (41b93e7, load 132 then 26, 22 steps) is consistent with this.",
+    "R3-01: start() reads availableSpace() before reconcile takes the lock (line 315), and reconcile runs spaceShortfallLocked for each job before its plan.enqueue requests (407-413). Every part-request path now passes the reservation: startJob, resume, topUpLocked (after verify, retry, discard and manifest refresh) and reconcile. The pause cancels adopted tasks and keeps verified parts.",
+    "R3-01 before-fix: in a scratch copy with the b354dc7 coordinator, relaunchWithTooLittleSpacePausesBeforeAnyRequest fails with 9 issues (enqueued 1, no block, job downloading, 1 request), matching review/round3-before-fix.log. It passes at HEAD. background-host/relaunch-low-space.log reproduces: required 4198625 bytes, available 2097152, 0 requests.",
+    "R3-02: Router.authenticated answers an unknown or revoked token with 401 `unauthenticated` and error=\"invalid_token\" (Router.swift:139-143). On the content route, 403 occurs only for insufficient_scope or a browser Origin. PauseReason.reauthenticationRequired.nextStep equals the checklist's new step 10.2 text. The OpenAPI document (line 508) and simulator/background-revoked.log line 4 agree.",
+    "R3-03: Console.say writes unbuffered to stdout. The logging-source pipeline check passes on a pseudo-terminal, and its log regenerated byte-identical. In 8 extra pipeline runs the QR drawing stayed contiguous: 41 rows, with no tee output interleaved.",
+    "QR gate gap: an independent script using the same CIFilter, bitmap and trim steps finds the finder patterns top-left, top-right and bottom-left, and the dark module at (n-8, 8), so the symbol is upright and not mirrored. cli-qr-code.log and cli-qr-terminal.log regenerated byte-identical. Level-L version-40 capacity is 2,953 bytes. The 3,633-character link at the protocol's limits is refused.",
+    "Package locks: the CI comparison reports MISMATCH and exits 1 on a copy with swift-collections 1.7.0. Xcode honours the committed lock for the local-only MacIdentityProbe project: with swift-collections seeded at 1.7.0, `xcodebuild -resolvePackageDependencies -disableAutomaticPackageResolution` checked out 1.7.0, while a fresh resolution gives 1.7.1, the newest tag. The lock therefore really pins the transitive packages, although the author's evidence could not show this because the pinned versions are the newest available.",
+    "Numbers match their logs: SourceService 65 tests and TransferKit 76 (45+11+20); clean run 2261 ms check, slowest poll 26.984 ms (returned while downloading), import_ms 4, commit median 11 and max 19, re-hash 1556 ms; repeats 2297, 6764 and 2331 ms with slowest polls 71.8, 42.9 and 22.7 ms at loads 13 to 86; development run 29288 ms, 33.4 ms during assembly, commit max 61, import_ms 14; the round 2 clean run had 18 steps with 17 passing; the relaunch-keep-alive gap is 0.453 s.",
+    "R3-04, R3-05 and R3-06(b) and (c): the reworded ADR-0008 and ADR-0009 sentences, the code comments, report findings 5, 21 and 22, open questions 3 and 12, and checklist steps 10, 13 to 16, 21, 22 and 23 are present as claimed. No beginBackgroundTask or BGProcessingTask appears in the spike. The ATS conclusions in the report and ADR-0008 are now labelled simulator.",
+    "No TODO, fatalError or try! was added; trust-guards passes; no NSAllowsArbitraryLoads; no new dependency."
+   ],
+   "gate_gaps": [
+    "Shared documents are now stale: ADR-0014 line 14 ('13 on this branch', now 15 locks), line 58 ('Two Stage 0 Xcode projects have no committed lock') and the open item at line 67, and integration-log.md section 6's G0.2 item, all contradict the committed locks. The request to their owner (M0 integration) is recorded only in PROGRESS.md. Route it to that owner.",
+    "The package-locks evidence (package-locks.log) shows only that the resolved versions equal the pins. Those pins are the newest tags, so a fresh resolution looks identical. Record a seeded-lock check, like the reviewer's swift-collections 1.7.0 experiment, as the proof that Xcode honours the lock.",
+    "device-ats-probe.sh collects the probe log from the test's stdout in xcodebuild's output (grep 'G02-ATS-PROBE'). Only the simulator path was exercised. Whether a device test host's print output reaches xcodebuild's console is untested; if it does not, the script reports 'NO PROBE OUTPUT (the test did not run...)' although the test ran. Writing the log as a test attachment or reading it from the result bundle would remove that dependency.",
+    "The first round 3 clean run's 2.1 s jobViews() wait (review/round3-first-clean-run-failed.log) is still unexplained: a part commit, a journal write with its barrier, or the import held the lock. Diagnostics were added. Moving the file work off the lock is a decision for the technical lead (report findings 20 and 22), and checklist step 11 is where it shows on a phone.",
+    "Still pending, as the author listed: device steps 4, 6, 8 to 11, 13 to 19 and 21 to 23; the security review (step 12); the signed identity probe (step 20, still 'No Accounts' in this rerun); the Tailscale ATS option (open question 1); and the bound across jobs (open question 3)."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R3-01",
+     "resolved": true,
+     "note": "The reservation now runs in reconcile() before launch requests, with free space read outside the lock. The host test passes at HEAD and, independently reproduced, fails on the b354dc7 coordinator. The ADR and report wording match the code."
+    },
+    {
+     "id": "R3-02",
+     "resolved": true,
+     "note": "Checklist step 10.2 now expects the reauthentication_required next step, matching the Router (401 invalid_token), PauseReason.nextStep, the OpenAPI document and the simulator and host logs. ADR-0009's failure table is corrected. The phone run is still pending."
+    },
+    {
+     "id": "R3-03",
+     "resolved": true,
+     "note": "The 'logging source' command line (tee /dev/tty plus a redacting sed) replaces the redirect in steps 8, 9, 13 to 16, 21 and 22. It is checked on a pseudo-terminal in CI, and the QR stays on /dev/tty. Verified in the rerun and in 8 extra pipeline runs."
+    },
+    {
+     "id": "R3-04",
+     "resolved": true,
+     "note": "ADR-0009, the code comments and the report no longer claim that holding the completion prevents suspension (the suspend versus terminate wording is still imprecise; see R4-03(b)). Step 22 and the M1 open item were added. The measurement is pending-device, and step 22's lock point should be at or below one window of parts left (R4-02)."
+    },
+    {
+     "id": "R3-05",
+     "resolved": true,
+     "note": "Fixed by the documentation alternative the review named: ADR-0009 'Concurrency', the ADR-0008 sentence on token copies, open question 3 and the open items. The decision itself is pending with the product owner. The per-job reservation should be added to the same decision (R4-05)."
+    },
+    {
+     "id": "R3-06",
+     "resolved": true,
+     "note": "(a) The ATS conclusions are labelled simulator, and step 23 with device-ats-probe.sh exists and runs on the simulator. Its PASS line does not check cleartext for the local forms (R4-01). (b) The local-network row is reworded with the substituted answer. (c) The ADR-0009 Evidence sentence now gives the 250 ms and 1 s budgets as the test asserts them."
+    }
+   ]
+  }
+ }
+]

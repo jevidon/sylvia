@@ -1,0 +1,50 @@
+commit: 6cede84a6f6ac610976b233d875e26dd89419dbd (m0-sessions-instructions); m0-sessions: 6cede84a6f6ac610976b233d875e26dd89419dbd
+date: 2026-10-23T17:10:43Z
+
+== 1. What the drop-in builds, copies or runs, read from it (lines as at HEAD)
+-- the drop-in itself: Scripts/ci.d/71-g05-recovery.sh
+-- Scripts/lib: it sources env.sh and sim.sh; the lock harness's checks it runs source xcodegen.sh too:
+   Scripts/ci.d/71-g05-recovery.sh:31:source "$(cd "$(dirname "$0")/../lib" && pwd)/env.sh"
+   Scripts/ci.d/71-g05-recovery.sh:32:source "$SYLVIA_ROOT/Scripts/lib/sim.sh"
+   Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:29:source "$(cd "$(dirname "$0")/../../../../Scripts/lib" && pwd)/env.sh"
+   Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:30:source "$SYLVIA_ROOT/Scripts/lib/sim.sh"
+   Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:31:source "$SYLVIA_ROOT/Scripts/lib/xcodegen.sh"
+-- Scripts/tools: sylvia_python (Scripts/lib/env.sh) runs Scripts/tools/bootstrap.sh, which installs
+   Scripts/tools/requirements.txt, when the tools virtualenv is missing; the drop-in calls it in step 10:
+   Scripts/ci.d/71-g05-recovery.sh:111:run_logged manifest-contract sylvia_python "$SPIKE/Scripts/check_manifest_contract.py" "$SYLVIA_ROOT" \
+   Scripts/lib/env.sh:40:sylvia_python() {
+-- Spikes/G05-Recovery: the package it builds and tests, the lock harness and its checks, the manifest checker:
+   Scripts/ci.d/71-g05-recovery.sh:34:SPIKE="$SYLVIA_ROOT/Spikes/G05-Recovery"
+   Scripts/ci.d/71-g05-recovery.sh:111:run_logged manifest-contract sylvia_python "$SPIKE/Scripts/check_manifest_contract.py" "$SYLVIA_ROOT" \
+   Scripts/ci.d/71-g05-recovery.sh:120:xcodebuild test -scheme G05Recovery-Package -destination "id=$UDID" -derivedDataPath "$SPIKE/.build/DerivedData" \
+   Scripts/ci.d/71-g05-recovery.sh:129:  -derivedDataPath "$SPIKE/.build/DerivedData" -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO
+   Scripts/ci.d/71-g05-recovery.sh:136:G05_LOG_DIR="$LOGS" G05_SIM_NAME="$SIM_NAME" "$SPIKE/LockHarness/Scripts/harness-checks.sh"
+   Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:33:HARNESS="$SYLVIA_ROOT/Spikes/G05-Recovery/LockHarness"
+-- Contracts: the backup-manifest schema and fixtures (step 10's checker; the host tests' ManifestContractTests):
+   Spikes/G05-Recovery/Scripts/check_manifest_contract.py:7:   Contracts/schemas/backup-manifest.v1.schema.json (the code and the contract agree).
+   Spikes/G05-Recovery/Scripts/check_manifest_contract.py:8:2. Every invalid fixture must fail for exactly one reason (Contracts/README.md: one reason per
+   Spikes/G05-Recovery/Scripts/check_manifest_contract.py:44:    schema = json.loads((root / "Contracts/schemas/backup-manifest.v1.schema.json").read_text(encoding="utf-8"))
+   Spikes/G05-Recovery/Scripts/check_manifest_contract.py:52:    for path in sorted((root / "Contracts/fixtures/backup-manifest.v1/invalid").glob("*.json")):
+   Spikes/G05-Recovery/Tests/SylviaRecoveryTests/ManifestContractTests.swift:8:@Suite("Backup manifest reader agrees with the contract (Contracts/schemas/backup-manifest.v1)")
+   Spikes/G05-Recovery/Tests/SylviaRecoveryTests/ManifestContractTests.swift:13:        .appending(path: "Contracts/fixtures/backup-manifest.v1", directoryHint: .isDirectory)
+   Spikes/G05-Recovery/Tests/SylviaRecoveryTests/ManifestContractTests.swift:44:          .enabled(if: fixturesReadable, "the repository's Contracts/ directory is not readable from this test process"))
+   Spikes/G05-Recovery/Tests/SylviaRecoveryTests/ManifestContractTests.swift:56:          .enabled(if: fixturesReadable, "the repository's Contracts/ directory is not readable from this test process"))
+-- any other repository path the drop-in or the harness checks name (SYLVIA_ROOT/...):
+   Scripts/ci.d/71-g05-recovery.sh:32:$SYLVIA_ROOT/Scripts/lib/sim.sh
+   Scripts/ci.d/71-g05-recovery.sh:34:$SYLVIA_ROOT/Spikes/G05-Recovery
+   Scripts/ci.d/71-g05-recovery.sh:35:$SYLVIA_ROOT/.build/g05-recovery
+   Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:30:$SYLVIA_ROOT/Scripts/lib/sim.sh
+   Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:31:$SYLVIA_ROOT/Scripts/lib/xcodegen.sh
+   Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:33:$SYLVIA_ROOT/Spikes/G05-Recovery/LockHarness
+   Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:35:$SYLVIA_ROOT/.build/g05-recovery/logs
+
+== 2. git diff --stat 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e <commit> -- Scripts/ci.d/71-g05-recovery.sh Scripts/lib Scripts/tools Spikes/G05-Recovery Contracts/schemas/backup-manifest.v1.schema.json Contracts/fixtures/backup-manifest.v1
+-- 6cede84a6f6ac610976b233d875e26dd89419dbd (6cede84a): no change: the run of 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e stands for what the drop-in builds, copies or runs
+-- HEAD (6cede84a): no change: the run of 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e stands for what the drop-in builds, copies or runs
+
+== 3. Does the drop-in, or a file it runs, name the files the m0-exit-prep run changes?
+-- Scripts/check-dependency-lock.py: named by none of them (the drop-in, the harness checks, the manifest checker, Scripts/lib, Scripts/tools/bootstrap.sh): the drop-in does not use it
+-- Scripts/ci.d/12-dependency-lock.sh: named by none of them (the drop-in, the harness checks, the manifest checker, Scripts/lib, Scripts/tools/bootstrap.sh): the drop-in does not use it
+   (12-dependency-lock is the drop-in Scripts/ci.sh runs as dependency-lock; runbook 0.8 runs 71-g05-recovery.sh alone, not through ci.sh)
+
+exit: 0

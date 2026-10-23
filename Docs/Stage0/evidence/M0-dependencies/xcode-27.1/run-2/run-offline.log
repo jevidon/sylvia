@@ -1,0 +1,16 @@
+run-offline run-2 started 2026-10-23T16:08:24Z at commit 5aec2518c90427a283d9c8195e11bb9ab23e5d12 (/Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Docs/Stage0/evidence/M0-dependencies/xcode-27.1/commands/run-offline.sh run-2 --skip-grdb-submodule)
+host: macOS 26.6.2 (25G83), Apple M5 Max
+toolchain: Xcode 27.1 Build version 27A9275 ; swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1); xcodegen Version: 2.46.0
+xcodebuild on PATH: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/.build/scratch/offline-shim/xcodebuild (the shim), real: /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild
+environment: GIT_ALLOW_PROTOCOL=file GIT_TERMINAL_PROMPT=0 GIT_TRACE=<scratch file> GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=submodule.SQLiteCustom/src.update GIT_CONFIG_VALUE_0=none
+load:  5:08  up 20 days, 15:18, 3 users, load averages: 7.18 7.14 5.64
+SwiftPM repository cache (names only): CryptoSwift-02302490 DifferenceKit-282f9df9 Fuzi-e5cfbf3a GCDWebServer-c5c026ce GRDB.swift-dd0599db SQLite.swift-bde2929d SwiftSoup-04d4e63a ZIPFoundation-07aa0357 ZIPFoundation-789121e4 Zip-75c2121f swift-asn1-7065ad2c swift-atomics-7429e549 swift-certificates-b091bbdc swift-collections-9a58d5cf swift-crypto-7e0614ea swift-custom-dump-9093c579 swift-issue-reporting-0855ec26 swift-nio-a9bb6d62 swift-nio-ssl-3eddd832 swift-snapshot-testing-fc18b6b3 swift-syntax-e1f983d3 swift-system-5815d4b7 swift-toolkit-ed0c4c74 
+build products deleted before the run (none tracked): 25
+build products under Apps/, Packages/ and Spikes/ at the start: 0
+changes under Apps Packages Spikes Scripts/lib Docs/Stage0/evidence/M0-dependencies/commands at the start (git status --porcelain): 
+resolve-locks.sh exit status: 1 (34 s)
+linkage.sh exit status: 0 (84 s)
+changes under Apps Packages Spikes Scripts/lib Docs/Stage0/evidence/M0-dependencies/commands at the end (git status --porcelain): 
+committed Package.resolved files changed by the run: 
+run-offline run-2 finished 2026-10-23T16:10:23Z
+load:  5:10  up 20 days, 15:20, 3 users, load averages: 12.94 9.31 6.68

@@ -1,0 +1,304 @@
+old: Docs/Stage0/evidence/M0-dependencies/linkage.log
+new: Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/linkage.log
+
+### 1. Mac source service: swift build --product sylvia-source (debug, host)
+  old build: ok (3 s); binary sylvia-source, 28084576 bytes; Mach-O 64-bit executable arm64
+  new build: ok (23 s); binary sylvia-source, 28124960 bytes; Mach-O 64-bit executable arm64
+  third-party code and its vendored libraries: old count -> new count
+         8 -> 8      BoringSSL (swift-crypto) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+      3368 -> 3368   BoringSSL (swift-crypto, CCryptoBoringSSL_ prefix)
+         8 -> 8      BoringSSL (swift-nio-ssl) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+      3832 -> 3832   BoringSSL (swift-nio-ssl, CNIOBoringSSL_ prefix)
+         0 -> 0      GCDWebServer (Objective-C classes)
+         0 -> 0      Keccak (swift-crypto CXKCP)
+         0 -> 0      Minizip (marmelroy/Zip; unz*/zip* C functions)
+         0 -> 0      Minizip write path (zipOpenNewFileInZip*)
+         0 -> 0      SHA1 (swift-nio CNIOSHA1, c_nio_sha1 prefix)
+         0 -> 0      SQLite C API defined here (a bundled SQLite would define sqlite3_*)
+       606 -> 606    Swift module Atomics
+        63 -> 63     Swift module Crypto (swift-crypto)
+      3159 -> 3159   Swift module CryptoExtras / _CryptoExtras
+         0 -> 0      Swift module CryptoSwift
+         0 -> 0      Swift module CustomDump (test only)
+       957 -> 957    Swift module DequeModule (swift-collections)
+         0 -> 0      Swift module DifferenceKit
+         0 -> 0      Swift module GRDB
+         0 -> 0      Swift module IssueReporting (test only)
+     10391 -> 10391  Swift module NIOCore
+      3806 -> 3806   Swift module NIOHTTP1
+      6805 -> 6805   Swift module NIOPosix
+      4606 -> 4606   Swift module NIOSSL
+         0 -> 0      Swift module NIOWebSocket
+         0 -> 0      Swift module ReadiumAdapterGCDWebServer
+         0 -> 0      Swift module ReadiumAdapterLCPSQLite
+         0 -> 0      Swift module ReadiumFuzi
+         0 -> 0      Swift module ReadiumInternal
+         0 -> 0      Swift module ReadiumLCP
+         0 -> 0      Swift module ReadiumNavigator
+         0 -> 0      Swift module ReadiumOPDS
+         0 -> 0      Swift module ReadiumShared
+         0 -> 0      Swift module ReadiumStreamer
+         0 -> 0      Swift module ReadiumZIPFoundation
+         0 -> 0      Swift module SQLite (SQLite.swift)
+         0 -> 0      Swift module SnapshotTesting (test only)
+      3101 -> 3101   Swift module SwiftASN1
+         0 -> 0      Swift module SwiftSoup
+         0 -> 0      Swift module SwiftSyntax (test only)
+         0 -> 0      Swift module SystemPackage (swift-system)
+     11055 -> 11055  Swift module X509 (swift-certificates)
+         0 -> 0      Swift module Zip (marmelroy/Zip Swift API)
+       138 -> 138    llhttp (swift-nio CNIOLLHTTP, c_nio_llhttp_ prefix)
+       390 -> 390    swift-nio CNIOAtomics functions generated with uSHET's cpp_magic.h macros (catmc_ prefix)
+  Sylvia's own modules: old count -> new count
+         0 -> 0      Swift module G01EPUBCore (the spike's sanitizer)
+         0 -> 0      Swift module SylviaDesign
+      3375 -> 3466   Swift module SylviaSourceService  (count changed, present in both)
+      3894 -> 3894   Swift module SylviaTransferCore (G0.2)
+  third-party markers whose presence changed: 0
+  file and library lines in the old log only: 0
+  file and library lines in the new log only: 5
+    + /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics
+    + /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage
+    + /usr/lib/swift/libswiftCoreImage.dylib
+    + /usr/lib/swift/libswiftMetal.dylib
+    + /usr/lib/swift/libswiftUniformTypeIdentifiers.dylib
+
+### 2. EPUB harness: xcodebuild build, scheme EPUBHarness, Debug, generic/platform=iOS Simulator, unsigned
+  old build: ok (2 s); Spikes/G01-EPUB/.build/DerivedData/Build/Products/Debug-iphonesimulator/EPUBHarness.app
+  new build: ok (17 s); Spikes/G01-EPUB/.build/DerivedData/Build/Products/Debug-iphonesimulator/EPUBHarness.app
+  third-party code and its vendored libraries: old count -> new count
+         0 -> 0      BoringSSL (swift-crypto) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+         0 -> 0      BoringSSL (swift-crypto, CCryptoBoringSSL_ prefix)
+         0 -> 0      BoringSSL (swift-nio-ssl) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+         0 -> 0      BoringSSL (swift-nio-ssl, CNIOBoringSSL_ prefix)
+         0 -> 0      GCDWebServer (Objective-C classes)
+         0 -> 0      Keccak (swift-crypto CXKCP)
+        55 -> 55     Minizip (marmelroy/Zip; unz*/zip* C functions)
+         8 -> 8      Minizip write path (zipOpenNewFileInZip*)
+         0 -> 0      SHA1 (swift-nio CNIOSHA1, c_nio_sha1 prefix)
+         0 -> 0      SQLite C API defined here (a bundled SQLite would define sqlite3_*)
+         0 -> 0      Swift module Atomics
+         0 -> 0      Swift module Crypto (swift-crypto)
+         0 -> 0      Swift module CryptoExtras / _CryptoExtras
+      5408 -> 5408   Swift module CryptoSwift
+         0 -> 0      Swift module CustomDump (test only)
+         0 -> 0      Swift module DequeModule (swift-collections)
+       671 -> 671    Swift module DifferenceKit
+         0 -> 0      Swift module GRDB
+         0 -> 0      Swift module IssueReporting (test only)
+         0 -> 0      Swift module NIOCore
+         0 -> 0      Swift module NIOHTTP1
+         0 -> 0      Swift module NIOPosix
+         0 -> 0      Swift module NIOSSL
+         0 -> 0      Swift module NIOWebSocket
+         0 -> 0      Swift module ReadiumAdapterGCDWebServer
+         0 -> 0      Swift module ReadiumAdapterLCPSQLite
+       724 -> 724    Swift module ReadiumFuzi
+       113 -> 113    Swift module ReadiumInternal
+         0 -> 0      Swift module ReadiumLCP
+     11758 -> 11758  Swift module ReadiumNavigator
+         0 -> 0      Swift module ReadiumOPDS
+     17752 -> 17752  Swift module ReadiumShared
+      2568 -> 2568   Swift module ReadiumStreamer
+      1945 -> 1945   Swift module ReadiumZIPFoundation
+         0 -> 0      Swift module SQLite (SQLite.swift)
+         0 -> 0      Swift module SnapshotTesting (test only)
+         0 -> 0      Swift module SwiftASN1
+     11593 -> 11593  Swift module SwiftSoup
+         0 -> 0      Swift module SwiftSyntax (test only)
+         0 -> 0      Swift module SystemPackage (swift-system)
+         0 -> 0      Swift module X509 (swift-certificates)
+       207 -> 207    Swift module Zip (marmelroy/Zip Swift API)
+         0 -> 0      llhttp (swift-nio CNIOLLHTTP, c_nio_llhttp_ prefix)
+         0 -> 0      swift-nio CNIOAtomics functions generated with uSHET's cpp_magic.h macros (catmc_ prefix)
+  Sylvia's own modules: old count -> new count
+      3479 -> 3479   Swift module G01EPUBCore (the spike's sanitizer)
+         0 -> 0      Swift module SylviaDesign
+         0 -> 0      Swift module SylviaSourceService
+         0 -> 0      Swift module SylviaTransferCore (G0.2)
+  third-party markers whose presence changed: 0
+  file and library lines in the old log only: 0
+  file and library lines in the new log only: 0
+
+### 3. GRDB: swift build --product g05-recovery-tool (Spikes/G05-Recovery, debug, host)
+  old build: ok (1 s); binary g05-recovery-tool, 9568864 bytes
+  new build: ok (7 s); binary g05-recovery-tool, 9673904 bytes
+  third-party code and its vendored libraries: old count -> new count
+         0 -> 0      defined sqlite3_* symbols (a bundled SQLite would define them)
+     20313 -> 20318  defined symbols of Swift module GRDB  (count changed, present in both)
+  third-party markers whose presence changed: 0
+  file and library lines in the old log only: 0
+  file and library lines in the new log only: 0
+
+### 4. GRDB built for iOS: xcodebuild build-for-testing, scheme G05Recovery-Package (Spikes/G05-Recovery), Debug, generic/platform=iOS Simulator, unsigned
+  old build: ok (2 s); Spikes/G05-Recovery/.build/DerivedData/Build/Products/Debug-iphonesimulator
+  new build: ok (11 s); Spikes/G05-Recovery/.build/DerivedData/Build/Products/Debug-iphonesimulator
+  third-party code and its vendored libraries: old count -> new count
+         0 -> 0      BoringSSL (swift-crypto) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+         0 -> 0      BoringSSL (swift-crypto, CCryptoBoringSSL_ prefix)
+         0 -> 0      BoringSSL (swift-nio-ssl) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+         0 -> 0      BoringSSL (swift-nio-ssl, CNIOBoringSSL_ prefix)
+         0 -> 0      GCDWebServer (Objective-C classes)
+         0 -> 0      Keccak (swift-crypto CXKCP)
+         0 -> 0      Minizip (marmelroy/Zip; unz*/zip* C functions)
+         0 -> 0      Minizip write path (zipOpenNewFileInZip*)
+         0 -> 0      SHA1 (swift-nio CNIOSHA1, c_nio_sha1 prefix)
+         0 -> 0      SQLite C API defined here (a bundled SQLite would define sqlite3_*)
+         0 -> 0      Swift module Atomics
+         0 -> 0      Swift module Crypto (swift-crypto)
+         0 -> 0      Swift module CryptoExtras / _CryptoExtras
+         0 -> 0      Swift module CryptoSwift
+         0 -> 0      Swift module CustomDump (test only)
+         0 -> 0      Swift module DequeModule (swift-collections)
+         0 -> 0      Swift module DifferenceKit
+     20324 -> 20324  Swift module GRDB
+         0 -> 0      Swift module IssueReporting (test only)
+         0 -> 0      Swift module NIOCore
+         0 -> 0      Swift module NIOHTTP1
+         0 -> 0      Swift module NIOPosix
+         0 -> 0      Swift module NIOSSL
+         0 -> 0      Swift module NIOWebSocket
+         0 -> 0      Swift module ReadiumAdapterGCDWebServer
+         0 -> 0      Swift module ReadiumAdapterLCPSQLite
+         0 -> 0      Swift module ReadiumFuzi
+         0 -> 0      Swift module ReadiumInternal
+         0 -> 0      Swift module ReadiumLCP
+         0 -> 0      Swift module ReadiumNavigator
+         0 -> 0      Swift module ReadiumOPDS
+         0 -> 0      Swift module ReadiumShared
+         0 -> 0      Swift module ReadiumStreamer
+         0 -> 0      Swift module ReadiumZIPFoundation
+         0 -> 0      Swift module SQLite (SQLite.swift)
+         0 -> 0      Swift module SnapshotTesting (test only)
+         0 -> 0      Swift module SwiftASN1
+         0 -> 0      Swift module SwiftSoup
+         0 -> 0      Swift module SwiftSyntax (test only)
+         0 -> 0      Swift module SystemPackage (swift-system)
+         0 -> 0      Swift module X509 (swift-certificates)
+         0 -> 0      Swift module Zip (marmelroy/Zip Swift API)
+         0 -> 0      llhttp (swift-nio CNIOLLHTTP, c_nio_llhttp_ prefix)
+         0 -> 0      swift-nio CNIOAtomics functions generated with uSHET's cpp_magic.h macros (catmc_ prefix)
+  Sylvia's own modules: old count -> new count
+         0 -> 0      Swift module G01EPUBCore (the spike's sanitizer)
+         0 -> 0      Swift module SylviaDesign
+         0 -> 0      Swift module SylviaSourceService
+         0 -> 0      Swift module SylviaTransferCore (G0.2)
+  third-party markers whose presence changed: 0
+  file and library lines in the old log only: 0
+  file and library lines in the new log only: 0
+
+### 5. SwiftASN1 in an iOS app: scheme G02TransferHarness (Spikes/G02-Transfer/iOS: SylviaTransferCore over SwiftASN1)
+  old build: ok (2 s); Spikes/G02-Transfer/iOS/.build/DerivedData/Build/Products/Debug-iphonesimulator/G02TransferHarness.app
+  new build: ok (8 s); Spikes/G02-Transfer/iOS/.build/DerivedData/Build/Products/Debug-iphonesimulator/G02TransferHarness.app
+  third-party code and its vendored libraries: old count -> new count
+         0 -> 0      BoringSSL (swift-crypto) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+         0 -> 0      BoringSSL (swift-crypto, CCryptoBoringSSL_ prefix)
+         0 -> 0      BoringSSL (swift-nio-ssl) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+         0 -> 0      BoringSSL (swift-nio-ssl, CNIOBoringSSL_ prefix)
+         0 -> 0      GCDWebServer (Objective-C classes)
+         0 -> 0      Keccak (swift-crypto CXKCP)
+         0 -> 0      Minizip (marmelroy/Zip; unz*/zip* C functions)
+         0 -> 0      Minizip write path (zipOpenNewFileInZip*)
+         0 -> 0      SHA1 (swift-nio CNIOSHA1, c_nio_sha1 prefix)
+         0 -> 0      SQLite C API defined here (a bundled SQLite would define sqlite3_*)
+         0 -> 0      Swift module Atomics
+         0 -> 0      Swift module Crypto (swift-crypto)
+         0 -> 0      Swift module CryptoExtras / _CryptoExtras
+         0 -> 0      Swift module CryptoSwift
+         0 -> 0      Swift module CustomDump (test only)
+         0 -> 0      Swift module DequeModule (swift-collections)
+         0 -> 0      Swift module DifferenceKit
+         0 -> 0      Swift module GRDB
+         0 -> 0      Swift module IssueReporting (test only)
+         0 -> 0      Swift module NIOCore
+         0 -> 0      Swift module NIOHTTP1
+         0 -> 0      Swift module NIOPosix
+         0 -> 0      Swift module NIOSSL
+         0 -> 0      Swift module NIOWebSocket
+         0 -> 0      Swift module ReadiumAdapterGCDWebServer
+         0 -> 0      Swift module ReadiumAdapterLCPSQLite
+         0 -> 0      Swift module ReadiumFuzi
+         0 -> 0      Swift module ReadiumInternal
+         0 -> 0      Swift module ReadiumLCP
+         0 -> 0      Swift module ReadiumNavigator
+         0 -> 0      Swift module ReadiumOPDS
+         0 -> 0      Swift module ReadiumShared
+         0 -> 0      Swift module ReadiumStreamer
+         0 -> 0      Swift module ReadiumZIPFoundation
+         0 -> 0      Swift module SQLite (SQLite.swift)
+         0 -> 0      Swift module SnapshotTesting (test only)
+      2715 -> 2715   Swift module SwiftASN1
+         0 -> 0      Swift module SwiftSoup
+         0 -> 0      Swift module SwiftSyntax (test only)
+         0 -> 0      Swift module SystemPackage (swift-system)
+         0 -> 0      Swift module X509 (swift-certificates)
+         0 -> 0      Swift module Zip (marmelroy/Zip Swift API)
+         0 -> 0      llhttp (swift-nio CNIOLLHTTP, c_nio_llhttp_ prefix)
+         0 -> 0      swift-nio CNIOAtomics functions generated with uSHET's cpp_magic.h macros (catmc_ prefix)
+  Sylvia's own modules: old count -> new count
+         0 -> 0      Swift module G01EPUBCore (the spike's sanitizer)
+         0 -> 0      Swift module SylviaDesign
+         0 -> 0      Swift module SylviaSourceService
+      3925 -> 3925   Swift module SylviaTransferCore (G0.2)
+  third-party markers whose presence changed: 0
+  file and library lines in the old log only: 0
+  file and library lines in the new log only: 0
+
+### 6. The design catalog app: scheme DesignCatalog (Apps/DesignCatalog: SylviaDesign with Literata)
+  old build: ok (3 s); Apps/DesignCatalog/.build/DerivedData/Build/Products/Debug-iphonesimulator/DesignCatalog.app
+  new build: ok (13 s); Apps/DesignCatalog/.build/DerivedData/Build/Products/Debug-iphonesimulator/DesignCatalog.app
+  third-party code and its vendored libraries: old count -> new count
+         0 -> 0      BoringSSL (swift-crypto) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+         0 -> 0      BoringSSL (swift-crypto, CCryptoBoringSSL_ prefix)
+         0 -> 0      BoringSSL (swift-nio-ssl) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+         0 -> 0      BoringSSL (swift-nio-ssl, CNIOBoringSSL_ prefix)
+         0 -> 0      GCDWebServer (Objective-C classes)
+         0 -> 0      Keccak (swift-crypto CXKCP)
+         0 -> 0      Minizip (marmelroy/Zip; unz*/zip* C functions)
+         0 -> 0      Minizip write path (zipOpenNewFileInZip*)
+         0 -> 0      SHA1 (swift-nio CNIOSHA1, c_nio_sha1 prefix)
+         0 -> 0      SQLite C API defined here (a bundled SQLite would define sqlite3_*)
+         0 -> 0      Swift module Atomics
+         0 -> 0      Swift module Crypto (swift-crypto)
+         0 -> 0      Swift module CryptoExtras / _CryptoExtras
+         0 -> 0      Swift module CryptoSwift
+         0 -> 0      Swift module CustomDump (test only)
+         0 -> 0      Swift module DequeModule (swift-collections)
+         0 -> 0      Swift module DifferenceKit
+         0 -> 0      Swift module GRDB
+         0 -> 0      Swift module IssueReporting (test only)
+         0 -> 0      Swift module NIOCore
+         0 -> 0      Swift module NIOHTTP1
+         0 -> 0      Swift module NIOPosix
+         0 -> 0      Swift module NIOSSL
+         0 -> 0      Swift module NIOWebSocket
+         0 -> 0      Swift module ReadiumAdapterGCDWebServer
+         0 -> 0      Swift module ReadiumAdapterLCPSQLite
+         0 -> 0      Swift module ReadiumFuzi
+         0 -> 0      Swift module ReadiumInternal
+         0 -> 0      Swift module ReadiumLCP
+         0 -> 0      Swift module ReadiumNavigator
+         0 -> 0      Swift module ReadiumOPDS
+         0 -> 0      Swift module ReadiumShared
+         0 -> 0      Swift module ReadiumStreamer
+         0 -> 0      Swift module ReadiumZIPFoundation
+         0 -> 0      Swift module SQLite (SQLite.swift)
+         0 -> 0      Swift module SnapshotTesting (test only)
+         0 -> 0      Swift module SwiftASN1
+         0 -> 0      Swift module SwiftSoup
+         0 -> 0      Swift module SwiftSyntax (test only)
+         0 -> 0      Swift module SystemPackage (swift-system)
+         0 -> 0      Swift module X509 (swift-certificates)
+         0 -> 0      Swift module Zip (marmelroy/Zip Swift API)
+         0 -> 0      llhttp (swift-nio CNIOLLHTTP, c_nio_llhttp_ prefix)
+         0 -> 0      swift-nio CNIOAtomics functions generated with uSHET's cpp_magic.h macros (catmc_ prefix)
+  Sylvia's own modules: old count -> new count
+         0 -> 0      Swift module G01EPUBCore (the spike's sanitizer)
+      4409 -> 4488   Swift module SylviaDesign  (count changed, present in both)
+         0 -> 0      Swift module SylviaSourceService
+         0 -> 0      Swift module SylviaTransferCore (G0.2)
+  third-party markers whose presence changed: 0
+  file and library lines in the old log only: 0
+  file and library lines in the new log only: 0
+
+compare-linkage: 0 problem(s) (a missing section, a failed build or a third-party marker whose presence changed)

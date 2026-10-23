@@ -1,0 +1,142 @@
+[
+ {
+  "run": "wf_5ce13c9e-6bf",
+  "seq": 15,
+  "label": "minors-g01-epub:author",
+  "result": {
+   "branch": "m0-int-minors-g01-epub",
+   "commit": "d31705419c15da68cd4208dc243e696b2f6d8346",
+   "summary": "Closed both open g01-epub review-3 findings on top of the M0 integration commit b354dc7. R3-01: the sanitizer timings near the caps were written as bounds (\"at most 4.8 s\") but came from single runs. They are now reported as measurements taken under load. The host test PublicationHTMLSafetyTests.linearTime times each at-cap document three times and writes the load averages at the top of sanitizer-timing.tsv. The CI drop-in 31-g01-epub.sh logs uptime at each stage. A new hosted test, SanitizerAtCapsTimingTests, times the same three documents wherever the hosted tests run and fails if any run passes the 20 s budget. It writes sanitizer-at-caps-simulator.json on the simulator or sanitizer-at-caps-device.json on a phone. Device checklist step 11 now runs it on the phone (38 tests, nine times recorded, repeat on the iPhone 12-class baseline). The new figures widen the concern: in the committed clean run, with a 1-minute load average of about 75 on 18 processors, the slowest served document (256 attributes per element, just under the attribute cap) took 13.2, 8.4 and 6.2 s on the host debug build. A separate rerun at load 35-73 took 4.8-5.0 s. So the margin to the 20 s budget on a loaded Mac is only about 1.5 to 4 times. The report (T13 row, F5, open question 8) and ADR-0004 section 4 'Bounds' state these ranges and the load. The budget was not changed. R3-02 was already resolved by the integration's Fixtures/LICENSES.md section ('Generated, committed', G0.1 EPUB, and the sentence allowing small committed generated fixtures), which I checked. The report's 'Integration should add these' sentence now says it was done. Re-ran Scripts/ci.d/31-g01-epub.sh plus Scripts/ci.sh contracts from clean (.build and the generated project deleted) at commit 7f3b072, on simulator Sylvia-M0-minors-g01-epub (iPhone 17, iOS 26.5). Both exited 0: 32 host, 38 hosted and 8 UI tests passed, with 0 warnings. ci-clean-run.log and all evidence were overwritten, and the report was updated where the run changed figures: compatibility-matrix times, navigation race now 5 of 5, preflight at most 5 ms, and one crash report written this time. Afterwards: HEAD detached, DerivedData and the generated project deleted, simulator deleted.",
+   "criteria": [
+    {
+     "criterion": "R3-01: sanitizer worst-case timings must not be written as bounds; give measured ranges with load, and add the slowest-served-document timing to the device checklist",
+     "status": "passed-host",
+     "evidence": "Host: linearTime times each at-cap document 3 times and records load averages. Docs/Stage0/evidence/G01-EPUB/sanitizer-timing.tsv from the clean run: 13.2/8.4/6.2 s, 4.7/4.5/4.2 s and 2.1/2.2/2.6 s at load 75-77. Rerun at load 35-73: observations/run-1013-0623-host-sanitizer-timing.tsv. Simulator: SanitizerAtCapsTimingTests passed, 4.6-5.7 s across all nine runs, all served (sanitizer-at-caps-simulator.json). Report T13 and F5 and ADR-0004 'Bounds' now give measured ranges and the load, with no 'at most'. Checklist step 11 adds the phone measurement. The phone figure itself is pending-device (checklist step 11, not run). Command: Scripts/ci.d/31-g01-epub.sh, log ci-clean-run.log."
+    },
+    {
+     "criterion": "R3-02: committed generated EPUB fixtures listed in Fixtures/LICENSES.md and the 'not committed' sentence corrected",
+     "status": "passed-host",
+     "evidence": "Resolved at M0 integration (integration-log row 7). I checked Fixtures/LICENSES.md: line 5 allows small committed generated fixtures, and section 'G0.1 EPUB' names the generator, MANIFEST.tsv and all 17 EPUBs. CI's 'generate-g01-epub-fixtures.sh --check' passed in ci-clean-run.log. The report's 'Generated fixtures' paragraph now says the listing is done."
+    },
+    {
+     "criterion": "Gate gap: phone sanitizer time near the caps on the iPhone 12-class baseline",
+     "status": "pending-device",
+     "evidence": "No device may be used in this task. Checklist step 11 now runs SanitizerAtCapsTimingTests on the phone, expects every run under 20 s and says to repeat it on the iPhone 12-class baseline; report open question 8 says what follows a failure."
+    },
+    {
+     "criterion": "Gate gap: finger selection and edit menu (G2), VoiceOver (9.4), device open time (19.2), grayscale judgment (G4), finger tap on form buttons (step 13)",
+     "status": "pending-device",
+     "evidence": "Need a device or a person; unchanged checklist steps 1-6, 10, 12, 13 in Docs/Stage0/device-checklists/G01-EPUB.md."
+    },
+    {
+     "criterion": "Clean re-run of the gate CI drop-in 31-g01-epub with ci-clean-run.log overwritten",
+     "status": "passed-simulator",
+     "evidence": "Docs/Stage0/evidence/G01-EPUB/ci-clean-run.log: commit 7f3b072, clean tree, Sylvia-M0-minors-g01-epub (iPhone 17, iOS 26.5). 32 host, 38 hosted and 8 UI tests passed; the crash check passed (one report plus one signal record, both stack overflows); contracts passed; exit 0 for both. Load recorded at each stage (33-91)."
+    }
+   ],
+   "ci": {
+    "script": "Scripts/ci.d/31-g01-epub.sh (G01_EPUB_SIM_NAME=Sylvia-M0-minors-g01-epub G01_EPUB_EVIDENCE_DIR=Docs/Stage0/evidence/G01-EPUB, from clean) then Scripts/ci.sh contracts",
+    "result": "pass: both exit 0; 32 host tests, 38 hosted simulator tests, 8 UI tests; 0 build warnings; log Docs/Stage0/evidence/G01-EPUB/ci-clean-run.log"
+   },
+   "plan_findings": [
+    "Under heavy parallel load (1-minute load average about 75 on 18 processors), the slowest document the sanitizer still serves took 13.2 s on the Mac (host debug build). That leaves about 1.5 times margin to the 20 s budget even on the Mac. The budget and caps (spike proposals, report open question 2) need confirming on the iPhone 12-class baseline before the product owner accepts them."
+   ],
+   "shared_changes_requested": [
+    "Docs/Stage0/integration-log.md section 2: record that g01-epub R3-01 is closed on branch m0-int-minors-g01-epub (commit d317054). R3-02 is already recorded as resolved there.",
+    "Docs/Stage0/integration-log.md section 2: after merging m0-int-minors-g01-epub, note that G0.1 EPUB's committed clean run is now at commit 7f3b072 with 38 hosted tests (was 37)."
+   ],
+   "dependencies_added": [],
+   "committed_fixtures": [],
+   "open_questions": [
+    "Product owner: if the phone measurement in checklist step 11 is over or near 20 s for the at-cap documents, should the caps be lowered or the budget raised? The budget is not relaxed to make a test pass.",
+    "Is the Debug-versus-Release difference for the sanitizer worth measuring on the device, since the hosted tests need a Debug build?"
+   ]
+  }
+ },
+ {
+  "run": "wf_5ce13c9e-6bf",
+  "seq": 17,
+  "label": "minors-g01-epub:review-1",
+  "result": {
+   "verdict": "accept-with-minor",
+   "commit_reviewed": "d31705419c15da68cd4208dc243e696b2f6d8346 (m0-int-minors-g01-epub, detached; base b354dc7b7ee026d7ca45b13259f4b93780535bfb is an ancestor)",
+   "rerun": {
+    "command": ".build/scratch/run-ci.sh in my worktree: rm -rf Spikes/G01-EPUB/.build Spikes/G01-EPUB/G01EPUB.xcodeproj; G01_EPUB_SIM_NAME=Sylvia-M0-review-minors-g01-epub-1 G01_EPUB_EVIDENCE_DIR=<worktree>/.build/scratch/evidence Scripts/ci.d/31-g01-epub.sh; then Scripts/ci.sh contracts (at HEAD d317054, clean tree with 0 changed paths, 13 Oct 2026 06:44-07:01 NZDT, simulator iPhone 17 on iOS 26.5). Log: .build/scratch/ci-review.log",
+    "result": "PASS from clean: 31-g01-epub exit 0 and contracts exit 0. Fixture --check passed; 32 host tests in 4 suites passed; 0 build warnings in the spike's own sources and 0 in package checkouts; 38 hosted and 8 UI tests passed with 0 failures; crash check passed (2 expected Readium-alone crashes, 0 crash reports this time, both shown as stack overflows by the app's signal records); contracts passed. The Mac was very heavily loaded: 1-minute load average 152 at the start, 422-515 during the host timing test and 133-240 during the hosted timing test, on 18 processors. At-cap sanitizer times, all documents served and all under 20 s. Host debug build: 256 attributes per element 6.85/6.34/5.84 s, 1 attribute per element 5.61/5.02/7.61 s, no attributes 4.39/3.29/2.91 s. Simulator: 5.08/5.88/5.57, 5.64/6.00/5.90, 3.05/2.82/3.04 s. 8 of the 9 committed evidence files that the earlier run did not change are byte-identical to what my run wrote (PNGs, footnote, non-BMP, cross-paragraph JSON). The exception is highlight-rapid-settings.json (6 boxes committed, 5 in my run): this varies between runs, and the report does not cite it. Afterwards I deleted my simulator (ED7AD80B-8E6E-4F90-8AD1-C8258CB5F8F2), Spikes/G01-EPUB/.build and the generated project; git status is clean."
+   },
+   "findings": [
+    {
+     "id": "R4-01",
+     "severity": "minor",
+     "title": "The report gives the run's load range as 33-91, but the committed log records 23.6 at two stages",
+     "location": "Docs/Stage0/G01-EPUB.md line 9 ('1-minute load average between 33 and 91 on 18 processors'); author result 'Load recorded at each stage (33-91)'",
+     "detail": "Docs/Stage0/evidence/G01-EPUB/ci-clean-run.log records these 1-minute loads: line 2 'load at start ... 24.43', line 10 (environment) '23.59', line 14 (host stage) '23.59', line 229 (simulator stage) '91.25', line 298 and the end '32.91'. So the recorded range is 23.6 to 91.3, not 33 to 91. Every other load figure in the report is right: the host timing test's own header gives 75-77, the simulator JSON 43-62, and the observation 35-73. This is a small factual slip in a passage written to make the load honest. Fix: say 'between 24 and 91'."
+    },
+    {
+     "id": "R4-02",
+     "severity": "minor",
+     "title": "The simulator at-cap times are summarized wrongly in the author's result and ambiguously in T13",
+     "location": "Docs/Stage0/G01-EPUB.md line 38 (T13: 'simulator ...: 4.6-5.1 s for the slowest, all nine runs served'); author criterion R3-01 evidence ('SanitizerAtCapsTimingTests passed, 4.6-5.7 s across all nine runs')",
+     "detail": "Docs/Stage0/evidence/G01-EPUB/sanitizer-at-caps-simulator.json gives these seconds: 256 attributes per element [5.114, 4.624, 5.105]; 1 attribute per element [5.705, 4.72, 5.052]; no attributes [2.705, 2.071, 2.13]. The nine runs therefore span 2.07 to 5.71 s, so the author's '4.6-5.7 s across all nine runs' is false; F5 lists every value correctly. In T13, 'the slowest' means the document that is slowest on the host, but on the simulator the slowest run (5.705 s) was the one-attribute-per-element document, in the committed run and again in my rerun (5.64-6.00 s against 5.08-5.88 s). A reader of T13 would take 5.1 s as the simulator maximum. Fix: in T13 name the document ('4.6-5.1 s for 256 attributes per element; the slowest run was 5.7 s, one attribute per element'), and correct the result summary."
+    },
+    {
+     "id": "R4-03",
+     "severity": "minor",
+     "title": "Step 11's device JSON does not identify the phone, and repeating the step on the baseline phone overwrites it",
+     "location": "Spikes/G01-EPUB/Tests/Unit/CompatibilityMatrixTests.swift:117 (used by SanitizerAtCapsTimingTests.swift for 'environment'); Docs/Stage0/device-checklists/G01-EPUB.md lines 6 and 59-61",
+     "detail": "On a device, CompatibilityMatrixTests.environment returns \"device: \\(UIDevice.current.model), ...\". UIDevice.model is the generic 'iPhone', and SIMULATOR_MODEL_IDENTIFIER is unset on hardware, so sanitizer-at-caps-device.json would read 'device: iPhone, iOS 26.x' on both the iPhone 17 Pro and the iPhone 12-class baseline. Step 11 copies Documents/evidence into the same Docs/Stage0/evidence/G01-EPUB/device/ folder on every run. The repeat on the baseline, which step 11 calls 'the phone the 20 s budget must hold on', would therefore overwrite the first phone's JSON, and the file itself would not say which phone it came from. step-NN.md records the model by hand, so nothing is lost if the tester follows the template. Fix: record the hardware identifier (utsname.machine) on a device, and copy each phone's evidence into device/<identifier>/."
+    },
+    {
+     "id": "R4-04",
+     "severity": "minor",
+     "title": "The phone measurement is a best case (one worker, idle phone), and the checklist and report do not say so",
+     "location": "Docs/Stage0/device-checklists/G01-EPUB.md line 61; Docs/Stage0/G01-EPUB.md F5 (line 87) and open question 8",
+     "detail": "SanitizerAtCapsTimingTests sanitizes one document at a time, and step 11 says to keep the phone idle. In the product, up to two sanitizer workers per publication run at once (ADR-0004 section 4 'Bounds'), alongside WebKit and Readium, on an iPhone 12-class phone with two performance cores. A step-11 pass at, say, 12-15 s therefore does not show that a legitimate near-cap document is served in real use. That is exactly R3-01's concern ('could otherwise be withheld on a slower phone'). Fix: state in step 11 and F5 that the figure is single-worker on an idle phone, and treat a result above about half the budget as a warning for the product owner's decision on caps or budget. Optionally, add a run with two at-cap documents sanitized at once."
+    },
+    {
+     "id": "R4-05",
+     "severity": "minor",
+     "title": "The timing spread is put down to load, but the load average does not predict it; the ADR and report also give different margins",
+     "location": "Docs/ADRs/0004-epub-reader-adapter.md line 74 ('So the margin to the 20 s budget on a loaded Mac is about 1.5 times'); Docs/Stage0/G01-EPUB.md F5 line 87 ('between about 1.5 and 4 times, depending on load')",
+     "detail": "The committed run took 13.2/8.4/6.2 s at a 1-minute load of 75-77. My clean rerun of the same host test at load 422-515 took 6.85/6.34/5.84 s, and the author's observation at load 35-73 took 4.8-5.0 s. So the load average does not explain the 13.2 s run: run-to-run variation from other causes (contention from other processes, memory pressure, warm-up, since the first run of each set is often the slowest) is at least as large. 'Depending on load' suggests a relationship the data does not support. The ADR also gives only 'about 1.5 times' (citing the 75-load run), while the report gives 1.5-4 times. Neither outcome changes, because an over-budget document is withheld and stays safe. Fix: give the ADR the same range as F5, and say the times varied from 4.8 to 13.2 s across runs on a shared Mac for reasons that were not isolated, with the load recorded beside each."
+    }
+   ],
+   "claims_verified": [
+    "HEAD d317054 descends from b354dc7. The diff touches only G0.1 EPUB-owned paths: ADR-0004, G01-EPUB.md, the device checklist, evidence/G01-EPUB, Scripts/ci.d/31-g01-epub.sh and Spikes/G01-EPUB. It does not touch Fixtures/LICENSES.md or integration-log.md; those changes were requested as shared-file requests.",
+    "The code at HEAD equals the code at 7f3b072, the commit the committed CI run used. `git diff --stat 7f3b072 HEAD` lists only Docs/ADRs, Docs/Stage0 and evidence files, so 'later commits change only documentation and this run's evidence' is true.",
+    "The clean rerun of 31-g01-epub plus contracts passes at HEAD: 32 host, 38 hosted and 8 UI tests, 0 warnings, crash check passed, contracts passed.",
+    "The committed sanitizer-timing.tsv matches F5, T13 and ADR-0004. At-cap runs: 13.223/8.386/6.188 s, 4.742/4.506/4.184 s and 2.071/2.248/2.564 s. Header load: 75.08 at start, 77.02 at end, 18 processors. Refusals took 0.201-1.518 s. Escaped script tokens at 16 MiB took 5.334 s.",
+    "observations/run-1013-0623-host-sanitizer-timing.tsv matches F5 and its README row: 4.760-4.979, 4.203-4.744 and 2.011-2.028 s at a load of 73.36 at start and 35.31 at end.",
+    "The previous committed figures quoted ('4.8, 4.5 and 2.2 s') match b354dc7's sanitizer-timing.tsv (4.822, 4.479, 2.159).",
+    "The values in sanitizer-at-caps-simulator.json match F5 (5.1/4.6/5.1, 5.7/4.7/5.1 and 2.7/2.1/2.1 s, all served, load 43.25 to 61.67, Debug build).",
+    "The wording 'at most 4.8 s' is gone from the report and the ADR. `git grep` finds no stale '37 hosted', '37 tests' or 'at most 4.' in tracked Markdown outside the historical PROGRESS.md.",
+    "SanitizerAtCapsTimingTests builds the same three documents as the host test's atCaps list: the same doc wrapper, `maxAttributesPerDocument/256 - 1` and `maxElementsPerDocument - 10`. It fails if any run reaches 20 s, and it writes sanitizer-at-caps-simulator.json or sanitizer-at-caps-device.json to Documents/evidence, which step 11 copies.",
+    "The hosted test count went from 37 to 38 (the committed log and my run both say 'Executed 38 tests'), and checklist step 11 now expects 38.",
+    "The compatibility-matrix table in the report matches compatibility-matrix.json and .md (parse and first-location times, depths). navigation-race.json readium_single_go_reset_count = 5 (b354dc7 had 4). The slowest preflight rejection in safety.json is 0.005 s.",
+    "In crash-reports.txt pid 34625 (the iterator) has a stack-overflow report, and in ui-deep-nesting.log pid 34906 (search) has a stack-overflow signal record. This matches the report's crash paragraph; b354dc7's run had 0 reports.",
+    "The committed run window, 17:25:50Z-17:40:30Z, is 06:25-06:40 NZDT, as the report says; the simulator is Sylvia-M0-minors-g01-epub (iPhone18,3, iOS 26.5).",
+    "R3-02: Fixtures/LICENSES.md line 5 allows small committed generated fixtures. The 'Generated, committed' section has '### G0.1 EPUB', naming the generator, MANIFEST.tsv and all 17 EPUBs, and Spikes/G01-EPUB/Fixtures/generated holds exactly 17 .epub files. The fixture --check passed in both runs.",
+    "Commit messages follow the convention (an imperative summary, the reason and the trailer). The WIP commits are the author's own and are superseded by d317054.",
+    "Not applicable: the spike plays no audio, so the quiet-audio rule does not apply. The diff adds no TLS, ATS, key or data-protection change and no TODO or stub."
+   ],
+   "gate_gaps": [
+    "Phone sanitizer time near the caps is correctly pending-device (checklist step 11, then a repeat on the iPhone 12-class baseline). The step measures a single worker on an idle phone, and the checklist does not say so (R4-04). On a device the JSON cannot identify the phone (R4-03).",
+    "Device and human items stay correctly pending: finger selection and the edit menu (G2, steps 1-4), VoiceOver (9.4, steps 5-6), device open time (19.2, step 12), the grayscale judgment (G4, step 10) and finger taps on the form buttons (step 13).",
+    "integration-log.md still describes g01-epub R3-01 as open and the committed run as the earlier one. The author properly left this shared file alone and requested the update; it has to be applied when this branch is merged.",
+    "The author marked R3-02 passed-host, but this branch did not fix it: M0 integration did, and the author only verified that fix and updated the report sentence. Labelling it 'resolved at integration, verified' would be more exact. It is not a defect."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R3-01",
+     "resolved": true,
+     "note": "Resolved. The report (T13, F5, open question 8) and ADR-0004 'Bounds' now give measured ranges with the load (13.2/8.4/6.2 s at load 75-77, 4.8-5.0 s at 35-73, and the earlier single runs) instead of 'at most'. The host test times each at-cap document three times and records load averages. A new hosted test, SanitizerAtCapsTimingTests, times the same documents on the simulator or a phone, and device checklist step 11 runs it on the phone and repeats it on the baseline. All of this was verified against the evidence and a clean rerun. Remaining minor wording and evidence issues: R4-01, R4-02, R4-04, R4-05."
+    },
+    {
+     "id": "R3-02",
+     "resolved": true,
+     "note": "Resolved by M0 integration in Fixtures/LICENSES.md: line 5 now allows small committed generated fixtures, and the 'Generated, committed' section has a G0.1 EPUB entry listing the generator, MANIFEST.tsv and all 17 EPUBs. The report's 'Generated fixtures' paragraph now says this was done. The fixture --check passes."
+    }
+   ]
+  }
+ }
+]

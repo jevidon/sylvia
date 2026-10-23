@@ -1,0 +1,658 @@
+[
+ {
+  "run": "wf_9ea3b4d5-f4f",
+  "seq": 9,
+  "label": "runbook:author",
+  "result": {
+   "branch": "m0-int-runbook",
+   "commit": "73c1ae2bb274f96d465686e0507f0f78b48b9573",
+   "summary": "I finished Docs/Stage0/M0-device-runbook.md, the M0 device and human-review runbook for the product owner. A stopped agent had left WIP on this branch. I re-checked all of it against the 8 checklists, the 8 reports, the harness and tool code and the plan, kept what held, and fixed or added what did not.\n\nWhat the runbook covers:\n- **Prerequisites (Section 1):** devices, including the oldest supported iPhone (iOS 26 runs from the iPhone 11 and iPhone SE 2nd generation; Apple Support was read). It also lists what one current iPhone can cover, the Mac and its tools (ffmpeg is needed even to check the G0.4 fixtures), cables and accessories, a second network, keys passed only as environment variables typed at a hidden prompt, free storage, and signing.\n- **Sessions 0-10:** ordered by what unblocks the gate first. Each step gives its gate and checklist source, what to do, the expected result, where and how to record it, and the time it takes.\n- **Section 7:** which steps block M0 and which can wait, with the reason for each.\n- **Section 8:** 44 corrections, each of which the runbook applies. 12 are new in this pass, including:\n  - G0.2's restarts strand the phone because the Mac source picks a new port each time; Session 4 now uses one fixed port and one library folder.\n  - The phone never displays the file's digest, so the digest check uses `imports.json` instead.\n  - A new pairing gives the phone a new device ID on the Mac, so `send` and `revoke` must use the newest one.\n  - Changing the Mac's key with a new state folder deletes every stored key; an ephemeral key on the same port avoids that.\n  - `--print-path` never generates the 5 GiB file.\n  - G0.5 recovery's save-latency budget had only a Debug run; a Release run is added.\n  - Low Power Mode runs must be on battery, because iOS turns the mode off when charging reaches 80 %.\n  - G0.6 step 23 wrongly expects a dark grey primary button in dark mode.\n  - The late-import timing that G0.3's report asks for is now recorded.\n  - A skipped live AI test is not a pass.\n  - Recovery step 4.3's bundle ID is not in its log.\n- **Section 9:** what was checked on the build Mac.\n\nChecks on the build Mac (no physical device was used or contacted):\n- **Device builds:** I ran every device build command for a generic iOS device (build only; no `-allowProvisioningUpdates`) and checked the products' signatures. All 22 checks came out as stated beforehand: 20 pass. G0.3's signed build and the Mac identity probe stop at signing because they need the team account in Xcode; G0.3 compiles with signing turned off.\n- **Test filters:** on my own simulator, every `-only-testing` filter the device steps use selects the tests it names. The exceptions are function-level filters written without `()`, which select nothing while xcodebuild still reports success.\n- **Clean run:** I ran all checks again from a clean tree at commit 07b1dbe (0 changed tracked files), followed by `Scripts/ci.sh contracts`, which passed. Other agents shared the Mac; the log records the load at each step.\n\nAfterwards I deleted all build products and my simulator Sylvia-M0-runbook, and detached HEAD. Every step in the runbook itself is still pending, on a device or with a person. The runbook is agent-written and agent-reviewed; human review is pending.",
+   "criteria": [
+    {
+     "criterion": "Section 1, what is needed first: iPhone and iPad models and OS versions per step, including the oldest supported iPhone; which steps one current iPhone covers; the Mac and its tools; cables; accessories (headphones, Bluetooth); a second network; optional API keys or a local model server, given only as environment variables",
+     "status": "pending-human",
+     "evidence": "Docs/Stage0/M0-device-runbook.md Sections 1.1-1.7. iOS 26 compatibility and Low Power Mode behaviour come from Apple Support (URLs cited). Mac state comes from Docs/Stage0/evidence/M0-runbook/build-mac-state.txt. Agent-written and agent-reviewed; product-owner review pending."
+    },
+    {
+     "criterion": "How to install the signed builds (team A4KBDX665Z, automatic signing), with each harness's device build command built for a generic iOS device on this Mac (build only) and the command and result recorded",
+     "status": "partial",
+     "evidence": "Docs/Stage0/evidence/M0-runbook/device-builds/summary.tsv and one log per check, from commands/verify-device-builds.sh within clean-run.log at commit 07b1dbe. 22 checks, all as expected: 20 pass and their signed products verify with codesign --verify --strict. Two stop at signing for want of the team account in Xcode: G0.3's signed build (it compiles with signing off) and the Mac identity probe. The G0.5 recovery package test bundles, Debug and Release, build unsigned."
+    },
+    {
+     "criterion": "Sessions grouped into as few sittings as possible, ordered by what unblocks the M0 gate; each step gives its gate and checklist step, the actions, the expected result, how and where to record it, and its time",
+     "status": "pending-human",
+     "evidence": "Docs/Stage0/M0-device-runbook.md Sections 2-6 (Sessions 0-10), with the recording table in Section 2 and the session log Docs/Stage0/evidence/M0-runbook/sessions.md. Agent-reviewed; human sign-off pending."
+    },
+    {
+     "criterion": "Clear split between steps that block the M0 gate and steps that can wait for a later milestone, with the reason for each",
+     "status": "pending-human",
+     "evidence": "Docs/Stage0/M0-device-runbook.md Section 7: a table per gate with the blocking steps and why, and the steps that can wait, until when and why; plan 20.4 is noted as not an M0 step. Agent-reviewed; human sign-off pending."
+    },
+    {
+     "criterion": "Every inconsistency between checklists and reports listed in shared_changes_requested with the exact correction, and the runbook written as if the corrections were applied",
+     "status": "pending-human",
+     "evidence": "Docs/Stage0/M0-device-runbook.md Section 8 (C1-C44, each applied in the sessions and cited where applied) and this result's shared_changes_requested. Code facts were read in the cited sources. The file owners' review is pending."
+    },
+    {
+     "criterion": "The -only-testing filters used by the device steps select the tests they name",
+     "status": "passed-simulator",
+     "evidence": "Docs/Stage0/evidence/M0-runbook/only-testing-ids.log, written by commands/check-only-testing-ids.sh on simulator Sylvia-M0-runbook (iPhone 17, iOS 26.5) at commit 07b1dbe. Counts: 37, 3, 4, then 1/4/4/3 for G0.4, then 1 and 1, 1 for latency(), and 1. The G0.5 AI step 2 filter as written selects 0 while xcodebuild reports success, which is correction C24."
+    },
+    {
+     "criterion": "Clean re-run of every check this work touches, with the log under the evidence directory (no CI drop-in or contract was changed; Scripts/ci.sh contracts run as a consistency check)",
+     "status": "passed-host",
+     "evidence": "Docs/Stage0/evidence/M0-runbook/clean-run.log (commit 07b1dbe, 0 changed tracked files, no build products at start; host load recorded per step: 1-minute load 6.5-15.9). Also Docs/Stage0/evidence/M0-runbook/contracts.log (15 schemas, 188 fixtures, 1 OpenAPI document, 1 instance) and tool-help.txt."
+    },
+    {
+     "criterion": "The physical-device and human steps themselves",
+     "status": "pending-device",
+     "evidence": "Nothing was installed on, launched on or copied to a physical device, and no device was contacted. Every step of Sessions 1-9 stays pending-device, and Session 10 pending-human, until the product owner runs it and records the result as Section 2 says."
+    }
+   ],
+   "ci": {
+    "script": "Docs/Stage0/evidence/M0-runbook/commands/clean-run.sh: runs build-mac-state.sh, tool-help.sh, verify-device-builds.sh (generic iOS device, build only), check-only-testing-ids.sh (own simulator Sylvia-M0-runbook), then Scripts/ci.sh contracts",
+    "result": "Exit 0 from a clean tree at commit 07b1dbe (0 changed tracked files, no build products at start). All 22 device-build checks came out as stated before the run: 20 pass, 2 stop at signing as expected. Every test filter came out as documented. Contracts pass: 15 schemas, 188 fixtures, 1 OpenAPI document, 1 instance. Load was recorded at each step (1-minute load 6.5-15.9; other agents shared the Mac), so no duration in the logs is a result. Log: Docs/Stage0/evidence/M0-runbook/clean-run.log. No CI drop-in or contract was changed."
+   },
+   "plan_findings": [
+    "Plan 15.1/15.5 (for M6): the paired phone keeps the address and port it paired with and never re-finds a moved Mac. The G0.2 client has no Bonjour re-resolution, and the Mac source picks a new free port at every start unless given --port; the host tests always restart it on the same port. The companion must keep a stable port across launches, or the client must re-resolve the paired source by its Bonjour TXT source ID. Otherwise a restarted Mac strands every phone with 'Make sure the Mac is awake'.",
+    "Plan 15.2/18.1 (security review of ADR-0008): every pairing creates a new device ID and token while the phone keeps only the newest token, so the Mac keeps earlier pairings of the same phone active and valid until each is revoked by hand. The security reviewer should decide whether re-pairing revokes the phone's earlier device records.",
+    "Mac identity store (for M6): KeychainIdentityStore.reset deletes every key stored under the service com.jevidon.sylvia.source.identity, not just the one for its state folder. A second instance with a new state folder therefore destroys the first one's identity, and starting an ephemeral identity in an existing state folder revokes all its pairings.",
+    "Plan 19.1/19.2: G0.5 recovery measured the acknowledged-save budget only in xcodebuild test's Debug build. A Release run of DurabilityTests/latency() (ENABLE_TESTABILITY=YES) builds and is selectable, and is added as correction C41.",
+    "Plan 21.1 G0.6 needs the type roles checked on the oldest supported iPhone. Plan 19.1 proposes iPhone 12-class hardware, but iOS 26 runs from the iPhone 11 and iPhone SE (2nd generation), so 'oldest supported' needs the product owner's decision (D-1). Without that device the G0.6 gate cannot pass as written (D-2).",
+    "Plan 21.1 G0.5 names live provider dialects, a local endpoint and a transcription endpoint. Without the product owner's keys or a local server these stay pending, and M0 needs a recorded exception moving them to M5 (D-4).",
+    "Test strategy (plan 22.2): a Swift Testing -only-testing filter that matches nothing, and a live test skipped for missing variables, both still end in a passing xcodebuild or swift test run. Device and release-candidate runs must check the executed or passed count of the test they target.",
+    "Plan 20.4's product validation with 8-12 users is not an M0 step: plan 21.2 puts the pilot in M8 and no 21.1 gate criterion asks for it."
+   ],
+   "shared_changes_requested": [
+    "Docs/Stage0/README.md: after the paragraph on integration-log.md, add: '[M0-device-runbook.md](M0-device-runbook.md) gathers every pending device and human step of the eight checklists and reports into sessions for the product owner, says which block the M0 gate and which can wait, and lists 44 corrections to the checklists and reports (its Section 8).'",
+    "C1, Docs/Stage0/device-checklists/G01-EPUB.md (Install), G03-Intake.md (Setup 3), G04-Audio.md (Setup 1), G05-AI.md (Setup for steps 1-4) and G05-Recovery.md (Setup): replace the instruction to take <device-id> from `xcrun devicectl list devices` with: 'Use the device's UDID: Xcode > Window > Devices and Simulators > the device > Identifier, or the last value in parentheses in `xcrun xctrace list devices`. The Identifier column of `xcrun devicectl list devices` is CoreDevice's own identifier, which may differ from the UDID that `xcodebuild -destination id=` expects; `xcrun devicectl --device` accepts the UDID (Docs/Stage0/evidence/M0-runbook/tool-help.txt).'",
+    "C2, G01-EPUB.md step 1: replace 'Long-press the word \"governor\" in \"From my governor, to be neither of the green nor of the blue party\", drag the end handle to \"fights\" at the end of that sentence.' with 'Long-press \"From\" at the start of the paragraph \"From my governor, to be neither of the green nor of the blue party\u2026\" (or long-press \"governor\" and drag the start handle back to \"From\"), then drag the end handle to \"fights\" (just before the semicolon).' Write the expected row as 'Quote: From my governor, \u2026 gladiators\u2019 fights' with U+2019, as the book prints it (epub/text/book-1.xhtml of Fixtures/epub/se-meditations.epub).",
+    "C3, G01-EPUB.md step 9: replace '(compare with the specimen in `Docs/Design/`)' with '(compare with `Docs/Design/images/Main.png`, `Reader.png` and `ReaderDark.png`, or the design catalog's Type page; there is no specimen file)'.",
+    "C4, G01-EPUB.md, the Devices line: replace 'Repeat steps 1, 6 and 11 on the iPhone 12-class baseline and an iPad' with 'Repeat steps 1, 6, 11 and 12 on the iPhone 12-class baseline, and steps 1, 6 and 11 on an iPad'. Reason: report open question 8 says open time on the baseline is unknown.",
+    "C5, Docs/Stage0/G01-EPUB.md: add 'Device: checklist step 7 (pending-device).' to row G6's evidence; add 'Device: checklist steps 11 and 13 (pending-device).' to rows T12 and T13 (F14 already calls step 13 pending-device); add passed-device to the 'Status values' line.",
+    "C6, G01-PDF.md Setup: add 'Device: the iPhone 17 Pro (iPhone18,1, iOS 26.7) for every step; repeat steps 1 and 10 on the iPhone 12-class baseline when available.' Report open question 3 asks for step 1 on the baseline, and step 10 asks which device was used.",
+    "C7, G01-PDF.md step 10: before the opens, build and install Release: `xcodebuild build -project Spikes/G01-PDF/G01PDF.xcodeproj -scheme PDFSpikeHarness -configuration Release -destination \"id=<udid>\" -derivedDataPath Spikes/G01-PDF/.build/DerivedData-device-release -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z`, then `xcrun devicectl device install app --device <udid> Spikes/G01-PDF/.build/DerivedData-device-release/Build/Products/Release-iphoneos/PDFSpikeHarness.app`, and launch from the Home Screen. Reason: plan 19.1 asks for Release builds without a debugger (built: Docs/Stage0/evidence/M0-runbook/device-builds/g01-pdf-release.log).",
+    "C8, Docs/Stage0/G01-PDF.md: add 'Device: checklist step 4 (pending-device).' to row 22, 'Device: checklist step 7 (pending-device).' to row 13, 'Device: checklist step 8 (pending-device).' to rows 18 and 18a, and 'Device: checklist step 9 (pending-device).' to rows 16 and 17.",
+    "C9, G02-Transfer.md step 1.1: replace the command with, from the repository root: `xcodebuild test -project Spikes/G02-Transfer/iOS/G02Transfer.xcodeproj -scheme G02TransferHarness -destination \"id=<udid>\" -derivedDataPath Spikes/G02-Transfer/iOS/.build/DerivedData -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z -only-testing:G02TransferHostedTests/KeychainCredentialStoreTests`. Reason: CLAUDE.md derived-data rule and ADR-0002; it selects 3 tests (only-testing-ids.log).",
+    "C10, G02-Transfer.md step 2.2: replace 'open the part 2 harness pairing screen and paste the printed code' with 'paste the printed code into \"Paste the pairing code or link\" and tap \"Check code\"'. In 2.4, write 'compare ..., tap \"Pair\", then type y on the Mac'.",
+    "C11, G02-Transfer.md step 3.1: replace `sylvia-source --root <any folder> --lan --port <P2> --ephemeral-identity --name Rogue` with `sylvia-source --root \"$(mktemp -d)\" --lan --port <P2> --ephemeral-identity --name Rogue --state \"$(mktemp -d)\"`. Add why: without --state the rogue runs in the genuine source's state folder. There an ephemeral identity counts as new and SourceService.start revokes every paired device in devices.json (`if identityCreated { try await pairing.revokeAll() }`), and its scan rewrites that folder's index.json, so a later genuine restart renumbers its items.",
+    "C12, G02-Transfer.md step 5: replace 1-2 with: '1. Under the paired Mac (the list exists only there) tap \"Browse the local network\". 2. Expected: \"Use Device test Mac (this Mac)\" appears; tapping it shows \"Checking <address>:<port> against the paired fingerprint...\" then \"Using <address>:<port>: the Mac's key matches the paired fingerprint.\" Discovery grants nothing: it only offers addresses for an already paired Mac, each checked against its pin, and pairing always needs a code.'",
+    "C13, G02-Transfer.md step 6.3: add the commands `xcodebuild build -project Spikes/G02-Transfer/iOS/G02Transfer.xcodeproj -scheme G02TransferATSVariant -configuration Debug G02_ATS_VARIANT=tailnet-exception -destination \"id=<udid>\" -derivedDataPath Spikes/G02-Transfer/iOS/.build/DerivedData-ats -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z` and `xcrun devicectl device install app --device <udid> Spikes/G02-Transfer/iOS/.build/DerivedData-ats/Build/Products/Debug-iphoneos/G02TransferATSVariant.app` (built with the exceptions present: device-builds/g02-ats-variant-tailnet.log).",
+    "C14, G02-Transfer.md step 13.1, and the request logs of steps 14-16: replace `> source.log` with `2>&1 | tee .build/scratch/g02-13-source.log`, keeping the existing pairing (same --state and port, C33). Add: 'Before attaching the log, replace its start-up \"pairing code:\" and \"pairing link:\" lines with [pairing code redacted].' Reason: with `>` the approval prompt is never seen and the code lands in the evidence log.",
+    "C15, G02-Transfer.md step 18: replace 'Fresh install of the harness. Tap \"Browse the local network\" before pairing.' and the prompt expectation with '1. With a paired Mac and a 5 GiB transfer running, turn off Settings > Privacy & Security > Local Network for the harness.' Keep the expectations from 'Bonjour finds nothing' on. Move the prompt screenshot ('Sylvia connects to the Mac you paired with on your network\u2026') to step 4's Record. Reason: the button exists only under a paired Mac.",
+    "C16, G02-Transfer.md steps 8.6, 9.3, 14.3, 15.2 and 16.2: where an import once is expected, add 'after the first import of this version, later downloads log import_already_recorded instead of imported; either is the single import'. In Before you start, add 'The phone needs about 12 GB free: the first 5 GiB import stays, and each later 5 GiB job needs the rest of the file plus four 16 MiB parts until it finishes (BackgroundTransferCoordinator.spaceShortfallLocked).'",
+    "C17, G02-Transfer.md Before you start (code signing) and the Notes of Docs/Stage0/G02-Transfer.md: replace the 12 October state with: 'On 14 October 2026 the harness, its hosted tests and the ATS probe app build and sign with the Apple Development identity and the \"iOS Team Provisioning Profile: *\" on the build Mac (one registered device). Xcode still has no account, which is needed for step 20, for G0.3's App Group and for any device the profile does not list (Docs/Stage0/evidence/M0-runbook/build-mac-state.txt, device-builds/).'",
+    "C18, G03-Intake.md Setup 3 (command line, used by step 24): add -disableAutomaticPackageResolution. Add: 'This needs the team's account in Xcode: the wildcard team profile cannot sign the App Group (\"doesn't include the App Groups capability\", Docs/Stage0/evidence/M0-runbook/device-builds/g03-intake-tests-signed.log); with the account, -allowProvisioningUpdates registers it.'",
+    "C19, G03-Intake.md step 24: add before the command: 'Run it after steps 19-23 with nothing in the drop area you still need: the filter also runs InAppLayoutTests/finderDeletion, which deletes everything in the harness's Documents folder (4 tests selected: only-testing-ids.log).'",
+    "C20, G03-Intake.md step 26: prefix 'If step 13 found Sylvia Intake Spike in the share sheet's app row:'. Add 'Otherwise AirDrop the same EPUB a second time as in step 25 and choose the harness. Expected either way: needs_review (a duplicate), never a second staged job.'",
+    "C21, G03-Intake.md step 27: replace 'Opened file staged: 5 file(s), state staged' with 'Opened file staged: 4 file(s), state staged'. Setup 4's pack holds 4 content files (manifest SHA-256 9e7f8269\u2026b367), which gave this result on the simulator (evidence/G03-Intake/sim-open-in.log; Docs/Stage0/evidence/M0-runbook/device-builds/g03-small-pack.log).",
+    "C22, G04-Audio.md step 14.3: replace 'copy the four multi/*.mp3 fixtures into Documents/G04Book instead of the M4B' with a folder copy that replaces the folder's contents: `xcrun devicectl device copy to --device <udid> --domain-type appDataContainer --domain-identifier com.jevidon.sylvia.spike.g04audio --source <folder holding only the four multi/*.mp3> --destination Documents/G04Book --remove-existing-content true`. Check it by the Player title 'G04Book (4 files)', with Xcode's Download Container / Replace Container as the fallback. Before steps 15 and 16, put the M4B back alone the same way (title 'G04Book (1 files)'). Reason: the harness plays every audio file there, cannot remove one, has no file sharing and never creates the folder.",
+    "C23, Docs/Stage0/G04-Audio.md: in row 15, change 'The device equivalent is checklist step 16.' to 'The device equivalent is checklist step 16 (pending-device).'; in row 25, add 'Device: checklist step 16 (pending-device).'; in row 24, change 'Device: steps 1, 1.5 and 14.' to 'Device: steps 1 and 1.5 (pending-device) and 14 (pending-human, by ear).'",
+    "C24, G05-AI.md step 2.2: replace `-only-testing:ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnotherDeviceOnTheLAN` with `'-only-testing:ProbeLocalNetworkingTests/ATSProbeTests/plainHTTPToAnotherDeviceOnTheLAN()'` (quoted for zsh). Add: 'Without (), the filter selects no test and xcodebuild still reports success (Docs/Stage0/evidence/M0-runbook/only-testing-ids.log).'",
+    "C25, Docs/Stage0/G05-AI.md, section 'Simulator, device and human checks': add the row '| P7 | Wording of disclosure, failure and outcome messages | pending-human | checklist step 9.2 |'.",
+    "C26, G05-AI.md Recording and steps 1-2: replace `| tee ats-device.log`, `| tee lan-allowed.log` and '(log to lan-denied.log)', which write into Spikes/G05-AI/ATSProbe, with `2>&1 | tee ../../../Docs/Stage0/evidence/G05-AI/device/step-01-ats.log` (step-02-lan-allowed.log, step-02-lan-denied.log). Name the record files of steps 3-8 Docs/Stage0/evidence/G05-AI/device/step-NN-<what>.txt.",
+    "C27, G05-Recovery.md: add a host step before step 1: 'Report row 10 (Mac screen unlocked): `mkdir -p Docs/Stage0/evidence/G05-Recovery/row10-unlocked && G05_LOG_DIR=Docs/Stage0/evidence/G05-Recovery/row10-unlocked G05_SIM_NAME=<your own simulator name> caffeinate -d -i Scripts/ci.d/71-g05-recovery.sh 2>&1 | tee Docs/Stage0/evidence/G05-Recovery/row10-unlocked/console.log`. Expected: exit 0 and \"row 10 evidence present: class-B readback and inheritance lines found in host-tests.log\". A folder of its own keeps the clean-run logs the report cites.' Point report row 10 and open question 7 at it.",
+    "C28, G06-Design.md step 1: replace 'On the iPhone 12-class baseline (iOS 26.x),' with 'On the iPhone 17 Pro, and again on the oldest supported iPhone when available (steps 1-9 alike; the gate needs the oldest iPhone for step 4),'.",
+    "C29, G06-Design.md, under the part 3 introduction: add 'Steps that overlap are done in one pass on the same device and recorded under each number: 13 with 23 (the review set includes Catalog > All components), 14 with 24, 15 with 25-27 on device A, 17 with 28, 18 with 29, 20 with 28; 4, 15 and 26 use the same text size on different screens.'",
+    "C30, G04-Audio.md Setup 1 ('branch m0 after integration, or m0-g04-audio'), G05-AI.md Setup ('branch m0 (or the G0.5 branch before integration)') and G05-Recovery.md Setup ('check out the branch'): replace with 'the M0 integration branch (m0-integrate, or m0 once it is merged), recording `git rev-parse HEAD` in the step record'.",
+    "C31, all eight device checklists: name a passed device step `passed-device`, replacing pass, PASS and passed. Add passed-device to the 'Status values' line of Docs/Stage0/G01-EPUB.md, and both passed-device and failed to the one in Docs/Stage0/G05-AI.md; the other reports have no such line.",
+    "C32, G04-Audio.md step 2.1: replace `-derivedDataPath Spikes/G04-Audio/.build/DerivedData-release` and the matching install path with `Spikes/G04-Audio/.build/DerivedData-release-app`. Built in step 1.5's folder, the installed Release app carries G04AudioTests.xctest and its fixtures: 9,085,888 KiB against 4,814 KiB (device-builds/g04-harness-release-as-written.log, g04-harness-release.log).",
+    "C33, G02-Transfer.md Before you start and steps 2-21: use one library folder and one fixed port for every source start. Add the setup `mkdir -p ~/SylviaDeviceTest/library; cp Fixtures/epub/se-walden.epub ~/SylviaDeviceTest/library/; cp -c \"$(Scripts/fixtures/generate-g02-transfer-large.sh --print-path)\" ~/SylviaDeviceTest/library/`. Add `--root ~/SylviaDeviceTest/library --port <P>` (the same free port every time) to every sylvia-source and sylvia-test-source command except the rogue's. Reason: the phone keeps the address and port it paired with, the source picks a new port at each start unless given one (the host tests restart it on the same port: Spikes/G02-Transfer/SourceService/Tests/SylviaSourceServiceTests/Harness.swift), and items are keyed by root position and file name. In step 6.2's second part, say to pair over the LAN first, then restart the same source (same state and port) with `--bind <Tailscale IPv4> --advertise-host <MagicDNS name>`.",
+    "C34, G02-Transfer.md steps 2.5 and 9.3: replace 'the phone reports the same SHA-256 as shasum -a 256 <file> on the Mac' and 'the final file's SHA-256 is d2383fe\u2026' with: 'the sha256 for this import in the app container's Library/Application Support/Transfers/imports.json equals shasum -a 256 <file> on the Mac (d2383fe\u2026 for the 5 GiB file). imports.json is written only after the phone's whole-file check, event assembly_verified. For a small file also pull Transfers/Library/<import-id>/<asset-id>.bin and hash it.' The harness shows no file digest.",
+    "C35, G02-Transfer.md steps 8.1 and 10.1: add 'Use the phone's current device ID: every pairing creates a new one and the phone keeps only the newest token, so take the last active line of `devices` (or the device field of the newest paired event in events.jsonl).'",
+    "C36, G02-Transfer.md step 10.3: replace 'delete its identity (\u2026 or start with a new --state)' with 'start a source with another key on the same address and port: `sylvia-source --root <same folder> --lan --port <P> --ephemeral-identity --state \"$(mktemp -d)\"`, before the job finishes'. Add the warning: 'a new --state without --ephemeral-identity runs KeychainIdentityStore.reset, which deletes every key stored under com.jevidon.sylvia.source.identity, the genuine source's included'.",
+    "C37, G02-Transfer.md Before you start and step 9.1: add 'Generate or verify the 5 GiB file first with `Scripts/fixtures/generate-g02-transfer-large.sh`, which prints \"present and verified\" or \"generated and verified\"; `--print-path` only prints where it should be.'",
+    "C38, G03-Intake.md steps 6 and 14, Record: add 'the time from \"Received by Sylvia\" to the harness's scan line with accepted=1 (report finding F11, open question 7)'.",
+    "C39, G03-Intake.md steps 6 and 7: replace '(AirDrop it or use Finder file sharing to another app)' with '(copy the files into iCloud Drive on the Mac, then in Files long-press > Move > On My iPhone; AirDrop may hand an EPUB to an app that claims EPUB instead of saving it in Files)'.",
+    "C40, G04-Audio.md step 1.4 and G05-Recovery.md step 2.2: replace 'and once in Low Power Mode' with 'and once in Low Power Mode on battery, started fully charged, checking that Low Power Mode stayed on (iOS turns it off when charging reaches 80 %: https://support.apple.com/en-us/101604)'.",
+    "C41, G05-Recovery.md step 2: add '4. Release build (plan 19.1): `xcodebuild test -scheme G05Recovery-Package -configuration Release ENABLE_TESTABILITY=YES -destination \"id=<udid>\" -derivedDataPath .build/DerivedData-release -disableAutomaticPackageResolution -allowProvisioningUpdates DEVELOPMENT_TEAM=A4KBDX665Z '-only-testing:SylviaRecoveryTests/DurabilityTests/latency()' 2>&1 | tee step-2-release.log`, once on the charger and once in Low Power Mode on battery. Expected: 1 test passed, p95 at most 200 ms.' Evidence: build device-builds/g05-recovery-tests-release.log; filter only-testing-ids.log. Update report row 13 to name both configurations.",
+    "C42, G05-Recovery.md step 4.3: replace '(the bundle ID is in step 4.1's log)' with '(find the test runner's bundle ID with `xcrun devicectl device info apps --device <udid>` before the restart; the probe's log prints the library's path, not the bundle ID; if none is listed, record that and skip this observation)'.",
+    "C43, G06-Design.md step 23, expected (3): replace 'the primary button is a dark grey block, distinct from ink text and from the hairline secondary button' with 'the primary button is a dark grey block in light and a light-to-mid grey block with a dark label in dark (grey levels 85 and 170 of 255 on the simulator: Docs/Stage0/evidence/G06-Design/t53-buttons-grayscale-simulator.md), distinct from ink text and from the hairline secondary button'.",
+    "C44, G05-AI.md steps 5.3, 6, 7.2 and 8.2: add 'The named test must report \u2714 \u2026 passed. A \u279c \u2026 skipped line means a variable is missing, and the run still ends \"\u2714 Test run with 4 tests in 1 suite passed\" (Docs/Stage0/evidence/M0-runbook/device-builds/g05-ai-live-tests-skip.log).'"
+   ],
+   "dependencies_added": [],
+   "committed_fixtures": [],
+   "open_questions": [
+    "Whether `xcodebuild test` signs and installs G0.5 recovery's package test bundle on a phone: build-for-testing leaves it unsigned (device-builds/g05-recovery-tests*.log), so only Session 1.2 will show. The runbook says to record any signing or install error verbatim.",
+    "devicectl documents --remove-existing-content for folders, but not whether a folder source is copied onto the destination or into it, nor whether a missing Documents/G04Book is created. Session 3 checks every book-folder change by the Player title and falls back to Xcode's Replace Container.",
+    "Whether macOS asks before sylvia-test-source reads the identity key that sylvia-source stored in the login keychain (Session 4.10 says to allow it), and whether AirDrop of an EPUB or PDF offers Files (C39 gives the iCloud route). Neither could be checked without the owner's keychain or a device.",
+    "Product owner: which phone counts as the oldest supported iPhone (iPhone 12-class per plan 19.1, or an iPhone 11 or SE 2nd generation, which iOS 26 supports), and whether an iPad is part of M0 or waits for M3 (D-1, D-2).",
+    "Product owner: provide API keys or a local model server for G0.5 AI steps 5-7, or record the exception that moves them to M5 (D-4).",
+    "Whether the CoreDevice identifier that `xcrun devicectl list devices` shows differs from the UDID on the owner's phone. The runbook avoids the question by using the UDID for both tools (C1)."
+   ]
+  }
+ },
+ {
+  "run": "wf_9ea3b4d5-f4f",
+  "seq": 18,
+  "label": "runbook:review-1",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "73c1ae2bb274f96d465686e0507f0f78b48b9573",
+   "rerun": {
+    "command": "Detached checkout of m0-int-runbook at 73c1ae2 (0 changed tracked files, no build products). I made copies of the author's commands/clean-run.sh, verify-device-builds.sh and check-only-testing-ids.sh that differ from the originals only in output paths (.build/scratch/review) and simulator name (Sylvia-M0-review-runbook-1), and diffed them against the originals to confirm. The copies ran build-mac-state.sh, tool-help.sh, the 22 device and host build checks (generic iOS device, no -allowProvisioningUpdates), the -only-testing check on my own simulator, and Scripts/ci.sh contracts. I also ran `xcodebuild -help` (Xcode 27.0, 27A266a), which is read-only.",
+    "result": "Exit 0, from 01:25 to 01:38 UTC on 14 October 2026. The 1-minute load was 8.0 at the start, peaked at 38.7 and was 14.2 at the end; other agents were using the Mac, so no duration is a result. All 22 checks matched the committed summary.tsv in check, exit, result, expected and as_expected: 20 pass, with codesign --verify --strict ok on every listed product, and g03-intake-tests-signed and g02-mac-identity-probe-signing stop at signing as stated. Every filter count was identical: 37; 3; 4; 1/4/4/3; lockedWrites() 1; persistentLibrary() 1; latency() 1 and latency 0. G0.5 AI step 2 as written ran 0 tests with TEST EXECUTE SUCCEEDED; with () it ran 1 test, which skipped. The UI-test filter selected 1. The 4 live AI tests skipped. Contracts passed: 15 schemas, 188 fixtures, 1 OpenAPI document, 1 instance. build-mac-state.txt and tool-help.txt were identical to the committed copies apart from date and commit. Tracked files were unchanged. Afterwards I deleted all build products, scratch files and my simulator. The checks reproduce; the defects are in what the runbook tells the owner to do."
+   },
+   "findings": [
+    {
+     "id": "R1-01",
+     "severity": "blocker",
+     "title": "-allowProvisioningUpdates does not register a device; the install path for device A, the iPad and the Mac identity probe is wrong",
+     "location": "Docs/Stage0/M0-device-runbook.md line 70 (1.5), line 147 (0.4), line 171 (0.7), line 694 (Session 8); also line 17 (phone B 'presumably' registered); Spikes/G02-Transfer/Scripts/mac-identity-probe-run.sh",
+     "detail": "The runbook makes three claims. Line 70: every command 'keeps -allowProvisioningUpdates, which lets Xcode register a connected device'. Line 147: devices A and C are 'registered by its first build with -allowProvisioningUpdates'. Line 171: the probe script's '-allowProvisioningUpdates may register this Mac'.\n\nThe pinned toolchain contradicts this. `xcodebuild -help` (Xcode 27.0, 27A266a) lists a separate flag: '-allowProvisioningDeviceRegistration  Allow xcodebuild to register your destination device on the developer portal if necessary. This flag only takes effect if -allowProvisioningUpdates is also passed.' Nothing in Docs, Scripts, Spikes, Apps or Packages passes it (grep: no match). tool-help.sh records only devicectl and cp, so the author never checked the claim.\n\nEffect if followed as written:\n- Session 8 (device A, which carries the G0.6 oldest-iPhone checks the runbook says block M0) and Session 9 (iPad) stop at signing on an unregistered device.\n- 0.7 (G0.2 step 20, blocks M0) cannot register this Mac for a Mac development profile.\n- Phone B is only 'presumably' the one device in the wildcard profile, so Sessions 1-7 also rest on an unchecked registration.\n\nOnly the '(or Xcode's Run)' aside in 0.4 gives a working route, and 0.7 has no such route.\n\nFix:\n- Add -allowProvisioningDeviceRegistration next to -allowProvisioningUpdates in every device command, or tell the owner to register A, C and the Mac first (one Run from Xcode with the account, or developer.apple.com > Devices).\n- Correct the three sentences and record this as a new correction.\n- Ask the G0.2 owner to add the flag to mac-identity-probe-run.sh.\n- Add `xcodebuild -help` to tool-help.sh as evidence."
+    },
+    {
+     "id": "R1-02",
+     "severity": "major",
+     "title": "Section 7 defers steps that M0 ADRs list as their pending device evidence, and its reasons contradict those ADRs",
+     "location": "Docs/Stage0/M0-device-runbook.md line 762 (blocking rule), 768 (G0.2 step 21), 770 (G0.4 steps 4-6), 771 (G0.5 AI steps 2 and 4); Docs/ADRs/0006-audio-playback-and-excerpts.md line 106 (and decision 6, line 28); Docs/ADRs/0011-ai-providers-context-and-privacy.md lines 90 and 133; Docs/ADRs/0009-transfer-protocol.md line 165",
+     "detail": "The runbook's own rule (line 762) says a step blocks M0 when 'a decision the M0 exit must take depends on it (an ADR ...)'. Section 7 nonetheless defers three groups of steps that the ADRs, which are approved at the M0 exit, list as their own pending device evidence:\n- G0.4 steps 4-6 (headphones, call, Bluetooth; T19) go to M4 because 'no M0 decision depends on it'. ADR-0006's Evidence section reads 'Pending (device): ... headphone removal, calls, Bluetooth ... (device checklist steps 1-7, 15 and 16)'. Its decision 6 is the interruption and route policy those steps test.\n- G0.5 AI steps 2 and 4 go to 'before M5 starts'. ADR-0011 line 90 reads 'Pending (device): ... Local Network denial classification ..., suspension during streaming on a device (... steps 1-4)', and its Open items (line 133) list 'Device run (checklist steps 1-4)'.\n- G0.2 step 21 goes to M6 because 'no M0 decision depends on which error iOS reports'. ADR-0009's open items (line 165) list it in 'Device run of the part 2 checklist steps (13 to 19, and 21 ...)'.\n\nSection 8 requests no change to these ADRs. The M0 gate summary built from Section 7 would therefore present those ADRs as approvable without evidence they say they need. The practical cost of fixing this is small: steps 4-6 take about 20 minutes, step 2 is 'quick now', and step 4's UI test already runs in Session 1.3.\n\nFix: either move these steps to 'Blocks M0', or add corrections that ask the owners of ADR-0006, ADR-0011 and ADR-0009 to move them explicitly to M4, M5 and M6, and cite those corrections in Section 7."
+    },
+    {
+     "id": "R1-03",
+     "severity": "major",
+     "title": "G0.5 AI step 1 must run on the minimum OS (row D1, plan 14.3); the runbook drops that condition",
+     "location": "Docs/Stage0/M0-device-runbook.md line 234 (1.3), line 771 (Section 7), Section 1.1 device table; Docs/Stage0/device-checklists/G05-AI.md lines 17 and 21; Docs/Stage0/G05-AI.md line 62 (row D1); plan line 669 (14.3)",
+     "detail": "Plan 14.3 allows the local-HTTP exception 'only if the minimum OS's ATS behavior passes testing'. Report row D1 reads 'ATS behaviour on a device with the minimum OS'. The checklist step is titled 'App Transport Security on the minimum supported OS' and asks for 'iOS 26.0-26.x if available (record the exact version; iOS 26.7 is the device on hand)'.\n\nThe runbook runs step 1 only on phone B (iOS 26.7, Session 1.3) and never mentions a minimum OS: grep for 'minimum' and '26.0' in the runbook finds nothing. Section 7 still counts step 1 as M0-blocking for 'The ATS key ADR-0011 ships (1, plan 14.3)'. The brief asked for the OS versions each step needs and for every checklist and report inconsistency. This one is neither stated nor corrected, and no D-decision covers it.\n\nFix:\n- State in 1.1, 1.3 and Section 7 that row D1 needs the minimum OS.\n- Tell the owner not to update device A and to repeat step 1 on it at its earliest 26.x build.\n- Add a product-owner/security decision: accept the earliest available 26.x as 'minimum OS' evidence, or record an exception in ADR-0011.\n- Add a correction that aligns checklist step 1, row D1 and plan 14.3."
+    },
+    {
+     "id": "R1-04",
+     "severity": "minor",
+     "title": "Device A's G0.6 repeats are unclassified, and the session plan, Session 8 and Section 7 disagree",
+     "location": "Docs/Stage0/M0-device-runbook.md line 121 (Section 3 row 8), Session 8 header and 8.3/8.5 (lines 690-704), line 773 (Section 7 G0.6 row), line 811 (C28)",
+     "detail": "The three places that describe device A do not agree:\n- Session 8 includes 8.5 (G0.6 steps 1-2 on A) and 8.3 ('with 13 and 14'), and counts them in 'about 3 h for what blocks M0' (15+60+45+30+15 min).\n- The Section 3 row for Session 8 lists 'G0.6 4, 15, 22-27 on A', without 1-2.\n- Section 7's G0.6 row puts neither 1-2 nor 13-14 on A in the blocking or the can-wait column.\n\nC28 asks for 'Steps 1-9 ... on device A when available', yet steps 3 and 5-9 on A appear in no session and in neither column. The brief asks for a clear split with a reason for every step.\n\nFix: classify each A repeat (probably 'can wait: M3', except step 4 and the gate-text steps), then align the Section 3 row, the Session 8 header and C28."
+    },
+    {
+     "id": "R1-05",
+     "severity": "minor",
+     "title": "C40 is incomplete: the 'on battery' Low Power Mode runs are set up with the phone connected by cable",
+     "location": "Docs/Stage0/M0-device-runbook.md line 194 (Session 1 preamble), line 221 (1.2), line 263 (1.4)",
+     "detail": "Session 1 puts phone B 'on a charger and connected by cable'. Steps 1.2 and 1.4 then ask for xcodebuild test runs 'in Low Power Mode on battery', because Low Power Mode turns off at 80 % while charging. I confirmed that on Apple Support 101604: 'When you charge the device to 80% or higher, Low Power Mode turns off.' A Mac's USB-C port charges the phone, so with the cable in, a battery run is impossible. The runbook never says to unplug the cable or that xcodebuild reaches the paired phone over Wi-Fi.\n\nFix: for the three Low Power Mode runs, unplug the cable, keep the phone on the Mac's Wi-Fi, confirm that `xcrun devicectl list devices` still shows it as available, and expect a slower install of G0.4's 9.3 GB bundle."
+    },
+    {
+     "id": "R1-06",
+     "severity": "minor",
+     "title": "The reported host-load range does not match the committed logs",
+     "location": "Author's result: criterion 'Clean re-run ...' evidence and ci.result ('1-minute load 6.5-15.9'); Docs/Stage0/evidence/M0-runbook/clean-run.log, only-testing-ids.log, device-builds/*.log",
+     "detail": "The committed logs record 1-minute loads from 7.40 (e.g. 'load at end: 7.40 7.80 7.14') to 17.22 (g02-sylvia-source.log and g02-sylvia-test-source.log: 'load at end: 17.22 10.01 7.95'). Neither end of '6.5-15.9' appears; 6.47 is the 15-minute average in the clean-run header. Timings are not treated as results, so no outcome changes, but the stated range is wrong. Fix: quote the range the logs give."
+    },
+    {
+     "id": "R1-07",
+     "severity": "minor",
+     "title": "C27's reason is factually wrong, and 0.8's 'exit status 0' cannot be observed through tee",
+     "location": "Docs/Stage0/M0-device-runbook.md line 810 (C27), line 181 (0.8 Expect); Scripts/ci.d/71-g05-recovery.sh lines 22 and 29",
+     "detail": "C27 says 'a run into the default log folder would overwrite the logs the report cites'. The drop-in's default G05_LOG_DIR is .build/g05-recovery/logs (lines 22 and 29), outside the evidence folder, so a default run overwrites nothing. Only the report's documented evidence command, G05_LOG_DIR=Docs/Stage0/evidence/G05-Recovery/logs, would. The 0.8 command itself is fine because it writes to row10-unlocked.\n\nSeparately, 0.8 expects 'exit status 0', but the command ends in `| tee ...`. In the owner's zsh without pipefail, the pipeline reports tee's status, not the drop-in's.\n\nFix: correct the C27 wording, and append `; echo \"drop-in exit ${pipestatus[1]}\"` to the 0.8 command (or run `setopt pipefail` first)."
+    },
+    {
+     "id": "R1-08",
+     "severity": "minor",
+     "title": "4.6 stores the pairing secret in an iCloud-synced shortcut, against the runbook's own rule",
+     "location": "Docs/Stage0/M0-device-runbook.md line 498 (4.6) versus line 450 (pairing-code rule)",
+     "detail": "Line 450 says to send codes only through a channel you control, 'never a cloud note or a message'. 4.6 then has the owner paste the sylvia://pair/v1#... link, which carries the pin and the invitation secret, into a Text action of a Shortcuts shortcut. Shortcuts sync through iCloud when that sync is on. The risk is small because the code is single-use and expires in 10 minutes, but the instruction contradicts the stated rule. Fix: use a shortcut that reads the clipboard (Get Clipboard > Generate QR Code > Quick Look) and keeps no link, or a local QR tool, and clear the clipboard afterwards."
+    },
+    {
+     "id": "R1-09",
+     "severity": "minor",
+     "title": "Overstated bookkeeping of the corrections; C1's premise is unverified",
+     "location": "Author's result criterion 5 ('each applied in the sessions and cited where applied'); Docs/Stage0/M0-device-runbook.md Section 8 (C1, C5, C8, C17, C23, C25, C31); Docs/Stage0/evidence/M0-runbook/tool-help.txt line 182",
+     "detail": "C5, C8, C17, C23, C25 and C31 are cited nowhere in Sections 1-7 (checked by grep). These are report-row and wording corrections, so 'applied in the sessions and cited where applied' overstates what the runbook does.\n\nC1's requested text asserts that the Identifier column of `xcrun devicectl list devices` 'is CoreDevice's own identifier'. No committed evidence shows that: tool-help.txt has no `list devices` output or help, and its filter example (line 182) compares 'Identifier' with a UDID-format value. The advice itself (use the UDID) is harmless, but the premise asked of five checklist owners is unproven.\n\nFix: label those six as report-only corrections, and mark C1's premise unverified or record `devicectl list devices --help`."
+    }
+   ],
+   "claims_verified": [
+    "The SHA under review is 73c1ae2bb274f96d465686e0507f0f78b48b9573, matching the author's reported commit. The branch diff from 471b143 touches only Docs/Stage0/M0-device-runbook.md and Docs/Stage0/evidence/M0-runbook/**: no shared file, CI drop-in or contract changed, and no build products are committed.",
+    "The clean re-run reproduces every check. All 22 device and host builds match summary.tsv: 20 pass and their products pass codesign --verify --strict; G0.3's signed build stops on the App Groups profile and the Mac probe on 'No profiles'. The -only-testing counts, the four skipped live AI tests, the contracts result (15/188/1/1), build-mac-state.txt and tool-help.txt are all identical.",
+    "Commits after the clean run (07b1dbe to 73c1ae2) change only documentation and evidence. The commands/ scripts are unchanged, so the evidence applies to the final commit. My own re-run at 73c1ae2 confirms this.",
+    "The author's simulator Sylvia-M0-runbook no longer exists. The committed evidence contains no device UDID and no e-mail address.",
+    "Apple Support confirms both cited facts: the iOS 26 compatibility list starts at the iPhone 11 family and the iPhone SE (2nd generation), and Low Power Mode turns off when charging reaches 80%.",
+    "Code facts behind the G0.2 corrections hold:\n- C33: --port defaults to 0, meaning a free port at every start; item IDs are keyed by root index and file name.\n- C11: SourceService.start runs revokeAll() when an identity is created.\n- C36: KeychainIdentityStore.reset drops the account key and deletes every item of the service.\n- C35: every pairing calls CanonicalID.make(), tokens are saved per source ID, and `devices` is sorted by pairedAt, oldest first.\n- C34: imports.json carries the manifest sha256 the phone verified against.\n- C16: a repeat import logs import_already_recorded, still sends receipts and deletes staging.\n- C12, C15: the Bonjour list exists only under a paired Mac.\n- C14: the console writes unbuffered, so `| tee` shows prompts.\n- C37: --print-path only prints the path.\n- The 12 GB space figure follows from window=4.",
+    "Other corrections hold:\n- C2: the book prints 'fights;' and 'gladiators\u2019' with U+2019.\n- C3: Docs/Design has no specimen.\n- C19: finderDeletion empties Documents.\n- C21: the small pack has 4 content files (manifest 9e7f8269...b367), and the simulator showed 'staged: 4 file(s)'.\n- C22: the harness reads only top-level files in G04Book, never creates the folder, and titles the player 'G04Book (N files)'.\n- C23, C25, C31: the report rows and status lists are as stated.\n- C38: F11 relies on device runs for scan timing.\n- C42: the probe prints the library path, not a bundle ID.\n- C43: the dark primary button fill measured grey 170 with a dark label (21).\n- C32: the as-written Release app carries G04AudioTests.xctest at 8.7 GiB, against 4.7 MiB for the corrected one.\n- Fixture byte counts check out (997,147 and 3,171,463).",
+    "The UI labels and messages quoted in Sessions 3 and 4 match the harness sources: 'Check code', 'Use address', 'Use <name> (this Mac)', the 'Checking/Using/did not work' lines, the local network usage string, 'Full volume (now quiet, 1 %)', 'Enable remote bookmark command' and 'Player \u00b7 '. Every relative link in the runbook resolves, and its tables have consistent column counts.",
+    "Not verifiable: the computed task truncated the author's shared_changes_requested after the README and C1 entries, so I could not check that all 44 corrections were requested with exact wording."
+   ],
+   "gate_gaps": [
+    "Brief item 1 asks how to install the signed builds. The route for devices the team has not registered is wrong: -allowProvisioningDeviceRegistration is missing, so device A, the iPad and the Mac identity probe are affected (R1-01).",
+    "Brief item 1 asks for the OS versions each step needs. G0.5 AI step 1 needs the minimum OS (row D1, plan 14.3), and the runbook does not say so (R1-03).",
+    "Brief item 2 asks for each step's exact actions, expected result and where to record it. Several steps give only a checklist reference and a time: 7.3, 7.4, 7.7, 7.9, 7.12, 8.1, 8.3, 8.4 and 8.5, plus the 'Do and expect: as the checklist' steps in 2.9, 2.13, 3.6 and 5.2-5.5. The runbook's introduction discloses this, but it is not what the brief asked.",
+    "Brief item 2 asks for sessions ordered by what unblocks the M0 gate first. Section 3 says Sessions 1-9 can run in any order and gives no unblocking order. Yet the security review (needs Session 4.15) and the design sign-off (needs Sessions 7 and 8, and device A) are the longest-lead dependencies.",
+    "Brief item 3 asks for a split with a reason for each step. Several device-A repeats are in neither column (R1-04), and the reasons for G0.4 steps 4-6, G0.5 AI steps 2 and 4, and G0.2 step 21 contradict the ADRs' own pending-device lists (R1-02).",
+    "Brief item 4 asks for every inconsistency with the exact correction. Three inconsistencies were missed: the device-registration flag (R1-01), the minimum-OS condition (R1-03), and the ADR pending-device lists against the deferrals (R1-02). Some listed corrections are instructions rather than exact replacement text (for example C16, C17 and C29)."
+   ],
+   "previous_findings_status": []
+  }
+ },
+ {
+  "run": "wf_9ea3b4d5-f4f",
+  "seq": 23,
+  "label": "runbook:fix-1",
+  "result": {
+   "commit": "9806a5a336ab8f350b0d91ed933147802144df27",
+   "fixed": [
+    {
+     "id": "R1-01",
+     "how": "Every device command in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-11/Docs/Stage0/M0-device-runbook.md (19 command lines) now passes `-allowProvisioningUpdates -allowProvisioningDeviceRegistration`. Section 1.5 explains what each flag does, citing Xcode 27.0's `xcodebuild -help`, which tool-help.sh now records in tool-help.txt. Session 0.4 checks each device's registration at developer.apple.com > Certificates, Identifiers & Profiles > Devices; phone B is no longer called 'presumably' registered. Session 0.7 registers the Mac first with a one-off probe build that passes both flags, and falls back to registering it by hand with its Provisioning UDID; build-mac-state.sh now records that this Mac reports that field, without printing it. The three wrong sentences are corrected. New corrections C45 (every checklist command) and C46 (mac-identity-probe-run.sh) give the exact text. The comment in verify-device-builds.sh is corrected too."
+    },
+    {
+     "id": "R1-02",
+     "how": "Section 7 is rebuilt on one stated rule that agrees with the ADRs. A step blocks M0 when a gate criterion as reported needs it, when an ADR lists it as pending device or human evidence or as a device run, or when an M0 decision depends on it. A step the runbook still proposes to defer names the correction that asks the ADR's owner, and it blocks M0 until that correction is accepted.\n\nMoved to 'Blocks M0': G0.4 steps 4-6 (Sessions 3.3-3.5), G0.5 AI steps 2 and 4 (6.4, 6.5) and G0.5 AI 9.2 (Session 10).\n\nDeferred only through corrections: G0.2 step 21 to M6 (C47, ADR-0009 and the G0.2 report; 4.17 runs it until C47 is accepted), and G0.5 AI step 8 and the ADR-0011 wording for 9.1 (C49).\n\nThe same rule applied elsewhere: the A steps that ADR-0003, -0005, -0007 and -0009 and report row T38 name now block M0. The iPad's G0.6 steps block M0 unless decision D-1 moves them (C51). ADR-0013's device open item is scoped by C50."
+    },
+    {
+     "id": "R1-03",
+     "how": "The minimum-OS condition is now stated in four places. Section 1.1 has a new 'OS versions' paragraph, and device A's row says to keep its iOS as delivered until 8.8. Session 1.3 records the exact build and keeps row D1 pending until D-9. New step 8.8 runs G0.5 AI step 1 on A if A has an earlier 26.x. Section 7 lists step 1 as 'on the minimum OS (row D1, plan 14.3)'. New decision D-9 (product owner with the security reviewer) decides whether the earliest 26.x on hand counts as the minimum OS or ADR-0011 records an exception, and the security reviewer's table has a matching row. Correction C48 gives exact text to align checklist step 1 and report row D1 with plan 14.3."
+    },
+    {
+     "id": "R1-04",
+     "how": "Every repeat on device A is classified in Section 7 and in Session 8. Blocking steps 8.1-8.10 are: G0.6 4, 13-15, 22-27 and 29-30; G0.1 PDF 1; G0.2 11; G0.4 8-10 and 12-13; G0.5 recovery 1-2; and G0.5 AI 1. Each has its actions, expected result and record. A table lists the repeats that can wait, each with its milestone: EPUB 1, 6, 11 and 12 (M3); PDF 10 (M3); G0.3 14-15 (M2); G0.4 1, 3 and 15 (M4); recovery 3-4 (M1); and G0.6 1-3, 5-9, 12, 16, 18-19 (M3, once C50 is accepted). The Section 3 row, the Session 8 header (about 6.5 h) and C28 now agree."
+    },
+    {
+     "id": "R1-05",
+     "how": "Session 1 has a Low Power Mode note: charge the phone fully, unplug the cable, stay on the Mac's Wi-Fi, check that `xcrun devicectl list devices` still lists the phone as available, expect a slow install of the 9.3 GB bundle, and confirm afterwards that Low Power Mode stayed on. Steps 1.2, 1.4 and 8.10 apply it. Step 1.4's repeats now log to distinct files and pull their tables after each run. C40 is rewritten as exact text."
+    },
+    {
+     "id": "R1-06",
+     "how": "The new clean run's logs record 56 load readings in 24 logs, with 1-minute loads from 4.20 (g04-harness-release-as-written.log, 'load at start: 4.20 9.07 9.70') to 17.11 (only-testing-ids.log and clean-run.log, '17.11 14.04 11.77'). Runbook Section 9 states that range, and this result quotes it."
+    },
+    {
+     "id": "R1-07",
+     "how": "C27 now says what is true: the report's documented evidence command (`G05_LOG_DIR=Docs/Stage0/evidence/G05-Recovery/logs`) would overwrite the cited logs, and the drop-in's default `.build/g05-recovery/logs` is outside the evidence folder. The 0.8 command now ends with `; echo \"drop-in exit ${pipestatus[1]}\"`, and the Expect line reads `drop-in exit 0`. A new probe, commands/zsh-exit-status.zsh (its output is in tool-help.txt), shows that pipestatus is `3 0`, `$?` is 0 (tee's), `setopt pipefail` gives 3, and caffeinate passes on the status of the command it runs."
+    },
+    {
+     "id": "R1-08",
+     "how": "Step 4.6 now uses a shortcut that holds no link (Get Clipboard, then Generate QR Code, then Quick Look). The QR code is shown on screen only. Afterwards the owner closes Quick Look and clears the clipboard with `pbcopy < /dev/null`. The text explains why a Text action holding the link breaks the pairing-code rule."
+    },
+    {
+     "id": "R1-09",
+     "how": "Section 8 now gives an 'Applied in' place for every correction. C5, C8, C17, C23 and C25 are labelled report only, and Section 2 cites C31.\n\nC1's premise was recorded and turned out to be wrong: `devicectl list devices --help`, now in tool-help.txt, says the Identifier column shows the UDID, falling back to ECID and then CoreDevice ID, and annotates the kind. C1 and Section 1.5 are rewritten to say that, and that xcodebuild needs the UDID."
+    },
+    {
+     "id": "gate-gap brief 2 (step detail)",
+     "how": "The steps that only cited the checklist now give Do, Expect and Record with file names: 7.3, 7.4, 7.7, 7.9, 7.12, 8.1-8.5, 2.9, 2.13, 3.6 and 5.2-5.5, plus 2.4, 2.6, 2.10, 2.14-2.19, 3.2, 3.7-3.15, 4.10-4.13, 4.17, 5.7, 6.5, 6.6 and the new 7.13. While doing this I found that 5.1 opened the G0.3 harness before step 6, which must record whether Files offers the extension before the harness has ever been opened; that is fixed."
+    },
+    {
+     "id": "gate-gap brief 2 (run order)",
+     "how": "Section 3 is now an ordered table, runs 1-12, each with the reason for its place. First: decision D-1, get device A, book the reviewers. Then Session 0, then 1, 4, 2 and 6, which complete the security review's inputs. Then 7 and 8, the design sign-off's inputs. Then 3 and 5, which only the owner's own decisions wait on. Then 9, then 10. sessions.md follows the same order."
+    },
+    {
+     "id": "gate-gap brief 4 (exact corrections)",
+     "how": "Section 8 is rebuilt as 52 entries: C1-C44 rewritten, and C45-C52 new for the registration flag, the probe script, ADR-0009, the minimum OS, ADR-0011, ADR-0013, the iPad and ADR-0007's steps. Each gives the problem, the exact replacement or insertion text, and where the runbook applies it. A new clean-run step, commands/check-correction-texts.py, confirms that all 71 quoted texts occur in their files (correction-texts.log: 71 checked, 0 missing)."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "C46 (R1-01, Spikes/G02-Transfer/Scripts/mac-identity-probe-run.sh; G0.2 owner, M6 after M0)",
+     "reason": "Outside my files. Exact change, in three places:\n1. In the `xcodebuild test` line, replace `-disableAutomaticPackageResolution -allowProvisioningUpdates` with `-disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration`.\n2. In the `note \"script> ...\"` line, replace `-allowProvisioningUpdates (automatic signing` with `-allowProvisioningUpdates -allowProvisioningDeviceRegistration (automatic signing`.\n3. In the header comment, replace `-allowProvisioningUpdates may register the Mac and create a development profile` (split over two lines) with `-allowProvisioningUpdates creates the development profile, and -allowProvisioningDeviceRegistration registers this Mac with the team if it is not registered`.\nAlso add to device checklist G02 step 20.1 the sentence given in runbook C46. Until this lands, runbook Session 0.7 registers the Mac first."
+    },
+    {
+     "id": "C45 (R1-01, device checklists)",
+     "reason": "Outside my files. Add ` -allowProvisioningDeviceRegistration` right after every `-allowProvisioningUpdates` in the device commands of: G01-EPUB Install and step 11; G02 step 1.1; G03 Setup 3; G04 Setup 2 and steps 1.1, 1.5 and 2.1; G05-AI Setup; G05-Recovery Setup and steps 1, 3 and 4. Do the same in the sentences that list the flags, adding the note 'The second flag registers a device the team has not registered; it takes effect only with the first.'"
+    },
+    {
+     "id": "C47 (R1-02, Docs/ADRs/0009-transfer-protocol.md and Docs/Stage0/G02-Transfer.md)",
+     "reason": "Outside my files; needs ADR-0009's owner, then the product owner (D-6).\n- ADR-0009 open item: replace '- Device run of the part 2 checklist steps (13 to 19, and 21 added in round 2): suspension, lock, force-quit, reboot before first unlock, Wi-Fi loss, data protection class, pairing by QR code, a full phone during a background download.' with '- Device run of the part 2 checklist steps 13 to 19 (M0): suspension, lock, force-quit, reboot before first unlock, Wi-Fi loss, data protection class, pairing by QR code.' Then add a new item: '- A full phone during a background download (checklist step 21, added in round 2): which error iOS reports for its own failed write, which the client's classification already covers in the shapes tested on the host. Owner: M6, with the transfer client's acceptance under adverse conditions (J-05).'\n- G0.2 report: in the row '15.4 when the system cannot store a background download', add '(M6, ADR-0009)' after 'checklist step 21'.\n- G0.2 report Notes: replace 'is written as device steps 4, 6, 8, 9, 13 to 19 and 21 (a full phone during a background download)' with 'is written as device steps 4, 6, 8, 9 and 13 to 19, and as step 21 (a full phone during a background download, M6)'.\nUntil this is accepted, step 21 blocks M0 (runbook 4.17)."
+    },
+    {
+     "id": "C48 (R1-03, device-checklists/G05-AI.md step 1 and Docs/Stage0/G05-AI.md row D1)",
+     "reason": "Outside my files.\n- Checklist step 1.1: replace 'Run, on an iPhone with iOS 26.0-26.x if available (record the exact version; iOS 26.7 is the device on hand):' with 'Run on the iPhone 17 Pro (iOS 26.7) and, if the oldest supported iPhone has an earlier iOS 26.x, on it too, before it is ever updated (iOS cannot be downgraded, so the earliest 26.x on hand is the closest to the minimum, iOS 26.0, that can be tested); record each exact version and build:'\n- After checklist step 1.4, add: 'A run on a later 26.x than 26.0 stands for the minimum OS of plan 14.3 only by the product owner's and the security reviewer's recorded decision; otherwise ADR-0011 records an exception.'\n- Report row D1 becomes: '| D1 | ATS behaviour on a device with the minimum OS (iOS 26.0, or the earliest 26.x on hand with the decision of checklist step 1) | pending-device | checklist step 1 |'.\nPlan 14.3 stays as it is. The decision itself is the owner's D-9."
+    },
+    {
+     "id": "C49 (R1-02, Docs/ADRs/0011-ai-providers-context-and-privacy.md and Docs/Stage0/G05-AI.md row P2)",
+     "reason": "Outside my files; needs ADR-0011's owner, with D-6.\n- ADR-0011 Evidence: replace the 'Pending (human)' line with '- **Pending (human):** a real local model server, live OpenAI and Anthropic, a real transcription endpoint, consent-wording review, security review (steps 5-7, 9.2 and 9.3). In M5: Hermes or another gateway (step 8; optional, plan 1.1) and the human answer-support review with the 100-question set (step 9.1).'\n- ADR-0011 Open items: replace '- Human runs (steps 5-8): real local server, gateway, live first-party providers, real transcription endpoint.' with '- Human runs (steps 5-7): real local server, live first-party providers, real transcription endpoint. In M5: a gateway (step 8).'\n- Report row P2: append '; optional (plan 1.1), in M5' to its evidence cell.\nUntil this is accepted, step 8 blocks M0."
+    },
+    {
+     "id": "C50 (R1-02/R1-04, Docs/ADRs/0013-design-language.md open item)",
+     "reason": "Outside my files; needs ADR-0013's owner, with D-6. Replace '- Devices: checklist steps 1-21 and the part 3 review steps 22-31, on the iPhone 12-class baseline, the iPhone 17 Pro and an iPad once available.' with '- Devices at M0: checklist steps 1-9, 12-14 and 16-19 and the part 3 review steps 22-26, 29 and 30 on the iPhone 17 Pro; steps 4, 13-15, 22-27, 29 and 30 on the oldest supported iPhone; on an iPad, steps 11, 13, 14, 17, 20, 22-26 and 28-30, unless the product owner moves them to M3. In M3, when the screens are built and reviewed on device: steps 1-3, 5-9, 12, 16, 18 and 19 on the oldest supported iPhone.'"
+    },
+    {
+     "id": "C51 (Docs/Stage0/G06-Design.md gate rows, ADR-0001 open item; only if the owner decides D-1)",
+     "reason": "Outside my files, and conditional on the owner's decision D-1. Exact replacement texts are in runbook Section 8, C51. Until D-1 is decided, the iPad's G0.6 steps block M0 as those rows stand."
+    },
+    {
+     "id": "C52 (R1-04, device-checklists/G04-Audio.md 'Device' line)",
+     "reason": "Outside my files. Replace 'Repeat steps 1, 3, 9-13 and 15 on the iPhone 12-class baseline when one is available (it has no Action button: skip step 11 there).' with 'Repeat steps 1, 3, 8-13 and 15 on the iPhone 12-class baseline when one is available (it has no Action button: skip step 11 there); ADR-0007's open item asks for steps 8-13 there.'"
+    },
+    {
+     "id": "C1-C44 (earlier shared-change requests)",
+     "reason": "Outside my files; still requested from the checklist, report and ADR owners. Each now has exact replacement text in runbook Section 8, and check-correction-texts.py confirms every quoted text exists in its file. C1 is replaced: its earlier premise (the Identifier column is CoreDevice's own identifier) is wrong per `devicectl list devices --help`. The new C1 asks each checklist to add one sentence after its `xcrun devicectl list devices` line: use the Identifier only when it is the UDID, otherwise take the UDID from Xcode's Devices window."
+    }
+   ],
+   "rerun": {
+    "command": "Docs/Stage0/evidence/M0-runbook/commands/clean-run.sh, run at commit 7ebe90d from a tree with no build products or generated projects (0 changed tracked files). It runs on the host and on this job's own simulator Sylvia-M0-runbook, which was deleted afterwards. No device was contacted, and no provisioning flag was passed.",
+    "result": "Exit 0; every step exit 0, from 2026-10-14T03:47:16Z to 03:58:16Z. All 27 commit stamps in the logs read 7ebe90d.\n\n- build-mac-state: one Apple Development identity; the wildcard team profile lists 1 registered device; no Xcode account; the Mac reports a Provisioning UDID field (value not printed).\n- tool-help: xcodebuild's two provisioning flags. devicectl's Identifier column shows the UDID, with ECID and then CoreDevice-ID fallbacks. zsh probe: pipestatus '3 0', $? 0, 3 with pipefail.\n- Device builds: 22/22 as expected. 20 pass, and their signed products verify with codesign --verify --strict. The two expected signing stops are G0.3's App Group and the Mac identity probe. G0.4 bundles are 9.3 GB; the Release app is 4.9 MB when built in a folder of its own.\n- Test filters select what the runbook states: 37, 3, 4, then 1/4/4/3, lockedWrites(), persistentLibrary(), latency(), and the UI test. The same filters without () select 0.\n- Correction texts: 71/71 found.\n- Contracts: pass (15 schemas, 188 fixtures, 1 OpenAPI, 1 instance).\n\nLoad: 1-minute load averages ran 4.20 to 17.11 (56 readings in 24 logs), so durations are indicative only.\n\nAn earlier full run at 91166f3 gave the same results. I discarded it because a WIP commit landed while it ran, so its filter log named 379365e.\n\nLogs are in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_9ea3b4d5-f4f-11/Docs/Stage0/evidence/M0-runbook/ (clean-run.log, build-mac-state.txt, tool-help.txt, device-builds/, only-testing-ids.log, correction-texts.log, contracts.log)."
+   }
+  }
+ },
+ {
+  "run": "wf_9ea3b4d5-f4f",
+  "seq": 26,
+  "label": "runbook:review-2",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "9806a5a336ab8f350b0d91ed933147802144df27",
+   "rerun": {
+    "command": "In a fresh worktree detached at 9806a5a (no build products, no generated projects, 0 changed tracked files): Docs/Stage0/evidence/M0-runbook/commands/clean-run.sh, through untracked copies (clean-run.review.sh, check-only-testing-ids.review.sh) that differ only in naming my simulator Sylvia-M0-review-runbook-2; then compared every regenerated evidence file with HEAD (git diff), saved my logs under .build/scratch/review/rerun, restored the tracked files with git checkout, and deleted the simulator, all DerivedData and the generated .xcodeproj bundles.",
+    "result": "Pass from clean; reproduces the committed evidence. The script exited 0 and every step exited 0: build-mac-state (identical apart from the timestamp and commit), tool-help (identical), device-builds, test-filters, correction-texts and contracts. Device builds: 22 of 22 checks as expected (20 pass, 2 stop at signing as stated: G0.3 signed and the Mac identity probe). The exit, result, expected and as_expected columns are identical to the committed summary.tsv. Each signed product passes codesign --verify --strict with TeamIdentifier A4KBDX665Z and 'iOS Team Provisioning Profile: *'. The G0.4 test bundles are 9,073,691 KiB with 69 fixture files. The as-written G0.4 Release harness carries G04AudioTests.xctest (C32 confirmed). Test filters are identical: 37; 3; 4 (finderDeletion() among them); 1/4/4/3; lockedWrites(); persistentLibrary(); latency() 1, and 0 without '()'. G0.5 AI step 2 as written selects 0 tests while xcodebuild reports TEST EXECUTE SUCCEEDED. Correction texts: 71 of 71 found. Contracts: 15 schemas, 188 fixtures, 1 OpenAPI document, 1 instance. Host load at the logged steps: 1-minute 3.58-26.56, with up to 35 seen mid-run, so durations are indicative only. No physical device was used or contacted."
+   },
+   "findings": [
+    {
+     "id": "R2-01",
+     "severity": "blocker",
+     "title": "Session 3.15's devicectl launch command cannot run: devicectl reads '-g04AutoPlay YES' as its own options; Section 9's 'checked' tool claim behind it is false",
+     "location": "Docs/Stage0/M0-device-runbook.md line 471 (3.15, G0.4 step 16, which blocks M0 per Section 7); Section 9 table line 1018 ('`device process launch` passes the arguments after the bundle ID to the app'); Docs/Stage0/evidence/M0-runbook/commands/tool-help.sh line 35 ('Launch arguments (G0.4 step 16's -g04AutoPlay YES)'); Docs/Stage0/device-checklists/G04-Audio.md line 257 (step 16.1, same command, no correction in Section 8)",
+     "detail": "**What the runbook says.** Step 3.15 launches the G0.4 harness so that it plays by itself, which is the crash-position trial for the plan 19.2 'position crash loss <= 5 s' budget:\n`xcrun devicectl device process launch --device \"$DEVICE_ID\" com.jevidon.sylvia.spike.g04audio -g04AutoPlay YES`\n\n**What devicectl does with it.** devicectl 642.16 (Xcode 27.0) does not pass a dash-prefixed argument through to the app. It splits `-g04AutoPlay` into its own short options and takes YES as the value of `-t` (timeout).\n\n**How I checked.** These were parse-only runs on this Mac. No `--device` was given, so no device was looked up or contacted.\n- `xcrun devicectl device process launch com.example.parse-only-check -g04AutoPlay YES` gives `Error: The value 'YES' is invalid for '-t <seconds>'`.\n- `... com.example.parse-only-check -g04AutoPlay` gives `Error: Missing value for '-t <seconds>'`.\n- `... com.example.parse-only-check -- -g04AutoPlay YES` gives `Error: Missing expected argument '--device ...'`, which is the expected missing-device error. So with `--` in front, the arguments parse.\n- `... plainArg YES` gives the same missing-device error.\n\nArgument parsing fails before the missing `--device` check. So with `--device` present, the runbook's command fails the same way and the harness never starts. The harness reads the flag through UserDefaults' argument domain (`Spikes/G04-Audio/Sources/Harness/HarnessModel.swift:136`), so it does work once it is passed after `--`.\n\n**Why this is a blocker.**\n- Section 9 lists \"`device process launch` passes the arguments after the bundle ID to the app\" as a checked tool option.\n- tool-help.sh line 35 says that check was made for exactly this argument.\n- The check only read the help's USAGE line, and it is false for the form the runbook uses.\n- The G0.4 checklist step 16.1 carries the same command, and Section 8 does not correct it. The brief asks the author to find steps that cannot be performed as written.\n\n**Fix.**\n- In 3.15, use `xcrun devicectl device process launch --device \"$DEVICE_ID\" com.jevidon.sylvia.spike.g04audio -- -g04AutoPlay YES`.\n- Add a Section 8 correction for G04-Audio.md step 16.1 with the same text.\n- Correct the Section 9 sentence.\n- Add the parse-only check above to tool-help.sh as evidence."
+    },
+    {
+     "id": "R2-02",
+     "severity": "major",
+     "title": "C40's Low Power Mode runs cannot keep the stated precondition: Low Power Mode sets Auto-Lock to 30 seconds",
+     "location": "Docs/Stage0/M0-device-runbook.md line 210 (Session 1 setup: 'Auto-Lock > Never'), line 212 (Low Power Mode runs), 1.2 (step-2-low-power.log, step-2-release-low-power.log), line 281 (1.4, step-01-low-power.log), line 819 (8.10 on device A), line 985 (C40, requested as checklist text for G04 step 1.4 and G05-Recovery step 2.2)",
+     "detail": "**What the runbook requires.** Session 1 sets phone B to \"Settings > Display & Brightness > Auto-Lock > Never\". G0.4 checklist step 1.1 says the same: \"Keep the phone unlocked ... auto-lock set to Never for this step\".\n\n**What C40 then runs in Low Power Mode, on battery:**\n- the third run of G0.4 step 1.4, the full suite, which the runbook says \"lasts well over an hour\";\n- G0.5 recovery step 2's Debug and Release Low Power Mode runs;\n- the same runs on device A in 8.10.\n\n**Why it cannot hold.** The Apple Support page the runbook cites for the 80 % rule is https://support.apple.com/en-us/101604. I fetched it on 14 October 2026. Among the features Low Power Mode limits, it lists: \"Sets Auto-Lock to 30 seconds\".\n\n**What I checked.**\n- No harness or test host keeps the screen awake: `grep -rn isIdleTimerDisabled Spikes Packages Apps` finds nothing.\n- The runbook never mentions the 30-second limit: `grep -n -i auto-lock Docs/Stage0/M0-device-runbook.md` matches only line 210.\n\n**Consequence.** In every Low Power Mode run, the phone locks 30 seconds after the last touch.\n- The G0.4 test host goes to the background or is suspended in the middle of an 80-minute suite.\n- G0.5 recovery's class-B and protection tests run against a locked phone. Closed class-B files cannot be reopened while the phone is locked.\n\nThese runs would measure something other than what checklist steps 1.4 and 2.2 ask for, which is budgets on an active phone in Low Power Mode. They are likely to fail or stall for reasons unrelated to the code. C40's replacement text would carry the same gap into both checklists.\n\n**Fix.**\n- State that Low Power Mode forces Auto-Lock to 30 seconds.\n- Give a way to keep the screen on for the whole run. For example, ask the G0.4 and G0.5 recovery owners to disable the idle timer in the test host during device test runs. Or narrow the Low Power Mode passes to tests that do not need the phone unlocked, for example G0.5 recovery's `DurabilityTests/latency()`, which is class C.\n- Record whether the phone locked during each Low Power Mode run. A run in which it locked is inconclusive, not a budget result.\n- Update C40's text for both checklists to match."
+    },
+    {
+     "id": "R2-03",
+     "severity": "minor",
+     "title": "Some steps on device A and the iPad are still unclassified, and rule (b) is not applied to ADR-0010",
+     "location": "Docs/Stage0/M0-device-runbook.md line 827 (Session 8 table: 'G0.3 | 14 and 15 ... Setup 1: \"Run on both\"'), line 892 (Section 7 G0.3 row), line 896 (Section 7 G0.6 row), line 1005 (C50); Docs/ADRs/0010-intake-handoff-and-wired-bundles.md line 125; Docs/ADRs/0013-design-language.md line 287; Docs/Stage0/device-checklists/G03-Intake.md Setup 1",
+     "detail": "**G0.3 on device A.** Checklist Setup 1 says \"Run on both when available\", meaning the iPhone 12-class baseline and the iPhone 17 Pro. ADR-0010's open item (line 125) is \"Device runs in Docs/Stage0/device-checklists/G03-Intake.md ... (owner: serialized device run)\". The runbook classifies only steps 14-15 on A, as can wait (M2). Steps 6-13 and 16-27 on A are in no session and in neither column of Section 7.\n\n**G0.6 on the iPad.** ADR-0013's open item (line 287) asks for checklist steps 1-21 and 22-31 \"on the iPhone 12-class baseline, the iPhone 17 Pro and an iPad\". C50's replacement text and Section 7 keep only steps 11, 13, 14, 17, 20, 22-26 and 28-30 on the iPad. They drop steps 2, 3, 5, 7, 8, 9, 12, 16, 18 and 19 on the iPad, and step 17 on device A, with no milestone and no reason. If C50 were applied as written, those steps would leave ADR-0013 without anyone deciding so.\n\n**G0.3 steps 25-27.** Section 7 defers them because \"neither G0.3's gate text nor ADR-0010's pending list names it\". But the runbook's rule (b) also counts \"a device run in its open items\", and ADR-0010 has one. Unlike ADR-0006, 0009, 0011 and 0013, no correction asks ADR-0010's owner to scope it.\n\n**Overstated claims.** Commit d52e57b (\"Classify every step on device A and the iPad\") and Section 7's sentence that every deferral of an ADR-listed step goes through a correction to that ADR's owner are not accurate for these cases.\n\n**Fix.**\n- Classify the G0.3 steps on A and the dropped G0.6 iPad steps, plus step 17 on A, each with a milestone and a reason.\n- Add a correction asking ADR-0010's owner to scope its device-run item: steps 25-27 to M2 with T08, and the repeats on A. Otherwise treat them as blocking under rule (b).\n- Extend C50's replacement text so it names every step the old item covered."
+    },
+    {
+     "id": "R2-04",
+     "severity": "minor",
+     "title": "ADR-0010 points the iCloud progress check at checklist step 16, but it is step 18; Section 8 misses it",
+     "location": "Docs/ADRs/0010-intake-handoff-and-wired-bundles.md line 29; Docs/Stage0/G03-Intake.md line 106 (F13, says step 18); Docs/Stage0/device-checklists/G03-Intake.md steps 16 and 18",
+     "detail": "ADR-0010 section 1 says: \"Whether an iCloud download reports its progress through this Progress on a device is checklist step 16.\" In the checklist, step 16 is \"Termination under memory pressure\". The iCloud placeholder check is step 18, and the report's F13 (line 106) correctly cites step 18.\n\nSection 8 says each correction came from reading a checklist against its report and its ADR, but it has no correction for this mismatch.\n\n**Fix.** Add a correction for ADR-0010 section 1: replace \"is checklist step 16.\" with \"is checklist step 18.\""
+    },
+    {
+     "id": "R2-05",
+     "severity": "minor",
+     "title": "G0.5 AI step 8 blocks M0 until C49 is accepted, but the runbook gives no actions, expected result or record for it",
+     "location": "Docs/Stage0/M0-device-runbook.md line 740 (end of 6.6), line 126 (Section 3 run 6: 'and 8 until C49 is accepted'), line 894 (Section 7 G0.5 AI row)",
+     "detail": "Section 3 schedules step 8 (a gateway) in Session 6, and Section 7 says it blocks M0 until ADR-0011's owner accepts C49. Yet 6.6 has only one sentence about it (\"Step 8 (a gateway) moves to M5 once ... until then it blocks M0\"). It lacks:\n- the command (step 5's command with the gateway's base URL and `SYLVIA_LIVE_COMPAT_API_KEY`);\n- the hidden-prompt `read -rs` / `export` / `unset` lines for that key;\n- the expected results: \"Connected to {host} \u00b7 user-managed \u00b7 {model}\", the tool-call refusal message, the output-limit rerun and the 5xx message;\n- a record file.\n\nThis contradicts the runbook's opening claim that every step gives its actions, expected result and record.\n\n**Fix.** Add a 6.7 adapted from checklist step 8, with the key typed at a hidden prompt and unset afterwards, the expected results, and `step-08-gateway.txt` as the record."
+    },
+    {
+     "id": "R2-06",
+     "severity": "minor",
+     "title": "The T38 memory-and-time step on device A uses a Debug build with a debugger attached, against plan 19.1 and the runbook's own Timings rule",
+     "location": "Docs/Stage0/M0-device-runbook.md line 813 (8.7, G0.2 step 11), line 77 (1.5 'Timings')",
+     "detail": "Step 8.7 installs the harness with Session 4's commands (`-configuration Debug`). It measures memory with \"Xcode's memory gauge (Debug > Attach to Process)\" and records the total time and the `milliseconds` of the `assembly_verified` and `staging_checked` events.\n\nPlan 19.1 says \"Run release builds, not debugger-attached results\". The runbook's own 1.5 \"Timings\" paragraph says the timed steps use Release builds without a debugger, and it does not list 8.7 as an exception.\n\n**Fix.** Either build the G0.2 harness in Release for 8.7 and measure with Instruments (Allocations, Hangs), or record 8.7 explicitly as a Debug measurement with the reason."
+    },
+    {
+     "id": "R2-07",
+     "severity": "minor",
+     "title": "Section 2's IP-address privacy rule conflicts with Session 4's record instructions",
+     "location": "Docs/Stage0/M0-device-runbook.md line 98 (Section 2 Privacy) versus Session 4 records (4.1-4.15; line 584 'tailscale status with the tailnet name redacted')",
+     "detail": "Section 2 says never record \"an IP address beyond its first two octets (G0.5 AI)\".\n\nSession 4 tells the owner to attach:\n- the Mac terminal output with only the codes redacted. `sylvia-source` prints `listening:` and `endpoints in pairing payload:` with full LAN or Tailscale addresses (`SourceCommandLine.run`);\n- screenshots of \"Using <address>:<port>\" and \"Pairing will connect only to <address>:<P2>\";\n- `tailscale status` with only the tailnet name redacted.\n\n**Fix.** Either scope the rule to G0.5 AI explicitly, or add address redaction to Session 4's record instructions."
+    },
+    {
+     "id": "R2-08",
+     "severity": "minor",
+     "title": "Folder pulls with `devicectl device copy from` are unverified and not listed as such",
+     "location": "Docs/Stage0/M0-device-runbook.md 4.2 (pull of 'Library/Application Support/Transfers/Library' into .build/scratch/g02-imported, lines ~495-503), 2.12 (Documents/evidence, line 345), Session 3 (capture records folder); Section 9 'Not checked here' paragraph",
+     "detail": "tool-help.txt records two different descriptions:\n- `copy to`: \"Copy a file or directory to the device\";\n- `copy from`: \"Receive a file from the remote device\".\n\nThe runbook's new step 4.2 pulls a whole folder with `copy from`, as do 2.12 and Session 3 (both inherited from the checklists). Section 9's \"Not checked here\" list names `copy to`'s folder behaviour but not `copy from`'s, and 4.2 gives no fallback.\n\n**Fix.** Add `copy from` with a folder source to the not-checked list, and give Xcode's Download Container as the fallback in 4.2."
+    },
+    {
+     "id": "R2-09",
+     "severity": "minor",
+     "title": "The clean-run and device-build scripts cannot fail, so 'Exit 0 from a clean tree' proves nothing on its own",
+     "location": "Docs/Stage0/evidence/M0-runbook/commands/clean-run.sh lines 10 and 62; Docs/Stage0/evidence/M0-runbook/commands/verify-device-builds.sh line 111",
+     "detail": "**clean-run.sh** uses `set -uo pipefail` without `-e`. It only logs each step's status and ends with `cat \"$LOG\"`, so it exits 0 whatever happened.\n\n**verify-device-builds.sh**'s `run_check` always returns 0. A check marked \"as expected: no\" would still produce \"device-builds: exit 0\".\n\nThe evidence is in the per-line results, and I reproduced those. But the reported \"Exit 0\" is not itself evidence.\n\n**Fix.** Track failures and exit non-zero when any step exits non-zero or any check is not as expected."
+    },
+    {
+     "id": "R2-10",
+     "severity": "minor",
+     "title": "The README shared-change text says 44 corrections; the runbook now has 52",
+     "location": "Reported shared_changes_requested (Docs/Stage0/README.md text); Docs/Stage0/M0-device-runbook.md line 6 and Section 8 (C1-C52)",
+     "detail": "The reported request for Docs/Stage0/README.md says the runbook \"lists 44 corrections to the checklists and reports (its Section 8)\". At 9806a5a, Section 8 has C1-C52, and the runbook's own introduction says 52.\n\nIf the fixer's shared_changes_requested was not updated, the README line would be wrong, and the requests for C45-C52 would be missing from it."
+    },
+    {
+     "id": "R2-11",
+     "severity": "minor",
+     "title": "Some checklist record items and remedies are dropped, although the introduction says every record is in the runbook",
+     "location": "Docs/Stage0/M0-device-runbook.md 1.2 ('Record: the six p95 values') and 8.10; 6.4",
+     "detail": "**1.2 and 8.10.** These record only the p95 values. They omit three record items from G05-Recovery checklist steps 1.3-1.4:\n- the `SQLite \u2026` version and compile options line, which ADR-0003's open item asks for on each device;\n- the class-A directory observation;\n- the `default GRDB connection` line.\n\n**6.4.** It drops the checklist's remedy for when the LAN test reports skipped: the variables did not reach the app, so add `G05_LAN_TARGET` and `G05_EXPECT_LOCAL_NETWORK` to the scheme's Test action and run again.\n\nThe logs are kept by `tee`, so the data are not lost. But the report rows need these items, and the runbook's introduction says every step's record is in the runbook.\n\n**Fix.** Add these items to the Record lines of 1.2 and 8.10, and add the remedy to 6.4."
+    }
+   ],
+   "claims_verified": [
+    "Ownership: `git diff --stat 471b1437..9806a5a` touches only Docs/Stage0/M0-device-runbook.md and Docs/Stage0/evidence/M0-runbook/. No checklist, report, ADR, script or code was changed; the shared changes are only requested.",
+    "Clean re-run at 9806a5a reproduces every check (see rerun). The committed results at 7ebe90d still describe HEAD: the only later commit, 9806a5a, changes the runbook's Section 9 and evidence files, and none of the command scripts.",
+    "Section 9's 1-minute load range of 4.20-17.11 matches the committed logs: 4.20 in g04-tests-release-fixtures.log and g04-harness-release-as-written.log, 17.11 in only-testing-ids.log and clean-run.log (R1-06).",
+    "All 21 xcodebuild commands in the runbook's code blocks, and the 4 device commands inline in Section 8, pass both -allowProvisioningUpdates and -allowProvisioningDeviceRegistration (scripted scan). `xcodebuild -help` in tool-help.txt describes both flags as the runbook says.",
+    "The build Mac's state reproduces: one Apple Development identity; the wildcard 'iOS Team Provisioning Profile: *' with 1 registered device; no Xcode account; a Provisioning UDID field present; every device-run fixture cached.",
+    "G0.2 code facts behind C11, C16, C33, C34, C35 and C36 hold in the source:\n- --port defaults to 0, and the host tests restart the source on the same port (Harness.swift:97);\n- items are keyed by root index and file name, and IDs survive restarts with the same state folder;\n- a newly created identity triggers revokeAll();\n- KeychainIdentityStore.reset deletes every item of the service (no account filter);\n- TransferRuntime.pair makes a new device ID on every pairing and keeps only the newest token, and `devices` lists pairings oldest first;\n- imports.json holds a sha256 per asset of each imported version, and import happens only after the whole file is verified; later downloads of the same version log import_already_recorded and delete their staging;\n- the space reservation is the bytes still to arrive plus 4 parts of 16 MiB;\n- 'Browse the local network' exists only under a paired Mac, and 'Pair' appears only after 'Check code';\n- the harness labels and the Local Network prompt text match the runbook.",
+    "C2: the Meditations text in se-meditations.epub has U+2019 in \"gladiators\u2019\" and a semicolon after \"fights\". Note references 1 (Verus) and 3 (mother) are where the runbook says.",
+    "G0.3 facts: the three step-7 files total 3,171,463 bytes; the gen-pack small pack has 4 content files with manifest SHA-256 9e7f8269\u2026b367; the simulator's open-in log says 'Opened file staged: 4 file(s)' (C21); finderDeletion() removes everything in Documents (C19).",
+    "C37: `generate-g02-transfer-large.sh --print-path` echoes the path and exits without generating or checking. The fixture scripts print the messages quoted in 0.5.",
+    "C42: the persistence probe prints the library path, not the runner's bundle ID. C43: the simulator's grayscale measurement gives a primary fill of 85 in light and 170 with a label of 21 in dark.",
+    "0.8: 71-g05-recovery.sh honours G05_LOG_DIR and G05_SIM_NAME and prints 'row 10 evidence present: ...'. The zsh probe shows ${pipestatus[1]} is the drop-in's status.",
+    "Apple Support 101604 (fetched 14 October 2026) says 'When you charge the device to 80% or higher, Low Power Mode turns off', which supports C40's cable fix. The same page says Low Power Mode 'Sets Auto-Lock to 30 seconds' (R2-02).",
+    "devicectl parse-only checks, run with no --device so nothing was contacted:\n- copy to with --remove-existing-content true, copy from, info files, info apps, info details, install app, and process signal with SIGKILL all parse;\n- `process launch <bundle> -g04AutoPlay YES` does not parse (R2-01).",
+    "The iPhoneOS platform in Xcode 27 ships the Agents/xctest test agent, so running G0.5 recovery's package logic tests on a device is plausible. The runbook already marks this as unknown until Session 1.",
+    "Every pending-device and pending-human row of the eight reports maps to a runbook step or a Session 10 item."
+   ],
+   "gate_gaps": [
+    "Brief item 4 (every inconsistency, with the exact correction): three are missed.\n- G0.4 checklist step 16.1's devicectl launch command cannot be run as written (R2-01).\n- G0.4 step 1.1/1.4 and G05-Recovery step 2.2 ask for Auto-Lock Never and a Low Power Mode run together, which iOS does not allow (R2-02).\n- ADR-0010 section 1 cites checklist step 16 where step 18 is meant (R2-04).",
+    "Brief item 3 (a clear split with a reason for each step): G0.3 steps 6-13 and 16-27 on device A (checklist Setup 1, 'Run on both') are unclassified. So are G0.6 steps 2, 3, 5, 7-9, 12, 16, 18 and 19 on the iPad and step 17 on device A, all of which ADR-0013 asks for. G0.3 steps 25-27 are deferred without the ADR-0010 correction that the runbook's own rule (b) requires (R2-03).",
+    "Brief item 2 (actions, expected result, record and time for each step): G0.5 AI step 8, which blocks M0 until C49 is accepted, is not spelled out (R2-05). The Session 10 reviews have no time estimate ('per review'). A few checklist record items and remedies are dropped (R2-11).",
+    "Brief item 1 (install the signed builds, with build commands verified): satisfied as far as is possible without the account. G0.3's signed build and the Mac identity probe stop at signing for want of the team account, the G0.5 recovery package test bundle is built but not signed, and the runbook says so honestly. Device registration itself remains unverified until Session 0.",
+    "Shared-change consistency: the reported README text says 44 corrections, while the runbook now has 52 (R2-10)."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R1-01",
+     "resolved": true,
+     "note": "Every device xcodebuild command now passes both -allowProvisioningUpdates and -allowProvisioningDeviceRegistration (scripted scan of all 21 commands, plus the 4 inline ones in Section 8). 0.4 checks each device's registration and registers it if needed. 0.7 registers the Mac before the probe script runs, with a manual Provisioning-UDID fallback. C45 and C46 ask for the checklist and script changes, and tool-help.txt records `xcodebuild -help` (reproduced). Registration itself is still unverified because it needs the account, which Section 9 states."
+    },
+    {
+     "id": "R1-02",
+     "resolved": true,
+     "note": "The three named ADRs are handled. G0.4 steps 4-6 now block (ADR-0006). G0.5 AI steps 2 and 4 block (ADR-0011). G0.2 step 21 blocks until ADR-0009's owner accepts C47. A residual of the same kind remains for ADR-0010's generic device-run item and for ADR-0013's iPad scope, which C50 narrows silently (new finding R2-03)."
+    },
+    {
+     "id": "R1-03",
+     "resolved": true,
+     "note": "Decision D-9, correction C48, the 1.1 'OS versions' paragraph, 1.3, 8.8 and the Section 7 row now carry the minimum-OS condition of row D1 and plan 14.3. Device A is not to be updated before 8.8."
+    },
+    {
+     "id": "R1-04",
+     "resolved": true,
+     "note": "Device A's G0.6 steps are now classified. Steps 4, 13-15, 22-27, 29 and 30 block M0; steps 1-3, 5-9, 12, 16, 18 and 19 move to M3 once C50 is accepted. The Section 3 row, Session 8, Section 7 and C28 now agree. Only step 17 on A is left unclassified, and the same gap remains for G0.3 on A and G0.6 on the iPad (R2-03)."
+    },
+    {
+     "id": "R1-05",
+     "resolved": true,
+     "note": "The Low Power Mode runs are now made off the cable, over Wi-Fi, after checking devicectl availability, with the battery levels recorded; C40 covers both checklists. However, the runs still cannot be made as written, because Low Power Mode forces Auto-Lock to 30 seconds (new major finding R2-02)."
+    },
+    {
+     "id": "R1-06",
+     "resolved": true,
+     "note": "Section 9 now says 1-minute load averages of 4.20 to 17.11, which matches the minimum and maximum in the committed logs. The re-run's loads are of the same order."
+    },
+    {
+     "id": "R1-09",
+     "resolved": true,
+     "note": "Only the ID is known: the finding's text was not passed to this review, and it is cited at runbook line 905 and in commit f6d9f77. The rewritten C1 and the 1.5 'device identifier' paragraph now match devicectl's own help as recorded in tool-help.txt: the Identifier column shows the UDID, falling back to the ECID and then the CoreDevice ID; --device accepts any of them; xcodebuild needs the UDID. Findings R1-07 and R1-08 were not passed to this review and could not be assessed."
+    }
+   ]
+  }
+ },
+ {
+  "run": "wf_eaa493fa-c4f",
+  "seq": 2,
+  "label": "runbook:fix-2",
+  "result": {
+   "commit": "6f33947",
+   "fixed": [
+    {
+     "id": "R2-01",
+     "how": "3.15 now launches with `xcrun devicectl device process launch --device \"$DEVICE_ID\" com.jevidon.sylvia.spike.g04audio -- -g04AutoPlay YES`. It expects the log's `autoplay` line and `position` lines. If the harness does not start playing by itself, the owner records the step as blocked instead of tapping Play. New correction C53 makes the same fix in G0.4 checklist step 16.1. tool-help.sh now runs two parse-only devicectl commands with no --device, so nothing is contacted. Without `--` it stops with \"The value 'YES' is invalid for '-t <seconds>'\" (exit 64). With `--` the only error left is \"Missing expected argument '--device ...'\" (devicectl 642.16; tool-help.txt). Section 9's false claim is corrected. Whether the app actually receives the arguments is now on the not-checked list."
+    },
+    {
+     "id": "R2-02",
+     "how": "Session 1 has a new paragraph (correction C54). It quotes Apple Support 101604, \"Sets Auto-Lock to 30 seconds\". For each Low Power Mode run the owner stays with the phone and touches the status-bar clock at least every 20 s. A run during which the phone locked is recorded with the time and run again, not counted. G0.4's Low Power Mode run is now the budget suite alone (`-only-testing:G04AudioTests/RealAV/BudgetTests`, Debug). Its filter is checked to select exactly `budgets()`. The stall count then covers 1.1 and the two cable repeats, which the runbook says. C40's replacement texts for G04 1.4 and G05-Recovery 2.2 are amended to match. C54 also corrects G04 step 1.1's 'auto-lock Never' sentence. 1.2 and 8.10 follow the same rule. Session times are updated."
+    },
+    {
+     "id": "R2-03",
+     "how": "G0.3 steps 6-24 on device A are now classified by rule (b): they block M0 until new correction C56 is accepted. C56 changes G03 Setup 1, ADR-0010's open item and the G0.3 report's open question 5, moving A's run to M2. Steps 25-27 on every device wait for M2. These steps are added as the first row of Session 8's repeats, with 25 GB of storage on A (1.4). C50 is amended: step 17 on A and steps 2, 3, 5, 7-9, 12, 16, 18 and 19 on the iPad are covered, and they block M0 until C50 is accepted. The iPad steps are the new 9.5, which runs them. Steps 1, 4 and 6 on the iPad are step 11. Steps 15 and 27 belong to device A, and 21 and 31 are single reviews. Section 7, the Section 3 table, the device-A paragraph in 1.1, the keyboard list, D-2, D-6 and 'In short' are updated."
+    },
+    {
+     "id": "R2-04",
+     "how": "New correction C55: in ADR-0010 section 1, replace \"is checklist step 16.\" with \"is checklist step 18.\" The quoted text is verified in correction-texts.log."
+    },
+    {
+     "id": "R2-05",
+     "how": "New step 6.7 for G0.5 AI step 8. It covers the operator's confirmation, the read -rs/export/unset lines for SYLVIA_LIVE_COMPAT_API_KEY (an empty key sends no key, which LiveProviderSmokeTests.isSet confirms) and the exact command. Expected: the user-managed LIVE-COMPAT line, its own pass line per C44, the tool-call refusal message, a rerun at the output limit and the 5xx message. It records to step-08-gateway.txt and takes 30 min."
+    },
+    {
+     "id": "R2-06",
+     "how": "8.7 now builds the G0.2 harness in Release in its own DerivedData-release folder, installs it with devicectl and launches it from the Home Screen. Memory and hangs are measured with Instruments (Allocations plus Hangs) attached as a profiler, never Xcode's debugger, and the record says so. A new verify-device-builds check, g02-harness-release, passes: codesign verifies, and its entitlements include get-task-allow = true, which Instruments needs. The 1.5 Timings rule now names 8.7."
+    },
+    {
+     "id": "R2-07",
+     "how": "Section 2's privacy rule now applies to every gate: IP addresses are cut to their first two octets, and the tailnet name is removed from MagicDNS names. Session 4 has a new 'Addresses' bullet with a perl one-liner for terminal logs, events.jsonl (which names hosts), imports.json and tailscale status, plus screenshot cropping. 4.15's record and 6.4's logs refer to it. tool-help.txt shows the one-liner run on made-up sample lines."
+    },
+    {
+     "id": "R2-08",
+     "how": "4.2 gives Xcode's Download Container as the fallback for the folder pull and says the same fallback serves 2.12 and Session 3. Section 9 quotes the copy-from help text and lists folder `copy from` as not checked."
+    },
+    {
+     "id": "R2-09",
+     "how": "These scripts now exit non-zero after a run in which anything went wrong: clean-run.sh counts failed steps, verify-device-builds.sh counts checks that did not turn out as expected, and check-only-testing-ids.sh compares each enumeration with expected_count and counts build failures. Clean rerun: clean-run exit 0 with 0 failed steps. 23 device-build checks, 0 not as expected (21 pass; 2 stop at signing as expected). All 14 filter enumerations as expected. 77 correction texts found."
+    },
+    {
+     "id": "R2-10",
+     "how": "The runbook now has 56 corrections (C1-C56) and says so. The README text in not_fixed uses 56."
+    },
+    {
+     "id": "R2-11",
+     "how": "1.2 now records, in step-1-2-results.txt, the SQLite version and compile-options line, writer pragmas, the class-A directory observation, the default GRDB connection line and the mismatch-test outcome. 8.10 records the same for A. 6.4 adds the checklist's remedy for a skipped LAN test (G05_LAN_TARGET and G05_EXPECT_LOCAL_NETWORK in the scheme's Test action) and a Record line with redaction. Session 10 now has time estimates for each review (gate gap, brief item 2)."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "shared-README",
+     "reason": "Outside my ownership. In Docs/Stage0/README.md, the runbook line should say 56 corrections, not 44: '[M0-device-runbook.md](M0-device-runbook.md) gathers every pending device and human step of the eight checklists and reports into sittings for the product owner, says which steps block the M0 gate and why, and lists 56 corrections to the checklists, reports, ADRs and one script (its Section 8); where it and a checklist differ, follow the runbook.'"
+    },
+    {
+     "id": "shared-C40-C50-C53-C56",
+     "reason": "Outside my ownership. Each requested change has its exact replace-with text in runbook Section 8. All 77 quoted source texts were confirmed present (correction-texts.log). New or changed since round 1: C53 (device-checklists/G04-Audio.md step 16.1: add `--` before -g04AutoPlay, plus the note after the code block); C54 (G04-Audio.md step 1.1 auto-lock sentence); amended C40 (G04-Audio.md step 1.4 and G05-Recovery.md step 2.2: keep the phone awake by touch, and a budget-only Low Power Mode run for G0.4); amended C50 (ADR-0013's device item: steps 1-3, 5-9, 12 and 16-19 on the oldest iPhone, and 2, 3, 5, 7-9, 12, 16, 18 and 19 on an iPad, move to M3); C55 (ADR-0010 section 1: 'is checklist step 16.' becomes 'is checklist step 18.'); C56 (device-checklists/G03-Intake.md Setup 1, ADR-0010's 'Device runs in ...' open item and Docs/Stage0/G03-Intake.md open question 5: device A's run moves to M2). C1-C39, C41-C49, C51 and C52 are unchanged from round 1 and still requested as written."
+    },
+    {
+     "id": "device-and-account-checks",
+     "reason": "Not runnable here, because no device or team account may be used. Still pending and listed in Section 9: whether the app receives the arguments after `--`; whether devicectl copy from copies a folder; whether touching the status bar keeps a phone in Low Power Mode awake for a whole run; how long a Wi-Fi install takes; device registration; G0.3's signed build and the Mac identity probe, which need the account."
+    }
+   ],
+   "rerun": {
+    "command": "Docs/Stage0/evidence/M0-runbook/commands/clean-run.sh (from a clean tree at commit 498691c; only runbook prose changed after that, in 6f33947)",
+    "result": "Exit 0 with 0 failed steps (clean-run.log). Device builds: 23 checks, 0 not as expected (21 pass, including the new g02-harness-release with get-task-allow; G0.3's signed build and the Mac identity probe stop at signing, as expected). Test filters: 14 enumerations match their expected counts, including BudgetTests = 1. Correction texts: 77 found, 0 missing. tool-help.txt includes the devicectl parse probe and the redaction sample. Contracts pass. Load during the run (1-minute average) ranged 1.73-24.39 because other agents were building. Afterwards: HEAD detached, all DerivedData deleted, simulator Sylvia-M0-runbook deleted. Evidence is under Docs/Stage0/evidence/M0-runbook/."
+   }
+  }
+ },
+ {
+  "run": "wf_eaa493fa-c4f",
+  "seq": 4,
+  "label": "runbook:review-3",
+  "result": {
+   "verdict": "accept-with-minor",
+   "commit_reviewed": "6f339473eec57fd4dc6b989efde195519c019f5b",
+   "rerun": {
+    "command": "From a clean worktree with no build products: Docs/Stage0/evidence/M0-runbook/commands/clean-run.sh, run in the background. Before the run I changed only the simulator name in check-only-testing-ids.sh to Sylvia-M0-review-runbook-3, so my run would use my own simulator. Afterwards I ran python3 -I Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py and Scripts/ci.sh contracts separately.",
+    "result": "build-mac-state: exit 0. tool-help: exit 0; the devicectl parse probes reproduced the '-t <seconds>' error without '--' and 'Missing expected argument --device' with '--'. device-builds: exit 0 after 501 s, all 23 checks as expected (21 passed; g03-intake-tests-signed and g02-mac-identity-probe-signing stopped at signing, which was the stated expectation); the G02 Release harness has get-task-allow=true. test-filters on my simulator: the G05-AI step 2 run lines and 5 enumerations had completed (step 2 without '()' selected 0, with '()' selected 1, step 4 selected 1, recovery steps 3 and 4 selected 1 each), all as expected. The workflow's structured-output enforcement then made me stop the run before the remaining filter enumerations finished (Release latency, G02, G03, G04 x4, EPUB). Those are unverified by my run; the committed log shows them as expected. check-correction-texts.py: 77 texts checked, 0 missing, exit 0. Scripts/ci.sh contracts: pass (15 schemas, 188 fixtures, 1 OpenAPI document, 1 instance). Afterwards I restored the tracked files with git checkout, deleted every build product and generated project my run created, and deleted my simulator. The worktree is clean at 6f33947."
+   },
+   "findings": [
+    {
+     "id": "R3-01",
+     "severity": "minor",
+     "title": "In run order, device A's G0.3 repeat moves the shared files out of iCloud before phone B needs them",
+     "location": "Docs/Stage0/M0-device-runbook.md line 625 (5.2: 'Move > On My iPhone'), Session 8 repeats table (G0.3 6-24 'as 5.1-5.6', 'the iCloud uploads of 0.6'), Section 3 run order (run 8 = Session 8 before run 10 = Session 5); C39 (line 1025)",
+     "detail": "C39 and 5.2 tell the tester to select se-walden.epub, se-meditations.epub and meditations-01-first180s.mp3 in iCloud Drive > 'Sylvia test' and 'Move them to On My iPhone'. A Files Move takes the items out of the iCloud folder. Section 3 runs Session 8 (run 8) before Session 5 (run 10), and Session 8's first repeat row, which blocks M0 until C56 is accepted, does G0.3 steps 6-24 on device A 'as 5.1-5.6', using 'the iCloud uploads of 0.6'. So device A's 5.2 empties 'Sylvia test' of the three files, and phone B's steps 6 and 7 then find them missing. The same happens on B when the two devices run in parallel, which Section 3 suggests. I did not try this on a device. Fix: in 5.2 and C39, say to copy (long-press > Copy, then paste in On My iPhone) rather than Move, or tell the tester to copy the three files back into 'Sylvia test' from the Mac before the second device's 5.2."
+    },
+    {
+     "id": "R3-02",
+     "severity": "minor",
+     "title": "Session 10 gives no action, owner or record for signing the plan's Section 23.1 decisions, which the M0 exit gate requires",
+     "location": "Docs/Stage0/M0-device-runbook.md Section 6 (Session 10, line ~883: 'What the M0 exit needs from people (plan 21.1 exit gate and Section 23.3)'); Section 7 'All' row ('Section 23 decisions signed')",
+     "detail": "Plan 21.1's exit gate is 'evidence and ADRs approved; review decisions in Section 23 signed'. Plan 23.1 lists D01-D15, each with its owner (for example D05 'Product + QA; publish actual codec/container list', D07 'Security + transfer; M0 gate'). Section 7's 'All' row names 'Section 23 decisions signed'. But Session 10, which presents itself as what the M0 exit needs from people, never mentions 23.1 or D01-D15. It mentions D03 and D08 only in passing, and its own decisions D-1 to D-9 use similar names. No other file tracks these sign-offs (grep finds them only in the plan and the integration log's D14/D15 merge note). Fix: add a Session 10 item listing D01-D15 with each one's owner from the 23.1 table, the input from this runbook (for example D05 after Session 1.4's codec list, D03 after Session 3), and where each signature is recorded."
+    },
+    {
+     "id": "R3-03",
+     "severity": "minor",
+     "title": "2.11 does not name the five EPUB fixtures it times",
+     "location": "Docs/Stage0/M0-device-runbook.md 2.11 (G0.1 EPUB step 12); checklist Docs/Stage0/device-checklists/G01-EPUB.md line 61",
+     "detail": "2.11 says 'for each of the five fixtures, five cold opens', but does not name them. The checklist does: se-meditations.epub, se-walden.epub, se-middlemarch.epub, pg-walden-epub2.epub and pg-walden-epub3.epub. The runbook's introduction says every step gives its actions and only G0.4 step 1.3's result tables stay in the checklist. Fix: name the five files in 2.11, which also applies to the Session 8 repeat that points to it."
+    },
+    {
+     "id": "R3-04",
+     "severity": "minor",
+     "title": "The filter check hard-codes its simulator name and does not check the outcomes of its two test runs",
+     "location": "Docs/Stage0/evidence/M0-runbook/commands/check-only-testing-ids.sh lines 29, 33 (Sylvia-M0-runbook) and run_filter (lines ~66-76)",
+     "detail": "The script always creates or reuses a simulator named 'Sylvia-M0-runbook'. Anyone re-running it, as a reviewer must on their own simulator, has to edit the script; I changed the name locally to Sylvia-M0-review-runbook-3. Also, run_filter writes the outcomes of the two G05-AI step 2 runs (0 tests run without '()'; the test skipped with its reason with '()') to the log but never adds them to MISMATCHES. So Section 9's claim that the filter with '()' is 'reported skipped with its reason' rests on reading the log, not on the script's exit status. The enumerations, which the script does check, cover the selection counts. Fix: take the simulator name from a variable (for example SIM_NAME=${M0_RUNBOOK_SIM:-Sylvia-M0-runbook}), and compare run_filter's 'Test run with N tests' and skip lines with expected values."
+    }
+   ],
+   "claims_verified": [
+    "R2-01: 3.15 now uses 'process launch ... com.jevidon.sylvia.spike.g04audio -- -g04AutoPlay YES'. The parse-only probe I reran shows devicectl 642.16 rejects the form without '--' ('-t <seconds>') and accepts the form with '--' up to the missing --device. The harness reads g04AutoPlay through UserDefaults and logs 'autoplay' and 0.5 s 'position global_ms=' lines only in that mode (HarnessModel.swift lines 133-143), so the step's 'blocked if it does not autoplay' rule is right.",
+    "R2-02: Apple Support 101604 (fetched) says Low Power Mode 'Sets Auto-Lock to 30 seconds' and 'When you charge the device to 80% or higher, Low Power Mode turns off'. The runbook keeps the phone awake by touch, reruns a run that locked, and limits G0.4's Low Power Mode run to the budget suite (one test, budgets()).",
+    "R2-03: G0.3 6-24 on A is classified (blocks M0 until C56, then M2), and G0.6 on A and on the iPad now covers every step. A: 4, 13-15, 22-27, 29, 30 block; 1-3, 5-9, 12, 16-19 block until C50; 10, 11, 20, 21, 28, 31 are explained. iPad: 9.1-9.5 plus the explained exclusions 10, 15, 21, 27, 31.",
+    "R2-04: ADR-0010 line 29 says 'checklist step 16', checklist step 16 is 'Termination under memory pressure' and step 18 is the iCloud download (line 39); C55 corrects this.",
+    "R2-05: 6.7 gives the hidden-prompt key commands, the command, the expected messages (checked against ConnectionTester.swift line 48 and ProviderError.swift lines 107 and 120, and 'user-managed' in ProviderConfig.swift line 58) and a record file. An empty key sends none (LiveProviderSmokeTests.store requires a non-empty key).",
+    "R2-06: 8.7 now builds Release into DerivedData-release, installs with devicectl and measures with Instruments. The device-build log shows that exact path builds, is signed with the wildcard profile, and carries get-task-allow=true.",
+    "R2-07: Section 2's address rule now applies to every gate. Session 4, 6.4, 6.6, 6.7 and 8.7 redact addresses, and the perl one-liner gives the stated output on the sample lines in tool-help.txt.",
+    "R2-08: 4.2 gives Xcode's Download Container as the fallback for folder pulls with copy from, and Section 9's not-checked list now names 'copy from' for folders.",
+    "R2-09: clean-run.sh, verify-device-builds.sh and check-only-testing-ids.sh now end with arithmetic tests that make them exit non-zero, and the correction-text check exits 1 on a missing text. My rerun reproduced device-builds 'exit 0 after 501 s' with 23 checks as expected.",
+    "Checked against the files: summary.tsv has 23 checks, 21 passed and 2 signing-stop, as Section 9 says. The G03 part-01.caf size is 4,831,838,986 bytes. The step 7 total of 3,171,463 bytes equals 997,147 + 733,307 + 1,441,009. The pinned 5 GiB digest d2383fe3... matches generate-g02-transfer-large.sh line 21. The AX5 sizes in 7.2 match type-roles-simulator.md. The EPUB passages in 2.1 and 2.2, U+2019 included, match se-meditations.epub. The G0.2 harness strings quoted in 4.1 are in the code. The SourceService revokeAll on a new identity (SourceService.swift line 90) supports C11 and 4.14. ADR-0007 line 71 and ADR-0003 line 85 support the blocking steps on A.",
+    "Every device xcodebuild command in the runbook passes both -allowProvisioningUpdates and -allowProvisioningDeviceRegistration (C45). The xcodebuild -help text in tool-help.txt confirms the second flag works only together with the first.",
+    "Ownership: the diff from 471b143 to HEAD touches only Docs/Stage0/M0-device-runbook.md and Docs/Stage0/evidence/M0-runbook/. Section 8's C1-C56 are numbered without gaps, and each has an 'Applied in' note.",
+    "The integration log rows the runbook cites (3, 19, 20, 22, 26 with ffmpeg 8.1.2, 27, 28 with ADR-0016 on m0-int-contracts, 30, and section 6) say what the runbook says they say."
+   ],
+   "gate_gaps": [
+    "Brief item 4 (shared_changes_requested): the fixer's final report was not provided to me; the only report given is the original one at 73c1ae2, which cites 44 corrections. I could not check that the final shared_changes_requested lists C45-C56 and gives the Docs/Stage0/README.md sentence with 56 corrections, not 44.",
+    "Brief item 1 (device build verified for each harness): the G0.3 signed build and the Mac identity probe were checked only up to the signing stop; without the account they cannot be built signed. The runbook reports this honestly (the author marked the criterion partial).",
+    "My clean rerun of the filter check was cut short by the workflow's output enforcement after 5 of its 16 enumeration and run results. The remaining G0.5 Release latency, G0.2, G0.3, G0.4 and EPUB filter counts rest on the author's committed log (commit 498691c), not on my run."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R2-01",
+     "resolved": true,
+     "note": "3.15 and C53 put '--' before -g04AutoPlay. The tool-help probe, which I reran, shows the form without '--' fails and the form with it parses. The step records 'blocked' if the harness does not autoplay. Whether the app receives the argument stays pending-device and is listed in Section 9."
+    },
+    {
+     "id": "R2-02",
+     "resolved": true,
+     "note": "C54 and Session 1 handle the 30 s Auto-Lock of Low Power Mode by touch, and G0.4's Low Power Mode run is now the budget suite alone. Both Apple Support statements were confirmed on the page."
+    },
+    {
+     "id": "R2-03",
+     "resolved": true,
+     "note": "G0.3 6-24 on A is classified (C56). The remaining G0.6 steps on A and on the iPad are classified (C50 amended, 9.5 added). Every G0.6 step on A and C is accounted for."
+    },
+    {
+     "id": "R2-04",
+     "resolved": true,
+     "note": "C55 replaces 'checklist step 16' with 'checklist step 18' in ADR-0010 section 1. I checked both against the checklist."
+    },
+    {
+     "id": "R2-05",
+     "resolved": true,
+     "note": "6.7 now gives the command, the hidden-prompt key handling, the expected messages (checked against the code) and step-08-gateway.txt as the record."
+    },
+    {
+     "id": "R2-06",
+     "resolved": true,
+     "note": "8.7 uses a Release build installed with devicectl and measured with Instruments Allocations and Hangs. The build was checked: get-task-allow=true."
+    },
+    {
+     "id": "R2-07",
+     "resolved": true,
+     "note": "Section 2's rule now covers every gate, and Session 4 has an 'Addresses' bullet with a redaction command checked on sample lines."
+    },
+    {
+     "id": "R2-08",
+     "resolved": true,
+     "note": "Xcode's Download Container is given as the fallback in 4.2 (also for 2.12 and Session 3), and Section 9's not-checked list includes 'copy from' for folders."
+    },
+    {
+     "id": "R2-09",
+     "resolved": true,
+     "note": "All four check scripts now exit non-zero on an unexpected result, and the clean run exits with the count of failed steps. My rerun's device-build step exited 0 with all 23 checks as expected."
+    }
+   ]
+  }
+ }
+]

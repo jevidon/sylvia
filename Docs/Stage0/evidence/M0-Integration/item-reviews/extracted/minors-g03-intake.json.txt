@@ -1,0 +1,626 @@
+[
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 43,
+  "label": "minors-g03-intake:author",
+  "result": {
+   "branch": "m0-int-minors-g03-intake",
+   "commit": "4b8c6342dd1a8549b077bc6f2d82c74d324cdd83",
+   "summary": "All six G0.3 review round 2 findings (R2-01 to R2-06) and the three gate gaps are closed on host and simulator; device and human parts are in the checklist and the open questions. The gate's CI drop-in passed from clean (all G0.3 build products deleted, `Scripts/ci.sh contracts g03-intake` with my own simulator) at commit c0affa9 on 2026-10-12 from 23:26 to 23:59 UTC, and `ci-clean-run.log` plus every step log were replaced. No code changed after c0affa9; the later commits are docs and evidence only.\n\nWhat changed:\n- **R2-01 (Cancel):** A `CancellationSignal` now reaches every phase of a share: before the provider delivers (the load's Progress is cancelled and the share fails as cancelled at once), during a coordinated-read wait (a coordinator cancelled just before its wait returns at once; a platform test pins this on host and simulator), during the copy, and after the last byte before the commit. Through the real share sheet, with a provider that delivers after 90 s, the fallback appeared 1.5 s after Cancel and nothing was imported. Getting that test to work exposed a simulator issue: a share sheet built from `UIActivityItemsConfiguration` never launched the extension, so the harness passes the provider as an activity item instead (observation log). The cancel did not reach the sharing app's own provider across processes (F17).\n- **R2-02:** Checklist step 27 now expects 4 files.\n- **R2-03:** Stale step references and the ZIP timing figure are corrected, using this run's numbers.\n- **R2-04 (contracts):** Both readers now check every schema string bound in code points, any `order` below 1, and `created_at` with an RFC 3339 parser that mirrors the validator. JSONDecoder's `.iso8601` strategy turned out to disagree with the schema both ways. There are 30 new fixtures, the byte-rule example is in the schemas' descriptions, and CI step 5 now runs a 137-case differential check: 0 mismatches now, 45 against the old readers.\n- **R2-05 (raw files and picker):** Raw drop-area files import through the single-file importer and are refused while they change. A copy that has paused is staged incomplete, which F15 states. The harness's Import from Files opens the system document picker in place; on the simulator it got security-scoped access, and the same bytes again came out `needs_review`.\n- **R2-06 (fixture generator):** The generator now locks with `lockf`, builds in a private folder, verifies both pinned digests and publishes each file by rename. A new overlap check passes; the old generator under the same check gave 7 failed checks and 222 watcher violations.\n\nThe report, ADR-0010, the 32-step checklist and PROGRESS.md are updated; the new findings are F15 to F17.",
+   "criteria": [
+    {
+     "criterion": "R2-01: the share extension's Cancel acts while the provider is still delivering, plus the checklist step 18 cancel case",
+     "status": "passed-simulator",
+     "evidence": "sim-app-tests.log ShareSheetUITests/testCancelWhileProviderIsStillDelivering through the real share sheet: 'Zero KB copied' on screen, then 'Not received. Nothing was saved to Sylvia.' / 'The copy was cancelled.' 1.5 s after the tap, with the provider due to deliver at 90 s; share count unchanged. host-intakekit-tests.log and sim-intakekit-tests.log: Cancel before delivery as a file representation (provider saw the cancel) and as a file URL, during a coordinated-read wait (1.0 s with the writer holding the file for 30 s), after the last byte before the commit, cancelled before start, and the platform test that a coordinator cancelled before coordinate() returns at once (error 3072). host-cancel-before-delivery-before-fix.log: the wait tests ran 30-62 s and failed before the fix. Device parts are in checklist steps 9 (Mail) and 18 (iCloud): pending-device."
+    },
+    {
+     "criterion": "R2-02: checklist step 27 expected 5 files from a pack that holds 4",
+     "status": "passed-simulator",
+     "evidence": "Docs/Stage0/device-checklists/G03-Intake.md: step 27 now expects 'Opened file staged: 4 file(s)', and step 4 says the small pack holds 4 files. Verified against sim-open-in.log (clean run): the open-in of the same gen-pack command's pack is '1 staged 4'."
+    },
+    {
+     "criterion": "R2-03: stale step references and one timing figure",
+     "status": "passed-host",
+     "evidence": "ADR-0010 section 1 now cites checklist step 18. ShareViewController.swift and InAppLayoutTests.swift cite step 24. The Alternatives bullet and section 3 use the clean run's zip-eval.log: upstream 48-72 s, then a false acceptance (43-75 s in round 1); the fork over 120 s; 64 MiB cuts rejected in 1.1-2.7 s (upstream) and 39-101 s (fork)."
+    },
+    {
+     "criterion": "R2-04: contract and Swift reader agree on edge inputs in both directions",
+     "status": "passed-host",
+     "evidence": "PackManifest/HandoffManifest now check every schema string bound in code points (SchemaLength.swift), any order below 1, and created_at with RFC3339.swift. 30 new fixtures, all passing (host-ci-contracts.log: 15 schemas, 218 fixtures). host-contract-instances.log differential check: 137 cases, 119 agree, 16 documented divergences and 2 validator quirks as expected, 0 mismatches. contract-instances-before-fix.log: 45 mismatches with the old readers. Swift tests at non-ASCII 512/513 bytes plus the 607-byte schema-valid example refused (host and simulator). Both schemas' descriptions now state the byte rule with an example."
+    },
+    {
+     "criterion": "R2-05: raw files copied with Finder and the document-picker route",
+     "status": "passed-simulator",
+     "evidence": "sim-app-tests.log ImportRoutesUITests. The picker hands over the Files EPUB in place (outside the app container, security-scoped access granted, source untouched) and it comes out needs_review twice, after the Files-app share imported the same bytes. A raw drop-area file is staged, then needs_review for the same bytes, and stays until removed. Host tests cover a raw EPUB import, refusal while the file changes (stillBeingWritten), and a paused copy staged as partial bytes (F15). A real Finder copy and an iCloud pick are pending-device (checklist steps 28-32)."
+    },
+    {
+     "criterion": "R2-06: the shared large-pack fixture is regenerated safely when runs overlap",
+     "status": "passed-host",
+     "evidence": "generator-overlap.log (Spikes/G03-Intake/scripts/check-generator-overlap.sh, private cache): two overlapping --force runs serialized on the lock and both reproduced the pinned digests (pack 982562b0...0268, part-01.caf b4e3eac6...bcc1); a run SIGKILLed mid-rebuild left the published files intact, the kernel released its lock, and the next run removed its leftovers; the watcher saw no partial or missing file. generator-overlap-before-fix.log: the old generator gave 7 failed checks and 222 watcher violations. Caveat in the report: branches with the old script take no lock."
+    },
+    {
+     "criterion": "Gate gap: share-extension cancel while the provider is still delivering",
+     "status": "passed-simulator",
+     "evidence": "Same as R2-01."
+    },
+    {
+     "criterion": "Gate gap: plan 8.5 raw-file Finder import not implemented or stated as a scope decision",
+     "status": "passed-simulator",
+     "evidence": "Implemented (DropAreaImporter.importDropAreaItem -> importSingleFile, route documents_file) and tested on host and simulator. What it cannot prove is stated in report F15, ADR-0010 sections 1 and 5, and checklist steps 28-30."
+    },
+    {
+     "criterion": "Gate gap: document-picker route behind fallback step 1 and T08's 'Files import' not exercised on the simulator",
+     "status": "passed-simulator",
+     "evidence": "sim-app-tests.log ImportRoutesUITests/testDocumentPickerImportsInPlaceAndFlagsTheSameFileAsDuplicate; report T08 row and Fallback route section."
+    },
+    {
+     "criterion": "Clean re-run of the 50-g03-intake drop-in, ci-clean-run.log overwritten",
+     "status": "passed-simulator",
+     "evidence": "Docs/Stage0/evidence/G03-Intake/ci-clean-run.log: commit c0affa9, working tree clean, 2026-10-12 23:26-23:59 UTC, 10-contracts pass and 50-g03-intake pass (1941 s). Includes 113 host and 113 simulator IntakeKit tests, 7 in-app and 9 UI tests, and 4 open-in checks, with load recorded. Step logs were collected by collect-evidence.sh."
+    },
+    {
+     "criterion": "Device-only items: real extension memory limit; Safari/Mail/Books/iCloud providers; Cancel stopping iCloud or Mail (F17); Finder cable copy above 4 GiB including partial and cancelled copies; Finder visibility; data-protection classes including an APFS clone's; AirDrop; Open With; raw Finder copies; picker with an iCloud placeholder",
+     "status": "pending-device",
+     "evidence": "Needs a physical iPhone, which this task may not use. Numbered steps with expected results are in Docs/Stage0/device-checklists/G03-Intake.md (steps 6-32)."
+    },
+    {
+     "criterion": "LSSupportsOpeningDocumentsInPlace decision (left by the last fixer)",
+     "status": "pending-human",
+     "evidence": "Product-owner decision. The spike keeps NO. The clean run again shows 'No Apps Available' under Open With on the simulator (sim-app-tests.log); see report F6, open question 2 and checklist step 13."
+    },
+    {
+     "criterion": "Product, security and design decisions: cleanup policy, bundle limits, raw Finder import policy (F15), EPUB folders, archive-rule security review, status strings (F7)",
+     "status": "pending-human",
+     "evidence": "Report open questions 1-4, 6 and 8; ADR-0010 open items. Agent-reviewed; human sign-off pending."
+    }
+   ],
+   "ci": {
+    "script": "G03_SIM_NAME=Sylvia-M0-minors-g03-intake Spikes/G03-Intake/scripts/clean-ci-run.sh .build/scratch/ci-clean-run.log (deletes every G0.3 build product, then runs Scripts/ci.sh contracts g03-intake), copied to Docs/Stage0/evidence/G03-Intake/ci-clean-run.log; step logs collected with Spikes/G03-Intake/scripts/collect-evidence.sh",
+    "result": "Passed at c0affa9 (2026-10-12 23:26:25-23:58:49 UTC). 10-contracts: 15 schemas, 218 fixtures, 1 OpenAPI document, 1 instance. 50-g03-intake: all 8 steps passed in 1941 s. Fixtures verified; 113 host IntakeKit tests; large pack validated in 2.0 s (7.6 MiB) and extracted in 2.4 s (8.0 MiB) with 326 truncated or padded copies and 0 partial accepted; kill test failures=0 with 12/12 mid-copy; differential check 137 cases, 0 mismatches; 113 simulator IntakeKit tests; 7 in-app and 9 UI tests passed; open-in failures=0; ZIP evaluation status 0. No compiler warnings in our sources. Timings were taken under parallel load (recorded in the log) and are indicative only. No code changed after c0affa9."
+   },
+   "plan_findings": [
+    "F15 (plan 8.5): a raw file copied with Finder cannot be proved complete. The import is refused if the file changes during the snapshot and hashing, but a paused or stopped copy is staged as partial bytes. Staged is not ready, yet an audio file cut short may still pass later validation. The product should steer large transfers to .sylviapack, word raw import as 'wait until Finder has finished', and decide whether raw files are offered for removal after import (they stay in Documents today).",
+    "F16a: on macOS 26.6, JSONDecoder's .iso8601 date strategy disagrees with JSON Schema's date-time format in both directions. It refused a lowercase t/z and accepted 30 February, 29 February 2025, hour 24, second 60, year 0000 and an offset without a colon. Any Sylvia reader of contract date-times using .iso8601 is affected; the G0.3 readers now use RFC3339.swift, which mirrors the validator.",
+    "F16b: Scripts/validate-contracts.py evaluates JSON Schema 'pattern' with Python's re, where '$' also matches before a final line feed. A pattern-checked string ending in '\\n' therefore passes CI although ECMA-262 refuses it. This affects every contract.",
+    "F17: on the iOS 26.5 simulator, the share extension's Cancel did not reach the sharing app's provider across the process boundary within ~15 s. Sharing apps such as iCloud or Mail may keep downloading after the user cancels; device checklist steps 9 and 18 will show what happens on a phone.",
+    "Harness observation (iOS 26.5 simulator): UIActivityViewController(activityItemsConfiguration:) built from UIActivityItemsConfiguration(itemProviders:) listed the share extension, but tapping it never launched the extension. Passing the NSItemProvider as an activity item works (simulator-share-sheet-item-provider-observation.log)."
+   ],
+   "shared_changes_requested": [
+    "Contracts/README.md: last line 'the validator covers 15 schemas, 188 fixtures' -> 218 fixtures. G0.3 review round 2 added 30: import-handoff-manifest.v1 +2 valid/+10 invalid, sylviapack-manifest.v1 +3 valid/+15 invalid.",
+    "Fixtures/LICENSES.md, 'G0.3 Intake (hand-written)': counts become import-handoff-manifest.v1 5 valid/27 invalid and sylviapack-manifest.v1 7 valid/37 invalid. The round 2 additions are committed valid fixtures with one field changed each, same placeholder IDs and digests. Cache row: add work/part-01.caf, 4,831,838,986 bytes, SHA-256 b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1, now pinned in the generator, and note that the generator locks (.generate.lock) and publishes by rename.",
+    "Docs/Stage0/README.md, G0.3 row 'Final review (agent)': note that round 2's minor findings R2-01 to R2-06 are closed on branch m0-int-minors-g03-intake (head 4b8c634, clean run at c0affa9), agent work not yet re-reviewed.",
+    "Docs/Stage0/integration-log.md: when m0-int-minors-g03-intake is merged, record G0.3's open findings R2-01 to R2-06 as closed, with the branch head 4b8c634 and the clean CI run at c0affa9.",
+    "Scripts/validate-contracts.py (owner: contracts tooling): Python's re '$' lets pattern-checked strings with a trailing line feed pass (G0.3 report F16b). Either make 'pattern' evaluation follow ECMA-262 '$' semantics (for example a custom pattern validator that also requires no trailing newline), or anchor patterns with an end-of-input form. This affects every contract, not only G0.3's.",
+    "Scripts/fixtures/fetch.sh: downloads to the fixed path '<name>.partial', so two concurrent fetches of the same missing file can interleave. Use a mktemp file beside the destination and rename after verifying the SHA-256, the same pattern as the G0.3 generator fix (R2-06).",
+    "Other contract owners (M1-M6 per Contracts/README.md): Swift readers of date-time fields that use JSONDecoder .iso8601 disagree with the schemas (F16a). Consider sharing an RFC 3339 parser like Spikes/G03-Intake/IntakeKit/Sources/SylviaIntakeCore/RFC3339.swift and a differential check like Spikes/G03-Intake/scripts/check-contract-instances.sh."
+   ],
+   "dependencies_added": [],
+   "committed_fixtures": [
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/build-version-empty.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/build-version-too-long.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/bundle-identifier-empty.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/bundle-identifier-too-long.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/content-type-empty.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/content-type-too-long.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/created-at-february-30.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/original-filename-too-long.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/provider-type-identifier-empty.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/invalid/provider-type-identifier-too-long.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/valid/created-at-fraction-and-offset.json",
+    "Contracts/fixtures/import-handoff-manifest.v1/valid/strings-at-limits.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/created-at-february-30.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/generator-name-empty.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/generator-name-too-long.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/generator-version-empty.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/generator-version-too-long.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/group-creator-too-long.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/group-language-too-long.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/group-title-too-long.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/identifier-scheme-empty.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/identifier-scheme-too-long.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/identifier-value-empty.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/identifier-value-too-long.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/media-type-empty.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/media-type-too-long.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/invalid/order-zero-publication-member.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/valid/created-at-fraction-and-offset.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/valid/created-at-lowercase-t-and-z.json",
+    "Contracts/fixtures/sylviapack-manifest.v1/valid/strings-at-limits.json"
+   ],
+   "open_questions": [
+    "Product owner: raw files copied with Finder (F15). Keep the raw import, which refuses a file that changes during the import but stages a paused or stopped copy as it is, or accept only .sylviapack from Finder above some size? And should a raw file be offered for removal from Documents after its import? It stays today and is backup-eligible.",
+    "Product owner: LSSupportsOpeningDocumentsInPlace, unchanged at NO (F6). NO hides Documents from the Files app but leaves Sylvia off 'Open With' on the simulator; YES restores Open With. Checklist step 13 records a phone.",
+    "Product owner: approve the cleanup policy (1 h for manifest-less handoffs, 7 days for rejected ones), the per-kind bundle limits, the 16 MiB aggregate expansion allowance, removal of imported bundles from Documents, and refusing non-Sylvia ZIP layouts.",
+    "Product owner with G0.1: whether Sylvia's Files import accepts EPUBs stored as package folders, and whether the Mac companion packs them.",
+    "Security reviewer: the archive rules and extraction path (agent-reviewed; human sign-off pending).",
+    "Owner of Scripts/validate-contracts.py: the Python '$' quirk (F16b).",
+    "Design package: status strings for the share extension's Received and Not received states (F7).",
+    "Device run: whether Cancel stops an iCloud download or Mail fetch (F17), plus the extension memory limit, iCloud progress versus the 60 s stall rule, and the protection class of a staged clone."
+   ]
+  }
+ },
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 49,
+  "label": "minors-g03-intake:review-1",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "4b8c6342dd1a8549b077bc6f2d82c74d324cdd83",
+   "rerun": {
+    "command": "In worktree /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-25, detached at m0-int-minors-g03-intake = 4b8c634: G03_SIM_NAME=Sylvia-M0-review-minors-g03-intake-1 Spikes/G03-Intake/scripts/clean-ci-run.sh .build/scratch/review-ci-clean-run.log. This deletes .build/DerivedData, .build/ci-logs and every G0.3 build product, then runs Scripts/ci.sh contracts g03-intake. After it: Spikes/G03-Intake/scripts/check-generator-overlap.sh .build/scratch/generator-overlap-review.log; a scratch copy of collect-evidence.sh writing to .build/scratch/collected-evidence; and reviewer probes under .build/scratch: diffcheck/run.sh (the differential check's 137 cases compared per kind), diffcheck/run-extra.sh (edge inputs outside the check), kit-mutant (pack reader on .iso8601), kit-nocommitcheck (HandoffSession.commit without its cancel check), coordprobe (NSFileCoordinator.cancel() while the accessor runs), and fixture_reasons.py.",
+    "result": "PASSED from clean at 4b8c634, 2026-10-13T01:06:44Z to 01:39:21Z. Load averages were 31.70 at the start and 9.86 at the end, so the timings are indicative only.\n\n- 10-contracts: 15 schemas, 218 fixtures.\n- 50-g03-intake: all 8 steps passed in 1956 s.\n  - Step 1: fixture digests ok.\n  - Step 2: host IntakeKit tests, 46+43+24 = 113 passed, no warnings in our sources.\n  - Step 3: large pack validated in 1.7 s and extracted in 2.2 s; 326 cut or zero-padded copies, 0 partial copies accepted.\n  - Step 4: 12 of 12 kills landed mid-copy, failures=0.\n  - Step 5: differential check, 137 cases, mismatches=0.\n  - Step 6: 113 IntakeKit tests passed on the iPhone 17 simulator, iOS 26.5.\n  - Step 7: 7 in-app tests and 9 UI tests passed. Cancel before delivery showed 'Zero KB copied', then the fallback 'The copy was cancelled.' 1.5 s after the tap, and nothing was imported. The picker opened the file in place outside the container (scoped=true), and it came out needs_review twice. A raw drop-area file was staged, then needs_review, then removed. Open-in failures=0.\n  - Step 8: ZIP evaluation status 0. Upstream accepted the four 4.5 GiB cuts after 47-71 s; the fork was killed at 120 s.\n- Overlap check: failures=0 (load 12.98 rising to 42.54). The shared cache was untouched: large.sylviapack mtime is still 2026-10-06.\n- Commit-check mutant: 'Cancel after the last byte ... before the commit' fails with 'received'. So the test really exercises HandoffSession.commit's check. The coordprobe confirms that cancel() during a running accessor reports no error, so no other path is involved.\n- .iso8601 pack-reader mutant: the script's own comparison still says '137 cases, mismatches=0'. A per-kind comparison finds 7 mismatches. With the branch's readers the per-kind comparison finds 0.\n\nCleanup: simulator Sylvia-M0-review-minors-g03-intake-1 deleted; every build product and DerivedData under the worktree deleted; git status is clean."
+   },
+   "findings": [
+    {
+     "id": "R3-01",
+     "severity": "major",
+     "title": "R2-04 is marked passed as 'contract and Swift reader agree on edge inputs in both directions', but the pack reader still accepts manifests the schema refuses, and several opposite-direction divergences are undocumented",
+     "location": "Spikes/G03-Intake/IntakeKit/Sources/SylviaPack/PackManifest.swift:36-97 (synthesized Decodable for the Optional members File.groupID and order; Group.title, creators, language, identifiers and memberOrderBasis); HandoffManifest.swift:79-83 and PackManifest.swift:139-143 (JSONDecoder keeps the first of duplicate keys); Spikes/G03-Intake/IntakeKit/Sources/SylviaIntakeCore/RFC3339.swift:3 ('exactly as ... accepts it'); Docs/Stage0/G03-Intake.md:117 (F16 'The readers and the contracts now agree, and a check keeps them so'); ADR-0010 section 2 'Other manifest fields'; Spikes/G03-Intake/scripts/check-contract-instances.sh (case list)",
+     "detail": "The brief's three explicit R2-04 asks are done and I verified them: string bounds with invalid fixtures (each of the 30 new fixtures fails for exactly its named reason), the byte-rule example in both schema descriptions and in ADR-0010, and the non-ASCII 512/513-byte Swift tests. The broader claim does not hold.\n\nI probed inputs outside the 137 cases with .build/scratch/diffcheck/run-extra.sh. It uses jsonschema 4.26 Draft 2020-12 with FormatChecker (as Scripts/validate-contracts.py does) and 'sylviapack-tool check-manifest' built from the branch's sources, against the same base fixtures as the differential check.\n\nSchema refuses, reader accepts. This is exactly the direction R2-04 raised: the reader accepts manifests the schema rejects. Eight inputs:\n- In sylviapack-manifest, an explicit null in any optional member: files[0].group_id (with order absent), files[0].order, groups[0].title, creators, language, identifiers and member_order_basis. All seven are schema=invalid and 'accepted' by PackManifest. Swift's synthesized Codable reads null as absent; no v1 field admits null.\n- In import-handoff-manifest, a duplicate key: '\"build_version\": \"1\", \"build_version\": \"<65 chars>\"'. Python keeps the last value (invalid, maxLength 64). Swift's JSONDecoder keeps the first, so the reader says 'accepted'.\n\nSchema accepts, reader refuses, and none of these is among the documented 16 divergences plus 2 quirks:\n- created_at ending in a line feed, for both contracts. rfc3339-validator's regex `$` has the same Python quirk as F16b, but in `format`, not `pattern`. RFC3339.swift says it accepts 'exactly' what the schema's date-time accepts, and it does not.\n- item_id '5E0D7C1A-2B3F-4A9C-8D7E--6F5A4B3C2D10', which Python's uuid format check accepts.\n- A lone surrogate '\\ud800' in a title.\n- The duplicate-key case with the out-of-bounds value first.\n\nThe differential check covers none of these classes. So F16's headline and the R2-04 criterion overstate what was achieved and what the CI check keeps true.\n\nFix:\n- Make the readers refuse explicit null, for example a pre-pass that rejects any NSNull, or init(from:) that rejects decodeNil.\n- Either refuse duplicate keys or record them as a documented divergence.\n- Add these cases to check-contract-instances.sh as 'agree' or 'documented'.\n- Record the date-time `$` quirk with F16b.\n- Narrow F16, the ADR sentence and the R2-04 criterion to what the check covers."
+    },
+    {
+     "id": "R3-02",
+     "severity": "minor",
+     "title": "The differential check compares the 19 pack created_at cases with the handoff reader's verdicts, so it cannot detect a regression in the pack reader's date handling",
+     "location": "Spikes/G03-Intake/scripts/check-contract-instances.sh:123-126 (the same case names for both kinds), 179-180 (both readers' output in one file), 185-189 and 193 (a dict keyed by name only, handoff lines overwrite pack lines); Docs/Stage0/evidence/G03-Intake/host-contract-instances.log:82-100; contract-instances-before-fix.log",
+     "detail": "The cases 'created_at-ok-00..06' and 'created_at-bad-07..18' exist for both kinds. The reader verdicts go into one dict keyed by name: pack lines first, handoff lines appended. So every pack created_at lookup returns the handoff reader's verdict.\n\nDemonstration with .build/scratch/diffcheck/run.sh, which regenerates the same 137 cases:\n- I built a scratch IntakeKit copy whose PackManifest.decode uses .iso8601 again, the round-1 strategy F16a describes. The handoff reader is unchanged.\n- The script's own comparison (its lines 182-208, verbatim) prints 'differential: 137 cases, mismatches=0'.\n- A per-kind comparison finds 7 mismatches: pack created_at-ok-02 refused; bad-07..11 and bad-16 accepted.\n- With the branch's real readers the per-kind comparison is also 0 mismatches, so the current outcome holds. ContractFixtureTests' pack date fixtures (created-at-february-30, created-at-lowercase-t-and-z) would also catch that regression.\n\nThe 19 'pack created_at' lines in the committed logs nevertheless show handoff-reader verdicts as the pack reader's. 'Agree: 119' counts them as pack comparisons.\n\nFix: key the verdicts by (kind, name), or prefix case names with the kind."
+    },
+    {
+     "id": "R3-03",
+     "severity": "minor",
+     "title": "Shared files with G0.3 counts and pins are now stale, and no request to their owner is recorded",
+     "location": "Fixtures/LICENSES.md:73 and :111; Contracts/README.md:41; Docs/Stage0/G03-Intake.md and Docs/Stage0/evidence/G03-Intake/PROGRESS.md (requests list)",
+     "detail": "This branch adds 30 contract fixtures. LICENSES.md:73 still says import-handoff-manifest.v1 '(3 valid, 17 invalid)' and sylviapack-manifest.v1 '(4 valid, 22 invalid)'. They are now 5/27 and 7/37 (fixture_reasons.py, ContractFixtureTests output).\n\nLICENSES.md:111 lists only the pack's digest as pinned. generate-g03-intake-pack.sh now also pins part-01.caf: b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1, 4,831,838,986 bytes.\n\nContracts/README.md:41 says 188 fixtures; CI now counts 218.\n\nThe author correctly left these shared files alone. But the report and PROGRESS name a request only for validate-contracts.py, not for these. Fix: list them as shared-file requests for the integration owner."
+    },
+    {
+     "id": "R3-04",
+     "severity": "minor",
+     "title": "Wrong timestamp in the before-fix cancel evidence header (local time labelled UTC)",
+     "location": "Docs/Stage0/evidence/G03-Intake/host-cancel-before-delivery-before-fix.log:2",
+     "detail": "The header says 'Run at 2026-10-13T06:38Z'. The file was committed in 3449a8b at 2026-10-13 08:04 +1300, which is 2026-10-12T19:04Z. A run at 06:38Z on 13 October would be after its own commit.\n\nThe value is local time: 06:38 +1300 is 2026-10-12T17:38Z, one minute after b31d21f was committed at 06:37:58 +1300. The other new logs use UTC correctly (generator-overlap logs at 21:43Z and 21:50Z with local 10:43 and 10:50; the share-sheet observation log).\n\nFix: write 2026-10-12T17:38Z."
+    },
+    {
+     "id": "R3-05",
+     "severity": "minor",
+     "title": "'Source untouched' or 'file left untouched' for the document picker rests only on fileExists",
+     "location": "Docs/Stage0/G03-Intake.md:46 (T08 row, 'the file left untouched'); the author's R2-05 criterion ('source untouched'); Spikes/G03-Intake/App/Tests/UI/ImportRoutesUITests.swift:87 (message 'never modified or removed (I-08)'); Spikes/G03-Intake/App/Harness/IntakeHarnessApp.swift:149-155",
+     "detail": "The only evidence is `FileManager.default.fileExists(atPath:)`, logged as 'source still there: true'. Nothing compares the picked file's size, modification time or digest before and after the import.\n\nCode reading supports read-only use: a coordinated read with .withoutChanges, open O_RDONLY, and an APFS clone. But the I-08 claim is worded as tested. Fix: record and assert the size, mtime and SHA-256 before and after, or reword to 'still present'."
+    }
+   ],
+   "claims_verified": [
+    "Clean CI drop-in passes from clean at the reviewed commit. My run: G03_SIM_NAME=Sylvia-M0-review-minors-g03-intake-1 clean-ci-run.sh, 10-contracts pass (15 schemas, 218 fixtures), 50-g03-intake pass (1956 s), all 8 steps, 113+113 IntakeKit tests, 7 in-app and 9 UI tests, open-in failures=0, ZIP eval status 0. This reproduces the committed ci-clean-run.log (c0affa9).",
+    "'No code changed after c0affa9': git diff --stat c0affa9..HEAD touches only Docs/ (ADR-0010, report, checklist, PROGRESS, evidence logs).",
+    "R2-01 host and simulator, from my run: cancel before delivery as a file representation took 1.56 s on host and 1.07 s on the simulator ('provider saw the cancel: true'); as a file URL, 1.73 s and 2.14 s; during a coordinated wait, 1.02 s and 1.01 s with the writer still holding the file; after the last byte the result is 'not received: cancelled'; the platform test returned error 3072 at once on both.",
+    "R2-01's commit check is genuinely tested. With a scratch copy whose HandoffSession.commit ignores the signal, the 'Cancel after the last byte' test fails with 'received'. The coordprobe shows NSFileCoordinator.cancel() during a running accessor reports no error, so no other path is involved.",
+    "R2-01 through the real share sheet: 'Zero KB copied', then 'The copy was cancelled.' 1.5 s after the tap, with the share job count unchanged. F17 holds: my simulator's unified log shows only 'G03-SLOWPROVIDER load 1: started'.",
+    "R2-02: gen-pack without extra file arguments writes 4 files (two CAF parts, notes.md, chapter.txt); my sim-open-in run reports '1 staged 4'; checklist steps 4 and 27 match.",
+    "R2-03: ADR-0010 cites checklist step 18 (iCloud placeholder) and the code cites step 24 (data protection). The ZIP figures match zip-eval.log: upstream 48.4-72.1 s then a false acceptance; the fork killed at 120 s; 64 MiB cuts 1.1-2.7 s and 38.6-100.6 s. Every step reference in the report, the ADR and the code matches the 32-step checklist.",
+    "R2-04 asks: each of the 30 new fixtures validates (5 valid) or fails with exactly one error at the named field (25 invalid). The readers check every schema string bound in code points and any order below 1. The schema descriptions' byte-rule examples (607 bytes for 307 code points; 256 bytes for 128 code points) are confirmed as schema-valid and reader-refused. The non-ASCII 512/513-byte tests pass on host and simulator.",
+    "The 137 differential cases agree per kind with the branch's readers (0 mismatches). F16a's list of .iso8601 disagreements is reproduced exactly by the mutant: lowercase t/z refused; 30 February, 29 February 2025, hour 24, second 60, +1300 and year 0000 accepted.",
+    "R2-05 on the simulator, from my run: the picker hands over a file outside the container with security-scoped access granted, and it comes out needs_review twice. A raw drop-area file is staged, then needs_review, then removed by the user. Host tests: raw import, refusal while the file changes (stillBeingWritten), and a paused copy staged as 2,097,152 of 4,194,304 bytes (F15).",
+    "R2-06: my run of check-generator-overlap.sh gave failures=0. B waited for A's lock; both runs reproduced the pinned digests 982562b0...0268 and b4e3eac6...bcc1. Killed run C left a .rebuild folder, which run D removed without waiting, and the published pack inode was unchanged. The watcher saw 0 violations. macOS lockf(1) supports the 'lockf [-s] [-t seconds] fd' form the generator uses (man page). The shared cache's pack and CAF are unchanged (mtime 2026-10-06).",
+    "Report figures (D2c, F4, G3-G5, T07, T13, ZIP) match the committed clean-run logs; my run's figures are close (indicative under load).",
+    "The author deleted their simulator (Sylvia-M0-minors-g03-intake is gone). My CI run left tracked files unchanged (git status clean)."
+   ],
+   "gate_gaps": [
+    "R2-04 / F16: the readers still accept schema-invalid manifests: explicit null in any optional sylviapack-manifest member, and duplicate keys, where Swift keeps the first value and the validator the last. Several schema-accepts/reader-refuses divergences are undocumented: a trailing line feed on created_at, UUIDs with extra hyphens, lone surrogates. The differential check covers none of these, and it miswires its 19 pack date-time cases to the handoff reader. Yet R2-04 is reported passed-host as agreement 'in both directions' (R3-01, R3-02).",
+    "Shared files that carry G0.3 counts and pins (Fixtures/LICENSES.md fixture counts and the part-01.caf pin; Contracts/README.md fixture total) are stale, and no request to their owner is recorded (R3-03).",
+    "Still pending, and correctly not claimed:\n- Device: the extension memory limit; real Safari, Mail, Books and iCloud providers; whether Cancel stops an iCloud download or a Mail fetch (F17); a Finder cable copy above 4 GiB including partial and cancelled copies; raw Finder copies (steps 28-30); the picker with an iCloud placeholder (step 32); data-protection classes including a clone's; AirDrop; Open With.\n- Human: the LSSupportsOpeningDocumentsInPlace decision; the raw-import policy (F15); security review of the archive rules."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R2-01",
+     "resolved": true,
+     "note": "CancellationSignal reaches every phase: it cancels the load's Progress and finishes the gate as cancelled before delivery, cancels a waiting coordinator, is polled during the copy, and is checked before the commit. Host and simulator tests pass in my clean re-run. The UI test through the real share sheet shows the fallback 1.5 s after Cancel with nothing imported. The commit-check test is meaningful (the mutant fails with 'received'). Checklist steps 9 and 18 have the device cancel cases. Cross-process propagation is pending-device (F17)."
+    },
+    {
+     "id": "R2-02",
+     "resolved": true,
+     "note": "Step 27 expects 4 files and step 4 explains why. Verified against the gen-pack code and my sim-open-in '1 staged 4'."
+    },
+    {
+     "id": "R2-03",
+     "resolved": true,
+     "note": "Step references now 18 and 24, and the ZIP timing figures match zip-eval.log: upstream 48-72 s then a false acceptance (43-75 s in round 1); the fork over 120 s."
+    },
+    {
+     "id": "R2-04",
+     "resolved": false,
+     "note": "The listed fixes are done and verified: string bounds with 30 one-reason fixtures, the byte-rule examples in both schemas and the ADR, and the non-ASCII 512/513-byte tests. But the finding's substance, that the reader accepts manifests the schema rejects, still holds for explicit null optionals and duplicate keys. The 'agree in both directions' claim is overstated, and the differential check miswires 19 cases (R3-01, R3-02)."
+    },
+    {
+     "id": "R2-05",
+     "resolved": true,
+     "note": "Raw drop-area files import through importSingleFile (route documents_file), are refused while they change, and the report states the paused-copy limitation (F15). Import from Files presents UIDocumentPickerViewController in place, exercised by ImportRoutesUITests on the simulator (scoped=true, needs_review). Device parts are checklist steps 28-32. 'Source untouched' wording is overstated (R3-05)."
+    },
+    {
+     "id": "R2-06",
+     "resolved": true,
+     "note": "The generator locks with lockf on fd 9, builds in .rebuild.*, verifies both pinned digests and publishes by rename. My overlap-check run gave failures=0. Caveat stated in the report: branches still carrying the old script take no lock."
+    },
+    {
+     "id": "R2-gap-cancel-before-delivery",
+     "resolved": true,
+     "note": "Same as R2-01."
+    },
+    {
+     "id": "R2-gap-raw-finder-import",
+     "resolved": true,
+     "note": "Implemented and tested on host and simulator; limits stated in F15, ADR-0010 sections 1 and 5, and checklist steps 28-30."
+    },
+    {
+     "id": "R2-gap-document-picker",
+     "resolved": true,
+     "note": "Exercised on the simulator by ImportRoutesUITests.testDocumentPickerImportsInPlaceAndFlagsTheSameFileAsDuplicate, which passed in my clean run. An iCloud placeholder through the picker is checklist step 32 (pending-device)."
+    }
+   ]
+  }
+ },
+ {
+  "run": "wf_744b95c1-309",
+  "seq": 12,
+  "label": "minors-g03-intake:fix-1",
+  "result": {
+   "commit": "937d53a570f2fc38700b19c6a8929e6718ebe0fe",
+   "fixed": [
+    {
+     "id": "R3-01",
+     "how": "Status: passed-host and passed-simulator. I reviewed the stopped fixer's WIP commits 2abf67c and 36beb0b and kept them. Both readers now check the whole text before decoding (StrictJSON.swift: RFC 8259 UTF-8 without a byte order mark, no member name twice, no unpaired surrogate, nesting of at most 512, integers of at most 4,300 digits, no NaN or Infinity). They refuse an explicit null in every optional pack member, accept only canonical UUIDs, and now test path separators on bytes (F18). Every refusal of schema-valid input falls in one of three classes, each now stated in both schema descriptions, ADR-0010 and report F16. The differential check has 321 named cases and 3,000 seeded random mutations (now including explicit nulls), with 0 failures (host-contract-instances.log). There are 13 new invalid fixtures, each failing its schema with exactly one error (contract-fixture-reasons.log), and ContractFixtureTests agree on 89 G0.3 fixtures on host and simulator."
+    },
+    {
+     "id": "R3-02",
+     "how": "Status: passed-host. contract_differential.py keys cases by (kind, name), runs each reader on its own files, and judges raw bytes as validate-contracts.py would. New: Spikes/G03-Intake/scripts/check-differential-sensitivity.sh builds the tool with one deliberate defect at a time: dates read with .iso8601 in either reader, nulls read as absent, the text check skipped, UUIDs from UUID(uuidString:), and the readers at 36beb0b. The check catches all 6. The round 2 check (4b8c634) run against the pack-date defect exits 0 with 0 mismatches, which is the blind spot R3-02 reported (Docs/Stage0/evidence/G03-Intake/contract-differential-sensitivity.log)."
+    },
+    {
+     "id": "R3-03",
+     "how": "Status: not-applicable for a host or simulator proof (documentation). The report has a new section, 'Requests to the owners of shared files', with the exact changes for Fixtures/LICENSES.md lines 73 and 111, Contracts/README.md line 41 and Scripts/validate-contracts.py, plus open questions 9 and 10. The gate's own report counts, C1 row and PROGRESS.md are updated. The edits to the shared files themselves are listed in not_fixed."
+    },
+    {
+     "id": "R3-04",
+     "how": "Status: passed-host (evidence correction). The header of Docs/Stage0/evidence/G03-Intake/host-cancel-before-delivery-before-fix.log now reads 2026-10-12T17:38Z (06:38 local, UTC+13, one minute after commit b31d21f on which it ran), with a note saying what it said before. I checked the other hand-written evidence headers against their commit times; all are consistent."
+    },
+    {
+     "id": "R3-05",
+     "how": "Status: passed-simulator and passed-host. The harness Import from Files now records the picked file's identity (device, inode, size, modification time to the nanosecond) before and after the import, and re-hashes the file inside a coordinated read to compare with the staged bytes. ImportRoutesUITests asserts both on both picks: sim-app-tests.log shows identity equal: true and SHA-256 equal: true for picks 1 and 2, at 997,147 bytes. Two host tests (duplicateParityAcrossRoutes and singleFileClone) compare identity and SHA-256 before and after. DropAreaImporter.FileIdentity is now public. Device checklist steps 31 and 32 are updated."
+    },
+    {
+     "id": "F18 (new, found while closing R3-01)",
+     "how": "Status: passed-host and passed-simulator. A '/' followed by a combining mark (U+0301), or preceded by U+0600, is one Swift Character. The Character-based split, hasPrefix, contains and == in PackPath, PackStructure, HandoffManifest and DropAreaImporter missed it. Before the fix, the reader accepted '../'+U+0301+'x' and extraction wrote that file into the parent of its extraction directory. The drop area's Remove also deleted a file beside Documents (host-path-separator-before-fix.log). Now PathBytes.swift tests separators, prefixes and dot components on bytes everywhere, and as defense in depth extraction refuses any target not strictly inside its directory. Evidence: PackPathSeparatorTests and PathSeparatorTests pass on host and simulator ('file written outside the extraction directory: false'), plus 12 differential cases, 3 fixtures and schema description notes. T13, ADR-0010 sections 1, 2 and Consequences, and report F18 are updated."
+    },
+    {
+     "id": "gate-gap R2-04/F16",
+     "how": "Closed as R3-01 (passed-host and passed-simulator)."
+    },
+    {
+     "id": "gate-gap shared files",
+     "how": "Closed as R3-03: requests recorded in the report. The shared-file edits are in not_fixed."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "R3-03 Fixtures/LICENSES.md:73",
+     "reason": "Shared file outside this task's ownership (owner: M0 integration). Exact change: in the 'G0.3 Intake (hand-written)' paragraph, change '(3 valid, 17 invalid)' to '(5 valid, 30 invalid)' and '(4 valid, 22 invalid)' to '(7 valid, 47 invalid)'."
+    },
+    {
+     "id": "R3-03 Fixtures/LICENSES.md:111",
+     "reason": "Shared file outside this task's ownership (owner: M0 integration). Exact change: in the cache row for generated/g03-intake, add part-01.caf's pin beside the pack's: 'part-01.caf 4,831,838,986 bytes; b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1 (pinned in the script since review R2-06 and checked on every rebuild)'."
+    },
+    {
+     "id": "R3-03 Contracts/README.md:41",
+     "reason": "Shared file outside this task's ownership (owner: M0 integration). Exact change: '188 fixtures' becomes '231 fixtures' (Scripts/ci.sh contracts at f72f61c: 15 schemas, 231 fixtures, 1 OpenAPI document, 1 instance)."
+    },
+    {
+     "id": "Scripts/validate-contracts.py (F16 b)",
+     "reason": "Shared tool outside this task's ownership (owner: the validator's owner). Exact changes: (a) do not let '$' accept a final line feed when matching pattern and date-time; (b) check format uuid against the canonical 8-4-4-4-12 form, because Python's UUID() and int() accept extra hyphens, 'urn:' anywhere, and a '+', an underscore, a space or a non-ASCII digit in place of a hex digit; (c) load_json (lines 154-159) catches only json.JSONDecodeError and should catch ValueError, so that non-UTF-8 files and integers over 4,300 digits give an error line instead of a traceback."
+    },
+    {
+     "id": "gate-gap still-pending device items",
+     "reason": "pending-device: these need a physical iPhone, which this task may not use. Each has a numbered checklist step in Docs/Stage0/device-checklists/G03-Intake.md: the extension memory limit (14-15); real Files, Safari, Mail, Books and iCloud providers (6-12, 18); whether Cancel stops an iCloud download or a Mail fetch (9, 18; F17); a Finder cable copy above 4 GiB, including partial and cancelled copies (19-23); raw Finder copies (28-30); Finder visibility and data-protection classes, including an APFS clone's (19, 24); AirDrop and open-in (25-27); and the document picker on a phone, including an iCloud placeholder (31-32)."
+    },
+    {
+     "id": "LSSupportsOpeningDocumentsInPlace decision and human sign-offs",
+     "reason": "pending-human: the product owner decides LSSupportsOpeningDocumentsInPlace (report F6, open question 2). The security reviewer reviews the archive rules and extraction path, including F18's byte-level rule and containment check (open question 4). All reviews so far are agent-reviewed, with human sign-off pending."
+    }
+   ],
+   "rerun": {
+    "command": "G03_SIM_NAME=Sylvia-M0-minors-g03-intake Spikes/G03-Intake/scripts/clean-ci-run.sh <log> (deletes every G0.3 build product, then runs Scripts/ci.sh contracts g03-intake), then Spikes/G03-Intake/scripts/collect-evidence.sh. Also ran Spikes/G03-Intake/scripts/check-differential-sensitivity.sh and fixture-reasons.py.",
+    "result": "Passed at commit f72f61c (working tree clean), 2026-10-13 04:13:12-04:45:46 UTC, load averages 4.05 at start and 5.46 at end. 10-contracts passed (15 schemas, 231 fixtures). 50-g03-intake passed every step in 1,952 s: 130 IntakeKit tests on host and 130 on the simulator, 7 in-app and 9 UI tests, 4 system open-ins, the large pack and kill runs, the differential check (321 named cases and 3,000 random mutations, 0 failures), and the ZIP evaluation and dependency probe. The log overwrote Docs/Stage0/evidence/G03-Intake/ci-clean-run.log. Commits after f72f61c change only docs, evidence and three scripts CI does not run. The sensitivity check caught 6 of 6 defects (contract-differential-sensitivity.log), and all 89 G0.3 fixtures are as expected (contract-fixture-reasons.log). The branch was then detached at 937d53a, DerivedData deleted, and simulator Sylvia-M0-minors-g03-intake deleted."
+   }
+  }
+ },
+ {
+  "run": "wf_744b95c1-309",
+  "seq": 18,
+  "label": "minors-g03-intake:review-2",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "937d53a570f2fc38700b19c6a8929e6718ebe0fe",
+   "rerun": {
+    "command": "In a fresh worktree at 937d53a (detached, tree clean): G03_SIM_NAME=Sylvia-M0-review-minors-g03-intake-2 Spikes/G03-Intake/scripts/clean-ci-run.sh .build/scratch/ci-clean-run.log (deletes every G0.3 build product including .build/DerivedData, then Scripts/ci.sh contracts g03-intake). Also re-ran, after the CI finished or in private copies: Spikes/G03-Intake/scripts/check-differential-sensitivity.sh .build/scratch/sensitivity.log; sylvia_python Spikes/G03-Intake/scripts/fixture-reasons.py <root>; Spikes/G03-Intake/scripts/check-generator-overlap.sh .build/scratch/generator-overlap.log. Reviewer probes ran under .build/scratch/probes against a sylviapack-tool release build from a private copy of IntakeKit.",
+    "result": "Passed. Commit 937d53a, working tree clean; 2026-10-13 05:36:46-06:09:40 UTC; load 19.58 at start, 31.74 at end and 65 seen mid-run, so all timings are indicative only. 10-contracts: 15 schemas, 231 fixtures, 1 OpenAPI document, 1 instance. 50-g03-intake passed in 1973 s, all 8 steps: (1) fixtures verified; (2) host IntakeKit 52+43+35 = 130 tests passed, no warnings in our sources; (3) large pack validated in 1.8 s (7.3 MiB) and extracted in 2.2 s (7.9 MiB), extracted digest equals the source; truncation sweep of 326 copies with 0 partial copies accepted; (4) 12 of 12 kills landed mid-copy, failures=0; (5) differential check: 321 named cases and 3,000 random mutations, failures=0, every count identical to the committed log; (6) simulator IntakeKit 130 tests passed; (7) in-app 7 and UI 9 tests passed. Cancel before delivery showed the fallback 1.5 s after the tap with 'Zero KB copied'; both picker picks showed identity equal and SHA-256 equal; open-in failures=0; (8) dependency probe ok; ZIP evaluation: upstream falsely accepted all four truncated 4.5 GiB copies after 43.9-78.5 s, and the fork did not finish within 120 s. Sensitivity check: 6 of 6 defects caught, and the round 2 check passed against the .iso8601 pack reader; output identical to the committed log apart from dates and temporary paths. fixture-reasons.py: identical to the committed log apart from its header, 0 fixtures not as expected. Generator overlap check: failures=0, 0 watcher violations. Afterwards I deleted my simulator (2203481B-5269-44BA-93A9-6742C2466474) and the DerivedData folders."
+   },
+   "findings": [
+    {
+     "id": "R4-01",
+     "severity": "blocker",
+     "title": "The pack reader and writer accept a file group_id the schema refuses (U+212A KELVIN SIGN), so 'the readers accept nothing their contracts refuse' is false and R3-01 is not closed",
+     "location": "Spikes/G03-Intake/IntakeKit/Sources/SylviaPack/PackManifest.swift:230-231. Claims: Docs/Stage0/G03-Intake.md:9, :117 (F16 title), :160 (R3-01 row); Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:54; Spikes/G03-Intake/IntakeKit/Tests/SylviaContainerLayoutTests/ManifestTextTests.swift:7. Coverage gap: Spikes/G03-Intake/scripts/contract_differential.py (no case)",
+     "detail": "**Defect.** PackManifest.validate checks each groups[].group_id with isValidGroupID. A file's group_id is never checked against the schema's $defs/group_id pattern ^[A-Za-z0-9_-]{1,64}$. It is only looked up in groupKinds, a [String: GroupKind] (line 231). Swift String equality and hashing use canonical equivalence, and U+212A KELVIN SIGN canonically decomposes to 'K'. So 'WALDEN_' + U+212A finds the group 'WALDEN_K'.\n\n**Reproduced at 937d53a**, with a release sylviapack-tool built from a private copy of IntakeKit:\n1. .build/scratch/probes/canon_probe.py writes the publication-and-audiobook fixture with groups[0].group_id='WALDEN_K' and the EPUB's group_id='WALDEN_'+U+212A. jsonschema Draft 2020-12 with FormatChecker (the configuration Scripts/validate-contracts.py:71 uses) says INVALID: files/0/group_id does not match '^[A-Za-z0-9_-]{1,64}$'. `sylviapack-tool check-manifest pack kelvin-file-group-id.json` prints 'accepted'. The audiobook-members variant is also accepted.\n2. A probe test in the private copy calls PackWriter().write with that group_id. It wrote and self-checked the pack (file group_id scalars [57 41 4c 44 45 4e 5f 212a]). PackReader().extract accepted and extracted it. Python zipfile plus jsonschema on that pack's sylviapack/manifest.json: INVALID, \"files/0/group_id 'WALDEN_\u212a' does not match\".\n3. A Swift probe prints `\"WALDEN_\\u{212A}\" == \"WALDEN_K\": true`, and the dictionary lookup returns the group.\n\n**Claims it contradicts.** This is R3-01's defect class (reader accepts what the schema refuses), in the direction the branch says can no longer happen: the F16 title 'The readers accept nothing their contracts refuse', ADR-0010:54 'The rule for both readers: they accept nothing their schema refuses', the R3-01 'closed' status, and R2-04's 'contract and Swift reader agree on edge inputs in both directions' (passed-host). I rate it blocker because these categorical claims are false, not just unproven, and this is the second round in which the claim is made and then refuted.\n\n**Why the checks miss it.** No named differential case uses a canonically equivalent identifier. The fuzz STRINGS pool has no U+212A, and no base group_id contains 'K'. The sensitivity script has no equality defect. F18's lesson about Swift String operations on untrusted text was applied to separators but not to equality, although PathBytes.equal exists for exactly this.\n\n**Fix.**\n- Refuse a file group_id that fails isValidGroupID before the lookup, or key groups by UTF-8 bytes.\n- Audit the other String ==, Set and Dictionary uses on manifest text.\n- Add a named differential case and an invalid fixture: a file group_id with U+212A against a group with K.\n- Add U+212A forms to the fuzz pool, with a base group_id that contains K.\n- Add a sensitivity defect that reverts the fix.\n- Reword F16 and ADR-0010:54 to what is actually proven."
+    },
+    {
+     "id": "R4-02",
+     "severity": "minor",
+     "title": "The readers' manifest byte limits refuse schema-valid input, but neither schema states them, and the 1 MiB limit makes files maxItems 9998 unreachable",
+     "location": "Spikes/G03-Intake/IntakeKit/Sources/SylviaPack/PackRules.swift:18; PackReader.swift:100; Spikes/G03-Intake/IntakeKit/Sources/SylviaImportHandoff/HandoffManifest.swift:10; InboxScanner.swift:302; Contracts/schemas/sylviapack-manifest.v1.schema.json (description; files maxItems 9998 at line 25); Contracts/schemas/import-handoff-manifest.v1.schema.json (description); Docs/Stage0/G03-Intake.md:117; Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:54",
+     "detail": "**The limits.** PackReader refuses a manifest entry larger than maxManifestBytes = 1 MiB. InboxScanner reads handoff.json with a 256 KiB limit. Both refuse schema-valid input.\n\n**Not documented where the branch says.** Neither schema's description mentions these limits; a grep of both schemas for MiB, KiB or a manifest size finds nothing. Only ADR-0010:33 and :47 mention them. Yet F16 (G03-Intake.md:117) and ADR-0010:54 say every refusal of schema-valid input is in a class 'each stated in the schema's description'.\n\n**Not seen by the check.** `sylviapack-tool check-manifest` calls only decode and validate, so the differential check never meets these refusals.\n\n**maxItems is unreachable.** I computed with python3 -I a manifest of 9,998 minimal files (4-character paths): 1,319,939 bytes compact and 1,819,890 bytes pretty-printed, which is how PackWriter writes. At most about 7,943 minimal entries fit in 1 MiB, and fewer with real paths. So the schema's maxItems 9998, and ADR-0010's 10,000-entry limit, cannot be reached by a pack the reader accepts.\n\nThe limits are pre-existing. R3-01 asked for undocumented opposite-direction divergences to be documented, and these were left out.\n\n**Fix.** State both byte limits in the schema descriptions, and in the differential check's 'documented' class. Then either align maxItems with what fits in 1 MiB or raise the limit with a measured reason."
+    },
+    {
+     "id": "R4-03",
+     "severity": "minor",
+     "title": "RFC3339.date(from:) returns wrong instants for schema-valid dates before 1582-10-15 (Foundation's Gregorian calendar is Julian there)",
+     "location": "Spikes/G03-Intake/IntakeKit/Sources/SylviaIntakeCore/RFC3339.swift:15, 73-77",
+     "detail": "**Mismatch.** The parser validates days with a proleptic Gregorian rule (daysIn, 'as Python's calendar.monthrange'). It then converts with Calendar(identifier: .gregorian), which Foundation implements as Julian before 1582-10-15.\n\n**Probe** (.build/scratch/probes/urlprobe.swift, built with swiftc -swift-version 6), compared with Python's proleptic values from datetime(...).timestamp():\n\n| Date | Foundation | Python |\n| --- | --- | --- |\n| 1582-10-10 | -12218860800 s (prints as 1582-10-20) | -12219724800 |\n| 1500-03-01 | -14825808000 s | -14826672000 |\n| 0001-01-01 | -62135769600 s | -62135596800 |\n\nInstants before 1582 are 10 days late, and 2 days early at year 1. The schema-valid date 1582-10-10 lands after 1582-10-15.\n\n**Impact.** The accept/refuse verdict is correct, which is all the differential check compares. But the doc comment 'The instant the string denotes' (line 15) is wrong for these dates, and any cross-platform comparison of created_at would disagree. Minor, because created_at values before 1582 are unrealistic.\n\n**Fix.** Compute days from the civil date arithmetically (proleptic Gregorian), and add the 0001-01-01 and 1582-10-10 instants to the rfc3339 test."
+    },
+    {
+     "id": "R4-04",
+     "severity": "minor",
+     "title": "The stall timeout can still resume the share as timed out after the copy has begun; the new OnceGate comment claims otherwise",
+     "location": "Spikes/G03-Intake/IntakeKit/Sources/SylviaImportHandoff/ItemProviderIntake.swift:224-225 (comment), 300, 306-307",
+     "detail": "**The claim.** The class comment added in this branch says the gate 'stops the timeout and the early cancel from acting once copying has begun'.\n\n**The cancel path holds.** finish(..., onlyBeforeWork: true) checks `started` under the same lock as beginWork.\n\n**The timeout path does not.** The stall task checks `self.started || self.done` (line 300), and only later calls `probe.cancel(); self.finish(.failure(.providerTimedOut))` with onlyBeforeWork false (306-307). If the provider delivers between those two points, beginWork() starts the copy, and the caller is still resumed with providerTimedOut. ShareViewController.handOff then calls session.discard() while the completion handler copies into that session.\n\n**Impact.** There is no false 'Received'. The user gets a spurious 'stopped sending' fallback from a provider that delivered right at the 60 s boundary. The code is the same at b354dc7 (pre-existing), and the window is narrow.\n\n**Fix.** Call finish(.failure(.providerTimedOut), onlyBeforeWork: true), and cancel the probe only when that returns true, as armCancellation does."
+    },
+    {
+     "id": "R4-05",
+     "severity": "minor",
+     "title": "The sensitivity evidence cannot be regenerated after a squash merge: the script reads branch-local commits",
+     "location": "Spikes/G03-Intake/scripts/check-differential-sensitivity.sh:88 (git show 4b8c634:...), :132 (git archive 36beb0b ...)",
+     "detail": "The script depends on two commits that exist only on this branch: the round 2 check from 4b8c634, and the pre-F18 IntakeKit from 36beb0b.\n\nIntegration merges gate branches with `git merge --squash` (Docs/Stage0/integration-log.md section 2). After such a merge, those commits stay reachable only while the m0-int-minors-g03-intake ref exists. From m0-integrate, or a clone without that ref, the script fails. contract-differential-sensitivity.log is cited for R3-02, F16 and F18, so that evidence could not then be regenerated from the merged tree.\n\nHere it ran fine, and my output was identical to the committed log apart from dates and temporary paths.\n\n**Fix.** Commit the two inputs as files (the round 2 check and the pre-F18 path rules), or express those two defects as patches like the other four cases."
+    },
+    {
+     "id": "R4-06",
+     "severity": "minor",
+     "title": "The drop-in header says CI runs only read the shared cache, but step 1's fetch.sh writes into it, and the round 2 fetch.sh request is not recorded",
+     "location": "Scripts/ci.d/50-g03-intake.sh:24-26 and 79; Scripts/fixtures/fetch.sh:24-32; Docs/Stage0/G03-Intake.md:169-178",
+     "detail": "**The claim.** The header, changed in this branch for R2-06, says 'The fixtures in the cache are shared: the runs only read them, and the generator (step 1) rebuilds them under a lock'.\n\n**What step 1 does.** It also runs `Scripts/fixtures/fetch.sh meditationsofmarcusaurelius_01` outside that lock. On a cold cache, fetch.sh downloads to the fixed path `$file.partial` and renames it. Two overlapping runs can truncate each other's download, delete it after a mismatch, or rename a file the other curl is still writing, which leaves the published MP3 partial for a while.\n\n**Not recorded.** The round 2 result asked the fetch.sh owner for a mktemp-and-rename fix. The report's 'Requests to the owners of shared files' does not include it; fetch.sh appears nowhere in the report.\n\n**Impact.** Minor: the pinned digests stop a wrong pack from being published, so the effect is a spurious failure.\n\n**Fix.** Reword the header, and add the fetch.sh request to the report's table."
+    }
+   ],
+   "claims_verified": [
+    "The clean CI (contracts plus 50-g03-intake) passes from clean at 937d53a with my own simulator. The commits after f72f61c change only documentation, evidence, check-differential-sensitivity.sh, fixture-reasons.py and collect-evidence.sh (git diff --stat f72f61c..HEAD).",
+    "The report's figures match the committed ci-clean-run.log (f72f61c, 04:13:12-04:45:46Z, load 4.05 and 5.46): G1 1.4 s; G3 1.8 s/7.2 MiB and 2.3 s/7.9 MiB; G4 2.0 s/+0.1 MiB and 2.6 s/-0.1 MiB; D2b 2.1 s/4.5 MiB; D2c peaks 34,523,224 / 40,077,400 / 47,646,976 / 48,285,928 bytes and a difference of 638,952; R2-01 host 1.86 and 1.81 s, simulator 1.59 and 1.01 s; T13 0.131 and 0.093 s; kill copy 2.71 s; C1 249/27/20/25 of 321 named cases; tests 130 host, 130 simulator, 7 in-app, 9 UI. The committed step logs trace to that run (handoff 67E1E401-C1CF-..., IntakeShare pid 51155).",
+    "R3-05: on both picks in my run, the picked file's identity is equal before and after the import, and its SHA-256 equals the staged bytes. Host tests compare identity and SHA-256 too.",
+    "R3-04: the header now reads 2026-10-12T17:38Z. b31d21f was committed at 2026-10-13T06:37:58+13:00, which is 17:37:58Z.",
+    "R3-03: counts verified with ls/find (5/30 and 7/47 G0.3 fixtures, 231 in total; 10-contracts log 'fixtures: 231'). The part-01.caf pin b4e3eac6...bcc1 and 4,831,838,986 bytes match the generator and my run. Shared files are untouched (empty git diff --stat for Fixtures, Contracts/README.md, Docs/Stage0/README.md, integration-log.md and Scripts/validate-contracts.py).",
+    "R3-02, F16 and F18: check-differential-sensitivity.sh reproduces 6 of 6 defects caught, and the 4b8c634 check passes the .iso8601 pack reader. The F16 platform facts (BOM, UTF-16, UTF-32, unchecked members, first of duplicate names) appear in the text-not-checked failures.",
+    "fixture-reasons.py: each of the 77 invalid G0.3 fixtures fails its schema with exactly one error, and the 12 valid ones with none (identical to the committed log).",
+    "F18: the before-fix log shows the escape ('file written outside the extraction directory: true'), the handoff file name accepted and the drop-area Remove deleting a file outside Documents. After the fix the tests pass on host and simulator. PathBytes.isInside resolves '../'+U+0301 at the byte level (my URL standardization probe), although no test reaches it, because the path rules refuse first.",
+    "R2-01: CancellationSignal reaches the provider wait, the coordinated-read wait, the copier and the commit. The UI test and the host tests pass in my run, and F17 is consistent (the harness provider logged only 'load 1: started').",
+    "R2-02: gen-pack without extra arguments writes 4 files (main.swift:142-147); step 27 expects 4; my open-in run shows 'Opened file staged: 4 file(s)'.",
+    "R2-03: the checklist step references in ADR-0010 and the report are correct (18 iCloud, 24 protection, 13 Open With, 22 cancelled Finder copy, 28-32 raw files and picker); code comments cite step 24; the ZIP figures 50-72 s match the committed zip-eval.log (49.6-71.8 s).",
+    "R2-05: raw drop-area import, the stillBeingWritten refusal, and the picker opening files in place (security-scoped, outside the container) are all exercised in my run.",
+    "R2-06: check-generator-overlap.sh re-run gives failures=0 and 0 watcher violations; the lock serialized two forced rebuilds and the kernel released a killed run's lock.",
+    "Schema changes are description-only (no v1 constraint changed). All 109 touched paths are within G0.3's contracts, docs, evidence, scripts and spike.",
+    "Number spellings (E0, E+5, 25 fraction digits, negative exponents, 0.997147e6) give the same verdict from the schema and the reader (probe).",
+    "Nothing in G0.3 plays audio (git grep for AVPlayer, AVAudio*, NSSound, afplay finds nothing), and there are no TODO or stub markers."
+   ],
+   "gate_gaps": [
+    "R2-04 and R3-01 (contract and reader agree in both directions) are not complete. A file group_id that is canonically equivalent to a declared group (U+212A for K) is accepted by PackManifest.validate, by PackWriter's self-check and by PackReader.extract, while the schema refuses it (R4-01). No differential case, fixture or sensitivity defect covers equality-based lookups; only separators were covered (F18).",
+    "Part of R3-01, the undocumented opposite-direction divergences: the manifest byte limits (1 MiB pack, 256 KiB handoff) refuse schema-valid input, and neither schema description states them. The differential check bypasses them (R4-02).",
+    "Correctly pending, not passed: device steps 6-32 (the real extension memory limit; Safari, Mail, Books and iCloud providers, including Cancel reaching Mail or iCloud; Finder copies above 4 GiB, including raw and cancelled copies; Finder and Files visibility; data protection including a clone's; Open With on a phone; AirDrop; the picker with an undownloaded iCloud file). Human decisions are also pending: LSSupportsOpeningDocumentsInPlace, the cleanup policy and limits, the raw Finder import policy, EPUB folders, the security sign-off, and the validator-owner and M0-integration requests in open questions 1-10."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R3-01",
+     "resolved": false,
+     "note": "Partly fixed. The fixes for explicit nulls, duplicate member names, the strict text check, canonical UUIDs and byte-level separators are real; I verified them with the sensitivity check (6 of 6 defects caught, reproduced) and the fixture-reasons script (reproduced). But the pack reader and writer still accept a manifest the schema refuses: a file group_id with U+212A matched to a group with K through Swift's canonical equivalence (R4-01). The manifest byte limits are still refusals of schema-valid input that the schemas do not state (R4-02). So the claims 'readers accept nothing their contracts refuse' and 'every divergence is stated in the schema description' do not hold."
+    },
+    {
+     "id": "R3-02",
+     "resolved": true,
+     "note": "contract_differential.py keys cases by (kind, name), and each reader judges its own files. Re-running check-differential-sensitivity.sh at 937d53a: with a pack reader that reads dates with .iso8601, the check fails on 13 pack created_at cases, while the 4b8c634 check exits 0 with 0 MISMATCH lines. Output identical to the committed log apart from dates and temporary paths."
+    },
+    {
+     "id": "R3-03",
+     "resolved": true,
+     "note": "The report's 'Requests to the owners of shared files' (G03-Intake.md:169-178) gives the exact replacement text, and the counts are correct: 5/30 and 7/47 G0.3 fixtures, 231 in total, matching the 10-contracts log. The part-01.caf pin and size match the generator (lines 35-36) and my run. The shared files were not edited. The round 2 fetch.sh request is still missing from that table (R4-06), but that was not part of R3-03."
+    },
+    {
+     "id": "R3-04",
+     "resolved": true,
+     "note": "The header now reads 2026-10-12T17:38Z (06:38 local time, UTC+13), with a correction note. b31d21f was committed at 2026-10-13T06:37:58+13:00, which is 17:37:58Z, so the run time is consistent."
+    },
+    {
+     "id": "R3-05",
+     "resolved": true,
+     "note": "The harness takes FileIdentity (device, inode, size, mtime in nanoseconds) before and after the import, then re-hashes the file inside a coordinated read and compares it with the staged digest. ImportRoutesUITests asserts both on both picks. In my run's sim-app-tests.log, both picks show 'identity ... equal: true' and 'SHA-256 ... equals the imported bytes: true'. Host tests also compare identity and SHA-256."
+    }
+   ]
+  }
+ },
+ {
+  "run": "wf_744b95c1-309",
+  "seq": 30,
+  "label": "minors-g03-intake:fix-2",
+  "result": {
+   "commit": "77ceaf3f5228b91c1e000047014618a9f783a6b1",
+   "fixed": [
+    {
+     "id": "R4-01",
+     "how": "passed-host, passed-simulator. PackManifest.validate now checks a file's group_id against ^[A-Za-z0-9_-]{1,64}$ (on bytes) before the [String: GroupKind] lookup (Spikes/G03-Intake/IntakeKit/Sources/SylviaPack/PackManifest.swift). Audit of every String ==, Set and Dictionary on manifest text: PackReader compares manifest/entry names, library names and digests with PathBytes.equal; format and producer.kind are byte-exact; Kind, GroupKind, MemberOrderBasis and Representation decode byte for byte (decodeExactCase in ContractDecoding.swift); InboxScanner compares item names as byte sets; only pattern-checked ASCII stays in sets and dictionaries. JSONDecoder's member-name matching (also canonical) is bounded by tests: an exhaustive scan shows only U+037E, U+1FEF and U+212A are canonical twins of ASCII text (Foundation and Swift agree), and no member name, enum value or constant in either schema holds ';', '`' or 'K'. The audit also fixed HandoffSession.cleanFilename, which used Character-based replacingOccurrences and missed '/' before U+0301. New: invalid fixture Contracts/fixtures/sylviapack-manifest.v1/invalid/file-group-id-kelvin-sign.json (exactly one error at files/0/group_id), 14 named differential cases, a canonical-twin mutation against a base whose group ids hold K (312 of 1,500 pack mutations), PackCanonicalEquivalenceTests and CanonicalEquivalenceTests, and sensitivity defect group-id-lookup-unchecked (caught; the frozen round 3 check passes against it, as the review found). F16 and ADR-0010 section 2 withdraw the categorical claim and say what the checks show and where they stop. Evidence: Docs/Stage0/evidence/G03-Intake/host-intakekit-tests.log, sim-intakekit-tests.log, host-contract-instances.log, contract-differential-sensitivity.log, host-round4-before-fix.log (the tests fail with the fix reverted), contract-fixture-reasons.log."
+    },
+    {
+     "id": "R4-02",
+     "how": "passed-host, passed-simulator. Both schema descriptions now state the limits: 16 MiB for a pack manifest, 256 KiB for handoff.json. sylviapack-tool check-manifest applies them through the readers' own functions (PackManifest.decode(_:limits:), HandoffManifest.read(contentsOf:)), and the 'documented' class covers them. The differential tests each at and one byte over its limit, plus 9,998 and 9,999 files with 512-byte paths. The pack limit is raised from 1 MiB, which held at most 5,636 files, to 16 MiB for a measured reason: the writer's manifest for 9,998 files at the path limit in 20 maximal audiobook groups is 9,356,558 bytes, and that 10,000-entry pack validates (2.6 s host, 3.1 s simulator, debug build). PackWriter writes and self-validates 9,998 files with 512-byte paths in 5.3 s (host-pack-writer-scaling.log); its growth is superlinear because ZIPFoundation rewrites the central directory per entry, recorded as an M6 item. The extension now refuses to commit a handoff.json over 256 KiB (new HandoffFailure.manifestTooLarge with fallback text). Before, it could show Received for a manifest the scan then refused. 100 maximal ordinary items measure 87,803 bytes. PackWriter refuses an over-limit manifest before writing. F19 is new. Sensitivity defect manifest-size-unchecked is caught."
+    },
+    {
+     "id": "R4-03",
+     "how": "passed-host, passed-simulator. RFC3339.date(from:) now counts days with proleptic Gregorian arithmetic (daysFromCivil, Hinnant) instead of Foundation's Calendar(identifier: .gregorian), which is Julian before 1582-10-15. The rfc3339 test checks Python's instants for 0001-01-01 (-62135596800), 1582-10-10 (-12219724800) and 10 more dates. A new test checks every first of the month from 0001 to 9999 (119,987 months, none off; 13 off under the old code). Part 3 of the differential compares every accepted created_at instant with Python's datetime (42, 0 failures). Sensitivity defect dates-julian is caught. Evidence: host/sim-intakekit-tests.log, host-contract-instances.log, host-round4-before-fix.log."
+    },
+    {
+     "id": "R4-04",
+     "how": "passed-host, passed-simulator. OnceGate's stall timeout now finishes the gate only through finish(_:onlyBeforeWork: true), under the same lock as beginWork, and cancels the load only when that call finished the gate (ItemProviderIntake.swift). A test seam (beforeStallTimeoutFires) delivers in exactly the window between the timeout's check and its finish. The test sees the copy's result and no cancelled load. Against the old code the share ended as providerTimedOut and the load was cancelled (host-round4-before-fix.log)."
+    },
+    {
+     "id": "R4-05",
+     "how": "passed-host. The round 2 check (4b8c634) and the round 3 differential (937d53a) are committed byte for byte under Spikes/G03-Intake/scripts/sensitivity/. Their git blob ids equal the originals', and the script checks their SHA-256 before use. The pre-F18 readers are now a mutation of PathBytes.swift to Character-based String operations. check-differential-sensitivity.sh reads no earlier commit. It was re-run: 9 of 9 defects caught, and both frozen checks pass against the defect their review found (contract-differential-sensitivity.log)."
+    },
+    {
+     "id": "R4-06",
+     "how": "passed-host. Step 1 of Scripts/ci.d/50-g03-intake.sh no longer runs fetch.sh outside the lock. The generator already downloads the LibriVox file under its own lock, only when it rebuilds, and no other step reads it. The header now states which step writes the shared cache and what fetch.sh itself still risks. The fetch.sh request (mktemp download, verify, rename) is now in the report's 'Requests to the owners of shared files' and open question 10. Clean run step 1: ci-clean-run.log."
+    },
+    {
+     "id": "gate-gap-1 (R2-04/R3-01 incomplete: equality-based lookups)",
+     "how": "Closed as R4-01 (passed-host, passed-simulator)."
+    },
+    {
+     "id": "gate-gap-2 (manifest byte limits undocumented and bypassed by the differential)",
+     "how": "Closed as R4-02 (passed-host, passed-simulator)."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "Scripts/fixtures/fetch.sh temporary download name (R4-06 remainder)",
+     "reason": "This shared file is not in my ownership. Exact change for its owner (M0 integration), lines 24-32: download each file to tmp=\"$(mktemp \"$dest/.$name.XXXXXX\")\" instead of \"$file.partial\", verify its SHA-256 there, then mv \"$tmp\" \"$file\", and remove the temporary file on exit (trap). G0.3's own runs no longer call fetch.sh outside the generator's lock."
+    },
+    {
+     "id": "Fixtures/LICENSES.md and Contracts/README.md counts (R3-03 requests, updated)",
+     "reason": "Shared files, not mine. Exact changes: Fixtures/LICENSES.md line 73: '(3 valid, 17 invalid)' becomes '(5 valid, 30 invalid)' and '(4 valid, 22 invalid)' becomes '(7 valid, 48 invalid)'. Line 111: add 'part-01.caf 4,831,838,986 bytes; b4e3eac6d299ef937eb52a103187a2847a63cc0084e9ab2d4c18d41bfa91bcc1' beside the pack's pin. Contracts/README.md line 41: '188 fixtures' becomes '232 fixtures'."
+    },
+    {
+     "id": "Scripts/validate-contracts.py quirks",
+     "reason": "Validator owner's file. Requests unchanged: (a) $ must not accept a final line feed in pattern and date-time; (b) check format uuid against the canonical 8-4-4-4-12 form; (c) load_json should catch ValueError (non-UTF-8 text, integers over 4,300 digits) instead of stopping with a traceback."
+    },
+    {
+     "id": "device steps 6-32 (G2, G6, G8, G10, T07/T08 device rows, D2d)",
+     "reason": "pending-device. These need a physical iPhone, which this task may not use. Covered: real extension memory limit; Safari, Mail, Books and iCloud providers (including Cancel reaching Mail or iCloud); Finder copies above 4 GiB (raw and cancelled); Finder and Files visibility; data protection including a clone's; Open With; AirDrop; the picker with an undownloaded iCloud file. All are numbered steps in Docs/Stage0/device-checklists/G03-Intake.md (unchanged in round 4)."
+    },
+    {
+     "id": "human decisions",
+     "reason": "pending-human. Product owner: LSSupportsOpeningDocumentsInPlace; the cleanup policy and limits, now including the 16 MiB pack and 256 KiB handoff manifest limits; the raw Finder import policy; EPUB folders. Also the security reviewer's sign-off on the archive rules, and the design package strings, including the new 'names too long' fallback reason (open questions 1-10)."
+    },
+    {
+     "id": "M6 pack writer central directory",
+     "reason": "Product scope (M6), not a gate defect. The spike's PackWriter reaches the 10,000-entry limit in 5.3 s, but grows superlinearly because ZIPFoundation's addEntry rewrites the central directory for every entry. Recorded as an ADR-0010 open item: the product writer should write the central directory once."
+    }
+   ],
+   "rerun": {
+    "command": "G03_SIM_NAME=Sylvia-M0-minors-g03-intake Spikes/G03-Intake/scripts/clean-ci-run.sh Docs/Stage0/evidence/G03-Intake/ci-clean-run.log (deletes every G0.3 build product, then Scripts/ci.sh contracts g03-intake); then Spikes/G03-Intake/scripts/collect-evidence.sh. Separately: check-differential-sensitivity.sh, check-round4-before-fix.sh, host-pack-writer-scaling.sh and fixture-reasons.py.",
+    "result": "Passed on 2026-10-13, 07:26:47-08:00:17 UTC, at commit 34fe383 with a clean working tree. Load averages over the last minute: 18.53 at start, 9.62 at end. Contracts: 15 schemas, 232 fixtures. 50-g03-intake: all 8 steps passed. IntakeKit: 146 of 146 tests on host and on the iPhone 17 / iOS 26.5 simulator. In the harness: 7 in-app tests, 9 UI tests and 4 open-in checks. Differential: 363 named cases, 3,000 random mutations and 42 instants, 0 failures. ZIP library evaluation finished with status 0. Logs were overwritten in Docs/Stage0/evidence/G03-Intake/. Separate runs: sensitivity caught 9 of 9 defects, and all 6 fixes' tests fail with the fix reverted. Commits after 34fe383 change only documentation and evidence. DerivedData and the simulator Sylvia-M0-minors-g03-intake are deleted, and HEAD is detached at 77ceaf3."
+   }
+  }
+ },
+ {
+  "run": "wf_3f1b0c6a-cad",
+  "seq": 4,
+  "label": "minors-g03-intake:review-3",
+  "result": {
+   "verdict": "accept-with-minor",
+   "commit_reviewed": "77ceaf3f5228b91c1e000047014618a9f783a6b1",
+   "rerun": {
+    "command": "G03_SIM_NAME=Sylvia-M0-review-minors-g03-intake-3-r5 Spikes/G03-Intake/scripts/clean-ci-run.sh .build/scratch/ci-clean-run.log. This deletes .build/DerivedData, .build/ci-logs, the IntakeKit, App and ZipEval .build folders and the generated G03Intake.xcodeproj, then runs `Scripts/ci.sh contracts g03-intake`. I then re-ran every check the work adds that is not in CI: Spikes/G03-Intake/scripts/check-differential-sensitivity.sh, check-round4-before-fix.sh, check-generator-overlap.sh, host-pack-writer-scaling.sh and fixture-reasons.py. I also ran two probes of my own: a copy of contract_differential.py with a different seed (7340021) and 6,000 mutations per contract, and a measurement of the manifest reader's memory with `/usr/bin/time -l sylviapack-tool check-manifest pack <file>`. All files went under .build/scratch.",
+    "result": "PASS at 77ceaf3 on host macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.0 (27A266a), and on an iPhone 17 simulator with the iOS 26.5 runtime. The run took 2026-10-13T14:41:10Z to 15:12:30Z from a clean working tree. Load averages were 5.53 at the start and 7.37 at the end, with a spike to about 48 during the run, so timings are indicative only.\n\n10-contracts passed: 15 schemas and 232 fixtures. 50-g03-intake passed in 1879 s, with all 8 steps:\n- Step 1: the cached pack was verified (982562b0\u20260268).\n- Step 2: 146 host tests.\n- Step 3: the large pack validated in 1.8 s and extracted with a digest equal to the source. Of 326 truncated or padded copies, 0 partial copies were accepted (2 byte-identical padded copies were accepted, correctly).\n- Step 4: kill test, 12 of 12 kills landed mid-copy, failures=0.\n- Step 5: differential with 363 named cases (287 agree, 31 documented, 20 reader-limit, 25 quirk), 3,000 random mutations and 42 instants, failures=0.\n- Step 6: the same 146 tests on the simulator.\n- Step 7: 7 in-app and 9 UI tests, none skipped. Cancel before delivery showed the fallback 1.5 s after the tap with 'Zero KB copied' on screen. The picker opened the file in place; its identity and SHA-256 were unchanged. A raw drop-area file was staged, then flagged needs_review. Extension peak growth from 4 GiB + 1 byte to 8 GiB + 1 byte was 180,200 bytes. Open-in had 0 failures.\n- Step 8: the dependency probe was OK. Upstream ZIPFoundation falsely accepted all four 4.5 GiB cuts after 42-85 s. The fork did not finish within 120 s.\n\nOther checks:\n- Sensitivity check: 9 of 9 defects caught. The frozen round 2 and round 3 checks each passed against the defect their review found.\n- Round 4 before-fix check: 0 of 6 fixes had tests that passed without the fix.\n- Generator overlap check: failures=0, 0 watcher violations.\n- PackWriter scaling: 9,998 files with 512-byte paths in 5.8 s, load about 10.\n- Fixture reasons: 5/30 and 7/48 fixtures, each invalid one with exactly one schema error.\n- My differential with seed 7340021: 12,000 mutations (1,234 pack canonical twins), failures=0.\n\nThe working tree was unchanged after all runs.\n\nSimulator: the assigned name Sylvia-M0-review-minors-g03-intake-3 already existed (AF7E67F8-E787-41B1-9A8E-E634D142F81A, created 2026-10-13 21:07 local by an earlier attempt). Under CLAUDE.md's rule I did not boot or delete it, and it is left for the orchestrator to remove. I created Sylvia-M0-review-minors-g03-intake-3-r5 (1BFD16A9-B588-471F-B734-BF279121248B) instead and deleted it at the end, along with every build product of this worktree."
+   },
+   "findings": [
+    {
+     "id": "R5-01",
+     "severity": "minor",
+     "title": "The drop-in header still misstates which steps write the shared fixture cache (the R4-06 rewording)",
+     "location": "Scripts/ci.d/50-g03-intake.sh:26-32; Spikes/G03-Intake/scripts/host-large-pack.sh:25; Spikes/G03-Intake/scripts/host-handoff-kill.sh:17,22",
+     "detail": "**What the header says.** \"Step 1 is the only step that writes the cache's files\" and \"Steps 2 to 8 only read the cache's files; steps 3 and 8 keep their own work in mktemp folders beside them\".\n\n**What the code does.**\n- Steps 3 and 4 also run Scripts/fixtures/generate-g03-intake-pack.sh (host-large-pack.sh:25; host-handoff-kill.sh:22, with its output sent to /dev/null).\n- That generator rebuilds and publishes large.sylviapack and work/part-01.caf whenever they are missing or wrong. One way this happens: a branch carrying the pre-R2-06 generator deletes the pack between steps, a case the report itself describes in its R2-06 row.\n- Step 4 creates its work folder inside the cache folder (`run=\"$(mktemp -d \"$cache/kill-run.XXXXXX\")\"`, host-handoff-kill.sh:17). The header omits it.\n- Checked with grep. My clean run's host-large-pack.log starts with the generator's 'ok \u2026/large.sylviapack (982562b0\u2026)' line printed by step 3.\n\n**Impact.** Every cache write still happens under the generator's lock or in a private mktemp folder, so overlapping runs stay safe. This is documentation only, but R4-06 was about the accuracy of exactly this header.\n\n**Fix.** Say that steps 1, 3 and 4 run the generator, that only step 1's output is shown, and that it writes only when the files are missing or wrong, always under its lock. Say that steps 3, 4 and 8 keep their work in mktemp folders beside the cache files."
+    },
+    {
+     "id": "R5-02",
+     "severity": "minor",
+     "title": "The 16 MiB pack-manifest limit was justified by time and reachability only; at that limit the reader needs about 286 MB, which is not measured or stated",
+     "location": "Spikes/G03-Intake/IntakeKit/Sources/SylviaPack/PackRules.swift:18-23; Docs/Stage0/G03-Intake.md:131 (F19) and :215 (open question 1); Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:47, :55, :134",
+     "detail": "**How the reader holds the manifest.** It keeps the whole manifest entry in memory, copies it for StrictJSON, and decodes it with JSONDecoder, which also tokenises unknown members.\n\n**Probe.** Host, using the release sylviapack-tool built by my clean run; `check-manifest pack` calls the same PackManifest.decode(_:limits:) and validate functions as PackReader. Command `/usr/bin/time -l \u2026/sylviapack-tool check-manifest pack <file>`, load averages about 5.8.\n\n| Manifest (all schema-valid) | Size (bytes) | Accepted | Peak memory footprint (bytes) |\n| --- | --- | --- | --- |\n| Base fixture plus an unknown member holding 5,591,973 zeros | 16,777,214 | yes, in 0.13 s | 285,737,656 (max RSS 290,619,392) |\n| 1,677,592 objects {\"a\": 0} | 16,777,215 | yes | 278,119,048 |\n| One 16 MiB padding string (the differential's size case) | 16,777,216 | yes | 35,586,528 |\n| The differential's 9,998-file entry-limit manifest | 8,763,992 | yes | 50,184,696 |\n\n**Why it matters.**\n- Raising the limit 16-fold raised the worst case about 17 times the manifest size; the old 1 MiB limit bounded the same shape at roughly a sixteenth of this (not measured).\n- F19 and ADR-0010 give only time figures (0.27 s, 2.6 s and 3.1 s).\n- Open question 1 asks the product owner to approve the limit without this cost.\n- PackReader runs in the app, and an iPhone 12-class phone has far less headroom than the host.\n\nNot a correctness failure: the limit is still a bound.\n\n**Fix.** Measure the reader's peak memory at the limit on host and simulator, with a manifest of many small values and not only padding. State the figure next to the limit in F19, ADR-0010 and open question 1. Consider bounding token count or unknown-member size, or sizing the limit to the writer's worst case plus a stated margin."
+    },
+    {
+     "id": "R5-03",
+     "severity": "minor",
+     "title": "Checklist step 9 does not record whether Mail keeps fetching after Cancel, though F17, ADR-0010 and open question 5 say the checklist covers it",
+     "location": "Docs/Stage0/device-checklists/G03-Intake.md:24 (step 9); Docs/Stage0/G03-Intake.md:127 (F17), :219 (open question 5); Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:31",
+     "detail": "**What the documents say.**\n- F17: \"Device checklist steps 9 and 18 record what Mail and iCloud do\".\n- ADR-0010 section 1: \"checklist steps 9 and 18 record Mail and iCloud on a device\".\n- Open question 5 lists \"whether Cancel stops an iCloud download or a Mail fetch (F17)\" as a device-run item.\n\n**What the checklist asks.** Step 18 asks the tester to record \"whether the download in Files stopped or went on\". Step 9's Cancel sub-step ends with \"Record the time from Cancel to that message\". Nothing asks the tester to go back to Mail and see whether the attachment kept downloading. The Mail half of F17 therefore has no recording instruction (CLAUDE.md: device steps give the expected result and how to record it).\n\n**Fix.** Add to step 9: after Cancel, return to Mail and record whether the attachment kept downloading, and whether it finished, as step 18 does for iCloud."
+    },
+    {
+     "id": "R5-04",
+     "severity": "minor",
+     "title": "Code comments give a different figure for the old 1 MiB limit (about 5,800 files) than the report and ADR (5,636)",
+     "location": "Spikes/G03-Intake/IntakeKit/Sources/SylviaPack/PackRules.swift:21; Spikes/G03-Intake/IntakeKit/Tests/SylviaPackTests/PackLimitTests.swift:228; vs Docs/Stage0/G03-Intake.md:131 (F19) and Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:55",
+     "detail": "**The disagreement.** Both comments say the 1 MiB limit \"held at most about 5,800 files even with 4-byte paths\". F19 and ADR-0010 say 5,636, computed in the writer's layout.\n\n**Check.** I reproduced the writer's layout with a Swift probe mirroring PackManifest.encoded(): sorted keys, pretty-printed, ISO 8601 date, trailing line feed. Inputs: 4-byte paths, 1-character media type, kind 'pdf', size 0, no groups, run with `xcrun swift .build/scratch/manifest_capacity.swift`.\n- 5,636 files give 1,048,565 bytes.\n- 5,637 files give 1,048,751 bytes, over 1,048,576.\n\nThe documents are right and the comments are stale.\n\n**Fix.** Change both comments to 5,636."
+    },
+    {
+     "id": "R5-05",
+     "severity": "minor",
+     "title": "\"Only pattern-checked ASCII is kept in sets and dictionaries\" is not literally true of the code",
+     "location": "Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:53; Docs/Stage0/G03-Intake.md:120 (F16, Equality); Spikes/G03-Intake/IntakeKit/Sources/SylviaPack/PackManifest.swift:208-212; PackReader.swift:126,132; PackRules.swift:169-178",
+     "detail": "**What the documents claim.** The R4-01 closure says manifest text is compared byte for byte and \"only pattern-checked ASCII is kept in sets and dictionaries; the duplicate-path rule alone\" treats paths as equal after folding.\n\n**What the code does.**\n- PackReader keeps `byName`, a Dictionary keyed by full entry names, which can be non-ASCII and are hashed by canonical equivalence (PackReader.swift:126).\n- PackPath.checkNoFileDirectoryConflicts keeps a Set of case-folded, normalised collision keys. This is the file-and-folder conflict rule, a second exception the documents do not name.\n\n**Impact.** Neither use can make a reader accept anything:\n- `byName` only chooses between unexpected_entry and entry_order_mismatch after the byte comparison has already failed (line 132).\n- The conflict set only refuses more.\n- My extra 12,000 differential mutations found no unsound case.\n\nR4-01 was a blocker because a categorical claim about the readers was false, so the replacement wording should be exact.\n\n**Fix.** Name these two uses as refusal-only, or key `byName` by UTF-8 bytes."
+    }
+   ],
+   "claims_verified": [
+    "Clean rerun at 77ceaf3 passes: `Scripts/ci.sh contracts g03-intake`, after deleting every G0.3 build product, ran from 14:41:10Z to 15:12:30Z on 2026-10-13. Both 10-contracts and 50-g03-intake passed, all 8 steps.",
+    "Contracts: 15 schemas and 232 fixtures. fixture-reasons.py rerun: handoff contract 5 valid and 30 invalid, pack contract 7 valid and 48 invalid; each invalid fixture has exactly one schema error, at the member it is named for. This matches report C1 and the shared-file request counts.",
+    "The differential reproduces the report's figures exactly: 363 named cases (pack 230, handoff 133), of which 287 agree, 31 documented, 20 reader-limit and 25 quirk; 3,000 random mutations (312 pack canonical twins); 42 instants; failures=0. ci-clean-run.log and host-contract-instances.log agree.",
+    "A different seed (7340021) with 12,000 mutations: 0 manifests that a reader accepts and its schema refuses, and 0 unexplained refusals.",
+    "R4-05: the frozen copies under scripts/sensitivity/ have git blob ids a4376f494a03\u2026 and 946db2553f4d\u2026, equal to 4b8c634:check-contract-instances.sh and 937d53a:contract_differential.py, with the SHA-256 values the script checks.",
+    "R4-05: the sensitivity rerun at 77ceaf3 catches 9 of 9 defects. The round 2 check passed against pack-dates-iso8601 and the round 3 check passed against group-id-lookup-unchecked, as the reviews found.",
+    "R4-01 to R4-04: check-round4-before-fix.sh rerun shows all 6 tests failing with each fix reverted, each on the intended assertion (for example canonical twin not refused, manifest_too_large, 13 months off, timeout instead of success(42) with the load cancelled).",
+    "R4-01: PackManifest.validate checks isValidGroupID before the groupKinds lookup (PackManifest.swift:257). Enums go through decodeExactCase; format, producer.kind, digests, entry names and item names are compared with PathBytes.equal or as byte arrays; isLowercaseSHA256Hex works on bytes.",
+    "R4-01: the tests confirm only U+037E, U+1FEF and U+212A are canonical twins of ASCII (Foundation and Swift ==), and the contracts' 37 member names and 15 enum values and constants hold no ';', '`' or 'K'.",
+    "R4-02: both schema descriptions state their limit (16,777,216 and 262,144 bytes). The entry-limit test passes on host and simulator (manifest 9,356,558 bytes; 20,524,663-byte pack). The handoff.json size and read-limit tests pass. HandoffSession.commit checks the encoded size, PackWriter refuses before writing, and check-manifest applies both limits.",
+    "R4-03: RFC3339 uses daysFromCivil. The continuity test finds 119,987 months with 0 off, on host and simulator. The 42 instants equal Python's within 1 ms. RFC3339's grammar matches rfc3339-validator 0.1.4 as jsonschema 4.26 applies it (uppercase first, year not 0000, monthrange, hour 00-23, second 00-59, offset 00-23:00-59).",
+    "R4-04: armStallTimeout finishes the gate only through finish(_:onlyBeforeWork: true) and cancels the load only when it finished the gate. The class comment is now accurate. The seam test passes on host and simulator ('success(42) \u2026 load cancelled: false').",
+    "R4-06: step 1 now runs only the generator. The generator calls fetch.sh only when it has to rebuild, inside its lockf lock. No other G0.3 step reads the LibriVox file. The fetch.sh request is in the report's request table. The residual header inaccuracy is R5-01.",
+    "R2-06: the generator overlap rerun at HEAD gives failures=0 with 0 watcher violations, including a killed rebuild. The generator is unchanged since 0369a46, so the committed generator-overlap.log matches the current code.",
+    "R4-02 / F19: the PackWriter scaling rerun gives 9,998 files with 512-byte paths in 5.8 s (the report says 5.3 s), load about 10. My probe reproduces the 5,636-file figure for the old 1 MiB limit.",
+    "R2-01: the CancellationSignal design was traced through OnceGate, copyCoordinated, StreamingCopier and commit(isCancelled:). Handlers run outside the locks, so there is no lock-order inversion. The host and simulator cancel tests pass (before delivery, file URL, coordinated wait, after the last byte). The UI test shows the fallback 1.5 s after Cancel, and the harness provider logs only 'load 1: started'.",
+    "R2-02: checklist step 27 expects 4 files, matching sim-open-in's '1 staged 4' for the same gen-pack command.",
+    "R2-03: step references in code and docs are correct (step 24 for protection, step 18 for iCloud progress). The ADR's upstream range of 45-78 s matches the committed zip-eval.log.",
+    "R2-05: the raw drop-area import, refusing a file that changes and staging partial bytes from a paused copy, passes on host and simulator. ImportRoutesUITests passes: the picker file is outside the app container with scoped access granted, identity and SHA-256 unchanged on both picks, and a raw file is staged, then needs_review, and stays until removed.",
+    "Report figures match the committed clean-run logs: the kill test's 2.3-3.6 s non-mid-copy kills against a 4.14 s reference; D2c peaks of 31.4, 41.0, 48.1 and 49.1 MB with 1,015,808 bytes growth; G3 and G4 timings; cancel times of 1.6 s and 2.7 s; the 16 MiB read in 0.27 s and 0.44 s; the entry limit in 2.6 s and 3.1 s; the ZIP evaluation ranges. All step logs fall inside 07:26:47Z-08:00:17Z.",
+    "Commits after 34fe383 touch only documentation and evidence (git diff --stat 34fe383..77ceaf3).",
+    "The schema changes since b354dc7 are description-only: the non-description content is identical, so no constraint was tightened and no version bump is needed.",
+    "No test was weakened or skipped: removed assertions were replaced by equal or stronger ones. The only XCTSkip is unreachable in CI, where G03_FILES_PROBE=placed, and no test was skipped in my run. No compiler warnings in the project's own sources. No audio playback, no ATS exception, no TODO in G0.3 code.",
+    "All writes are within G0.3 paths (Spikes/G03-Intake, its ADR, report, checklist, evidence, its contracts, its drop-in and its generator). No shared file was edited.",
+    "The platform facts the tests record (JSONDecoder leniencies; UUID(uuidString:) with a NUL suffix) still hold on host and simulator."
+   ],
+   "gate_gaps": [
+    "Nothing the brief asked for on host or simulator is missing: R2-01 to R2-06 and the three round 2 gate gaps are implemented and exercised.",
+    "Still pending-device, correctly not claimed, each with checklist steps:\n- extension memory limit and peak (steps 14-15);\n- real Files, Safari, Mail and Books providers, the EPUB folder, and Cancel while Mail or iCloud is delivering (steps 6-13 and 18);\n- iCloud progress against the 60 s stall rule (step 18);\n- termination and force-quit (steps 16-17);\n- the Finder cable copy above 4 GiB, including partial and cancelled copies, and Finder and Files visibility (steps 19-23);\n- data-protection classes, including an APFS clone's (step 24);\n- AirDrop and Open in (steps 25-27);\n- raw Finder copies (steps 28-30);\n- the picker with an iCloud placeholder (steps 31-32).",
+    "Still pending-human: product-owner decisions (open questions 1, 2, 3 and 8), the security review (4), design-package strings (6), the validator owner (9) and the M0 integration requests (10).",
+    "Partly missing: the Mail half of F17, whether Cancel stops a Mail fetch, has no recording instruction in checklist step 9 (R5-03).",
+    "Partly missing: the memory cost of the new 16 MiB manifest limit is not given to the product owner, whose open question 1 asks for approval of that limit (R5-02)."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R4-01",
+     "resolved": true,
+     "note": "Closed.\n\nFix in code: a file's group_id is checked against ^[A-Za-z0-9_-]{1,64}$ on bytes before the groupKinds lookup (PackManifest.swift:257). All other manifest text is compared by bytes or kept only after pattern checks.\n\nEvidence, re-run by me:\n- Fixture file-group-id-kelvin-sign.json fails its schema with one pattern error.\n- PackCanonicalEquivalenceTests and CanonicalEquivalenceTests pass on host and simulator.\n- The differential's group_id-kelvin-* cases agree.\n- The before-fix check fails with the lookup check removed.\n- The sensitivity defect group-id-lookup-unchecked is caught with 66 failing cases, while the frozen round 3 check passes against it.\n- My extra 12,000 mutations, 1,234 of them pack canonical twins, found 0 unsound cases.\n\nThe categorical claim was withdrawn (F16 'Where it stops'). Residual wording imprecision about sets and dictionaries: R5-05."
+    },
+    {
+     "id": "R4-02",
+     "resolved": true,
+     "note": "Closed.\n\nChanges:\n- Both schema descriptions state the limits (16 MiB and 256 KiB).\n- PackLimits.maxManifestBytes is 16 << 20, and the entry limit is reachable: the 9,998-file manifest is 9,356,558 bytes, and the 10,000-entry pack is accepted on host and simulator.\n- The extension refuses to commit a handoff.json over 262,144 bytes and shows the fallback.\n- PackWriter refuses an over-limit manifest.\n- check-manifest applies both limits, and the differential's size-* cases pass.\n\nEvidence, re-run by me:\n- The sensitivity defect manifest-size-unchecked is caught.\n- The before-fix tests fail without each fix.\n- Writer scaling: 5.8 s at 9,998 files.\n\nResidual: the memory cost of the new limit is unmeasured (R5-02)."
+    },
+    {
+     "id": "R4-03",
+     "resolved": true,
+     "note": "Closed. RFC3339.date counts days with daysFromCivil (proleptic Gregorian).\n\nEvidence, re-run by me:\n- ContractFixtureTests checks the instants for 0001-01-01 and 1582-10-10, and the continuity test finds 119,987 months with 0 off, on host and simulator.\n- The differential compares 42 instants with Python's, failures=0.\n- The before-fix check finds 13 months off plus 7 issues in the RFC 3339 test.\n- The sensitivity defect dates-julian is caught."
+    },
+    {
+     "id": "R4-04",
+     "resolved": true,
+     "note": "Closed.\n\nFix in code: the stall task calls finish(.failure(.providerTimedOut), onlyBeforeWork: true) under the same lock as beginWork, and calls probe.cancel() only when it actually finished the gate. The OnceGate comment now matches the code.\n\nEvidence, re-run by me:\n- The seam test 'a delivery at the moment the stall timeout fires wins' passes on host and simulator: success(42), load not cancelled.\n- With the fix reverted it fails: providerTimedOut, load cancelled."
+    },
+    {
+     "id": "R4-05",
+     "resolved": true,
+     "note": "Closed.\n\nThe round 2 check and the round 3 differential are committed under Spikes/G03-Intake/scripts/sensitivity/. Their git blob ids, a4376f49\u2026 and 946db255\u2026, equal the originals at 4b8c634 and 937d53a, and the script checks their SHA-256. The pre-F18 readers are now a mutation of PathBytes.swift.\n\nThe script reads no other commit; it calls `git rev-parse` only for its log header.\n\nMy rerun at 77ceaf3 reproduces the evidence: 9 of 9 defects caught, and both frozen checks pass against their defects."
+    },
+    {
+     "id": "R4-06",
+     "resolved": true,
+     "note": "The race and the missing request are fixed:\n- Step 1 no longer runs fetch.sh outside the lock.\n- The generator downloads only when it rebuilds, under lockf, so two runs of this drop-in never download at once.\n- The fetch.sh request, with the exact change, is in the report's request table.\n\nResidual: the rewritten header still says step 1 is the only step that writes the cache and lists only steps 3 and 8 as keeping work beside it. In fact steps 3 and 4 also run the generator, and step 4 keeps kill-run.* in the cache folder. Raised as R5-01 (minor, documentation only)."
+    }
+   ]
+  }
+ }
+]

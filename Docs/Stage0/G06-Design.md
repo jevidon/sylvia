@@ -14,6 +14,8 @@
 
 **Size of the snapshot references.** 527 PNG files, 37,900 KiB on disk, largest 368 KB, in `Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests` ([inventory](evidence/G06-Design/snapshot-references.md)). 31 samples (22 Section 4.4.7 components and 9 screen parts added in part 3) x (4 appearances x 2 text sizes in color, the same in grayscale, plus Bold Text) = 527. Default size at 2x, AX5 at 1x. Review round 1 re-recorded 51 of them (`markerRows`, `captureCard-generated`, `captureSheet-saveStates`) on `Sylvia-M0-g06-design`; the suite then passed in verify mode twice (a scratch run and the clean run).
 
+**M0 item review record.** The author result and the one review of `m0-int-minors-g06-design`, the revision that closed R3-01, R3-02 and finding 18 (Review round 3 below), handed over on 24 October 2026 from the orchestrating session's workflow journals (agent reviews; human sign-off pending): the review, round 4, accepted `98125421` with five minor findings, R4-01 to R4-05, left open at the merge and not written up in this report: [`evidence/M0-Integration/item-reviews/minors-g06-design.md`](evidence/M0-Integration/item-reviews/minors-g06-design.md).
+
 ## Results
 
 Evidence paths are under `Docs/Stage0/evidence/G06-Design/` unless stated.

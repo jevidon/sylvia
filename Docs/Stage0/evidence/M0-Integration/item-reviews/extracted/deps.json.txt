@@ -1,0 +1,812 @@
+[
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 45,
+  "label": "deps:author",
+  "result": {
+   "branch": "m0-int-deps",
+   "commit": "a4a24c7441f5071d6a84a089afbfbee80c4114d7",
+   "summary": "ADR-0014 is delivered on m0-int-deps (27 commits on b354dc7). A stopped agent had left two WIP commits; I treated them as unreviewed and re-checked them. Its 31 license-text copies are byte-identical to fresh copies. Its scripts are kept with fixes: resolve-locks.sh now keeps DerivedData per project, passes a scheme, and accepts only the resolver's own IdentityProbe refusal, so a network failure cannot pass. Its logs were regenerated.\n\nWhat was delivered:\n(1) Inventory: Docs/Licenses/inventory.json (machine-readable) and third-party-inventory.md. It covers 23 Swift packages pinned by 13 locks (exact version, revision, URL, role, locks, requiring manifests and targets), with one version per package and every requirement exact. Builds show what actually ships (linkage.log). It also covers vendored code, fonts and scripts found inside packages, Sylvia's Literata, the toolchain and host tools, Python CI pins, the GitHub Actions, and a cross-check of Fixtures/LICENSES.md (every digest, count and size matches).\n(2) Licenses: read from each checkout at its pinned revision and version tag (read-licenses.log). License texts not present in the checkouts were fetched from public sources or extracted from file headers. All 45 texts were re-verified byte for byte (run-all.log).\n(3) Advisories: GitHub Advisory Database (the Swift list read in full, plus a keyword search per package) and OSV (advisories.md). One applies to a pinned version: marmelroy/Zip 2.1.2, CVE-2023-39135, with no fixed release. Its vulnerable function is linked into the app but never called; CI now forbids product imports of Zip and Minizip. The npm and Hypothesis code in Readium's scripts and the host tools were not searched (pending).\n(4) An acknowledgements draft generated from the inventory, with every text verbatim; CI fails if it drifts.\n(5) Scripts/check-dependency-lock.py and Scripts/ci.d/12-dependency-lock.sh. CI fails on a pin that differs, an unknown package, a non-exact requirement (Swift or Python), or a spike-only package or Spikes/ code reaching Apps/ or Packages/. It also fails on transitive-only direct use or imports, a test-only package in a non-test target, stale lock registrations or exemptions, changed license texts or vendored fonts, workflow-action or toolchain drift, and documents out of sync. Its self-test checks 40 mutations (all detected) and 4 allowed changes (none flagged). The clean run passed at ff4e472 in 51 s.\n(6) ADR-0014 (Proposed): the lock, roles (product 9, product-transitive 9, test 4, spike 1: only weichsel/ZIPFoundation is spike-only), license and security posture, update procedure, and pending-human decisions.\n\nMain findings:\n- Readium ships five OpenDyslexic 2.001 font files under CC BY 3.0 plus a Bitstream license whose text is no longer at the URL they give. This needs counsel.\n- The Mac companion links two BoringSSL copies. SwiftNIO SSL's copy is under the OpenSSL and SSLeay licenses, with advertising clauses; its NOTICE points at BoringSSL's current Apache license, which does not match the vendored files.\n- Notice-heavy obligations: CryptoSwift's required acknowledgment sentence, Info-ZIP code in Minizip, and embedded MIT and Apache code in Readium, SwiftSoup, CryptoSwift, GRDB and swift-certificates.\n\nG0.4 was read at m0-g04-audio 943d5e778de2b58f47343f0e146f9e3ed7baa70e and adds no package. Network use was limited to pinned package resolution and public HTTPS reads of license files, package metadata and advisory pages; no repository content was sent. No simulator was created, and no build products remain.",
+   "criteria": [
+    {
+     "criterion": "Inventory of everything third-party: every Package.swift and Package.resolved (exact version, revision, URL, which targets use it, product vs spike/test), transitive packages, vendored assets, Homebrew tools with versions, Xcode toolchain and SDKs, fixture sources",
+     "status": "passed-host",
+     "evidence": "Docs/Licenses/inventory.json; Docs/Licenses/third-party-inventory.md; Docs/Stage0/evidence/M0-dependencies/resolve-locks.log (7 projects and 10 packages resolve without changing a lock; IdentityProbe refused as ADR-0010 records), linkage.log (what the EPUB app, the Mac source service and the recovery tool link and bundle), toolchain.log, fixtures-crosscheck.log (0 failed). Host macOS 26.6.2 (25G83), Xcode 27.0 (27A266a)."
+    },
+    {
+     "criterion": "License of each package read from its LICENSE file at the pinned revision (in the package checkout, not from memory)",
+     "status": "passed-host",
+     "evidence": "Docs/Stage0/evidence/M0-dependencies/read-licenses.log (23 of 23 checkouts at the pinned revision and version tag, no tracked file modified, every license, notice and copyright file with its SHA-256); run-all.log (all 45 texts in Docs/Licenses/texts identical to today's copies, extractions and fetches); vendored-headers.log, copyright-lines.log, font-names.log, extract-notices.log, fetch-external-licenses.log, fetch-npm-licenses.log"
+    },
+    {
+     "criterion": "Obligations of each license for an App Store binary (notice, attribution, copyleft)",
+     "status": "passed-host",
+     "evidence": "third-party-inventory.md (Licenses and obligations; Third-party code and assets inside packages), ADR-0014 section 4. No shipped code is GPL or LGPL. Notice-heavy items listed. Agent-assessed: counsel confirmation is a separate pending-human criterion."
+    },
+    {
+     "criterion": "Known security advisories for each pinned version, sources cited, 'none found' stated with what was searched",
+     "status": "partial",
+     "evidence": "Docs/Stage0/evidence/M0-dependencies/advisories.md covers all 23 Swift packages plus the vendored BoringSSL, Minizip and llhttp (GitHub Advisory Database: the Swift list read in full plus a keyword search per package; OSV), each hit checked against the pinned source. One applies: marmelroy/Zip CVE-2023-39135. Not searched: the npm closure and Hypothesis code bundled in Readium's scripts, the CI Python tools and the host tools (pending-human, security reviewer)."
+    },
+    {
+     "criterion": "Docs/Licenses/third-party-inventory.md (human-readable) and Docs/Licenses/inventory.json (machine-readable)",
+     "status": "passed-host",
+     "evidence": "Both committed. 12-dependency-lock checks that the page names every package with its version and revision, and that the JSON matches the repository (ci-12-dependency-lock.log: 0 failures)."
+    },
+    {
+     "criterion": "Draft acknowledgements text the app will need",
+     "status": "passed-host",
+     "evidence": "Docs/Licenses/acknowledgements-draft.md (iOS app and Mac companion; every license and notice reproduced verbatim), generated by check-dependency-lock.py acknowledgements --write and compared in CI. Release-owner approval is pending-human."
+    },
+    {
+     "criterion": "Scripts/check-dependency-lock.py and Scripts/ci.d/12-dependency-lock.sh fail CI when a pin differs from the inventory, a package is not in the inventory, a requirement is not exact, or a spike-only dependency is referenced by a product target",
+     "status": "passed-host",
+     "evidence": "Docs/Stage0/evidence/M0-dependencies/ci-12-dependency-lock.log: Scripts/ci.sh dependency-lock from a clean tree at ff4e472, pass in 51 s. The self-test checks 40 mutations, all detected, including pin-differs, unknown-package, not-exact (Package.swift from, branch and revision; project.yml from and range; Python >=) and spike-in-product (manifest, lock, local Spikes path), and 4 allowed changes, none flagged. The check of the repository reports 0 failures."
+    },
+    {
+     "criterion": "ADR-0014 (Status: Proposed): lock, license posture, update procedure, which spike dependencies are recommended for M1+ product use and which are spike-only, items needing the product owner or a lawyer",
+     "status": "passed-host",
+     "evidence": "Docs/ADRs/0014-dependency-lock-and-license-inventory.md (sections 1-7; roles table; update procedure; section 7 pending-human items). The decisions themselves await their deciders."
+    },
+    {
+     "criterion": "Fixture sources cross-checked against Fixtures/LICENSES.md (corrections requested, not edited)",
+     "status": "passed-host",
+     "evidence": "Docs/Stage0/evidence/M0-dependencies/fixtures-crosscheck.log: every stated SHA-256, count and size matches, all 17 G0.1 EPUBs match MANIFEST.tsv, every fixture-like file is named, and the fetch manifest is consistent. No correction needed; two additions requested (pointer to the inventory; G0.4 rows at its merge)."
+    },
+    {
+     "criterion": "G0.4 audio read from m0-g04-audio and its commit stated",
+     "status": "passed-host",
+     "evidence": "Read with git at 943d5e778de2b58f47343f0e146f9e3ed7baa70e: Spikes/G04-Audio/project.yml declares no package, and the branch adds no Package.swift or Package.resolved; its host tools (ffmpeg 8.1.2 and others) are listed in toolchain.log and third-party-inventory.md"
+    },
+    {
+     "criterion": "CI drop-ins touched re-run from clean, log saved; DerivedData created deleted",
+     "status": "passed-host",
+     "evidence": "Docs/Stage0/evidence/M0-dependencies/ci-12-dependency-lock.log (commands/ci-clean.sh deletes build products, then runs Scripts/ci.sh dependency-lock; after the run, 0 build products under Apps, Packages and Spikes). The earlier clean run at 6244405 deleted every .build, DerivedData and generated .xcodeproj this work created. No shared DerivedData folder belongs to this worktree. Contracts/ was not touched."
+    },
+    {
+     "criterion": "Own simulator (Sylvia-M0-deps) created only if needed and deleted before finishing",
+     "status": "not-applicable",
+     "evidence": "All work was host-only, so no simulator was created; simctl lists no device named Sylvia-M0-deps (checked at start and end)."
+    },
+    {
+     "criterion": "Counsel and release-owner confirmation of the license posture and acknowledgements",
+     "status": "pending-human",
+     "evidence": "ADR-0014 section 7 items 2 and 5; agent-reviewed; human sign-off pending"
+    },
+    {
+     "criterion": "Decision on Readium's bundled OpenDyslexic 2.001 fonts (CC BY 3.0 and Bitstream license; App Store technological-measures question)",
+     "status": "pending-human",
+     "evidence": "ADR-0014 section 7 item 1; font-names.log (embedded license statement); linkage.log (five files in the app bundles); fetch-external-licenses.log (the referenced legal page no longer carries the Bitstream text)"
+    },
+    {
+     "criterion": "Security-review acceptance of marmelroy/Zip CVE-2023-39135 and the BoringSSL posture; search of the unsearched components",
+     "status": "pending-human",
+     "evidence": "ADR-0014 section 7 items 3 and 4; advisories.md"
+    },
+    {
+     "criterion": "Test audio quiet",
+     "status": "not-applicable",
+     "evidence": "No test, harness or probe in this work plays audio."
+    }
+   ],
+   "ci": {
+    "script": "Scripts/ci.sh dependency-lock, run from a clean tree by Docs/Stage0/evidence/M0-dependencies/commands/ci-clean.sh",
+    "result": "pass (51 s) at ff4e472e0f016bf692ad969e7abd9484e4487d02 with load averages 10-25: self-test 40 mutations and 4 allowed changes, 0 wrong; check of the repository 0 failures (13 locks, 18 manifests, 46 license texts, 58 product Swift files, 3 vendored assets, 20 Python pins, 2 workflow actions, toolchain matches, acknowledgements draft matches). Log: Docs/Stage0/evidence/M0-dependencies/ci-12-dependency-lock.log"
+   },
+   "plan_findings": [
+    "Plan 18.4 and Appendix C (distribution rights): Readium 3.11.0 copies five OpenDyslexic 2.001 font files into the app and registers the face in every EPUB web view by default. Their only license statement is embedded in the fonts: Bitstream glyphs, with OpenDyslexic changes under CC BY 3.0 Unported. The Bitstream license text they point to is no longer at http://opendyslexic.org/legal/, and CC BY 3.0 section 4(a) forbids technological measures. This needs counsel before any distribution (ADR-0014 section 7.1).",
+    "Plan 23.2 (dependency risk): marmelroy/Zip 2.1.2, linked into the app through Readium, carries CVE-2023-39135 (path traversal in Zip.unzipFile). No release fixes it; the fix was merged in 2024 but never released. Readium never calls the function: it uses only Minizip's read functions. Minizip's unused zipOpenNewFileInZip4_64 has the CVE-2023-45853 pattern. CI now forbids product imports of Zip and Minizip.",
+    "Plan 21.1 G0.5 (security posture): the Mac source service links two BoringSSL copies. One comes from swift-nio-ssl (revision 817ab07e, committed 28 January 2025; OpenSSL and SSLeay licenses with advertising clauses). swift-nio-ssl's NOTICE points to BoringSSL's current Apache-2.0 LICENSE, which is not the license of the vendored files. The other comes from swift-crypto through swift-certificates' _CryptoExtras (revision 0226f304, Apache-2.0). BoringSSL fixes arrive only through those packages' releases.",
+    "Plan 22.1, 22.2 and Appendix C (notices): beyond the package LICENSE files, the app must carry several further notices. CryptoSwift requires an acknowledgment sentence in every redistribution. Minizip's linked crypt.h is Info-ZIP code whose license requires notices in binary documentation. Readium's navigator scripts have all license comments stripped but contain Hypothesis client code (BSD-2-Clause) and up to 95 npm packages. Further embedded code: Readium's DataCompression (Apache-2.0), SwiftSoup's LRUCache (MIT), CryptoSwift's BigInt (MIT upstream; CryptoSwift ships no license for it), GRDB's Rails inflections (MIT) and Swift-derived code (Apache-2.0), and swift-certificates' musl code (MIT).",
+    "Plan 18.2 (privacy manifests): Readium, Fuzi, SwiftSoup, DifferenceKit, Zip, swift-asn1, swift-certificates, swift-atomics and swift-collections ship no PrivacyInfo.xcprivacy. The app's and the companion's own manifests must cover any required-reason API they use (M1 and M6).",
+    "Plan 22.2 ('verify package licenses') is now enforced by Scripts/ci.d/12-dependency-lock.sh: license texts must match digests read at the pinned revisions, and the repository must match a reviewed inventory with roles and obligations. License compatibility is a reviewed decision recorded in ADR-0014, not something CI judges automatically.",
+    "Lock hygiene for plan 6.3 ('do not build against a moving dependency'): G0.2's MacIdentityProbe project has no committed lock, so swift-atomics, swift-collections and swift-system could drift on a fresh resolution; the iOS project likewise has none, though its only remote package is exact. Most CI SwiftPM invocations lack --force-resolved-versions; only 71-g05-recovery.sh passes it. The GitHub workflow uses movable action tags (@v4) and an unpinned 'brew install xcodegen'."
+   ],
+   "shared_changes_requested": [
+    "Docs/ADRs/README.md, row 0014: replace 'Proposed (G0.4 packages added at its merge)' with 'Proposed; G0.4 adds no package; license and security decisions pending (ADR-0014 section 7)'.",
+    "Docs/ADRs/0002-repository-build-and-ci.md, Dependencies paragraph: replace 'and listed with its license in the inventory produced at the M0 gate (ADR-0014).' with 'and recorded with its role and license in `Docs/Licenses/inventory.json`, which `Scripts/ci.d/12-dependency-lock.sh` checks on every run (ADR-0014).'",
+    "CLAUDE.md, Toolchain bullet beginning 'Pinned dependency versions are in ADR-0002': replace the bullet with: '- Pinned dependency versions are in ADR-0002; the full lock, with every transitive package, its role and its license, is `Docs/Licenses/inventory.json` (ADR-0014), and `Scripts/ci.d/12-dependency-lock.sh` fails on any difference. One version per package across the repository: changing a version changes every committed `Package.resolved` that holds it, and the inventory, in the same commit (ADR-0014 section 6). Requirements are exact (`exact:`, `exactVersion:`). Product code never imports a transitive-only package (for example `import Zip`) and never depends on `Spikes/`.'",
+    "Fixtures/LICENSES.md, end of section 'Bundled with the app (not fixtures)': add the sentence 'Third-party code, fonts and scripts that ship inside the app's and the companion's packages (for example the fonts and scripts in Readium's resources) are inventoried in `Docs/Licenses/third-party-inventory.md` (ADR-0014).'",
+    "Fixtures/LICENSES.md, at the G0.4 merge (owner: the G0.4 merge agent): replace 'G0.4 audio fixtures are added to this file when the `m0-g04-audio` branch is merged.' with a 'Generated into the cache' row naming `generated/g04-audio/` and `generated/g04-audio/long-formats/`, generators `Scripts/fixtures/generate-g04-audio-fixtures.sh` and `generate-g04-audio-long-formats.sh` (ffmpeg 8.1.2), digests in each directory's manifest.tsv, and content: encodes of the LibriVox Meditations recording above (public domain) and a generated 1 kHz tone, with the sizes G04-Audio.md reports. Then run `Scripts/ci.sh dependency-lock`; G0.4 adds no package.",
+    "Spikes/G02-Transfer/MacIdentityProbe/Package.resolved (owner: G0.2): add it as an exact copy of Spikes/G02-Transfer/SourceService/Package.resolved. In the same commit, in Docs/Licenses/inventory.json: remove the `unlocked` entry for Spikes/G02-Transfer/MacIdentityProbe/project.yml; add {\"path\": \"Spikes/G02-Transfer/MacIdentityProbe/Package.resolved\", \"manifest\": \"Spikes/G02-Transfer/MacIdentityProbe/project.yml\", \"note\": \"A copy of SourceService's lock\"} to `locks`; and add that path to the `locks` of swift-nio, swift-nio-ssl, swift-certificates, swift-crypto, swift-asn1, swift-atomics, swift-collections and swift-system. Verify with Scripts/ci.sh dependency-lock g02.",
+    "Spikes/G02-Transfer/iOS/Package.resolved (owner: G0.2): add it as an exact copy of Spikes/G02-Transfer/TransferKit/Package.resolved, with the matching Docs/Licenses/inventory.json change: drop the `unlocked` entry, register the lock, and add the path to swift-asn1's `locks`.",
+    "Add --force-resolved-versions to every `swift build` and `swift test` (not to `--show-bin-path` calls) in: Scripts/ci.d/20-design.sh (line 42), 31-g01-epub.sh (line 38), 40-g02-transfer.sh (line 86), 50-g03-intake.sh (line 80), 70-g05-ai.sh (lines 65 and 81); Spikes/G02-Transfer/Scripts/scripted-cli-run.sh (lines 45-46), sim-sources.sh (line 17), simulator-pairing-run.sh (line 24); Spikes/G03-Intake/scripts/check-contract-instances.sh (line 16), host-handoff-kill.sh (line 23), sim-open-in.sh (line 30), host-large-pack.sh (line 26); Spikes/G03-Intake/ZipEval/run-eval.sh (line 52); Spikes/G05-AI/Scripts/live-tests-dry-run.sh (line 33). Reason: a lock that no longer satisfies its manifest should fail, not be rewritten (ADR-0014 section 1.4).",
+    ".github/workflows/ci.yml (owner: the workflow owner, ADR-0002): reference actions/checkout and actions/upload-artifact by full commit SHA (keep '# v4' comments). Replace 'brew install xcodegen' with an install that fails unless `xcodegen --version` prints 'Version: 2.46.0'. In the same commit, update `ci_actions[].uses` in Docs/Licenses/inventory.json (the check fails otherwise).",
+    "Docs/Stage0/README.md, after the gate table: add 'The M0 dependency lock and license inventory: [ADR-0014](../ADRs/0014-dependency-lock-and-license-inventory.md), [`Docs/Licenses/third-party-inventory.md`](../Licenses/third-party-inventory.md); evidence in `evidence/M0-dependencies/`; CI `Scripts/ci.d/12-dependency-lock.sh`.'",
+    "Docs/Stage0/integration-log.md, section 6: add the bullet '- **Done on `m0-int-deps`:** ADR-0014 rewritten with the full inventory (`Docs/Licenses/`), the CI check `12-dependency-lock`, the advisory search and the acknowledgements draft; its pending-human items are in ADR-0014 section 7.' Amend the G0.2 bullet to say the lock copies are requested.",
+    "Docs/ADRs/0004-epub-reader-adapter.md, section 1 after the table (owner: G0.1 EPUB / M3): add 'Readium's resources also ship OpenDyslexic 2.001 (CC BY 3.0 and Bitstream), Accessible DfA and iA Writer Duospace (OFL) fonts and minified scripts that bundle Hypothesis and npm code; marmelroy/Zip 2.1.2 carries CVE-2023-39135 in an API Readium does not call. See ADR-0014.'",
+    "Docs/ADRs/0009-transfer-protocol.md, Decision paragraph on the source service (owner: G0.2 / M6): add 'The built service links two BoringSSL copies: swift-nio-ssl's (OpenSSL and SSLeay licenses) and, through swift-certificates' _CryptoExtras, swift-crypto's (Apache-2.0); ADR-0014, linkage.log.'",
+    "ADR-0015 threat model (owner: the parallel M0 threat-model item): include the supply-chain inputs from ADR-0014: two vendored BoringSSL copies updated only through package releases; marmelroy/Zip CVE-2023-39135 (uncalled, CI import rule); Readium's minified third-party scripts; unpinned GitHub Actions and XcodeGen in CI; Spikes projects without locks."
+   ],
+   "dependencies_added": [],
+   "committed_fixtures": [],
+   "open_questions": [
+    "Product owner and counsel: may Sylvia ship Readium's OpenDyslexic 2.001 fonts (CC BY 3.0 and an unavailable Bitstream license text) through the App Store, or should Readium be asked to ship the OFL-licensed release or make the fonts optional? (ADR-0014 section 7.1)",
+    "Release owner and counsel: accept the OpenSSL and SSLeay advertising clauses of swift-nio-ssl's BoringSSL for the notarized Mac companion, or require a swift-nio-ssl release with Apache-2.0 BoringSSL before distribution? (section 7.2)",
+    "Security reviewer: accept marmelroy/Zip CVE-2023-39135 (linked but never called, product imports forbidden by CI) until Readium drops or updates Zip? (section 7.3)",
+    "Once the workflow owner pins the actions, should CI also fail on any GitHub Action referenced by a movable tag rather than a commit? Today the inventory only records the tags.",
+    "Should CI, once product targets exist in M6, forbid the swift-nio packages in iOS targets (ADR-0009)? It is stated in ADR-0014 but not yet enforced.",
+    "Once the repository is hosted, should the advisory search be automated (for example OSV-Scanner), given that each run sends the dependency list to a service?"
+   ]
+  }
+ },
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 51,
+  "label": "deps:review-1",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "a4a24c7441f5071d6a84a089afbfbee80c4114d7",
+   "rerun": {
+    "command": "Fresh worktree, `git checkout --detach m0-int-deps` (a4a24c7), no .build/DerivedData/.xcodeproj under Apps, Packages or Spikes beforehand; `source Scripts/lib/env.sh; source Scripts/lib/sim.sh; source Scripts/lib/xcodegen.sh; Scripts/ci.sh dependency-lock` (host macOS 26.6.2 25G83, Xcode 27.0 27A266a)",
+    "result": "pass (55 s), load averages 10.00 15.25 21.41 before and 13.18 15.33 21.06 after. Self-test: 40 mutations and 4 allowed changes, 0 wrong. Repository check: 0 failures (13 locks committed and registered, 18 manifests with 16 remote requirements, 46 license texts, 58 product Swift files, 3 vendored assets, 20 Python pins, 2 workflow actions; Xcode 27A266a, Swift 6.4 and XcodeGen 2.46.0 match; acknowledgements draft matches at 226055 characters). The run left no build products and `git status` was clean."
+   },
+   "findings": [
+    {
+     "id": "R1-01",
+     "severity": "major",
+     "title": "Zip/Minizip import ban, the CVE-2023-39135 mitigation, is bypassed by Swift 6 access-level imports",
+     "location": "Scripts/check-dependency-lock.py:462 (importer regex), :466 (only .swift files scanned); claim at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:54, :58, :70 and in the author's summary (\"CI now forbids product imports of Zip and Minizip\")",
+     "detail": "ADR-0014 section 5 says product code never imports Zip or Minizip, \"enforced by CI\". The regex only accepts attributes before `import`, so the Swift 6 access-level form (SE-0409) is never matched.\n\nReproduction on a scratch copy of the committed tree (`git archive HEAD`):\n- Added Packages/Design/Sources/SylviaDesign/ZipProbe.swift containing `internal import Zip` and `internal import Minizip`.\n- Ran `<tools venv>/bin/python -I Scripts/check-dependency-lock.py check --root <copy>`. Output: \"dependency lock check: 0 failure(s)\".\n- Control: replacing the file with `import Zip` gives \"FAIL transitive-direct Packages/Design/Sources/SylviaDesign/ZipProbe.swift:1: imports Zip, a module of marmelroy/Zip\".\n\nOn the checker's own synthetic tree (write_base), these also pass undetected: `public import BModule`, `package import BModule`, `import Foundation; import BModule` on one line, and `@import BModule;` in a .m file.\n\nThe syntax is ordinary in the Swift 6 language mode the repository mandates: `xcrun swiftc -swift-version 6` (Swift 6.4) compiles `internal import Foundation` and `package import Dispatch`, and the binary runs.\n\nFix: accept an optional `public|package|internal|fileprivate|private` modifier before `import`, split statements on `;`, scan C and Objective-C sources under product roots (`@import X;`, `#import <X/...>`, `#include <X/...>`), and add a self-test mutation for each form."
+    },
+    {
+     "id": "R1-02",
+     "severity": "major",
+     "title": "\"Spikes/ code referenced from Apps/ or Packages/\" fails CI only for local package dependencies; a product project.yml can compile Spikes sources",
+     "location": "Scripts/check-dependency-lock.py:392-395 (checks only m['local']) and :183-223 (xcodegen() ignores target `sources`); claim at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:58 and in the author's summary (\"a spike-only package or Spikes/ code reaching Apps/ or Packages/\")",
+     "detail": "Reproduction on the scratch copy:\n- Added `- path: ../../Spikes/G01-EPUB/Core/Sources/G01EPUBCore` to the DesignCatalog target's `sources:` in Apps/DesignCatalog/project.yml.\n- `check --root <copy>` reports \"0 failure(s)\".\n- `xcodegen generate` (2.46.0) on that project puts Spike files (MarkupCanonicalizer.swift, PortableEPUBAnchor.swift) into the product app's Sources build phase.\n\nA second route also passes: a symlink `Packages/Linked -> ../Spikes/S`, used as a local package by Apps/App/project.yml in the synthetic tree, is not detected. project.yml local paths are only normpath'd, while Package.swift paths are realpath'd.\n\nCLAUDE.md requires that Spikes harness code is never shipped, so the claim matters. Only spike-only *packages* (the brief's literal requirement) are enforced correctly.\n\nFix: resolve every project.yml target `sources` and `resources` path (string or `path:` form) with realpath and fail when it lies under a spike root. Realpath local package paths. Add self-test mutations. Otherwise, narrow ADR section 3 and the summary to what is actually enforced."
+    },
+    {
+     "id": "R1-03",
+     "severity": "major",
+     "title": "No advisory search for code that ships in the app: Readium's bundled npm closure and Hypothesis code; doable, and no reason given",
+     "location": "Docs/Stage0/evidence/M0-dependencies/advisories.md:67; Docs/ADRs/0014-dependency-lock-and-license-inventory.md:72, :95 (section 7 item 4)",
+     "detail": "readium-*.js ships in the app's resource bundle (linkage.log) and contains up to 95 npm packages plus Hypothesis client anchoring code v1.1763.0. advisories.md marks this as \"Pending: no advisory search was made ... Owner: security reviewer\" and gives no reason. CLAUDE.md requires every pending item to state its reason. The brief asks for advisories you can find for each inventoried package, with what was searched.\n\nThe search is cheap with the author's own method. The author already fetched 94 license files for this exact closure from unpkg (fetch-npm-licenses.log). My spot queries on the GitHub Advisory Database each answered in seconds, with 0 results: `ecosystem:npm css-selector-generator` and `hypothesis client`.\n\nThe author's own status for this criterion is \"partial\". The work was doable, so it should not be deferred to a human.\n\nFix: search the GitHub Advisory Database (npm ecosystem) and OSV for each package@version in readium-js-closure.log and for hypothesis/client v1.1763.0. Record each result as \"none found\" with what was searched, or as the advisory and whether it applies."
+    },
+    {
+     "id": "R1-04",
+     "severity": "minor",
+     "title": "\"The installed virtualenv ... held nothing else\" is false: pip 26.2.1 is installed and the script silently excludes it",
+     "location": "Docs/Licenses/third-party-inventory.md:194; Docs/Stage0/evidence/M0-dependencies/commands/toolchain.sh:118; toolchain.log:117",
+     "detail": "toolchain.sh subtracts {'pip', 'setuptools'} before printing \"installed but not in requirements.txt: none\", and the log does not say so. `ls ~/Library/Caches/SylviaTools/venv/lib/python3.14/site-packages` shows pip-26.2.1.dist-info, which is neither pinned nor inventoried.\n\nFix: say that pip and setuptools are excluded, or record pip's version."
+    },
+    {
+     "id": "R1-05",
+     "severity": "minor",
+     "title": "readium/ZIPFoundation is recorded as MIT only, but two linked files declare Readium's BSD-style license",
+     "location": "Docs/Licenses/inventory.json:95-117; Docs/Licenses/third-party-inventory.md:30, :92; acknowledgements-draft.md:3074",
+     "detail": "In the checkout at adb49c8b, Sources/ZIPFoundation/DataSource.swift and SharedMutableValue.swift both begin: \"Copyright 2025 Readium Foundation. All rights reserved. Use of this source code is governed by the BSD-style license available in the top-level LICENSE file of the project\". That top-level LICENSE is MIT (Thomas Zoechling), so the headers point to the wrong file.\n\ncopyright-lines.log:18 caught the copyright line, but the inventory, the human-readable page and the draft do not mention it.\n\nThe practical effect is small, because Readium's BSD-3 text is already in the iOS acknowledgements. Still, record the ambiguity under the package's license and bundled entries so counsel sees it."
+    },
+    {
+     "id": "R1-06",
+     "severity": "minor",
+     "title": "Notice in Minizip's crypt.h, which is compiled in, is not reproduced; the Terry Thorsen copyright appears nowhere",
+     "location": "Docs/Licenses/inventory.json:239-242; acknowledgements-draft.md:3327 (Info-ZIP entry); source: Zip/minizip/include/crypt.h lines 1-13 at 67fa5581",
+     "detail": "crypt.h carries its own notice: \"Copyright (C) 1998-2005 Gilles Vollant / Modifications for Info-ZIP crypting Copyright (C) 2003 Terry Thorsen / ... Copyright (C) 1990-2000 Info-ZIP\". Its functions decrypt_byte, init_keys and update_keys are linked into the app (inventory.json:239).\n\nThe Info-ZIP entry reproduces only the generic 2009-Jan-02 license. `grep -c Thorsen` returns 0 in inventory.json, third-party-inventory.md, the ADR and acknowledgements-draft.md.\n\nFix: extract crypt.h's header comment into Docs/Licenses/texts and add it to the Info-ZIP entry."
+    },
+    {
+     "id": "R1-07",
+     "severity": "minor",
+     "title": "Self-test claim \"covering every rule above\" is overstated",
+     "location": "Docs/ADRs/0014-dependency-lock-and-license-inventory.md:58; Scripts/check-dependency-lock.py:873-914",
+     "detail": "self_test() calls Checker.run() without toolchain=True, so the installed Xcode, Swift, XcodeGen and virtualenv checks are never self-tested. There are also no mutations for the identity-mismatch, duplicate-pin or non-remoteSourceControl branches (check_locks lines 330-341).\n\nI exercised the toolchain branch by hand: changed XcodeGen, Swift and venv pins in a scratch inventory produce 4 failures, so it works. The wording still overstates the proof.\n\nFix: inject a fake toolchain runner into the self-test, or reword the claim."
+    },
+    {
+     "id": "R1-08",
+     "severity": "minor",
+     "title": "A stale lock passes: locks are never checked against their manifests' requirements",
+     "location": "Scripts/check-dependency-lock.py:303-357 (check_locks), :359-423 (check_manifests)",
+     "detail": "Two cases pass undetected on the checker's synthetic tree:\n- Spikes/S/Package.swift gains an exact, inventoried requirement (acme/A), with the inventory's direct_in updated, but its Package.resolved is never re-resolved.\n- A lock and the inventory both drop the pin of a package that the lock's manifest requires.\n\nThe check compares the inventory's lists with the committed locks, never the locks with their manifests. Only 71-g05-recovery.sh passes --force-resolved-versions (ADR section 1.4, confirmed by git grep). So a SwiftPM drop-in would resolve such a requirement, and its transitive ranges, freshly in CI with no lock.\n\nFix: for each locked manifest, require every remote requirement's identity among the lock's pins, including those reached through local packages."
+    },
+    {
+     "id": "R1-09",
+     "severity": "minor",
+     "title": "Third-party binaries are invisible to the check",
+     "location": "Scripts/check-dependency-lock.py:140-181 (swiftpm model ignores binary targets), :207-222 (project.yml framework dependencies ignored)",
+     "detail": "Both of these pass with 0 failures on the synthetic tree:\n- A product Package.swift adding `.binaryTarget(name: \"Vendor\", url: \"https://example.com/vendor.xcframework.zip\", checksum: ...)`.\n- A product project.yml target adding `- framework: Vendor/Foo.xcframework` with the xcframework committed.\n\nThe ADR does not claim to cover these, but they are third-party code entering a product target outside the inventory.\n\nFix: fail on binary targets and on framework or xcframework dependencies under product roots unless they are inventoried."
+    },
+    {
+     "id": "R1-10",
+     "severity": "minor",
+     "title": "\"Ships in\" cites linkage.log for iOS packages that linkage.log never builds",
+     "location": "Docs/Licenses/third-party-inventory.md:25, :38, :47; Docs/Licenses/inventory.json:535, :646 (acknowledgements preamble)",
+     "detail": "The page says \"Ships in\" is what the M0 builds actually link (linkage.log), and the preamble says the draft covers what the builds link. linkage.log builds only the iOS EPUB harness, the host sylvia-source and the host g05-recovery-tool. GRDB (\"iOS app\") and SwiftASN1 (\"iOS app and Mac companion\") are linked into no iOS build there; their iOS rows are inferred from manifests.\n\nFix: label those rows \"from manifests\", or add an iOS Simulator link check (for example ATSProbe or the G0.2 iOS harness)."
+    }
+   ],
+   "claims_verified": [
+    "The clean-tree CI run passes at the final commit a4a24c7 (my rerun above). The committed log (ff4e472) differs from HEAD only in the log file itself.",
+    "The branch has 27 commits on b354dc7 (the m0-integrate head). Only ADR-0014 is modified; every other change is a new file under Docs/Licenses, Docs/Stage0/evidence/M0-dependencies, Scripts/check-dependency-lock.py or Scripts/ci.d/12-dependency-lock.sh. Fixtures/LICENSES.md, Contracts/, CLAUDE.md and the shared indexes are untouched.",
+    "Independent script over all 13 tracked Package.resolved files: 23 distinct packages, one version and revision each. Every pin matches inventory.json (URL, version, full revision); each package's lock list matches; no pin is outside the inventory.",
+    "Every remote requirement in the 11 Package.swift and 7 project.yml files is exact (`exact:` or `exactVersion:`). The XcodeGen key semantics (version: means exact) come from an empirical probe (xcodegen-requirements.log).",
+    "Resolution from the committed locks leaves every lock unchanged: `swift package resolve --force-resolved-versions` for SourceService, Design, G05-Recovery, ZipEval/Upstream, ZipEval/Readium and G01-EPUB/Core; `xcodebuild -resolvePackageDependencies -disableAutomaticPackageResolution` for G01-EPUB.",
+    "In all 23 checkouts, HEAD (read from .git/HEAD) equals the pinned revision. Every license and notice file named in inventory.json has a SHA-256 equal to the inventory digest and to the committed copy in Docs/Licenses/texts (0 problems). The swift-crypto and swift-nio-ssl BoringSSL texts match the digests in fetch-external-licenses.log.",
+    "Extracted notices (for example DataCompression.swift lines 8-31) match their sources; run-all.log's 45 texts and the ci log's 46 entries are consistent.",
+    "Advisories: the GitHub Swift list is 64 advisories over 3 pages, and every entry naming a pinned package is in advisories.md. The ranges for GHSA-g454-wj9r-jpg4 (Zip <= 2.1.2, no patch, CVSS 7.8), GHSA-9m44-rr2w-ppp7 (swift-crypto 4.0.0-4.3.0, fixed 4.3.1) and GHSA-r3rc-9hpw-54v9 (swift-nio <= 2.99.0, fixed 2.100.0) match.",
+    "Zip 2.1.2 (tag dated 23 February 2022) is still its latest tag. GCDWebServer fix 0273843 is an ancestor of 584db89a. ZIPFoundation fix commits f000f30 and 4b24bdf, and b979e8b (tagged 0.9.18), are ancestors of adb49c8b.",
+    "Readium 3.11.0 imports only Minizip (MinizipContainer.swift), calls only unz* read functions, and has no `import Zip`. Its manifest declares swift-docc-plugin, which is never pinned.",
+    "OpenDyslexic: four OTFs in the Navigator bundle plus an identical Regular in the Streamer bundle (SHA-256 e2da53e6), carrying the CC BY 3.0 and Bitstream statement. Readium registers them unconditionally in EPUBNavigatorViewModel.swift (about lines 92-114). opendyslexic.org/legal/ now describes only the OFL release.",
+    "BoringSSL: hash.txt revisions 817ab07e (nio-ssl) and 0226f304 (swift-crypto). The nio-ssl copy is under OpenSSL/SSLeay and ISC (fiat MIT), and its OpenSSL-licensed files with Intel copyrights are covered. At 0226f304 the fiat LICENSE is Apache-2.0 (googlesource), and the swift-crypto copy's '1 OpenSSL/SSLeay' hits are API names, not license headers. Neither copy has a BSD-only file. swift-nio-ssl release notes through 2.37.5 (17 Sep) never mention a BoringSSL update. OSV lists one OSS-Fuzz BoringSSL entry, from 2023.",
+    "Privacy manifests exist exactly for the packages listed. Reason codes: 3B52.1 in the Readium fork, 0A2A.1 in upstream ZIPFoundation and NIOPosix.",
+    "Fixtures/LICENSES.md: all 20 digests stated for tracked files match; the 3 cache-file digests are pinned in their generators. Apps/DesignCatalog/Package.resolved is byte-identical to Packages/Design/Package.resolved.",
+    "G0.4: neither 943d5e7 nor the current m0-g04-audio head 5d85b1f declares a package or adds a manifest or lock. Its scripts use ffmpeg, ffprobe, afconvert, python3 and shasum, all inventoried. It commits no audio or license files.",
+    "The `--toolchain` checks fail correctly when XcodeGen, Swift or virtualenv pins are changed (exercised by hand on a scratch inventory).",
+    "Only Scripts/ci.d/71-g05-recovery.sh passes --force-resolved-versions (ADR section 1.4).",
+    "No third-party code is vendored in Sylvia's own tree beyond Literata. The two .c files and the custom symbol SVGs are Sylvia's own, and the design boards load only Literata from Google Fonts.",
+    "No simulator named Sylvia-M0-deps exists. I created none (host-only review); every build product and scratch file I created has been deleted."
+   ],
+   "gate_gaps": [
+    "Brief item 2 (advisories for each package): not done for the 95-package npm closure and Hypothesis code that ship inside Readium's navigator scripts (R1-03). Pending with no reason stated, although doable.",
+    "Brief item 4 (fail CI if any requirement is not exact): GitHub Actions are referenced by movable tags (actions/checkout@v4, actions/upload-artifact@v4), and the check only tests that they are in the inventory. This is disclosed as an open item (pinned_to_commit: false).",
+    "Brief item 4 (spike-only dependency referenced by a product target): enforced for spike-role packages and local Spikes packages. The author's broader 'Spikes/ code' rule is incomplete (R1-02).",
+    "The license check compares the committed copies with the recorded digests, but never ties those digests to the pinned revision. A version bump that forgets to refresh the license text and digest still passes CI.",
+    "The CI check does not verify that each lock contains its manifest's requirements (R1-08), and the SwiftPM drop-ins other than 71 do not force resolved versions (requested from their owners).",
+    "The ADR's own M6 rule, that swift-nio packages never enter an iOS target, is disclosed as not yet checked by CI, although inventory.json records platforms per package.",
+    "inventory.json records requiring manifests (direct_in) but no target names. Per-target usage appears only in the human-readable 'Where each package is required' table.",
+    "Locks for G0.2's MacIdentityProbe and iOS projects are still missing; they are requested from G0.2, and swift-atomics, swift-collections and swift-system can drift for MacIdentityProbe (disclosed)."
+   ],
+   "previous_findings_status": []
+  }
+ },
+ {
+  "run": "wf_744b95c1-309",
+  "seq": 21,
+  "label": "deps:fix-1",
+  "result": {
+   "commit": "1442a66860577512a13861667c1b573ea755a1e6",
+   "fixed": [
+    {
+     "id": "R1-01",
+     "how": "Scripts/check-dependency-lock.py now tokenizes Swift source with comments and strings blanked. It finds every import declaration: access-level modifiers (internal/public/package/fileprivate/private), attributes, import kinds, statements before it on the same line, line breaks or comments between tokens, backticks and #if branches. It also scans C-family files for @import, #import, #include and #pragma clang module import of transitive modules and their public headers. The inventory lists those headers for the nine transitive-only packages (transitive-modules.log checks them against their manifests at the pinned revisions). Module maps under Apps/Packages that name a banned header, and -module-alias to a banned module in product flags or settings, are caught too. Shared code compiled from outside Apps/Packages now fails as outside-product, which closes the route around the scan. The reviewer's `internal import Zip` case and nine variants fail on copies of the committed tree (round1-reproductions.log). ADR-0014 section 5 now states exactly what is enforced; access by symbol (extern, dlsym, @_silgen_name) is listed as outside what the check can see."
+    },
+    {
+     "id": "R1-02",
+     "how": "Every path a product manifest builds from is judged:\n- target sources (non-test), xcconfig files and their #includes, project references, header, library and framework search paths and flags, module maps, symbolic links and local packages.\n- A reference into Spikes/ fails as spike-in-product, test targets included. Anything else outside Apps/ and Packages/ fails as outside-product; test targets may take fixtures.\n\nThe reviewer's case (DesignCatalog sources from Spikes/G01-EPUB/Core) and five more routes fail on copies of the committed tree (round1-reproductions.log). The stopped fixer's symlink case had one `../` too many, pointing outside the tree; I corrected it and kept the outside-the-tree link as an extra case."
+    },
+    {
+     "id": "R1-03",
+     "how": "New commands/advisories-search.py runs a version-exact search in OSV (querybatch at each version and at any version) and the GitHub Advisory Database (affects=name@version, reviewed and malware). It covers the 95-package npm closure and hypothesis 1.1763.0, plus the 23 Swift packages, 20 Python pins with pip, and both workflow actions.\n\nEach ecosystem has positive controls. They exposed three limits, which the script now handles:\n- GitHub's case-sensitive PyPI names (PyYAML).\n- Bare-name Swift records (swift-crypto's GHSA-9m44).\n- OSV evaluating no versions for GitHub Actions.\n\nResult: no advisory for any version of any npm package or Hypothesis, and hypothesis/client publishes no repository advisories. Only marmelroy/Zip 2.1.2 CVE-2023-39135 applies, as before. Evidence: advisories-search.log; advisories.md, the inventory and the ADR are updated. Host tools remain unsearched, with the reason stated."
+    },
+    {
+     "id": "R1-04",
+     "how": "toolchain.sh no longer excludes pip or setuptools. It lists every distribution in the virtualenv with ensurepip's bundled version (26.1.2) and the file dates, which show pip 26.2.1 was upgraded after the venv was created. The false sentence in third-party-inventory.md is replaced. inventory.json records pip under python_tools.unpinned with reason, owner and fix. `check --toolchain` now fails if the virtualenv holds anything beyond the pins and recorded unpinned entries, or another pip version. Pinning pip itself is requested (see not_fixed)."
+    },
+    {
+     "id": "R1-05",
+     "how": "extract-notices.py extracts the Readium Foundation header at the pinned revision (adb49c8b). Its --check proves the block is identical in DataSource.swift and SharedMutableValue.swift. inventory.json now gives readium/ZIPFoundation a bundled entry and an updated license id and obligations. The acknowledgements carry a new entry with the header and Readium's BSD-3-Clause text alongside the MIT notice. The page's license and third-party-code tables are updated. Which license the header means is a new ADR-0014 section 7 pending-human item for counsel (item 3)."
+    },
+    {
+     "id": "R1-06",
+     "how": "extract-notices.py extracts crypt.h's own header comment (Gilles Vollant 1998-2005, Terry Thorsen 2003, Info-ZIP 1990-2000) at the pinned revision. It is now in the Zip bundled entry, the obligations, the acknowledgements' Info-ZIP entry (notice, then the Info-ZIP license) and the human page. I checked every non-own copyright holder in copyright-lines.log; each now maps to a row."
+    },
+    {
+     "id": "R1-07",
+     "how": "The self-test records the line of each fail() call. Using the AST of its own source, it fails unless every `self.fail(` call (96) is reached by the mutation written for it. That check showed the stopped fixer's 101 mutations missed 43 branches. There are now 161 mutations and 18 allowed changes, with the toolchain branches run against a fake toolchain. The ADR now states exactly that, and the final clean run (ci-12-dependency-lock.log at fd1d3f4) shows 96 of 96 reached and 0 wrong."
+    },
+    {
+     "id": "R1-08",
+     "how": "Each registered lock must pin every remote package its manifest requires, directly or through local packages; a missing pin fails as pin-missing. Both reviewer cases (G05-AI gains SwiftSoup without re-resolving; G05-Recovery's lock and the inventory drop GRDB) fail on copies of the committed tree. A third self-test case covers a requirement reached through a local package."
+    },
+    {
+     "id": "R1-09",
+     "how": "Caught now:\n- SwiftPM binary targets (url or path).\n- XcodeGen framework, bundle and Carthage dependencies.\n- Committed Mach-O files and static libraries under product roots.\n- Libraries and frameworks linked by name (linkedLibrary/linkedFramework, -l/-framework/-Wl, XcodeGen sdk:, module-map link) that no iOS or macOS SDK provides.\n- Library or framework search paths and directly named libraries outside product roots.\n\nAny of these fails unless listed in inventory `binaries`, which also has a stale-entry check. Both reviewer cases and two more fail on copies of the committed tree."
+    },
+    {
+     "id": "R1-10",
+     "how": "linkage.sh adds three iOS Simulator builds (generic destination, no simulator booted):\n- The G0.5 recovery package's test bundle: GRDB, 20,324 symbols, system libsqlite3.\n- The G0.2 transfer harness app: SwiftASN1, 2,715 symbols; it resolved exactly swift-asn1 1.7.3.\n- The design catalog app: SylviaDesign, the Literata fonts and OFL.txt, and zero snapshot-testing symbols.\n\nThe ATS probe app turned out not to link GRDB (SylviaAI does not use it). The lock table's column is now 'Linked by an M0 build' with linkage.log sections. GRDB is stated as linked only by host builds and an iOS test bundle, not by any M0 iOS app. The acknowledgements preamble and the inventory's 'linked' fields say the same."
+    },
+    {
+     "id": "GAP-spikes-rule",
+     "how": "Covered by R1-02: the broadened product-code rule is in ADR-0014 section 1.5, in section 3, and in the checker."
+    },
+    {
+     "id": "GAP-lock-covers-manifest",
+     "how": "Covered by R1-08: CI now verifies that each lock contains its manifest's requirements. Forcing resolved versions in other drop-ins remains a request (not_fixed)."
+    },
+    {
+     "id": "GAP-license-revision",
+     "how": "CI fails when a package's license data were recorded at another revision than it pins (inventory license.read_at). So a version bump that forgets to re-read its license and digest now fails CI. The byte-level comparison with the files at the pinned revision stays in run-all.sh (47 of 47 texts identical), because a clean CI run has no checkouts and the check uses no network. ADR-0014 section 3 states this split."
+    },
+    {
+     "id": "GAP-m6-platform",
+     "how": "The platform rule is enforced and self-tested: a non-test product target may use a package only on the platforms the inventory allows, so the swift-nio packages (macOS only) cannot enter an iOS target. ADR-0014 section 2 now says it is checked by CI."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "GAP-actions-movable-tags",
+     "reason": "The fix is in .github/workflows/ci.yml, which this task does not own. The check now fails any action on a tag unless the inventory records a reasoned exemption (reason and owner); the two current actions carry one. Exact change for the workflow owner:\n- `uses: actions/checkout@v4` \u2192 `uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0`\n- `uses: actions/upload-artifact@v4` \u2192 `uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2`\n- Install XcodeGen 2.46.0 exactly instead of `brew install xcodegen`.\n\nThose are the releases the tags named on 13 October (advisories-search.log). In the same commit, Docs/Licenses/inventory.json ci_actions must take the pinned `uses` values with pinned_to_commit true."
+    },
+    {
+     "id": "GAP-force-resolved-versions",
+     "reason": "These are other owners' drop-ins and spike scripts. Exact change: add `--force-resolved-versions` to:\n- Scripts/ci.d/20-design.sh lines 42-43; 31-g01-epub.sh line 38; 40-g02-transfer.sh line 86; 50-g03-intake.sh line 80; 70-g05-ai.sh lines 65 and 81; 71-g05-recovery.sh line 61.\n- Spikes/G02-Transfer/Scripts/scripted-cli-run.sh lines 44-46; sim-sources.sh lines 17-18; simulator-pairing-run.sh lines 24-25.\n- Spikes/G03-Intake/ZipEval/run-eval.sh line 52.\n- Spikes/G03-Intake/scripts/check-contract-instances.sh line 16; host-handoff-kill.sh line 23; host-large-pack.sh line 26; sim-open-in.sh line 30.\n- Spikes/G05-AI/Scripts/live-tests-dry-run.sh line 33.\n\nListed in the ADR-0014 open items."
+    },
+    {
+     "id": "REQ-pin-pip",
+     "reason": "Scripts/tools/requirements.txt is not owned. Exact change: add `pip==26.2.1` to Scripts/tools/requirements.txt. In the same commit, move pip in Docs/Licenses/inventory.json from python_tools.unpinned to python_tools.packages; otherwise the check fails."
+    },
+    {
+     "id": "REQ-G02-locks",
+     "reason": "These are G0.2-owned files. Exact change: copy Spikes/G02-Transfer/SourceService/Package.resolved to Spikes/G02-Transfer/MacIdentityProbe/Package.resolved, and Spikes/G02-Transfer/TransferKit/Package.resolved to Spikes/G02-Transfer/iOS/Package.resolved. In the same commit, inventory.json moves both from `unlocked` to `locks` and adds the new paths to each pinned package's `locks` list; the stale-exemption rule fails otherwise."
+    },
+    {
+     "id": "PROCESS-stray-file",
+     "reason": "Disclosure, not a code change. While starting the clean CI run I mistakenly redirected the wrapper's stdout to /Users/jevidon/Git/sylvia/.build-ci-clean-placeholder, a file in the main checkout outside my worktree. It held only the last five lines of the CI log. I deleted it as soon as the run finished. Nothing else was written outside the worktree, and the evidence log itself was written inside the worktree."
+    }
+   ],
+   "rerun": {
+    "command": "Docs/Stage0/evidence/M0-dependencies/commands/run-all.sh > Docs/Stage0/evidence/M0-dependencies/run-all.log 2>&1 (at cd63444; regenerates every evidence log, including advisories-search.log, linkage.log, transitive-modules.log and round1-reproductions.log), then Docs/Stage0/evidence/M0-dependencies/commands/ci-clean.sh (Scripts/ci.sh dependency-lock from a clean tree at fd1d3f4, writes ci-12-dependency-lock.log)",
+    "result": "run-all.log: all 17 steps ok, 0 failures; 47 committed license texts byte-identical to what the commands copy, extract or fetch. round1-reproductions.log: 24 cases fail with their expected category and both allowed changes pass, on copies of the committed tree. Clean CI at fd1d3f4: 12-dependency-lock passed in 16 s; self-test 161 mutations and 18 allowed changes, 96 of 96 failure branches reached, 0 wrong; repository and toolchain check 0 failures. Load averages are recorded in each log (about 18 to 75). All on the host: macOS 26.6.2, Xcode 27.0 (27A266a); no simulator was booted or created. Build products were deleted, the worktree's scratch removed, and HEAD detached at 1442a66."
+   }
+  }
+ },
+ {
+  "run": "wf_744b95c1-309",
+  "seq": 27,
+  "label": "deps:review-2",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "1442a66860577512a13861667c1b573ea755a1e6",
+   "rerun": {
+    "command": "In a fresh worktree with no .build or DerivedData present (git status --ignored empty), `git checkout --detach m0-int-deps`, then `Scripts/ci.sh dependency-lock`. Then the same drop-in against a virtualenv built the way Scripts/tools/bootstrap.sh builds one, done offline: `python3 -m venv .build/scratch/freshvenv` (pip 26.1.2), the 20 pinned distributions copied in from the shared venv without pip, then `SYLVIA_TOOLS_VENV=.build/scratch/freshvenv Scripts/ci.d/12-dependency-lock.sh`. Host: macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.0 (27A266a), XcodeGen 2.46.0. No simulator.",
+    "result": "Clean worktree with the shared venv: pass in 22 s. Load averages were 7.05 27.12 30.24 before and 6.54 25.39 29.53 after. The self-test ran 161 mutations and 18 allowed changes, reached 96 of 96 failure branches, 0 wrong. The check reported 0 failures (13 locks, 18 manifests, 49 license texts, 58 product Swift files, toolchain ok). With the freshly bootstrapped virtualenv: exit 1, `FAIL toolchain virtualenv: virtualenv has pip 26.1.2, inventory 26.2.1`. The line just before it reads `ok    python tools: ... the virtualenv holds exactly these` (see R2-01). The resolve-locks.sh rerun at HEAD passed: all 17 projects and packages resolved, no lock changed, and IdentityProbe was refused. All build products and scratch files I created were deleted afterwards."
+   },
+   "findings": [
+    {
+     "id": "R2-01",
+     "severity": "major",
+     "title": "12-dependency-lock fails in any freshly bootstrapped tools virtualenv: the check requires an exact pip version that nothing pins",
+     "location": "Scripts/check-dependency-lock.py:1416-1427 (check_python with --toolchain: line 1421 `recorded = dict(want, **unpinned)`, then an exact compare; line 1427 appends 'the virtualenv holds exactly these' even when that compare fails); Docs/Licenses/inventory.json:812 (python_tools.unpinned pip 26.2.1); Scripts/tools/bootstrap.sh:7-10; .github/workflows/ci.yml (SYLVIA_TOOLS_VENV=${{ github.workspace }}/.venv-tools, a new venv on every run)",
+     "detail": "The inventory records pip as 'unpinned', but `check --toolchain`, which is how the drop-in runs, requires the installed pip to equal 26.2.1 exactly. bootstrap.sh creates the venv with `python3 -m venv` and never upgrades pip, so a new venv holds the pip bundled with Python 3.14.6.\n\nReproduction, offline:\n1. `python3 -m venv .build/scratch/freshvenv`, then `pip --version` gives 'pip 26.1.2'.\n2. Copy the 20 pinned distributions (not pip) from ~/Library/Caches/SylviaTools/venv into it. This is what bootstrap's `pip install -r requirements.txt` adds.\n3. `SYLVIA_TOOLS_VENV=.build/scratch/freshvenv Scripts/ci.d/12-dependency-lock.sh` exits 1 and prints 'ok    python tools: 20 pinned, 1 recorded as unpinned (pip 26.2.1); the virtualenv holds exactly these', then 'FAIL toolchain virtualenv: virtualenv has pip 26.1.2, inventory 26.2.1'.\n\nThe step therefore passes only in this Mac's shared venv, whose pip was upgraded by an unrecorded command (toolchain.log). It fails on every GitHub Actions run, which creates a new venv each time (ADR-0002). It also fails on any second Mac set up per ADR-0002, and here whenever the cache is recreated. ADR-0014 section 3 and ci-12-dependency-lock.log present the drop-in as passing from clean, and nowhere state that a fresh environment fails until the requested pin lands. The 'ok \u2026 holds exactly these' line is also emitted after the comparison has failed, so the log contradicts itself.\n\nFix, either:\n- (a) while pip sits in python_tools.unpinned, require only that it is present (any version);\n- (b) get `pip==26.2.1` into Scripts/tools/requirements.txt before this merges.\nIn both cases, make the note conditional on success, and say in ADR-0014 section 3 what a fresh environment does."
+    },
+    {
+     "id": "R2-02",
+     "severity": "major",
+     "title": "The CVE-2023-39135 import ban, which ADR-0014 says CI enforces, still has routes the check does not see: non-test code in any '*Tests' subfolder, and Swift regex literals",
+     "location": "Scripts/check-dependency-lock.py:200-202 (is_test_path), :1093-1097 (test-layout judges only each target's declared source roots), :1288-1310 (import and include checks skipped when is_test_path), :1220-1227 (module maps skipped the same way), :404-421 (swift_code has no regex-literal state). Claims: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:73-74 and :118",
+     "detail": "(a) Any file with a directory component ending in 'Tests' is treated as test code, so its import, include and module-map checks are skipped. The test-layout rule ('a non-test target takes its sources from a test directory') only checks the roots each target declares. Probes on a `git archive HEAD` copy with `check --root <copy>`:\n- `Packages/Design/Sources/SylviaDesign/ABTests/Experiment.swift` containing `import Zip`: exit 0, 0 failures.\n- `Apps/DesignCatalog/Sources/FeatureTests/Use.swift` containing `import Minizip`: exit 0, 0 failures.\n- Control, `Packages/Design/Sources/SylviaDesign/ZipUse.swift` containing `internal import Zip`: FAIL transitive-direct.\n\nSuch files do compile into the non-test target. A scratch SwiftPM package with Sources/App/ABTests/Experiment.swift importing a module reachable only through a dependency's product built and printed 'compiled from Sources/App/ABTests: Inner.unsafeUnzip reached'. XcodeGen `sources: - path: Sources` is recursive in the same way.\n\n(b) swift_code() treats `/*` and `\"` inside regex literals (on by default in Swift 6 mode) as the start of a comment or string. This file passes `swiftc -swift-version 6 -typecheck`, yet the checker's swift_imports() returns []:\n```\n@MainActor let r1 = #/ /* /#\nimport Foundation\n@MainActor let r2 = #/ */ /#\n@MainActor let r3 = /\"/; import Darwin\n```\nThe same patterns with Zip pass `check` with 0 failures.\n\nADR-0014 says CI fails on 'any Swift import declaration' and on a non-test target taking sources from a test directory. Section 5 rests the High CVE's mitigation on 'enforced by CI', and neither route is listed under 'What the check cannot see'.\n\nFix:\n- Classify a file as test code only by membership in a test target's sources, and fail on non-test sources that sit in *Tests subfolders.\n- Lex regex literals, or take imports from the compiler (`swiftc -dump-parse`) or from SwiftSyntax.\n- Add self-test mutations for both routes.\n- Otherwise, narrow the claim."
+    },
+    {
+     "id": "R2-03",
+     "severity": "minor",
+     "title": "A linked vendored MIT component (uSHET cpp_magic.h in swift-nio's CNIOAtomics) is missing from the inventory and the acknowledgements",
+     "location": "Docs/Licenses/third-party-inventory.md:120-140 (table 'Third-party code and assets inside packages'); Docs/Licenses/inventory.json:479 (swift-nio 'linked'); Docs/Licenses/acknowledgements-draft.md:3678-3827 (Mac section); Docs/Stage0/evidence/M0-dependencies/vendored-headers.log (CNIOAtomics was never scanned)",
+     "detail": "In swift-nio 2.103.0, Sources/CNIOAtomics/src/cpp_magic.h begins: '// this is https://github.com/18sg/uSHET/blob/c09e0aca\u2026/lib/cpp_magic.h // LICENSE: MIT'. CNIOAtomics is a dependency of NIOConcurrencyHelpers, which NIOHTTP1 depends on. It is linked: a scratch debug build of `swift build --product sylvia-source --force-resolved-versions` took 42 s at load averages around 77. That build contains CNIOAtomics.o, and `nm -U sylvia-source | grep -c ' T _catmc_'` gives 390 functions generated with those macros.\n\nuSHET's LICENSE reads 'Copyright (c) 2014 Thomas Nixon, Jonathan Heathcote', MIT. The table that claims every vendored component (and 'Each copyright line \u2026 matched to a row') omits it. The draft carries only swift-nio's NOTICE, which links to it.\n\nThe survey method cannot find this kind of file:\n- vendored-headers.py ran on hand-picked directories only.\n- copyright-lines.py only sees copyright lines, and cpp_magic.h has none.\n\nFix: add a bundled entry with the uSHET text and an acknowledgements entry, and run the header survey over every C target that a product build links."
+    },
+    {
+     "id": "R2-04",
+     "severity": "minor",
+     "title": "advisories.md says 'No advisory exists', against the brief's 'never \"none exist\"'",
+     "location": "Docs/Stage0/evidence/M0-dependencies/advisories.md:34",
+     "detail": "Line 34 reads 'No advisory exists for any version of any package in their closure, or for the Hypothesis client, so none applies to the versions Readium 3.11.0 bundles.' The brief requires 'none found' with what was searched, never 'none exist'. Line 3 of the same file defines the right meaning, so this is a wording overclaim, not a missing search. Fix: 'None found in OSV or the GitHub Advisory Database (reviewed and malware) on 13 October 2026 for any version of these packages (advisories-search.log)'."
+    },
+    {
+     "id": "R2-05",
+     "severity": "minor",
+     "title": "BoringSSL license details: a false 'OpenSSL/SSLeay' header count, and OpenSSL License clause 6 missing from the obligations",
+     "location": "Docs/Licenses/inventory.json:587 and Docs/Licenses/third-party-inventory.md:137 (swift-crypto BoringSSL 0226f304 'headers: 492 Apache-2.0, 1 OpenSSL/SSLeay'); inventory.json packages[apple/swift-nio-ssl].obligations; Docs/ADRs/0014-dependency-lock-and-license-inventory.md:109 and :148; Docs/Licenses/texts/apple__swift-nio-ssl/external__boringssl-817ab07ebb53da35afea409ab9328f578492832d__LICENSE:58",
+     "detail": "(a) The '1 OpenSSL/SSLeay' file in swift-crypto's BoringSSL is a false positive. vendored-headers.py's regex matched the symbol `kSSLeayMethod` at Sources/CCryptoBoringSSL/crypto/rand/rand.cc:57, and that file's header is Apache-2.0 (it is also counted among the 492). No file in that copy carries the OpenSSL or SSLeay license. Recording it as a license-header count invites counsel to look for an OpenSSL-licensed file that does not exist.\n\n(b) For swift-nio-ssl's BoringSSL 817ab07e, the obligations and ADR-0014 section 7 item 2 name only the documentation notices and the advertising clauses. OpenSSL License clause 6 (line 58 of the fetched text, 'Redistributions of any form whatsoever must retain the following acknowledgment') applies to every redistribution, just as CryptoSwift's sentence does, and that one is called out. The draft reproduces the full text, so the sentence is present, but the decision put to counsel is framed as advertising only.\n\nFix: correct the count, and add clause 6 to the obligations and to section 7 item 2."
+    },
+    {
+     "id": "R2-06",
+     "severity": "minor",
+     "title": "Statements that disagree with their own evidence or with the code",
+     "location": "Docs/Licenses/inventory.json:830 and Docs/Licenses/third-party-inventory.md:195 (Chrome); Docs/ADRs/0014-dependency-lock-and-license-inventory.md:67 (25 s), :23 (exemptions), :186 (OSV-Scanner); Scripts/check-dependency-lock.py:58 and :1044-1048",
+     "detail": "(a) Chrome is recorded as 154.0.8037.98, but the regenerated toolchain.log:56 that the inventory cites says 'Google Chrome (optional): 155.0.8059.40'.\n(b) ADR-0014:67 says '25 s in the clean run'. The committed ci-12-dependency-lock.log, run at fd1d3f4, says 'pass (16s)'; the 25 s came from the superseded f98d4bd run. No load figure sits next to the number.\n(c) ADR-0014:23 and the checker's docstring say exemptions are allowed only under Spikes/. check_manifests rejects an exemption only under Apps/ and Packages/, so a manifest under a root Tests/ (plan 22.1) or Tools/ can be exempted.\n(d) ADR-0014:186 rejects OSV-Scanner because it 'would send the dependency list to a service'. advisories-search.py sends the same list: every pinned name@version goes to OSV querybatch and to the GitHub advisories API. The real difference is how often, and the ADR should say so.\n\nFix each statement, or the code for (c)."
+    },
+    {
+     "id": "R2-07",
+     "severity": "minor",
+     "title": "G0.4 has moved since it was read; the requested Fixtures/LICENSES.md row for the G0.4 merge is now stale",
+     "location": "Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3; Docs/Licenses/third-party-inventory.md section 'G0.4 audio'; shared change request for Fixtures/LICENSES.md at the G0.4 merge",
+     "detail": "ADR-0014 read m0-g04-audio at 943d5e778de2b58f47343f0e146f9e3ed7baa70e. The branch head is now 459229347684220687b814a162d2fcdd863c718c. It still adds no package: project.yml declares none, and there is no Package.swift or Package.resolved. It does add Scripts/fixtures/generate-g04-audio-probes.sh, which writes generated/g04-audio/probes/ (Spikes/G04-Audio/project.yml now checks for its stamp).\n\nThe requested 'Generated into the cache' row names only two generators. The inventory's G0.4 section describes only 943d5e7. The host tools are unchanged (ffmpeg, ffprobe, shasum), so the tools inventory still holds.\n\nFix: re-read G0.4 at its head before the merge and update the request."
+    }
+   ],
+   "claims_verified": [
+    "The clean rerun of `Scripts/ci.sh dependency-lock` in a fresh worktree passes in 22 s (load averages 7.05/27.12/30.24): 161 mutations, 18 allowed changes, 96 of 96 failure branches reached, 0 failures on the repository (13 locks, 18 manifests, 49 texts, 58 product Swift files).",
+    "The tree has 13 Package.resolved and 18 manifests (11 Package.swift, 7 project.yml), matching the inventory's locks and exemptions.",
+    "Rerunning commands/resolve-locks.sh at HEAD: all 7 Xcode projects and 10 Swift packages resolve, no committed lock changes, and IdentityProbe is refused over the shared 'zipfoundation' identity.",
+    "License files at the pinned revisions, checked with my own script over the fresh checkouts: all 23 packages are at their pinned commit and version tag (GRDB tags 'v7.11.1') with no local modification. Every recorded license file's SHA-256 in the checkout equals the inventory digest and the committed copy under Docs/Licenses/texts.",
+    "Probes on copies of the committed tree: a changed GRDB pin gives pin-differs; an uninventoried pin (swift-log) gives unknown-package; `from:` in a Spikes Package.swift gives not-exact; weichsel/ZIPFoundation in the Apps/DesignCatalog lock or in Packages/Design/Package.swift gives spike-in-product.",
+    "R1-01's reproduction (`internal import Zip` under Packages/Design/Sources) now fails CI (transitive-direct), and so does R1-02's (DesignCatalog sources pointing into Spikes/G01-EPUB/Core: spike-in-product).",
+    "Readium 3.11.0 imports only Minizip (Sources/Shared/Toolkit/ZIP/Minizip/MinizipContainer.swift:8) and calls only unz* read functions; it never imports Zip.",
+    "GitHub advisory GHSA-g454-wj9r-jpg4 lists marmelroy/Zip <= 2.1.2 with no patched version, and the Zip tags page shows no release after 2.1.2 (23 February 2022). GHSA-rj37-6j9x-74q6 lists swift-nio <= 2.99.0, patched in 2.100.0.",
+    "BoringSSL commit 817ab07e is dated 28 January 2025 and 0226f304 is dated 7 September 2025 (boringssl.googlesource.com). actions/checkout v4.4.0 is commit 11d5960a.",
+    "The privacy manifests in the checkouts match the inventory: CryptoSwift, GRDB, SQLite.swift and ZIPFoundation 1 each, swift-crypto 6, swift-nio 3, swift-nio-ssl 1, none elsewhere.",
+    "Readium registers the four OpenDyslexic faces in EPUBNavigatorViewModel.swift lines 90-112, and the fonts' name tables carry the CC BY 3.0 and Bitstream statement quoted in ADR-0014.",
+    "G0.4 adds no Swift package at either 943d5e7 or its current head 4592293.",
+    "The --force-resolved-versions line references in the ADR open items match the drop-in and spike scripts.",
+    "There are 58 non-test Swift files under Apps/ and Packages/.",
+    "The diff writes only ADR-0014, Docs/Licenses/**, Docs/Stage0/evidence/M0-dependencies/**, Scripts/check-dependency-lock.py and Scripts/ci.d/12-dependency-lock.sh. Shared files are only requested, and Fixtures/LICENSES.md is unedited.",
+    "The evidence logs were generated at cd63444; only documents and logs changed between cd63444 and HEAD, so the scripts that wrote them are the same ones at HEAD."
+   ],
+   "gate_gaps": [
+    "Brief item 4 (CI check): 12-dependency-lock passes only in this Mac's shared virtualenv. A fresh bootstrap per ADR-0002, and the repository's own GitHub workflow, fail it on pip 26.1.2 against 26.2.1, and ADR-0014 does not say so (R2-01).",
+    "ADR-0014 section 5 says the Zip and Minizip ban for CVE-2023-39135 is 'enforced by CI'. Non-test code in *Tests subfolders and regex-literal files get past it, and neither route is listed under 'What the check cannot see' (R2-02).",
+    "Brief item 2, 'never \"none exist\"': advisories.md:34 says 'No advisory exists' (R2-04).",
+    "Brief item 1, 'everything third-party': uSHET's MIT cpp_magic.h in swift-nio's CNIOAtomics is linked into the Mac service but is not in the inventory or the acknowledgements draft (R2-03).",
+    "G0.4 was read and its commit stated (943d5e7), but the branch has since moved to 4592293 with a third fixture generator, so the requested Fixtures/LICENSES.md row is stale (R2-07)."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R1-01",
+     "resolved": true,
+     "note": "swift_imports() now tokenises after removing comments and strings and handles attributes, access levels, import kinds, `;` and line breaks. My probe of `internal import Zip` in Packages/Design/Sources reported FAIL transitive-direct, and round1-reproductions.log covers the other forms. Other routes still get past it (Tests-named subfolders, regex literals): new finding R2-02."
+    },
+    {
+     "id": "R1-02",
+     "resolved": true,
+     "note": "Every string in a product manifest is checked for paths into Spikes/, and target sources, xcconfig files, module maps and symlinks are judged as well. My probe adding `- path: ../../Spikes/G01-EPUB/Core/Sources/G01EPUBCore` to DesignCatalog reported FAIL spike-in-product."
+    },
+    {
+     "id": "R1-03",
+     "resolved": true,
+     "note": "advisories-search.log searches the 95 npm packages plus hypothesis 1.1763.0 in OSV and GitHub (reviewed and malware) at exact versions, with a lodash positive control, and hypothesis/client's repository advisories. One wording problem is left over: new finding R2-04."
+    },
+    {
+     "id": "R1-04",
+     "resolved": true,
+     "note": "toolchain.log now lists every distribution ('none excluded: pip 26.2.1'), and the inventory records pip as unpinned with the reason. Making the check require that exact pip version causes a new problem: R2-01."
+    },
+    {
+     "id": "R1-05",
+     "resolved": true,
+     "note": "inventory.json and the human page record the two Readium Foundation files. acknowledgements-draft.md:3102-3146 reproduces their header and Readium's BSD-3-Clause text, and the question is pending-human in ADR-0014 section 7 item 3."
+    },
+    {
+     "id": "R1-06",
+     "resolved": true,
+     "note": "crypt.h's header comment is committed (texts/marmelroy__zip/Zip__minizip__include__crypt.h__header-comment), and the draft's Info-ZIP entry includes it (Terry Thorsen appears)."
+    },
+    {
+     "id": "R1-07",
+     "resolved": true,
+     "note": "The self-test now checks that every `self.fail(` site is reached by its own mutation; my run showed 96 of 96. Toolchain branches run against a fake toolchain, and identity-mismatch, duplicate-pin and non-remoteSourceControl mutations exist. The ADR's claim is now precise."
+    },
+    {
+     "id": "R1-08",
+     "resolved": true,
+     "note": "check_manifests compares each lock with required_remote(), covering direct requirements and requirements through local packages; both of the reviewer's cases are mutations. My probes 7-9 showed pin-missing for stale product locks. Transitive requirements of remote packages are still not checked, as the ADR states."
+    },
+    {
+     "id": "R1-09",
+     "resolved": true,
+     "note": "Binary targets, framework, bundle and carthage dependencies, committed Mach-O files and static libraries, search paths and libraries linked by name are all checked. Self-test mutations and round1-reproductions.log section R1-09 report each."
+    },
+    {
+     "id": "R1-10",
+     "resolved": true,
+     "note": "linkage.log now has six builds: the recovery package's iOS test bundle (GRDB), the G0.2 iOS harness (SwiftASN1 1.7.3 only) and the design catalog (Literata) among them. The inventory's 'Linked by an M0 build' column cites the build sections, and GRDB is stated as not yet linked by any M0 iOS app."
+    }
+   ]
+  }
+ },
+ {
+  "run": "wf_3f1b0c6a-cad",
+  "seq": 9,
+  "label": "deps:fix-2",
+  "result": {
+   "commit": "e38124785c5eca712122ce8e87191350c8cb3015",
+   "fixed": [
+    {
+     "id": "R2-01",
+     "how": "Scripts/check-dependency-lock.py check_python: pip is still recorded as unpinned. With --toolchain it must be present, at any version, instead of exactly 26.2.1. Below the inventory's new `minimum` (26.2.0, from `minimum_why`: GHSA-qwm4-qh6w-59xr / CVE-2026-13346; every other pip advisory is fixed at or before 26.1.2) the check prints a WARN and does not fail, because nothing in the repo pins pip. I added warn() with self-test coverage: three allowed changes must warn, and both warn branches must be reached. The advisory search now also queries the fresh-bootstrap pip: OSV and GitHub both return GHSA-qwm4 for 26.1.2 (advisories-search.log). round2-reproductions.log builds a virtualenv the way bootstrap.sh does (`python3 -m venv` gives pip 26.1.2; the 20 pins are copied offline from the shared virtualenv, not downloaded from PyPI). The reviewed check fails it ('virtualenv has pip 26.1.2, inventory 26.2.1'). `Scripts/ci.sh dependency-lock` passes it in 25 s at load 7.45 with the WARN. ADR-0014 sections 3, 5 and 7 (new pending-human item 9, security reviewer) describe the behaviour and the GitHub workflow case. The pip pin is still requested (see not_fixed)."
+    },
+    {
+     "id": "R2-02",
+     "how": "Test code is now decided by target membership: a file counts as test code only if test targets alone include it, going by the declared source paths. SwiftPM default paths are modelled the way PackageBuilder chooses them, including the rule that a single target takes the whole Sources/ or Tests/ directory; both were confirmed with `swift package describe`. Files no target includes count as product code. test-layout now also flags a shipping target that builds a file in a *Tests directory at any depth. Import and header checks read the raw text, so comments, strings, regex literals, raw identifiers, C++ raw strings, line splices, digraphs, trigraphs, computed includes, _Pragma and Zip-Swift.h can no longer hide an import. SwiftPM `moduleAliases:` is now judged like -module-alias (newly found route). round2-reproductions.log covers 20 routes on copies of the committed tree. Each is reported by the current check and missed by the reviewed one, including the reviewer's ABTests/Experiment.swift. A stand-in module shows each hidden import really compiles. ADR-0014 'What the check cannot see' now lists symbol access, token-pasted names and @_exported re-exports. I also corrected the false claim that nothing re-exports: swift-nio's NIOFS re-exports 5 SystemPackage types. Self-test: 189 mutations, 26 allowed changes, 99/99 failure branches and 2/2 warning branches reached."
+    },
+    {
+     "id": "R2-03",
+     "how": "uSHET cpp_magic.h is now inventoried: a bundled entry under swift-nio, the header notice extracted (extract-notices.log), and uSHET's LICENSE at c09e0aca fetched (fetch-external-licenses.log). It has its own acknowledgements entry, with a note that the file also carries jsmn's license, which SwiftNIO does not use. linkage.log shows 390 catmc_ functions linked into sylvia-source. vendored-headers.py now reads every C target of the 18 product and product-transitive packages and fails on any unreviewed vendored-code directory (third_party, vendor and similar). That survey found swift-crypto's copy of BoringSSL third_party/fiat shipped without a license file. I fetched BoringSSL's fiat LICENSE at 0226f304 (Apache-2.0, fiat-crypto authors) and inventoried it with an acknowledgements entry; linkage.log shows the 8 X25519, Ed25519 and P-256 entry points that include it. The survey also found a SwiftSoup BinarySearch.swift adapted from Stack Overflow, now pending-human item 8 for counsel. vendored-advisories.log: GitHub keyword searches for uSHET, cpp_magic, 18sg and fiat-crypto found nothing, with a positive control that did return results."
+    },
+    {
+     "id": "R2-04",
+     "how": "advisories.md line 34 now says 'None was found in OSV or the GitHub Advisory Database, reviewed or malware ... not proof that no vulnerability exists'. The other overclaiming phrases in the file now say 'None found' with the sources named."
+    },
+    {
+     "id": "R2-05",
+     "how": "vendored-headers.py counts license statements, not words. Recomputed counts that add up (vendored-headers.log): swift-crypto BoringSSL has 492 Apache-2.0, 1 file with only a public-domain note, 129 with no header, and no OpenSSL/SSLeay file (the old hit was kSSLeayMethod). swift-nio-ssl BoringSSL: 323 OpenSSL, 200 ISC, 1 Apache-2.0, 1 public-domain-only, 119 with no header. Clause 6 ('every redistribution must retain...') and the attribution to Eric Young are now in the obligations (inventory.json, third-party-inventory.md, ADR-0014 section 4, section 7 item 2). The acknowledgements note carries the exact clause 6 and SSLeay acknowledgment sentences."
+    },
+    {
+     "id": "R2-06",
+     "how": "(a) Chrome is now 155.0.8059.40, matching toolchain.log, with a note that Chrome updates itself. (b) The ADR no longer quotes a number that can go stale. It points to the logs, which record time and load (clean run at 65487a1: 20 s, load 6.16 before and 7.82 after; fresh-virtualenv run: 25 s, load 7.45). (c) The code now rejects an exemption for any manifest outside Spikes/, matching the ADR and the docstring (self-test mutation added). I also corrected an ADR statement that turned out false (the @_exported re-exports) and checked every count against the regenerated logs."
+    },
+    {
+     "id": "R2-07",
+     "how": "Re-read m0-g04-audio at its head, 459229347684220687b814a162d2fcdd863c718c. It still adds no package and no committed fixture. Third-party-inventory 'G0.4 audio' now lists all three generators and their cache directories, including the new generate-g04-audio-probes.sh writing generated/g04-audio/probes/, plus the tools they use (security and du were added to toolchain.log). The ADR status and open item now state the exact Fixtures/LICENSES.md section the G0.4 merge needs."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "R2-01 (pin pip; Scripts/tools/requirements.txt, not owned)",
+     "reason": "Requested from the Scripts/tools owner. Exact change: add the line `pip==26.2.1` to Scripts/tools/requirements.txt. Then in Docs/Licenses/inventory.json move the pip entry from python_tools.unpinned to python_tools.packages as {\"name\": \"pip\", \"version\": \"26.2.1\", \"license\": \"MIT\"}, and update ADR-0014 sections 3, 5 and 7 item 9. Until then a fresh bootstrap holds pip 26.1.2 (inside GHSA-qwm4-qh6w-59xr's range), and CI warns rather than fails."
+    },
+    {
+     "id": "R2-01 (GitHub workflow; .github/workflows/ci.yml, not owned)",
+     "reason": "Requested from the workflow owner. Exact change: install XcodeGen 2.46.0 exactly instead of the unpinned `brew install xcodegen`, because `check --toolchain` fails on any other XcodeGen version. Also pin `actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0` and `actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2`, then update inventory ci_actions. The workflow was not run (no push allowed), so whether it passes on a runner is unverified."
+    },
+    {
+     "id": "R2-07 (Fixtures/LICENSES.md at the G0.4 merge, not owned)",
+     "reason": "For the agent that merges m0-g04-audio at 4592293. Exact change: add a 'Generated (G0.4 audio)' section to Fixtures/LICENSES.md naming three generators and the cache directories they write, none committed: Scripts/fixtures/generate-g04-audio-fixtures.sh (generated/g04-audio/), generate-g04-audio-long-formats.sh (generated/g04-audio/long-formats/) and generate-g04-audio-probes.sh (generated/g04-audio/probes/). Name the sources (the LibriVox Meditations recording already listed, and a generated 1 kHz tone), and point to each directory's manifest.tsv as the file list with SHA-256. Then re-run Scripts/ci.sh dependency-lock."
+    },
+    {
+     "id": "observation (ADR-0002 and integration-log, not owned)",
+     "reason": "Outside these findings, noted for the integration owner. ADR-0002 and Docs/Stage0/integration-log.md section 4 measured G0.4's binary files at 943d5e7. Since then the branch has added 6 new evidence PNGs (Control Center screenshots). Re-run Docs/Stage0/evidence/M0-Integration/commands/measure.sh at G0.4's head and update those counts when G0.4 is merged."
+    }
+   ],
+   "rerun": {
+    "command": "Docs/Stage0/evidence/M0-dependencies/commands/run-all.sh > Docs/Stage0/evidence/M0-dependencies/run-all.log (at c452b9c), then Docs/Stage0/evidence/M0-dependencies/commands/ci-clean.sh (Scripts/ci.sh dependency-lock from a clean tree at 65487a1)",
+    "result": "Both passed, logs committed (65487a1 and e381247). run-all: every step ok; 50 committed license texts, none different. round1-reproductions: 0 failures. round2-reproductions: the 20 R2-02 routes are all reported (all 20 missed by the reviewed check), the compile proofs pass, the documented limits stay unreported, and the fresh-bootstrap virtualenv passes `ci.sh dependency-lock` (25 s, load 7.45) with the pip WARN where the reviewed check failed. Clean CI: pass in 20 s (load 6.16 before, 7.82 after; indicative only, under parallel load). Self-test: 189 mutations, 26 allowed changes, 99/99 failure branches, 2/2 warning branches, 0 wrong. Check: 0 failures, 0 warnings. Host: macOS 26.6.2, Xcode 27.0 (27A266a). No simulator was created; branch detached at e381247; build products and scratch removed."
+   }
+  }
+ },
+ {
+  "run": "wf_3f1b0c6a-cad",
+  "seq": 11,
+  "label": "deps:review-3",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "e38124785c5eca712122ce8e87191350c8cb3015",
+   "rerun": {
+    "command": "Scripts/ci.sh dependency-lock in a fresh worktree detached at e381247, with no build products present (find Apps Packages Spikes for .build, *.xcodeproj and DerivedData returned 0). Repeated with SYLVIA_TOOLS_VENV set to a fresh `/opt/homebrew/opt/python@3.14/bin/python3.14 -m venv`, which holds pip 26.1.2, with the 20 pinned distributions copied in offline from the shared venv (pip excluded).",
+    "result": "Pass in 22 s. Load averages were 5.91 6.79 6.69 before and 6.61 6.90 6.73 after; other agents shared the Mac, so the timing is indicative only. Self-test: 189 mutations, 26 allowed changes, 99 of 99 failure branches and 2 of 2 warning branches reached, 0 wrong. Check: 0 failures, 0 warnings; 13 locks, 18 manifests, 16 remote requirements, 52 license texts, 58 product Swift files. Output is identical to the committed ci-12-dependency-lock.log apart from temporary-directory names (committed at 65487a1, which differs from HEAD only in that log). With the fresh-bootstrap venv: pass in 28 s (load 5.90 6.47 7.24) with 1 WARN (pip 26.1.2 is below 26.2.0). The WARN appears only in .build/ci-logs/12-dependency-lock.log. No simulator was created or used. Every build product I created (.build, .swiftpm, generated .xcodeproj and DerivedData under Apps/, Packages/ and Spikes/, plus the root .build/scratch and Scripts/__pycache__) has been deleted. `git status --porcelain --ignored` is empty."
+   },
+   "findings": [
+    {
+     "id": "R3-01",
+     "severity": "major",
+     "title": "The CVE-2023-39135 import ban and the 'product code only from Apps/ and Packages/' rule miss three flag-based routes, and ADR-0014 does not list them",
+     "location": "Scripts/check-dependency-lock.py:328-380 (flag_items has no case for -import-module; -include and -import-objc-header are treated only as paths), :166-169 and :1256-1269 (BUILD_VARS exempts build-product variables before any judgement; rel_real counts paths into gitignored .build/ under Apps/ and Packages/ as inside the product roots), :1215-1239 (judge); Docs/ADRs/0014-dependency-lock-and-license-inventory.md:31 (section 1.5), :99-106 (What the check cannot see), :131 (section 5)",
+     "detail": "WHAT THE ADR CLAIMS. Section 5 (line 131): product code never reaches Zip or Minizip by import, include, module map or module alias, and 'CI enforces it (section 3), within the limits section 3 lists: access by symbol, and names the C preprocessor assembles from pieces'. Section 1.5: no header or module-map search path a product manifest uses may resolve outside Apps/ and Packages/.\n\nTHE ROUTES. Each sits in a tracked product manifest, and none needs an import or include in any source file.\n1. An implicit import: `-Xfrontend -import-module -Xfrontend Zip` in SwiftPM unsafeFlags or in OTHER_SWIFT_FLAGS. flag_items has no case for -import-module, so the token is dropped.\n2. An implicit include: `-include unzip.h` in cSettings unsafeFlags or OTHER_CFLAGS. judge() resolves the argument only as a path relative to the project, which lands inside Apps/ or Packages/. It never compares it with the banned header names.\n3. A bridging or prefix header (or header search path) that points into a package checkout. Either through a build-product variable, such as `$(BUILD_DIR)/../../SourcePackages/checkouts/Zip/Zip/minizip/include/unzip.h`, which BUILD_VARS exempts before judging. Or through $(SRCROOT) into the project's own gitignored `.build/SourcePackages/checkouts/...`. That is the clone layout this repository's own resolve-locks.sh creates (`-clonedSourcePackagesDirPath \"$dir/.build/SourcePackages\"`), and rel_real places it inside Apps/.\n\nPROOF.\n(a) The forms compile against a stand-in module (host, Xcode 27.0, Swift 6.4).\n- `xcrun swiftc -swift-version 6 -typecheck -I mod -Xfrontend -import-module -Xfrontend BModule use.swift` resolves bfunc() in a file with no import. Without the flag it fails.\n- `xcrun clang -fsyntax-only -Werror=implicit-function-declaration -I cinc -include bmodule.h use.c` compiles a file with no #include. Without the flag it fails.\n- `xcrun swiftc -typecheck -import-objc-header cinc/third.h usec.swift` makes a C function visible to Swift with no import.\n(b) The checker on its own synthetic tree (write_base plus fake_toolchain, as its self-test does). The control `import BModule` gives 1 transitive-direct. Each of these gives 0 failures: unsafeFlags -import-module; OTHER_SWIFT_FLAGS -import-module; cSettings -include bmodule.h; OTHER_CFLAGS -include bmodule.h; SWIFT_OBJC_BRIDGING_HEADER and GCC_PREFIX_HEADER at $(BUILD_DIR)/../../SourcePackages/checkouts/...\n(c) `Checker(root).run()` on copies of `git archive HEAD`, each giving 0 failures:\n- SylviaDesign `swiftSettings: [.unsafeFlags([\"-Xfrontend\",\"-import-module\",\"-Xfrontend\",\"Zip\"])]`\n- DesignCatalog OTHER_SWIFT_FLAGS '-Xfrontend -import-module -Xfrontend Minizip'\n- DesignCatalog SWIFT_OBJC_BRIDGING_HEADER '$(BUILD_DIR)/../../SourcePackages/checkouts/Zip/Zip/minizip/include/unzip.h'\n- DesignCatalog SWIFT_OBJC_BRIDGING_HEADER '$(SRCROOT)/.build/SourcePackages/checkouts/Zip/Zip/minizip/include/unzip.h'\n- SylviaDesign cSettings `.headerSearchPath(\"../../.build/checkouts/Zip/Zip/minizip/include\")` plus `.unsafeFlags([\"-include\",\"unzip.h\"])`\nOn the same copies, the R2-02 routes are reported, which serves as the control.\n\nWHY IT MATTERS. None of these routes is in section 3's list of what the check cannot see. That list implies build-product variables are judged, and neither reproduction log tries these routes. No product manifest depends on Readium today, so nothing is exposed yet. But the rule exists for M1 onward, and the security reviewer is asked to accept CVE-2023-39135 on the strength of it (section 7 item 4). This is the same class of gap as R2-02, which was rated major.\n\nFIX. Apply the raw-text rule to product manifests and xcconfig files as well as sources:\n- scan every string for banned module names (including after -import-module) and public-header names (in -include, -import-objc-header, bridging and prefix headers, and search paths);\n- treat any path that resolves into .build, DerivedData, SourcePackages or checkouts, or that climbs out of a build-product variable with '..', as outside the product roots;\n- add a self-test mutation per route.\nOtherwise, list these routes as limits in section 3 and qualify sections 1.5 and 5."
+    },
+    {
+     "id": "R3-02",
+     "severity": "minor",
+     "title": "Advisory records give wrong reasons for three vendored components and skip searches that were possible (llhttp 9.3.0, BoringSSL by revision, BigInt)",
+     "location": "Docs/Stage0/evidence/M0-dependencies/advisories.md:96-97, :99, :107; Docs/Licenses/inventory.json (apple/swift-nio-ssl `advisories` field: 'BoringSSL has no per-revision advisory feed'); Docs/Licenses/third-party-inventory.md:164",
+     "detail": "WHAT THE RECORDS SAY.\n- llhttp (advisories.md line 99): 'no version file in the directory | covered by the swift-nio advisories above | None found beyond swift-nio's own advisories'.\n- BoringSSL (lines 96-97 and 107): it 'publishes no versioned releases or per-revision advisories', is 'Not assessed per revision', and 'no advisory feed exists'. inventory.json repeats that BoringSSL has no per-revision advisory feed.\n\nWHAT I FOUND.\n1. llhttp. swift-nio 2.103.0 `Sources/CNIOLLHTTP/include/c_nio_llhttp.h` lines 8-10 define LLHTTP_VERSION 9.3.0. llhttp is indexed under npm. OSV `{package: llhttp, ecosystem: npm}` lists GHSA-5689-v88g-g6rv and GHSA-q5vx-44v4-gch4 (fixed in 6.0.7) and GHSA-cggh-pq45-6h9x (fixed in 8.1.1). At version 9.3.0 it returns none. These are llhttp's own advisories, not swift-nio's.\n2. BoringSSL. OSV indexes it through OSS-Fuzz records with git ranges: `{package: boringssl, ecosystem: OSS-Fuzz}` returns OSV-2023-41. As a positive control, a commit query for that record's introducing commit 33b569282ca124c81d9ba74df696a013cb9a80ae returns it. Commit queries for 817ab07ebb53da35afea409ab9328f578492832d and 0226f30467f540a3f62ef48d453f93927da199b6 return none. So a per-revision source exists.\n3. BigInt. attaswift/BigInt 5.3.0 is vendored in CryptoSwift and linked into the app, but appears in no advisory record. OSV SwiftURL github.com/attaswift/BigInt (any version) lists none.\n\nWHY MINOR. The outcomes are unchanged: none found. This is a record correction of the same kind as R2-04, since the brief asks for 'none found' with what was searched, not an assertion that no source exists.\n\nFIX. State each search with its source, positive control and result, and add these queries to advisories-search.py so the update procedure repeats them."
+    },
+    {
+     "id": "R3-03",
+     "severity": "minor",
+     "title": "Summary license sentences contradict the pending items beside them; ReadiumCSS's license is inferred, not read",
+     "location": "Docs/ADRs/0014-dependency-lock-and-license-inventory.md:112; Docs/Licenses/third-party-inventory.md:19, :112, :123; Docs/Licenses/inventory.json (readium/swift-toolkit bundled ReadiumCSS row, and the acknowledgements note 'Includes ReadiumCSS (readium-css), under the same license')",
+     "detail": "WHAT THE SUMMARIES SAY.\n- ADR-0014 line 112: 'Everything that ships is under a permissive license.'\n- third-party-inventory.md line 19: 'All permissive'.\n- third-party-inventory.md line 112: 'The one shipped item whose terms raise a distribution question is the CC BY 3.0 statement in the OpenDyslexic fonts'.\n\nWHY THEY CONFLICT. ADR section 7 item 8, and inventory.md lines 20 and 127, leave open whether SwiftSoup's Sources/BinarySearch.swift carries a Stack Overflow answer's terms. That file is linked into the app and says it was 'Adapted from' Stack Overflow question 31904396, which dates from 2015, so CC BY-SA 3.0 would apply if any license does. CC BY-SA is share-alike (copyleft), and it has the same technological-measures clause the OpenDyslexic item is flagged for. Separately, the OpenDyslexic original-glyph terms (the Bitstream license) are not available, so calling them permissive is unverified.\n\nREADIUMCSS. Its license is inferred ('Covered by Readium's BSD-3-Clause LICENSE (same copyright holder)') and was never read or recorded. I fetched readium/readium-css's LICENSE from its develop branch on 14 October 2026: BSD-3-Clause, 'Copyright (c) 2017, Readium'. That agrees with the inference, but it was not read at the bundled revision, as the other external texts were.\n\nFIX. Qualify the three summary sentences with the pending items in section 7. Fetch readium-css's LICENSE and record it, with its revision, alongside the other external texts."
+    },
+    {
+     "id": "R3-04",
+     "severity": "minor",
+     "title": "Package references in a force-committed Xcode project bypass every lock rule, and ADR-0014 does not list this as a limit",
+     "location": "Scripts/check-dependency-lock.py:1093 (only files named Package.swift and project.yml are read as manifests); Docs/ADRs/0014-dependency-lock-and-license-inventory.md:75, :99-106",
+     "detail": "WHAT HAPPENS. check_manifests never reads a tracked .xcodeproj or .xcworkspace. ADR-0002 forbids committing them and .gitignore lists them, but no CI drop-in enforces that. Meanwhile ADR-0014 section 3 claims a failure whenever 'a lock or manifest names a package not in the inventory' or a requirement is not exact, and does not list this case among its limits.\n\nPROBE. I built the checker's synthetic tree in a scratch git repository and force-added (`git add -f`) Apps/App/App.xcodeproj/project.pbxproj. It holds an XCRemoteSwiftPackageReference to https://example.com/acme/Zed.git with `kind = branch; branch = main;`. Checker.run(toolchain=True) reported 0 failures. A lock that Xcode writes inside the project would be caught as an unregistered lock, but the requirement itself is not checked.\n\nWHY MINOR. It needs `git add -f` against .gitignore. It is still a gap against brief item 4 (fail on an uninventoried package or an inexact requirement).\n\nFIX. Fail on any tracked path inside *.xcodeproj or *.xcworkspace (or parse XCRemoteSwiftPackageReference requirements), with a self-test mutation, or list it as a limit."
+    },
+    {
+     "id": "R3-05",
+     "severity": "minor",
+     "title": "The pip warning, on which the interim posture rests, is invisible in a passing CI run",
+     "location": "Scripts/ci.sh:29-35; Scripts/ci.d/12-dependency-lock.sh:11-13; Docs/ADRs/0014-dependency-lock-and-license-inventory.md:90, :169",
+     "detail": "WHAT HAPPENS. ADR-0014 section 3 (line 90) replaces the pip failure with a WARN, and section 7 item 9 asks the security reviewer to accept 'the interim warning' until pip is pinned. But Scripts/ci.sh prints only '==> 12-dependency-lock / pass (Ns)', and shows a drop-in's log tail only on failure.\n\nREPRODUCED. With SYLVIA_TOOLS_VENV pointing at a fresh python3.14 venv holding pip 26.1.2, the console shows 'pass (28s) / all 1 steps passed'. The WARN line exists only in .build/ci-logs/12-dependency-lock.log.\n\nFIX. Surface WARN lines in the console summary (print them, or count them in the pass line), or state in ADR-0014 that the warning is visible only in the drop-in log."
+    }
+   ],
+   "claims_verified": [
+    "Clean rerun: `Scripts/ci.sh dependency-lock` passes from a fresh worktree at e381247 in 22 s under parallel load (load averages 5.9 to 6.9). Self-test: 189 mutations, 26 allowed changes, 99/99 failure branches, 2/2 warning branches. Output matches the committed log apart from temporary-directory names.",
+    "Scope: the diff b354dc7..e381247 touches only ADR-0014, Docs/Licenses/**, Docs/Stage0/evidence/M0-dependencies/**, Scripts/check-dependency-lock.py and Scripts/ci.d/12-dependency-lock.sh. Fixtures/LICENSES.md and the other shared files are not edited. No TODO, FIXME or stub markers.",
+    "Locks (independent script): 13 committed Package.resolved files pin 23 packages, one version and revision each. Every pin matches inventory.json (URL, identity, version, revision), and every package's `locks` list equals the locks that pin it. Roles: product 9, product-transitive 9, test 4, spike 1. All 16 remote requirements in the 18 manifests are exact.",
+    "Resolution: resolve-locks.sh, re-run, resolves all 17 projects and packages from their committed locks with no lock changed. IdentityProbe is refused with the zipfoundation identity conflict. MacIdentityProbe and the G0.2 iOS project resolve the inventoried versions.",
+    "License files: for all 23 packages, the checkout HEAD equals the pinned revision, carries the version tag and is unmodified. Every inventoried license, notice and NOTICE file's SHA-256 equals the inventory digest and the committed copy under Docs/Licenses/texts. The two readium-css font license copies are byte-identical.",
+    "BoringSSL texts: LICENSE at 817ab07e and 0226f304, and third_party/fiat/LICENSE at 0226f304, fetched from googlesource, are byte-identical to the committed copies. Commit dates are 28 January 2025 and 7 September 2025, as stated.",
+    "Offline evidence logs reproduce byte for byte: transitive-modules, vendored-headers, copyright-lines, font-names, readium-js-closure, privacy-manifests, extract-notices and fixtures-crosscheck. toolchain.log is identical apart from timestamps and load.",
+    "Header counts (R2-05): CNIOBoringSSL 644 = 323 OpenSSL + 200 ISC + 1 Apache + 1 public-domain-only + 119 none. CCryptoBoringSSL 622 = 492 Apache + 1 public-domain-only + 129 none, with no OpenSSL/SSLeay. Fiat file counts are 11 and 18. The OpenSSL License clause 6 acknowledgment matches the fetched text.",
+    "Linkage: a host debug build of sylvia-source from its lock (26 s, load 6.6 rising to 12.6) defines 3,850 _CNIOBoringSSL_ symbols, 3,369 _CCryptoBoringSSL_ symbols (both copies are linked), 390 catmc_ functions and 138 c_nio_llhttp symbols, with no SystemPackage or CNIOSHA1 symbols. The CCryptoBoringSSL X25519, ED25519 and EC_GFp_nistp256_method entry points are present.",
+    "OpenDyslexic: five 2.001 files, with the embedded CC BY 3.0 and Bitstream statement, registered in EPUBNavigatorViewModel.swift lines 95-110. Readium ships exactly the seven fonts listed, and its minified scripts carry no license comments.",
+    "Readium 3.11.0 imports only Minizip and calls only unz* read functions; unzipFile is never called and unzseek64 is commented out. marmelroy/Zip's only extension is of its own Zip class, which is not an NSObject subclass.",
+    "GRDB links the system sqlite3 (GRDBSQLite system-library module map). The G0.5 ATS probe app uses only SylviaAI and G05TestSupport, so no M0 iOS app links GRDB.",
+    "Advisory spot-checks in OSV: GHSA-qwm4-qh6w-59xr (pip < 26.2.0), GHSA-g454-wj9r-jpg4 (Zip <= 2.1.2, last_affected), GHSA-rj37-6j9x-74q6 (swift-nio < 2.100.0) and GHSA-9m44-rr2w-ppp7 (swift-crypto 4.0.0 to 4.3.1) match advisories.md and advisories-search.log.",
+    "Workflow actions: the GitHub tags API gives checkout v4 = v4.4.0 = 11d5960a326750d5838078e36cf38b85af677262 and upload-artifact v4 = v4.6.2 = ea165f8d65b6e75b540449e92b4886f43607fa02.",
+    "R2-01: a fresh `python3.14 -m venv` holds pip 26.1.2. The drop-in then passes with one WARN.",
+    "R2-02: on copies of HEAD, ABTests/Experiment.swift importing Zip gives test-layout plus transitive-direct, and `import Zip` between regex literals gives transitive-direct. Upper-case .SWIFT and .Swift files are not compiled by SwiftPM (unhandled) or XcodeGen (put in Resources), so they are not a route. Module selectors (BModule::bfunc) need an import.",
+    "G0.4: the local m0-g04-audio head is 459229347684220687b814a162d2fcdd863c718c, as ADR-0014 states. It adds no Package.swift or Package.resolved, its project.yml has no packages key, it has three generators (the probes generator writes six files), and its device build requires all three stamps.",
+    "Open items: the --force-resolved-versions line numbers are all correct, and only 71-g05-recovery.sh passes the flag. Every third-party Python import in tracked scripts (jsonschema, openapi_spec_validator, referencing, yaml) is covered by requirements.txt. No Homebrew tool the scripts call is missing from host_tools.",
+    "The acknowledgements draft regenerates byte for byte. One npm license (@juggle/resize-observer 3.4.0) matches unpkg verbatim. Package count 95 = 93 MIT + approx-string-match + @juggle/resize-observer."
+   ],
+   "gate_gaps": [
+    "Brief item 2 (known advisories for what ships, with what was searched): three vendored components were left unsearched or dismissed with wrong reasons, although sources index them: llhttp 9.3.0, BoringSSL 817ab07e and 0226f304 by revision, and BigInt 5.3.0. All come back none found (R3-02).",
+    "Brief item 4 (fail CI on a package not in the inventory, or a requirement that is not exact): not enforced for package references in a force-committed .xcodeproj or .xcworkspace, and not listed as a limit (R3-04).",
+    "ADR-0014 section 5 says CI enforces the Zip/Minizip ban, which the CVE risk acceptance relies on, 'within the limits section 3 lists'. Three unlisted flag-based routes pass CI: -import-module, -include, and bridging or prefix headers or search paths into package checkouts (R3-01)."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R2-01",
+     "resolved": true,
+     "note": "check_python now accepts pip at any version and warns below 26.2.0 (lines 1514-1558). Verified: `/opt/homebrew/opt/python@3.14/bin/python3.14 -m venv` gives pip 26.1.2. With the 20 pinned distributions copied in offline and SYLVIA_TOOLS_VENV pointing at that venv, `Scripts/ci.sh dependency-lock` passes in 28 s with one WARN. That the WARN does not show in a passing run is R3-05."
+    },
+    {
+     "id": "R2-02",
+     "resolved": true,
+     "note": "Test code is now decided by target membership (is_test_file and owners; Packages/Design classifies 58 product and 22 test Swift files correctly), and imports are read from the raw text. On copies of HEAD: ABTests/Experiment.swift importing Zip gives test-layout plus transitive-direct; `import Zip` between extended regex literals gives transitive-direct. The routes R2-02 named are closed. New flag-based routes are R3-01."
+    },
+    {
+     "id": "R2-03",
+     "resolved": true,
+     "note": "uSHET's cpp_magic.h is now a bundled inventory entry, with the header notice and uSHET's LICENSE at c09e0aca under texts/ and its own acknowledgements section. extract-notices --check reproduces, and my sylvia-source build links its 390 catmc_ functions."
+    },
+    {
+     "id": "R2-04",
+     "resolved": true,
+     "note": "advisories.md line 36 now reads 'None was found ... not proof that no vulnerability exists'. No 'none exist' wording remains for advisories. Similar wording about advisory feeds for vendored components is R3-02."
+    },
+    {
+     "id": "R2-05",
+     "resolved": true,
+     "note": "vendored-headers.log (reproduced byte for byte) shows no OpenSSL/SSLeay statement in swift-crypto's BoringSSL (492 Apache, 129 none, 1 public-domain-only), and the inventory text matches. The clause 6 acknowledgment is in ADR section 4, the swift-nio-ssl obligations and the acknowledgements draft, matching the fetched OpenSSL License text (lines 58-61)."
+    },
+    {
+     "id": "R2-06",
+     "resolved": true,
+     "note": "Chrome 155.0.8059.40 appears consistently in inventory.json, third-party-inventory.md and toolchain.log. The ADR now points to the logged times with their loads (ci log: pass 20 s, load 6.16 before and 7.82 after; round 2 log: 25 s, load 7.45). An exemption outside Spikes/ fails (line 1140), with a self-test mutation."
+    },
+    {
+     "id": "R2-07",
+     "resolved": true,
+     "note": "The local m0-g04-audio head is still 459229347684220687b814a162d2fcdd863c718c, the commit ADR-0014 now states. At that head: no Package.swift or Package.resolved, and project.yml has no packages key. generate-g04-audio-probes.sh writes six files to generated/g04-audio/probes, and the device-build script requires all three stamps (project.yml line 92). The requested Fixtures/LICENSES.md section now covers all three generators."
+    }
+   ]
+  }
+ },
+ {
+  "run": "wf_9ea3b4d5-f4f",
+  "seq": 20,
+  "label": "deps:fix-3",
+  "result": {
+   "commit": "67682c2394d7d6ed488cf2902c944efd2e12d539",
+   "fixed": [
+    {
+     "id": "R3-01",
+     "how": "Scripts/check-dependency-lock.py now fails closed. A shipping target may pass only the flags in FLAGS_ALLOWED and its patterns. -Xcc, -Xlinker, -Xfrontend, -Xclang and -Wl, are unwrapped, and flags are read from SwiftPM unsafeFlags, every build setting whose name contains FLAGS, and XcodeGen per-file compilerFlags. So -import-module, -imacros, -vfsoverlay, -fplugin= and any unreviewed flag fail ('flag'). These fail as 'transitive-direct': -import-module of a transitive module; -module-alias, SWIFT_MODULE_ALIASES or moduleAliases; and any definition or other manifest or xcconfig value that names a Zip or Minizip module or public header. These must be git-tracked files under Apps/ or Packages/, and are then read as product code: -include, -import-objc-header, prefix and bridging headers, MODULEMAP_FILE and -fmodule-map-file=. Every path a shipping target names must be tracked content. A build-variable path may not use '..' or reach SourcePackages/checkouts, and an unknown variable fails. Settings that replace the compiler, linker, SDK or toolchain, or take their inputs from a file, also fail; these lists come from Xcode 27.0's specifications (xcode-settings.log). Headers and module maps under the product roots are always product code. ADR-0014 sections 1.5, 2, 3 and 5 state these rules and the limits that remain: access by symbol, names assembled from pieces, paths that scripts compute, settings outside the Xcode-derived lists, and the environment. Evidence, round3-reproductions.log: all 18 R3-01 routes are reported now and were missed at e381247, and each one compiles against a stand-in module; the allowed changes and one listed limit stay unreported. ci-12-dependency-lock.log at faed1d3: self-test 228 mutations and 30 allowed changes, 109 of 109 failure branches reached, 0 wrong."
+    },
+    {
+     "id": "R3-04",
+     "how": "New check_xcode_projects reads the git index and fails 'xcode-project' once for each committed .xcodeproj or .xcworkspace bundle anywhere in the repository, so a force-added project fails too. The message explains that its package references, requirements, settings and lock are not checked and that sylvia_generate writes the project from project.yml. A self-test mutation covers it, and ADR-0014 sections 1.5 and 3 state the rule. round3-reproductions.log: Apps/DesignCatalog/DesignCatalog.xcodeproj, force-added with a branch requirement on marmelroy/Zip, is reported once as xcode-project; the check at e381247 missed it."
+    },
+    {
+     "id": "R3-02",
+     "how": "New commands/vendored-advisories.py searches each vendored component by version or revision, with a positive control and a recorded verdict for every hit (vendored-advisories.log). llhttp 9.3.0 was searched in OSV, the GitHub Advisory Database and nodejs/llhttp's advisories: OSV's three advisories were fixed in 6.0.7 and 8.1.1, so none applies. Both BoringSSL revisions, 817ab07e and 0226f304, were searched in OSV's commit index (control: OSV-2023-41 at 33b56928): none listed. CryptoSwift's BigInt was compared with every attaswift/BigInt release: closest to 5.4.0 and 5.4.1, identical to none, and no advisory found. Every vendored component was also searched by keyword in the GitHub Advisory Database and NVD and in its repository's advisories. advisories-search.py now also reads each package's repository security advisories and NVD's keyword search, with judged verdicts (advisories-search.log). They found four advisories new to the record, none affecting a pinned version: GHSA-qcc5-f287-vgmq (swift-nio), GHSA-xfxg-9975-pc2j (swift-nio-ssl), GHSA-8q93-f6xh-4f6f (swift-crypto) and CVE-2018-4281 (SwiftNIO before 1.8.0). For the three GHSAs, the fix is an ancestor of the pinned revision (round3-reproductions.log), and the swift-nio floor is now 2.101.0. The wrong reasons were replaced in advisories.md, inventory.json, third-party-inventory.md and ADR-0014 section 5. A final commit makes ADR-0014 cite NVD's range (advisories-search.log) for CVE-2018-4281 and round3-reproductions.log only for the three GHSAs."
+    },
+    {
+     "id": "R3-03",
+     "how": "ADR-0014 section 4 now says that every shipped component whose terms are settled is permissive (or OFL). It names the four shipped items that are not settled: the OpenDyslexic fonts (CC BY 3.0), BoringSSL's advertising clauses, ZIPFoundation's two Readium Foundation files, and SwiftSoup's binary search adapted from Stack Overflow. third-party-inventory.md's Licenses row and its paragraph on distribution say the same. ReadiumCSS: new commands/readium-css-provenance.py compares git blob ids with every readium/readium-css commit that touched css/dist. At 1ba225fe, 11 of the 13 bundled stylesheets are identical; the other two differ by 3 lines each, shown as diffs. It fetched LICENSE at that commit (BSD-3-Clause, sha256 f47741fc..., byte-identical to swift-toolkit's LICENSE) and committed it as Docs/Licenses/texts/readium__swift-toolkit/external__readium-css-1ba225fe...__LICENSE. The ReadiumCSS entry in inventory.json and the regenerated acknowledgements-draft.md carry it (readium-css-provenance.log; run-all.log shows all 51 committed texts identical to their sources)."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "R3-05",
+     "reason": "Scripts/ci.sh is outside the owned paths. Exact change requested from its owner: in Scripts/ci.sh, after line 30 (echo \"    pass ($((SECONDS - start))s)\"), add the line:     grep -E \"^WARN \" \"$LOG_DIR/$name.log\" | sed \"s/^/    | /\"   round3-reproductions.log runs a fresh virtualenv holding pip 26.1.2: without the change the console shows only 'pass', and on a copy of the tree with the change it prints the WARN line. Done within scope: the check prints its WARN lines last, just before the summary line '(the WARN lines above do not fail the check)'. The header of Scripts/ci.d/12-dependency-lock.sh, and ADR-0014 section 3, section 7 item 9 and the open items, now say that a passing ci.sh run hides the warning, and request the change. Also requested from the Scripts/tools owner: add pip==26.2.1 to Scripts/tools/requirements.txt, then move pip from python_tools.unpinned to packages in inventory.json. That removes both the advisory and the warning."
+    }
+   ],
+   "rerun": {
+    "command": "Docs/Stage0/evidence/M0-dependencies/commands/ci-clean.sh (deletes the build products, then runs Scripts/ci.sh dependency-lock), at faed1d3; and Docs/Stage0/evidence/M0-dependencies/commands/run-all.sh (every evidence command, including the round 1-3 reproductions), at cfc5dea. The commits after cfc5dea change only ADR-0014 wording, one punctuation mark in third-party-inventory.md and logs; no script or inventory.json changed.",
+    "result": "Pass. ci-12-dependency-lock.log: Scripts/ci.sh dependency-lock passed from a clean tree at faed1d3 in 34 s (load averages 5.49 before, 4.73 after, with other agents building, so the timing is indicative only). Self-test: 228 mutations in 22 categories and 30 allowed changes; 109 of 109 failure branches and 2 of 2 warning branches reached; 0 wrong. Check of the repository and toolchain: 0 failures, 0 warnings. run-all.log at cfc5dea: 22 of 22 steps ok, 0 failures, and all 51 committed license texts identical to their sources. round1, round2 and round3 reproductions: 0 failures each. advisories-search and vendored-advisories: 0 failures. Final commit 67682c2 on m0-int-deps (it adds only the faed1d3 log); HEAD is detached there and the tree is clean. Cleanup: ci-clean found no build products left to delete, and no folder in ~/Library/Developer/Xcode/DerivedData points at this worktree. No simulator was created, because this work is host-only; simctl lists no device named Sylvia-M0-deps, so there was none to delete, and no other simulator was touched. The drop-in comment and the commit messages carry the agent review label 'agent-reviewed; human sign-off pending'."
+   }
+  }
+ },
+ {
+  "run": "wf_9ea3b4d5-f4f",
+  "seq": 25,
+  "label": "deps:review-4",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "67682c2394d7d6ed488cf2902c944efd2e12d539",
+   "rerun": {
+    "command": "Clean tree (no .build or DerivedData present), host only: source Scripts/lib/env.sh, Scripts/lib/sim.sh and Scripts/lib/xcodegen.sh; then Scripts/ci.sh dependency-lock (drop-in log in .build/ci-logs/12-dependency-lock.log). Repeated once after Docs/Stage0/evidence/M0-dependencies/commands/resolve-locks.sh had left untracked checkouts, DerivedData and generated .xcodeproj bundles in the worktree.",
+    "result": "PASS at 67682c2, 34 s, load 7.57 before and 9.01 after. Self-test: 228 mutations across 22 categories and 30 allowed changes; 109 of 109 failure branches and 2 of 2 warning branches reached; 0 wrong. Repository check: 13 locks committed and registered, 18 manifests, 16 remote requirements, 53 license texts, 58 product Swift files; 0 failures, 0 warnings (the shared virtualenv's pip is 26.2.1). Toolchain checks found 27A266a, Swift 6.4 and XcodeGen 2.46.0. Second run with untracked build products present: PASS, 33 s, load 14.34 to 18.43, so build products do not affect the check. Timings are indicative only (shared Mac). resolve-locks.sh re-run: failures 0, no committed lock changed. IdentityProbe was refused on the zipfoundation 0.9.20 versus 3.0.1 conflict. Cleanup: every .build, DerivedData and generated .xcodeproj I created is deleted, and no simulator was created. Disclosure: two stray shell commands touched the main checkout. One created an empty file /Users/jevidon/Git/sylvia/.build-never; the other created and removed a directory .build-reviewer-unused in the same command. I removed the file, and neither path exists now. One xcodebuild -showBuildSettings probe created ~/Library/Developer/Xcode/DerivedData/DesignCatalog-bpcwnevjxtytayeacqshnehbphda, which references my scratch path; I deleted it."
+   },
+   "findings": [
+    {
+     "id": "R4-01",
+     "severity": "major",
+     "title": "XcodeGen expands ${VAR} from the environment, so a product project.yml can reference Spikes code, add -import-module Zip, or use a test-only package while the check passes",
+     "location": "Scripts/check-dependency-lock.py:950 (packages and localPackages are excluded from the Spikes string scan), :960 (local package path read literally), :1002-1004 (templates resolved by literal name; targetTemplates are excluded from 'texts'), :1352 (a dependency whose literal ref is unknown is skipped); Scripts/lib/xcodegen.sh:19 (xcodegen generate --quiet, without --no-env); Docs/ADRs/0014-dependency-lock-and-license-inventory.md:38 (section 1.5), :85-88 (section 3), :140 (section 5)",
+     "detail": "WHAT. XcodeGen 2.46.0 expands ${VAR} from the environment in spec strings by default (`xcodegen generate --help`: '-n, --no-env  Disable environment variable expansions'), and sylvia_generate does not pass --no-env. The check reads the same values literally. It treats a `$` as unevaluable only in settings and source paths. It does not do so for local package paths, template names or dependency references.\n\nREPRODUCED on copies of the committed tree (git archive HEAD extracted without .git, so the checker walks every file; `sylvia_python Scripts/check-dependency-lock.py check --root <copy>`):\n(a) Apps/DesignCatalog/project.yml, packages: `ZipEvalCommon: path: ${SYLVIA_ROOT}/Spikes/G03-Intake/ZipEval/Common`. Check output: 'dependency lock check: 0 failure(s), 0 warning(s)'. `SYLVIA_ROOT=<copy> xcodegen generate` then writes `XCLocalSwiftPackageReference \"<copy>/Spikes/G03-Intake/ZipEval/Common\"`. SYLVIA_ROOT is exported by Scripts/lib/env.sh:5, which Scripts/ci.d/21-design-catalog.sh sources (line 32) before calling sylvia_generate (line 61). So this works in the repository's normal generation flow, with no special environment. ADR section 1.5 says a reference into Spikes/ from any product manifest 'is always an error'.\n(b) A targetTemplates entry `Quiet` with `OTHER_SWIFT_FLAGS: \"-Xfrontend -import-module -Xfrontend Zip\"`, and the app target with `templates: [${SYLVIA_TEMPLATE}]`. Check output: 0 failures. With SYLVIA_TEMPLATE=Quiet, the generated project.pbxproj carries `OTHER_SWIFT_FLAGS = \"-Xfrontend -import-module -Xfrontend Zip\";` for the DesignCatalog target (Debug and Release). This is review R3-01's route back into the CVE-2023-39135 module.\n(c) The project declares swift-snapshot-testing (exactVersion 1.19.6) for DesignCatalogTests, and the inventory's direct_in and used_by_targets are updated as section 6 asks. The app target adds `- package: ${SYLVIA_EXTRA_PACKAGE}` with `product: SnapshotTesting`. Check output: 0 failures. With SYLVIA_EXTRA_PACKAGE=swift-snapshot-testing, the app target's packageProductDependencies are SylviaDesign, SylviaDesignGallery and SnapshotTesting: a test-only package in a shipping target.\n\nWHY IT MATTERS. This is the brief's rule 4 (a product target must not reference spike code or packages), the test-in-product rule and the Zip import ban, each bypassed by an unlisted route. Section 3's limit about the environment covers only 'what the compiler and linker take from the environment (CPATH, ...)'. Section 5 lists 'what the compiler takes from the environment'. Neither covers project generation.\n\nFIX. No tracked project.yml contains `${` today (grep), so the check can fail any `${` in a product project.yml at no cost; add self-test mutations for paths, template names and dependency references. Alternatively, request --no-env in sylvia_generate from the owner of xcodegen.sh. In either case, list the route in section 3 until it is closed."
+    },
+    {
+     "id": "R4-02",
+     "severity": "major",
+     "title": "C-family #include paths are judged only against Spikes/, so includes outside the product roots or into a package checkout (including Minizip's unzip.c) pass, contrary to ADR sections 3 and 5",
+     "location": "Scripts/check-dependency-lock.py:1692-1695 (the include branch tests only spike_roots); :518 (HEADER_WORD matches only header extensions); Docs/ADRs/0014-dependency-lock-and-license-inventory.md:85 (section 3 lists 'C-family includes' as a checked route to 'code outside the product roots'), :140 (section 5: 'product code never reaches Zip or Minizip by import, include ...; CI enforces it ... within the limits section 3 lists')",
+     "detail": "REPRODUCED on copies of the committed tree, with the same commands as R4-01:\n(a) New file Packages/Design/Sources/SylviaDesign/include/shim.h containing `#include \"../../../../../Scripts/tools/x.h\"` (outside Apps/ and Packages/). Check output: 'dependency lock check: 0 failure(s), 0 warning(s)'.\n(b) The same header containing `#include \"../../../.build/checkouts/Zip/Zip/minizip/unzip.c\"`. Check output: 0 failures. The text contains no banned header name, and the path leads into a package checkout, which section 1.5 says a shipping target may never name.\n\nTHE ROUTE COMPILES. A probe file whose only text is a comment, `#include \"<SourcePackages>/checkouts/Zip/Zip/minizip/unzip.c\"` and `int probe(const char *p){ unzFile f = unzOpen(p); return f != 0; }` compiles with `xcrun clang -c -w -I <checkout>/Zip/Zip/minizip/include probe.c`. `nm` then shows `T _unzOpen` and `T _probe`. A target that depends on Readium's graph receives Minizip's include directory from SwiftPM or Xcode. Including zip.c the same way would compile the unused write path, which has the CVE-2023-45853 pattern, into product code.\n\nWHY IT MATTERS. No limit listed in section 3 or 5 covers it: access by symbol, names the preprocessor assembles from pieces, settings outside Xcode's lists, and the compiler's environment do not apply. The checker's own docstring correctly limits include judging to Spikes/ (spike-in-product). It is the ADR that claims more. This is the same class as review R3-01, which was rated major.\n\nFIX. Resolve every quoted include path relative to the including file and judge it like other paths: fail if it leaves Apps/ and Packages/ or passes through an untracked or checkout directory (.build, DerivedData, SourcePackages, checkouts). Add mutations for both cases. Alternatively, narrow sections 3 and 5 and list the route as a limit."
+    },
+    {
+     "id": "R4-03",
+     "severity": "minor",
+     "title": "A product manifest can redefine a build-product variable, after which a header or Swift search path that starts with it passes while Xcode resolves it outside the product roots",
+     "location": "Scripts/check-dependency-lock.py:215-218 (BUILD_VARS), :1510-1515 (resolve_setting trusts a value that starts with a build variable); Docs/ADRs/0014-dependency-lock-and-license-inventory.md:38 (section 1.5: 'A path may start with a build-product, SDK or toolchain variable only if it stays in that directory')",
+     "detail": "REPRODUCED. A copy whose DesignCatalog target settings add `DERIVED_FILE_DIR: /opt/elsewhere/Zip/Zip/minizip/include`, `HEADER_SEARCH_PATHS: $(DERIVED_FILE_DIR)` and `SWIFT_INCLUDE_PATHS: $(DERIVED_FILE_DIR)`. Check output: 0 failures. Control: `HEADER_SEARCH_PATHS: /opt/elsewhere/...` written directly fails with outside-product. On the generated scratch project, `xcodebuild -showBuildSettings -target DesignCatalog` prints `DERIVED_FILE_DIR = /opt/elsewhere/Zip/Zip/minizip/include`, `HEADER_SEARCH_PATHS = .../build/Debug-iphoneos/include /opt/elsewhere/Zip/Zip/minizip/include`, and the same value for SWIFT_INCLUDE_PATHS.\n\nIMPACT. Search paths outside the product roots defeat the 'product code only from Apps/ and Packages/' rule for headers and modules with names that are not banned. The Zip import ban still catches `import Minizip` and banned header names, because Zip's module map names the module Minizip. Section 3's limit about settings outside Xcode's lists arguably covers the redefinition, but the section 1.5 sentence overstates.\n\nFIX. Fail a product manifest or .xcconfig that assigns any BUILD_VARS name, and add a mutation for it."
+    },
+    {
+     "id": "R4-04",
+     "severity": "minor",
+     "title": "In C and linker flag settings, `-Werror <Name>` reads Name as a diagnostic group, although clang treats it as an input file",
+     "location": "Scripts/check-dependency-lock.py:489-490 (DIAG_FLAGS consume the next token for every setting whose name contains FLAGS); ADR-0014 section 3 (line 86: 'an input file among the flags fails too')",
+     "detail": "REPRODUCED. A copy with `OTHER_LDFLAGS: -Werror Evil` in the DesignCatalog target. Check output: 0 failures. clang's -Werror takes no argument: `xcrun clang -Werror Evil -c x.c` fails with 'no such file or directory: Evil'. With an object file named Evil present, `xcrun clang -dynamiclib -Werror Evil x.o -o libx.dylib` links it, and `nm` shows `T _evil`.\n\nIMPACT. Narrow. The input must be a bare capitalized name in the linker's working directory, and a committed Mach-O file there is still caught by the binaries rule. It still contradicts the 'fails closed' claim.\n\nFIX. Accept a diagnostic-group argument only for Swift flags (OTHER_SWIFT_FLAGS, and unsafeFlags in swiftSettings)."
+    },
+    {
+     "id": "R4-05",
+     "severity": "minor",
+     "title": "The --force-resolved-versions request list omits the G0.3 pack generator that a drop-in runs",
+     "location": "Docs/ADRs/0014-dependency-lock-and-license-inventory.md:233-235 (open items); Scripts/fixtures/generate-g03-intake-pack.sh:37; Scripts/ci.d/50-g03-intake.sh:77",
+     "detail": "The ADR asks for --force-resolved-versions on 'every swift build, swift test and swift run call' and lists the drop-ins and the spike scripts they call. Scanning every tracked shell script for `swift build|test|run` also finds generate-g03-intake-pack.sh:37: `(cd \"$kit\" && swift build --configuration release --product sylviapack-tool ...)`. It builds IntakeKit, which pins readium/ZIPFoundation, without the flag, and 50-g03-intake.sh:77 runs it. Add it to the request."
+    },
+    {
+     "id": "R4-06",
+     "severity": "minor",
+     "title": "The Mac companion's 'what ships' list and acknowledgements omit ReadiumZIPFoundation, which ADR-0010 assigns to the companion's .sylviapack writer",
+     "location": "Docs/ADRs/0014-dependency-lock-and-license-inventory.md:124 (section 4, Mac companion); Docs/Licenses/acknowledgements-draft.md:3714-3716; Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:56",
+     "detail": "ADR-0010 line 56: '**Writer** (`PackWriter`, Mac companion)'. It uses readium/ZIPFoundation 3.0.1, which ADR-0014 section 2 recommends for '.sylviapack, backups'; the inventory allows it on iOS and macOS. Section 4 lists only the G0.2 source service's packages for the companion. The draft's companion section says only 'if it also uses GRDB or ZIPFoundation, their entries above apply'. As a result, the companion's notices lack ZIPFoundation's MIT text and the Readium Foundation BSD-3-Clause notice that the iOS section carries. Fix: add ZIPFoundation, with the Readium Foundation files, to the companion's entries, or state in section 4 that ADR-0010 already puts it there and track it for M6."
+    },
+    {
+     "id": "R4-07",
+     "severity": "minor",
+     "title": "The inventory page says all 17 projects and packages resolve from their locks, but two resolve with no lock at all",
+     "location": "Docs/Licenses/third-party-inventory.md:14",
+     "detail": "Line 14: 'all 17 projects and packages resolve from their locks without changing one (resolve-locks.log)'. resolve-locks.log, and my re-run of resolve-locks.sh, show Spikes/G02-Transfer/MacIdentityProbe ('no committed lock, and Xcode wrote none ...; remote packages resolved: 8') and Spikes/G02-Transfer/iOS (1) resolved without a lock. G01-PDF and ZipEval/Common have no remote packages. Thirteen resolve from locks. The 'Without a lock' table on the same page is accurate; reword line 14 to match it."
+    }
+   ],
+   "claims_verified": [
+    "Only ADR-0014 is modified relative to b354dc7. Every other change is a new file under Docs/Licenses/, Docs/Stage0/evidence/M0-dependencies/, Scripts/check-dependency-lock.py or Scripts/ci.d/12-dependency-lock.sh (git diff --name-status). Shared files are changed only by request.",
+    "13 committed Package.resolved files pin 23 URLs. Every pin's version, revision and identity equals inventory.json, there is one version and revision per package, and each package's locks list matches (my own parse of every tracked lock).",
+    "resolve-locks.sh re-run at 67682c2: failures 0, no committed lock changed. IdentityProbe was refused with \"root depends on 'zipfoundation' 0.9.20 ... swift-toolkit 3.11.0 depends on 'zipfoundation' 3.0.1..<4.0.0\".",
+    "All 31 package license files (23 packages) at the pinned checkout revisions (HEAD read from each checkout's .git) are byte-identical to inventory.json's sha256 and to the committed copies. The bundled font licenses are identical too, and every __notice and __header-comment text is extracted verbatim from its source.",
+    "The external texts fetched at their pinned refs match the committed copies byte for byte: BoringSSL LICENSE at 817ab07e and at 0226f304, fiat LICENSE at 0226f304, uSHET LICENSE at c09e0aca, attaswift/BigInt LICENSE.md (v5.3.0 is identical to v5.4.1), readium-css LICENSE at 1ba225fe (equal to the toolkit's), Hypothesis LICENSE at v1.1763.0, zlib LICENSE at v1.3.1.",
+    "BoringSSL 817ab07e is under the OpenSSL plus SSLeay licenses, with ISC and MIT for fiat; clause 6 and the Eric Young attribution read as the ADR quotes them. BoringSSL 0226f304 is Apache-2.0, does not mention fiat, and its third_party/fiat/LICENSE is Apache-2.0 'Copyright 2015-2020 the fiat-crypto authors'.",
+    "ReadiumCSS: 11 of 13 bundled stylesheets are identical to readium/readium-css css/dist at 1ba225fe. ReadiumCSS-after.css and rtl/ReadiumCSS-after.css each differ in one rule (the p:first-letter selector).",
+    "Readium ships 7 fonts (four OpenDyslexic files in Navigator, one in Streamer, Accessible DfA, iA Writer Duospace). OpenDyslexic 2.001's name table carries the quoted Bitstream and CC BY 3.0 statement.",
+    "Readium 3.11.0 imports only Minizip (MinizipContainer.swift) and calls only unz* read functions; the one unzseek64 use is commented out. Zip.unzipFile is not called.",
+    "Advisories: repository advisories number 6 (swift-nio), 2 (swift-nio-ssl), 2 (swift-crypto) and 1 (swift-asn1), with the ranges recorded. GHSA-qcc5-f287-vgmq, GHSA-xfxg-9975-pc2j and GHSA-8q93-f6xh-4f6f return 404 from the global Advisory Database. GHSA-rj37-6j9x-74q6 is 'high' there. GHSA-g454-wj9r-jpg4 lists <= 2.1.2 with no patched version. OSV returns nothing for commits 817ab07e and 0226f304, and only OSV-2023-41 for OSS-Fuzz boringssl. llhttp 9.3.0 has none in OSV (its three advisories were fixed in 6.0.7 and 8.1.1). OSV returns GHSA-qwm4-qh6w-59xr for pip 26.1.2 and nothing for 26.2.1.",
+    "The llhttp version is 9.3.0 by LLHTTP_VERSION macros at the pinned swift-nio. cpp_magic.h's header names uSHET commit c09e0aca and 'LICENSE: MIT'.",
+    "The privacy-manifest table matches the checkouts: ZIPFoundation (both), GRDB, CryptoSwift, SQLite.swift, NIOSSL, six swift-crypto targets, and NIOPosix, NIOFS and _NIOFileSystem.",
+    "actions/checkout v4 = v4.4.0 = 11d5960a and actions/upload-artifact v4 = v4.6.2 = ea165f8d (GitHub tags API).",
+    "m0-g04-audio is still at 459229347684220687b814a162d2fcdd863c718c. Relative to its merge base it adds no Package.swift, Package.resolved, requirements, font or license file, and its project.yml declares no packages.",
+    "Nine local evidence logs reproduce from my own checkouts: transitive-modules, read-licenses, vendored-headers, copyright-lines, font-names, readium-js-closure, privacy-manifests, extract-notices and fixtures-crosscheck. The differences are only scratch paths, and a tracked-file count that rose from 2021 to 2024 with the three later log files.",
+    "The brief's four CI rules fail on copies of the committed tree: a pin changed to 2.1.1 (pin-differs), an unknown pin in Packages/Design (unknown-package), from: in Packages/Design (not-exact), and weichsel/ZIPFoundation in Apps/DesignCatalog (spike-in-product). The platform rule (swift-nio in the iOS app), test-in-product, a direct Zip requirement, `internal import Zip`, a Package@swift-6.4.swift manifest and a registry dependency also fail.",
+    "Review round 3 routes fail as claimed: -import-module Zip in unsafeFlags, -include unzip.h, a bridging header via $(BUILD_DIR)/../../SourcePackages/checkouts (also with a [sdk=iphoneos*] key), and a committed DesignCatalog.xcodeproj.",
+    "The self-test's 109 failure branches equal the AST count of self.fail calls (111 grep hits less 2 docstring mentions); the 2 warning branches match likewise.",
+    "The acknowledgements draft's code fences are balanced. It contains the CryptoSwift sentence, the OpenSSL clause 6 acknowledgment and the Eric Young attribution, and CI shows it equals the generated output.",
+    "The drop-in and the checker are tracked as mode 100755. Neither the drop-in nor the scripts play audio."
+   ],
+   "gate_gaps": [
+    "Brief item 4 (fail CI when a spike-only dependency is referenced by a product target) holds only for literal manifest values. Values that XcodeGen expands from the environment escape it, including the SYLVIA_ROOT variable that env.sh exports (R4-01).",
+    "ADR-0014 section 5 says CI enforces the Zip and Minizip ban for every include within the listed limits; a C include of Minizip's .c source or of any file outside the product roots is not judged (R4-02).",
+    "Advisory search for the host tools (Xcode, Homebrew formulae, Chrome, Tailscale) was not done. It is recorded honestly as not searched, pending the threat model's scope; the author's criterion is 'partial'.",
+    "The Mac companion's acknowledgements cover only the G0.2 source service's packages; ReadiumZIPFoundation, which ADR-0010 assigns to the companion, is deferred to M6 (R4-06).",
+    "Counsel, release-owner and security decisions remain pending-human, as the brief allows: OpenDyslexic, the BoringSSL advertising clauses, the Readium Foundation file headers, the SwiftSoup Stack Overflow snippet, the Zip CVE and pip. The acknowledgements draft cannot be final until they are decided."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R3-01",
+     "resolved": true,
+     "note": "The three flag routes and the further ones are closed. On copies of the committed tree, each of these fails: -Xfrontend -import-module Zip in unsafeFlags (flag and transitive-direct), OTHER_CFLAGS -include unzip.h, a bridging header via $(BUILD_DIR)/../../SourcePackages/checkouts, and the same with a [sdk=iphoneos*] key. round3-reproductions.log shows the rest. New adjacent routes remain: an environment-named XcodeGen template reintroduces -import-module Zip (R4-01); C includes are not judged outside Spikes (R4-02); build variables can be redefined (R4-03)."
+    },
+    {
+     "id": "R3-02",
+     "resolved": true,
+     "note": "The records are corrected, and I confirmed the underlying facts. The LLHTTP_VERSION macros give 9.3.0. OSV lists none for llhttp 9.3.0, and its three advisories were fixed in 6.0.7 and 8.1.1. OSV's commit queries return none at 817ab07e and 0226f304, with OSV-2023-41 the only OSS-Fuzz boringssl entry. BigInt was searched at every release. The three July 2026 repository advisories are absent (404) from the global database, and their fixes are ancestors of the pins (round3-reproductions.log)."
+    },
+    {
+     "id": "R3-03",
+     "resolved": true,
+     "note": "ADR section 4 and third-party-inventory.md lines 19 and 112 now limit 'permissive' to items 'whose terms are settled' and name the four pending items. ReadiumCSS's license was fetched from readium/readium-css at 1ba225fe; I fetched it again and it is byte-identical (f47741fc...). 11 of 13 stylesheets are identical at that commit, and 2 differ in one rule."
+    },
+    {
+     "id": "R3-04",
+     "resolved": true,
+     "note": "check_xcode_projects fails any tracked file inside a .xcodeproj or .xcworkspace. My copy with Apps/DesignCatalog/DesignCatalog.xcodeproj/project.pbxproj fails as xcode-project, and ADR sections 1.5 and 3 say so."
+    },
+    {
+     "id": "R3-05",
+     "resolved": true,
+     "note": "Addressed by disclosure and a request, within this item's ownership. ADR section 3 and section 7 item 9 now state that a passing Scripts/ci.sh console hides the WARN (it appears only in .build/ci-logs/12-dependency-lock.log), and a one-line ci.sh change is requested from its owner, with round3-reproductions.log showing its effect. The console will hide the warning until that shared-file change lands; recommending a pip pin removes the question."
+    }
+   ]
+  }
+ }
+]

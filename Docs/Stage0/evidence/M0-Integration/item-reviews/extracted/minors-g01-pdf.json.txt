@@ -1,0 +1,615 @@
+[
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 18,
+  "label": "minors-g01-pdf:author",
+  "result": {
+   "branch": "m0-int-minors-g01-pdf",
+   "commit": "7884a59c212f405d2ea616d833e78e519a1aaa8b",
+   "summary": "Closed R2-01, R2-02 and R2-03 for G0.1 PDF on the simulator, and closed the gate gaps that host and simulator can reach. A stopped agent had left five WIP commits on the branch. I read them, treated them as unreviewed, built them and ran their tests before changing anything, then kept them with fixes.\n\nWhat changed:\n- R2-01: NonURLActionTests now asserts every outcome the report and ADR state: the delegate decisions, the field value before and after each action, that nothing is presented (no print sheet), and that no URL opens.\n- R2-02: actions-chained.pdf covers /Next as one dictionary, as an array (URI, Launch, JavaScript) and as a cycle, plus /AA at document, page, link and form-field level. PDFActionAudit follows /Next and reads every /AA. I added a total row cap: a /Next graph that repeats entries has 2^depth paths within the depth limit. ChainedActionTests covers the file with and without the delegate, and LinkTapUITests does real taps, field typing and closing the file. PDFKit ignores /Next. It surfaces only an /AA-only link's mouse-up URL, through the delegate (without the delegate, its default opens it). It presents no action for widgets.\n- R2-03: HighlightRestorer and the harness draw a relocated highlight where its text now is and save the rebuilt anchor. It then restores exactly after a relaunch (UI and unit tests).\n- Gate gaps: rotated-page touch drags are automated, at one drag per page, with the overlay checked on screen at 2.5x zoom. Anchors captured on iOS 26.5 restore exactly on the iOS 27.0 runtime, with page text unchanged, so the relocation path ran on a simulated change.\n\nRobustness fixes found along the way:\n- The drop-in now resolves a relative G01_PDF_EVIDENCE_DIR. My first clean run failed on it: the tests run inside the simulator and could not write their evidence.\n- UI tests now fail when they cannot write evidence. Before, a failed write could leave stale files in Docs.\n- The timing test records the Mac's load, and the drop-in logs uptime around the tests.\n\nFinal clean run: commit 9decb79, new simulators, all checks pass (see ci). Load at the start of the run was 34.60, 28.10, 26.77, so timings are indicative only. The later commit 7884a59 changes only docs, evidence and the wording of one doc comment (same lines, no compiled change).\n\nUpdated: report Docs/Stage0/G01-PDF.md (rows 2a, 3, 18a, new 18b, 24, new 24a, 26a, 28; findings 7, 9 and new 10; limits; failures; shared changes; open questions), ADR-0005, the device checklist (steps 3 and 8, plus an iPad pointer sub-step), Spikes/G01-PDF/README.md and PROGRESS.md. No test plays audio.",
+   "criteria": [
+    {
+     "criterion": "R2-01: NonURLActionTests asserts (not just records) the non-URL action behaviour the report and ADR-0005 state",
+     "status": "passed-simulator",
+     "evidence": "Spikes/G01-PDF/Tests/Unit/NonURLActionTests.swift asserts these outcomes. Decisions are [.blocked(\"named action Find/GoToPage is not supported\")] for C and D, and empty for A, B, E, G, H and I. The field is unchanged (\"Filled in\") after A-F, \"Default\" after G, and \"Default\" before and after H and I. Nothing is presented after any action (no print sheet), no URL opens and the file digest is unchanged. Docs/Stage0/evidence/G01-PDF/links-nonurl-actions.txt; ci-clean-run.log (61/61, simulator iPhone 17 iOS 26.5 (23F77), commit 9decb79). Report row 18a; ADR-0005 'Links and actions'."
+    },
+    {
+     "criterion": "R2-02: /Next-chained actions and annotation /AA triggers covered by a fixture with assertions; PDFActionAudit follows /Next and reads /AA; ADR-0005 sentence",
+     "status": "passed-simulator",
+     "evidence": "Fixture Spikes/G01-PDF/Fixtures/actions-chained.pdf (11th fixture, regenerates byte-identically). It has /Next as a dictionary, as an array [URI, Launch, JavaScript] and as a cycle; an /AA-only link; a link with every annotation trigger; a field with every widget and field trigger; page /AA /O and /C; the catalog /OpenAction; and document /AA WC, WS, DS, WP and DP. ChainedActionTests (6 tests): links-chained-declared.txt (42 declared actions, cycle reported once), links-chained-actions.txt, links-chained-open-actions.txt, links-audit-limits.txt (depth limit 64; row cap 4,096 on a /Next graph with 2^30-1 paths). Control links-chained-control-no-interceptor.txt: without the delegate PDFKit still ignores the /Next chains, but its default opens the /AA-only link. Real taps in LinkTapUITests.testChainedAndAdditionalActionTaps: ui-link-taps-chained.txt (links A-G, field tap, typing and leaving, close through the Open menu; only D (asks) and E (blocked) reach the delegate, nothing opens). ADR-0005 'Links and actions' paragraph; report row 18b and finding 10."
+    },
+    {
+     "criterion": "R2-03: the harness shows and saves relocated highlights (plan 9.4 / 7.5)",
+     "status": "passed-simulator",
+     "evidence": "HighlightRestorer runs on every open in ReaderViewController. It draws a relocated highlight at its current position (the same overlay frames as an unchanged record of the passage, Ochre on screen) and saves the rebuilt anchor with the same record ID and quotation. After a relaunch it restores exactly. Evidence: ui-relocated-highlight.txt, ui-relocated-highlight.png, ui-relocated-highlight-after-relaunch.png (HighlightUITests.testRelocatedHighlightIsDrawnAndSaved), and highlight-restore-relocated.txt (HighlightRestoreTests: review and not-found records unchanged). The change was simulated, because no real extractor change was available. Report row 24a; ADR-0005 'Restoring'."
+    },
+    {
+     "criterion": "R1-04: provenance of the committed PDF fixtures in Fixtures/LICENSES.md",
+     "status": "partial",
+     "evidence": "Fixtures/LICENSES.md is outside this workstream. The ten fixtures R1-04 named were added at M0 integration (integration-log section 3, row 10), and their SHA-256 values match make_pdf_fixtures.py --check (ci-clean-run.log). This round added one fixture, actions-chained.pdf, whose row is requested in shared_changes_requested and in the report's 'Shared changes requested'. Spikes/G01-PDF/README.md holds its provenance until then."
+    },
+    {
+     "criterion": "Gate gap: rotated-page touch drag selection automated on the simulator",
+     "status": "passed-simulator",
+     "evidence": "SelectionGestureUITests.testDragEndHandleOnRotatedPages covers rotated.pdf pages 1 (90), 2 (180), 3 (270) and 5 (270 with an offset CropBox). A long press, then one drag of the end handle along the page's own axes, reached the second line on every page. After Highlight, the overlay was measured on screen at 2.5x the fit scale. Evidence: ui-drag-selection-rotated.txt, ui-drag-rotate-1.png, -2.png, -3.png, -5.png. Report row 2a."
+    },
+    {
+     "criterion": "Finger selection across lines, columns and rotated pages on a physical device",
+     "status": "pending-device",
+     "evidence": "Needs a person and a device: Docs/Stage0/device-checklists/G01-PDF.md steps 1-3 (step 3 now notes the simulated drags and asks whether the handle lands where the finger aims). Report row 2."
+    },
+    {
+     "criterion": "Gate gap: plan 9.4 'survives an extraction-cache rebuild'",
+     "status": "passed-simulator",
+     "evidence": "Re-extraction on the same OS restores every sample exactly (anchor-capture-restore.txt). The ten anchors captured on iOS 26.5 (Spikes/G01-PDF/Tests/Resources/anchors-captured-ios-26.5-23F77.json) restore exactly through HighlightRestorer on iOS 26.5 and on the iOS 27.0 (24A434) runtime, with every page-text digest unchanged: cross-os-restore-iOS-26.5-23F77.txt and cross-os-restore-iOS-27.0-24A434.txt (CrossOSRestoreTests, run by the drop-in on both runtimes). A text change is handled by relocation, which is drawn and saved (row 24a, simulated change). Limits: two simulator runtimes, not a device OS update; no real extractor change was observed. Report rows 24 and 24a."
+    },
+    {
+     "criterion": "Mouse-enter and mouse-exit /AA triggers through pointer hover (iPad with trackpad or mouse)",
+     "status": "pending-device",
+     "evidence": "XCUITest cannot hover on iOS. A new sub-step in device checklist step 8 asks for an iPad with a pointer to hover over link F and the field in actions-chained.pdf. No such iPad is available yet (ADR-0001)."
+    },
+    {
+     "criterion": "Gate gap: real-world PDF corpus (embedded/CID fonts, RTL, CJK, rotated text matrices, messy column order)",
+     "status": "pending-human",
+     "evidence": "It needs QA to choose public-domain sources and confirm their licences. The files would come in through Scripts/fixtures/fetch.sh with SHA-256 pins and Fixtures/LICENSES.md rows, both shared files. The report's limits and open question 5 state this; every fixture is generated."
+    },
+    {
+     "criterion": "Drop-in 32-g01-pdf re-run from clean; ci-clean-run.log overwritten",
+     "status": "passed-simulator",
+     "evidence": "Docs/Stage0/evidence/G01-PDF/ci-clean-run.log, plus ci-clean-run-xcodebuild.log, ci-clean-run-xcodebuild-tsan.log and ci-clean-run-xcodebuild-cross-os.log. The run had DerivedData, the generated project and the logs removed, and used new simulators named Sylvia-M0-minors-g01-pdf. Commit 9decb79: 61/61 tests, Thread Sanitizer 2/2 with 0 reports, CrossOSRestoreTests 1/1 on iOS 27.0, contracts pass. The fixture check passes on the host."
+    },
+    {
+     "criterion": "Self-found robustness defects in this gate's code (not review findings)",
+     "status": "passed-simulator",
+     "evidence": "1) The PDFActionAudit row cap: testAuditStopsOnAnExponentialNextGraph, links-audit-limits.txt. 2) The drop-in resolves a relative evidence path; the first clean run failed on this, as recorded in the report's 'Development crashes and failures'. 3) UI-test evidence writes now fail the test instead of being silently skipped. 4) large-pdf-timing.txt records the host load averages via getloadavg (checked against uptime), and the drop-in logs uptime around the tests. 5) PDFKitObservationTests checks its fixture list against the bundled fixtures."
+    }
+   ],
+   "ci": {
+    "script": "From the worktree root, after removing Spikes/G01-PDF/.build/DerivedData, Spikes/G01-PDF/G01PDF.xcodeproj and .build/g01-pdf-logs and deleting this task's simulators: G01_PDF_SIM_NAME=Sylvia-M0-minors-g01-pdf G01_PDF_EVIDENCE_DIR=Docs/Stage0/evidence/G01-PDF Scripts/ci.d/32-g01-pdf.sh, then Scripts/ci.sh contracts",
+    "result": "PASS, drop-in exit 0, contracts exit 0, on commit 9decb79 (2026-10-13 10:34 +1300). 11 committed fixtures regenerate byte-identically (host). 61 of 61 tests passed (49 unit, 12 UI): 0 failed, 0 skipped, 0 test-process restarts, 0 Swift warnings; simulator iPhone 17, iOS 26.5 (23F77). Thread Sanitizer OverlayConcurrencyTests: 2 of 2, 0 reports. CrossOSRestoreTests: 1 of 1 on iOS 27.0 (24A434). Load averages 34.60, 28.10, 26.77 at the start and 126.15, 45.60, 33.59 at the end (parallel agents), so timings are indicative only. Log: Docs/Stage0/evidence/G01-PDF/ci-clean-run.log. The final commit 7884a59 changes only docs, evidence and one doc comment (same lines, no compiled change)."
+   },
+   "plan_findings": [
+    "PDFKit surfaces one /AA trigger: the mouse-up (/U) action of a link with no /A, presented as the link's own action. With Sylvia's delegate it reaches pdfViewWillClick and the policy. Without the delegate, PDFKit's default opens that URL (control test). The mandatory link delegate (ADR-0005 finding 1) therefore also covers /AA-only links. PDFKit performs no action named by /Next and presents no action for a form field whose actions are all in /AA. No document, page, link or field trigger fires on open, page change, field edit, real field taps or close (simulator, iOS 26.5).",
+    "PDFKit extracted identical page text for every fixture page used by the ten sample anchors on the iOS 26.5 and iOS 27.0 simulator runtimes, so anchors captured on 26.5 restore exactly on 27.0. A real extractor change has not been observed; the relocation path (plan 7.5) was exercised with a simulated change.",
+    "On relocation the spike replaces the stored anchor (same record ID and quotation) and keeps no history. Plan 7.5 asks to store the reader's original locator, so whether the product keeps superseded anchors needs a decision before the anchor contract is written (report open question 6).",
+    "Simulated downward selection-handle drags on unrotated pages land 19 to 29 pt above the touch point; on rotated pages one drag reached the target line. Whether a finger behaves the same is device checklist steps 1-3."
+   ],
+   "shared_changes_requested": [
+    "Fixtures/LICENSES.md, section 'G0.1 PDF (`Spikes/G01-PDF/Fixtures/`)': add the table row | `actions-chained.pdf` | `02e43a75acb78ea5f5f16a3a658813f286593550b4302cb5657b8278592ec347` |. The file is 7,088 bytes, generated by Spikes/G01-PDF/Tools/make_pdf_fixtures.py like the other ten (original text, standard Helvetica referenced and not embedded, no third-party content) and verified by --check. The existing ten rows and the large-1000.pdf cache entry are unchanged.",
+    "Docs/Stage0/integration-log.md section 2 (row 4, G0.1 PDF) lists open findings R2-01 to R2-03. Once this branch (m0-int-minors-g01-pdf at 7884a59c212f405d2ea616d833e78e519a1aaa8b) is reviewed and merged, record them as closed. Note that the drop-in now also creates a simulator of the same name on the iOS 27.0 runtime, which a CI verifier must delete after its run."
+   ],
+   "dependencies_added": [],
+   "committed_fixtures": [
+    "Spikes/G01-PDF/Fixtures/actions-chained.pdf (7,088 bytes, SHA-256 02e43a75acb78ea5f5f16a3a658813f286593550b4302cb5657b8278592ec347; generated by Spikes/G01-PDF/Tools/make_pdf_fixtures.py and regenerated byte-identically by --check; every action in it aims at the harness's own canary URL scheme)",
+    "Spikes/G01-PDF/Tests/Resources/anchors-captured-ios-26.5-23F77.json (test input for CrossOSRestoreTests: the ten anchors captured on iOS 26.5 (23F77), identical to the samples in Docs/Stage0/evidence/G01-PDF/anchor-samples.json)"
+   ],
+   "open_questions": [
+    "QA: choose a small public-domain real-world PDF set for extraction-quality checks: a scanned book, a two-column journal, embedded and CID-keyed fonts, CJK, right-to-left text, text drawn with rotated matrices and messy column order. It would come in through the shared Scripts/fixtures/fetch.sh and Fixtures/LICENSES.md (report open question 5).",
+    "Product owner / contract consolidation: when a highlight is relocated, should the product keep the superseded anchor as history? The spike replaces it; plan 7.5 asks to store the reader's original locator (report open question 6).",
+    "Product owner: for PDFs that open without a password but forbid copying, keep the spike's choice of no quotation, search or AI text, or allow personal quotation? Also confirm password-protected PDFs stay excluded in v1.",
+    "iOS lead: confirm on the baseline device that setNeedsDisplay() shows a new highlight without a visible flash or delay (checklist step 1).",
+    "Device availability: an iPad with a trackpad or mouse is needed for the mouse-enter and mouse-exit /AA check (checklist step 8). The iPhone 12-class baseline device is still needed for open time (step 10)."
+   ]
+  }
+ },
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 28,
+  "label": "minors-g01-pdf:review-1",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "7884a59c212f405d2ea616d833e78e519a1aaa8b",
+   "rerun": {
+    "command": "cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-14 && git checkout --detach m0-int-minors-g01-pdf (7884a59) && .build/scratch/run-clean-ci.sh, which sources Scripts/lib/{env,sim,xcodegen}.sh, runs rm -rf Spikes/G01-PDF/.build/DerivedData Spikes/G01-PDF/G01PDF.xcodeproj .build/g01-pdf-logs, then G01_PDF_SIM_NAME=Sylvia-M0-review-minors-g01-pdf-1 G01_PDF_EVIDENCE_DIR=.build/scratch/evidence Scripts/ci.d/32-g01-pdf.sh (a relative evidence path on purpose, to exercise the new path handling), then Scripts/ci.sh contracts, then git status --short. Log: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-14/.build/scratch/ci-review-run.log",
+    "result": "PASS from clean on 7884a59 (2026-10-13 10:56 +1300). The drop-in and contracts both exited 0, and the tree was still clean afterwards. All 11 committed fixtures regenerate byte-identically on the host. New simulator iPhone 17, iOS 26.5 (23F77): 61 passed (49 unit, 12 UI), 0 failed, 0 skipped, 0 test-process restarts, 61 test methods in source, 0 Swift warnings. The Thread Sanitizer run of OverlayConcurrencyTests passed 2 of 2 with 0 reports. CrossOSRestoreTests passed 1 of 1 on a new iOS 27.0 (24A434) simulator. The relative G01_PDF_EVIDENCE_DIR worked. Load averages: 21.29 27.29 27.50 at the start, 44.02 31.86 29.12 before the tests, 14.15 21.25 26.18 after the tests, and 112.48 43.12 33.74 at the end; the end spike coincides with booting the new 27.0 simulator, as in the author's log. I compared my evidence with the committed evidence using .build/scratch/compare_evidence.py. Every text evidence file is identical apart from the simulator name, except the run-dependent ones (large-pdf-timing.txt: first-page draw 31.8 ms and extraction 606.7 ms at load 75.27; overlay-concurrency counters; temporary paths in original-bytes-unchanged.txt) and ui-accessibility.txt, which has 8 issues against the committed 7 (R3-05). The offscreen overlay PNGs are byte-identical. My simulators (26.5 and 27.0), the DerivedData directories and the generated projects have been deleted."
+   },
+   "findings": [
+    {
+     "id": "R3-01",
+     "severity": "major",
+     "title": "ADR-0005 and PDFActionAudit's own doc comment say the audit lists every declared action and reads every /AA; it does not",
+     "location": "Docs/ADRs/0005-pdf-reading-and-anchors.md:85 (last sentence); Spikes/G01-PDF/Sources/PDFAnchorKit/LinkPolicy.swift:153-160 (doc comment) and 187-223 (audit); author summary 'PDFActionAudit follows /Next and reads every /AA'",
+     "detail": "ADR-0005 line 85 says '`PDFActionAudit` lists every declared action for diagnostics: it follows /Next, reads every /AA'. The doc comment at LinkPolicy.swift:153 says 'Lists every action a PDF declares where a viewer could trigger it'. The code (lines 187-223) only visits the catalog (/OpenAction, /AA, and whether /Names /JavaScript exists) and, for each page, the page's /AA and each /Annots entry's /A and /AA. It never reads three things:\n(a) the /AA of a form field dictionary that is not merged with its widget. Such a field sits in /AcroForm /Fields and its widget in /Annots with /Parent; ISO 32000-1 Table 220 puts the K/F/V/C field triggers there.\n(b) the /A of outline items.\n(c) the actions in the /Names /JavaScript tree, or their /Next.\n\nReviewer probes:\n- Host probe (macOS 26.6.2; audit code copied verbatim from LinkPolicy.swift:131-303 into .build/scratch/audit-probe, built with swiftc, run with ./audit-probe). The PDF has a non-merged field whose parent /AA holds a JavaScript /K and a URI /U, an outline item with a URI /A, a /Names /JavaScript action whose /Next is a URI, and a link with /AA {D, E}. The audit printed only 'catalog /Names /JavaScript | JavaScript | -', 'page 0 annotation 1 /AA /D' and 'page 0 annotation 1 /AA /E'. There was no row for the field's /AA, the outline action or the JavaScript /Next. macOS PDFKit itself exposes the outline item as PDFActionURL canary://outline-item, so this is a live action.\n- iOS 26.5 simulator probe (ReviewProbeTests in a scratch copy of the spike, probe-evidence/review-probe-annotation-actions.txt). Again no row for a non-merged field whose parent /AA has D, U, Fo and Bl.\n\nEnforcement does not depend on the audit, so the gate's safety result stands. But this round's R2-02 deliverable, the ADR paragraph, now states a completeness the code does not have, and in the unsafe direction: a later reader who relies on the audit would miss active content. The author's summary repeats the claim.\n\nFix, either way:\n- Narrow the ADR sentence, the doc comment and the summary to the places the audit actually reads, and name what it skips (non-merged field dictionaries, outline items, the JavaScript name tree and its /Next).\n- Or extend the audit to walk /AcroForm /Fields with /Kids, /Outlines (/First and /Next siblings, /A) and the /Names /JavaScript tree (following /Next), add those shapes to actions-chained.pdf, and assert their rows."
+    },
+    {
+     "id": "R3-02",
+     "severity": "minor",
+     "title": "The /AA-only-link behaviour and the no-delegate result are stated more broadly than the one shape tested; a probe contradicts the doc comment",
+     "location": "Spikes/G01-PDF/Sources/PDFAnchorKit/LinkPolicy.swift:93-95; Docs/ADRs/0005-pdf-reading-and-anchors.md:85; Docs/Stage0/G01-PDF.md:63 (finding 10); author plan_findings[0]",
+     "detail": "The LinkInterceptor doc comment says: 'A link with no /A whose /AA has a mouse-up (/U) action arrives here too: PDFKit presents that action as the link's own.' The fixture tests one shape only, link E with /AA {U}.\n\nReviewer probes on iOS 26.5 (scratch copy of the harness and a generated probe-aa.pdf; .build/scratch/probe-evidence/review-probe-aa-taps.txt and review-probe-annotation-actions.txt):\n- Links without /A whose /AA is {D, U}, {U, D}, {D} or every trigger except U: PDFKit presents no action (annotation.action is nil). Real taps run nothing, with the delegate or without it.\n- A link with /AA {U} only: blocked by the delegate, and opened by PDFKit's default without it, as the branch reports.\n- macOS PDFKit gives the same result for P1 and P4 (nil) and P5 (PDFActionURL).\n\nSo /U is surfaced only when it is the sole /AA entry, and the doc comment is false for /D+/U links. ADR line 85 and finding 10 hold only as upper bounds ('surfaces only...').\n\nThe same ADR paragraph also goes beyond its evidence in two other ways. It says that without the delegate PDFKit 'performs nothing from the dictionary and array chains', but only links A and C were performed without it; B (NextPage + /Next) and D (https + /Next) were not. It also states the field tap, type and leave result without condition, but that ran only with the delegate installed; finding 10 scopes it correctly.\n\nSafety holds: nothing opened in any probed shape with the delegate. Fix: scope these statements to the shapes tested. Add a /D+/U link and a non-merged field to actions-chained.pdf, with assertions, so the pinned behaviour covers them."
+    },
+    {
+     "id": "R3-03",
+     "severity": "minor",
+     "title": "\"A text field whose /AA declares every widget and field trigger\" is overstated, and \"typed into\" is never checked",
+     "location": "Docs/Stage0/G01-PDF.md:38 (row 18b); Spikes/G01-PDF/README.md:43; Spikes/G01-PDF/Tests/Unit/ChainedActionTests.swift:9,296; Spikes/G01-PDF/Tools/make_pdf_fixtures.py:33; Spikes/G01-PDF/Tests/UI/LinkTapUITests.swift (field part of testChainedAndAdditionalActionTaps)",
+     "detail": "The field's /AA holds D, U, Fo and Bl (widget) and K, F, V and C (field). The audit rows in links-chained-declared.txt for annotation 7 confirm this. It has none of the other annotation triggers in ISO 32000-1 Table 194 (E, X, PO, PC, PV, PI); only link F has those, and PDFKit treats widget /AA differently from link /AA (the field presents no action).\n\nThe UI test taps the keyboard's x key, but neither the test nor the harness checks that the character reached the field. Yet the report, ADR line 85 and the evidence say the field was 'typed into'.\n\nFix: add the missing triggers to the field, or word the claim as 'D, U, Fo and Bl, and K, F, V and C'. Have the harness publish the field's value (or read it in the test) and assert the typed character."
+    },
+    {
+     "id": "R3-04",
+     "severity": "minor",
+     "title": "The 'nothing presented (no print sheet)' assertions rely on a detector with no committed positive control",
+     "location": "Spikes/G01-PDF/Tests/Unit/TestSupport.swift:167-186 (presentedUI); NonURLActionTests.swift:44,108-110; ChainedActionTests.swift:184,304; report row 18a and finding 9; ADR-0005:83",
+     "detail": "The new R2-01 claim that Print, JavaScript and SubmitForm present nothing rests on presentedUI() returning []. The only check of the detector is a baseline [] before the first action, so the suite never shows it can report a presentation.\n\nA reviewer probe on iOS 26.5 (ReviewProbeTests.testProbePresentedUIDetector, probe-evidence/review-probe-presented-ui.txt) shows the detector works:\n- baseline: []\n- with a UIAlertController presented on the host window: ['UIAlertController']\n- with UIPrintInteractionController.shared.printingItem set: ['UIPrintInteractionController has a print job']\n- after clearing: []\n\nThe claim is therefore true today but not self-evidencing. Fix: commit this positive control next to the assertions."
+    },
+    {
+     "id": "R3-05",
+     "severity": "minor",
+     "title": "Row 26a presents an intermittent accessibility-audit result as a change between runs",
+     "location": "Docs/Stage0/G01-PDF.md:48 (row 26a); Docs/Stage0/evidence/G01-PDF/ui-accessibility.txt",
+     "detail": "Row 26a says performAccessibilityAudit 'found 7 issues', and that the earlier run's unattributed 'Potentially inaccessible element' issue was not listed by 'this run'. My clean run of the same code (7884a59) found 8 issues, including 'elementDetection on - id \"\" label \"\": Potentially inaccessible element' (.build/scratch/evidence/ui-accessibility.txt). The issue is intermittent; nothing fixed it. The pass condition (no issue on the PDF view, the Highlight button or the status line) is unaffected. Fix: say the audit reports 7 or 8 issues from run to run, and that the unattributed element-detection issue appears intermittently."
+    },
+    {
+     "id": "R3-06",
+     "severity": "minor",
+     "title": "The shared-change request leaves out the new committed test input anchors-captured-ios-26.5-23F77.json",
+     "location": "Docs/Stage0/G01-PDF.md:87-95 (Shared changes requested); Spikes/G01-PDF/Tests/Resources/anchors-captured-ios-26.5-23F77.json",
+     "detail": "Fixtures/LICENSES.md opens with 'Every fixture used by Sylvia's tests is listed here', and other gates' committed JSON test inputs have rows: G0.2's semantic-invalid manifests and G0.5's eval-set.v0.json. This round commits a 24,138-byte JSON test input (SHA-256 11e0a2c2f2204489ec0462a3d62964c75ac54eb028f04cefc50c48326172abb9) that CrossOSRestoreTests reads. Its provenance appears only in its own description field and the spike README, and the report requests a row for actions-chained.pdf only.\n\nThe content is safe: its samples are semantically identical to anchor-samples.json at b354dc7 and at HEAD (checked with Python json), and the text comes from the generated fixtures. Fix: request a LICENSES.md row for it as well (written by AnchorCaptureRestoreTests.testWriteAnchorSamples on iOS 26.5 (23F77) from the generated fixtures, with no third-party content)."
+    }
+   ],
+   "claims_verified": [
+    "Branch and scope: HEAD 7884a59 (detached from m0-int-minors-g01-pdf). git diff --stat b354dc7..HEAD touches only gate-owned paths (Docs/ADRs/0005, Docs/Stage0/G01-PDF.md, its device checklist, Docs/Stage0/evidence/G01-PDF, Scripts/ci.d/32-g01-pdf.sh, Spikes/G01-PDF). No shared file is edited; Fixtures/LICENSES.md is untouched.",
+    "The final commit compiles nothing new: git diff 9decb79..7884a59 -- Spikes Scripts changes only a two-line doc comment in LinkPolicy.swift. Everything else is documentation and evidence from the third clean run on 9decb79.",
+    "The drop-in passes from clean on 7884a59 in my own run: 61/61, Thread Sanitizer 2/2 with 0 reports, CrossOSRestoreTests 1/1 on iOS 27.0, contracts pass, 0 Swift warnings. The relative evidence-path fix works.",
+    "R2-01: NonURLActionTests asserts the delegate decisions for C and D, empty decisions for A, B, E, G, H and I, the GoToR decision, the field value before and after every action ('Filled in', 'Default' after G, 'Default' for H and I), nothing presented, no URL, an unchanged digest, and the policy outcomes. My links-nonurl-actions.txt is identical to the committed file.",
+    "presentedUI() does detect a presented UIAlertController and a print job (my simulator probe), so the 'nothing presented' assertions are meaningful.",
+    "R2-02: actions-chained.pdf regenerates byte-identically (SHA-256 02e43a75...ec347, 7,088 bytes). links-chained-declared.txt has 43 rows: 42 declared actions, which I counted from the generator, plus one cycle row. The limit tests give 64 chained actions then a depth-limit row, and 4,096 rows then a list-limit row. The links-chained-actions, -open-actions and -control-no-interceptor files, links-audit-limits.txt and ui-link-taps-chained.txt are identical in my run.",
+    "R2-03: HighlightRestorer and the harness draw a relocated record at the same overlay frames as an undrifted record and save it, and the next launch reports '1 stored, 1 restored exactly'. ui-relocated-highlight.txt and highlight-restore-relocated.txt are identical in my run. ui-relocated-highlight.png shows the overlay on the multiline passage with the status '1 relocated (new location saved)'.",
+    "Rotated-page drags: one drag reached two lines on pages 1, 2, 3 and 5, with the overlay measured at 2.5 times the fit scale. ui-drag-selection-rotated.txt is identical in my run, including the pixel shares. ui-drag-rotate-2.png shows the overlay on the upside-down lines.",
+    "Cross-OS restore: the committed anchors-captured JSON samples equal the anchor-samples.json samples at b354dc7 and at HEAD. All 10 restore exactly with unchanged page digests on iOS 26.5 and on iOS 27.0 (24A434), and both cross-os files are identical in my run.",
+    "Fixture digests in the README, the report and LICENSES.md match the files (shasum). LICENSES.md has the ten earlier rows; the eleventh is requested.",
+    "The report's numbers match the evidence files: drag misses of 19 to 29 pt (19.2, 28.7 and 29.4 measured), the load averages, the timing medians, 42 declared actions, and 7 audit issues in the cited run.",
+    "The author's simulators Sylvia-M0-minors-g01-pdf are absent from simctl list, as PROGRESS.md claims.",
+    "The safety conclusion holds beyond the fixture. Reviewer probes on iOS 26.5, by real taps with and without the delegate: /A-less links with /AA {D,U}, {U,D}, {D} or every trigger except U, and a non-merged field with parent /AA, run nothing. Only /AA {U} is surfaced: the delegate blocks it, and PDFKit's default opens it. A push-button widget's /A URI reaches the delegate. No URL was opened with the delegate installed."
+   ],
+   "gate_gaps": [
+    "R1-04 is reported with status 'partial', which is not one of the statuses the brief allows (passed-host, passed-simulator, pending-device, pending-human, not-applicable). It should be pending-human (the shared-file owner) with the reason, noting that the ten original fixtures were resolved at integration.",
+    "The shared-file request covers actions-chained.pdf but not the new committed test input Tests/Resources/anchors-captured-ios-26.5-23F77.json (R3-06).",
+    "The /AA coverage pins only the single-entry /U shape for links without /A. Links with /D (alone or with /U) and a non-merged field's /AA have no fixture or assertion, although both are doable on the simulator (the reviewer's probe did it). If PDFKit's behaviour changes for those shapes, no test fails.",
+    "Real-world corpus: pending-human is reasonable for licensed real PDFs. The synthetic subset (text drawn with rotated text matrices, content streams in messy column order) needs no licence and was doable with the generator on host and simulator. It was neither attempted nor explained. ADR-0005 Consequences still says underlines assume horizontal lines and rotated-matrix text is untested.",
+    "Two WIP commits from the stopped agent (d5b01c4, 08cc1e8) have no 'why' paragraph, which the commit-message rule requires. The final commit's message complies."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R2-01",
+     "resolved": true,
+     "note": "Every stated outcome is now asserted: delegate decisions, field values before and after each action, nothing presented, no URL, digest unchanged. Reproduced from clean, and my evidence is identical. The presented-UI detector works (reviewer probe), but its positive control is not committed (R3-04)."
+    },
+    {
+     "id": "R2-02",
+     "resolved": true,
+     "note": "The actions-chained.pdf fixture, the unit tests with no-delegate controls, the real-tap UI test, the audit following /Next and reading annotation /AA, and the row and depth caps are all present and reproduced from clean. The ADR paragraph written for this finding overstates the audit's coverage (R3-01, major) and generalizes the /AA /U behaviour beyond the one shape tested (R3-02)."
+    },
+    {
+     "id": "R2-03",
+     "resolved": true,
+     "note": "HighlightRestorer draws a relocated highlight at its current position and saves the rebuilt anchor; after a relaunch it restores exactly (UI and unit tests). The text change is simulated (stored metadata altered, page text unchanged), and the report says so."
+    },
+    {
+     "id": "R1-04",
+     "resolved": false,
+     "note": "The ten original fixtures got LICENSES.md rows at M0 integration. This round adds actions-chained.pdf and the captured-anchors JSON without rows. A row is requested for the PDF only, and the status is given as 'partial'."
+    },
+    {
+     "id": "R2-gap-rotated-drag",
+     "resolved": true,
+     "note": "SelectionGestureUITests.testDragEndHandleOnRotatedPages covers pages 1, 2, 3 and 5 and checks the overlay at 2.5 times the fit scale; reproduced identically. A finger on a device remains checklist step 3."
+    },
+    {
+     "id": "R2-gap-next-aa",
+     "resolved": true,
+     "note": "Covered by fixture, unit, control and real-tap tests. Coverage of other /AA shapes and the audit's blind spots are R3-01 and R3-02."
+    },
+    {
+     "id": "R2-gap-extraction-rebuild",
+     "resolved": true,
+     "note": "Anchors from iOS 26.5 restore exactly on the 26.5 and 27.0 runtimes, and the relocation path is exercised by a simulated change. The limits (two simulator runtimes, no real extractor change) are stated."
+    },
+    {
+     "id": "R2-gap-real-corpus",
+     "resolved": false,
+     "note": "pending-human: QA must choose the sources and confirm licences. A synthetic rotated-matrix or messy-column-order fixture was doable but not attempted (gate_gaps)."
+    }
+   ]
+  }
+ },
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 57,
+  "label": "minors-g01-pdf:fix-1",
+  "result": {
+   "commit": "11736d159fbca55ee483d4c232c8d8313cbede8c",
+   "fixed": [
+    {
+     "id": "R3-01",
+     "how": "passed-simulator. I extended PDFActionAudit (Spikes/G01-PDF/Sources/PDFAnchorKit/LinkPolicy.swift) to read three more places: the /Names /JavaScript name tree through /Kids (following each action's /Next), the /Outlines items through /First and /Next, and the /AcroForm /Fields tree through /Kids. A field merged with its widget is listed once, with its page. Cycles and nodes reached twice are reported once, nesting is cut at 64 levels, and the 4,096-row cap is kept. The doc comment, ADR-0005 'Links and actions' and report row 18c now list exactly what the audit reads and what it skips: XFA scripts, /PresSteps, a link's /PA, media, rich-media and 3D scripts, embedded files and unreferenced objects. actions-chained.pdf gained a separate field dictionary, an outline and a JavaScript name tree. ChainedActionTests.testAuditListsEveryPlaceItReads asserts all 73 declared actions plus the one cycle row (links-chained-declared.txt). testAuditStopsAtCyclesAndDepthInTrees covers cycles and 100-level nesting in each tree (links-audit-trees.txt)."
+    },
+    {
+     "id": "R3-02",
+     "how": "passed-simulator. actions-chained.pdf gained links H {D,U}, I {U,D}, J {D}, K {U,E} and L (canary URI with a /Next canary), plus a field whose separate field dictionary holds K,F,V,C,D,U,Fo,Bl and a separate widget whose /AA holds only U. All are asserted with the interceptor and without it: PDFView.perform (unit) and real taps (LinkTapUITests.testChainedTapsWithoutInterceptorControl, new). Results: E and K are presented and blocked, and opened without the delegate. H, I and J present nothing. Field three's widget is presented, but a real tap starts editing. Links B and L were run without the delegate, so only the https chain stays delegate-only (Safari). The LinkInterceptor doc comment, ADR-0005 and report finding 10 are scoped to these shapes. Evidence: links-chained-actions.txt, links-chained-control-no-interceptor.txt, ui-link-taps-chained.txt, ui-link-taps-chained-control.txt."
+    },
+    {
+     "id": "R3-03",
+     "how": "passed-simulator. The merged field's /AA now declares every annotation trigger (E,X,D,U,Fo,Bl,PO,PC,PV,PI) and every field trigger (K,F,V,C). The harness publishes text-field values in a 'fieldValues' label, for bundled fixtures only. The UI tests type a digit into each of the three fields and assert 'Typed1', 'Second2' and 'Third3', with and without the interceptor. They use digits because autocorrection rewrote letters differently from run to run. On a new simulator the tests dismiss the keyboard's slide-to-type introduction and log that they did."
+    },
+    {
+     "id": "R3-04",
+     "how": "passed-simulator. NonURLActionTests.testControlPresentedUIDetectorSeesAnAlertAndAPrintJob is the positive control. It checks: baseline [], a presented UIAlertController gives ['UIAlertController'], dismissed gives [], printingItem set gives ['UIPrintInteractionController has a print job'], cleared gives [] (presented-ui-control.txt). Report row 18a and ADR-0005 cite it."
+    },
+    {
+     "id": "R3-05",
+     "how": "passed-simulator. Report row 26a now says the audit's issue count varies from run to run. This round's clean run found 9 issues: 8 Dynamic Type issues on invisible test labels (two of those labels are new) and one clipped-text issue. The unattributed element-detection issue appears intermittently: it was seen at b354dc7 and in the reviewer's 7884a59 run, but not at 9decb79 or in this run. The pass condition held: no issue concerns the PDF view, the Highlight button or the status line (ui-accessibility.txt)."
+    },
+    {
+     "id": "R3-06",
+     "how": "Done in the report's 'Shared changes requested' and in the spike README. They now request Fixtures/LICENSES.md rows for anchors-captured-ios-26.5-23F77.json (24,138 bytes, SHA-256 11e0a2c2..., written by AnchorCaptureRestoreTests.testWriteAnchorSamples on iOS 26.5 (23F77) from the generated fixtures, no third-party content), for actions-chained.pdf (changed this round: 12,952 bytes, ce2eb738...) and for the new text-layout.pdf (3,363 bytes, cf2d5a1f...). Adding the rows themselves is pending-human: the shared-file owner."
+    },
+    {
+     "id": "R2-01",
+     "how": "passed-simulator. Fixed in the previous round and re-verified in this clean run (NonURLActionTests asserts every stated outcome); R3-04 now adds the control for its 'nothing presented' check."
+    },
+    {
+     "id": "R2-02",
+     "how": "passed-simulator. Fixed in the previous round; this round corrected its overstated ADR sentence (R3-01) and its scope (R3-02), and widened the shapes."
+    },
+    {
+     "id": "R2-03",
+     "how": "passed-simulator. Fixed in the previous round (the harness draws and saves relocated highlights); re-verified in this clean run (ui-relocated-highlight.txt, highlight-restore-relocated.txt)."
+    },
+    {
+     "id": "GAP-AA-shapes",
+     "how": "passed-simulator. /D links, alone or with /U in either order, and a field dictionary's /AA (not merged with its widget) now have fixtures and assertions; see R3-02."
+    },
+    {
+     "id": "GAP-generated-layouts",
+     "how": "passed-simulator for extraction and anchors. New fixture text-layout.pdf has rotated text matrices (upward, downward, upside down, 30 degrees), scrambled two-column stream order and bottom-up stream order. TextLayoutTests and LineEndSelectionTests cover it (report row 13a, findings 12 and 14). Every line's anchor restores exactly. PDFKit puts the scrambled columns in reading order, but drops the break between the first two bottom-up lines and reverses the two downward lines; both are asserted. The overlay on rotated-matrix text is recorded as report row 10c, status failed (see not_fixed). ADR-0005 Consequences now states this evidence instead of 'untested'."
+    },
+    {
+     "id": "NEW-line-end-anchors",
+     "how": "passed-simulator. Found by a probe while closing the generated-layout gap. PDFKit reports a selection ending at a line's last character with the following line break inside range(at:on:). Before this round such an anchor stored the break, quoted without it, and could not be restored. Range, word, line and drag selections all showed this on every fixture, so a long-pressed last word of a line was affected. PDFAnchorBuilder now drops trailing breaks when PDFKit's text is unchanged without them. It throws the new quotationMismatch error for any anchor whose ranges do not give back its quotation. LineEndSelectionTests covers 4 fixtures, rotated text and a search hit, with a control that reconstructs the old anchor: not found or needs review (anchor-line-end-selections.txt). HighlightUITests.testLineEndWordHighlightSurvivesRelaunch shows '1 stored, 1 restored exactly' (ui-line-end-highlight-relaunch.txt). Report rows 8a and 22a, finding 11, ADR-0005 anchor rules."
+    },
+    {
+     "id": "NEW-outline-actions",
+     "how": "passed-simulator. PDFKit presents outline items' /A as PDFOutline.action. With the delegate, the URI item is blocked, the GoTo item navigates without running its /Next, and the JavaScript child does nothing; without the delegate the URI item is opened. Report finding 13 and ADR-0005 add a rule for M3's table of contents."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "R1-04",
+     "reason": "pending-human, for the shared-file owner of Fixtures/LICENSES.md, which is outside this workstream. The ten original fixtures and large-1000.pdf were added at M0 integration (integration log section 3, rows 10 and 11). Still needed, with exact rows in the report's 'Shared changes requested': rows for actions-chained.pdf (SHA-256 ce2eb738d20b0e1d9ff6de3e64c05654100560ef145851aadf7bda439eb9d558, 12,952 bytes; its earlier requested digest 02e43a75... no longer applies), text-layout.pdf (cf2d5a1fa176f2cfc33ad43db210434f342d987c236f1bfa8fb3e56e37266153, 3,363 bytes) and Spikes/G01-PDF/Tests/Resources/anchors-captured-ios-26.5-23F77.json (11e0a2c2f2204489ec0462a3d62964c75ac54eb028f04cefc50c48326172abb9, 24,138 bytes). Each row goes in the 'G0.1 PDF (Spikes/G01-PDF/Fixtures/)' section with the provenance text from the report."
+    },
+    {
+     "id": "ROW-10c-rotated-text-overlay",
+     "reason": "Status failed, pending a human decision (contract consolidation and M3). On lines drawn with rotated text matrices, the overlay draws the underline along the bottom edge of PDFKit's axis-aligned line box. On vertical lines that makes a 25 to 30 pt block over the first or last glyphs; on upside-down lines it runs along the tops of the glyphs; 30-degree line boxes overlap the next line (overlay-rotated-text.png, text-layout-rotated.txt). The fix would add a per-line direction (for example line_directions) to the portable anchor envelope, which is the input to the anchor schema owned by contract consolidation. So it is recorded as finding 12, open question 7 and an ADR-0005 open item, not made in the spike. TextLayoutTests pins the current behaviour."
+    },
+    {
+     "id": "GAP-wip-commit-messages",
+     "reason": "Not rewritten. The stopped agent's WIP commits d5b01c4 and 08cc1e8 lack a 'why' paragraph. Rewording them would change every later SHA, including 9decb79 and 7884a59, which the report, the integration log and this workflow cite, and interactive rebase is unavailable. Their why is recorded in Docs/Stage0/evidence/G01-PDF/PROGRESS.md (and noted in the final commit message). All of this round's commits have a why paragraph."
+    },
+    {
+     "id": "GAP-real-world-corpus",
+     "reason": "pending-human. Licensed real-world PDFs (embedded and CID fonts, CJK, right-to-left, sideways tables, real column layouts) need a person to choose sources and confirm licences, and they would come in through the shared Scripts/fixtures/fetch.sh and Fixtures/LICENSES.md. The generated subset is done (row 13a); report open question 5."
+    },
+    {
+     "id": "DEVICE-STEPS",
+     "reason": "pending-device. Docs/Stage0/device-checklists/G01-PDF.md covers finger selection, now including selections ending at a line's end, zoom and orientation judged by a person, VoiceOver, pointer hover over links and fields on an iPad, open time on a device, and a new step 11 for rotated text and stream order by finger. No physical device was used."
+    }
+   ],
+   "rerun": {
+    "command": "From clean (rm -rf Spikes/G01-PDF/.build/DerivedData Spikes/G01-PDF/G01PDF.xcodeproj .build/g01-pdf-logs, with my simulators deleted first): G01_PDF_SIM_NAME=Sylvia-M0-minors-g01-pdf G01_PDF_EVIDENCE_DIR=Docs/Stage0/evidence/G01-PDF Scripts/ci.d/32-g01-pdf.sh, then Scripts/ci.sh contracts. Run on commit 3ffd394 (later commits change only docs and evidence). Transcript: Docs/Stage0/evidence/G01-PDF/ci-clean-run.log, plus ci-clean-run-xcodebuild.log, ci-clean-run-xcodebuild-tsan.log and ci-clean-run-xcodebuild-cross-os.log.",
+    "result": "PASS, drop-in exit 0. 54 unit and 14 UI tests: 68 passed, 0 failed, 0 skipped, 0 test-process restarts, 68 test methods in source, 0 Swift warnings. Thread Sanitizer OverlayConcurrencyTests: 2 of 2, 0 reports. CrossOSRestoreTests on iOS 27.0 (24A434): 1 of 1. All 12 committed fixtures regenerate byte-identically. Contracts pass. No launch retry. Simulator iPhone 17 on iOS 26.5 (23F77); the build Mac's load was 39.61 at start, 75.98 to 6.34 around the tests and 64.50 at the end, so timings are indicative only. No test plays audio. Afterwards: HEAD is detached at 11736d1, DerivedData is deleted, and both Sylvia-M0-minors-g01-pdf simulators (26.5 and 27.0) are deleted."
+   }
+  }
+ },
+ {
+  "run": "wf_744b95c1-309",
+  "seq": 7,
+  "label": "minors-g01-pdf:review-2",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "11736d159fbca55ee483d4c232c8d8313cbede8c",
+   "rerun": {
+    "command": "From the worktree root, detached at 11736d1 with no tracked changes. First I deleted a shut-down simulator with this review's name; an earlier run of this review task created it at 15:36 today. Then: rm -rf Spikes/G01-PDF/.build/DerivedData Spikes/G01-PDF/G01PDF.xcodeproj .build/g01-pdf-logs; G01_PDF_SIM_NAME=Sylvia-M0-review-minors-g01-pdf-2 G01_PDF_EVIDENCE_DIR=<worktree>/.build/scratch/evidence Scripts/ci.d/32-g01-pdf.sh; then Scripts/ci.sh contracts. The wrapper is .build/scratch/clean-run.sh and the transcript is .build/scratch/clean-run.log. Evidence went to scratch, so Docs/ was not touched. Probes ran in a scratch copy of the spike and were not committed: .build/scratch/run-probe.sh, run-probe-base.sh and run-probe-drag.sh, with outputs in .build/scratch/probe-evidence*/.",
+    "result": "PASS: drop-in exit 0, contracts exit 0, run 2026-10-13 16:26-16:39 +1300.\n- Host: all 12 committed fixtures regenerate byte-identically.\n- Simulator iPhone 17, iOS 26.5 (23F77): 68 of 68 tests passed (54 unit, 14 UI). 0 failed, 0 skipped, 0 test-process restarts, 68 test methods in source, 0 Swift warnings.\n- Thread Sanitizer, OverlayConcurrencyTests: 2 of 2 passed, 0 reports.\n- CrossOSRestoreTests on iOS 27.0 (24A434): 1 of 1 passed.\n- Contracts: pass.\n- Load averages (uptime): 60.17 29.11 15.65 when the tests started, 58.11 112.58 84.53 when they ended, 275.76 158.09 103.01 when the run ended. Other agents were building, so timings are indicative only.\n- Every evidence text file the run wrote matches the committed one. The only differences are timings, run counts, simulator names and paths, and the order of the accessibility-audit issues (the same 9 issues).\n- Probes on this review's simulators (iOS 26.5 and 27.0, deleted afterwards):\n  - PDFPage.string is identical on both runtimes for every page of all 12 fixtures.\n  - A two-range, same-page PDFSelection is refused with quotationMismatch on both runtimes. The base builder (b354dc7) captured it, and it restored exactly.\n  - A cross-page selection ending at a line's end captures and restores exactly. With the base builder it was not found (the line-end fix works).\n  - 96,472 geometric drags (PDFPage.selection(from:to:)) over every text page of 9 fixtures never gave more than one range on a page, and none was refused."
+   },
+   "findings": [
+    {
+     "id": "R4-01",
+     "severity": "major",
+     "title": "The new quotationMismatch guard assumes PDFKit joins a selection's pieces with \"\\n\". It does not for pieces on the same page, so any selection with two or more ranges on a page is now refused (a regression the tests do not cover)",
+     "location": "Spikes/G01-PDF/Sources/PDFAnchorKit/PDFAnchorBuilder.swift:16-18,57-58; Docs/ADRs/0005-pdf-reading-and-anchors.md:58,61; Docs/Stage0/G01-PDF.md:69 (finding 11: 'The product's capture must keep both rules')",
+     "detail": "What is wrong: capture() refuses an anchor unless segments.map(\\.text).joined(separator: \"\\n\") equals selection.string. The comment at line 57 gives the reason as 'PDFKit joins a selection's pieces with \"\\n\"'.\n\nHow I know: a probe in a scratch copy of the spike, run on this review's iOS 26.5 (23F77) and iOS 27.0 (24A434) simulators:\n- On labels-multipage.pdf page 3, I made a PDFSelection with add() from the ranges 22+10 and 120+10. Its string is \"The pond iturning ov\": PDFKit joins pieces on the same page with no separator. Current capture throws quotationMismatch on both runtimes.\n- The same probe with the base commit's builder (b354dc7) captured 2 segments [p3 22..<32, p3 120..<130], and PDFAnchorResolver restored them exactly. The resolver's combine() builds the selection the same way and is unchanged since b354dc7.\n- Across pages the \"\\n\" join is right: a document.selection(from:to:) across pages 3-4 captures and restores exactly.\n\nWhy it matters:\n- ADR-0005:58 keeps 'One segment per contiguous text range per page', and the builder loops over numberOfTextRanges(on:). Yet ADR-0005:61 now makes 'segments joined by \"\\n\" == exact_text' part of the envelope, and open question 4 asks contract consolidation to adopt that envelope.\n- So the decision record states an invariant that contradicts PDFKit for a shape it allows, and the report tells the product to keep it.\n- A relocated multi-range record would also fail HighlightRestorer.rebuild and stop being drawn.\n- No test exercises a multi-range page or the refusal path, so nothing caught it. Plan 22.3 asks for negative-case tests.\n\nReach: in 96,472 geometric drags over every text page of 9 fixtures, none gave more than one range on a page. Touch drags on these fixtures are unaffected; composed selections (PDFSelection.add) are.\n\nFix:\n- Compare `exact` with the string of a PDFSelection built from the trimmed ranges exactly as PDFAnchorResolver.combine builds it. (Or join same-page pieces with \"\" and pages with \"\\n\", once that is verified.)\n- Correct the comment, ADR-0005:61 and finding 11.\n- Add tests: a two-range same-page selection that captures and restores exactly; a cross-page selection ending at a line's end; and a constructed anchor that really cannot give back its quotation, which throws quotationMismatch."
+    },
+    {
+     "id": "R4-02",
+     "severity": "minor",
+     "title": "Device checklist step 1 puts \"water\" at the end of the second body line; it ends the first",
+     "location": "Docs/Stage0/device-checklists/G01-PDF.md:20",
+     "detail": "On labels-multipage.pdf page index 3, \"water\" ends the first body line: 'The pond in winter keeps its own counsel. Under a skin of grey ice the water'. The second body line ends '... A walker'.\n\nHow I know: I wrapped BODY[0] at 78 characters by importing Tools/make_pdf_fixtures.py with python3 -I. anchor-line-end-selections.txt agrees: its 'last word ... ending \"water\"' is the page text's second line, whose first line is the header 'Body, physical page 4'.\n\nThe step's own first instruction calls this line 'the first body line', so a tester gets two different targets. Fix: 'long-press the last word of the first body line (\"water\")'."
+    },
+    {
+     "id": "R4-03",
+     "severity": "minor",
+     "title": "The line-end behaviour is claimed 'on every fixture' for drag selections, but the tests do not show that",
+     "location": "Docs/ADRs/0005-pdf-reading-and-anchors.md:61; Docs/Stage0/G01-PDF.md:69 (finding 11); Spikes/G01-PDF/Sources/PDFAnchorKit/PDFAnchorBuilder.swift:90-92",
+     "detail": "ADR-0005:61 says 'This happened on every fixture for a range, a word, a line and a drag ending at a line's end'. Finding 11 and the builder's doc comment say the same.\n\nWhat the tests cover:\n- LineEndSelectionTests uses 4 of the 12 fixtures: labels-multipage page 3, two-column page 0, rotated page 1, and text-layout page 0 for range shapes only.\n- It asserts the trailing break only for the range, word and line shapes.\n- On two-column.pdf the 'drag from the line's start to past its end' ran into the right column. anchor-line-end-selections.txt, committed and reproduced in my run, records 'selection 392 scalars ending \" second colu\"; PDFKit range 12+392 ends with a line break: false'.\n\nRow 8a is worded precisely; these three places are not. Fix: scope the sentences to the pages and shapes tested, and make the two-column drag target stay in the left column (or say that it crossed columns)."
+    },
+    {
+     "id": "R4-04",
+     "severity": "minor",
+     "title": "The tests cannot see whether the chained file's /OpenAction or page /O runs, yet ADR and report say neither runs 'with or without the delegate'",
+     "location": "Spikes/G01-PDF/Tools/make_pdf_fixtures.py:825,852; Docs/ADRs/0005-pdf-reading-and-anchors.md:92; Docs/Stage0/G01-PDF.md:68 (finding 10); Spikes/G01-PDF/Tests/Unit/LinkInterceptionTests.swift:82-90",
+     "detail": "In actions-chained.pdf, both the catalog /OpenAction and page 0 /AA /O start with a GoTo to page index 0, followed by a /Next canary. PDFKit never follows /Next (shown elsewhere). So if PDFKit performed either action on opening the file or on returning to page 0, nothing observable would change. ChainedActionTests and LinkTapUITests therefore cannot distinguish 'runs' from 'does not run' for these two triggers.\n\nactions.pdf's URI /OpenAction and page /O are asserted not to reach the delegate (testOpeningTheDocumentRunsNoOpenActionOrJavaScript). Without the delegate their absence is not asserted: testControlPDFKitDefaultOpensURLWithoutInterceptor only waits for link-uri. links-control-no-interceptor.txt happens to list only link-uri.\n\nThe safety conclusion (nothing opens) holds. The descriptive claim in ADR-0005:92 and finding 10 that the page /O trigger and the open action do not run, with or without the delegate, is unproven for the chained file.\n\nFix: make the first actions of those two triggers observable (a canary URI, or a GoTo to page index 2 checked against the page), and assert in a no-delegate control that actions.pdf's open-action and page-open-action canaries never arrive."
+    },
+    {
+     "id": "R4-05",
+     "severity": "minor",
+     "title": "A code comment cites a test that does not exist",
+     "location": "Spikes/G01-PDF/Sources/PDFAnchorKit/LinkPolicy.swift:417",
+     "detail": "The comment says '`testAuditFollowsNextAndReadsAnnotationAA` checks the fixture's cycle is caught here'. No such test exists: grep over Tests/ finds 68 test methods and none has that name. It was renamed in 615f85d. The cycle is asserted by ChainedActionTests.testAuditListsEveryPlaceItReads, in the row 'page 0 annotation 6 /A /Next /Next | (cycle)'. Fix: update the name."
+    },
+    {
+     "id": "R4-06",
+     "severity": "minor",
+     "title": "'iOS 26.5 and 27.0 extract the fixtures identically' cites evidence that covers only the pages the ten anchors touch",
+     "location": "Docs/Stage0/G01-PDF.md:50 (row 24a), :83 (Limits); Docs/ADRs/0005-pdf-reading-and-anchors.md:127",
+     "detail": "Row 24a says 'iOS 26.5 and 27.0 extract these fixtures identically (row 24)'. The Limits section says 'PDFKit extracted the fixtures' text identically on both', and ADR-0005:127 says 'the fixtures' page text did not change'.\n\nThe cited test, CrossOSRestoreTests, compares only the page-text digests of the pages the ten sample anchors use: labels-multipage, two-column, rotated and unicode. text-layout.pdf and the action fixtures are not compared.\n\nMy probe (SHA-256 of PDFPage.string for every page of all 12 bundled fixtures, on iOS 26.5 23F77 and iOS 27.0 24A434) found every page identical. So the statement is true, but nothing committed shows it. Fix: scope the sentences to the anchors' pages, or extend CrossOSRestoreTests to record and compare every fixture page's digest across the two runtimes."
+    },
+    {
+     "id": "R4-07",
+     "severity": "minor",
+     "title": "Three wording slips in ADR-0005 and the README about the audit and the action fixture",
+     "location": "Docs/ADRs/0005-pdf-reading-and-anchors.md:84,86,94; Spikes/G01-PDF/README.md:43; Docs/Stage0/G01-PDF.md:41 (row 18b)",
+     "detail": "(a) ADR-0005:94 says the audit 'reports a cycle or a node reached twice once'. That holds for name-tree, outline and field nodes, and for a /Next that returns to an action already on the current chain. A /Next action reached by two different paths is listed again each time: testAuditStopsOnAnExponentialNextGraph lists 4,096 rows of 30 actions. The code's own doc comment (LinkPolicy.swift:177-183) states this correctly.\n\n(b) ADR-0005:84 says NonURLActionTests asserts 'that Find and GoToPage reach the delegate and nothing else does'. /GoToR also reaches the delegate, and the same test asserts it (links-nonurl-actions.txt, line F).\n\n(c) 'every action aims at the canary' (ADR-0005:86, README:43, report row 18b): the file also has GoTo and Named actions, link D's https URI and a /Launch of /bin/sh. Say that every URI and JavaScript action except link D's https one aims at the canary."
+    }
+   ],
+   "claims_verified": [
+    "The branch head is 11736d1. The diff from b354dc7 touches only gate-owned paths: Docs/ADRs/0005, Docs/Stage0/G01-PDF.md, device-checklists/G01-PDF.md, evidence/G01-PDF/, Scripts/ci.d/32-g01-pdf.sh and Spikes/G01-PDF/. No shared file is written.",
+    "Commits after the cited clean run (3ffd394 to 11736d1) change only documentation and evidence (git diff --stat). The committed ci-clean-run.log is therefore valid for HEAD. Its UDIDs match the three committed xcodebuild logs.",
+    "Clean re-run of the 32-g01-pdf drop-in on 11736d1 with this review's own simulators passed:\n- 68 of 68 tests (54 unit, 14 UI), 0 failed, skipped or restarted, 0 Swift warnings\n- Thread Sanitizer: 2 of 2, 0 reports\n- CrossOSRestoreTests on iOS 27.0 (24A434): 1 of 1\n- contracts: pass\n- fixture --check: 12 of 12",
+    "Every evidence text file my run wrote matches the committed one, apart from timings, counters, paths, simulator names and the order of the accessibility issues.",
+    "R2-01: NonURLActionTests asserts each outcome that row 18a and ADR-0005 state:\n- page indexes 1 and 2 for NextPage and LastPage\n- delegate decisions for Find, GoToPage and GoToR, and empty decisions for the others\n- the field value before and after each action (ResetForm gives 'Default')\n- nothing presented and no URL opened\nThe presented-UI detector has a positive control (alert and print job).",
+    "R2-02: actions-chained.pdf has /Next as a dictionary, as an array (URI, Launch, JavaScript) and as a cycle; the /AA shapes {U}, {D,U}, {U,D}, {D} and {U,E}; a link and a merged field declaring every trigger; a separate field dictionary and a separate widget; outline, name tree, page and document triggers. Tests cover it with the delegate and without it (unit and real taps). The audit follows /Next, reads /AA, lists 73 rows and has depth and row caps.",
+    "R2-03: HighlightRestorer runs on every open in ReaderViewController. It draws a relocated record at its current rectangles (UI overlay frames equal the undrifted reference) and saves the rebuilt anchor with the same id, creation date and quotation. After a relaunch the status reads '1 restored exactly' (HighlightRestoreTests and HighlightUITests).",
+    "Gate gap, rotated pages: testDragEndHandleOnRotatedPages drags into the second line on pages 1 (90), 2 (180), 3 (270) and 5 (270 with crop), saves the highlight and checks the overlay on screen at 2.5 x the fit scale. Checklist step 3 stays for a finger.",
+    "SHA-256 values and sizes in 'Shared changes requested' and the spike README match the files: actions-chained.pdf ce2eb738... (12,952 bytes), text-layout.pdf cf2d5a1f... (3,363 bytes), anchors JSON 11e0a2c2... (24,138 bytes). The JSON's samples equal anchor-samples.json's. The ten earlier fixtures match their Fixtures/LICENSES.md rows.",
+    "A probe found PDFPage.string identical on iOS 26.5 and iOS 27.0 for every page of all 12 fixtures.",
+    "The line-end fix works for a cross-page selection too. Probe: the current builder stores p4 0..<99 and restores exactly; the base builder stored p4 0..<100 and the anchor was not found.",
+    "96,472 geometric drags over every text page of 9 fixtures were all captured; none gave more than one range on a page.",
+    "Row 26a is consistent: my run's audit found the same 9 issues (8 Dynamic Type on the invisible test labels, 1 clipped text) and no element-detection issue.",
+    "The device checklist has steps with expected results and recording instructions for:\n- finger selection, steps 1-3\n- zoom and orientation, step 5\n- VoiceOver, step 6\n- the chained-action taps and iPad pointer hover for /AA E and X, step 8\n- device open time, step 10\n- rotated text by finger, step 11",
+    "No TODO or stub in the spike, no ATS exception in its sources, and no audio played. The only XCTSkip (large-PDF timing without its env var) is turned into a failure by the drop-in.",
+    "Commit messages of this round's WIP commits and the final commit have a summary line, a why paragraph and the trailer. The two older WIP commits without a why are acknowledged in PROGRESS.md."
+   ],
+   "gate_gaps": [
+    "R1-04 is still open: Fixtures/LICENSES.md has no rows for actions-chained.pdf, text-layout.pdf or Tests/Resources/anchors-captured-ios-26.5-23F77.json. CLAUDE.md requires provenance for every committed fixture. The rows are requested with correct digests. The status should be pending-human, waiting on the shared-file owner; the round-1 result called it 'partial', which is not one of the brief's statuses.",
+    "A real-world PDF corpus (embedded and CID fonts, CJK, right-to-left text, real column layouts) is still pending-human: QA has to choose the sources and confirm their licences. Only the generated part (text-layout.pdf) was done.",
+    "Row 10c failed: the overlay on text drawn with rotated text matrices is wrong. The decision is deferred to contract consolidation and M3 (open question 7) and is not fixed in this branch.",
+    "Plan 7.5 relocation was exercised only on a simulated extractor change. My probe confirms iOS 26.5 and 27.0 extract the fixtures identically, so no real change was available.",
+    "Device and person steps remain pending:\n- finger selection, checklist steps 1-3 and 11\n- alignment at zoom, step 5\n- VoiceOver, step 6\n- iPad pointer hover for /AA E and X, step 8\n- device open time on the iPhone 12-class baseline, step 10",
+    "Docs/Stage0/integration-log.md section 2 row 4 still lists R2-01 to R2-03 as open. That is a shared file, to update when the branch is merged."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R3-01",
+     "resolved": true,
+     "note": "PDFActionAudit now walks the document JavaScript name tree, the outline and the AcroForm field tree. LinkPolicy.swift:160-183 and ADR-0005:94 list exactly what it reads and what it skips. testAuditListsEveryPlaceItReads asserts all 73 rows (links-chained-declared.txt, reproduced in my run). Cycles and 100-level nesting in the trees, and the 4,096-row cap, are tested. One wording slip remains in ADR-0005:94 ('node reached twice ... once' does not hold for /Next); see R4-07."
+    },
+    {
+     "id": "R3-02",
+     "resolved": true,
+     "note": "Links H {D,U}, I {U,D}, J {D}, K {U,E} and L, a separate field dictionary with /AA, and a separate widget with /AA {U} are in the fixture. The LinkInterceptor doc (LinkPolicy.swift:96-102), ADR-0005:86-92 and report row 18b and finding 10 are scoped to these shapes. The unit and real-tap results, with and without the delegate, reproduced in my run."
+    },
+    {
+     "id": "R3-03",
+     "resolved": true,
+     "note": "Field one's /AA now holds all 10 annotation triggers plus K, F, V and C (14 rows for annotation 12). LinkTapUITests types a digit into each field and asserts 'Typed1', 'Second2' and 'Third3' with nothing reaching the delegate or opening, with and without the interceptor. Reproduced."
+    },
+    {
+     "id": "R3-04",
+     "resolved": true,
+     "note": "NonURLActionTests.testControlPresentedUIDetectorSeesAnAlertAndAPrintJob shows presentedUI() reporting a presented UIAlertController and a pending print job, then [] after each is removed. presented-ui-control.txt reproduced."
+    },
+    {
+     "id": "R3-05",
+     "resolved": true,
+     "note": "Row 26a now says the issue count varies between runs and describes the intermittent element-detection issue as unattributed. My clean run found the same 9 issues (8 Dynamic Type on the invisible labels, 1 clipped text), consistent with the row."
+    },
+    {
+     "id": "R3-06",
+     "resolved": true,
+     "note": "'Shared changes requested' now includes the JSON test input: SHA-256 11e0a2c2\u2026abb9 and 24,138 bytes, verified with shasum and stat. It also lists the new digests for actions-chained.pdf and text-layout.pdf, which match the files."
+    }
+   ]
+  }
+ },
+ {
+  "run": "wf_744b95c1-309",
+  "seq": 14,
+  "label": "minors-g01-pdf:fix-2",
+  "result": {
+   "commit": "a44b746c6a83f77aa20cf8cc43f399fe1d628717",
+   "fixed": [
+    {
+     "id": "R4-01",
+     "how": "passed-simulator (major). PDFAnchorBuilder.capture no longer joins segments with \"\\n\". It now checks each new anchor by restoring it through PDFAnchorResolver.resolveExactly with the same extraction, and throws quotationMismatch otherwise. A probe also found that PDFKit keeps the line break after an inner piece that ends at a line's end, so the reviewer's alternative rule (nothing between pieces on a page, \"\\n\" between pages) is also wrong. New ComposedSelectionTests: (1) 11 composed shapes (two and three pieces on a page, reverse order, touching and overlapping pieces, inner pieces ending at a line's end, pieces on two pages) all restore exactly; PDFKit's text for each is pinned, and 6 of the 11 would have been refused by the old guard. (2) A cross-page selection ending at a line's end, by character index and by a drag, restores exactly, with a control. (3) A relocated composed record is rebuilt and saved, then restores exactly. (4) A PDFSelection test subclass whose ranges cannot give back its quotation is refused with quotationMismatch; the old guard would have accepted one of its two cases. The PDFAnchor and builder comments, the envelope description in anchor-samples.json, ADR-0005 (Anchor bullets, Evidence, Consequences, Open items), report finding 11, new finding 15, row 8b and open question 4 are corrected. Evidence: anchor-composed-selections.txt, anchor-cross-page-line-end.txt, highlight-restore-relocated-composed.txt, anchor-quotation-mismatch.txt."
+    },
+    {
+     "id": "R4-02",
+     "how": "passed-simulator (documentation checked against simulator evidence). Device checklist step 1 now says to long-press the last word of the first body line (\"water\"); anchor-line-end-selections.txt shows that line. The device step itself remains pending-device."
+    },
+    {
+     "id": "R4-03",
+     "how": "passed-simulator. LineEndSelectionTests now tests three named lines, using the first left-column line of two-column.pdf instead of the full-width title. Its drag ends 6 pt past the line's last character, inside the gutter. The test asserts that PDFKit's range ends with the line break for all five shapes on all three lines, and for every text-layout line except the last. It records, without asserting, a 40 pt overshoot: on two-column.pdf that drag selected part of the title. ADR-0005, finding 11, row 8a, the builder's doc comment and the checklist are scoped to these lines and shapes."
+    },
+    {
+     "id": "R4-04",
+     "how": "passed-simulator. In actions-chained.pdf (regenerated, SHA-256 21f84806...cc3f89b4), the catalog /OpenAction and page 0's /AA /O now start with a GoTo to page index 2. ChainedActionTests asserts the view stays on page 0, with and without the delegate, after display and every time page 0 is shown again. New LinkInterceptionTests.testControlWithoutInterceptorOpeningRunsNoOpenActionOrJavaScript asserts that none of actions.pdf's open-action, page-open or JavaScript canaries arrive without the delegate. The existing control now asserts that only the performed link's canary arrives. LinkTapUITests passed on the changed fixture. ADR-0005, finding 10 and rows 18 and 18b say how this is observed. Evidence: links-chained-open-actions.txt, links-chained-control-no-interceptor.txt, links-chained-actions.txt, links-open-actions-control-no-interceptor.txt."
+    },
+    {
+     "id": "R4-05",
+     "how": "passed-host. The LinkPolicy.swift comment now names ChainedActionTests.testAuditListsEveryPlaceItReads and its cycle row. git grep finds no remaining reference to the old test name."
+    },
+    {
+     "id": "R4-06",
+     "how": "passed-simulator. New CrossOSRestoreTests.testRecordPageTextOfEveryFixturePage records the scalar count and SHA-256 of PDFPage.string for every page of all 12 bundled fixtures, or why a file does not open. The drop-in removes stale per-runtime files, runs both CrossOSRestoreTests on iOS 27.0 and compares the two lists line by line. A difference is printed, not failed. Result: identical, 32 pages of the 10 fixtures that open; the password-protected and truncated files open on neither runtime. Evidence: page-text-digests-iOS-26.5-23F77.txt, page-text-digests-iOS-27.0-24A434.txt, ci-clean-run.log. Report rows 24 and 24a, finding 7, Limits and ADR-0005 now cite this comparison."
+    },
+    {
+     "id": "R4-07",
+     "how": "passed-host (wording checked against the code and evidence). (a) ADR-0005 now says the audit reports a revisited tree node, or a /Next back onto the current chain, once; a /Next action reached along two paths is listed on each path, hence the 4,096-row cap. (b) ADR-0005 now says /GoToR, Find and GoToPage reach the delegate. (c) ADR-0005, the README, report row 18b, the checklist, the generator docstrings and the ChainedActionTests and LinkTapUITests comments now say: every URI and JavaScript action aims at the canary except link D's https URI; the rest are GoTo and Named actions and a /Launch of /bin/sh."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "R1-04",
+     "reason": "pending-human (shared-file owner). Fixtures/LICENSES.md is outside this workstream. The exact change is in the report's 'Shared changes requested' section: add three rows to the G0.1 PDF table. actions-chained.pdf: 21f8480692ca81003190b7fd496acf9255fcd9e4a73b1950daafd1c9cc3f89b4, 12,952 bytes; it changed again this round, so the earlier ce2eb738... and 02e43a75... digests no longer apply. text-layout.pdf: cf2d5a1fa176f2cfc33ad43db210434f342d987c236f1bfa8fb3e56e37266153, 3,363 bytes. Spikes/G01-PDF/Tests/Resources/anchors-captured-ios-26.5-23F77.json: 11e0a2c2f2204489ec0462a3d62964c75ac54eb028f04cefc50c48326172abb9, 24,138 bytes. Provenance for all three: generated by make_pdf_fixtures.py or written by testWriteAnchorSamples; no third-party content. Spikes/G01-PDF/README.md carries the same provenance until the rows are added."
+    },
+    {
+     "id": "gap-real-world-corpus",
+     "reason": "pending-human. QA must choose a public-domain real-world PDF set (scanned, two-column journal, embedded and CID fonts, CJK, right-to-left, sideways tables) and confirm the licences. The files would come in through Scripts/fixtures/fetch.sh with SHA-256 pins and Fixtures/LICENSES.md rows (both shared files). Only the generated part (text-layout.pdf) exists. This is report open question 5."
+    },
+    {
+     "id": "gap-row-10c",
+     "reason": "Not fixed: it would change scope. The overlay on lines drawn with rotated text matrices stays failed (row 10c, finding 12). The decision needs a per-line reading direction in the anchor envelope, or acceptance of the current drawing. It belongs to contract consolidation and M3 (open question 7), not this spike."
+    },
+    {
+     "id": "gap-real-extractor-change",
+     "reason": "Pending a future OS release. Plan 7.5 relocation still runs only on a simulated extractor change (row 24a). This round shows iOS 26.5 and 27.0 extract every page of the fixtures identically, so no available runtime produces a real change. The drop-in now records and compares every page's text on each runtime, so a future runtime with a changed extractor will show up there and in CrossOSRestoreTests."
+    },
+    {
+     "id": "gap-device-and-person-steps",
+     "reason": "pending-device and pending-human. Not run on the simulator: finger selection (checklist steps 1-3 and 11), alignment judged at zoom (step 5), VoiceOver (step 6), iPad pointer hover for /AA E and X (step 8), and open time on the iPhone 12-class baseline (step 10). Step 1 now names the right line, and step 8 says what the chained file's actions aim at and that the file must stay on page index 0 when it opens."
+    },
+    {
+     "id": "gap-integration-log-row-4",
+     "reason": "Shared file; update when the branch is merged (requested in the report's 'Shared changes requested' section). In Docs/Stage0/integration-log.md section 2, row 4 (G0.1 PDF), the 'Open findings' cell should record that these were closed on m0-int-minors-g01-pdf: R2-01 to R2-03 (7884a59), R3-01 to R3-06 (11736d1) and R4-01 to R4-07 (a44b746), with the agent review that accepts them. Docs/Stage0/README.md's G0.1 row names 'PDF review 2' as the final review and needs the same update."
+    }
+   ],
+   "rerun": {
+    "command": "From a clean state (no DerivedData, generated project or logs; simulators named Sylvia-M0-minors-g01-pdf deleted first): G01_PDF_SIM_NAME=Sylvia-M0-minors-g01-pdf G01_PDF_EVIDENCE_DIR=Docs/Stage0/evidence/G01-PDF Scripts/ci.d/32-g01-pdf.sh on commit 177395f, then Scripts/ci.sh contracts. The transcript is saved as Docs/Stage0/evidence/G01-PDF/ci-clean-run.log; the xcodebuild logs are ci-clean-run-xcodebuild.log, -tsan.log and -cross-os.log.",
+    "result": "PASS on the first attempt, with no launch retry. Fixtures regenerate byte-identically on the host. Main run: 74 of 74 passed (60 unit, 14 UI), 0 failed, 0 skipped, 0 test-process restarts, 0 Swift warnings. Thread Sanitizer: 2 of 2 passed, 0 reports. CrossOSRestoreTests on iOS 27.0 (24A434): 2 of 2 passed. Page text on iOS 26.5 and 27.0: identical, 32 pages. Contracts: pass. Load averages were 10.57 / 39.20 / 15.36 / 89.24 at the run's start, the tests' start, the tests' end and the run's end, so timings are indicative only. The simulators and DerivedData were deleted afterwards, and HEAD is detached at a44b746."
+   }
+  }
+ },
+ {
+  "run": "wf_744b95c1-309",
+  "seq": 20,
+  "label": "minors-g01-pdf:review-3",
+  "result": {
+   "verdict": "accept-with-minor",
+   "commit_reviewed": "a44b746c6a83f77aa20cf8cc43f399fe1d628717",
+   "rerun": {
+    "command": "In the review worktree checked out detached at a44b746 (git status clean). I removed Spikes/G01-PDF/.build/DerivedData, Spikes/G01-PDF/G01PDF.xcodeproj and .build/g01-pdf-logs; no simulator with the review's name existed. Then: G01_PDF_SIM_NAME=Sylvia-M0-review-minors-g01-pdf-3 G01_PDF_EVIDENCE_DIR=<worktree>/.build/scratch/evidence Scripts/ci.d/32-g01-pdf.sh, followed by Scripts/ci.sh contracts. Wrapper: .build/scratch/run-ci.sh; transcript: .build/scratch/ci-run.log; xcodebuild logs: .build/g01-pdf-logs/.",
+    "result": "PASS from clean, 2026-10-13 18:53:59 to 19:07:05 +1300.\n- Host: all 12 committed fixtures regenerate byte-identically. large-1000.pdf was up to date at its pinned digest.\n- iOS 26.5 (23F77), iPhone 17: 74 passed, 0 failed, 0 skipped, 0 test-process restarts, 74 test methods in source, 0 Swift warnings.\n- Thread Sanitizer run of OverlayConcurrencyTests: 2 of 2 passed, 0 reports.\n- CrossOSRestoreTests on iOS 27.0 (24A434): 2 of 2 passed.\n- Page text of iOS 26.5 and 27.0 compared: identical, 32 pages of 10 fixtures; 2 fixtures do not open.\n- Drop-in exit 0; contracts exit 0.\n- Load averages (uptime): 15.59 16.70 19.22 at start, 52.99 24.84 22.06 before the tests, 11.32 16.33 20.40 after them, 90.23 34.91 26.86 at the end. Timings were taken under this load, so they are indicative only.\n- My evidence against the committed evidence: 49 of 60 text files are byte-identical once the simulator name is normalized. The other 11 differ only in run-specific values: simulator UDID paths, temp store names, timings, concurrency round counts, and one simulated rotated-page drag that ended one UTF-16 unit later (84 vs 83). The accessibility audit listed 10 issues instead of 9; the extra one is the intermittent, unattributed elementDetection issue that report row 26a already describes as varying from run to run.\n- Both simulators I created (CE1415F9\u2026 on iOS 26.5, 7C2C5BCD\u2026 on iOS 27.0) were deleted afterwards, along with all DerivedData and generated projects."
+   },
+   "findings": [
+    {
+     "id": "R5-01",
+     "severity": "minor",
+     "title": "Capture refuses cross-page selections that have an empty piece on a boundary page; this shape is neither tested nor disclosed",
+     "location": "Spikes/G01-PDF/Sources/PDFAnchorKit/PDFAnchorBuilder.swift:50 (zero-length ranges skipped) and :72 (restore check); Docs/Stage0/G01-PDF.md:5 (Summary) and :86 (Limits); Docs/ADRs/0005-pdf-reading-and-anchors.md:62",
+     "detail": "What is wrong:\n- A cross-page selection can start after a page's last character or end at the next page's character 0. PDFKit then reports a zero-length range on that page, for example p3[392+0], and its `string` still holds that page's join \"\\n\".\n- `capture` skips the zero-length range at line 50 but keeps `selection.string` as `exact`.\n- The restore check at line 72 therefore cannot give the \"\\n\" back, and capture throws `quotationMismatch`. The harness shows \"Not saved: the selection could not be anchored\" (ReaderViewController.swift:353).\n\nHow I know: I ran probe test classes in a scratch copy of the spike (not committed) on my simulators, iOS 26.5 and iOS 27.0, with identical results on both.\n- Random drags: seeded point-to-point drags with `page.selection(from:to:)` within every page of the 9 fixtures that open and allow copying, and `document.selection(from:at:to:at:)` across adjacent pages.\n  - 4,949 non-empty selections.\n  - 4,726 captured, and every one restored exactly.\n  - 223 refused: 221 `quotationMismatch` and 2 `emptySelection`. Every refusal is a cross-page selection with an empty piece and a leading or trailing \"\\n\". No single-page drag was refused.\n  - By fixture: labels-multipage 53, actions-chained 50+1, actions-nonurl 47, rotated 45+1, actions 13, text-layout 13.\n- Targeted case: labels-multipage.pdf, `document.selection(from: page 3, at: (306, -6), to: page 4, at: <first body line>)`. That start point is below page 3, beyond its short last line. Result: ranges p3[392+0] p4[0+25], text \"\\nBody, physi\u2026\" (26 scalars), REFUSED quotationMismatch.\n  - The same gesture on pages 4\u21925 and 2\u21923 captured, because there the start mapped inside the last line.\n- These all captured and restored exactly: starting on text and ending in the next page's top margin, on its header or in the gap between pages (all 15 such cases I tried); three-page selections; composed pieces on three pages; whole-page and whole-document selections; and a selection across mixed-scanned.pdf's image-only page.\n\nWhy it matters:\n- The behaviour is safe. Nothing false is saved, and the R3 \"\\n\"-join guard refused the same shapes, so this round did not regress it. At b354dc7, with no guard, such an anchor would have been saved and then never restored.\n- But a visible selection is refused.\n- The report's summary says cross-page selections become portable anchors, while neither the report's Limits nor ADR-0005 mention that some are refused.\n- No UI test or checklist step makes a cross-page handle drag, so whether a finger reaches this shape is unknown.\n\nFix, either of:\n- Before the restore check, drop the join \"\\n\" that PDFKit adds for an empty boundary piece. That is a leading \"\\n\" when the first page in `selection.pages` has no non-empty range, and a trailing one when the last page has none. Then add both shapes to ComposedSelectionTests: a start after a page's last character, and an end at the next page's character 0.\n- Or record the refusal in report Limits and ADR-0005, and add a cross-page finger step to checklist step 1: a handle released below a short last line or above the next page's first line."
+    },
+    {
+     "id": "R5-02",
+     "severity": "minor",
+     "title": "Restoring a multi-segment anchor depends on PDFKit composing its text the same way, which ADR-0005 does not state; relocation cannot recover from a composition change",
+     "location": "Spikes/G01-PDF/Sources/PDFAnchorKit/PDFAnchorResolver.swift:61, :91, :106-115; Docs/ADRs/0005-pdf-reading-and-anchors.md:62, :76, :128-132; Scripts/ci.d/32-g01-pdf.sh:131-139",
+     "detail": "What is wrong:\n- `combine` returns nil unless the rebuilt selection's `string` equals `exactText` scalar for scalar.\n- Both `resolveExactly` (line 61) and `relocate` (line 91) use it, and `relocate` returns `.notFound` when it fails.\n- So suppose a later PDFKit composed same-page pieces or page joins differently while page text stayed the same. Every multi-segment anchor (composed or cross-page) would then fail both the exact and the text-plus-context step and become \"not found\": the quotation is kept but the location is lost.\n\nWhere the ADR misleads:\n- ADR-0005:132 says \"The builder does not depend on how PDFKit composes a multi-piece selection's text\". That is accurate for the builder only.\n- The Restoring paragraph (:76) does not say that relocation also requires the composed text to match.\n- Consequences (:128) says re-anchoring falls back to exact text plus context.\n- ADR-0005:62 advises other platforms to restore segment by segment, which Sylvia's own resolver does not do.\n\nMitigation exists:\n- ComposedSelectionTests pins the composition and the ADR says it must stay in the product suite.\n- I ran ComposedSelectionTests and LineEndSelectionTests on iOS 27.0 (24A434) from a scratch copy: 5 of 5 passed. So composition did not change between the two runtimes.\n- The drop-in's iOS 27.0 step runs only CrossOSRestoreTests, so this result is not part of the gate's evidence.\n\nFix:\n- State the restore-side dependency in Restoring and Consequences.\n- Add ComposedSelectionTests and LineEndSelectionTests to the iOS 27.0 step of 32-g01-pdf.sh.\n- For contract consolidation and M3: consider accepting a per-segment match while keeping `exact_text` as the stored quotation, as the ADR already recommends for other clients."
+    },
+    {
+     "id": "R5-03",
+     "severity": "minor",
+     "title": "The actions.pdf open-action tests never let page 1 display before returning to page 0, so the page-open action is shown not to run only at first display",
+     "location": "Spikes/G01-PDF/Tests/Unit/LinkInterceptionTests.swift:103-105 (no-delegate control added for R4-04) and :146-148; Docs/ADRs/0005-pdf-reading-and-anchors.md:85; Docs/Stage0/G01-PDF.md:40 (row 18)",
+     "detail": "What is wrong:\n- Both tests call `view.go(to: page 1)` and then `view.go(to: page 0)` back to back, with no `layoutIfNeeded()` or run-loop turn between them, and only then spin for 3 s.\n- Page 0 may therefore never be hidden and shown again.\n- ADR-0005:85 says actions.pdf's open action and page-open action (canary URIs) \"do not run when the file is displayed and its pages change, with the delegate or without it\". For this file's URI /O, only the first display is really exercised.\n\nWhy it is minor:\n- ChainedActionTests does lay out and spin 0.3 s after each page change, and asserts the page index, for actions-chained.pdf's GoTo /O.\n- So the conclusion is supported for a GoTo page-open trigger, and nothing opened in my run either.\n\nFix, either of:\n- Lay out and spin between the two `go(to:)` calls, as ChainedActionTests does.\n- Or scope ADR-0005:85 and row 18 to the file being displayed."
+    }
+   ],
+   "claims_verified": [
+    "The drop-in passes from clean at a44b746. No file under Spikes/ or Scripts/ changed after 177395f (git diff 177395f..HEAD touches only Docs). My clean run reproduced the author's results: 74/74 tests, TSan 2/2 with 0 reports, iOS 27.0 2/2, page text identical (32 pages), contracts pass.",
+    "R4-01: `capture` now checks each new anchor with `PDFAnchorResolver.resolveExactly` (PDFAnchorBuilder.swift:72) instead of a \"\\n\" join. ComposedSelectionTests has 11 shapes, a cross-page line-end selection with a control, a relocated composed record, and two refusal cases through a PDFSelection subclass. It passed in my clean run on iOS 26.5 and in my extra run on iOS 27.0.",
+    "Every number in anchor-composed-selections.txt was reproduced byte-for-byte by my run: 6 of 11 shapes would have been refused by the old guard, and all 11 restore exactly. The same holds for anchor-cross-page-line-end.txt, anchor-quotation-mismatch.txt and highlight-restore-relocated-composed.txt.",
+    "R4-02: checklist step 1 now names the first body line for \"water\". This matches page index 3's text: \"The pond in winter \u2026 the water\" is the first body line, and the third body line is \"who stops at the shore hears it settle.\"",
+    "R4-03: LineEndSelectionTests asserts the trailing break for all five shapes on three lines, using the first left-column line of two-column.pdf. The 40 pt overshoot is only recorded; it selected range 40+32, part of the full-width title, which I checked against the generator's page text. The wording is scoped in ADR-0005:61, finding 11 and the builder comment.",
+    "R4-04: in actions-chained.pdf, the /OpenAction and page 0's /AA /O are now GoTo actions to page index 2, checked in make_pdf_fixtures.py. ChainedActionTests asserts the view stays on page 0 after display and on every re-show, with and without the delegate. LinkInterceptionTests has a no-delegate actions.pdf control asserting no canary arrives. All passed in my run.",
+    "R4-05: the LinkPolicy.swift:417 comment now names ChainedActionTests.testAuditListsEveryPlaceItReads, which exists, and its expected rows include \"page 0 annotation 6 /A /Next /Next | (cycle)\".",
+    "R4-06: testRecordPageTextOfEveryFixturePage records all 12 fixtures, and the drop-in compares the two runtimes line by line. My run reproduced the comparison as identical (32 pages), and the committed digest files match each other after their header line.",
+    "R4-07: every URI and JavaScript action in actions-chained.pdf targets the canary scheme except link D's https URI. The other actions are GoTo, Named NextPage and a /Launch of /bin/sh. I checked this against actions_chained_doc(); the README, generator, test comments, checklist, ADR-0005:87 and row 18b say the same.",
+    "The fixture digest history quoted in Shared changes requested is correct: 02e43a75\u2026 (7,088 bytes) at 7884a59, ce2eb738\u2026 (12,952 bytes) at 11736d1, 21f84806\u2026 (12,952 bytes) at 177395f and HEAD. The digests and sizes requested for text-layout.pdf and the anchors JSON also match.",
+    "Tests/Resources/anchors-captured-ios-26.5-23F77.json holds anchors identical to the samples in anchor-samples.json; only the description and environment fields differ. anchor-samples.json changed in this round only in its envelope description and environment label.",
+    "The committed ci-clean-run*.log files belong to the cited run. The UDIDs and timestamps (18:30 to 18:43) match ci-clean-run.log, and evidence files were changed only in dc25097, the run commit; a44b746 changed only ADR-0005, G01-PDF.md and PROGRESS.md.",
+    "Ownership: every changed path is under Spikes/G01-PDF, Docs/Stage0/G01-PDF.md, Docs/Stage0/device-checklists/G01-PDF.md, Docs/Stage0/evidence/G01-PDF, Docs/ADRs/0005 or Scripts/ci.d/32-g01-pdf.sh. No shared file was touched.",
+    "Hard rules: the changed text files contain no TODO, FIXME or stub, no NSAllowsArbitraryLoads or trust-all code, no isMuted and no keys. The spike plays no audio.",
+    "Numbers in the report and ADR match the evidence: the overlay-vs-selection maximum is 0.000360 pt in user space and 0.000225 pt in the view; the transform deviation is 1.53e-16; large-PDF medians are 1.1, 26.7 and 507 ms with load averages 31.44, 21.57, 15.86; the test counts are 60 unit and 14 UI.",
+    "Additional probe (scratch copy, not committed), iOS 26.5 and 27.0: whole-document, whole-page, three-page and composed three-page selections, and a selection across an image-only page, all capture and restore exactly after a fresh open. All single-page random drags captured and restored exactly. The cross-page exceptions are R5-01."
+   ],
+   "gate_gaps": [
+    "Fixtures/LICENSES.md still has no rows for actions-chained.pdf (21f8480692ca\u2026cc3f89b4, 12,952 bytes), text-layout.pdf (cf2d5a1f\u202637266153, 3,363 bytes) or Tests/Resources/anchors-captured-ios-26.5-23F77.json (11e0a2c2\u202672abb9, 24,138 bytes). These are R1-04 and R3-06. The file is shared, so the rows are only requested; until integration applies them, CLAUDE.md's rule that every committed fixture has its provenance in Fixtures/LICENSES.md is unmet on this branch. I verified the requested digests are correct.",
+    "Device and human steps are still pending: finger selection across lines, columns and rotated pages and to a line's end (checklist steps 1-3), zoom judgement (5), VoiceOver (6), iPad pointer hover for the /AA E and X triggers (8), open time on the baseline device (10) and rotated text by finger (11).",
+    "A real-world PDF corpus (embedded or CID fonts, right-to-left, CJK, real column layouts) is untested. Report open question 5 leaves the choice of sources to QA.",
+    "No simulator UI test and no checklist step makes a cross-page handle drag; row 2a and steps 1-3 cover lines, columns and rotated pages only. So whether a finger reaches the R5-01 refusal is unknown.",
+    "The drop-in's iOS 27.0 step runs only CrossOSRestoreTests. I ran ComposedSelectionTests and LineEndSelectionTests on iOS 27.0 myself (5 of 5 passed), but that result is not in the gate's evidence (R5-02).",
+    "Docs/Stage0/integration-log.md section 2, row 4, and Docs/Stage0/README.md still list R2-01 to R2-03 and \"PDF review 2\". They are shared files; the report requests the update at merge.",
+    "The author result given to this review names commit 7884a59 (the R2 round), but the branch head is a44b746, two fix rounds later. I reviewed a44b746. The R4 round's own result with its criteria list was not provided, so I could not check it. My copy of R4-07's text was truncated, so I checked it against the fixer's description in a44b746's message and PROGRESS.md.",
+    "This is an agent review only; QA and product-owner sign-off remain pending (agent-reviewed; human sign-off pending)."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R4-01",
+     "resolved": true,
+     "note": "Capture now checks each new anchor by restoring it through resolveExactly, which builds the selection exactly as the resolver does. ComposedSelectionTests covers 11 shapes (6 of which the old guard refused), a cross-page selection ending at a line's end with a control, a relocated composed record that is rebuilt and saved, and quotationMismatch refusals. It passed from clean on iOS 26.5 and in my extra run on iOS 27.0. The comments, ADR-0005:62 and findings 11 and 15 are corrected. A remaining, separate shape is R5-01: cross-page selections with an empty boundary piece. The R3 guard refused it too, so this round did not regress it."
+    },
+    {
+     "id": "R4-02",
+     "resolved": true,
+     "note": "Device checklist step 1 now says to long-press the last word of the first body line (\"water\"). That matches page index 3's text."
+    },
+    {
+     "id": "R4-03",
+     "resolved": true,
+     "note": "LineEndSelectionTests uses the first left-column line of two-column.pdf and asserts the trailing break for all five shapes on all three lines, plus every rotated-text line except the last. The 40 pt overshoot is recorded, not asserted; on two-column it selected part of the title, which I verified against the page text. ADR-0005:61, finding 11 and the builder comment are scoped to these lines and shapes."
+    },
+    {
+     "id": "R4-04",
+     "resolved": true,
+     "note": "The fixture's /OpenAction and page 0's /AA /O now go to page index 2. ChainedActionTests asserts page 0 after display and on every re-show, with and without the delegate, and the new actions.pdf no-delegate control asserts no canaries arrive. All passed in my clean run. The weak page-change step in the actions.pdf tests is R5-03, minor."
+    },
+    {
+     "id": "R4-05",
+     "resolved": true,
+     "note": "The LinkPolicy.swift:417 comment names ChainedActionTests.testAuditListsEveryPlaceItReads, which exists and asserts the cycle row for link G."
+    },
+    {
+     "id": "R4-06",
+     "resolved": true,
+     "note": "CrossOSRestoreTests.testRecordPageTextOfEveryFixturePage records all 32 pages of the 10 fixtures that open, and the drop-in compares them. My run printed \"identical\" for the two runtimes. Rows 24 and 24a, Limits, finding 7 and ADR-0005:120 and :129 now cite all-page evidence."
+    },
+    {
+     "id": "R4-07",
+     "resolved": true,
+     "note": "The wording for actions-chained.pdf (\"every URI and JavaScript action aims at the canary except link D's https URI; the other actions are GoTo and Named actions inside the file and a /Launch of /bin/sh\") is accurate against the generator, and is used consistently in the README, generator, tests, checklist, report and ADR. My copy of the original finding text was truncated, so I checked it against the fixer's description."
+    },
+    {
+     "id": "R2-01",
+     "resolved": true,
+     "note": "NonURLActionTests asserts the page, the delegate decisions, the field value before and after each action, that nothing is presented, and that no URL opens. The presented-UI detector has a control (an alert and a print job). Both passed in my run."
+    },
+    {
+     "id": "R2-02",
+     "resolved": true,
+     "note": "actions-chained.pdf covers /Next as a dictionary, an array and a cycle, plus /AA at document, page, link and field level, an outline and a JavaScript name tree. PDFActionAudit follows /Next and reads /AA, name trees, outlines and fields; 73 rows are asserted, with cycle, depth and row caps. Unit and real-tap tests have no-delegate controls. All passed in my run."
+    },
+    {
+     "id": "R2-03",
+     "resolved": true,
+     "note": "HighlightRestorer runs on every open in the harness: it draws relocated highlights and saves the rebuilt anchors. HighlightUITests.testRelocatedHighlightIsDrawnAndSaved and HighlightRestoreTests both passed in my run."
+    },
+    {
+     "id": "R1-04",
+     "resolved": false,
+     "note": "Fixtures/LICENSES.md is a shared file outside this workstream. Rows for actions-chained.pdf, text-layout.pdf and the anchors JSON are requested with correct digests; the README carries the provenance meanwhile."
+    }
+   ]
+  }
+ }
+]

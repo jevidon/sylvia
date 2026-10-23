@@ -1,0 +1,350 @@
+linkage started 2026-10-23T16:05:44Z at commit 5aec2518c90427a283d9c8195e11bb9ab23e5d12
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+load:  5:05  up 20 days, 15:16, 3 users, load averages: 5.77 4.26 4.31
+
+### 1. Mac source service: swift build --product sylvia-source (debug, host)
+build: ok (23 s); binary sylvia-source, 28124960 bytes; Mach-O 64-bit executable arm64
+lock: unchanged
+defined symbols per marker (distinct names):
+  (84725 distinct defined symbol names in all)
+    3832  BoringSSL (swift-nio-ssl, CNIOBoringSSL_ prefix)
+    3368  BoringSSL (swift-crypto, CCryptoBoringSSL_ prefix)
+     138  llhttp (swift-nio CNIOLLHTTP, c_nio_llhttp_ prefix)
+       0  SHA1 (swift-nio CNIOSHA1, c_nio_sha1 prefix)
+     390  swift-nio CNIOAtomics functions generated with uSHET's cpp_magic.h macros (catmc_ prefix)
+       8  BoringSSL (swift-nio-ssl) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+       8  BoringSSL (swift-crypto) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+       0  Keccak (swift-crypto CXKCP)
+       0  Minizip (marmelroy/Zip; unz*/zip* C functions)
+       0  Minizip write path (zipOpenNewFileInZip*)
+    3466  Swift module SylviaSourceService
+   10391  Swift module NIOCore
+    6805  Swift module NIOPosix
+    3806  Swift module NIOHTTP1
+    4606  Swift module NIOSSL
+       0  Swift module NIOWebSocket
+   11055  Swift module X509 (swift-certificates)
+      63  Swift module Crypto (swift-crypto)
+    3159  Swift module CryptoExtras / _CryptoExtras
+    3101  Swift module SwiftASN1
+     606  Swift module Atomics
+     957  Swift module DequeModule (swift-collections)
+       0  Swift module SystemPackage (swift-system)
+       0  Swift module ReadiumShared
+       0  Swift module ReadiumStreamer
+       0  Swift module ReadiumNavigator
+       0  Swift module ReadiumInternal
+       0  Swift module ReadiumOPDS
+       0  Swift module ReadiumLCP
+       0  Swift module ReadiumAdapterGCDWebServer
+       0  Swift module ReadiumAdapterLCPSQLite
+       0  GCDWebServer (Objective-C classes)
+       0  Swift module SQLite (SQLite.swift)
+       0  Swift module Zip (marmelroy/Zip Swift API)
+       0  Swift module ReadiumZIPFoundation
+       0  Swift module ReadiumFuzi
+       0  Swift module SwiftSoup
+       0  Swift module CryptoSwift
+       0  Swift module DifferenceKit
+       0  Swift module G01EPUBCore (the spike's sanitizer)
+       0  Swift module GRDB
+       0  SQLite C API defined here (a bundled SQLite would define sqlite3_*)
+    3894  Swift module SylviaTransferCore (G0.2)
+       0  Swift module SylviaDesign
+       0  Swift module SnapshotTesting (test only)
+       0  Swift module CustomDump (test only)
+       0  Swift module IssueReporting (test only)
+       0  Swift module SwiftSyntax (test only)
+dynamic libraries it loads (otool -L):
+  /usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 2200.27.0)
+  /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 5027.0.69)
+  /usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)
+  /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)
+  /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.69)
+  /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics (compatibility version 64.0.0, current version 2050.0.0)
+  /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage (compatibility version 1.0.1, current version 7.0.0)
+  /System/Library/Frameworks/CryptoKit.framework/Versions/A/CryptoKit (compatibility version 1.0.0, current version 1.0.0)
+  /System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 62460.1.2)
+  /usr/lib/swift/libswiftCore.dylib (compatibility version 0.0.0, current version 0.0.0)
+  /usr/lib/swift/libswiftCoreFoundation.dylib (compatibility version 1.0.0, current version 120.100.0)
+  /usr/lib/swift/libswiftCoreImage.dylib (compatibility version 1.0.0, current version 3.0.0, weak)
+  /usr/lib/swift/libswiftDarwin.dylib (compatibility version 1.0.0, current version 428.0.10)
+  /usr/lib/swift/libswiftDispatch.dylib (compatibility version 1.0.0, current version 1605.0.2)
+  /usr/lib/swift/libswiftIOKit.dylib (compatibility version 1.0.0, current version 1.0.0, weak)
+  /usr/lib/swift/libswiftMetal.dylib (compatibility version 1.0.0, current version 382.5.3, weak)
+  /usr/lib/swift/libswiftObjectiveC.dylib (compatibility version 1.0.0, current version 973.1.0, weak)
+  /usr/lib/swift/libswiftSynchronization.dylib (compatibility version 0.0.0, current version 0.0.0)
+  /usr/lib/swift/libswiftUniformTypeIdentifiers.dylib (compatibility version 1.0.0, current version 917.0.1, weak)
+  /usr/lib/swift/libswiftXPC.dylib (compatibility version 1.0.0, current version 167.0.2, weak)
+  /usr/lib/swift/libswift_Builtin_float.dylib (compatibility version 0.0.0, current version 0.0.0, weak)
+  /usr/lib/swift/libswift_Concurrency.dylib (compatibility version 0.0.0, current version 0.0.0)
+  /usr/lib/swift/libswift_DarwinFoundation1.dylib (compatibility version 1.0.0, current version 428.0.10)
+  /usr/lib/swift/libswift_DarwinFoundation3.dylib (compatibility version 1.0.0, current version 428.0.10)
+  /usr/lib/swift/libswiftos.dylib (compatibility version 1.0.0, current version 1090.0.0, weak)
+
+### 2. EPUB harness: xcodebuild build, scheme EPUBHarness, Debug, generic/platform=iOS Simulator, unsigned
+build: ok (17 s); Spikes/G01-EPUB/.build/DerivedData/Build/Products/Debug-iphonesimulator/EPUBHarness.app
+Mach-O files in the app:
+  EPUBHarness (72984 bytes)
+  EPUBHarness.debug.dylib (45806616 bytes)
+  __preview.dylib (33144 bytes)
+defined symbols per marker across those files (distinct names):
+  (71523 distinct defined symbol names in all)
+       0  BoringSSL (swift-nio-ssl, CNIOBoringSSL_ prefix)
+       0  BoringSSL (swift-crypto, CCryptoBoringSSL_ prefix)
+       0  llhttp (swift-nio CNIOLLHTTP, c_nio_llhttp_ prefix)
+       0  SHA1 (swift-nio CNIOSHA1, c_nio_sha1 prefix)
+       0  swift-nio CNIOAtomics functions generated with uSHET's cpp_magic.h macros (catmc_ prefix)
+       0  BoringSSL (swift-nio-ssl) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+       0  BoringSSL (swift-crypto) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+       0  Keccak (swift-crypto CXKCP)
+      55  Minizip (marmelroy/Zip; unz*/zip* C functions)
+       8  Minizip write path (zipOpenNewFileInZip*)
+       0  Swift module SylviaSourceService
+       0  Swift module NIOCore
+       0  Swift module NIOPosix
+       0  Swift module NIOHTTP1
+       0  Swift module NIOSSL
+       0  Swift module NIOWebSocket
+       0  Swift module X509 (swift-certificates)
+       0  Swift module Crypto (swift-crypto)
+       0  Swift module CryptoExtras / _CryptoExtras
+       0  Swift module SwiftASN1
+       0  Swift module Atomics
+       0  Swift module DequeModule (swift-collections)
+       0  Swift module SystemPackage (swift-system)
+   17752  Swift module ReadiumShared
+    2568  Swift module ReadiumStreamer
+   11758  Swift module ReadiumNavigator
+     113  Swift module ReadiumInternal
+       0  Swift module ReadiumOPDS
+       0  Swift module ReadiumLCP
+       0  Swift module ReadiumAdapterGCDWebServer
+       0  Swift module ReadiumAdapterLCPSQLite
+       0  GCDWebServer (Objective-C classes)
+       0  Swift module SQLite (SQLite.swift)
+     207  Swift module Zip (marmelroy/Zip Swift API)
+    1945  Swift module ReadiumZIPFoundation
+     724  Swift module ReadiumFuzi
+   11593  Swift module SwiftSoup
+    5408  Swift module CryptoSwift
+     671  Swift module DifferenceKit
+    3479  Swift module G01EPUBCore (the spike's sanitizer)
+       0  Swift module GRDB
+       0  SQLite C API defined here (a bundled SQLite would define sqlite3_*)
+       0  Swift module SylviaTransferCore (G0.2)
+       0  Swift module SylviaDesign
+       0  Swift module SnapshotTesting (test only)
+       0  Swift module CustomDump (test only)
+       0  Swift module IssueReporting (test only)
+       0  Swift module SwiftSyntax (test only)
+resource bundles in the app and the third-party files in them (fonts, scripts, styles, licenses):
+  CryptoSwift_CryptoSwiftResources.bundle: 2 files
+    PrivacyInfo.xcprivacy
+  ReadiumZIPFoundation_ReadiumZIPFoundation.bundle: 2 files
+    PrivacyInfo.xcprivacy
+  Readium_ReadiumNavigator.bundle: 31 files
+    Assets/Static/fonts/OpenDyslexic-Bold.otf
+    Assets/Static/fonts/OpenDyslexic-BoldItalic.otf
+    Assets/Static/fonts/OpenDyslexic-Italic.otf
+    Assets/Static/fonts/OpenDyslexic-Regular.otf
+    Assets/Static/readium-css/ReadiumCSS-after.css
+    Assets/Static/readium-css/ReadiumCSS-before.css
+    Assets/Static/readium-css/ReadiumCSS-default.css
+    Assets/Static/readium-css/ReadiumCSS-ebpaj_fonts_patch.css
+    Assets/Static/readium-css/cjk-horizontal/ReadiumCSS-after.css
+    Assets/Static/readium-css/cjk-horizontal/ReadiumCSS-before.css
+    Assets/Static/readium-css/cjk-horizontal/ReadiumCSS-default.css
+    Assets/Static/readium-css/cjk-vertical/ReadiumCSS-after.css
+    Assets/Static/readium-css/cjk-vertical/ReadiumCSS-before.css
+    Assets/Static/readium-css/cjk-vertical/ReadiumCSS-default.css
+    Assets/Static/readium-css/fonts/AccessibleDfA.otf
+    Assets/Static/readium-css/fonts/LICENSE-AccessibleDfa
+    Assets/Static/readium-css/fonts/LICENSE-IaWriterDuospace.md
+    Assets/Static/readium-css/fonts/iAWriterDuospace-Regular.ttf
+    Assets/Static/readium-css/rtl/ReadiumCSS-after.css
+    Assets/Static/readium-css/rtl/ReadiumCSS-before.css
+    Assets/Static/readium-css/rtl/ReadiumCSS-default.css
+    Assets/Static/scripts/readium-fixed-wrapper-one.js
+    Assets/Static/scripts/readium-fixed-wrapper-two.js
+    Assets/Static/scripts/readium-fixed.js
+    Assets/Static/scripts/readium-reflowable.js
+  Readium_ReadiumShared.bundle: 4 files
+  Readium_ReadiumStreamer.bundle: 2 files
+    Assets/fonts/OpenDyslexic-Regular.otf
+
+### 3. GRDB: swift build --product g05-recovery-tool (Spikes/G05-Recovery, debug, host)
+FAIL: build exited non-zero (1 s); tail:
+Creating working copy for https://github.com/groue/GRDB.swift.git
+error: 'grdb.swift': Couldn’t update repository submodules:
+    Submodule 'SQLiteCustom/src' (https://github.com/swiftlyfalling/SQLiteLib.git) registered for path 'SQLiteCustom/src'
+    Cloning into '/Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Spikes/G05-Recovery/.build/checkouts/GRDB.swift/SQLiteCustom/src'...
+    fatal: transport 'https' not allowed
+    fatal: clone of 'https://github.com/swiftlyfalling/SQLiteLib.git' into submodule path '/Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Spikes/G05-Recovery/.build/checkouts/GRDB.swift/SQLiteCustom/src' failed
+    Failed to clone 'SQLiteCustom/src'. Retry scheduled
+    Cloning into '/Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Spikes/G05-Recovery/.build/checkouts/GRDB.swift/SQLiteCustom/src'...
+    fatal: transport 'https' not allowed
+    fatal: clone of 'https://github.com/swiftlyfalling/SQLiteLib.git' into submodule path '/Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Spikes/G05-Recovery/.build/checkouts/GRDB.swift/SQLiteCustom/src' failed
+    Failed to clone 'SQLiteCustom/src' a second time, aborting
+
+### 4. GRDB built for iOS: xcodebuild build-for-testing, scheme G05Recovery-Package (Spikes/G05-Recovery), Debug, generic/platform=iOS Simulator, unsigned
+No M0 iOS app links GRDB: the recovery tool (section 3) is a host build, and the G0.5 ATS probe apps link SylviaAI,
+which does not use GRDB (Spikes/G05-AI/Package.swift: only SylviaContext depends on it). The M0 build that links GRDB
+for iOS is the recovery package's test bundle, which 71-g05-recovery.sh also builds and runs on the simulator.
+FAIL: build exited non-zero (1 s); tail:
+Fetching from https://github.com/groue/GRDB.swift.git (cached)
+
+Creating working copy of package ‘GRDB.swift’
+
+Checking out 7.11.1 of package ‘GRDB.swift’
+Couldn’t update repository submodules:
+    Submodule 'SQLiteCustom/src' (https://github.com/swiftlyfalling/SQLiteLib.git) registered for path 'SQLiteCustom/src'
+    Cloning into '/Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Spikes/G05-Recovery/.build/DerivedData/SourcePackages/checkouts/GRDB.swift/SQLiteCustom/src'...
+    fatal: transport 'https' not allowed
+    fatal: clone of 'https://github.com/swiftlyfalling/SQLiteLib.git' into submodule path '/Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Spikes/G05-Recovery/.build/DerivedData/SourcePackages/checkouts/GRDB.swift/SQLiteCustom/src' failed
+    Failed to clone 'SQLiteCustom/src'. Retry scheduled
+    Cloning into '/Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Spikes/G05-Recovery/.build/DerivedData/SourcePackages/checkouts/GRDB.swift/SQLiteCustom/src'...
+    fatal: transport 'https' not allowed
+    fatal: clone of 'https://github.com/swiftlyfalling/SQLiteLib.git' into submodule path '/Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Spikes/G05-Recovery/.build/DerivedData/SourcePackages/checkouts/GRDB.swift/SQLiteCustom/src' failed
+    Failed to clone 'SQLiteCustom/src' a second time, aborting
+fatalError
+
+Resolved source packages:
+  G05-Recovery: (null)
+
+2026-10-24 05:06:28.718 xcodebuild[19747:51719394] Writing error result bundle to /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/ResultBundle_2026-24-10_05-06-0028.xcresult
+xcodebuild: error: Could not resolve package dependencies:
+  fatalError
+  Couldn’t update repository submodules:
+
+
+### 5. SwiftASN1 in an iOS app: scheme G02TransferHarness (Spikes/G02-Transfer/iOS: SylviaTransferCore over SwiftASN1)
+This project has no committed lock (an inventory exemption: its one remote package, swift-asn1, is required exactly by
+TransferKit), so this build lets Xcode resolve; what it resolved is printed below and must be swift-asn1 1.7.3 only.
+build: ok (9 s); Spikes/G02-Transfer/iOS/.build/DerivedData/Build/Products/Debug-iphonesimulator/G02TransferHarness.app
+remote packages resolved for this build (from the build log; local packages omitted):
+  swift-asn1: https://github.com/apple/swift-asn1.git @ 1.7.3
+Mach-O files in the app:
+  G02TransferHarness (72992 bytes)
+  G02TransferHarness.debug.dylib (9592912 bytes)
+  __preview.dylib (33152 bytes)
+defined symbols per marker across those files (distinct names):
+  (15664 distinct defined symbol names in all)
+       0  BoringSSL (swift-nio-ssl, CNIOBoringSSL_ prefix)
+       0  BoringSSL (swift-crypto, CCryptoBoringSSL_ prefix)
+       0  llhttp (swift-nio CNIOLLHTTP, c_nio_llhttp_ prefix)
+       0  SHA1 (swift-nio CNIOSHA1, c_nio_sha1 prefix)
+       0  swift-nio CNIOAtomics functions generated with uSHET's cpp_magic.h macros (catmc_ prefix)
+       0  BoringSSL (swift-nio-ssl) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+       0  BoringSSL (swift-crypto) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+       0  Keccak (swift-crypto CXKCP)
+       0  Minizip (marmelroy/Zip; unz*/zip* C functions)
+       0  Minizip write path (zipOpenNewFileInZip*)
+       0  Swift module SylviaSourceService
+       0  Swift module NIOCore
+       0  Swift module NIOPosix
+       0  Swift module NIOHTTP1
+       0  Swift module NIOSSL
+       0  Swift module NIOWebSocket
+       0  Swift module X509 (swift-certificates)
+       0  Swift module Crypto (swift-crypto)
+       0  Swift module CryptoExtras / _CryptoExtras
+    2715  Swift module SwiftASN1
+       0  Swift module Atomics
+       0  Swift module DequeModule (swift-collections)
+       0  Swift module SystemPackage (swift-system)
+       0  Swift module ReadiumShared
+       0  Swift module ReadiumStreamer
+       0  Swift module ReadiumNavigator
+       0  Swift module ReadiumInternal
+       0  Swift module ReadiumOPDS
+       0  Swift module ReadiumLCP
+       0  Swift module ReadiumAdapterGCDWebServer
+       0  Swift module ReadiumAdapterLCPSQLite
+       0  GCDWebServer (Objective-C classes)
+       0  Swift module SQLite (SQLite.swift)
+       0  Swift module Zip (marmelroy/Zip Swift API)
+       0  Swift module ReadiumZIPFoundation
+       0  Swift module ReadiumFuzi
+       0  Swift module SwiftSoup
+       0  Swift module CryptoSwift
+       0  Swift module DifferenceKit
+       0  Swift module G01EPUBCore (the spike's sanitizer)
+       0  Swift module GRDB
+       0  SQLite C API defined here (a bundled SQLite would define sqlite3_*)
+    3925  Swift module SylviaTransferCore (G0.2)
+       0  Swift module SylviaDesign
+       0  Swift module SnapshotTesting (test only)
+       0  Swift module CustomDump (test only)
+       0  Swift module IssueReporting (test only)
+       0  Swift module SwiftSyntax (test only)
+SQLite libraries the app's Mach-O files load (otool -L):
+fonts, licenses, scripts and styles in the app and its bundles:
+resolved exactly what the inventory pins: swift-asn1: https://github.com/apple/swift-asn1.git @ 1.7.3
+
+### 6. The design catalog app: scheme DesignCatalog (Apps/DesignCatalog: SylviaDesign with Literata)
+The snapshot-testing packages are in its lock for the design package's tests; none of their modules may be in the app.
+build: ok (14 s); Apps/DesignCatalog/.build/DerivedData/Build/Products/Debug-iphonesimulator/DesignCatalog.app
+lock: the committed Package.resolved, unchanged
+Mach-O files in the app:
+  DesignCatalog (72992 bytes)
+  DesignCatalog.debug.dylib (18143880 bytes)
+  __preview.dylib (33144 bytes)
+defined symbols per marker across those files (distinct names):
+  (22214 distinct defined symbol names in all)
+       0  BoringSSL (swift-nio-ssl, CNIOBoringSSL_ prefix)
+       0  BoringSSL (swift-crypto, CCryptoBoringSSL_ prefix)
+       0  llhttp (swift-nio CNIOLLHTTP, c_nio_llhttp_ prefix)
+       0  SHA1 (swift-nio CNIOSHA1, c_nio_sha1 prefix)
+       0  swift-nio CNIOAtomics functions generated with uSHET's cpp_magic.h macros (catmc_ prefix)
+       0  BoringSSL (swift-nio-ssl) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+       0  BoringSSL (swift-crypto) X25519, Ed25519 and P-256 entry points, whose files include fiat-crypto
+       0  Keccak (swift-crypto CXKCP)
+       0  Minizip (marmelroy/Zip; unz*/zip* C functions)
+       0  Minizip write path (zipOpenNewFileInZip*)
+       0  Swift module SylviaSourceService
+       0  Swift module NIOCore
+       0  Swift module NIOPosix
+       0  Swift module NIOHTTP1
+       0  Swift module NIOSSL
+       0  Swift module NIOWebSocket
+       0  Swift module X509 (swift-certificates)
+       0  Swift module Crypto (swift-crypto)
+       0  Swift module CryptoExtras / _CryptoExtras
+       0  Swift module SwiftASN1
+       0  Swift module Atomics
+       0  Swift module DequeModule (swift-collections)
+       0  Swift module SystemPackage (swift-system)
+       0  Swift module ReadiumShared
+       0  Swift module ReadiumStreamer
+       0  Swift module ReadiumNavigator
+       0  Swift module ReadiumInternal
+       0  Swift module ReadiumOPDS
+       0  Swift module ReadiumLCP
+       0  Swift module ReadiumAdapterGCDWebServer
+       0  Swift module ReadiumAdapterLCPSQLite
+       0  GCDWebServer (Objective-C classes)
+       0  Swift module SQLite (SQLite.swift)
+       0  Swift module Zip (marmelroy/Zip Swift API)
+       0  Swift module ReadiumZIPFoundation
+       0  Swift module ReadiumFuzi
+       0  Swift module SwiftSoup
+       0  Swift module CryptoSwift
+       0  Swift module DifferenceKit
+       0  Swift module G01EPUBCore (the spike's sanitizer)
+       0  Swift module GRDB
+       0  SQLite C API defined here (a bundled SQLite would define sqlite3_*)
+       0  Swift module SylviaTransferCore (G0.2)
+    4488  Swift module SylviaDesign
+       0  Swift module SnapshotTesting (test only)
+       0  Swift module CustomDump (test only)
+       0  Swift module IssueReporting (test only)
+       0  Swift module SwiftSyntax (test only)
+SQLite libraries the app's Mach-O files load (otool -L):
+fonts, licenses, scripts and styles in the app and its bundles:
+  SylviaDesign_SylviaDesign.bundle/Fonts/Literata-Italic-Variable.ttf
+  SylviaDesign_SylviaDesign.bundle/Fonts/Literata-Variable.ttf
+  SylviaDesign_SylviaDesign.bundle/Fonts/OFL.txt
+
+linkage finished 2026-10-23T16:06:51Z; failures: 2
+load:  5:06  up 20 days, 15:17, 3 users, load averages: 17.06 8.19 5.80

@@ -1,0 +1,60 @@
+command: python3 -I Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/finding-lines.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_79cfa66f-313-3
+commit: c924c16ae646792a950a88900ebfbf4292839ef0; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-23T00:26:12Z; load: 13:26  up 19 days, 23:36, 3 users, load averages: 4.28 3.02 2.30
+
+cited lines read at 91c3b46a1e034563ca9a6df9a77d5c736d202303 (the commit tested) and at 35543102e4c0f550c7bdd59ca013c788f048e8e3 (the run's evidence commit, where the record started)
+match    UNL-01 Docs/Stage0/integration-log.md:1389: "Not run: no code changed since `660c2b3a`, and it stays the runbook's 0.8, for the owner, "; at 35543102 that line does not
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/followup/round-5/README.md:18: "(no code changed; it stays the runbook's 0.8, for the owner; *dated note, 23 October 2026"; at 35543102 that line does not
+match    UNL-01 Docs/Stage0/M0-gate.md:590: '35. **The lock harness**'; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/M0-gate.md:590: '*(Dated note, 23 October 2026: it ran, and passed, on `9cdb0a02`: item 92.)*'; at 35543102 that line does not
+match    UNL-01 Docs/Stage0/M0-gate.md:600: '42. **The lock harness**'; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/M0-gate.md:600: '*(Dated note, 23 October 2026: it ran, and passed, on `9cdb0a02`: item 92.)*'; at 35543102 that line does not
+match    UNL-01 Docs/Stage0/integration-log.md:962: 'A run with the screen unlocked is pending.'; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/integration-log.md:1045: "It is now the runbook's 0.8, for the owner, in Session 0, before Session 6."; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/integration-log.md:1116: "It is the runbook's 0.8, for the owner, in Session 0, before Session 6."; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/integration-log.md:1174: "Not run: no code changed since `a1ea66d2`, and it stays the runbook's 0.8, for the owner, "; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/integration-log.md:1226: "Not run: no code changed since `19489f10`, and it stays the runbook's 0.8, for the owner, "; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/integration-log.md:1277: "Not run: no code changed since `13d2b4c7`, and it stays the runbook's 0.8, for the owner, "; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/integration-log.md:1333: "Not run: no code changed since `11f41be5`, and it stays the runbook's 0.8, for the owner, "; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/fix-2/README.md:20: 'runbook 0.8 asks the owner to run it in Session 0'; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/followup/README.md:17: "it stays the runbook's 0.8, for the owner"; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/followup/round-2/README.md:16: "it stays the runbook's 0.8, for the owner"; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/followup/round-3/README.md:17: "it stays the runbook's 0.8, for the owner"; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/followup/round-4/README.md:18: "it stays the runbook's 0.8, for the owner"; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/M0-gate.md:671: '90. **The records of earlier rounds**'; at 35543102 that line holds it
+match    UNL-01 Docs/Stage0/integration-log.md:1419: "Each record that called the run pending, still to run or the owner's to make"; at 35543102 that line does not
+match    UNL-01 Docs/Stage0/integration-log.md:1419: 'where a dated text asked for the run, a dated note after it records the run'; at 35543102 that line does not
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/README.md:3: 'The record puts the run wherever the records called it pending'; at 35543102 that line absent
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/README.md:3: 'and checks that it did'; at 35543102 that line absent
+match    UNL-01 Docs/Stage0/M0-gate.md:676: 'with dated notes where they asked for the run'; at 35543102 that line does not
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py:77: 'check("M0-gate.md item 2 (repeat 0.8 after a fix of the harness)"'; at 35543102 that line absent
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py:205: 'check("the integration log, section 25 and 24.5\'s note", log,'; at 35543102 that line absent
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py:212: '# No record left that still tells the owner to run the whole drop-in once more'; at 35543102 that line absent
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py:216: 'for name, text in (("M0-gate.md", gate), ("the runbook", runbook), ("the session log", ses'; at 35543102 that line absent
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py:217: '("ADR-0012", a12), ("the Stage 0 README", stage0)):'; at 35543102 that line absent
+match    UNL-02 Docs/Stage0/M0-gate.md:4: "the follow-up that records your answers and its four fixes, and this summary's own updates"; at 35543102 that line holds it
+match    UNL-02 Docs/Stage0/M0-gate.md:4: "the last fix, the follow-up's fourth (23 October 2026), has not been reviewed"; at 35543102 that line holds it
+match    UNL-02 Docs/Stage0/README.md:5: "the follow-up's fourth fix has not been reviewed"; at 35543102 that line holds it
+match    UNL-02 Docs/Stage0/integration-log.md:1423: "already counts this summary's own updates"; at 35543102 that line does not
+match    UNL-02 Docs/Stage0/M0-gate.md:677: '93. **Not reviewed**: this record is agent-written'; at 35543102 that line does not
+match    UNL-02 Docs/Stage0/M0-device-runbook.md:11: '- **Who wrote it.**'; at 35543102 that line holds it
+match    UNL-03 Docs/Stage0/M0-device-runbook.md:150: 'about 1.5 h of your time, 2 h elapsed'; at 35543102 that line holds it
+match    UNL-03 Docs/Stage0/M0-device-runbook.md:152: 'with three devices to register and the drop-in of 0.8 to run'; at 35543102 that line holds it
+match    UNL-03 Docs/Stage0/M0-device-runbook.md:124: '| 1.5 h / 2 h (three devices to register, 0.4) |'; at 35543102 that line holds it
+match    UNL-03 Docs/Stage0/M0-gate.md:34: '| 1.5 h (2 h) |'; at 35543102 that line holds it
+match    UNL-03 Docs/Stage0/M0-device-runbook.md:209: '**So 0.8 needs nothing from you now.'; at 35543102 that line does not
+match    UNL-04 Docs/Stage0/M0-gate.md:30: 'if a fix changes the harness or the drop-in after `9cdb0a02`'; at 35543102 that line does not
+match    UNL-04 Docs/Stage0/M0-gate.md:74: '(the recovery package and its lock harness, the drop-in, `Scripts/lib` or the contracts;'; at 35543102 that line does not
+match    UNL-04 Docs/Stage0/M0-device-runbook.md:209: 'the recovery package or its lock harness (`Spikes/G05-Recovery`), the drop-in, `Scripts/li'; at 35543102 that line does not
+match    UNL-05 Docs/Stage0/integration-log.md:1397: "everything below is read in the run's committed evidence, except who started it"; at 35543102 that line does not
+match    UNL-05 Docs/Stage0/integration-log.md:1406: '`G05_ALLOW_MISSING_CLASS_B` was not set, as relayed.'; at 35543102 that line does not
+match    UNL-05 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/check-run.py:5: 'Nothing is inferred.'; at 35543102 that line absent
+match    UNL-05 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/check-run.py:153: 'fact("after the run: one git status line (this folder, untracked)",'; at 35543102 that line absent
+match    UNL-05 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/check-run.py:154: 'line(console, "git status --porcelain lines after the run: ") == "git status --porcelain l'; at 35543102 that line absent
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py: 33 check() calls, 33 of them on lines 77-210; the finding gives 33
+match    UNL-01 Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py:212-224: the sweep reads ['M0-gate.md', 'the runbook', 'the session log', 'ADR-0012', 'the Stage 0 README']; the finding names the gate summary, the runbook, the session log, ADR-0012 and the Stage 0 README
+result: 50 of 50 cited lines and counts hold at 91c3b46a
+
+exit status: 0
+end: 2026-10-23T00:26:12Z; load: 13:26  up 19 days, 23:36, 3 users, load averages: 4.28 3.02 2.30

@@ -1,0 +1,18 @@
+restore crash drill (T47): environment host (macOS), seed 20261007, 300 iterations, SIGKILL during prepare and during the swap
+calibration: prepare 70.4 ms, commit 25.3 ms
+  50 iterations, 0 failures
+  100 iterations, 0 failures
+  150 iterations, 0 failures
+  200 iterations, 0 failures
+  250 iterations, 0 failures
+  300 iterations, 0 failures
+iterations: 300
+measured unkilled run: prepare 70.4 ms, commit (swap) 25.3 ms
+SIGKILLs by window: commit=150 prepare=150
+SIGKILLs by the last step the child reported: COMMIT=38, PREPARE=150, STEP activeMovedAside=33, STEP intentWritten=38, STEP restoredMovedIn=41
+children that finished before the kill: 0
+library after reopen: old library kept=191 restored library=109
+launch reconciliation: completedRestore=70 keptExistingLibrary=3 nothingToDo=227
+failures: 0
+elapsed: 47.1 s
+RESULT: PASS

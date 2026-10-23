@@ -1,0 +1,53 @@
+command: Docs/Stage0/evidence/M0-Decisions/harness/commands/run-dropin-clean.sh dropin-clean
+commit: cad45445ff89e39f62533375058709d86f8e045e; uncommitted files before the run: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+deleted before the run: Spikes/G05-Recovery/.build Spikes/G05-Recovery/LockHarness/.build .build/g05-recovery
+simulator name Sylvia-M0-dec-harness (iPhone 17, iOS 26.5; created by the drop-in if missing); G05_LOG_DIR=Docs/Stage0/evidence/M0-Decisions/harness/dropin-clean/logs
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-22T07:13:37Z; load: 20:13  up 19 days,  6:24, 3 users, load averages: 6.49 6.77 7.47
+==> 00-git-lfs
+    pass (4s)
+==> 71-g05-recovery
+    FAIL (34s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-4/.build/ci-logs/71-g05-recovery.log
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back at the next open, with -wal, -shm and an earlier partial copy: 20 fallible operations, each failed in turn with an injected ENOSPC and finished by the next open (the snapshot never beside the old -wal or -shm; every row intact after migrating): remove an earlier partial copy; copy the snapshot into Staging; flush the staged copy; publish the staged copy; flush Staging after staging; create failed-<id>; move library.sqlite aside; flush failed-<id> after moving library.sqlite; flush Library after moving library.sqlite; move library.sqlite-wal aside; flush failed-<id> after moving library.sqlite-wal; flush Library after moving library.sqlite-wal; move library.sqlite-shm aside; flush failed-<id> after moving library.sqlite-shm; flush Library after moving library.sqlite-shm; move the staged copy into Library; flush Library after the move in; flush Staging after the move in; remove the intent; flush Library after removing the intent; complete despite the error (only the flush after removing the intent failed): ["flush Library after removing the intent"]
+    | ✔ Test "an injected ENOSPC at each fallible file operation of a put-back leaves a state the next open finishes" with 3 test cases passed after 15.758 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected text-invalid-utf8: database snapshot has values this build rejects: capture.quoted_text rowid 4: text is not valid UTF-8
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreferenced-cover: blob fc3a494786859dfa3d96c098f36d4ba6f4c9880593f0f93e8606cda47fb64894 is not referenced by the snapshot
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected cover-dropped-from-manifest: blob a533ac5b8b5700b1ba69957a3503cafd403f6d8437ee2a1a171b34b4d6abd13d referenced by the snapshot is missing
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreadable-directory-with-unlisted-file: not a .sylviabackup bundle: cannot read export/zz-unreadable
+    | ✔ Test "T46: corrupt, truncated, newer and malicious backups are rejected without touching the library" passed after 15.611 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] migration put-back crash drill (short)
+    | iterations: 24
+    | measured unkilled run (open, snapshot, failed migration, put-back): 466.6 ms
+    | SIGKILLs by plan: delay databaseMovedAside=1, delay intentWritten=1, delay migrationFailed=1, delay shmMovedAside=1, delay snapshotMovedIn=1, delay staged=1, delay walMovedAside=1, pause databaseMovedAside=1, pause intentRemoved=1, pause intentWritten=1, pause migrationFailed=1, pause shmMovedAside=1, pause snapshotMovedIn=1, pause staged=1, pause walMovedAside=1, random=3
+    | SIGKILLs by the last line the child printed: OPEN=2, STEP databaseMovedAside=3, STEP intentRemoved=1, STEP intentWritten=2, STEP migrationFailed=2, STEP shmMovedAside=2, STEP snapshotMovedIn=2, STEP staged=2, STEP walMovedAside=2
+    | children that finished before the kill: 6
+    | first reopen: migrated=9 put back, then migrated at the next open=15
+    | failures: 0
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore crash drill (short)
+    | iterations: 30
+    | measured unkilled run: prepare 175.4 ms, commit (swap) 92.6 ms
+    | SIGKILLs by window: commit=15 prepare=14
+    | SIGKILLs by the last step the child reported: COMMIT=5, PREPARE=12, STEP activeMovedAside=3, STEP intentWritten=4, STEP restoredMovedIn=5
+    | children that finished before the kill: 1
+    | library after reopen: old library kept=19 restored library=11
+    | launch reconciliation: completedRestore=5 keptExistingLibrary=2 nothingToDo=23
+    | failures: 0
+    | ✔ Test "SIGKILL at every put-back step and at random times never leaves an empty or partial library (short run; CI runs 240)" passed after 17.797 seconds.
+    | ✔ Suite "Migration put-back (plan 7.4, T45)" passed after 17.798 seconds.
+    | ✔ Test "T47: SIGKILL during prepare or the swap leaves exactly the old or the restored library (short run; CI runs 300)" passed after 15.411 seconds.
+    | ✔ Suite "Restore (plan 17.4, T35, T46, T47, J-06)" passed after 17.800 seconds.
+    | ✔ Test run with 73 tests in 11 suites passed after 17.801 seconds.
+    | FAIL: row 10 evidence missing from host-tests.log: [class B (non-default) requested: read back on] [files SQLite created in a class-B directory:]. The class-B protection tests skip while the host screen is locked; unlock it and rerun (or set G05_ALLOW_MISSING_CLASS_B=1 to accept a run without that evidence)
+FAILED: 71-g05-recovery
+ci.sh exit: 1
+---- 71-g05-recovery.log: step headers, warnings and verdict lines (the step logs hold the rest)
+=== 1. toolchain
+=== 2. host build
+=== 3. host tests
+✔ Test run with 73 tests in 11 suites passed after 17.801 seconds.
+FAIL: row 10 evidence missing from host-tests.log: [class B (non-default) requested: read back on] [files SQLite created in a class-B directory:]. The class-B protection tests skip while the host screen is locked; unlock it and rerun (or set G05_ALLOW_MISSING_CLASS_B=1 to accept a run without that evidence)
+---- end
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-22T07:14:15Z; load: 20:14  up 19 days,  6:24, 3 users, load averages: 7.37 7.00 7.53
+git status --porcelain lines after the run: 1

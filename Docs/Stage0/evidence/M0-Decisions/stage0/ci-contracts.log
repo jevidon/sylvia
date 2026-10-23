@@ -1,0 +1,29 @@
+command: Scripts/ci.sh contracts
+commit: 58a53626310af4627b37b6f19d663ab969b9575b; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-22T07:01:51Z; load: 20:01  up 19 days,  6:12, 3 users, load averages: 7.19 8.94 6.79
+
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (78s)
+all 3 steps passed
+
+exit status: 0
+end: 2026-10-22T07:03:15Z; load: 20:03  up 19 days,  6:13, 3 users, load averages: 25.66 16.42 9.97
+
+---- appended after the run: the last 4 lines of each drop-in's own log (.build/ci-logs/), as the last run of Scripts/ci.sh contracts on this same commit left them (the plan amendments' checks ran it again as their control, after this run)
+-- 00-git-lfs
+LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+pointer files in the working tree: none
+git lfs fsck --pointers (HEAD): Git LFS fsck OK
+00-git-lfs: pass: no file stored with Git LFS is a pointer in the working tree, and every file the LFS attributes match is committed as an LFS pointer
+-- 10-contracts
+schemas: 18  fixtures: 657  openapi: 1  instances: 1
+-- 11-capture-anchor-contracts
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete minLength
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete type
+generic bound, survived: capture-envelope#/properties/word: delete type
+result: pass

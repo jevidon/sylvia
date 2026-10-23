@@ -1,0 +1,66 @@
+command: python3 -I Docs/Stage0/evidence/M0-Decisions/followup/round-5/commands/finding-lines.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_90af3f3d-daf-11
+commit: a499875c1a1dfe5749c3acff94dba2e682bb8e09; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-22T22:07:42Z; load: 11:07  up 19 days, 21:18, 3 users, load averages: 5.48 4.85 4.32
+
+cited lines read at 660c2b3a89a15a86de0352e2f66709a322a40a5e (the commit tested) and at 19489f10033e6b79d7509d9041c76850b0006703 (the follow-up, which the fourth review read)
+match    OWN5-01 Docs/Stage0/M0-device-runbook.md:1015: "What remains of them is D-6's ADR approvals"; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-device-runbook.md:1032: '**Technical lead: you**'; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-device-runbook.md:1043: "| ADR-0014's item 7: the roles of its section 2, the CI rules of its section 3"; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-device-runbook.md:1050: '**QA: you** (about 2 h; plan 23.3: QA approves fixture coverage, the device matrix and fai'; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-device-runbook.md:1072: "the technical lead's item 7"; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-device-runbook.md:134: '| 12 | 10 Sign-offs and the exit review |'; at 19489f10 that line holds it
+match    OWN5-01 Docs/Stage0/M0-gate.md:51: '- **As technical lead**'; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-gate.md:52: '- **As QA** (about 2 h): fixture coverage, the device matrix and the failure tests, and G0'; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-gate.md:53: 'the outcome of D03, whether quick capture can be advertised'; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-gate.md:233: '| 67 | Exit gate: review decisions in Section 23 signed |'; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-gate.md:301: "the technical lead's sign-off, yours, after the device sessions"; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-gate.md:304: 'with the QA sign-off, yours'; at 19489f10 that line does not
+match    OWN5-01 Docs/Stage0/M0-gate.md:316: '| D17 Data protection and durability (new) |'; at 19489f10 that line does not
+match    OWN5-01 Docs/Sylvia_v1_iOS_Implementation_Plan.md:1160: "Pending: the technical lead's sign-off"; at 19489f10 that line holds it
+match    OWN5-01 Docs/Sylvia_v1_iOS_Implementation_Plan.md:1163: 'Pending: the device run (G0.4 step 1) and the QA sign-off of the codec list'; at 19489f10 that line holds it
+match    OWN5-01 Docs/Sylvia_v1_iOS_Implementation_Plan.md:1175: "and the persistence owner's, after G0.5 recovery device steps 1-4 on phone B and steps 1 a"; at 19489f10 that line holds it
+match    OWN5-02 Docs/Stage0/M0-device-runbook.md:104: '(or leave that to an agent working from your records)'; at 19489f10 that line holds it
+match    OWN5-02 Docs/Stage0/M0-device-runbook.md:160: '**0.3 Commit**'; at 19489f10 that line holds it
+match    OWN5-02 Docs/Stage0/M0-device-runbook.md:166: 'lands on a branch of its own, made from `m0-decisions`'; at 19489f10 that line does not
+match    OWN5-02 Docs/Stage0/M0-device-runbook.md:206: 'Record: commit the regenerated log'; at 19489f10 that line does not
+match    OWN5-02 Docs/Stage0/M0-device-runbook.md:217: 'an agent can do it from the folder'; at 19489f10 that line does not
+match    OWN5-02 Docs/Stage0/M0-device-runbook.md:1004: "Then ask ADR-0014's owner, an agent"; at 19489f10 that line does not
+match    OWN5-02 Docs/Stage0/M0-gate.md:14: '**1. Before the first session**'; at 19489f10 that line holds it
+match    OWN5-02 Docs/Stage0/M0-gate.md:17: 'every agent you ask starts from that branch'; at 19489f10 that line does not
+match    OWN5-02 Docs/Stage0/M0-gate.md:20: 'made from `m0-decisions`'; at 19489f10 that line does not
+match    OWN5-02 Docs/Stage0/M0-gate.md:72: 'an agent can then update the records that call the run pending'; at 19489f10 that line does not
+match    OWN5-02 Docs/ADRs/0002-repository-build-and-ci.md:37: 'One branch and one pull request per milestone'; at 19489f10 that line holds it
+match    OWN5-03 Docs/Stage0/M0-device-runbook.md:134: "and once ADR-0014's R4-01 and R4-02 are closed (run 1)"; at 19489f10 that line holds it
+match    OWN5-03 Docs/Stage0/M0-device-runbook.md:987: '| Class C protection and the unencrypted backup format'; at 19489f10 that line does not
+match    OWN5-03 Docs/Stage0/M0-device-runbook.md:987: 'Session 0.8, 1.2 and 6.1-6.3 results'; at 19489f10 that line does not
+match    OWN5-03 Docs/Stage0/M0-device-runbook.md:992: 'record this sign-off only after runs 3-6 and 8-11 (Section 3)'; at 19489f10 that line does not
+match    OWN5-03 Docs/Stage0/M0-device-runbook.md:996: "the security reviewer's items 4, 5 and 9"; at 19489f10 that line does not
+match    OWN5-03 Docs/Stage0/M0-gate.md:10: "the closing of ADR-0014's R4-01 and R4-02 and the final reviews' records, which need no de"; at 19489f10 that line holds it
+match    OWN5-03 Docs/Stage0/M0-gate.md:48: "after runs 3-6 and 8-11 and once ADR-0014's R4-01 and R4-02 are closed (item 4)"; at 19489f10 that line does not
+match    OWN5-03 Docs/Stage0/M0-gate.md:316: '(runbook 0.8, 1.2, 6.1, 6.3)'; at 19489f10 that line does not
+match    OWN5-04 Docs/Stage0/M0-gate.md:29: 'Since `4c73da57` (pull request #5) the only change in the folders the rule below names is '; at 19489f10 that line does not
+match    OWN5-04 Docs/Stage0/M0-gate.md:641: 'since `4c73da57` those folders changed only in the lock harness and the G0.5 recovery drop'; at 19489f10 that line does not
+match    OWN5-04 Docs/Stage0/evidence/M0-Decisions/followup/round-4/gate-checks.log:23: 'only the lock harness and the G0.5 recovery drop-in, as M0-gate.md item 2 says'; at 19489f10 that line absent
+match    OWN5-05 Docs/Stage0/M0-gate.md:4: '- **State:** agent-written.'; at 19489f10 that line holds it
+match    OWN5-05 Docs/Stage0/M0-gate.md:10: '**Recommendation** (Section 7)'; at 19489f10 that line holds it
+match    OWN5-05 Docs/Stage0/M0-device-runbook.md:123: '| 1 | Before the sessions |'; at 19489f10 that line holds it
+match    OWN5-06 Docs/Stage0/M0-device-runbook.md:1032: "the reports' open questions for the technical lead"; at 19489f10 that line does not
+match    OWN5-06 Docs/Stage0/M0-device-runbook.md:1037: 'the record names no role for them'; at 19489f10 that line does not
+match    OWN5-06 Docs/Stage0/M0-gate.md:51: "the G0.2 report's 5-7 and G0.4's question for M2"; at 19489f10 that line does not
+match    OWN5-06 Docs/Stage0/M0-gate.md:51: "ADR-0002's amendments"; at 19489f10 that line does not
+match    OWN5-06 Docs/Stage0/M0-gate.md:67: '**Four requests to maintainers, and a measurement, yours**'; at 19489f10 that line does not
+match    OWN5-06 Docs/Stage0/M0-gate.md:459: '(G0.2 open question 12'; at 19489f10 that line does not
+match    OWN5-06 Docs/Stage0/G02-Transfer.md:178: '12. Technical lead (round 3, finding R3-04)'; at 19489f10 that line holds it
+match    OWN5-06 Docs/Stage0/G01-EPUB.md:112: '4. Who reports F1, F4, F6 and F14 to Readium'; at 19489f10 that line holds it
+match    OWN5-06 Docs/Stage0/M0-plan-amendments.md:368: 'who reports Readium findings F1, F4, F6 and F14 upstream'; at 19489f10 that line holds it
+OWN5-05's word counts (words split on white space):
+match    Docs/Stage0/M0-gate.md '**Recommendation** (Section 7)' at 660c2b3a: 867 words; the finding gives 867
+match    Docs/Stage0/M0-gate.md '**Recommendation** (Section 7)' at a1ea66d2: 288 words; the finding gives 288
+match    Docs/Stage0/M0-gate.md '**Recommendation** (Section 7)' at 19489f10: 423 words; the finding gives 423
+match    Docs/Stage0/M0-gate.md '- **State:**' at 660c2b3a: 402 words; the finding gives 402
+match    Docs/Stage0/M0-device-runbook.md '| 1 | Before the sessions |' at 660c2b3a: 578 words; the finding gives 578
+result: 55 of 55 cited lines and counts hold at 660c2b3a
+
+exit status: 0
+end: 2026-10-22T22:07:43Z; load: 11:07  up 19 days, 21:18, 3 users, load averages: 5.48 4.85 4.32

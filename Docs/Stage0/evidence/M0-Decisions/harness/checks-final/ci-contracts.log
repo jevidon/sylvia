@@ -1,0 +1,13 @@
+command: Docs/Stage0/evidence/M0-Decisions/harness/commands/checks.sh checks-final (Scripts/ci.sh contracts)
+commit: 6324f46e10fc1aff76d9527dc47336e9fa6833be; uncommitted files: 1
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+date: 2026-10-22T07:40:05Z; load: 3.00 2.31 3.02
+
+==> 00-git-lfs
+    pass (4s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (52s)
+all 3 steps passed
+exit: 0

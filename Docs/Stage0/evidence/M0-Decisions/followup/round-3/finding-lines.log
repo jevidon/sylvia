@@ -1,0 +1,36 @@
+command: python3 -I Docs/Stage0/evidence/M0-Decisions/followup/round-3/commands/finding-lines.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_90af3f3d-daf-6
+commit: 071fd28ab16f72ce7689f0572bf0968a96107c7e; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-22T19:57:36Z; load:  8:57  up 19 days, 19:08, 3 users, load averages: 5.11 3.44 2.71
+
+cited lines read at 19489f10033e6b79d7509d9041c76850b0006703 (the commit tested) and at 13d2b4c795994d5b85531ab60f758ce753aa06c7 (the fix's starting commit)
+match    HON4-01 Docs/Stage0/M0-device-runbook.md:160: 'or by pull request for `main`), between sessions'; at 13d2b4c7 that line does not
+match    HON4-01 Docs/Stage0/M0-gate.md:37: 'merge that branch into the branch you build from, between sessions'; at 13d2b4c7 that line does not
+match    HON4-01 Docs/ADRs/0002-repository-build-and-ci.md:41: 'The rule stays for every other milestone branch'; at 13d2b4c7 that line holds it
+match    HON4-02 Docs/Stage0/M0-gate.md:41: 'the exit review approves ADR-0014'; at 13d2b4c7 that line does not
+match    HON4-02 Docs/Stage0/M0-gate.md:41: 'as items for the public-release gate'; at 13d2b4c7 that line does not
+match    HON4-02 Docs/Stage0/M0-device-runbook.md:1014: 'the exit review approves ADR-0014'; at 13d2b4c7 that line holds it
+match    HON4-02 Docs/ADRs/0014-dependency-lock-and-license-inventory.md:233: 'the exit review approves this record'; at 13d2b4c7 that line holds it
+match    HON4-02 Docs/Stage0/integration-log.md:1142: 'the exit review approves ADR-0014'; at 13d2b4c7 that line holds it
+match    HON4-03 Docs/ADRs/0001-platform-baseline-and-toolchain.md:53: 'on iPadOS 26.x or 27.x as it has'; at 13d2b4c7 that line holds it
+match    HON4-03 Docs/Stage0/device-checklists/G06-Design.md:50: 'on iPadOS 26.x or 27.x, as it has'; at 13d2b4c7 that line holds it
+match    HON4-03 Docs/Sylvia_v1_iOS_Implementation_Plan.md:1045: 'so no device has to be acquired'; at 13d2b4c7 that line does not
+match    HON4-03 Docs/Stage0/M0-device-runbook.md:23: '**C. An iPad**'; at 13d2b4c7 that line holds it
+match    HON4-03 Docs/Stage0/M0-device-runbook.md:123: 'on the OS they have'; at 13d2b4c7 that line holds it
+match    HON4-03 Docs/Stage0/M0-gate.md:14: 'Your iPad, with its keyboard and trackpad or mouse'; at 13d2b4c7 that line holds it
+match    HON4-04 Docs/Stage0/M0-gate.md:10: 'M0 cannot be approved yet. It waits on no decision of yours'; at 13d2b4c7 that line holds it
+match    HON4-04 Docs/Stage0/M0-gate.md:560: 'Section 1 no longer says M0 waits on no decision at all'; at 13d2b4c7 that line does not
+match    HON4-04 Docs/Stage0/M0-gate.md:582: 'M0 cannot be approved yet. It waits on no decision of yours'; at 13d2b4c7 that line does not
+match    HON4-05 Docs/Stage0/integration-log.md:832: 'the owner decided all three that day'; at 13d2b4c7 that line holds it
+match    HON4-05 Docs/Stage0/M0-plan-amendments.md:4: 'You decided them on 23 October 2026'; at 13d2b4c7 that line holds it
+match    HON4-05 Docs/Stage0/M0-plan-amendments.md:357: 'the recommended default applies'; at 13d2b4c7 that line holds it
+match    HON4-05 Docs/Stage0/M0-gate.md:41: "which bind only advertising material that mentions the companion's features"; at 13d2b4c7 that line holds it
+match    HON4-05 Docs/Stage0/M0-gate.md:61: 'stayed open until you decided them'; at 13d2b4c7 that line holds it
+match    HON4-05 Docs/ADRs/0014-dependency-lock-and-license-inventory.md:177: "which bind only advertising material that mentions the companion's features"; at 13d2b4c7 that line holds it
+match    HON4-06 README.md:49: 'this merge before the M0 exit review, which approves nothing'; at 13d2b4c7 that line does not
+match    HON4-06 Docs/Stage0/README.md:5: 'raised six more'; at 13d2b4c7 that line holds it
+match    HON4-06 Docs/ADRs/README.md:15: 'Status (22 October 2026)'; at 13d2b4c7 that line does not
+result: 26 of 26 cited lines hold their text at 19489f10
+
+exit status: 0
+end: 2026-10-22T19:57:36Z; load:  8:57  up 19 days, 19:08, 3 users, load averages: 5.11 3.44 2.71

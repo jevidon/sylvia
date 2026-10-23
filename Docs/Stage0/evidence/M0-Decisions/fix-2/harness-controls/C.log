@@ -1,0 +1,132 @@
+Command line invocation:
+Resolve Package Graph
+Resolved source packages:
+  GRDB: https://github.com/groue/GRDB.swift.git @ 7.11.1
+  G05Recovery: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery
+ComputePackagePrebuildTargetDependencyGraph
+Prepare packages
+CreateBuildRequest
+SendProjectDescription
+CreateBuildOperation
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (10 targets)
+GatherProvisioningInputs
+CreateBuildDescription
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/SDKStatCaches.noindex/iphonesimulator27.1-24A94232-35d3147121984ba087c28d913653d626.sdkstatcache
+SwiftDriver G05LockHarness normal arm64 com.apple.xcode.tools.swift.compiler (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 Compiling\ TonePlayer.swift /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/Core/TonePlayer.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/Core/TonePlayer.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftEmitModule normal arm64 Emitting\ module\ for\ G05LockHarness (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 Compiling\ SystemAdapters.swift /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/App/SystemAdapters.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/App/SystemAdapters.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Compiling SystemAdapters.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 Compiling\ G05LockHarnessApp.swift /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/App/G05LockHarnessApp.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/App/G05LockHarnessApp.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 Compiling\ HarnessController.swift /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/Core/HarnessController.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/Core/HarnessController.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 Compiling\ HarnessView.swift /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/App/HarnessView.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/App/HarnessView.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 Compiling\ HarnessDependencies.swift /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/Core/HarnessDependencies.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftCompile normal arm64 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/Core/HarnessDependencies.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Compiling TonePlayer.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Compiling HarnessDependencies.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Compiling HarnessView.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Compiling G05LockHarnessApp.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Compiling HarnessController.swift (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftDriver\ Compilation G05LockHarness normal arm64 com.apple.xcode.tools.swift.compiler (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Emitting module for G05LockHarness (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftDriver\ Compilation\ Requirements G05LockHarness normal arm64 com.apple.xcode.tools.swift.compiler (in target 'G05LockHarness' from project 'G05LockHarness')
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarness.build/Objects-normal/arm64/G05LockHarness.abi.json (in target 'G05LockHarness' from project 'G05LockHarness')
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.swiftmodule/arm64-apple-ios-simulator.swiftmodule /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarness.build/Objects-normal/arm64/G05LockHarness.swiftmodule (in target 'G05LockHarness' from project 'G05LockHarness')
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarness.build/Objects-normal/arm64/G05LockHarness.swiftsourceinfo (in target 'G05LockHarness' from project 'G05LockHarness')
+Ld /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/G05LockHarness.debug.dylib normal (in target 'G05LockHarness' from project 'G05LockHarness')
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.swiftmodule/arm64-apple-ios-simulator.swiftdoc /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarness.build/Objects-normal/arm64/G05LockHarness.swiftdoc (in target 'G05LockHarness' from project 'G05LockHarness')
+ConstructStubExecutorLinkFileList /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarness.build/G05LockHarness-ExecutorLinkFileList-normal-arm64.txt (in target 'G05LockHarness' from project 'G05LockHarness')
+note: Using stub executor library with Swift entry point. (in target 'G05LockHarness' from project 'G05LockHarness')
+Ld /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/G05LockHarness normal (in target 'G05LockHarness' from project 'G05LockHarness')
+ExtractAppIntentsMetadata (in target 'G05LockHarness' from project 'G05LockHarness')
+2026-10-23 00:15:53.181 appintentsmetadataprocessor[23875:48945880] Starting appintentsmetadataprocessor export
+2026-10-23 00:15:53.182 appintentsmetadataprocessor[23875:48945880] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+SwiftDriver G05LockHarnessUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftDriver G05LockHarnessTests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+CopySwiftLibs /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app (in target 'G05LockHarness' from project 'G05LockHarness')
+CodeSign /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/G05LockHarness.debug.dylib (in target 'G05LockHarness' from project 'G05LockHarness')
+CodeSign /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/__preview.dylib (in target 'G05LockHarness' from project 'G05LockHarness')
+/Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/__preview.dylib: replacing existing signature
+CodeSign /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app (in target 'G05LockHarness' from project 'G05LockHarness')
+Validate /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app (in target 'G05LockHarness' from project 'G05LockHarness')
+SwiftEmitModule normal arm64 Emitting\ module\ for\ G05LockHarnessUITests (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftCompile normal arm64 (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftCompile normal arm64 Compiling\ LockHarnessSmokeUITests.swift /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/UITests/LockHarnessSmokeUITests.swift (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftCompile normal arm64 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/UITests/LockHarnessSmokeUITests.swift (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Emitting module for G05LockHarnessUITests (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftDriver\ Compilation\ Requirements G05LockHarnessUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftEmitModule normal arm64 Emitting\ module\ for\ G05LockHarnessTests (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+SwiftCompile normal arm64 (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+SwiftCompile normal arm64 Compiling\ TonePlayer.swift /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/Core/TonePlayer.swift (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+SwiftCompile normal arm64 /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/Core/TonePlayer.swift (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessUITests.build/Objects-normal/arm64/G05LockHarnessUITests.swiftsourceinfo (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessUITests.build/Objects-normal/arm64/G05LockHarnessUITests.abi.json (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Compiling LockHarnessSmokeUITests.swift (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftDriver\ Compilation G05LockHarnessUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+Ld /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest/G05LockHarnessUITests normal (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+CopySwiftLibs /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+ExtractAppIntentsMetadata (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+2026-10-23 00:15:53.585 appintentsmetadataprocessor[23887:48945975] Starting appintentsmetadataprocessor export
+2026-10-23 00:15:53.586 appintentsmetadataprocessor[23887:48945975] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+CodeSign /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+SwiftDriverJobDiscovery normal arm64 Compiling TonePlayer.swift (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+CodeSign /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+/Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app: replacing existing signature
+SwiftDriverJobDiscovery normal arm64 Emitting module for G05LockHarnessTests (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+SwiftDriver\ Compilation\ Requirements G05LockHarnessTests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+SwiftDriver\ Compilation G05LockHarnessTests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessTests.build/Objects-normal/arm64/G05LockHarnessTests.swiftsourceinfo (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessTests.build/Objects-normal/arm64/G05LockHarnessTests.abi.json (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+Ld /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/G05LockHarnessTests normal (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+CopySwiftLibs /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+ExtractAppIntentsMetadata (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+2026-10-23 00:15:53.854 appintentsmetadataprocessor[23895:48946008] Starting appintentsmetadataprocessor export
+2026-10-23 00:15:53.855 appintentsmetadataprocessor[23895:48946008] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+CodeSign /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+PruneExplicitPrecompiledModules /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/SDKExplicitPrecompiledModules
+PruneExplicitPrecompiledModules /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+PruneExplicitPrecompiledModules /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+2026-10-23 00:15:53.946 xcodebuild[23826:48945624] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-23 00:15:54.858403+1300 G05LockHarnessUITests-Runner[23898:48946153] [Default] Running tests...
+2026-10-23 00:15:54.892224+1300 G05LockHarnessUITests-Runner[23898:48946186] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-10-23 00:15:55.295901+1300 G05LockHarnessUITests-Runner[23898:48946186] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+objc[23898]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x10a6ec310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x109f58398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+Test Suite 'All tests' started at 2026-10-23 00:15:56.797.
+Test Suite 'G05LockHarnessUITests.xctest' started at 2026-10-23 00:15:56.797.
+Test Suite 'LockHarnessSmokeUITests' started at 2026-10-23 00:15:56.797.
+Test Case '-[G05LockHarnessUITests.LockHarnessSmokeUITests testStartBackgroundForegroundStopRelaunch]' started.
+2026-10-23 00:15:56.902 xcodebuild[23826:48945624] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-23 00:15:56.902 xcodebuild[23826:48945624] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-23 00:15:56.908 xcodebuild[23826:48945624] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-23 00:17:42.265 xcodebuild[23826:48945624] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-23 00:17:42.265 xcodebuild[23826:48945624] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-23 00:17:43.342 xcodebuild[23826:48945624] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-23 00:17:43.342 xcodebuild[23826:48945624] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-23 00:17:43.349 xcodebuild[23826:48945624] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-23 00:17:46.377 xcodebuild[23826:48945624] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-23 00:17:46.377 xcodebuild[23826:48945624] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+Test Case '-[G05LockHarnessUITests.LockHarnessSmokeUITests testStartBackgroundForegroundStopRelaunch]' passed (110.734 seconds).
+Test Suite 'LockHarnessSmokeUITests' passed at 2026-10-23 00:17:47.532.
+	 Executed 1 test, with 0 failures (0 unexpected) in 110.734 (110.734) seconds
+Test Suite 'G05LockHarnessUITests.xctest' passed at 2026-10-23 00:17:47.532.
+	 Executed 1 test, with 0 failures (0 unexpected) in 110.734 (110.735) seconds
+Test Suite 'All tests' passed at 2026-10-23 00:17:47.533.
+	 Executed 1 test, with 0 failures (0 unexpected) in 110.734 (110.736) seconds
+2026-10-23 00:17:47.564 xcodebuild[23826:48945624] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-23 00:17:47.564 xcodebuild[23826:48945624] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-23 00:17:47.839 xcodebuild[23826:48945624] [MT] IDETestOperationsObserverDebug: 113.950 elapsed -- Testing started completed.
+2026-10-23 00:17:47.839 xcodebuild[23826:48945624] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-23 00:17:47.839 xcodebuild[23826:48945624] [MT] IDETestOperationsObserverDebug: 113.950 sec, +113.950 sec -- end
+Test session results, code coverage, and logs:
+	/Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/scratch/fix2-controls/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Logs/Test/Test-G05LockHarness-2026.10.23_00-15-51-+1300.xcresult
+** TEST SUCCEEDED **
+Testing started
+xcodebuild exit: 0

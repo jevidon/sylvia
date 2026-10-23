@@ -1,0 +1,48 @@
+command: Docs/Stage0/evidence/M0-Decisions/assembly/commands/run-dropin-clean.sh unlocked-run-1
+commit: 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e (m0-decisions); uncommitted files before the run: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+deleted before the run: Spikes/G05-Recovery/.build Spikes/G05-Recovery/LockHarness/.build .build/g05-recovery
+simulator name Sylvia-M0-dec-assembly (iPhone 17, iOS 26.5; created by the drop-in if missing); G05_LOG_DIR=Docs/Stage0/evidence/M0-Decisions/assembly/unlocked-run-1/logs
+screen lock (ioreg) at the start: unlocked IOConsoleLocked=False CGSSessionScreenIsLocked=False
+start: 2026-10-22T22:36:32Z; load: 11:36  up 19 days, 21:47, 3 users, load averages: 2.96 2.42 2.77
+==> 00-git-lfs
+    pass (6s)
+==> 71-g05-recovery
+    pass (447s)
+all 2 steps passed
+ci.sh exit: 0
+---- 71-g05-recovery.log: step headers, warnings and verdict lines (the step logs hold the rest)
+=== 1. toolchain
+=== 2. host build
+=== 3. host tests
+✔ Test run with 73 tests in 11 suites passed after 18.202 seconds.
+row 10 evidence present: class-B readback and inheritance lines found in host-tests.log
+=== 4. crash drill, chosen durability, 900 iterations
+=== 5. crash drill, synchronous=OFF (limit of a process-kill drill)
+=== 6. capture save latency
+=== 7. restore drill
+=== 8. restore crash drill, 300 iterations
+=== 9. migration put-back crash drill, 240 iterations
+=== 10. backup-manifest contract
+=== 11. simulator tests (Sylvia-M0-dec-assembly)
+✔ Test run with 68 tests in 11 suites passed after 16.538 seconds.
+** TEST SUCCEEDED **
+simulator Sylvia-M0-dec-assembly shut down
+=== 12. iOS device build (library, and the tests unsigned so the device checklist can run them)
+** TEST BUILD SUCCEEDED **
+=== 13. harness lock: LockHarness/Package.resolved pins what ../Package.resolved pins
+ok: LockHarness/Package.resolved pins exactly what ../Package.resolved pins: grdb.swift 7.11.1 b83108d10f42680d78f23fe4d4d80fc88dab3212
+originHash equal
+=== 14. harness unit tests and the app's UI smoke test on the simulator (Sylvia-M0-dec-assembly)
+✔ Test run with 49 tests in 4 suites passed after 1.130 seconds.
+** TEST SUCCEEDED **
+simulator Sylvia-M0-dec-assembly shut down
+=== 15. harness app for a generic iOS device (Debug; automatic signing for team A4KBDX665Z; build only)
+** BUILD SUCCEEDED **
+== G05LockHarness.app: codesign --verify --strict ok
+G0.5 recovery lock harness: steps 13-15 passed (logs in /Users/jevidon/Git/sylvia/.claude/worktrees/g05-unlocked/Docs/Stage0/evidence/M0-Decisions/assembly/unlocked-run-1/logs)
+G0.5 recovery: all steps passed (logs in /Users/jevidon/Git/sylvia/.claude/worktrees/g05-unlocked/Docs/Stage0/evidence/M0-Decisions/assembly/unlocked-run-1/logs)
+---- end
+screen lock (ioreg) at the end: unlocked IOConsoleLocked=False CGSSessionScreenIsLocked=False
+end: 2026-10-22T22:44:05Z; load: 11:44  up 19 days, 21:54, 3 users, load averages: 18.06 14.72 8.34
+git status --porcelain lines after the run: 1

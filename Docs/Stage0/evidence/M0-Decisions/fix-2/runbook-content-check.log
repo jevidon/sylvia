@@ -1,0 +1,348 @@
+command: Docs/Stage0/evidence/M0-Decisions/assembly/commands/runbook-content-check.sh
+commit: 7019f4358316c9080ad05a44496a7b1b7a842f63; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-22T11:53:40Z; load:  0:53  up 19 days, 11:04, 3 users, load averages: 3.38 3.39 3.15
+
+command: Docs/Stage0/evidence/M0-Decisions/assembly/commands/runbook-content-check.sh
+commit: 7019f4358316c9080ad05a44496a7b1b7a842f63; uncommitted files: 0
+date: 2026-10-22T11:53:40Z
+
+== 1. the runbook as committed
+runbook: Docs/Stage0/M0-device-runbook.md
+== forward: each checklist step's markers, in the runbook
+G01-EPUB.md: 13 steps, 38 markers: 38 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G01-PDF.md: 11 steps, 27 markers: 26 in the runbook, 0 in steps left to the checklist, 1 listed as not carried, 0 missing
+G02-Transfer.md: 23 steps, 76 markers: 68 in the runbook, 0 in steps left to the checklist, 8 listed as not carried, 0 missing
+G03-Intake.md: 27 steps, 59 markers: 59 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G04-Audio.md: 17 steps, 121 markers: 100 in the runbook, 15 in steps left to the checklist, 6 listed as not carried, 0 missing
+G05-AI.md: 9 steps, 73 markers: 57 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+G05-Recovery.md: 5 steps, 62 markers: 60 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+G06-Design.md: 31 steps, 41 markers: 39 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+  NOT_CARRIED: 19 entries: 7 a placeholder the runbook fills in; 5 the checklist's history, or a simulator result it quotes; 2 said in other words in the runbook; 2 a description of a log's format, not an expected value; 1 the expected result of a step that can wait for a later milestone; 2 a detail of a review done from the checklist
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  453 in its gate's checklist; 19 in a checklist (no gate named); 82 listed as the runbook's own (by kind: document 24, external 1, harness 37, runbook 13, tool 7)
+  57 source fragments of 61 entries looked up in their files
+  RUNBOOK_OWN: 61 entries: 53 with a source whose fragment is read in its file; 8 without one, checked only for being in the runbook (external 1, runbook 7)
+  ok   pull the 35 result tables: G0.4 step 1.2's loop names 35 tables
+result: pass (0 problem(s))
+
+== 2a. the runbook the round-2 review read (83ee280): it must fail
+== forward: each checklist step's markers, in the runbook
+  MISSING step 3: continue selection
+  MISSING step 11: Executed 38 tests, with 0 failures
+  MISSING step 1: The pond in winter ... the water
+  MISSING step 1: water
+  MISSING step 1: who stops at the shore hears it settle.
+  MISSING step 8: Page index 0 of 3
+  MISSING step 8: not run: no iPad with a pointer
+  MISSING step 10: Open … ms (digest, checks, parse); text of 1000 pages … ms; restore highlights … ms (n restored); first page drawn … ms after display began; total … ms
+  MISSING step 10: Pair this iPhone with the Mac again. Verified parts are kept.
+  MISSING step 10: Revocation and identity change
+  MISSING step 10: error="invalid_token"
+  MISSING step 10: invalid_token
+  MISSING step 10: reason=reauthentication_required
+  MISSING step 9: The copy was cancelled.
+  MISSING step 9: Zero KB copied
+  MISSING step 18: Copying to Sylvia…
+  MISSING step 18: The copy was cancelled.
+  MISSING step 18: Zero KB copied
+  MISSING step 20: Imported large.sylviapack: 5 files, state staged, route documents_bundle
+  MISSING step 24: clone=NSFileProtectionCompleteUntilFirstUserAuthentication
+  MISSING step 27: Opened file staged: 4 file(s), state staged
+  MISSING step 2: volume=1.0 preview_volume=1.0 reason=toggle_or_launch_argument
+  MISSING step 3: Last 24 Hours
+  MISSING step 3: no unrelated background work
+  MISSING step 3: reason=itemChange
+  MISSING step 7: Skip 10 s back, 30 s ahead (change)
+  MISSING step 7: Skip 15 s back, 15 s ahead (change)
+  MISSING step 7: remote command=skipBackward mode=main status=success
+  MISSING step 7: settings skip_backward_s=10 skip_forward_s=30
+  MISSING step 12: captures=<n> newest=<origin>
+  MISSING step 12: loaded=false
+  MISSING step 12: loaded=true
+  MISSING step 12: played_since_load=false
+  MISSING step 12: state=2
+  MISSING step 12: was_playing=false
+PROBLEM G05-AI.md step 9: listed as left to the checklist, but the runbook no longer says so
+  MISSING step 1: ATS-PROBE variant=… private-ip=…
+  MISSING step 1: ats-blocked=false
+  MISSING step 1: localhost=
+  MISSING step 1: public-ip=192.0.2.1 … ats-blocked=…
+  MISSING step 2: AI failed
+  MISSING step 2: Sylvia isn't allowed to reach devices on your local network …
+  MISSING step 6: SYLVIA_LIVE_MAX_OUTPUT_TOKENS=<n>
+  MISSING step 6: characters=
+  MISSING step 6: finish == .complete
+  MISSING step 6: finish=outputLimit at max-output=… set SYLVIA_LIVE_MAX_OUTPUT_TOKENS higher and run again
+  MISSING step 7: timestamps-requested=
+  MISSING step 8: Connected to {host} · user-managed · {model}
+  MISSING step 8: {host} answered the test by asking to run a tool. Sylvia never runs tools, so it can't use this route. Configure a text-only route or model for this endpoint.
+  MISSING step 8: … reported a server or gateway error (HTTP {status}). The request may or may not have been processed, so Sylvia won't send it again without asking.
+  MISSING step 1: Test run with 68 tests in 11 suites passed
+  MISSING step 1: class B (non-default) requested: read back on 53 files and directories: ["NSFileProtectionCompleteUnlessOpen": 53]
+  MISSING step 1: class C (chosen; also the platform default) read back on 53 files and directories: ["NSFileProtectionCompleteUntilFirstUserAuthentication": 53]
+  MISSING step 1: files SQLite created in a class-B directory: probe.sqlite=NSFileProtectionCompleteUnlessOpen probe.sqlite-wal=NSFileProtectionCompleteUnlessOpen probe.sqlite-shm=NSFileProtectionCompleteUnlessOpen
+  MISSING step 2: capture save latency synchronous=FULL fullfsync=ON: n=400 p50=… p95=… p99=… max=…
+  MISSING step 3: G05 Lock
+  MISSING step 3: audio=playing
+  MISSING step 3: audioCategory=AVAudioSessionCategoryPlayback
+  MISSING step 3: class-a-canary.bin=NSFileProtectionComplete
+  MISSING step 3: classA=readable
+  MISSING step 3: classes=differs:
+  MISSING step 3: classes=ok
+  MISSING step 3: durability=journal_mode=wal,synchronous=FULL,fullfsync=1,checkpoint_fullfsync=1
+  MISSING step 3: event name=audio
+  MISSING step 3: event name=protected-data-did-become-available
+  MISSING step 3: event name=protected-data-will-become-unavailable
+  MISSING step 3: extra=0
+  MISSING step 3: extra=1
+  MISSING step 3: failures=0
+  MISSING step 3: file=differs
+  MISSING step 3: file=failed
+  MISSING step 3: file=ok
+  MISSING step 3: foreignKeyViolations=0
+  MISSING step 3: gaps=0
+  MISSING step 3: integrity=ok
+  MISSING step 3: lockedFailures=0
+  MISSING step 3: not observed
+  MISSING step 3: not observed: iOS did not launch the harness before the first unlock
+  MISSING step 3: observed before the first unlock
+  MISSING step 3: protection=NSFileProtectionCompleteUntilFirstUserAuthentication
+  MISSING step 3: readback=differs
+  MISSING step 3: readback=equal
+  MISSING step 3: readback=failed
+  MISSING step 3: readback=missing
+  MISSING step 3: result=could-not-read
+  MISSING step 3: result=ended-by-restart
+  MISSING step 3: result=library-only
+  MISSING step 3: result=ok
+  MISSING step 3: result=unreadable
+  MISSING step 3: save=already-saved
+  MISSING step 3: save=failed
+  MISSING step 3: save=saved
+  MISSING step 3: session=failed
+  MISSING step 3: session=ok
+  MISSING step 3: store=open
+  MISSING step 3: when=launch
+  MISSING step 3: when=protected-data-available
+  MISSING step 3: written-late=
+  MISSING step 4: TEST_RUNNER_SYLVIA_DEVICE_PERSIST_PROBE=clean
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  UNLISTED text at offset 2683 (any checklist): about 8.6 GB
+  UNLISTED text at offset 2683 (any checklist): iPhone 12-class hardware
+  UNLISTED step 0.8 (G05-Recovery.md): class B (non-default) requested: read back on 52 files and directories
+  UNLISTED step 0.8 (G05-Recovery.md): read back on 52 files and directories
+  UNLISTED step 1.2 (G05-Recovery.md): Test run with 58 tests in 11 suites
+  UNLISTED step 1.2 (G05-Recovery.md): Test run with 58 tests in 11 suites passed
+  UNLISTED step 1.2 (G05-Recovery.md): capture save latency ... p95=
+  UNLISTED step 1.2 (G05-Recovery.md): class B (non-default) requested: read back on 52 files and directories: ["NSFileProtectionCompleteUnlessOpen": 52]
+  UNLISTED step 1.2 (G05-Recovery.md): class C (chosen; also the platform default) read back on 52 files and directories: ["NSFileProtectionCompleteUntilFirstUserAuthentication": 52]
+  UNLISTED step 1.2 (G05-Recovery.md): read back on 52 files and directories
+  UNLISTED step 2.12 (G01-EPUB.md): Executed 37 tests
+  UNLISTED step 2.12 (G01-EPUB.md): Executed 37 tests, with 0 failures
+  UNLISTED step 4.6 (G02-Transfer.md): Paired with Device test Mac…
+  UNLISTED step 6.1 (G05-Recovery.md): classA_readable=false
+  UNLISTED step 6.1 (G05-Recovery.md): classC_save=ok
+  UNLISTED step 6.7 (G05-AI.md): <host> answered the test by asking to run a tool. Sylvia never runs tools, so it can't use this route. Configure a text-only route or model for this endpoint.
+  UNLISTED step 6.7 (G05-AI.md): Connected to <host> · user-managed · <model>
+  UNLISTED step 6.7 (G05-AI.md): … reported a server or gateway error (HTTP <status>). The request may or may not have been processed, so Sylvia won't send it again without asking.
+  UNLISTED step 8.10 (G05-Recovery.md): Run on both when available
+  UNLISTED text at offset 177498 (any checklist): Security approves pairing, endpoint/content isolation and exports
+  UNLISTED text at offset 186349 (any checklist): Run on both when available
+  UNLISTED text at offset 186349 (any checklist): once available
+  337 in its gate's checklist; 14 in a checklist (no gate named); 72 listed as the runbook's own (by kind: document 18, external 1, harness 36, runbook 10, tool 7)
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): Blocks M0
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): Security approves pairing (including the Tailscale exception, D16), endpoint/content isolation (including the EPUB adapter's safety configuration and the archive rules), the data-protection class (D17
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): don't know how to pin xcode
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): evidence and ADRs approved
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): is an iPhone 11 Pro: the product owner chose the iPhone 11 family on 22 October 2026
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): pointer hover over links and form fields on an iPad
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): row 10 evidence present
+PROBLEM the runbook says pull the 34 result tables, and G0.4 step 1.2's loop names 35
+result: FAIL (129 problem(s))
+control: fails, as it must (exit 1)
+
+== 2b. the runbook the round-3 review read (dc81fce): it must fail
+== forward: each checklist step's markers, in the runbook
+  MISSING step 27: Opened file staged: 4 file(s), state staged
+  MISSING step 6: SYLVIA_LIVE_MAX_OUTPUT_TOKENS=<n>
+  MISSING step 6: characters=
+  MISSING step 6: finish == .complete
+  MISSING step 6: finish=outputLimit at max-output=… set SYLVIA_LIVE_MAX_OUTPUT_TOKENS higher and run again
+  MISSING step 3: G05 Lock
+  MISSING step 3: audio=playing
+  MISSING step 3: audioCategory=AVAudioSessionCategoryPlayback
+  MISSING step 3: class-a-canary.bin=NSFileProtectionComplete
+  MISSING step 3: classA=readable
+  MISSING step 3: classes=differs:
+  MISSING step 3: classes=ok
+  MISSING step 3: durability=journal_mode=wal,synchronous=FULL,fullfsync=1,checkpoint_fullfsync=1
+  MISSING step 3: event name=audio
+  MISSING step 3: event name=protected-data-did-become-available
+  MISSING step 3: event name=protected-data-will-become-unavailable
+  MISSING step 3: extra=0
+  MISSING step 3: extra=1
+  MISSING step 3: failures=0
+  MISSING step 3: file=differs
+  MISSING step 3: file=failed
+  MISSING step 3: file=ok
+  MISSING step 3: foreignKeyViolations=0
+  MISSING step 3: gaps=0
+  MISSING step 3: integrity=ok
+  MISSING step 3: lockedFailures=0
+  MISSING step 3: not observed
+  MISSING step 3: not observed: iOS did not launch the harness before the first unlock
+  MISSING step 3: observed before the first unlock
+  MISSING step 3: protection=NSFileProtectionCompleteUntilFirstUserAuthentication
+  MISSING step 3: readback=differs
+  MISSING step 3: readback=equal
+  MISSING step 3: readback=failed
+  MISSING step 3: readback=missing
+  MISSING step 3: result=could-not-read
+  MISSING step 3: result=ended-by-restart
+  MISSING step 3: result=library-only
+  MISSING step 3: result=ok
+  MISSING step 3: result=unreadable
+  MISSING step 3: save=already-saved
+  MISSING step 3: save=failed
+  MISSING step 3: save=saved
+  MISSING step 3: session=failed
+  MISSING step 3: session=ok
+  MISSING step 3: store=open
+  MISSING step 3: when=launch
+  MISSING step 3: when=protected-data-available
+  MISSING step 3: written-late=
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  UNLISTED text at offset 4251 (any checklist): iPhone 12-class hardware
+  UNLISTED step 6.1 (G05-Recovery.md): classA_readable=false
+  UNLISTED step 6.1 (G05-Recovery.md): classC_save=ok
+  UNLISTED step 8.10 (G05-Recovery.md): Run on both when available
+  UNLISTED text at offset 199844 (any checklist): Security approves pairing, endpoint/content isolation and exports
+  UNLISTED text at offset 215631 (any checklist): Run on both when available
+  UNLISTED text at offset 215631 (any checklist): once available
+  403 in its gate's checklist; 19 in a checklist (no gate named); 77 listed as the runbook's own (by kind: document 21, external 1, harness 37, runbook 11, tool 7)
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): Security approves pairing (including the Tailscale exception, D16), endpoint/content isolation (including the EPUB adapter's safety configuration and the archive rules), the data-protection class (D17
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): don't know how to pin xcode
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): is an iPhone 11 Pro: the product owner chose the iPhone 11 family on 22 October 2026
+result: FAIL (58 problem(s))
+control: fails, as it must (exit 1)
+
+== 2c. 4.1's expected pairing status changed: it must fail
+== forward: each checklist step's markers, in the runbook
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  UNLISTED step 4.1 (G02-Transfer.md): Paired. Token stored in iCloud Keychain (synced).
+  453 in its gate's checklist; 19 in a checklist (no gate named); 81 listed as the runbook's own (by kind: document 24, external 1, harness 36, runbook 13, tool 7)
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): Paired with Device test Mac. Token stored in the Keychain (after first unlock, this device only).
+result: FAIL (2 problem(s))
+control: fails, as it must (exit 1), naming: Paired. Token stored in iCloud Keychain (synced).
+
+== 2d. 4.14's expected message changed: it must fail
+== forward: each checklist step's markers, in the runbook
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  UNLISTED step 4.14 (G02-Transfer.md): Trust anyway? The Mac key changed.
+  453 in its gate's checklist; 19 in a checklist (no gate named); 81 listed as the runbook's own (by kind: document 24, external 1, harness 36, runbook 13, tool 7)
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): The Mac's identity changed. Pair again and compare the fingerprint.
+result: FAIL (2 problem(s))
+control: fails, as it must (exit 1), naming: Trust anyway? The Mac key changed.
+
+== 2e. 3.13's file count changed: it must fail
+== forward: each checklist step's markers, in the runbook
+  MISSING step 14: G04Book (4 files)
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  UNLISTED step 3.13 (G04-Audio.md): G04Book (5 files)
+  452 in its gate's checklist; 19 in a checklist (no gate named); 82 listed as the runbook's own (by kind: document 24, external 1, harness 37, runbook 13, tool 7)
+result: FAIL (2 problem(s))
+control: fails, as it must (exit 1), naming: G04Book (5 files)
+
+== 2f. the source of 4.14's message changed, the runbook not: it must fail
+== forward: each checklist step's markers, in the runbook
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  453 in its gate's checklist; 19 in a checklist (no gate named); 82 listed as the runbook's own (by kind: document 24, external 1, harness 37, runbook 13, tool 7)
+PROBLEM source no longer says it, for "The Mac's identity changed. Pair again and compare the fingerprint.": Spikes/G02-Transfer/TransferKit/Sources/SylviaTransferCore/PartResponseValidation.swift lacks 'case .sourceIdentityChanged: "The Mac\'s identity changed. Pair again and compare the fingerprint."'
+result: FAIL (1 problem(s))
+control: fails, as it must (exit 1), naming: source no longer says it
+
+== 2g. a G0.5 AI-only text in step 0.8, whose heading names G0.5 recovery (R8-01): it must fail
+== forward: each checklist step's markers, in the runbook
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  UNLISTED step 0.8 (G05-Recovery.md): AI failed [only in G05-AI.md]
+  453 in its gate's checklist; 19 in a checklist (no gate named); 82 listed as the runbook's own (by kind: document 24, external 1, harness 37, runbook 13, tool 7)
+result: FAIL (1 problem(s))
+control: fails, as it must (exit 1), naming: UNLISTED step 0.8 (G05-Recovery.md): AI failed [only in G05-AI.md]
+
+== 2h. a G0.3-only text in Session 4's own text, before its first step: it must fail
+== forward: each checklist step's markers, in the runbook
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  UNLISTED Session 4 (G02-Transfer.md): Received by Sylvia [only in G03-Intake.md]
+  453 in its gate's checklist; 19 in a checklist (no gate named); 82 listed as the runbook's own (by kind: document 24, external 1, harness 37, runbook 13, tool 7)
+result: FAIL (1 problem(s))
+control: fails, as it must (exit 1), naming: UNLISTED Session 4 (G02-Transfer.md): Received by Sylvia [only in G03-Intake.md]
+
+== 2n. the round-2 version of the check (Docs/Stage0/evidence/M0-Integration/repin-27.1/round-2/commands/runbook-content-check.py) on the runbook as committed: it must fail, naming exactly the expected problems
+UNLISTED text at offset N (any checklist): is an iPhone 11 Pro: the product owner chose the iPhone 11 family on 22 October 2026
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): Run on both when available
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): iPhone 12-class hardware
+PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): once available
+PROBLEM source no longer says it, for 'Run on both when available': Docs/Stage0/device-checklists/G03-Intake.md lacks 'Run on both when available'
+PROBLEM source no longer says it, for 'once available': Docs/ADRs/0013-design-language.md lacks 'once available'
+control: fails, as it must (exit 1), with exactly the 6 problems expected
+
+== 2o. the Stage 0 round's version of the check (Docs/Stage0/evidence/M0-Decisions/stage0/commands/runbook-content-check.py) on the runbook as committed: it must fail, naming exactly the expected problems
+PROBLEM G05-Recovery.md step 3: listed as left to the checklist, but the runbook no longer says so
+UNLISTED text at offset N (any checklist): is an iPhone 11 Pro: the product owner chose the iPhone 11 family on 22 October 2026
+control: fails, as it must (exit 1), with exactly the 2 problems expected
+
+== 2p. 6.1's expected lockedFailures=0 (the lock harness, G0.5 recovery step 3) made lockedFailures=1: it must fail
+== forward: each checklist step's markers, in the runbook
+  MISSING step 3: lockedFailures=0
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  UNLISTED step 6.1 (G05-Recovery.md): lockedFailures=1
+  452 in its gate's checklist; 19 in a checklist (no gate named); 82 listed as the runbook's own (by kind: document 24, external 1, harness 37, runbook 13, tool 7)
+result: FAIL (2 problem(s))
+control: fails, as it must (exit 1), naming: lockedFailures=1
+   and names the checklist's lockedFailures=0 as missing from the runbook, so step 3 is compared both ways
+
+== 2q. plan 19.1's baseline sentence changed in a copy of the plan, the runbook not: it must fail
+== forward: each checklist step's markers, in the runbook
+== reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
+  453 in its gate's checklist; 19 in a checklist (no gate named); 82 listed as the runbook's own (by kind: document 24, external 1, harness 37, runbook 13, tool 7)
+PROBLEM source no longer says it, for 'is an iPhone 11 Pro: the product owner chose the iPhone 11 family on 22 October ': Docs/Sylvia_v1_iOS_Implementation_Plan.md lacks 'is an iPhone 11 Pro: the product owner chose the iPhone 11 family on 22 October 2026'
+result: FAIL (1 problem(s))
+control: fails, as it must (exit 1), naming: Docs/Sylvia_v1_iOS_Implementation_Plan.md lacks 'is an iPhone 11 Pro: the product owner chose the iPhone 11 family on 22 October 2026'
+
+== 3i. 4.4's expected status, written in backticks without a field or count, inverted: not compared, so it must pass
+result: pass (0 problem(s))
+limit: passes, as the documents say (exit 0)
+
+== 3j. 0.7's expected result line, written in backticks without a field or count, inverted: not compared, so it must pass
+result: pass (0 problem(s))
+limit: passes, as the documents say (exit 0)
+
+== 3k. 1.4's count of the release tables, in prose, changed: not compared, so it must pass
+result: pass (0 problem(s))
+limit: passes, as the documents say (exit 0)
+
+== 3l. 1.4's test counts of the filters, in prose, changed: not compared, so it must pass
+result: pass (0 problem(s))
+limit: passes, as the documents say (exit 0)
+
+== 3m. 4.18's count of parts, in prose, changed: not compared, so it must pass
+result: pass (0 problem(s))
+limit: passes, as the documents say (exit 0)
+
+== 4. step coverage of the runbook as committed (final-fix/commands/runbook-coverage.py)
+runbook: Docs/Stage0/M0-device-runbook.md
+G0.1 EPUB (G01-EPUB.md): checklist steps 1-13 (13); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.1 PDF (G01-PDF.md): checklist steps 1-11 (11); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.2 (G02-Transfer.md): checklist steps 1-23 (23); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.3 (G03-Intake.md): checklist steps 6-32 (27); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.4 (G04-Audio.md): checklist steps 1-17 (17); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 AI (G05-AI.md): checklist steps 1-9 (9); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): none
+G0.5 recovery (G05-Recovery.md): checklist steps 1-5 (5); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [5]
+G0.6 (G06-Design.md): checklist steps 1-31 (31); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [10]
+result: pass (0 missing)
+
+result: PASS
+
+exit status: 0
+end: 2026-10-22T11:53:43Z; load:  0:53  up 19 days, 11:04, 3 users, load averages: 3.27 3.36 3.15

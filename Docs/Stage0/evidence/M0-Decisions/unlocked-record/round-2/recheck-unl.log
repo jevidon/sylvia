@@ -1,0 +1,15 @@
+command: python3 -I Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/recheck-unl.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_79cfa66f-313-3
+commit: c924c16ae646792a950a88900ebfbf4292839ef0; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-23T00:26:13Z; load: 13:26  up 19 days, 23:36, 3 users, load averages: 4.28 3.02 2.30
+
+answered UNL-01: the fifteen texts each with its dated note, the three statements of coverage each with its note; the sweep: 102 Markdown files of Docs/Stage0 and Docs/ADRs, 23 texts that gave the run as pending or the owner's, 23 with a dated note naming `9cdb0a02` after them
+answered UNL-02: the State line (198 words) names the record of the drop-in run and its fix and the last two fixes as unreviewed; the Stage 0 README gives the review of the record and its fix; 25.2's row has its note
+answered UNL-03: Session 0 about 1.25 h (1.75 h) and 10-15 min more with 0.8, in the runbook's heading and run 2 and the summary's table: its steps without 0.3 and 0.8 add up to 77 min; the table's 10 rows add up to 42.5 h
+answered UNL-04: item 2 repeats 0.8 for anything the drop-in builds, copies or runs, as item 4 and 0.8 list it: the drop-in sources Scripts/lib/env.sh and sim.sh, the harness's checks xcodegen.sh, and step 10 reads Contracts/schemas and Contracts/fixtures
+answered UNL-05: section 25's opening, 25.4's row and the record's README have their notes; this round's check-run.py says what it reads and infers, and changes only its docstring and 8 label lines of the same 34 facts
+answered review: the record read by an agent review, at 91c3b46a, and its fix not reviewed, in the gate summary, the runbook, the integration log, the record's README and the ADR index
+result: pass (0 of 6 not as stated)
+
+exit status: 0
+end: 2026-10-23T00:26:13Z; load: 13:26  up 19 days, 23:36, 3 users, load averages: 4.28 3.02 2.30

@@ -1,0 +1,53 @@
+command: Docs/Stage0/evidence/M0-Decisions/fix-2/commands/run-dropin-clean.sh dropin-clean
+commit: 080624469c395d548bcd16976d2acf50da0a2749 (m0-decisions); uncommitted files before the run: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+deleted before the run: Spikes/G05-Recovery/.build Spikes/G05-Recovery/LockHarness/.build .build/g05-recovery
+simulator name Sylvia-M0-dec-fix-2 (iPhone 17, iOS 26.5; created by the drop-in if missing); G05_LOG_DIR=Docs/Stage0/evidence/M0-Decisions/fix-2/dropin-clean/logs
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-22T11:08:38Z; load:  0:08  up 19 days, 10:19, 3 users, load averages: 10.75 7.91 5.69
+==> 00-git-lfs
+    pass (5s)
+==> 71-g05-recovery
+    FAIL (34s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-16/.build/ci-logs/71-g05-recovery.log
+    | ✔ Test "an injected ENOSPC at each fallible file operation of a put-back leaves a state the next open finishes" with 3 test cases passed after 15.700 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected text-with-nul: database snapshot has values this build rejects: note_revision.body rowid 1: text contains a NUL character
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected text-invalid-utf8: database snapshot has values this build rejects: capture.quoted_text rowid 4: text is not valid UTF-8
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreferenced-cover: blob fc3a494786859dfa3d96c098f36d4ba6f4c9880593f0f93e8606cda47fb64894 is not referenced by the snapshot
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected cover-dropped-from-manifest: blob a533ac5b8b5700b1ba69957a3503cafd403f6d8437ee2a1a171b34b4d6abd13d referenced by the snapshot is missing
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreadable-directory-with-unlisted-file: not a .sylviabackup bundle: cannot read export/zz-unreadable
+    | ✔ Test "T46: corrupt, truncated, newer and malicious backups are rejected without touching the library" passed after 16.044 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore crash drill (short)
+    | iterations: 30
+    | measured unkilled run: prepare 249.6 ms, commit (swap) 195.4 ms
+    | SIGKILLs by window: commit=15 prepare=14
+    | SIGKILLs by the last step the child reported: COMMIT=4, PREPARE=12, STEP activeMovedAside=5, STEP intentWritten=4, STEP restoredMovedIn=4
+    | children that finished before the kill: 1
+    | library after reopen: old library kept=17 restored library=13
+    | launch reconciliation: completedRestore=8 keptExistingLibrary=1 nothingToDo=21
+    | failures: 0
+    | ✔ Test "T47: SIGKILL during prepare or the swap leaves exactly the old or the restored library (short run; CI runs 300)" passed after 16.656 seconds.
+    | ✔ Suite "Restore (plan 17.4, T35, T46, T47, J-06)" passed after 16.657 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] migration put-back crash drill (short)
+    | iterations: 24
+    | measured unkilled run (open, snapshot, failed migration, put-back): 535.0 ms
+    | SIGKILLs by plan: delay databaseMovedAside=1, delay intentWritten=1, delay migrationFailed=1, delay shmMovedAside=1, delay snapshotMovedIn=1, delay staged=1, delay walMovedAside=1, pause databaseMovedAside=1, pause intentRemoved=1, pause intentWritten=1, pause migrationFailed=1, pause shmMovedAside=1, pause snapshotMovedIn=1, pause staged=1, pause walMovedAside=1, random=4
+    | SIGKILLs by the last line the child printed: STEP databaseMovedAside=2, STEP intentRemoved=2, STEP intentWritten=3, STEP migrationFailed=4, STEP shmMovedAside=3, STEP snapshotMovedIn=1, STEP staged=2, STEP walMovedAside=2
+    | children that finished before the kill: 5
+    | first reopen: migrated=7 put back, then migrated at the next open=17
+    | failures: 0
+    | ✔ Test "SIGKILL at every put-back step and at random times never leaves an empty or partial library (short run; CI runs 240)" passed after 17.404 seconds.
+    | ✔ Suite "Migration put-back (plan 7.4, T45)" passed after 17.404 seconds.
+    | ✔ Test run with 73 tests in 11 suites passed after 17.404 seconds.
+    | FAIL: row 10 evidence missing from host-tests.log: [class B (non-default) requested: read back on] [files SQLite created in a class-B directory:]. The class-B protection tests skip while the host screen is locked; unlock it and rerun (or set G05_ALLOW_MISSING_CLASS_B=1 to accept a run without that evidence)
+FAILED: 71-g05-recovery
+ci.sh exit: 1
+---- 71-g05-recovery.log: step headers, warnings and verdict lines (the step logs hold the rest)
+=== 1. toolchain
+=== 2. host build
+=== 3. host tests
+✔ Test run with 73 tests in 11 suites passed after 17.404 seconds.
+FAIL: row 10 evidence missing from host-tests.log: [class B (non-default) requested: read back on] [files SQLite created in a class-B directory:]. The class-B protection tests skip while the host screen is locked; unlock it and rerun (or set G05_ALLOW_MISSING_CLASS_B=1 to accept a run without that evidence)
+---- end
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-22T11:09:18Z; load:  0:09  up 19 days, 10:19, 3 users, load averages: 8.71 7.74 5.73
+git status --porcelain lines after the run: 1

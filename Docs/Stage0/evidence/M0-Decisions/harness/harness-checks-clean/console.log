@@ -1,0 +1,46 @@
+command: Docs/Stage0/evidence/M0-Decisions/harness/commands/run-harness-checks-clean.sh harness-checks-clean
+commit: cad45445ff89e39f62533375058709d86f8e045e; uncommitted files before the run: 1
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+deleted before the run: Spikes/G05-Recovery/LockHarness/.build; simulator name Sylvia-M0-dec-harness (iPhone 17, iOS 26.5)
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-22T07:14:15Z; load: 20:14  up 19 days,  6:24, 3 users, load averages: 6.94 6.92 7.50
+---- harness-checks.sh output: step headers, results and verdict lines (the whole output is in the step logs)
+=== 13. harness lock: LockHarness/Package.resolved pins what ../Package.resolved pins
+ok: LockHarness/Package.resolved pins exactly what ../Package.resolved pins: grdb.swift 7.11.1 b83108d10f42680d78f23fe4d4d80fc88dab3212
+originHash equal
+=== 14. harness unit tests on the simulator (Sylvia-M0-dec-harness)
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 ; load: 6.94 6.92 7.50
+✔ Test run with 43 tests in 4 suites passed after 0.860 seconds.
+** TEST SUCCEEDED **
+simulator Sylvia-M0-dec-harness shut down
+=== 15. harness app for a generic iOS device (Debug; automatic signing for team A4KBDX665Z; build only)
+** BUILD SUCCEEDED **
+# The harness app built for a generic iOS device (Debug, automatic signing). Host macOS 26.6.2 (25G83), Xcode 27.1 (27A9275).
+# Build only: nothing is installed on or run on a device (device checklist step 3 installs it).
+== G05LockHarness.app: codesign --verify --strict ok
+Identifier=com.jevidon.sylvia.spike.g05lockharness
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+profile Name=iOS Team Provisioning Profile: *
+profile TeamIdentifier:0=A4KBDX665Z
+profile ExpirationDate=Tue Aug 17 04:53:58 NZST 2027
+-- entitlements (codesign -d --entitlements)
+"application-identifier" => "A4KBDX665Z.com.jevidon.sylvia.spike.g05lockharness"
+"com.apple.developer.team-identifier" => "A4KBDX665Z"
+"get-task-allow" => true
+-- Info.plist of the built app (plutil -p): background modes and the refresh task
+"BGTaskSchedulerPermittedIdentifiers" => [
+0 => "com.jevidon.sylvia.spike.g05lockharness.refresh"
+]
+"UIBackgroundModes" => [
+0 => "audio"
+1 => "fetch"
+]
+G0.5 recovery lock harness: steps 13-15 passed (logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-4/Docs/Stage0/evidence/M0-Decisions/harness/harness-checks-clean)
+---- end
+harness-checks.sh exit: 0
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-22T07:14:47Z; load: 20:14  up 19 days,  6:25, 3 users, load averages: 10.72 8.02 7.89
+git status --porcelain lines after the run: 3

@@ -1,0 +1,53 @@
+command: Docs/Stage0/evidence/M0-Decisions/fix-1/commands/run-dropin-clean.sh dropin-clean
+commit: 713d99b1adef27210afa43f7d346eac9b6adf090 (m0-decisions); uncommitted files before the run: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+deleted before the run: Spikes/G05-Recovery/.build Spikes/G05-Recovery/LockHarness/.build .build/g05-recovery
+simulator name Sylvia-M0-dec-fix-1 (iPhone 17, iOS 26.5; created by the drop-in if missing); G05_LOG_DIR=Docs/Stage0/evidence/M0-Decisions/fix-1/dropin-clean/logs
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-22T09:51:46Z; load: 22:51  up 19 days,  9:02, 3 users, load averages: 2.38 3.13 3.58
+==> 00-git-lfs
+    pass (5s)
+==> 71-g05-recovery
+    FAIL (33s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_59cd2944-89a-11/.build/ci-logs/71-g05-recovery.log
+    | ✔ Test "T46: corrupt, truncated, newer and malicious backups are rejected without touching the library" passed after 13.233 seconds.
+    | ✔ Test "storage full on a real volume: the WAL append fails, nothing half-written, earlier saves intact after reopen, retry saves once" passed after 14.085 seconds.
+    | ✔ Suite "Durable saves (I-03, T02, plan 19.2)" passed after 14.085 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore crash drill (short)
+    | iterations: 30
+    | measured unkilled run: prepare 238.6 ms, commit (swap) 98.5 ms
+    | SIGKILLs by window: commit=15 prepare=15
+    | SIGKILLs by the last step the child reported: COMMIT=5, PREPARE=11, STEP activeMovedAside=4, STEP intentWritten=7, STEP restoredMovedIn=3
+    | children that finished before the kill: 0
+    | library after reopen: old library kept=18 restored library=12
+    | launch reconciliation: completedRestore=9 keptExistingLibrary=2 nothingToDo=19
+    | failures: 0
+    | ✔ Test "T47: SIGKILL during prepare or the swap leaves exactly the old or the restored library (short run; CI runs 300)" passed after 14.548 seconds.
+    | ✔ Suite "Restore (plan 17.4, T35, T46, T47, J-06)" passed after 14.549 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back in the failing open: 19 fallible operations, each failed in turn with an injected ENOSPC and finished by the next open (the snapshot never beside the old -wal or -shm; every row intact after migrating): copy the snapshot into Staging; flush the staged copy; publish the staged copy; flush Staging after staging; create failed-<id>; move library.sqlite aside; flush failed-<id> after moving library.sqlite; flush Library after moving library.sqlite; move library.sqlite-wal aside; flush failed-<id> after moving library.sqlite-wal; flush Library after moving library.sqlite-wal; move library.sqlite-shm aside; flush failed-<id> after moving library.sqlite-shm; flush Library after moving library.sqlite-shm; move the staged copy into Library; flush Library after the move in; flush Staging after the move in; remove the intent; flush Library after removing the intent; complete despite the error (only the flush after removing the intent failed): ["flush Library after removing the intent"]
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back at the next open, with -wal and -shm: 19 fallible operations, each failed in turn with an injected ENOSPC and finished by the next open (the snapshot never beside the old -wal or -shm; every row intact after migrating): copy the snapshot into Staging; flush the staged copy; publish the staged copy; flush Staging after staging; create failed-<id>; move library.sqlite aside; flush failed-<id> after moving library.sqlite; flush Library after moving library.sqlite; move library.sqlite-wal aside; flush failed-<id> after moving library.sqlite-wal; flush Library after moving library.sqlite-wal; move library.sqlite-shm aside; flush failed-<id> after moving library.sqlite-shm; flush Library after moving library.sqlite-shm; move the staged copy into Library; flush Library after the move in; flush Staging after the move in; remove the intent; flush Library after removing the intent; complete despite the error (only the flush after removing the intent failed): ["flush Library after removing the intent"]
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] put-back at the next open, with -wal, -shm and an earlier partial copy: 20 fallible operations, each failed in turn with an injected ENOSPC and finished by the next open (the snapshot never beside the old -wal or -shm; every row intact after migrating): remove an earlier partial copy; copy the snapshot into Staging; flush the staged copy; publish the staged copy; flush Staging after staging; create failed-<id>; move library.sqlite aside; flush failed-<id> after moving library.sqlite; flush Library after moving library.sqlite; move library.sqlite-wal aside; flush failed-<id> after moving library.sqlite-wal; flush Library after moving library.sqlite-wal; move library.sqlite-shm aside; flush failed-<id> after moving library.sqlite-shm; flush Library after moving library.sqlite-shm; move the staged copy into Library; flush Library after the move in; flush Staging after the move in; remove the intent; flush Library after removing the intent; complete despite the error (only the flush after removing the intent failed): ["flush Library after removing the intent"]
+    | ✔ Test "an injected ENOSPC at each fallible file operation of a put-back leaves a state the next open finishes" with 3 test cases passed after 15.879 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] migration put-back crash drill (short)
+    | iterations: 24
+    | measured unkilled run (open, snapshot, failed migration, put-back): 253.4 ms
+    | SIGKILLs by plan: delay databaseMovedAside=1, delay intentWritten=1, delay migrationFailed=1, delay shmMovedAside=1, delay staged=1, delay walMovedAside=1, pause databaseMovedAside=1, pause intentRemoved=1, pause intentWritten=1, pause migrationFailed=1, pause shmMovedAside=1, pause snapshotMovedIn=1, pause staged=1, pause walMovedAside=1, random=4
+    | SIGKILLs by the last line the child printed: OPEN=2, STEP databaseMovedAside=3, STEP intentRemoved=1, STEP intentWritten=2, STEP migrationFailed=3, STEP shmMovedAside=2, STEP snapshotMovedIn=1, STEP staged=2, STEP walMovedAside=2
+    | children that finished before the kill: 6
+    | first reopen: migrated=9 put back, then migrated at the next open=15
+    | failures: 0
+    | ✔ Test "SIGKILL at every put-back step and at random times never leaves an empty or partial library (short run; CI runs 240)" passed after 16.737 seconds.
+    | ✔ Suite "Migration put-back (plan 7.4, T45)" passed after 17.366 seconds.
+    | ✔ Test run with 73 tests in 11 suites passed after 17.366 seconds.
+    | FAIL: row 10 evidence missing from host-tests.log: [class B (non-default) requested: read back on] [files SQLite created in a class-B directory:]. The class-B protection tests skip while the host screen is locked; unlock it and rerun (or set G05_ALLOW_MISSING_CLASS_B=1 to accept a run without that evidence)
+FAILED: 71-g05-recovery
+ci.sh exit: 1
+---- 71-g05-recovery.log: step headers, warnings and verdict lines (the step logs hold the rest)
+=== 1. toolchain
+=== 2. host build
+=== 3. host tests
+✔ Test run with 73 tests in 11 suites passed after 17.366 seconds.
+FAIL: row 10 evidence missing from host-tests.log: [class B (non-default) requested: read back on] [files SQLite created in a class-B directory:]. The class-B protection tests skip while the host screen is locked; unlock it and rerun (or set G05_ALLOW_MISSING_CLASS_B=1 to accept a run without that evidence)
+---- end
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-22T09:52:24Z; load: 22:52  up 19 days,  9:02, 3 users, load averages: 4.48 3.61 3.74
+git status --porcelain lines after the run: 1

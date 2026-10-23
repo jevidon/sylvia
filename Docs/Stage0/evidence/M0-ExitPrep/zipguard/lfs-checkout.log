@@ -1,0 +1,18 @@
+git lfs checkout in this worktree (.claude/worktrees/wf_0a6096ab-52b-1, branch m0-exit-zipguard), 23 October 2026, about 17:11 UTC
+(24 October on the build Mac's clock), at commit 6cd842d3, after reproductions.log and docs-checks.log and before the
+checks of Scripts/ci.sh. A new worktree has the 777 files Git LFS tracks as pointer files, and 00-git-lfs, which
+Scripts/ci.sh runs first, stops on them; `git lfs checkout` fills them from the repository's local LFS store, with no
+fetch. The commands and what they printed, transcribed:
+
+$ git -C <worktree> lfs ls-files | awk '$2 == "-"' | wc -l      (pointer files before)
+     777
+$ git -C <worktree> lfs ls-files | wc -l                        (files tracked by LFS)
+     777
+$ git -C <worktree> lfs checkout
+Checking out LFS objects: 100% (777/777), 68 MB | 0 B/s, done.
+exit 0
+$ git -C <worktree> lfs ls-files | awk '$2 == "-"' | wc -l      (pointer files after)
+       0
+$ git -C <worktree> status --short                             (tracked files modified: none)
+?? Docs/Stage0/evidence/M0-ExitPrep/zipguard/docs-checks.log
+?? Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log

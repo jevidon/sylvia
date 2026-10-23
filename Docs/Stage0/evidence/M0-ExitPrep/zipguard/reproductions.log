@@ -1,0 +1,321 @@
+reproductions started 2026-10-23T17:09:10Z; base 5aec2518c90427a283d9c8195e11bb9ab23e5d12; working tree at 6cd842d3f966c6dcee06e9bbc66a096c9787846f with Scripts/check-dependency-lock.py as committed
+check after the fix: Scripts/check-dependency-lock.py, sha256 3427e76fb9dd1b949a892bd132593705e0a7e4321796af060ce3f13bb64d0f3f
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 ; swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1); xcodegen Version: 2.46.0
+load:  6:09  up 20 days, 16:19, 3 users, load averages: 64.78 19.70 10.02
+
+=== Part 1: each route in a copy of the tree at the base commit, the check before and after the fix
+  the unplanted copy, check before the fix: exit 0 -> dependency lock check: 0 failure(s), 0 warning(s)
+  the unplanted copy, check after the fix: exit 0 -> dependency lock check: 0 failure(s), 0 warning(s)
+
+--- route 1: R4-01 (a) local package path from the environment, into Spikes/: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Apps/DesignCatalog/project.yml: packages.ZipEvalCommon.path is '${SYLVIA_ROOT}/Spikes/G03-Intake/ZipEval/Common': XcodeGen replaces ${NAME} with the environment variable NAME when it generates the project (and, in a target template, with the target's name, its platform or a templ
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 2: R4-01 (b) target template named from the environment, passing -import-module Zip: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Apps/DesignCatalog/project.yml: targets.DesignCatalog.templates[0] is '${SYLVIA_TEMPLATE}': XcodeGen replaces ${NAME} with the environment variable NAME when it generates the project (and, in a target template, with the target's name, its platform or a template attribute), a YAML
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 3: R4-01 (c) app dependency on a package named from the environment (swift-snapshot-testing): ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Apps/DesignCatalog/project.yml: targets.DesignCatalog.dependencies[2].package is '${SYLVIA_EXTRA_PACKAGE}': XcodeGen replaces ${NAME} with the environment variable NAME when it generates the project (and, in a target template, with the target's name, its platform or a template at
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 4: YAML escape \x24{ that parses to ${ (local package path): ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Apps/DesignCatalog/project.yml: packages.ZipEvalCommon.path is '${SYLVIA_ROOT}/Spikes/G03-Intake/ZipEval/Common': XcodeGen replaces ${NAME} with the environment variable NAME when it generates the project (and, in a target template, with the target's name, its platform or a templ
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 5: build setting name from the environment (a key): ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Apps/DesignCatalog/project.yml: the key targets.DesignCatalog.settings.base.${SYLVIA_SEARCH_SETTING} is '${SYLVIA_SEARCH_SETTING}': XcodeGen replaces ${NAME} with the environment variable NAME when it generates the project (and, in a target template, with the target's name, its p
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 6: template attribute naming the package of a dependency (templateAttributes; swift-snapshot-testing): ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Apps/DesignCatalog/project.yml: targetTemplates.WithDep.dependencies[0].package is '${dep_package}': XcodeGen replaces ${NAME} with the environment variable NAME when it generates the project (and, in a target template, with the target's name, its platform or a template attribute
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 7: local package path with a leading ~: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Apps/DesignCatalog/project.yml: packages.Vendored.path is '~/Vendor/Zip': XcodeGen expands a leading ~ in the paths it resolves, such as a local package's path or a source path, to a home directory: it does not take such a path from the project's directory, so the value the build
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 8: Package.swift reads the environment through Context (adds SnapshotTesting to SylviaDesign): ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Packages/Design/Package.swift:27: names 'Context': every build evaluates a Package.swift again, in its own environment, so a product manifest may read nothing but its own text: it may import only PackageDescription and CompilerPluginSupport, and may not name Context (the environm
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 9: Package.swift imports Foundation and reads ProcessInfo (adds SnapshotTesting to SylviaDesign): ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Packages/Design/Package.swift:27: imports Foundation: every build evaluates a Package.swift again, in its own environment, so a product manifest may read nothing but its own text: it may import only PackageDescription and CompilerPluginSupport, and may not name Context (the envir
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 10: R4-02 (a) product header includes a file outside Apps/ and Packages/: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/shim.h:1: includes '../../../../../Scripts/tools/x.h'; beside this file it would be Scripts/tools/x.h, which is not a file git tracks under Apps or Packages, and in a search directory its `..` climbs out of that directory (from a pack
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 11: R4-02 (b) product header includes Minizip's unzip.c from a package checkout: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/shim.h:1: includes '../../../.build/checkouts/Zip/Zip/minizip/unzip.c'; beside this file it would be Packages/Design/.build/checkouts/Zip/Zip/minizip/unzip.c, which is not a file git tracks under Apps or Packages, and in a search dire
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 12: include "../unzip.c", found through Minizip's include directory: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/shim.h:1: includes '../unzip.c'; beside this file it would be Packages/Design/Sources/SylviaDesign/unzip.c, which is not a file git tracks under Apps or Packages, and in a search directory its `..` climbs out of that directory (from a
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 13: include <../unzip.c>: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/shim.h:1: includes '../unzip.c', and in a search directory its `..` climbs out of that directory (from a package's public include directory into the package's own sources, for one), to code the product rules do not read (Minizip's unz
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 14: computed include of ../unzip.c through a macro: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/shim.h:2: #include MINIZIP_SOURCE: a computed include, whose file macros decide, so this check cannot tell which file it brings in (review R4-02). Write the file's name out, as "..." or <...>, where the include rules can judge it
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 15: #embed of a file outside the product roots: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/shim.h:2: includes '../../../../../Scripts/tools/requirements.txt'; beside this file it would be Scripts/tools/requirements.txt, which is not a file git tracks under Apps or Packages, and in a search directory its `..` climbs out of t
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 16: assembly file with .incbin of a file outside the product roots: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/blob.s:2: includes '../../../../Scripts/tools/requirements.txt', and in a search directory its `..` climbs out of that directory (from a package's public include directory into the package's own sources, for one), to code the product rules do
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 17: inline assembly with .incbin of ../unzip.c: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/shim.h:1: includes '../unzip.c', and in a search directory its `..` climbs out of that directory (from a package's public include directory into the package's own sources, for one), to code the product rules do not read (Minizip's unz
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 18: build-settings file #includes one outside Apps/ and Packages/: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Apps/DesignCatalog/Config/Debug.xcconfig:1 (used by Apps/DesignCatalog/project.yml): takes build settings from '../../../Scripts/tools/Base.xcconfig', which resolves to Scripts/tools/Base.xcconfig, outside Apps and Packages, where the product rules do not apply
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 19: build-settings file #includes one from Xcode's directory (<DEVELOPER_DIR>): ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Apps/DesignCatalog/Config/Debug.xcconfig:1 (used by Apps/DesignCatalog/project.yml): takes build settings from '$(DEVELOPER_DIR)/Makefiles/CoreOS/Xcode/BSD.xcconfig', a build, SDK or toolchain directory: the build-settings files a product target uses, and the files they #include
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 20: build-settings file #include? of a file git does not track: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Apps/DesignCatalog/Config/Debug.xcconfig:1 (used by Apps/DesignCatalog/project.yml): names 'Generated.xcconfig', which resolves to Apps/DesignCatalog/Config/Generated.xcconfig: that is not a file tracked by git, so it can hold only build products, package checkouts or generated 
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 21: build rule that compiles *.txt files with clang: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Apps/DesignCatalog/project.yml: sets buildRules {"filePattern": "*.txt", "compilerSpec": "com.apple.compilers.llvm.clang.1_0"}: it replaces a compiler, linker, SDK or toolchain input, or takes flags from outside the manifests, so what the target is built with cannot be judged
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 22: R4-03 DERIVED_FILE_DIR redefined, then searched for headers and Swift modules: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Apps/DesignCatalog/project.yml: sets DERIVED_FILE_DIR = /opt/elsewhere/Zip/Zip/minizip/include: the check evaluates that variable itself (a path that starts with a build-product, SDK or toolchain variable is trusted to stay in that directory, and $(SRCROOT), $(PROJECT_DIR) and $
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 23: R4-04 -Werror followed by an input file in OTHER_LDFLAGS: ok (passed before the fix, fails after it)
+    before the fix (5aec2518):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL flag Apps/DesignCatalog/project.yml: passes 'Evil', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judged. Remove it, or add it there with a rule for its
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+=== Part 2a: XcodeGen 2.46.0 on probe projects
+project.yml (env):
+  | name: Env
+  | options:
+  |   bundleIdPrefix: com.example
+  | targetTemplates:
+  |   Quiet:
+  |     settings:
+  |       base:
+  |         OTHER_SWIFT_FLAGS: "-Xfrontend -import-module -Xfrontend Zip"
+  |   Attr:
+  |     settings:
+  |       base:
+  |         OTHER_CFLAGS: "-DATTR_${attr1} -DNAME_${target_name}"
+  | targets:
+  |   App:
+  |     type: application
+  |     platform: iOS
+  |     templates:
+  |       - ${PROBE_TEMPLATE}
+  |       - Attr
+  |     templateAttributes:
+  |       attr1: hello
+  |     sources:
+  |       - path: Sources
+  |     settings:
+  |       base:
+  |         PROBE_BRACES: "${PROBE_VALUE}"
+  |         PROBE_BARE: "$PROBE_VALUE"
+  |         PROBE_DEFAULT: "${PROBE_VALUE:-dflt}"
+  |         PROBE_ESCAPED: "\x24{PROBE_VALUE}"
+  |         PROBE_UNSET: "${PROBE_UNSET_VAR}"
+  |         ${PROBE_KEY}: keyvalue
+xcodegen generate (as sylvia_generate runs it), with PROBE_TEMPLATE=Quiet PROBE_VALUE=expanded PROBE_KEY=KEY_FROM_ENV: exit 0; the App target's settings:
+  KEY_FROM_ENV = keyvalue;
+  OTHER_CFLAGS = "-DATTR_hello -DNAME_App";
+  OTHER_SWIFT_FLAGS = "-Xfrontend -import-module -Xfrontend Zip";
+  PROBE_BARE = $PROBE_VALUE;
+  PROBE_BRACES = expanded;
+  PROBE_DEFAULT = "${PROBE_VALUE:-dflt}";
+  PROBE_ESCAPED = expanded;
+  PROBE_UNSET = "${PROBE_UNSET_VAR}";
+xcodegen generate --no-env, with PROBE_TEMPLATE=Quiet PROBE_VALUE=expanded PROBE_KEY=KEY_FROM_ENV: exit 0; the App target's settings:
+  "${PROBE_KEY}" = keyvalue;
+  OTHER_CFLAGS = "-DATTR_hello -DNAME_App";
+  PROBE_BARE = $PROBE_VALUE;
+  PROBE_BRACES = "${PROBE_VALUE}";
+  PROBE_DEFAULT = "${PROBE_VALUE:-dflt}";
+  PROBE_ESCAPED = "${PROBE_VALUE}";
+  PROBE_UNSET = "${PROBE_UNSET_VAR}";
+
+project.yml (yaml): a merge key, a tag, YAML 1.1 scalars and a duplicate key, read by XcodeGen and by the check's PyYAML:
+  | name: Yaml
+  | options:
+  |   bundleIdPrefix: com.example
+  | x-base: &base
+  |   PROBE_MERGED: frommerge
+  |   PROBE_OVERRIDE: frommerge
+  | targets:
+  |   App:
+  |     type: application
+  |     platform: iOS
+  |     sources:
+  |       - path: Sources
+  |     settings:
+  |       base:
+  |         <<: *base
+  |         PROBE_OVERRIDE: explicit
+  |         PROBE_TAG: !!str tagged
+  |         PROBE_BOOL: on
+  |         PROBE_OCTAL: 010
+  |         PROBE_SEXA: 1:20
+  |         PROBE_DUP: first
+  |         PROBE_DUP: second
+xcodegen exit: 0; XcodeGen's values:
+  PROBE_BOOL = YES;
+  PROBE_DUP = second;
+  PROBE_MERGED = frommerge;
+  PROBE_OCTAL = 8;
+  PROBE_OVERRIDE = explicit;
+  PROBE_SEXA = 80;
+  PROBE_TAG = tagged;
+PyYAML's values (as the check reads them):
+  PROBE_BOOL = True
+  PROBE_DUP = 'second'
+  PROBE_MERGED = 'frommerge'
+  PROBE_OCTAL = 8
+  PROBE_OVERRIDE = 'explicit'
+  PROBE_SEXA = 80
+  PROBE_TAG = 'tagged'
+
+a local package at path: ~/Vendor/Zip, with a package at the literal ~/Vendor/Zip inside the project directory:
+  Spec validation error: Invalid local package "Vendored"
+  xcodegen exit: 1; the package reference it wrote: none
+
+a local package at path: plain/Vendor/Zip, with a package at the literal plain/Vendor/Zip inside the project directory:
+  xcodegen exit: 0; the package reference it wrote: relativePath = plain/Vendor/Zip
+(The same package at a plain relative path validates; at a path that starts with ~ it does not, though the literal
+directory is there: XcodeGen does not read a leading ~ as a directory in the project.)
+
+=== Part 2b: SwiftPM evaluates a Package.swift again for each build, in that build's environment
+Package.swift reads the environment through Context (adds SnapshotTesting to SylviaDesign):
+  SYLVIA_EXTRA unset: the SylviaDesign target's dependencies in dump-package: [{"byName": ["SylviaDesignTokens", null]}]
+  SYLVIA_EXTRA 1: the SylviaDesign target's dependencies in dump-package: [{"byName": ["SylviaDesignTokens", null]}, {"product": ["SnapshotTesting", "swift-snapshot-testing", null, null]}]
+Package.swift imports Foundation and reads ProcessInfo (adds SnapshotTesting to SylviaDesign):
+  SYLVIA_EXTRA unset: the SylviaDesign target's dependencies in dump-package: [{"byName": ["SylviaDesignTokens", null]}]
+  SYLVIA_EXTRA 1: the SylviaDesign target's dependencies in dump-package: [{"byName": ["SylviaDesignTokens", null]}, {"product": ["SnapshotTesting", "swift-snapshot-testing", null, null]}]
+
+=== Part 2c: clang and the linker on probe files (xcrun clang, the macOS SDK; Minizip from /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1/Spikes/G01-EPUB/.build/SourcePackages/checkouts/Zip)
+Minizip checkout: marmelroy/Zip as Spikes/G01-EPUB/Package.resolved pins it (2.1.2 67fa55813b9e7b3b9acee9c0ae501def28746d76), resolved offline by run-2; its include directory: Minizip.h crypt.h ioapi.h unzip.h zip.h 
+dotdot.c:
+  | /* a product C file */
+  | #include "../unzip.c"
+  | int probe(const char *p) { unzFile f = unzOpen(p); return f != 0; }
+  xcrun clang -c -w -I <Minizip>/include dotdot.c: exit 0; Minizip functions defined in the object: 36 (for example 'T _unzOpen')
+computed.c:
+  | /* a product C file */
+  | #define MINIZIP_SOURCE "../unzip.c"
+  | #include MINIZIP_SOURCE
+  | int probe(const char *p) { unzFile f = unzOpen(p); return f != 0; }
+  xcrun clang -c -w -I <Minizip>/include computed.c: exit 0; Minizip functions defined in the object: 36 (for example 'T _unzOpen')
+angled.c:
+  | /* a product C file */
+  | #include <../unzip.c>
+  | int probe(const char *p) { unzFile f = unzOpen(p); return f != 0; }
+  xcrun clang -c -w -I <Minizip>/include angled.c: exit 0; Minizip functions defined in the object: 36 (for example 'T _unzOpen')
+embed.c (#embed "../outside/blob.bin", a 4096-byte file): xcrun clang -c -std=c23: exit 0; Section (__TEXT, __const): 4096
+blob.s (.incbin "../outside/blob.bin", from the assembler's working directory): xcrun clang -c: exit 0; Section (__DATA, __data): 4096
+inline.c (__asm__(".data\n.globl _blob2\n_blob2:\n.incbin \"../outside/blob.bin\"\n.text");): xcrun clang -c: exit 0; Section (__DATA, __data): 4096
+OTHER_LDFLAGS "-Werror Evil" (review R4-04): xcrun clang -dynamiclib -Werror Evil x.o: exit 0; T _evil in the library
+
+=== Part 2d: Xcode follows a build-settings file's #include outside the project, and #include? (a probe project with no package)
+Generated.xcconfig absent; xcodebuild -showBuildSettings -project Cfg.xcodeproj -target App -configuration Debug:
+  PROBE_FROM_OUTSIDE = included from outside the project
+Generated.xcconfig present; xcodebuild -showBuildSettings -project Cfg.xcodeproj -target App -configuration Debug:
+  PROBE_FROM_OUTSIDE = included from outside the project
+  PROBE_GENERATED = from a file that appeared after generation
+
+=== Part 2e: the public include directories of the transitive-only packages' C targets, at the pinned revisions
+  readium/Fuzi: no directory named include (no C target with public headers)
+  krzyzanowskim/CryptoSwift: no directory named include (no C target with public headers)
+  ra1028/DifferenceKit: no directory named include (no C target with public headers)
+  marmelroy/Zip: Zip/minizip/include: 5 files; listed headers 5, module maps 0, anything else: none
+  readium/GCDWebServer: GCDWebServer/include: 15 files; listed headers 15, module maps 0, anything else: none
+  stephencelis/SQLite.swift: no directory named include (no C target with public headers)
+  apple/swift-atomics: Sources/_AtomicsShims/include: 2 files; listed headers 1, module maps 1, anything else: none
+  apple/swift-collections: no directory named include (no C target with public headers)
+  apple/swift-system: Sources/CSystem/include: 8 files; listed headers 7, module maps 1, anything else: none
+
+reproductions finished 2026-10-23T17:10:18Z; problems: 0
+load:  6:10  up 20 days, 16:20, 3 users, load averages: 23.59 16.67 9.64

@@ -41,6 +41,7 @@
     {"path": "Spikes/G05-AI/Package.resolved", "manifest": "Spikes/G05-AI/Package.swift"},
     {"path": "Spikes/G05-AI/ATSProbe/Package.resolved", "manifest": "Spikes/G05-AI/ATSProbe/project.yml"},
     {"path": "Spikes/G05-Recovery/Package.resolved", "manifest": "Spikes/G05-Recovery/Package.swift"},
+    {"path": "Spikes/G05-Recovery/DeviceTests/Package.resolved", "manifest": "Spikes/G05-Recovery/DeviceTests/project.yml", "note": "Device-hosted tests reuse the recovery package and its exact GRDB pin; no new dependency."},
     {"path": "Spikes/G05-Recovery/LockHarness/Package.resolved", "manifest": "Spikes/G05-Recovery/LockHarness/project.yml", "note": "A copy of Spikes/G05-Recovery/Package.resolved, which sylvia_generate installs into the generated project: Xcode writes no lock for a project whose only package is the local .. (the G0.5 recovery package). Committed for the G0.5 recovery lock harness (PO-23 option (b), product owner, 22 October 2026; ADR-0014 request); step 13 of Scripts/ci.d/71-g05-recovery.sh checks that it pins exactly what that lock pins."}
   ],
   "unlocked": [
@@ -334,7 +335,7 @@
         {"manifest": "Spikes/G05-Recovery/Package.swift", "target": "SylviaRecoveryTests", "products": ["GRDB"], "test": true},
         {"manifest": "Spikes/G05-Recovery/Package.swift", "target": "g05-recovery-tool", "products": ["GRDB"], "test": false}
       ],
-      "locks": ["Spikes/G05-AI/Package.resolved", "Spikes/G05-AI/ATSProbe/Package.resolved", "Spikes/G05-Recovery/Package.resolved", "Spikes/G05-Recovery/LockHarness/Package.resolved"],
+      "locks": ["Spikes/G05-AI/Package.resolved", "Spikes/G05-AI/ATSProbe/Package.resolved", "Spikes/G05-Recovery/Package.resolved", "Spikes/G05-Recovery/LockHarness/Package.resolved", "Spikes/G05-Recovery/DeviceTests/Package.resolved"],
       "linked": "One Stage 0 iOS app links GRDB since 22 October 2026: the G0.5 recovery lock harness (Spikes/G05-Recovery/LockHarness, never shipped), through SylviaRecovery; its Debug device build loads the system's /usr/lib/libsqlite3.dylib and defines no sqlite3_* symbol of its own (otool and nm, Docs/Stage0/evidence/M0-Decisions/harness/checks/harness-linkage.log; linkage.sh was not run for it, so its GRDB symbols were not counted). The G0.5 ATS probe apps link SylviaAI, which does not use GRDB. Linked into g05-recovery-tool (host, 20,313 symbols) and into the G0.5 recovery package's iOS Simulator test bundle (20,324 symbols), both of which load the system's /usr/lib/libsqlite3.dylib and define no sqlite3_* symbol of their own: SQLite is the system's, not bundled (linkage.log sections 3 and 4). The SQLiteCustom tree in the checkout (SQLite public domain, MIT build files) belongs to GRDB's separate Xcode project and is not part of the SwiftPM product.",
       "license": {
         "id": "MIT",

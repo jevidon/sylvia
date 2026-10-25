@@ -141,7 +141,16 @@ FACTS = {
                               "Docs/ADRs/0001-platform-baseline-and-toolchain.md")
                     + log_has("repin-27.1/round-2/12-dependency-lock.log", "dependency lock check: 0 failure(s)")
                     + log_has("repin-27.1/round-2/12-dependency-lock.log", "12-dependency-lock exit status: 0\n")),
-    76: ("failed", adr_says(14, "reject", "R4-01", "R4-02")),
+    # Row 76: failed on round 4's verdict, reject, with R4-01 and R4-02 open, until the M0 exit preparation of 24 October
+    # 2026 closed both in the guard (an agent's change on m0-exit-zipguard, 6cd842d3, which an agent review reads next):
+    # ADR-0014's status says so, and the drop-in passes with the self-test that plants each route, on the change's last
+    # documents commit (integration log section 28). Until then this entry read
+    # ("failed", adr_says(14, "reject", "R4-01", "R4-02")).
+    76: ("passed-host", adr_says(14, "R4-01 and R4-02 are closed in the guard")
+                        + file_has("Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log",
+                                   "dependency lock check: 0 failure(s)")
+                        + file_has("Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log",
+                                   "self-test: 278 mutations")),
     77: ("pending-human", file_has("Docs/ADRs/0014-dependency-lock-and-license-inventory.md",
                                    "### 7. Decisions that need a person (pending-human)")),
     78: ("pending-human", ALL_ADRS_PENDING),

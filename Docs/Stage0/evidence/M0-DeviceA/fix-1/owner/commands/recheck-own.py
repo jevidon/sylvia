@@ -13,10 +13,12 @@ the review status:
   ran           OWN-DA-02: the gate summary's opening says where the sittings are recorded and that their records have
                 not been reviewed, and Section 5.1, Section 7, the runbook's header and the Stage 0 README that they have
                 not been reviewed, the earlier fixes' texts kept; item 142;
-  host          OWN-DA-03: the runbook's 1.5 says what Session 1 found, quoting Xcode's message as the log on m0-decisions
-                has it, with the log and the commit that added DeviceTests, and that DeviceTests has not been reviewed, its
-                old sentence gone; the G0.5 recovery checklist's setup note on its device commands; the runbook's 0.3,
-                step 7, lists that note among the changes that need no repeat; item 143;
+  host          OWN-DA-03: the runbook's 1.5 says what Session 1 found, in a bullet of its own, quoting Xcode's message as
+                the log on m0-decisions has it, with the log and the commit that added DeviceTests, and that DeviceTests
+                has not been reviewed; the bullet whose question it answers, which m0-decisions changes, kept as it was at
+                caf75a84, so that the merge of m0-decisions stays without a conflict; the G0.5 recovery checklist's setup
+                note on its device commands; the runbook's 0.3, step 7, lists that note among the changes that need no
+                repeat; item 143;
   confirm       OWN-DA-04: ADR-0001's open item for the technical lead and the runbook's D-3 note say where the one-line
                 confirmation is written until m0-exit-prep is merged; the third fix's texts in item 1's step 7, 0.2 and
                 the technical-lead part kept; item 144; the merge of m0-exit-prep, computed, conflicting in the same files
@@ -120,7 +122,8 @@ header6 = line_with(runbook, "- **No device result is recorded on this branch ye
 header7 = line_with(runbook, "- **Your decisions of 22 October 2026 are in it**")
 header8 = line_with(runbook, "- **Your decision of 24 October 2026, and the branch you build from since then.**")
 row_a = line_with(runbook, "| **A. Device A, the small-screen baseline: your iPhone 13 mini**")
-step15 = line_with(runbook, "- **G0.5 recovery** is a Swift package:")
+step15 = line_with(runbook, "- **G0.5 recovery on a phone, as Session 1 found it** (26 October 2026).")
+step15_pkg = line_with(runbook, "- **G0.5 recovery** is a Swift package:")
 then = line_with(runbook, "- **Then:** in the gate's report, change each row")
 step02 = block(runbook, "**0.2 Xcode account", "**0.3 Commit**")
 step03 = block(runbook, "**0.3 Commit**", "**0.4 Devices.**")
@@ -223,16 +226,23 @@ report("ran", m, "the gate summary's opening says where the sittings are recorde
 
 # host: OWN-DA-03.
 attempt = git("show", "m0-decisions:Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log").stdout
-m = need(step15, ["Session 1 has since found that a phone cannot run it from the package", f"`{XCODE}`",
+m = need(step15, ["Session 1 has answered the bullet above on whether `xcodebuild test` signs the recovery package's "
+                  "tests for the phone: a phone cannot run them from the package.", f"`{XCODE}`",
                   "(`Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log` on `m0-decisions`, at `c72247a6`, where "
                   "your first sittings are recorded; not reviewed)", "`Spikes/G05-Recovery/DeviceTests`, an app that hosts "
                   "the suite on the phone (`4be1a1a4` there)", "until then, run 1.2, 6.3 and 8.10 with the commands of the "
                   "runbook on the branch your checkout is on (1.2's note)", "`DeviceTests` has not been reviewed.",
-                  "its finding OWN-DA-03.)"], "the runbook's 1.5")
-m += gone(step15, ["Whether `xcodebuild test` signs it for the phone is only known when Session 1 runs it."],
-          "the runbook's 1.5")
+                  "its finding OWN-DA-03; the bullet above keeps its words here, since `m0-decisions` changes that line "
+                  "and the merge brings its text"], "the runbook's 1.5, its bullet on what Session 1 found")
 if XCODE not in attempt:
     m.append("the message the runbook's 1.5 quotes is not in step-1-tests.log on m0-decisions")
+# The bullet that m0-decisions changes is kept as it was at caf75a84, so that the merge of m0-decisions stays without a
+# conflict (merges.log, checked under checkout); its question is answered by the bullet above.
+kept = subprocess.run(["git", "-C", str(REPO), "show", "caf75a8447597efa5076b53b9a0d36be0fdcc901:" + RUNBOOK],
+                      capture_output=True, text=True).stdout
+old15 = [l for l in kept.splitlines() if l.startswith("- **G0.5 recovery** is a Swift package:")]
+if not old15 or step15_pkg != old15[0]:
+    m.append("the runbook's 1.5 bullet on the recovery package, which m0-decisions changes, is not as it was at caf75a84")
 m += need(checklist, ["- The device commands of steps 1, 2.4 and 4 below run the package's own scheme, which Xcode refuses "
                       "to run on a phone", "use this checklist on the branch your checkout is on", "its finding OWN-DA-03; "
                       "wording only: no step's action, expected result or rule changes.)"], "the G0.5 recovery checklist")

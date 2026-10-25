@@ -31,7 +31,11 @@ session records on `m0-decisions`, and row 12 named neither the Section 23.1 sig
 persistence owner, nor `linkage.sh` in the security sign-off's timing: the review of the follow-up's fixes, its
 findings OWN5-02, OWN5-01 and OWN5-03. Until 23 October 2026, after the run of the whole drop-in on `9cdb0a02`, it
 said that no run of the whole drop-in had passed since 22 October 2026, and that 0.8 was to be run once more, in
-Session 0: `M0-gate.md` Section 6.3, item 92.)
+Session 0: `M0-gate.md` Section 6.3, item 92.) *(Dated note, 26 October 2026: this is the copy on `m0-exit-prep`. The
+log as you keep it, on `m0-decisions`, has recorded device runs since 25 October 2026 UTC, its rows 3a-3d, and its first
+sentence there says that device testing began, which these records have not reconciled: `M0-gate.md` Section 5.4. This
+copy's first sentence is left as it was, so that a merge takes that line as you keep it: the fifth review of the M0 exit
+preparation, its finding HON-EP-06.)*
 
 The rows are in the runbook's run order (its Section 3); session numbers are the runbook's labels. Add a row for each further sitting of a session.
 

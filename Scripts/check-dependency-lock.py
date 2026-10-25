@@ -38,7 +38,11 @@ settings count as every target's. `check` fails when:
                      product roots, so neither "<DEVELOPER_DIR>/..." nor an untracked #include? passes, and a # line the
                      check cannot read as an #include fails; review R4-02); a referenced Xcode project; a header,
                      module-map, bridging-header or prefix-header path in its settings or flags (or in a module map under
-                     the product roots); or a symbolic link under Apps/ or Packages/ resolves outside them. And, for a
+                     the product roots); or a symbolic link under Apps/ or Packages/ resolves outside them. A local
+                     package inside them must be one git tracks there, its Package.swift a tracked file, which the check
+                     then reads as a product manifest: a package checkout under .build/checkouts, a build product or a
+                     generated package fails, whichever targets use it (review of the M0 exit preparation,
+                     SEC-ZIPGUARD-01: until then a local package was judged only against Spikes/ and the roots). And, for a
                      shipping target (review R3-01): a path it names inside the product roots holds nothing git tracks (a
                      build product, a package checkout under .build, a generated file), or a header or module map it
                      takes is not a file git tracks there; a path that starts with a build-product, SDK or toolchain
@@ -1498,6 +1502,16 @@ class Checker:
                 self.fail('spike-in-product', rel, f"depends on {local['path']} under {'/'.join(spike_roots)}, which is never shipped")
             elif not self.under_ci(local['path'], product_roots):
                 self.fail('outside-product', rel, f"depends on the local package {local['path']}, outside {' and '.join(product_roots)}, where the product rules do not apply")
+            elif self.tracked_file(os.path.join(local['path'], 'Package.swift')) is None:
+                # Inside the product roots, a local package is product code only if git tracks it: its Package.swift is
+                # then one of the manifests this check reads, and its sources are files it scans. One that git does not
+                # track (a package checkout under .build/checkouts, a build product, a package generated or copied in
+                # before the build) is read by neither, yet the build would compile and link it, as it would anything
+                # its manifest brings in (review of the M0 exit preparation, SEC-ZIPGUARD-01: until then only the
+                # paths a target names were held to this rule, judge_inside, and a local package was not).
+                where = ' (a build or package-checkout directory)' if any(
+                    p.casefold() in CHECKOUT_DIRS for p in local['path'].split('/')) else ''
+                self.fail('outside-product', rel, f"depends on the local package {local['path']}{where}, whose Package.swift is not a file git tracks: a local package inside {' or '.join(product_roots)} must be one git tracks there, which the check reads as a product manifest and scans as product code; an untracked one (a package checkout, a build product or a generated package) is read by neither, yet the build would compile and link it (ADR-0014 section 1, rule 5)")
         for value, bases in m['strings']:
             for hit in self.spike_paths(value, bases, spike_roots):
                 self.fail('spike-in-product', rel, f'names {hit[0]!r}, which resolves to {hit[1]} under {"/".join(spike_roots)}; Spikes code is never shipped')
@@ -3113,6 +3127,29 @@ MUTATIONS = [  # (what, category, a fragment of the message that only this rule 
      app_settings('        OTHER_LDFLAGS: "-Werror Evil"\n')),
     ('R4-04: -Werror followed by an input file in a SwiftPM linker unsafeFlags', 'flag', "passes 'Evil'",
      good_settings('linkerSettings: [.unsafeFlags(["-Werror", "Evil"])]')),
+    # The review of the M0 exit preparation, SEC-ZIPGUARD-01: a local package inside the product roots was judged only
+    # against Spikes/ and the roots, so one that git does not track passed, its manifest and sources read by nothing
+    # (Docs/Stage0/evidence/M0-ExitPrep/fix-1/reproductions.log plants the review's routes in the real tree).
+    ("SEC-ZIPGUARD-01 (b00): a product project depends on a local package in a package's checkouts under .build, populated as at build time, and the app target uses its product",
+     'outside-product', "depends on the local package Packages/Good/.build/checkouts/B (a build or package-checkout directory), whose Package.swift is not a file git tracks",
+     tree(lambda r: add_file(r, 'Packages/Good/.build/checkouts/B/Package.swift',
+                             '// swift-tools-version: 6.2\nimport PackageDescription\nlet package = Package(name: "B", products: [.library(name: "B", targets: ["B"])], targets: [.target(name: "B")])\n'),
+          lambda r: add_file(r, 'Packages/Good/.build/checkouts/B/Sources/B/B.swift', 'public struct B {}\n'),
+          lambda r: edit(r, APP_YML, 'packages:\n', 'packages:\n  Vendored:\n    path: ../../Packages/Good/.build/checkouts/B\n'),
+          lambda r: edit(r, APP_YML, APP_DEPS, APP_DEPS + '      - package: Vendored\n        product: B\n'))),
+    ('SEC-ZIPGUARD-01 (b02): a product Package.swift depends on a local package under its own .build', 'outside-product',
+     "depends on the local package Packages/Good/.build/checkouts/B (a build or package-checkout directory), whose Package.swift is not a file git tracks",
+     lambda r: edit(r, GOOD_SWIFT, 'dependencies: [\n        .package(', 'dependencies: [\n        .package(path: ".build/checkouts/B"),\n        .package(')),
+    ('SEC-ZIPGUARD-01 (b03): a product Package.swift depends on a directory under Packages/ that holds only build products',
+     'outside-product', "depends on the local package Packages/Vendored, whose Package.swift is not a file git tracks",
+     tree(lambda r: add_file(r, 'Packages/Vendored/.build/checkouts/B/Package.swift', '// swift-tools-version: 6.2\n'),
+          lambda r: edit(r, GOOD_SWIFT, 'dependencies: [\n        .package(', 'dependencies: [\n        .package(path: "../Vendored"),\n        .package('))),
+    ("SEC-ZIPGUARD-01: XcodeGen's localPackages list names a package checkout under .build", 'outside-product',
+     "depends on the local package Packages/Good/.build/checkouts/B (a build or package-checkout directory), whose Package.swift is not a file git tracks",
+     lambda r: edit(r, APP_YML, 'targets:\n', 'localPackages:\n  - ../../Packages/Good/.build/checkouts/B\ntargets:\n')),
+    ('SEC-ZIPGUARD-01: a local package path names a tracked directory under Apps/ that holds no Package.swift (tracked content is not enough)',
+     'outside-product', "depends on the local package Apps/App/Sources, whose Package.swift is not a file git tracks",
+     lambda r: edit(r, APP_YML, 'packages:\n', 'packages:\n  AppSources:\n    path: Sources\n')),
 ]
 
 
@@ -3248,6 +3285,15 @@ NEGATIVES = [  # (what, change[, warning]) that must not produce any failure, an
      tree(good_settings('swiftSettings: [.unsafeFlags(["-Werror", "DeprecatedDeclaration"])]'),
           lambda r: edit(r, APP_YML, APP_SOURCES, '    sources:\n      - path: Sources/App.swift\n'
                                                   '        compilerFlags: ["-Werror", "DeprecatedDeclaration"]\n'))),
+    # SEC-ZIPGUARD-01 keeps a local package that git tracks under the product roots allowed (the App project's local
+    # package Packages/Good, in the base tree, is the XcodeGen form): here the SwiftPM form, a product package that
+    # depends on another product package by path, whose manifest the check reads as a product manifest.
+    ('a product package depends on another product package by a path inside the product roots, whose Package.swift git tracks',
+     tree(lambda r: add_file(r, 'Packages/Other/Package.swift',
+                             '// swift-tools-version: 6.2\nimport PackageDescription\nlet package = Package(name: "Other", products: [.library(name: "Other", targets: ["Other"])], targets: [.target(name: "Other")])\n'),
+          lambda r: add_file(r, 'Packages/Other/Sources/Other/Other.swift', 'public struct Other {}\n'),
+          lambda r: edit(r, GOOD_SWIFT, 'dependencies: [\n        .package(', 'dependencies: [\n        .package(path: "../Other"),\n        .package('),
+          lambda r: edit(r, GOOD_SWIFT, '[.product(name: "A", package: "A")])', '[.product(name: "A", package: "A"), .product(name: "Other", package: "Other")])'))),
 ]
 
 

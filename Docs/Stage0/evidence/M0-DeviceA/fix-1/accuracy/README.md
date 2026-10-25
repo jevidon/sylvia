@@ -18,6 +18,9 @@ cells of the session log's dated rows there: when, by whom, from which commit, o
 the same branch, from `ec91f66a`, this fix's last commit: [`../completeness/`](../completeness/README.md); integration
 log section 31.)*
 
+*(26 October 2026: and its owner-readability findings, OWN-DA-01 to OWN-DA-09, to a fourth fix, from `caf75a84`, the
+third fix's last commit: [`../owner/`](../owner/README.md); integration log section 32.)*
+
 ## The findings, and what was done
 
 | Finding | What was done |

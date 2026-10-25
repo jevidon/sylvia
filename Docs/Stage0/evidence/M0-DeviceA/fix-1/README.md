@@ -22,6 +22,11 @@ and integration log section 31. It changed what this fix had the owner's instruc
 `m0-decisions` (FID-DA-03): neither the drop-in nor the lock harness's checks builds, copies or runs `DeviceTests`, so
 the drop-in's run on `9cdb0a02` stands for it.)*
 
+*(26 October 2026: the same review's owner-readability findings, OWN-DA-01 to OWN-DA-09, were relayed to a fourth fix
+that followed on the same branch, from `caf75a84`, the third fix's last commit; its record is [`owner/`](owner/README.md)
+and integration log section 32. It too left the merge of `m0-decisions` into `m0-sessions` to the orchestrating session,
+with the owner, between sittings, and records none of the sittings' results.)*
+
 ## The findings, and what was done
 
 | Finding | What was done |

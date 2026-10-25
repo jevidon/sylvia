@@ -17,6 +17,11 @@ session log and `Spikes/G05-Recovery`, and its logs print, of the session log th
 dated rows (when, by whom, from which commit, on which device); it records none of the owner's sittings' results here
 and infers none.
 
+*(26 October 2026: the same review's owner-readability findings, OWN-DA-01 to OWN-DA-09, were relayed to a fourth fix
+that followed on the same branch, from `caf75a84`, this fix's last commit: [`../owner/`](../owner/README.md); integration
+log section 32. The texts this fix asked for `CLAUDE.md` (below) are now also listed among the edits left to the owner,
+in the gate summary's Section 1, item 4.)*
+
 ## The findings, and what was done
 
 | Finding | What was done |

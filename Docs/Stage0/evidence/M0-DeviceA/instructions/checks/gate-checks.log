@@ -1,0 +1,349 @@
+commit: 0bd06abd49b2ad2cc7a9bc2159362d0ed01382df (m0-sessions-instructions); uncommitted files before this run: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T16:35:43Z; load:  5:35  up 22 days, 15:46, 4 users, load averages: 4.28 4.65 6.49
+
+== 1. What changed
+-- 1a. since 6cede84a (m0-sessions's head): 32 files: 21 of them this update's evidence; the documents:
+   Docs/Stage0/M0-device-runbook.md
+   Docs/Stage0/M0-gate.md
+   Docs/Stage0/README.md
+   Docs/Stage0/device-checklists/G01-EPUB.md
+   Docs/Stage0/device-checklists/G01-PDF.md
+   Docs/Stage0/device-checklists/G02-Transfer.md
+   Docs/Stage0/device-checklists/G03-Intake.md
+   Docs/Stage0/device-checklists/G04-Audio.md
+   Docs/Stage0/device-checklists/G05-AI.md
+   Docs/Stage0/device-checklists/G05-Recovery.md
+   Docs/Stage0/device-checklists/G06-Design.md
+   only the files this update owns
+-- 1b. the plan, the amendments, the ADRs, the gate reports, the integration log, the session log, the license inventory, README.md and CLAUDE.md since 6cede84a: unchanged (their owners' updates are on other branches), so the follow-up's fix's amendments checker applies as it was
+-- 1c. from 96bdc7e9 (pull request #6) to 6cede84a, before this update: CLAUDE.md
+   6cede84a Point CLAUDE.md at m0-sessions, the branch the M0 work and device sessions now use
+   5aec2518 Point CLAUDE.md's milestone paragraph at main, where all M0 work now is
+-- 1d. 9cdb0a02, the commit of the drop-in's run, is an ancestor of HEAD: yes
+   code, scripts, contracts, fixtures and the workflow changed since 9cdb0a02: none, so the run stands for HEAD's code
+   the drop-in's own paths (Docs/Stage0/evidence/M0-DeviceA/instructions/commands/dropin-paths.sh, exit 0; the paths and the lines that name them: Docs/Stage0/evidence/M0-DeviceA/instructions/checks/dropin-paths.log):
+   == 2. git diff --stat 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e <commit> -- Scripts/ci.d/71-g05-recovery.sh Scripts/lib Scripts/tools Spikes/G05-Recovery Contracts/schemas/backup-manifest.v1.schema.json Contracts/fixtures/backup-manifest.v1
+   -- 6cede84a6f6ac610976b233d875e26dd89419dbd (6cede84a): no change: the run of 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e stands for what the drop-in builds, copies or runs
+   -- HEAD (0bd06abd): no change: the run of 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e stands for what the drop-in builds, copies or runs
+   == 3. Does the drop-in, or a file it runs, name the files the m0-exit-prep run changes?
+   -- Scripts/check-dependency-lock.py: named by none of them (the drop-in, the harness checks, the manifest checker, Scripts/lib, Scripts/tools/bootstrap.sh): the drop-in does not use it
+   -- Scripts/ci.d/12-dependency-lock.sh: named by none of them (the drop-in, the harness checks, the manifest checker, Scripts/lib, Scripts/tools/bootstrap.sh): the drop-in does not use it
+      (12-dependency-lock is the drop-in Scripts/ci.sh runs as dependency-lock; runbook 0.8 runs 71-g05-recovery.sh alone, not through ci.sh)
+   exit: 0
+-- 1e. the checklists, which the rule for repeating a session names: from 9cdb0a02 to 6cede84a: unchanged; since 6cede84a, by this update: 8 of the 8 (device-A and branch lines)
+    Docs/Stage0/device-checklists/G01-EPUB.md     |  4 ++--
+    Docs/Stage0/device-checklists/G01-PDF.md      |  4 ++--
+    Docs/Stage0/device-checklists/G02-Transfer.md | 10 +++++-----
+    Docs/Stage0/device-checklists/G03-Intake.md   |  2 +-
+    Docs/Stage0/device-checklists/G04-Audio.md    |  4 ++--
+    Docs/Stage0/device-checklists/G05-AI.md       |  6 +++---
+    Docs/Stage0/device-checklists/G05-Recovery.md |  4 ++--
+    Docs/Stage0/device-checklists/G06-Design.md   | 10 +++++-----
+    8 files changed, 22 insertions(+), 22 deletions(-)
+   the session log at HEAD (Docs/Stage0/evidence/M0-runbook/sessions.md, unchanged since 6cede84a: 1b), whose dated rows must all be agents': 14 rows; dated: 2 (2 (0.8 only, ahead of the session); 2 (0.8 only, ahead of the session)); dated and not an agent's: 0
+-- 1f. the committed logs of resolve-locks.sh and linkage.sh since 4c73da57: unchanged
+   a run under Xcode 27.1 (Docs/Stage0/evidence/M0-dependencies/xcode-27.1/) on this branch: absent, as the records say (the agent run on m0-exit-prep makes it: pending)
+-- 1g. branches, read-only (nothing is fetched):
+   main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07; origin/main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07 (pull request #6's merge: 96bdc7e9)
+   m0-sessions: 6cede84a6f6ac610976b233d875e26dd89419dbd; HEAD descends from it: yes; commits on m0-sessions that main lacks: 2
+   m0-decisions: 044ed3cf86db838c93cda7e2ca4829474b234ae5; behind main: yes
+   Spikes/G05-Recovery/LockHarness/project.yml at m0-sessions: present; at HEAD: present
+
+== 2. Git LFS state
+.gitattributes patterns (non-comment lines):
+**/__Snapshots__/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+**/__Snapshots__/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[pP][nN][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[jJ][pP][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[jJ][pP][eE][gG] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[gG][iI][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[hH][eE][iI][cC] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[tT][iI][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[tT][iI][fF][fF] filter=lfs diff=lfs merge=lfs -text
+Docs/Stage0/evidence/**/*.[wW][eE][bB][pP] filter=lfs diff=lfs merge=lfs -text
+git config --show-origin --get-regexp 'filter\.lfs|lfs\.':
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.repositoryformatversion 0
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.smudge git-lfs smudge -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.process git-lfs filter-process
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.required true
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.clean git-lfs clean -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.https://github.com/jevidon/sylvia.git/info/lfs.access basic
+git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+files tracked by LFS (git lfs ls-files): 777; of them still pointer files in the working tree: 0
+LFS files (object and path, git lfs ls-files -l) at HEAD and at 4c73da5754f5cbddabde88e11d222a231a29f8ca: identical, 777 each: this update adds no LFS object
+
+== 3. M0-gate.md: paths, and statuses against the records they cite
+== paths: 330 checked
+== gate report rows
+row 1: passed-simulator | G01-EPUB.md G1: 'passed-simulator' -> agrees
+row 2: pending-device | G01-EPUB.md G2: 'pending-device' -> agrees
+row 3: passed-simulator | G01-EPUB.md G3: 'passed-simulator' -> agrees
+row 4: pending-human | G01-EPUB.md G4: 'pending-human' -> agrees
+row 5: passed-simulator | G01-EPUB.md G5: 'passed-simulator' -> agrees
+row 6: passed-simulator | G01-EPUB.md G6: 'passed-simulator' -> agrees
+row 7: passed-simulator | G01-EPUB.md G7: 'passed-simulator' -> agrees
+row 8: passed-simulator | G01-PDF.md 1: 'passed-simulator' -> agrees
+row 9: pending-device | G01-PDF.md 2: 'pending-device' -> agrees
+row 10: failed | G01-PDF.md 10c: 'failed' -> agrees
+row 11: passed-simulator | G01-EPUB.md G8: 'passed-simulator' -> agrees
+row 12: pending-human | G01-EPUB.md G9: 'pending-human' -> agrees
+row 13: passed-simulator | G01-EPUB.md G10: 'passed-simulator' -> agrees
+row 14: passed-simulator | G02-Transfer.md User-mediated trust bootstrap from iOS: 'passed-simulator' -> agrees
+row 15: pending-device | G02-Transfer.md User-mediated trust bootstrap on a physical iPho: 'pending-device' -> agrees
+row 16: passed-simulator | G02-Transfer.md Certificate pinning on iOS: 'passed-simulator' -> agrees
+row 17: partial | G02-Transfer.md Authorized ranged downloads with verified parts: 'partial' -> agrees
+row 18: partial | G02-Transfer.md Recovery after suspension or force-quit: 'partial' -> agrees
+row 19: passed-host | G02-Transfer.md Mac source mutation never yields a mixed-version: 'passed-host' -> agrees
+row 20: passed-host | G02-Transfer.md Manual-address connectivity: IPv4 and IPv6 loopb: 'passed-host' -> agrees
+row 21: passed-simulator | G02-Transfer.md Plan 15.2 Stage 0 gate, local address forms: 'passed-simulator' -> agrees
+row 22: failed | G02-Transfer.md Plan 15.2 Stage 0 gate, Tailscale address forms: 'failed' -> agrees
+row 22: failed | G02-Transfer.md T43 Tailscale address and MagicDNS name on iOS w: 'failed' -> agrees
+row 23: pending-device | G02-Transfer.md Manual-address and Tailscale connectivity betwee: 'pending-device' -> agrees
+row 24: pending-human | G02-Transfer.md Security reviewer approves the pairing protocol: 'pending-human' -> agrees
+row 25: passed-host | G02-Transfer.md No trust-all path, no ATS exception in the harne: 'passed-host' -> agrees
+row 26: passed-simulator | G03-Intake.md G1: 'passed-simulator' -> agrees
+row 27: pending-device | G03-Intake.md G2: 'pending-device' -> agrees
+row 28: pending-device | G03-Intake.md G6: 'pending-device' -> agrees
+row 29: passed-host | G03-Intake.md G3: 'passed-host' -> agrees
+row 30: passed-simulator | G03-Intake.md G4: 'passed-simulator' -> agrees
+row 31: passed-host | G03-Intake.md G5: 'passed-host' -> agrees
+row 32: passed-simulator | G03-Intake.md G7: 'passed-simulator' -> agrees
+row 33: pending-device | G03-Intake.md G8: 'pending-device' -> agrees
+row 34: partial | G03-Intake.md T42: 'partial' -> agrees
+row 35: passed-host | G03-Intake.md G9: 'passed-host' -> agrees
+row 36: pending-device | G03-Intake.md G10: 'pending-device' -> agrees
+row 37: passed-simulator | G04-Audio.md 1: 'passed-simulator' -> agrees
+row 38: pending-device | G04-Audio.md 2: 'pending-device' -> agrees
+row 39: passed-simulator | G04-Audio.md 3: 'passed-simulator' -> agrees
+row 39: passed-simulator | G04-Audio.md 11: 'passed-simulator' -> agrees
+row 40: pending-device | G04-Audio.md 12: 'pending-device' -> agrees
+row 41: passed-simulator | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 33: 'passed-simulator (opening, positions, timing); start/resume budget ...' -> agrees
+row 43: passed-simulator | G04-Audio.md 4: 'passed-simulator (with the container limits stated)' -> agrees
+row 44: passed-simulator | G04-Audio.md 5: 'passed-simulator' -> agrees
+row 45: passed-simulator | G04-Audio.md 6: 'passed-simulator' -> agrees
+row 46: passed-simulator | G04-Audio.md 7: 'passed-simulator' -> agrees
+row 47: partial | G04-Audio.md 8: 'partial' -> agrees
+row 48: passed-simulator | G04-Audio.md 18: 'passed-simulator (control: both signings; App Shortcut and the cont...' -> agrees
+row 49: pending-device | G04-Audio.md 19: 'pending-device' -> agrees
+row 50: partial | G04-Audio.md 9: 'partial' -> agrees
+row 51: partial | G05-AI.md G1: 'partial' -> agrees
+row 52: partial | G05-AI.md G2: 'partial' -> agrees
+row 53: passed-host | G05-AI.md G3: 'passed-host' -> agrees
+row 54: partial | G05-AI.md G4: 'partial' -> agrees
+row 55: passed-simulator | G05-Recovery.md 1: 'passed-simulator' -> agrees
+row 56: pending-device | G05-Recovery.md 22: 'pending-device' -> agrees
+row 57: passed-host | G05-Recovery.md 2: 'passed-host' -> agrees
+row 58: partial | G05-AI.md G6: 'partial' -> agrees
+row 59: pending-human | G05-Recovery.md 23: 'pending-human' -> agrees
+row 60: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 61: passed-simulator | G06-Design.md G0.6: every token pair's contrast verified: 'passed-simulator' -> agrees
+row 62: pending-device | G06-Design.md G0.6: type roles under Dynamic Type: 'pending-device' -> agrees
+row 63: failed | G06-Design.md Scaling through UIFontMetrics as Section 4.4.3 s: 'failed' -> agrees
+row 64: pending-device | G06-Design.md G0.6: component set viewed on a device: 'pending-device' -> agrees
+row 65: partial | G06-Design.md G0.6: token values adjusted where devices disagr: 'partial' -> agrees
+row 72: passed-simulator | G06-Design.md CI drop-in `Scripts/ci.d/21-design-catalog.sh`: 'passed-simulator' -> agrees
+row 73: pending-human | G06-Design.md Prototype matches the boards where they agree wi: 'pending-human' -> agrees
+row 74: pending-device | G06-Design.md G0.6 device review of the component set and the : 'pending-device' -> agrees
+row 79: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 80: pending-human | G06-Design.md Design review of the components and references: 'pending-human' -> agrees
+row 91: passed-host | G06-Design.md Token export with schema, fixtures: 'passed-host' -> agrees
+== ADR and deliverable rows
+row 66: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 71: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 75: passed-host | expected passed-host; 17 of 17 facts hold -> agrees
+row 76: failed | expected failed; 3 of 3 facts hold -> agrees
+row 77: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 78: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 82: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 83: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 84: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 85: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 86: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 87: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 88: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 89: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 90: passed-host | expected passed-host; 8 of 8 facts hold -> agrees
+row 92: pending-human | expected pending-human; 6 of 6 facts hold -> agrees
+== rows not checked mechanically
+row 67: partial | the Section 23 decisions are signed by people; nothing to read
+row 68: pending-human | a judgement for the exit review
+row 69: partial | a judgement on the amendments' text against the four gates with failed rows
+row 70: partial | summarises rows 1-65
+row 81: pending-human | an exit demonstration by people
+== summary: 92 rows; failed 5, partial 13, passed-host 11, passed-simulator 27, pending-device 15, pending-human 21; 74 report rows and 80 ADR and log facts compared; 0 problem(s)
+
+-- 3b. Negative control on copies with three planted wrong statuses: checker exit 1; rows reported as disagreeing: 22 42 66 71 78 92
+   as required (22, 42, 66, 71, 78, 92)
+
+== 4. The documents' own checks
+-- the follow-up's fix's amendments checker, unchanged (Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/check-amendments.py), the plan unchanged on this branch
+summary: 132 numbered findings in the eight reports; 56 amendment tags; 44 product-owner questions; 0 failed checks
+exit: 0
+-- this update's runbook content check (Docs/Stage0/evidence/M0-DeviceA/instructions/commands/runbook-content-check.py; its controls and limits: Docs/Stage0/evidence/M0-DeviceA/instructions/checks/runbook-content-check.log): it must pass
+G01-EPUB.md: 13 steps, 38 markers: 38 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G01-PDF.md: 11 steps, 27 markers: 26 in the runbook, 0 in steps left to the checklist, 1 listed as not carried, 0 missing
+G02-Transfer.md: 23 steps, 76 markers: 68 in the runbook, 0 in steps left to the checklist, 8 listed as not carried, 0 missing
+G03-Intake.md: 27 steps, 59 markers: 59 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G04-Audio.md: 17 steps, 121 markers: 100 in the runbook, 15 in steps left to the checklist, 6 listed as not carried, 0 missing
+G05-AI.md: 9 steps, 73 markers: 57 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+G05-Recovery.md: 5 steps, 62 markers: 60 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+G06-Design.md: 31 steps, 41 markers: 39 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+  NOT_CARRIED: 19 entries: 7 a placeholder the runbook fills in; 5 the checklist's history, or a simulator result it quotes; 2 said in other words in the runbook; 2 a description of a log's format, not an expected value; 1 the expected result of a step that can wait for a later milestone; 2 a detail of a review done from the checklist
+  453 in its gate's checklist; 19 in a checklist (no gate named); 83 listed as the runbook's own (by kind: document 25, external 1, harness 37, runbook 13, tool 7)
+  58 source fragments of 62 entries looked up in their files
+  RUNBOOK_OWN: 62 entries: 54 with a source whose fragment is read in its file; 8 without one, checked only for being in the runbook (external 1, runbook 7)
+result: pass (0 problem(s))
+exit: 0
+-- the assembly's content check (Docs/Stage0/evidence/M0-Decisions/assembly/commands/runbook-content-check.py), which the version above replaces: it must report exactly the three texts this update changed
+   UNLISTED text at offset N (any checklist): 13 mini only (Recommended)
+   UNLISTED text at offset N (any checklist): iphone 11 pro seems to be no longer charging. i do have a 13 mini that is still working, so update the plan. even better from a screen size.
+   PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): is an iPhone 11 Pro: the product owner chose the iPhone 11 family on 22 October 2026
+exit: 1
+   as required: exactly those three (the owner's words and the option chosen, quoted in Section 6's D-1, and plan 19.1's sentence of 22 October 2026, no longer quoted in 1.1)
+-- the runbook's step coverage (Docs/Stage0/evidence/M0-Integration/final-fix/commands/runbook-coverage.py): it must pass
+G0.5 recovery (G05-Recovery.md): checklist steps 1-5 (5); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [5]
+G0.6 (G06-Design.md): checklist steps 1-31 (31); not classified in Section 7: none; blocking but in no session: none; can wait, no session (allowed): [10]
+result: pass (0 missing)
+exit: 0
+-- the runbook's correction-text check on 4c73da5754f5cbddabde88e11d222a231a29f8ca, on 6cede84a6f6ac610976b233d875e26dd89419dbd and on HEAD (Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py, as committed at HEAD)
+   4c73da5754f5cbddabde88e11d222a231a29f8ca: exit 1; 77 texts checked, 59 missing
+   6cede84a6f6ac610976b233d875e26dd89419dbd: exit 1; 77 texts checked, 68 missing
+   HEAD: exit 1; 77 texts checked, 68 missing
+   the lines that differ from 4c73da5754f5cbddabde88e11d222a231a29f8ca to HEAD (the first line, a timestamp, left out):
+   < C28  ok      x1 Docs/Stage0/device-checklists/G06-Design.md: On the iPhone 12-class baseline (iOS 26.x), Settings > Display & Brigh
+   > C28  MISSING x0 Docs/Stage0/device-checklists/G06-Design.md: On the iPhone 12-class baseline (iOS 26.x), Settings > Display & Brigh
+   < C47  ok      x1 Docs/Stage0/G02-Transfer.md: Which error iOS reports for its own failed write: checklist step 21.
+   > C47  MISSING x0 Docs/Stage0/G02-Transfer.md: Which error iOS reports for its own failed write: checklist step 21.
+   < C49  ok      x1 Docs/ADRs/0011-ai-providers-context-and-privacy.md: - **Pending (human):** a real local model server, Hermes or another ga
+   < C49  ok      x1 Docs/ADRs/0011-ai-providers-context-and-privacy.md: - Human runs (steps 5-8): real local server, gateway, live first-party
+   < C49  ok      x1 Docs/Stage0/G05-AI.md: | P2 | Hermes or another gateway | pending-human | checklist step 8 |
+   < C50  ok      x1 Docs/ADRs/0013-design-language.md: - Devices: checklist steps 1-21 and the part 3 review steps 22-31, on 
+   > C49  MISSING x0 Docs/ADRs/0011-ai-providers-context-and-privacy.md: - **Pending (human):** a real local model server, Hermes or another ga
+   > C49  MISSING x0 Docs/ADRs/0011-ai-providers-context-and-privacy.md: - Human runs (steps 5-8): real local server, gateway, live first-party
+   > C49  MISSING x0 Docs/Stage0/G05-AI.md: | P2 | Hermes or another gateway | pending-human | checklist step 8 |
+   > C50  MISSING x0 Docs/ADRs/0013-design-language.md: - Devices: checklist steps 1-21 and the part 3 review steps 22-31, on 
+   < C56  ok      x1 Docs/Stage0/device-checklists/G03-Intake.md: Run on both when available.
+   < C56  ok      x1 Docs/ADRs/0010-intake-handoff-and-wired-bundles.md: - Device runs in `Docs/Stage0/device-checklists/G03-Intake.md`, in par
+   < C56  ok      x1 Docs/Stage0/G03-Intake.md: the share extension's real memory limit and peak on the iPhone 17 Pro 
+   < 77 texts checked, 59 missing
+   > C56  MISSING x0 Docs/Stage0/device-checklists/G03-Intake.md: Run on both when available.
+   > C56  MISSING x0 Docs/ADRs/0010-intake-handoff-and-wired-bundles.md: - Device runs in `Docs/Stage0/device-checklists/G03-Intake.md`, in par
+   > C56  MISSING x0 Docs/Stage0/G03-Intake.md: the share extension's real memory limit and peak on the iPhone 17 Pro 
+   > 77 texts checked, 68 missing
+   as required: from 4c73da5754f5cbddabde88e11d222a231a29f8ca to HEAD the nine texts of the corrections the decisions round applied, found before and missing after, and the summary line, nothing else; from 6cede84a6f6ac610976b233d875e26dd89419dbd to HEAD no line differs
+-- the follow-up's recheck of the second review's twelve answered findings and HON-11 (Docs/Stage0/evidence/M0-Decisions/followup/commands/recheck-review2.py): it must pass
+   result: pass (0 of the twelve no longer answered)
+exit: 0
+-- the third fix's moved history notes (Docs/Stage0/evidence/M0-Decisions/followup/round-4/commands/moved-notes.py): it must pass
+   result: 7 of 7 notes moved whole
+exit: 0
+-- the fourth fix's moved texts (Docs/Stage0/evidence/M0-Decisions/followup/round-5/commands/moved-notes.py): it must pass
+   result: 4 of 4 texts moved whole
+exit: 0
+-- the record's check of the run's facts (Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/check-run.py): it must pass
+   result: pass (0 fact(s) not as the records state them)
+exit: 0
+-- the fix's check of the run's facts (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/check-run.py): it must pass
+   result: pass (0 fact(s) not as the records state them)
+exit: 0
+   its control, on the assembly's run with the screen locked: fails, as required, naming the locked screen and the missing row-10 line
+-- the fix's check of its review's cited lines (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/finding-lines.py), at 91c3b46a: it must pass
+   result: 50 of 50 cited lines and counts hold at 91c3b46a
+exit: 0
+-- the second fix's recheck of UNL2-01 to UNL2-03 and of the fix's review status (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-3/commands/recheck-unl2.py): it must pass
+   result: pass (0 of 4 not as stated)
+exit: 0
+   its control on the tree of 26530d49: all four reported, as required
+-- the second fix's check of its review's cited lines (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-3/commands/finding-lines.py), at 26530d49: it must pass
+   result: 31 of 31 cited lines and claims hold at 26530d49
+exit: 0
+   its control at 91c3b46a: fails, as required
+-- the six earlier rechecks that read texts this update changed: each must report exactly the lines of Docs/Stage0/evidence/M0-DeviceA/instructions/commands/expected-rechecks.txt (which says why)
+   recheck-review4 (Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/recheck-review4.py): exit 1; result: FAIL (2 of the eight not answered)
+   recheck-hon4 (Docs/Stage0/evidence/M0-Decisions/followup/round-3/commands/recheck-hon4.py): exit 1; result: FAIL (1 of the six not answered)
+   recheck-own4 (Docs/Stage0/evidence/M0-Decisions/followup/round-4/commands/recheck-own4.py): exit 1; result: FAIL (3 of the nine not answered)
+   recheck-own5 (Docs/Stage0/evidence/M0-Decisions/followup/round-5/commands/recheck-own5.py): exit 1; result: FAIL (1 of the six findings and five answers not answered or not recorded; 5 of five answers recorded)
+   recheck-unlocked (Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py): exit 1; result: FAIL (5 of 34 records not as stated)
+   recheck-unl (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/recheck-unl.py): exit 1; result: FAIL (2 of 6 not as stated)
+   as required: exactly the 14 expected lines
+-- this update's recheck (Docs/Stage0/evidence/M0-DeviceA/instructions/commands/recheck-instructions.py; its log: Docs/Stage0/evidence/M0-DeviceA/instructions/checks/recheck-instructions.log), on HEAD: it must pass
+   as stated device-A: device A is the iPhone 13 mini (iPhone14,4 expected; A15; 375 × 812 pt) in the runbook, the gate summary, the Stage 0 README and each checklist's device-A line, the iPhone 11 Pro kept only in dated notes
+   as stated floor: the 13 mini lays out at the 11 Pro's 375 × 812 pt drawn about 8% smaller; its figures that depend on the chip are its own, never the A13's; no budget changes; M8 measures the A13 floor; D-2 (a) stands with a narrower form of (b)'s exception
+   as stated branch: the runbook, the gate summary, the checklists' setup lines and the Stage 0 README send the owner to m0-sessions in ~/Git/sylvia-sessions, with records and agent work merged into it between sittings
+   as stated run-1: steps 2 and 3 done, step 5 asked and pending, step 7 a one-line confirmation with Apple's evidence in item 1 and the runbook's 0.2; run 1 within 200 words; the old texts in Section 6.3, item 104
+   as stated step-0.8: 0.8 gives the paths read from the drop-in, the commit checked, the result, the command for after a merge, and that the drop-in uses neither file m0-exit-prep changes; dropin-paths.log records no change
+   as stated sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of this update is a record of what happened (40 lines listed, each with its reason)
+   result: pass (0 of 6 not as stated)
+exit: 0
+-- its control on the tree of 6cede84a, where this update starts: all six items must be reported
+   PROBLEM   device-A: device A is the iPhone 13 mini (iPhone14,4 expected; A15; 375 × 812 pt) in the runbook, the gate summary, the Stage 0 README and each checklist's device-A line, the iPhone 11 Pro k
+   PROBLEM   floor: the 13 mini lays out at the 11 Pro's 375 × 812 pt drawn about 8% smaller; its figures that depend on the chip are its own, never the A13's; no budget changes; M8 measures the A13 floo
+   PROBLEM   branch: the runbook, the gate summary, the checklists' setup lines and the Stage 0 README send the owner to m0-sessions in ~/Git/sylvia-sessions, with records and agent work merged into it b
+   PROBLEM   run-1: steps 2 and 3 done, step 5 asked and pending, step 7 a one-line confirmation with Apple's evidence in item 1 and the runbook's 0.2; run 1 within 200 words; the old texts in Section 6.
+   PROBLEM   step-0.8: 0.8 gives the paths read from the drop-in, the commit checked, the result, the command for after a merge, and that the drop-in uses neither file m0-exit-prep changes; dropin-paths.
+   PROBLEM   sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of this update is a record of what happened (38 lines listed, each with its reason) (Docs/Stage0/M0-
+   result: FAIL (6 of 6 not as stated)
+exit: 1; reported: 6 of 6
+   as required: all six reported
+
+== 5. Scripts/ci.sh contracts dependency-lock hard-rules (every drop-in must pass)
+==> 00-git-lfs
+    pass (6s)
+==> 10-contracts
+    pass (0s)
+==> 11-capture-anchor-contracts
+    pass (54s)
+==> 12-dependency-lock
+    pass (23s)
+==> 13-hard-rules
+    pass (7s)
+all 5 steps passed
+ci.sh exit: 0
+summary lines from the drop-ins' own logs (.build/ci-logs/):
+-- 00-git-lfs (last 4 lines)
+LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+pointer files in the working tree: none
+git lfs fsck --pointers (HEAD): Git LFS fsck OK
+00-git-lfs: pass: no file stored with Git LFS is a pointer in the working tree, and every file the LFS attributes match is committed as an LFS pointer
+-- 10-contracts (last 4 lines)
+schemas: 18  fixtures: 657  openapi: 1  instances: 1
+-- 11-capture-anchor-contracts (last 4 lines)
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete minLength
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete type
+generic bound, survived: capture-envelope#/properties/word: delete type
+result: pass
+-- 12-dependency-lock (last 4 lines)
+ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1) (the pin, compared whole)
+ok    toolchain: xcodegen --version -> Version: 2.46.0 (the pin, compared whole)
+ok    acknowledgements draft: matches the inventory (236499 characters)
+dependency lock check: 0 failure(s), 0 warning(s)
+-- 13-hard-rules (last 4 lines)
+| todo-in-product | 0 | 0 |
+
+result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+13-hard-rules: self-test and repository audit passed; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_ce9fb2ad-560-1/.build/ci-logs/hard-rules
+-- the audit's result line:
+result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+-- FAIL lines in 12-dependency-lock's log:
+(none)
+-- its toolchain lines:
+ok    toolchain: the Xcode pin 27.1 (27A9275) as stated in .github/workflows/ci.yml, CLAUDE.md, Docs/ADRs/0001-platform-baseline-and-toolchain.md
+ok    toolchain: xcodebuild -version -> Build version 27A9275 (the pin, compared whole)
+ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1) (the pin, compared whole)
+ok    toolchain: xcodegen --version -> Version: 2.46.0 (the pin, compared whole)
+
+== 6. Leftover G0.5 temporary directories (read-only count; G05-AI R7-04)
+g05-* directories in the user's temporary folder: 1664
+g05-tests-* directories there: 0
+
+exit: 0
+end: 2026-10-25T16:37:19Z; load:  5:37  up 22 days, 15:47, 4 users, load averages: 4.39 4.67 6.30

@@ -1,0 +1,81 @@
+commit read: 8082bdb6a3f4a8ee8edfef6a9a5d3489f445ce22
+holds DA-01 Docs/Stage0/M0-device-runbook.md:163: The orchestrating session switches this checkout to it, from `main` at `96bdc7e9`
+holds DA-01 Docs/Stage0/M0-device-runbook.md:163: if it still reads `main`
+holds DA-01 Docs/Stage0/M0-device-runbook.md:163: run `git checkout m0-sessions` there yourself
+holds DA-01 Docs/Stage0/M0-device-runbook.md:163: Never build from `m0-integrate` or `m0-decisions`, both behind `main`
+holds DA-01 Docs/Stage0/M0-gate.md:16: The orchestrating session switches the checkout to it, from `main` at `96bdc7e9`
+holds DA-01 Docs/Stage0/M0-gate.md:16: Never build from `m0-integrate` or `m0-decisions`, both behind `main`
+holds DA-01 Docs/Stage0/device-checklists/G04-Audio.md:11: `m0-integrate` and `m0-decisions` are behind `main`
+holds DA-01 Docs/Stage0/device-checklists/G05-AI.md:7: `m0-integrate` and `m0-decisions` are behind `main`
+holds DA-01 Docs/Stage0/device-checklists/G05-Recovery.md:11: `m0-integrate` and `m0-decisions` are behind `main`
+holds DA-01 Docs/Stage0/integration-log.md:1570: on `main` at `96bdc7e9`
+holds DA-01 CLAUDE.md:5: both are behind `main`
+holds DA-01 Docs/Stage0/M0-gate.md:714: 115. **Seen at the assembly, and not in these records**
+holds DA-01 Docs/Stage0/M0-gate.md:714: do not describe that checkout as it now is
+holds DA-01 Docs/Stage0/M0-device-runbook.md:950: Do: the commands of 1.2 with A's `DEVICE_ID`
+holds DA-02 Docs/Stage0/M0-gate.md:10: None of the gates' device or human steps has run
+holds DA-02 Docs/Stage0/M0-gate.md:132: no device step has run
+holds DA-02 Docs/Stage0/M0-gate.md:718: not one device or human step has run
+holds DA-02 Docs/Stage0/README.md:5: no device step has run, so every gate stays pending
+holds DA-02 Docs/Stage0/M0-device-runbook.md:6: Nothing in this runbook has been run on a device
+holds DA-02 Docs/Stage0/M0-gate.md:714: whose messages record device runs
+holds DA-02 Docs/Stage0/integration-log.md:1684: their messages record device runs and the sessions' setup
+holds DA-02 Docs/Stage0/M0-device-runbook.md:22: | **B. iPhone 17 Pro** (iPhone18,1), iOS 26.7 (23H24), Developer Mode on |
+holds DA-02 Docs/ADRs/0001-platform-baseline-and-toolchain.md:62: **Test devices.** Recorded for Stage 0: iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24)
+holds DA-02 Docs/Sylvia_v1_iOS_Implementation_Plan.md:900: The current iPhone is an iPhone 17 Pro on iOS 26.7 (phone B in the runbook)
+holds DA-03 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (1) `m0-decisions` checked out
+holds DA-03 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (2) `CLAUDE.md`'s milestone paragraph corrected on `m0-decisions`
+holds DA-03 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (5) R4-01 and R4-02 asked of an agent (base `m0-decisions`
+holds DA-03 Docs/Stage0/evidence/M0-runbook/sessions.md:40: merged into `m0-decisions`
+holds DA-03 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (6) after each sitting, its records and evidence committed on `m0-decisions`
+holds DA-03 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (7) Apple's release notes for Xcode 27.1 read as technical lead
+holds DA-03 Docs/Stage0/evidence/M0-runbook/sessions.md:49: | 8 | 8 Device A, your iPhone 11 Pro (after Session 4) |
+holds DA-03 Docs/Stage0/evidence/M0-runbook/sessions.md:7: No device step has been run.
+holds DA-03 Docs/Stage0/M0-device-runbook.md:105: add one row per sitting to [`evidence/M0-runbook/sessions.md`]
+holds DA-03 Docs/Stage0/M0-device-runbook.md:163: 1. `git branch --show-current` reads `m0-sessions`
+holds DA-03 Docs/Stage0/M0-gate.md:705: 109. **Asked of other owners, not done here**: the session log's rows 1 and 8
+holds DA-03 Docs/Stage0/M0-gate.md:711: the session log's rows 1 and 8, which still name `m0-decisions` and your iPhone 11 Pro
+holds DA-04 Docs/ADRs/README.md:17: whether 27A9275 is the non-beta release still awaits a check of Apple's release notes
+holds DA-04 Docs/Sylvia_v1_iOS_Implementation_Plan.md:1159: Pending: the technical lead's sign-off, with the check of Apple's release notes for Xcode 27.1 (ADR-0001)
+holds DA-04 Docs/ADRs/0001-platform-baseline-and-toolchain.md:3: has not been checked against Apple's release notes
+holds DA-04 CLAUDE.md:16: whether 27A9275 is the non-beta release awaits a check of Apple's release notes
+holds DA-04 Docs/Stage0/M0-gate.md:22: 7. **As technical lead, confirm that Xcode 27.1 (27A9275) is the release build: one line**
+holds DA-04 Docs/Stage0/M0-device-runbook.md:159: Apple's pages show that 27A9275 is Xcode 27.1's release build
+holds DA-05 Docs/ADRs/0014-dependency-lock-and-license-inventory.md:247: the request names `m0-decisions` as the agent's base and a branch of its own for the result, which reaches the
+holds DA-06 Docs/Stage0/M0-device-runbook.md:918: 8.8 and 8.9 record what iOS does, not a speed or memory figure, and so does step 1 of 8.10
+holds DA-06 Docs/Stage0/M0-device-runbook.md:1025: (8.1-8.5, 8.8, 8.9 and step 1 of 8.10) are not affected
+holds DA-06 Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DurabilityTests.swift:169: func latency() throws {
+holds DA-06 Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DurabilityTests.swift:173: #expect(result.p95Ms <= 200)
+holds DA-06 Docs/Stage0/device-checklists/G05-Recovery.md:46: 1. Step 1's log already contains `capture save latency synchronous=FULL fullfsync=ON:
+holds DA-07 Docs/Stage0/M0-device-runbook.md:210: ran that check again on the merged tree
+holds DA-07 Docs/Stage0/M0-device-runbook.md:210: any output means 0.8 runs again
+holds DA-07 Docs/Stage0/M0-gate.md:714: so runbook 0.8 would then run again
+holds DA-08 Docs/Stage0/M0-device-runbook.md:952: in G0.6 step 12, whether a stall of the phone of more than 150 ms makes a press toggle twice
+holds DA-08 Docs/Stage0/evidence/M0-DeviceA/README.md:61: G0.6 step 12, whose stated limit is a stall of the phone of more than 150 ms
+holds DA-08 Docs/ADRs/0013-design-language.md:136: does not apply to these steps: they depend on the screen
+holds DA-08 Docs/ADRs/0013-design-language.md:290: steps 1-3, 5-9, 12 and 16-19 on device A
+holds DA-08 Docs/ADRs/0013-design-language.md:220: more than 150 ms
+holds DA-09 Docs/Stage0/M0-gate.md:22: which is recorded in ADR-0001 as your check
+holds DA-09 Docs/Stage0/M0-gate.md:22: ADR-0001 records the same evidence on `m0-exit-prep`, until its merge into `m0-sessions`
+holds DA-09 Docs/Stage0/M0-gate.md:22: if you do not confirm it, PO-35 comes back to you before any device result rests on it
+holds DA-09 Docs/Stage0/M0-device-runbook.md:159: your confirmation of that reading, as technical lead, is still to be recorded: one line (run 1, step 7)
+holds DA-09 Docs/Stage0/M0-device-runbook.md:167: and leave those records to it until its branch is merged
+holds DA-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log (named, no line cited; found on line 18): m0-decisions behind main (an ancestor of it): no
+holds DA-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/gate-checks.log (named, no line cited; found on line 103): m0-decisions: c72247a69a374ce361834550b92689b4abab95ee; behind main: NO
+holds DA-01 Docs/Stage0/integration-log.md (named, no line cited; found on line 1682): #### 28.8.6 Seen at the assembly: the sessions' checkout on `m0-decisions`
+holds DA-04 Docs/ADRs/README.md (named, no line cited; found on line 15): | ADR | Title | Status (24 October 2026) | Owner during Stage 0 |
+holds DA-06 Docs/Stage0/device-checklists/G05-Recovery.md (named, no line cited; found on line 32): `Test run with 68 tests in 11 suites passed`
+holds DA-07 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/dropin-paths.log (named, no line cited; found on line 1): commit: 5e455f706c20d46711030a8b030c9dbf87dd4acd (m0-sessions)
+the session log on m0-decisions (c72247a6), rows 3a-3d, the first six cells only (run | session | date | who | commit | devices):
+   3a | 1 Automated suites, step 1.1 only | 2026-10-25 17:12 UTC | Codex with Justin Evidon | `96bdc7e996f99fcd2571ea983cc32a04076a5a07` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3b | 1 Automated suites, step 1.2 | 2026-10-25 17:14 UTC | Codex with Justin Evidon | `8404f342` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3c | 1 Automated suites, step 1.2 hosted | 2026-10-25 UTC | Codex with Justin Evidon | `432acc13` plus DeviceTests code committed unchanged as `4be1a1a4` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3d | 1 Automated suites, step 1.3 | 2026-10-25 17:24–17:26 UTC | Codex with Justin Evidon | `d5336111` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+holds DA-01 claim: git for-each-ref refs/heads/m0-decisions: m0-decisions c72247a69a374ce361834550b92689b4abab95ee /Users/jevidon/Git/sylvia-sessions
+holds DA-01 claim: git rev-list --count main..m0-decisions gives 8; the commits after 044ed3cf run from 8404f342 2026-10-26 06:12:41 +1300 to c72247a6 2026-10-26 06:33:13 +1300 (NZDT, as the commits record it)
+holds DA-01 claim: the session log on m0-decisions has rows 3a-3d, sittings on phone B (iPhone 17 Pro) on 2026-10-25 UTC (the steps run and their results, the last two cells, not read here)
+holds DA-02 claim: those rows give phone B as iOS 27.0.1 (24A446)
+holds DA-01 claim: under Spikes, m0-decisions adds exactly DeviceTests's project.yml, App/TestHost.swift, Support/Bundle+Module.swift and Package.resolved
+holds DA-01 claim: on m0-decisions the runbook's 1.2 generates DeviceTests and runs its two xcodebuild commands with -project DeviceTests/G05RecoveryDeviceTests.xcodeproj -scheme G05RecoveryDeviceTests
+holds DA-07 claim: Scripts/ci.d/71-g05-recovery.sh and LockHarness/Scripts/harness-checks.sh name no DeviceTests at the commit read (0 lines)
+result: every cited line, named text and claim holds (61 citations, 0 of them found within three lines of the line cited; 6 named texts; 7 claims)

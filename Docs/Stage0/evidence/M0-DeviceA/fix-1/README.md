@@ -16,6 +16,12 @@ the same branch, from `d6315ad3`, this fix's last commit; its record is [`accura
 log section 30. That fix read more of `m0-decisions` than this one did, to judge the merge ACC-01 asks for, and records
 none of the sittings' results either.)*
 
+*(26 October 2026: the same review's completeness findings, DA-01 to DA-09, were relayed to a third fix that followed on
+the same branch, from `ec91f66a`, the second fix's last commit; its record is [`completeness/`](completeness/README.md)
+and integration log section 31. It changed what this fix had the owner's instructions say of 0.8 after the merge of
+`m0-decisions` (FID-DA-03): neither the drop-in nor the lock harness's checks builds, copies or runs `DeviceTests`, so
+the drop-in's run on `9cdb0a02` stands for it.)*
+
 ## The findings, and what was done
 
 | Finding | What was done |

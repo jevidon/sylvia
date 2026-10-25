@@ -14,6 +14,10 @@ judge the merge ACC-01 asks for, this fix read the diff of `m0-decisions` agains
 included; it records none of the owner's sittings' results here and infers none (its logs print only the first six
 cells of the session log's dated rows there: when, by whom, from which commit, on which device).
 
+*(26 October 2026: the same review's completeness findings, DA-01 to DA-09, were relayed to a third fix that followed on
+the same branch, from `ec91f66a`, this fix's last commit: [`../completeness/`](../completeness/README.md); integration
+log section 31.)*
+
 ## The findings, and what was done
 
 | Finding | What was done |

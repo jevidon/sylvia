@@ -1,6 +1,6 @@
-commit: 3463cc1483e4340b7c99a346f11dc38839d827b8 (m0-exit-prep); uncommitted files before this run: 0
+commit: 73c57cf2f08357112c5366050da49b98aa00fd36 (m0-exit-prep); uncommitted files before this run: 0
 host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
-start: 2026-10-25T18:24:24Z; load:  7:24  up 22 days, 17:34, 3 users, load averages: 4.63 14.67 20.79
+start: 2026-10-25T18:36:56Z; load:  7:36  up 22 days, 17:47, 3 users, load averages: 6.10 6.20 11.52
 extraction dir of the review records: /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews
 
 == 1. What changed
@@ -61,7 +61,7 @@ extraction dir of the review records: /private/tmp/claude-501/-Users-jevidon-Git
    main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07; origin/main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07; commits on origin/main that main lacks: 0; on main that origin/main lacks: 0
    m0-decisions: c72247a69a374ce361834550b92689b4abab95ee; origin/m0-decisions: 044ed3cf86db838c93cda7e2ca4829474b234ae5; its tree is main's: no
    Spikes/G05-Recovery/LockHarness/project.yml at main: present; at HEAD: present
--- 1h. this fix, from 609ed492 (the assembly's last commit, which the review read) to HEAD: 32 files, 22 of them new
+-- 1h. this fix, from 609ed492 (the assembly's last commit, which the review read) to HEAD: 35 files, 25 of them new
    ad709059, the guard's change, an ancestor of HEAD: yes; its parent 609ed492 (the assembly's last commit, as stated); it changes: Scripts/check-dependency-lock.py
    the files changed, outside this fix's evidence:
    Docs/ADRs/0014-dependency-lock-and-license-inventory.md
@@ -111,7 +111,7 @@ files tracked by LFS (git lfs ls-files): 777; of them still pointer files in the
 LFS files (object and path, git lfs ls-files -l) at HEAD and at 4c73da5754f5cbddabde88e11d222a231a29f8ca: identical, 777 each: no LFS object added since pull request #5
 
 == 3. M0-gate.md: paths, and statuses against the records they cite
-== paths: 336 checked
+== paths: 337 checked
 == gate report rows
 row 1: passed-simulator | G01-EPUB.md G1: 'passed-simulator' -> agrees
 row 2: pending-device | G01-EPUB.md G2: 'pending-device' -> agrees
@@ -568,21 +568,23 @@ exit: 0
    result: FAIL (4 problem(s))
 exit: 1; parts with a problem: 4.
    as required: part 4 alone
--- this fix's recheck of SEC-ZIPGUARD-01 and SEC-ZIPGUARD-02 and of the review's status (Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/recheck-fix-1.py), on HEAD: it must pass
+-- this fix's recheck of SEC-ZIPGUARD-01 and SEC-ZIPGUARD-02, of the review's status and of the observation it records (Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/recheck-fix-1.py), on HEAD: it must pass
    ok       F1: the rule for a local package inside the product roots, its docstring, five mutations and an allowed change, and the reproductions' seven routes as expected (12 texts)
    ok       F2: ADR-0014 (rule 5, section 3, counts, status, evidence, consequence, open item), the ADR index, the gate summary (row 76, item 111, Sections 1, 2.10 and 6.1, item 4, the Branch line), its checker, integration log section 31, the Stage 0 README (
    ok       F3: item 22, row 76 and item 105 give the earlier counts in the past tense; item 112 (7 texts)
    ok       R: the State line, Section 6.2 (the review's row and paragraph), items 109 and 113, Section 7's item 5, Section 8, integration log 30.6 and the runbook's Who wrote it (16 texts)
-   result: pass (0 of 4 groups not as stated)
+   ok       O: the observation of a version-specific manifest, in the fix's README, integration log 31.5 and item 113, with its log (6 texts)
+   result: pass (0 of 5 groups not as stated)
 exit: 0
 -- its control on the tree of 609ed492, the commit the review read: every group must be reported
    PROBLEM  F1: the rule for a local package inside the product roots, its docstring, five mutations and an allowed change, and the reproductions' seven routes as expected (12 of 12 not as stated; first:
    PROBLEM  F2: ADR-0014 (rule 5, section 3, counts, status, evidence, consequence, open item), the ADR index, the gate summary (row 76, item 111, Sections 1, 2.10 and 6.1, item 4, the Branch line), its 
    PROBLEM  F3: item 22, row 76 and item 105 give the earlier counts in the past tense; item 112 (7 of 7 not as stated; first: Docs/Stage0/M0-gate.md lacks: its self-test then had 239 mutations (228 befo
    PROBLEM  R: the State line, Section 6.2 (the review's row and paragraph), items 109 and 113, Section 7's item 5, Section 8, integration log 30.6 and the runbook's Who wrote it (14 of 16 not as stated;
-   result: FAIL (4 of 4 groups not as stated)
-exit: 1; groups reported: 4 of 4
-   as required: all four groups reported
+   PROBLEM  O: the observation of a version-specific manifest, in the fix's README, integration log 31.5 and item 113, with its log (6 of 6 not as stated; first: Docs/Stage0/evidence/M0-ExitPrep/fix-1/RE
+   result: FAIL (5 of 5 groups not as stated)
+exit: 1; groups reported: 5 of 5
+   as required: all five groups reported
 
 == 5. Scripts/ci.sh contracts dependency-lock hard-rules (every drop-in must pass)
 ==> 00-git-lfs
@@ -590,11 +592,11 @@ exit: 1; groups reported: 4 of 4
 ==> 10-contracts
     pass (1s)
 ==> 11-capture-anchor-contracts
-    pass (53s)
+    pass (54s)
 ==> 12-dependency-lock
-    pass (32s)
+    pass (29s)
 ==> 13-hard-rules
-    pass (8s)
+    pass (7s)
 all 5 steps passed
 ci.sh exit: 0
 summary lines from the drop-ins' own logs (.build/ci-logs/):
@@ -637,4 +639,4 @@ g05-* directories in the user's temporary folder: 1664
 of them g05-tests, G0.5 recovery's test root, which the cleanup command of G05-AI.md would delete too (R8-04): 1; g05-tests-*: 0
 
 exit: 0
-end: 2026-10-25T18:26:33Z; load:  7:26  up 22 days, 17:37, 3 users, load averages: 4.63 11.29 18.57
+end: 2026-10-25T18:39:04Z; load:  7:39  up 22 days, 17:49, 3 users, load averages: 5.66 6.06 10.71

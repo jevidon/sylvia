@@ -16,7 +16,11 @@ is, and the review's status given wherever the records give the exit preparation
       tense too, with item 112;
   R   the review's status: the State line (within 200 words), Section 6.2's row for the review, placed before the
       hand-over's row, which stays the table's last, and its paragraph, items 109 and 113, Section 7's item 5, Section
-      8's bullets and its Written by line, the integration log's 30.6, and the runbook's Who wrote it.
+      8's bullets and its Written by line, the integration log's 30.6, and the runbook's Who wrote it;
+  O   the observation outside the two findings, not fixed (a version-specific manifest beside a product Package.swift,
+      which SwiftPM evaluates and the manifest-input rule does not read): recorded in the fix's README, integration log
+      31.5 and the gate summary's item 113, and its log showing dump-package following the environment and the check
+      reporting nothing.
 Most checks are an anchor with the start of the dated note that must follow it at once, so that a note in the wrong
 place fails; a text that must be gone is checked as gone. On HEAD every group must pass; on the tree of 609ed492, the
 reviewed commit, which the gate checks beside this file run as its control, every group must be reported. The checks
@@ -202,5 +206,21 @@ group("R", [
 ], "the State line, Section 6.2 (the review's row and paragraph), items 109 and 113, Section 7's item 5, Section 8, "
    "integration log 30.6 and the runbook's Who wrote it")
 
-print(f"result: {'pass' if problems == 0 else 'FAIL'} ({problems} of 4 groups not as stated)")
+# O: the observation outside the two findings, recorded and not fixed.
+OBS = "Docs/Stage0/evidence/M0-ExitPrep/fix-1/observation-vsm.log"
+FIX_README = "Docs/Stage0/evidence/M0-ExitPrep/fix-1/README.md"
+group("O", [
+    (FIX_README, "- **A route that no relayed finding names, found while fixing and not fixed.** SwiftPM evaluates a "
+                 "version-specific manifest"),
+    (LOG, "- **A route no relayed finding names, found while fixing, not fixed.** SwiftPM evaluates a version-specific "
+          "manifest"),
+    (GATE, "Its agent also found one more route of R4-01's kind that no finding names, and did not fix it"),
+    (OBS, "  SYLVIA_EXTRA unset: exit 0; the SylviaDesign target's path: Sources/SylviaDesign\n"),
+    (OBS, "  SYLVIA_EXTRA Sources/Elsewhere: exit 0; the SylviaDesign target's path: Sources/Elsewhere\n"),
+    (OBS, "=== 2. The check as in this checkout, on the copy, SYLVIA_EXTRA unset (as CI runs it)\n"
+          "  dependency lock check: 0 failure(s), 0 warning(s)\n  exit 0\n"),
+], "the observation of a version-specific manifest, in the fix's README, integration log 31.5 and item 113, with its "
+   "log")
+
+print(f"result: {'pass' if problems == 0 else 'FAIL'} ({problems} of 5 groups not as stated)")
 sys.exit(1 if problems else 0)

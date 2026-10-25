@@ -1,0 +1,23 @@
+observation started 2026-10-25T18:31:50Z; tree of 0a2f2ca3d26b8a1b89cd416395466a6dc85b40c4 (m0-exit-prep); uncommitted paths: 7, of them under Docs/: 7
+the check run: Scripts/check-dependency-lock.py as committed, sha256 71514489291fe34ceda1731fb1d9874d0946977fdc74db97df75e3cb51f4a826
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 ; swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+load:  7:31  up 22 days, 17:42, 3 users, load averages: 2.80 5.98 13.81
+
+=== The planted version-specific manifest: its lines that differ from Packages/Design/Package.swift
+  26a27,28
+  > import Foundation
+  > let designPath = ProcessInfo.processInfo.environment["SYLVIA_EXTRA"] ?? "Sources/SylviaDesign"
+  48c50
+  <             path: "Sources/SylviaDesign",
+  ---
+  >             path: designPath,
+
+=== 1. swift package dump-package of Packages/Design, without and with SYLVIA_EXTRA
+  SYLVIA_EXTRA unset: exit 0; the SylviaDesign target's path: Sources/SylviaDesign
+  SYLVIA_EXTRA Sources/Elsewhere: exit 0; the SylviaDesign target's path: Sources/Elsewhere
+
+=== 2. The check as in this checkout, on the copy, SYLVIA_EXTRA unset (as CI runs it)
+  dependency lock check: 0 failure(s), 0 warning(s)
+  exit 0
+
+observation finished 2026-10-25T18:31:54Z; load:  7:31  up 22 days, 17:42, 3 users, load averages: 3.06 5.98 13.76

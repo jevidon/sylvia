@@ -655,7 +655,7 @@ python3 -I "$fixev/commands/recheck-fix-1.py" "$trees/asm" > "$s/f1-control.out"
 f1_groups="$(grep -c -E '^(ok|PROBLEM) ' "$s/f1-control.out")"
 f1_reported="$(grep -c -E '^PROBLEM ' "$s/f1-control.out")"
 {
-  echo "-- this fix's recheck of SEC-ZIPGUARD-01 and SEC-ZIPGUARD-02 and of the review's status ($fixev/commands/recheck-fix-1.py), on HEAD: it must pass"
+  echo "-- this fix's recheck of SEC-ZIPGUARD-01 and SEC-ZIPGUARD-02, of the review's status and of the observation it records ($fixev/commands/recheck-fix-1.py), on HEAD: it must pass"
   sed 's/^/   /' "$s/f1.out" | cut -c1-260
   echo "exit: $f1_status"
   echo "-- its control on the tree of ${asm:0:8}, the commit the review read: every group must be reported"
@@ -663,10 +663,10 @@ f1_reported="$(grep -c -E '^PROBLEM ' "$s/f1-control.out")"
   echo "exit: $f1_control; groups reported: $f1_reported of $f1_groups"
 } >> "$log"
 (( f1_status != 0 )) && status=1
-if [[ "$f1_control" == 1 && "$f1_groups" == 4 && "$f1_reported" == 4 ]]; then
-  echo "   as required: all four groups reported" >> "$log"
+if [[ "$f1_control" == 1 && "$f1_groups" == 5 && "$f1_reported" == 5 ]]; then
+  echo "   as required: all five groups reported" >> "$log"
 else
-  echo "   NOT as required: all four groups reported" >> "$log"; status=1
+  echo "   NOT as required: all five groups reported" >> "$log"; status=1
 fi
 rm -rf "$trees"
 

@@ -11,3 +11,5 @@ Log: step-1-tests.log.
 No protection readback or latency measurements obtained. Cable repeats and Release/Low Power Mode runs not attempted because the package test target requires a host application. Existing G05 Lock harness has separate tests, not the SylviaRecoveryTests suite; it is not a substitute for this step.
 
 Retry requested by owner: 2026-10-25 17:15 UTC, build commit 38f9604e. Same command, exit 70, same tool-hosted testing error before any tests executed. Evidence: step-1-retry-tests.log. Status remains blocked.
+
+The host-app blocker was resolved by DeviceTests (4be1a1a4). The subsequent unchanged-suite device run FAILED with 108 issues; see step-1-hosted-results.md and step-1-hosted-tests.log. Four expected skips. One Debug cable latency p95=2.292 ms; other latency runs pending.

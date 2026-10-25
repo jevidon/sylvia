@@ -18,6 +18,14 @@ writes only the Markdown files of ../ (render) and its own standard output.
       with --extraction, also compares each committed file byte for byte with DIR/<file>.json (exit 1 on any problem)
 
 No network, no simulator, no device; git is only read.
+
+Changed on 26 October 2026, after the second review of the M0 exit preparation (integration log section 32): the
+deps item's two notes are dated (EV-01: the second said that ADR-0014 names none of R4-03 to R4-07, which it gives
+since the Zip guard's fix, 6cd842d3, while part 7 printed that fact as a note beside it); part 7 now checks, as
+problems, the three statements of the records that rest on the repository as it is now (that note on ADR-0014, and
+R8-04's command and G0.5 recovery's g05-tests/ root, which the minors-g05-ai note and the README state), where it
+printed them as notes; and parts 5 and 6 report a branch missing from the repository as a problem instead of
+stopping with an error (EV-04: the thirteen m0-int-* branches are local to the build Mac's repository).
 """
 import argparse
 import hashlib
@@ -91,15 +99,30 @@ RUN_ORDER = ["wf_5ce13c9e-6bf", "wf_5552ba19-d21", "wf_744b95c1-309", "wf_3f1b0c
 # The runs the gate summary (Section 1, item 4) named, from a listing of the journals' folder, read-only.
 GATE_SUMMARY_RUNS = ["wf_5552ba19-d21", "wf_744b95c1-309", "wf_3f1b0c6a-cad", "wf_9ea3b4d5-f4f", "wf_eaa493fa-c4f",
                      "wf_84f4e4ba-f4a"]
+# The Zip guard's fix of the deps item's R4-01 and R4-02, on m0-exit-zipguard (integration log section 28), from which
+# ADR-0014 gives round 4's minor findings too; the deps item's second note is checked against it (part 7).
+ZIP_FIX = "6cd842d3"
+ADR14 = "Docs/ADRs/0014-dependency-lock-and-license-inventory.md"
+R4_MINOR = ["R4-03", "R4-04", "R4-05", "R4-06", "R4-07"]
 
 # Notes this hand-over adds to an item's Markdown (facts read in the records, the repository or the task).
 NOTES = {
     "deps": [
         "The final round's R4-01 and R4-02 are the two serious findings the gate summary tracks (`M0-gate.md` "
-        "Section 6.1; integration log 7.1). A parallel agent's task of 24 October 2026 is to close them, on a branch "
-        "of its own; its outcome is not part of this record.",
-        "The final round's minor findings R4-03 to R4-07 are not in ADR-0014, which names R4-01 and R4-02 only "
-        "(searched by ID on this branch).",
+        "Section 6.1; integration log 7.1). A parallel agent's task of 24 October 2026 was to close them, on a branch "
+        "of its own; its outcome is not part of this record. *(Dated note, 26 October 2026: that agent closed both in "
+        "the guard on `m0-exit-zipguard` (`6cd842d3`), with R4-03 and R4-04, and its branch was merged into "
+        "`m0-exit-prep` (`7e2cd62e`) just before this record's (integration log section 28); whether a review judged "
+        "R4-01 and R4-02 answered has not been relayed, so round 4's verdict stays on the record (ADR-0014, Status). "
+        "Until the second review of the M0 exit preparation, its finding EV-01, this note said that the task \"is\" "
+        "to close them.)*",
+        "The final round's minor findings R4-03 to R4-07 were not in ADR-0014, which named R4-01 and R4-02 only "
+        "(searched by ID on `m0-exit-reviews`, where this record was made). *(Dated note, 26 October 2026: until "
+        "`6cd842d3`, the fix of R4-01 and R4-02 on `m0-exit-zipguard` (integration log section 28), ADR-0014 named "
+        "only R4-01 and R4-02; since then it gives all seven, R4-03 and R4-04 closed with that fix and R4-05 to R4-07 "
+        "left open with its owner (its Status, section 3 and Open items), as on `m0-exit-prep`, where both branches "
+        "were merged. Until the second review of the M0 exit preparation, its finding EV-01, this note said \"are "
+        "not\" and \"names\", on this branch; `check` now fails if it stops holding (its part 7).)*",
     ],
     "contracts": [
         "fix-2 recorded that the list of review-2b's findings handed to it ended partway through L2-R2-01, so it saw "
@@ -662,7 +685,7 @@ def check(extraction):
             given = commit_of(r) or ""
             full = resolve(given)
             note = "" if HEX.fullmatch(given) else f" (given as {given[:60]!r}{'...' if len(given) > 60 else ''})"
-            ok = full is not None and is_ancestor(full, head)
+            ok = full is not None and bool(head) and is_ancestor(full, head)
             date = git("show", "-s", "--format=%cI", full).stdout.strip() if full else "-"
             report(ok, f"{n} {short_label(r)}: {(full or given)[:12]} is a commit of this repository (git cat-file -e), "
                        f"on {it.branch} (committed {date}){note}")
@@ -691,31 +714,37 @@ def check(extraction):
         if not row:
             continue
         final = resolve(commit_of(it.finals[0]))
-        head = git("rev-parse", f"refs/heads/{it.branch}").stdout.strip()
+        # A branch missing from the repository (a clone that lacks the local m0-int-* branches) is a problem here, not
+        # an error that stops the check (since 26 October 2026; until then this ran with check=True: EV-04).
+        head = git("rev-parse", "--verify", "--quiet", f"refs/heads/{it.branch}", check=False).stdout.strip()
         verdicts = {r["result"].get("verdict") for r in it.finals}
         report(row["branch"] == it.branch and final == row["final"] and head == row["final"],
                f"{n}: 7.1's final commit {row['final'][:12]} = the commit the final round reviewed = the head of "
-               f"{it.branch}")
+               f"{it.branch}" + ("" if head else f" (no branch {it.branch} in this repository)"))
         report(verdicts == {row["verdict"]}, f"{n}: 7.1's verdict {row['verdict']!r} = the final round's "
                f"{', '.join(sorted(v for v in verdicts if v))}")
         squash = resolve(row["squash"])
         message = git("show", "-s", "--format=%B", squash).stdout if squash else ""
         report(squash is not None and it.branch in message and row["final"] in message,
                f"{n}: the squash commit {row['squash']} names {it.branch} and {row['final'][:12]} in its message")
-        parent = git("rev-parse", f"{squash}^").stdout.strip()
-        base = git("merge-base", it.branch, parent).stdout.strip()
-        paths = [p for p in git("diff", "--name-only", "--no-renames", base, it.branch).stdout.splitlines() if p]
-        differ = []
-        for path in paths:
-            a = git("ls-tree", it.branch, "--", path).stdout.split()
-            b = git("ls-tree", squash, "--", path).stdout.split()
-            if a[:1] + a[2:3] != b[:1] + b[2:3]:
-                differ.append(path)
-        expected = ["Docs/ADRs/0014-dependency-lock-and-license-inventory.md"] if n == "deps" else []
-        report(len(paths) == row["paths"] and differ == expected,
-               f"{n}: the {len(paths)} paths the branch changes are identical in mode and blob in the squash commit"
-               + (f", except {', '.join(differ)}" if differ else "") + f" (7.1: {row['paths']} paths"
-               + ("; its one conflict, in wording only, as 7.1 records" if n == "deps" else "") + ")")
+        if head:
+            parent = git("rev-parse", f"{squash}^").stdout.strip()
+            base = git("merge-base", it.branch, parent).stdout.strip()
+            paths = [p for p in git("diff", "--name-only", "--no-renames", base, it.branch).stdout.splitlines() if p]
+            differ = []
+            for path in paths:  # --full-tree: the paths are the repository's, wherever ROOT is (a copy, in a control)
+                a = git("ls-tree", "--full-tree", it.branch, "--", path).stdout.split()
+                b = git("ls-tree", "--full-tree", squash, "--", path).stdout.split()
+                if a[:1] + a[2:3] != b[:1] + b[2:3]:
+                    differ.append(path)
+            expected = ["Docs/ADRs/0014-dependency-lock-and-license-inventory.md"] if n == "deps" else []
+            report(len(paths) == row["paths"] and differ == expected,
+                   f"{n}: the {len(paths)} paths the branch changes are identical in mode and blob in the squash "
+                   f"commit" + (f", except {', '.join(differ)}" if differ else "") + f" (7.1: {row['paths']} paths"
+                   + ("; its one conflict, in wording only, as 7.1 records" if n == "deps" else "") + ")")
+        else:
+            report(False, f"{n}: the paths the branch changes cannot be compared with the squash commit's: no branch "
+                          f"{it.branch} in this repository")
         report(is_ancestor(squash, "HEAD"), f"{n}: the squash commit is in this branch's history")
         serious = [f["id"] for r in it.finals for f in r["result"].get("findings", [])
                    if f.get("severity") in SERIOUS]
@@ -728,13 +757,16 @@ def check(extraction):
     for n, (fragment, commits, ids, closed) in SECTION2.items():
         it = items[n]
         report(fragment in log, f"{n}: integration log section 2 says: {fragment[:110]}...")
-        head = git("rev-parse", f"refs/heads/{it.branch}").stdout.strip()
+        head = git("rev-parse", "--verify", "--quiet", f"refs/heads/{it.branch}", check=False).stdout.strip()
+        if not head:  # as in part 5: a problem, not an error (since 26 October 2026, EV-04)
+            report(False, f"{n}: no branch {it.branch} in this repository, so the commits section 2 names cannot "
+                          f"be read on it")
         by_label = {short_label(r): resolve(commit_of(r)) for r in it.records}
         final = resolve(commit_of(it.finals[0]))
         for short, role in commits:
             full = resolve(short)
             if role == "on-branch":
-                ok = full is not None and is_ancestor(full, head)
+                ok = full is not None and bool(head) and is_ancestor(full, head)
                 what = f"on {it.branch}"
             elif role == "final":
                 ok = full == final
@@ -845,20 +877,41 @@ def check(extraction):
           f"{total['raised']} raised by the final rounds, {total['earlier']} earlier findings with no recorded "
           f"resolution, {total['prev']} earlier items the final rounds mark not resolved")
 
-    adr14 = open(os.path.join(ROOT, "Docs/ADRs/0014-dependency-lock-and-license-inventory.md"),
-                 encoding="utf-8").read()
-    named = [i for i in ("R4-03", "R4-04", "R4-05", "R4-06", "R4-07") if id_pattern(i).search(adr14)]
-    print(f"note    deps: of the final round's minor findings R4-03 to R4-07, ADR-0014 names "
-          f"{', '.join(named) or 'none'} (searched by ID)")
+    # Three statements of these records rest on the repository as it is now, not on the records: the deps item's note on
+    # what ADR-0014 names, and R8-04's cleanup command and G0.5 recovery's g05-tests/ root, which the minors-g05-ai note
+    # and the README give as still there. Until 26 October 2026 this part printed each fact as a note beside the
+    # statement, so the deps note went stale on m0-exit-prep unseen (the second review of the M0 exit preparation,
+    # EV-01); since then each statement is checked against its fact, and one that no longer agrees is a problem.
+    readme_text = open(os.path.join(FOLDER, "README.md"), encoding="utf-8").read()
+    adr14 = open(os.path.join(ROOT, ADR14), encoding="utf-8").read()
+    named = [i for i in R4_MINOR
+             if any(id_pattern(i).search(line) for line in adr14.split("\n") if "item-reviews/" not in line)]
+    zip_fix = resolve(ZIP_FIX)
+    before = git("show", f"{zip_fix}^:{ADR14}", check=False).stdout if zip_fix else ""
+    named_before = [i for i in R4_MINOR if id_pattern(i).search(before)]
+    since = zip_fix is not None and is_ancestor(zip_fix, "HEAD")
+    deps_note = NOTES["deps"][1]
+    report(bool(before) and not named_before and since and named == R4_MINOR
+           and f"until `{ZIP_FIX}`" in deps_note and "since then it gives all seven" in deps_note,
+           f"deps: the record's note on ADR-0014 holds: before {ZIP_FIX}, the Zip guard's fix, ADR-0014 named "
+           f"{', '.join(named_before) or 'none'} of R4-03 to R4-07; {ZIP_FIX} is {'' if since else 'NOT '}in this "
+           f"branch's history; and ADR-0014 now names {', '.join(named) or 'none'} of them outside its pointer line")
     ai = open(os.path.join(ROOT, "Docs/Stage0/G05-AI.md"), encoding="utf-8").read()
     command = "find \"$TMPDIR\" -maxdepth 1 -name 'g05-*' -type d -exec rm -rf {} +"
-    print(f"note    minors-g05-ai: the cleanup command R8-04 names is {'still' if command in ai else 'no longer'} in "
-          f"G05-AI.md")
+    still = command in ai
+    said = ("The command is still there" in NOTES["minors-g05-ai"][1], "The command is still there" in readme_text)
+    report(said == (still, still),
+           f"minors-g05-ai: the cleanup command R8-04 names is {'still' if still else 'no longer'} in G05-AI.md; the "
+           f"record's note and the README say it is still there: {'yes' if said[0] else 'no'}, "
+           f"{'yes' if said[1] else 'no'}")
     support = open(os.path.join(ROOT, "Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Support.swift"),
                    encoding="utf-8").read()
-    print(f"note    minors-g05-ai: G0.5 recovery's tests {'still' if 'temporaryDirectory' in support and '\"g05-tests/' in support else 'no longer'} "
-          f"make their scratch directories under g05-tests/ in the temporary folder (Spikes/G05-Recovery/Tests/"
-          f"SylviaRecoveryTests/Support.swift)")
+    under = "temporaryDirectory" in support and '"g05-tests/' in support
+    said_root = "still makes its scratch directories under `g05-tests/`" in readme_text
+    report(said_root == under,
+           f"minors-g05-ai: G0.5 recovery's tests {'still' if under else 'no longer'} make their scratch directories "
+           f"under g05-tests/ in the temporary folder (Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Support.swift); "
+           f"the README says they still do: {'yes' if said_root else 'no'}")
 
     print()
     print("== 8. The Markdown records")

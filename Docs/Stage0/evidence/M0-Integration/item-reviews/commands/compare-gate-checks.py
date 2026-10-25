@@ -9,6 +9,11 @@ both runs fail on exactly that. What must hold: the lines that report a problem,
 base log's only failing parts are 1b's and 1c's lines on CLAUDE.md, every other part saying it passed or failed as
 required.
 
+(Dated note, 26 October 2026: 5aec2518 is that correction made otherwise than step 2 asks, which is on m0-decisions:
+the orchestrating session made it on top of main, at the owner's request as its commit message records, before this
+hand-over began. Until then this description did not say so: the third review of the M0 exit preparation, its finding
+HON-EP-02; integration log section 33. The comparison is unchanged.)
+
   python3 -I Docs/Stage0/evidence/M0-Integration/item-reviews/commands/compare-gate-checks.py <base log> <head log>
 """
 import collections

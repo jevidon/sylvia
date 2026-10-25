@@ -110,19 +110,21 @@ NOTES = {
     "deps": [
         "The final round's R4-01 and R4-02 are the two serious findings the gate summary tracks (`M0-gate.md` "
         "Section 6.1; integration log 7.1). A parallel agent's task of 24 October 2026 was to close them, on a branch "
-        "of its own; its outcome is not part of this record. *(Dated note, 26 October 2026: that agent closed both in "
-        "the guard on `m0-exit-zipguard` (`6cd842d3`), with R4-03 and R4-04, and its branch was merged into "
-        "`m0-exit-prep` (`7e2cd62e`) just before this record's (integration log section 28); whether a review judged "
-        "R4-01 and R4-02 answered has not been relayed, so round 4's verdict stays on the record (ADR-0014, Status). "
-        "Until the second review of the M0 exit preparation, its finding EV-01, this note said that the task \"is\" "
-        "to close them.)*",
+        "of its own; its outcome is not part of this record. *(Dated note, 26 October 2026: that agent answered both "
+        "in the guard by its change on `m0-exit-zipguard` (`6cd842d3`), with R4-03 and R4-04, and its branch was "
+        "merged into `m0-exit-prep` (`7e2cd62e`) just before this record's (integration log section 28); no review "
+        "has accepted the change, so round 4's verdict stays on the record and both stay open (ADR-0014, Status). "
+        "Until the second review of the M0 exit preparation, its finding EV-01, this note said that the task \"is\" to "
+        "close them; and until the third, its finding HON-EP-01, that the agent closed both, and that whether a review "
+        "judged them answered had not been relayed.)*",
         "The final round's minor findings R4-03 to R4-07 were not in ADR-0014, which named R4-01 and R4-02 only "
         "(searched by ID on `m0-exit-reviews`, where this record was made). *(Dated note, 26 October 2026: until "
         "`6cd842d3`, the fix of R4-01 and R4-02 on `m0-exit-zipguard` (integration log section 28), ADR-0014 named "
-        "only R4-01 and R4-02; since then it gives all seven, R4-03 and R4-04 closed with that fix and R4-05 to R4-07 "
-        "left open with its owner (its Status, section 3 and Open items), as on `m0-exit-prep`, where both branches "
-        "were merged. Until the second review of the M0 exit preparation, its finding EV-01, this note said \"are "
-        "not\" and \"names\", on this branch; `check` now fails if it stops holding (its part 7).)*",
+        "only R4-01 and R4-02; since then it gives all seven, R4-03 and R4-04 answered by that fix, review pending, "
+        "and R4-05 to R4-07 left open with its owner (its Status, section 3 and Open items), as on `m0-exit-prep`, "
+        "where both branches were merged. Until the second review of the M0 exit preparation, its finding EV-01, this "
+        "note said \"are not\" and \"names\", on this branch; `check` now fails if it stops holding (its part 7). "
+        "Until the third, its finding HON-EP-01, it said that R4-03 and R4-04 were closed with that fix.)*",
     ],
     "contracts": [
         "fix-2 recorded that the list of review-2b's findings handed to it ended partway through L2-R2-01, so it saw "

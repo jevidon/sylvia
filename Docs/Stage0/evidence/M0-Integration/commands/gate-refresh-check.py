@@ -141,24 +141,30 @@ FACTS = {
                               "Docs/ADRs/0001-platform-baseline-and-toolchain.md")
                     + log_has("repin-27.1/round-2/12-dependency-lock.log", "dependency lock check: 0 failure(s)")
                     + log_has("repin-27.1/round-2/12-dependency-lock.log", "12-dependency-lock exit status: 0\n")),
-    # Row 76: failed on round 4's verdict, reject, with R4-01 and R4-02 open, until the M0 exit preparation of 24 October
-    # 2026 closed both in the guard (an agent's change on m0-exit-zipguard, 6cd842d3, which an agent review reads next):
-    # ADR-0014's status says so, and the drop-in passes with the self-test that plants each route, on the change's last
-    # documents commit (integration log section 28). Until then this entry read
-    # ("failed", adr_says(14, "reject", "R4-01", "R4-02")).
-    # Since the fix of the review of the M0 exit preparation (26 October 2026, SEC-ZIPGUARD-01; integration log section
-    # 31), also ADR-0014's status on that fix and the drop-in's run with the guard's rule for local packages, on the
-    # fix's last documents commit; the zip guard's own log stays as its record.
-    76: ("passed-host", adr_says(14, "R4-01 and R4-02 are closed in the guard")
-                        + adr_says(14, "a local package inside the product roots must be one git tracks there")
-                        + file_has("Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log",
-                                   "dependency lock check: 0 failure(s)")
-                        + file_has("Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log",
-                                   "self-test: 283 mutations")
-                        + file_has("Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log",
-                                   "dependency lock check: 0 failure(s)")
-                        + file_has("Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log",
-                                   "self-test: 278 mutations")),
+    # Row 76: failed on round 4's verdict, reject, with R4-01 and R4-02 open. Before 24 October 2026 this entry read
+    # ("failed", adr_says(14, "reject", "R4-01", "R4-02")). From the M0 exit preparation of 24 October 2026 until its
+    # third review, 26 October 2026, it expected passed-host, as the agent that changed the guard (m0-exit-zipguard,
+    # 6cd842d3) asked (integration log 30.2), on ADR-0014's status saying that R4-01 and R4-02 are closed in the guard:
+    # ("passed-host", adr_says(14, "R4-01 and R4-02 are closed in the guard") with the four facts on the guard's logs
+    # below, and from the fix of the first review (SEC-ZIPGUARD-01; integration log section 31) also the fact on its
+    # rule for local packages, below). Since the third review (HON-EP-01; integration log section 33) it expects failed
+    # again: closing R4-01 and R4-02 is an agent's change to the guard with an agent review that accepts it (M0-gate.md
+    # Section 1, item 4), no review has accepted the change, as ADR-0014's status now says, and that status must no
+    # longer say that they are closed in the guard. The guard's logs, which the row cites, are read as before: they show
+    # that the change exists and passes, which is not what the row waits for.
+    76: ("failed", adr_says(14, "reject", "R4-01 and R4-02 are answered in the guard by its change, review pending",
+                            "No review has accepted that change")
+                   + adr_says(14, "a local package inside the product roots must be one git tracks there")
+                   + [("ADR-0014 status no longer says 'R4-01 and R4-02 are closed in the guard'",
+                       lambda: "R4-01 and R4-02 are closed in the guard" not in adr_status(14))]
+                   + file_has("Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log",
+                              "dependency lock check: 0 failure(s)")
+                   + file_has("Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log",
+                              "self-test: 283 mutations")
+                   + file_has("Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log",
+                              "dependency lock check: 0 failure(s)")
+                   + file_has("Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log",
+                              "self-test: 278 mutations")),
     77: ("pending-human", file_has("Docs/ADRs/0014-dependency-lock-and-license-inventory.md",
                                    "### 7. Decisions that need a person (pending-human)")),
     78: ("pending-human", ALL_ADRS_PENDING),

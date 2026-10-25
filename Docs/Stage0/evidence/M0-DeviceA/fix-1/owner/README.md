@@ -71,7 +71,7 @@ line, and 399.
 | --- | --- |
 | [`relayed-findings.md`](relayed-findings.md) | What was relayed to this fix: the request, the task, and the nine findings verbatim |
 | [`commands/finding-lines.py`](commands/finding-lines.py) → [`checks/finding-lines.log`](checks/finding-lines.log) | Every line the findings cite, read at `8082bdb6` with `git show`, holds the text they quote, every text they name without a line is in its file, and their claims about refs and other commits hold |
-| `../commands/branch-state.sh` → [`checks/branch-state.log`](checks/branch-state.log) | The first fix's read of the branches, unchanged, run again on this fix's documents commit |
+| `../commands/branch-state.sh` → [`checks/branch-state.log`](checks/branch-state.log) | The first fix's read of the branches, unchanged, run again on this fix's last documents commit |
 | `../accuracy/commands/branch-texts.py` → [`checks/branch-texts.log`](checks/branch-texts.log) | The second fix's judged branch check, unchanged, run again |
 | `../completeness/commands/dropin-paths.sh` → [`checks/dropin-paths.log`](checks/dropin-paths.log) | The third fix's check of runbook 0.8's paths, unchanged, run again |
 | [`commands/merges.sh`](commands/merges.sh) → [`checks/merges.log`](checks/merges.log) | The two merges `m0-sessions` waits for, computed and not made: `m0-decisions`, which must still be at `c72247a6`, into HEAD, and `m0-exit-prep`, as it stood when read, into HEAD and into `caf75a84`. The successor of the third fix's |
@@ -89,7 +89,9 @@ bullet on the recovery package, a line `m0-decisions` changes too, made the comp
 the runbook (`commands/merges.sh` and the third fix's `dropin-paths.sh` exited 1): this fix must add no conflict to the
 merge the switch waits for. The second documents commit restores that line as it was at `caf75a84`, gives what Session 1
 found in a bullet of its own after it, and has `commands/recheck-own.py` (host) require the line as it was; that run's
-logs were discarded, and every check below ran again on the second documents commit.
+logs were discarded. A second run, on that commit, passed as below, but showed this README's account of the third fix's
+gate checks (its part 1c) to be wrong in one clause; the third documents commit corrects it, that run's logs were
+discarded too, and every check below ran again on the third, the fix's last documents commit.
 
 Each ran on the build Mac (macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275)) on the commit its log's header
 names: `lfs-checkout.log` on `caf75a84`, before any change; the others on the fix's last documents commit, with no
@@ -152,7 +154,8 @@ for a finding; this fix's checks assert the new text, and its gate checks requir
   documents commit, with no uncommitted file): part 1a, which allows only the third fix's files since `ec91f66a`, so not
   `README.md`, ADR-0001, the G0.5 recovery checklist or this fix's folder; part 1b, which requires nothing outside
   `Docs/` and the checklists unchanged since `ec91f66a`; part 1c, which allows no change under `Docs/Stage0/evidence`
-  but its own new files and the dated notes in three READMEs, so not this fix's new files or the third fix's README; part
+  but its own new files and the dated notes in three READMEs, so not this fix's new files (the dated note in the third
+  fix's own README passes there, since that file is one of its new files since `ec91f66a`); part
   3, on the five logs of this fix that the gate summary cites and that the documents commit does not hold yet
   (`apple-ios27-page.log`, `branch-state.log`, `finding-lines.log`, `gate-checks.log` and `merges.log`; this fix's gate
   checks, on the commit that adds them, find every path); and part 4, for the three rechecks above. Their other parts pass, part 5 (`Scripts/ci.sh contracts

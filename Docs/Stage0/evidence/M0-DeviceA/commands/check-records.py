@@ -130,11 +130,15 @@ check("ADR-0010: the repeats on device A, the iPhone 13 mini; the narrower excep
 check("ADR-0013: G0.6's steps for the oldest supported iPhone made on device A; the exception does not apply", A13, need=[
     "that check is made on device A, the iPhone 13 mini (A15)",
     "does not apply to these steps: they depend on the screen and record no speed, memory or thermal figure",
-    "steps 4, 13-15, 22-27, 29 and 30 on device A, for the oldest supported iPhone (the iPhone 13 mini since 24 October "
-    "2026"],
+    "steps 4, 13-15, 22-27, 29 and 30 on device A (the iPhone 13 mini since 24 October 2026, the iPhone 11 Pro until "
+    "then), the steps for the oldest supported iPhone, which device A covers by its screen size in points"],
     gone=["Since the product owner's decision D-1 (b) of 22 October 2026 that phone is the iPhone 11 Pro",
           "The oldest supported iPhone is device A, the iPhone 11 Pro (375 × 812 pt)",
-          "steps 4, 13-15, 22-27, 29 and 30 on the oldest supported iPhone (device A, the iPhone 11 Pro)"])
+          "steps 4, 13-15, 22-27, 29 and 30 on the oldest supported iPhone (device A, the iPhone 11 Pro)",
+          # 26 October 2026: the first attempt's wording, which set the iPhone 13 mini beside "the oldest supported
+          # iPhone" as if it were it.
+          "for the oldest supported iPhone (the iPhone 13 mini since",
+          "G0.6's type roles on the oldest supported iPhone are checked on it"])
 
 # 1-4. The gate reports.
 t38 = line_with(G02, "| T38 on a device (Wi-Fi, oldest supported iPhone) |")

@@ -3,7 +3,7 @@
 # m0-sessions-records, and prints a header naming the environment. The successor of
 # Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/run-checks.sh for the plan amendments' checks:
 #   1. this update's amendments checker (check-amendments.py beside this file): every check must pass;
-#   2. its 64 mutations (mutation-checks.py beside this file): each must make the checker fail its guarding check;
+#   2. its 66 mutations (mutation-checks.py beside this file): each must make the checker fail its guarding check;
 #   3. control: the follow-up's fix's checker must fail on exactly three checks, the anchors of 22 and 23 October 2026
 #      this update replaced: the revision date, D-1's anchors of 22 October 2026 in 19.1 and 21.1 (10c), and the entry's
 #      last items (10i);
@@ -15,7 +15,8 @@
 #      reports there, except two, each on exactly one text, the ADR index's status column, now dated 24 October 2026:
 #      the follow-up's fix's recheck (its FID4-04, and its result line) and the second fix's (its HON4-06, and its result
 #      line), whose new text check-records.py requires; the two drop-in fixes' rechecks count the Markdown files they
-#      sweep, which this update adds to, so those counts are left out of the comparison;
+#      sweep, which this update adds to, so those counts are left out of the comparison; and each one's HON-11 line
+#      (CLAUDE.md's milestone paragraph, which 5aec2518 and 6cede84a changed) is printed as it reports it on this tree;
 #   6. the device runbook's content check (Docs/Stage0/evidence/M0-Decisions/assembly/commands/runbook-content-check.py,
 #      the assembly's, unchanged): it must pass, so the fragments it reads in the plan, ADR-0009, ADR-0010 and the G0.2
 #      report still hold (the runbook and the checklists are not changed on this branch);
@@ -138,6 +139,11 @@ for script in "${rechecks[@]}"; do
       "$outdir/$name.$side" > "$outdir/$name.$side.n"
   done
   diff "$outdir/$name.start.n" "$outdir/$name.head.n" | grep -E '^[<>] ' | sed 's/^/   /'
+done
+echo "   HON-11 (CLAUDE.md's milestone paragraph), as each recheck that reads it reports it on HEAD:"
+for script in "${rechecks[@]}"; do
+  name="$(basename "$script" .py)"
+  grep -h 'HON-11' "$outdir/$name.head" | sed "s/^/   $name: /"
 done
 python3 -I - "$outdir" <<'PY'
 import sys

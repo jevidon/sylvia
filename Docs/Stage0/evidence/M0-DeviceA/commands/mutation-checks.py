@@ -6,9 +6,11 @@ plan draft 0.8 as revised on 24 October 2026.
 This version replaces Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/mutation-checks.py, run against this
 update's checker: its 51 mutations kept, six of them changed because the text they mutate or the label of the check
 they expect changed with the decision of 24 October 2026 (D-1 reverted in 19.1 and in 21.1, now on the text of the iPhone
-13 mini; the revision date turned back, now from 24 to 23 October 2026; and the labels of 10c and 10i, which now say
-"as revised on 24 October 2026", in the mutations that expect them), and thirteen more, for the checks this update
-changed or added: the Status and Revised lines without the decision (10k), the M8 row without the A13 floor (10k), the
+13 mini; the revision date turned back, now from 26 to 24 October 2026, the date the first attempt of this update wrote
+and its second, on 26 October 2026, replaced; and the labels of 10c and 10i, which now say
+"as revised on 24 October 2026", in the mutations that expect them), and fifteen more, for the checks this update
+changed or added: the Status and Revised lines without the decision (10k), the Revised line without the record's
+completion of 26 October 2026 and the item of 24 October 2026 without that date (10k), the M8 row without the A13 floor (10k), the
 baseline's A13 restored in the device-evidence row (10k), the Literata row and D01 back on the iPhone 11 Pro (10k), 21.4's
 older baseline iPhone restored (10k), G0.6's check on device A dropped from 21.1 (10k), the iPhone 11 a second A13 phone
 again in 19.1 (10c), the A13 floor said to be measured in M0 (10c), a pass on the iPhone 13 mini read as an A13 pass
@@ -217,9 +219,10 @@ MUTATIONS = [
      "and the product owner's decision keeps it so.",
      "draft 0.8 as revised on 23 October 2026: 15.5 records the product owner's decision on PO-12"),
     # Added by the follow-up of 23 October 2026 (the product owner's answers of that day).
-    ("the revision date turned back to 23 October 2026 (until 24 October 2026: from 23 to 22 October)", PLAN,
+    ("the revision date turned back to 24 October 2026 (until 26 October 2026: from 24 to 23 October; until 24 October "
+     "2026: from 23 to 22 October)", PLAN,
+     "**Revised:** 26 October 2026 (",
      "**Revised:** 24 October 2026 (",
-     "**Revised:** 23 October 2026 (",
      "new anchor phrases are present in the plan"),
     ("PO-12's two parts left open again in 15.5", PLAN,
      "Decided for the sources file and the import ledger by the product owner on 23 October 2026: each is set aside and "
@@ -314,8 +317,8 @@ MUTATIONS = [
      "| G0.6 on the oldest supported iPhone, an iPhone 11 Pro the product owner has",
      "draft 0.8 as revised on 24 October 2026: the product owner's decision on device A"),
     ("D01 back on the iPhone 11 Pro", PLAN,
-     "The baseline device, device A, is an iPhone 13 mini (A15, 375 × 812 pt); the A13, the oldest chip iOS 26 supports, "
-     "is left for M8's release device matrix (Section 19.1)",
+     "Device A, the baseline for small-screen layout on a device, is an iPhone 13 mini (A15, 375 × 812 pt); the A13, the "
+     "oldest chip iOS 26 supports, is left for M8's release device matrix (Section 19.1)",
      "The oldest supported iPhone, the baseline device, is an iPhone 11 Pro (A13; Section 19.1)",
      "draft 0.8 as revised on 24 October 2026: the product owner's decision on device A"),
     ("21.4's older baseline iPhone restored", PLAN,
@@ -346,6 +349,15 @@ MUTATIONS = [
      "\n- *Recorded on 24 October 2026, within draft 0.8:",
      " *Recorded on 24 October 2026, within draft 0.8:",
      "draft 0.8 as revised on 24 October 2026: Appendix D's draft 0.8 entry ends with the dated item"),
+    # Added on 26 October 2026, when the second attempt completed the record: the completion's two anchors.
+    ("the Revised line without the completion of 26 October 2026", PLAN,
+     " 26 October: that record completed before any review, two of its wordings corrected (D01's row and Section 19.1).",
+     "",
+     "draft 0.8 as revised on 24 October 2026: the product owner's decision on device A"),
+    ("the item of 24 October 2026 without the date of its completion", PLAN,
+     " The record was completed on 26 October 2026, before any review:",
+     " The record was completed before any review:",
+     "draft 0.8 as revised on 24 October 2026: the product owner's decision on device A"),
     ("the amendments' A46 row without its note of 24 October 2026", DOC,
      " 24 October 2026: the product owner's iPhone 11 Pro no longer charges, and the owner decided D-1 again: device A, "
      "the baseline for small-screen layout on a device, is the owner's iPhone 13 mini",

@@ -114,8 +114,10 @@ check("ADR-0007: device A the iPhone 13 mini, no Action button; the exception ch
       gone=["on device A, the iPhone 11 Pro since D-1 (b) of the same day",
             "device A, the oldest supported iPhone, has none: the iPhone 11 Pro since 22 October 2026"])
 check("ADR-0009: step 11 on the iPhone 13 mini; the narrower exception; the words the runbook check reads kept", A09,
-      need=["memory on the oldest supported iPhone (checklist step 11, on device A: since the product owner's decision "
-            "of 24 October 2026 the iPhone 13 mini (A15)", EXCEPTION,
+      need=["memory on the oldest supported iPhone (checklist step 11, which runs on device A. Device A was the iPhone "
+            "11 Pro (A13), the product owner's decision D-1 (b) of 22 October 2026, which no longer charges; since the "
+            "owner's decision of 24 October 2026 it is the iPhone 13 mini (A15), which is not the oldest supported iPhone.",
+            EXCEPTION, "and an A13 phone's wait for M8's release device matrix, plan 19.1)",
             "step 11 on device A, the iPhone 13 mini since the product owner's decision of 24 October 2026"],
       gone=["memory on the oldest supported iPhone (device A: the iPhone 11 Pro since",
             "step 11 on device A, the iPhone 11 Pro since D-1 (b) of the same day"])
@@ -198,8 +200,11 @@ check("the integration log: section 28 and its parts", LOG, need=[
     "## 28. Device A is the iPhone 13 mini, and the owner's instructions brought up to date (24 October 2026)",
     "### 28.1 The state on 24 October 2026", "### 28.2 The device-A change: the decision, and where each record changed",
     "### 28.3 The owner's instructions brought up to date", "### 28.4 Commits", "### 28.5 Checks",
-    "### 28.6 Not done here, and why",
-    "the M0 work moved to `m0-sessions`, and the product owner decided device A again"])
+    "### 28.6 Not done here, and why", "### 28.7 What stays pending",
+    "the M0 work moved to `m0-sessions`, and the product owner decided device A again",
+    # The second attempt (26 October 2026): the record says what the first attempt left and what the second ran.
+    "This part was made in two attempts", "whether they ran is not known",
+    "when the workflow relayed the product owner's \"keep going\""])
 
 print(f"summary: {len(failures)} failed checks")
 sys.exit(1 if failures else 0)

@@ -2,13 +2,15 @@
 """Consistency checks for the M0 plan amendments, for plan draft 0.8 (the product owner's decisions of 22 October 2026,
 the answers of 23 October 2026 and the decision of 24 October 2026 on device A recorded within it).
 
-This version (24 October 2026, the update of the M0 records for the device-A change; integration log section 28)
-replaces Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/check-amendments.py with every one of its checks
-unchanged except three, and adds one, because on 24 October 2026 the product owner decided D-1 again (the iPhone 11 Pro,
-device A since 22 October 2026, no longer charges: device A is the owner's iPhone 13 mini, and the A13 floor is left for
-M8's release device matrix), and the plan records it within draft 0.8:
-- 7, the anchors: "**Revised:** 23 October 2026" is now required to be absent and "**Revised:** 24 October 2026"
-  present;
+This version (24 October 2026, the update of the M0 records for the device-A change, completed on 26 October 2026 by
+that update's second attempt, before any review; integration log section 28) replaces
+Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/check-amendments.py with every one of its checks unchanged
+except three, and adds one, because on 24 October 2026 the product owner decided D-1 again (the iPhone 11 Pro, device A
+since 22 October 2026, no longer charges: device A is the owner's iPhone 13 mini, and the A13 floor is left for M8's
+release device matrix), and the plan records it within draft 0.8:
+- 7, the anchors: "**Revised:** 23 October 2026" and "**Revised:** 24 October 2026" are now required to be absent, and
+  "**Revised:** 26 October 2026" present (the first attempt wrote 24 October 2026, the second, which corrected two of
+  the record's wordings in D01's row and 19.1 on 26 October 2026, the date of that correction);
 - 10c, D-1: its anchors of 22 October 2026 in 19.1 and 21.1 (the iPhone 11 Pro as the baseline, the iPhone 11 as a
   second A13 phone, every budget stricter on them) are replaced by the decision of 24 October 2026 (the iPhone 13 mini,
   its screen as the iPhone 11 Pro's, its A15, the A13 floor left for M8), the old wording now required to be absent
@@ -588,15 +590,19 @@ def main():
         # Replaced on 24 October 2026, when the product owner's decision of that day on device A was recorded within
         # draft 0.8 (the follow-up's fix's version required this anchor).
         "**Revised:** 23 October 2026",
+        # Replaced on 26 October 2026, when that record was completed before any review (this checker's first version,
+        # of 24 October 2026, required this anchor).
+        "**Revised:** 24 October 2026",
     ]
     present = [
         # Draft 0.8 (22 October 2026): the draft 0.7 checker required "**Status:** Draft 0.7" and
         # "**Revised:** 20 October 2026" here; those are now in the list of replaced phrases above.
         "**Status:** Draft 0.8",
-        # 24 October 2026: the revision date moved with the decision of that day on device A (the follow-up's fix's
-        # version required "**Revised:** 23 October 2026" here, and the first fix's "**Revised:** 22 October 2026";
-        # both are now in the list of replaced phrases above).
-        "**Revised:** 24 October 2026",
+        # 24 October 2026: the revision date moved with the decision of that day on device A, and on 26 October 2026
+        # with the completion of that record (the follow-up's fix's version required "**Revised:** 23 October 2026"
+        # here, the first fix's "**Revised:** 22 October 2026", and this checker's first version "**Revised:** 24
+        # October 2026"; all three are now in the list of replaced phrases above).
+        "**Revised:** 26 October 2026",
         "Not yet the versioned 1.0 execution specification: Section 23.3 says that follows the M0 exit, which waits for the device sessions.",
         "**Draft 0.8 - 22 October 2026: the product owner's decisions on the M0 gate's questions recorded.**",
         "**Approved by the product owner on 22 October 2026.** The product owner approved every decision below, D01 to D17",
@@ -1067,7 +1073,9 @@ def main():
             "device A no longer charging: device A is the owner's iPhone 13 mini, and the A13, the oldest chip iOS 26 "
             "supports, is left for M8's release device matrix"]),
         ("the Revised line", line_with(plan, "**Prepared:**"), [
-            "24 October: the product owner's decision of that day on device A recorded within draft 0.8"]),
+            "24 October: the product owner's decision of that day on device A recorded within draft 0.8",
+            "26 October: that record completed before any review, two of its wordings corrected (D01's row and Section "
+            "19.1)"]),
         ("21.1", sec("21.1 Stage 0"), [
             "The product owner has device A (24 October 2026; until then device A was the owner's iPhone 11 Pro, which no "
             "longer charges",
@@ -1082,8 +1090,8 @@ def main():
             "device A (D-1: an older baseline iPhone until 24 October 2026; since then an iPhone 13 mini, the A13 floor "
             "left for M8's device matrix, Section 19.1)"]),
         ("D01's row", d01, [
-            "The baseline device, device A, is an iPhone 13 mini (A15, 375 × 812 pt); the A13, the oldest chip iOS 26 "
-            "supports, is left for M8's release device matrix (Section 19.1)",
+            "Device A, the baseline for small-screen layout on a device, is an iPhone 13 mini (A15, 375 × 812 pt); the "
+            "A13, the oldest chip iOS 26 supports, is left for M8's release device matrix (Section 19.1)",
             "on 24 October 2026 the product owner took D-1 again, the iPhone 11 Pro no longer charging: device A is the "
             "iPhone 13 mini, and the A13 floor is left for M8 (Section 19.1)",
             "Approved by the product owner on 22 October 2026, with the oldest supported iPhone decided (runbook D-1 (b):"]),
@@ -1109,6 +1117,7 @@ def main():
             "\"with a borrowed or bought A13 phone if wanted\"",
             "So part (i) of D-1 is decided again, not read anew",
             "D-2 (a) stands: the M0 exit waits for Session 8 on device A",
+            "The record was completed on 26 October 2026, before any review",
             "No budget, scope or other decision changed. Agent-written; not reviewed.*"]),
         ("Appendix D's draft 0.3 note on D01", line_with(after_d, "- D01: platform floor amended"), [
             "*(24 October 2026: device A is now an iPhone 13 mini, the iPhone 11 Pro no longer charging, and the A13 floor "
@@ -1136,7 +1145,8 @@ def main():
         ("Section 7", line_with(doc, "| Device A and the A13 floor (24 October 2026) |"), [
             "Checked (`evidence/M0-DeviceA/commands/check-amendments.py`, its checks 10c and 10k)"]),
         ("Section 9", line_with(doc, "- **Applied as:**"), [
-            "(the latest, for draft 0.8 as revised on 24 October 2026, `evidence/M0-DeviceA/commands/check-amendments.py`"]),
+            "(the latest, for draft 0.8 as revised on 24 and 26 October 2026, "
+            "`evidence/M0-DeviceA/commands/check-amendments.py`"]),
     ]
     k_missing = ["%s: %s" % (name, phrase) for name, text, phrases in k_plan + k_doc for phrase in phrases
                  if not text or phrase not in text]

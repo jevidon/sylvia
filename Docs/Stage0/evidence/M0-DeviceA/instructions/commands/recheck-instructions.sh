@@ -14,9 +14,10 @@ control=.build/scratch/recheck-instructions-control
 rm -rf "$control"; mkdir -p "$control"
 git archive "$start" | tar -x -C "$control"
 status=0
+uncommitted="$(git status --porcelain | wc -l | tr -d ' ')"  # counted before the log is opened
 {
   echo "command: Docs/Stage0/evidence/M0-DeviceA/instructions/commands/recheck-instructions.sh"
-  echo "commit: $(git rev-parse HEAD) ($(git rev-parse --abbrev-ref HEAD)); uncommitted files: $(git status --porcelain | wc -l | tr -d ' ')"
+  echo "commit: $(git rev-parse HEAD) ($(git rev-parse --abbrev-ref HEAD)); uncommitted files before this run: $uncommitted"
   echo "date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
   echo
   echo "== on the tree as it stands: it must pass"

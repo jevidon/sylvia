@@ -151,10 +151,17 @@ FACTS = {
     # again: closing R4-01 and R4-02 is an agent's change to the guard with an agent review that accepts it (M0-gate.md
     # Section 1, item 4), no review has accepted the change, as ADR-0014's status now says, and that status must no
     # longer say that they are closed in the guard. The guard's logs, which the row cites, are read as before: they show
-    # that the change exists and passes, which is not what the row waits for.
+    # that the change exists and passes, which is not what the row waits for. Since the fix of the fourth review
+    # (SEC-ZIPGUARD-03; integration log section 34) it also reads ADR-0014's status on that fix and the fix's log of
+    # 12-dependency-lock, which the row cites; the row stays failed, that fix awaiting a review like the change.
     76: ("failed", adr_says(14, "reject", "R4-01 and R4-02 are answered in the guard by its change, review pending",
                             "No review has accepted that change")
                    + adr_says(14, "a local package inside the product roots must be one git tracks there")
+                   + adr_says(14, "a product package's only manifest is its `Package.swift`")
+                   + file_has("Docs/Stage0/evidence/M0-ExitPrep/fix-2/12-dependency-lock.log",
+                              "dependency lock check: 0 failure(s)")
+                   + file_has("Docs/Stage0/evidence/M0-ExitPrep/fix-2/12-dependency-lock.log",
+                              "self-test: 291 mutations")
                    + [("ADR-0014 status no longer says 'R4-01 and R4-02 are closed in the guard'",
                        lambda: "R4-01 and R4-02 are closed in the guard" not in adr_status(14))]
                    + file_has("Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log",

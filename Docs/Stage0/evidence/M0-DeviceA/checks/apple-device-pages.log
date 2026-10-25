@@ -1,0 +1,61 @@
+command: Docs/Stage0/evidence/M0-DeviceA/commands/apple-device-pages.sh
+commit: fdbec8b8a806e6dd3fb4b04bde7ad399975d22f1 (m0-sessions-records); uncommitted paths: 0
+read: 2026-10-25T16:39:08Z (UTC; the build Mac's date: 2026-10-26)
+
+fetched https://support.apple.com/en-nz/111873 -> HTTP 200, 202804 bytes
+fetched https://support.apple.com/en-nz/111879 -> HTTP 200, 187546 bytes
+fetched https://support.apple.com/en-nz/111865 -> HTTP 200, 193441 bytes
+fetched https://support.apple.com/en-nz/111878 -> HTTP 200, 187526 bytes
+fetched https://support.apple.com/en-nz/111882 -> HTTP 200, 198425 bytes
+fetched https://support.apple.com/guide/iphone/iphone-models-compatible-with-ios-26-iphe3fa5df43/26/ios/26 -> HTTP 200, 1463481 bytes
+
+-- https://support.apple.com/en-nz/111873
+   fetched: 202804 bytes; text read: 25230 characters
+   present: "iPhone 13 mini - Technical Specifications"
+   present: "5.4-inch (diagonal) all-screen OLED display"
+   present: "2340-by-1080-pixel resolution at 476 ppi"
+   present: "A15 Bionic chip"
+   present: "6-core CPU with 2 performance and 4 efficiency cores"
+   present: "4-core GPU"
+   present: "16-core Neural Engine"
+   present: "Lightning connector"
+   present: "Enabled by TrueDepth camera for facial recognition"
+   present: "Ring/Silent switch"
+   absent, as required (any letter case): "Action button"
+   absent, as required: the word "RAM" (0 occurrences)
+   the word "memory", any letter case: 0 occurrence(s)
+-- https://support.apple.com/en-nz/111879
+   fetched: 187546 bytes; text read: 17522 characters
+   present: "iPhone 11 Pro - Technical Specifications"
+   present: "5.8-inch (diagonal) all-screen OLED Multi-Touch display"
+   present: "2436-by-1125-pixel resolution at 458 ppi"
+   present: "A13 Bionic chip"
+   present: "Lightning connector"
+   present: "Ring/Silent switch"
+   absent, as required (any letter case): "Action button"
+   absent, as required: the word "RAM" (0 occurrences)
+   the word "memory", any letter case: 0 occurrence(s)
+-- https://support.apple.com/en-nz/111865
+   fetched: 193441 bytes; text read: 23456 characters
+   present: "iPhone 11 - Technical Specifications"
+   present: "1792-by-828-pixel resolution at 326 ppi"
+   present: "A13 Bionic chip"
+-- https://support.apple.com/en-nz/111878
+   fetched: 187526 bytes; text read: 17491 characters
+   present: "iPhone 11 Pro Max - Technical Specifications"
+   present: "2688-by-1242-pixel resolution at 458 ppi"
+   present: "A13 Bionic chip"
+-- https://support.apple.com/en-nz/111882
+   fetched: 198425 bytes; text read: 24449 characters
+   present: "iPhone SE (2nd generation) - Technical Specifications"
+   present: "1334-by-750-pixel resolution at 326 ppi"
+   present: "A13 Bionic chip"
+-- https://support.apple.com/guide/iphone/iphone-models-compatible-with-ios-26-iphe3fa5df43/26/ios/26
+   fetched: 1463481 bytes; text read: 31599 characters
+   present: "iPhone models compatible with iOS 26"
+   present: "which is compatible with the following models: iPhone 11 iPhone 11 Pro iPhone 11 Pro Max iPhone 12 mini iPhone 12 iPhone 12 Pro iPhone 12 Pro Max iPhone 13 mini iPhone 13"
+   present: "iPhone SE (2nd generation) iPhone SE (3rd generation)"
+   absent, as required (any letter case): "iPhone XS"
+   absent, as required (any letter case): "iPhone XR"
+result: pass (0 problem(s))
+exit: 0

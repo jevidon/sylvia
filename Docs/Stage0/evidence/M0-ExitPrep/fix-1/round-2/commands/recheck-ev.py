@@ -13,8 +13,9 @@ it is, and the review's status given wherever the records gave the fix of the fi
   E2  EV-02: the gate summary's note on the final-review records (item 4) and integration log 29.2, each with a dated
       note on the reason the records give for the 25 findings no later record names; item 115;
   E3  EV-03: the README's pointer to the check log's part 7 for R8-04, part 6 gone; item 116;
-  E4  EV-04: the README's note on where the records' commits are kept, citing branch-reach.log; the check's parts 4-6
-      reading a branch with check=False and part 5's old call gone; the gate summary's Section 5.4 item and item 117;
+  E4  EV-04: the README's note on where the records' commits are kept, citing branch-reach.log, and integration log
+      29.2's; the check's parts 5 and 6 reading a branch with check=False and their old call gone; the gate summary's
+      Section 5.4 item and item 117;
   R   the review's status: the State line (within 200 words), Section 6.2 (the first review's row, a row for the
       second before the hand-over's row, which stays the table's last, and the paragraph after the table), the notes
       after each text that gave the first fix as not reviewed (the gate summary's item 4, Section 1, row 76, Section
@@ -162,6 +163,9 @@ group("E4", [
     (IREADME, "(`Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/branch-reach.log`)"),
     (IREADME, "Keeping the branches, pushing them or tagging those commits before `m0-exit-prep` reaches `main` is the "
               "product owner's to decide"),
+    (LOG, "each review read the commit of the author or fix before it.",
+     " *(Dated note, 26 October 2026: of this repository on the build Mac alone: the 28 commits the records cite are on "
+     "the thirteen local `m0-int-*` branches and no other ref"),
     ("parts 5 and 6 read the branch with check=False", call in part5 and call in part6),
     ("gone", SCRIPT, 'head = git("rev-parse", f"refs/heads/{it.branch}").stdout.strip()'),
     ("Section 5.4 has the owner's choice on the m0-int-* branches",
@@ -170,7 +174,8 @@ group("E4", [
     (GATE, "117. **Where the review records' commits are kept** (EV-04)"),
     ("Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/branch-reach.py", 'git("for-each-ref", "--contains", '
                                                                                  'full'),
-], "the README's note on the local m0-int-* branches, the check's parts 5 and 6, Section 5.4 and item 117")
+], "the README's and integration log 29.2's notes on the local m0-int-* branches, the check's parts 5 and 6, Section 5.4 "
+   "and item 117")
 
 # R: the review's status.
 gate = read(GATE)

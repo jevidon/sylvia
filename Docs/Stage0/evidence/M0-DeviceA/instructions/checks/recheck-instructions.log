@@ -1,0 +1,25 @@
+command: Docs/Stage0/evidence/M0-DeviceA/instructions/commands/recheck-instructions.sh
+commit: db6ab39c4ce4b2090a66c141ca9e0eb80ada1bed (m0-sessions-instructions); uncommitted files before this run: 0
+date: 2026-10-25T16:43:27Z
+
+== on the tree as it stands: it must pass
+as stated device-A: device A is the iPhone 13 mini (iPhone14,4 expected; A15; 375 × 812 pt) in the runbook, the gate summary, the Stage 0 README and each checklist's device-A line, the iPhone 11 Pro kept only in dated notes
+as stated floor: the 13 mini lays out at the 11 Pro's 375 × 812 pt drawn about 8% smaller; its figures that depend on the chip are its own, never the A13's; no budget changes; M8 measures the A13 floor; D-2 (a) stands with a narrower form of (b)'s exception
+as stated branch: the runbook, the gate summary, the checklists' setup lines and the Stage 0 README send the owner to m0-sessions in ~/Git/sylvia-sessions, with records and agent work merged into it between sittings
+as stated run-1: steps 2 and 3 done, step 5 asked and pending, step 7 a one-line confirmation with Apple's evidence in item 1 and the runbook's 0.2; run 1 within 200 words; the old texts in Section 6.3, item 104
+as stated step-0.8: 0.8 gives the paths read from the drop-in, the commit checked, the result, the command for after a merge, and that the drop-in uses neither file m0-exit-prep changes; dropin-paths.log records no change
+as stated sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of this update is a record of what happened (40 lines listed, each with its reason)
+result: pass (0 of 6 not as stated)
+exit: 0
+
+== its control on the tree of 6cede84a, where this update starts: all six items must be reported
+PROBLEM   device-A: device A is the iPhone 13 mini (iPhone14,4 expected; A15; 375 × 812 pt) in the runbook, the gate summary, the Stage 0 README and each checklist's device-A line, the iPhone 11 Pro kept only in dated notes (the runbook's 1.1 lacks: | **A. Device A, the small-screen baseline: your iPhone 13 mini** (model identifier iPhone14,4 expected; A15 Bionic; 375 × 812 pt); the runbook's 1.1 
+PROBLEM   floor: the 13 mini lays out at the 11 Pro's 375 × 812 pt drawn about 8% smaller; its figures that depend on the chip are its own, never the A13's; no budget changes; M8 measures the A13 floor; D-2 (a) stands with a narrower form of (b)'s exception (the runbook's 1.1 lacks: draws each point about 8% smaller; the runbook's 1.1 lacks: a native scale of 2.88; the runbook's 1.1 lacks: screen-
+PROBLEM   branch: the runbook, the gate summary, the checklists' setup lines and the Stage 0 README send the owner to m0-sessions in ~/Git/sylvia-sessions, with records and agent work merged into it between sittings (the runbook's 0.3 lacks: Do, in `~/Git/sylvia-sessions`, the checkout of your repository prepared for the sessions; the runbook's 0.3 lacks: 1. `git branch --show-current` reads `m0-s
+PROBLEM   run-1: steps 2 and 3 done, step 5 asked and pending, step 7 a one-line confirmation with Apple's evidence in item 1 and the runbook's 0.2; run 1 within 200 words; the old texts in Section 6.3, item 104 (M0-gate.md item 1 lacks: 2. **Done: `CLAUDE.md` corrected.**; M0-gate.md item 1 lacks: 3. **Done: `m0-decisions` merged into `main`** by pull request #6 on 24 October 2026 (`96bdc7e9`); M
+PROBLEM   step-0.8: 0.8 gives the paths read from the drop-in, the commit checked, the result, the command for after a merge, and that the drop-in uses neither file m0-exit-prep changes; dropin-paths.log records no change (the runbook's 0.8 lacks: **Checked on 24 October 2026:**; the runbook's 0.8 lacks: None of them changed between `9cdb0a02` and `6cede84a`, the head of `m0-sessions` that day; th
+PROBLEM   sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of this update is a record of what happened (38 lines listed, each with its reason) (Docs/Stage0/M0-device-runbook.md: unlisted, with no mark of this update: - **Your decisions of 22 October 2026 are in it** (the M0 decision page; `M0-gate.md` Sections 3 and; Docs/Stage0/M0-device-runbook.md: unlist
+result: FAIL (6 of 6 not as stated)
+exit: 1; reported: 6 of 6
+as required: all six reported
+result: PASS

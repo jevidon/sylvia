@@ -1,0 +1,20 @@
+Date: 2026-10-25 UTC (26 October NZDT). Tester: Codex with Justin Evidon.
+Device: iPhone 17 Pro (iPhone18,1), iOS 27.0.1 (24A446). Xcode 27.1 (27A9275).
+Build commit: d5336111b6ba76e4c248b7cf647e1c3fa9d2500b. Debug, wired, unlocked.
+Result: failed. A Local Network prompt appeared and the owner allowed it; the whole scheme was repeated as instructed. Both attempts produced private-IP timeouts (-1001) in all three variants, instead of the expected ATS block/default and local refusal/exception variants. Public IP was ATS-blocked in all variants; localhost succeeded in all. The selected private address was 10.71.x.x; whether it is the intended Wi-Fi interface needs diagnosis. No claim about minimum iOS 26.0. No ATS exception or EndpointPolicy was changed.
+
+ATS-PROBE variant=default private-ip=10.71.x.x result=URLError -1001 classified=timeout
+✘ Test plainHTTPToAPrivateLANAddress() recorded an issue at ATSProbeTests.swift:92:13: Expectation failed: Self.isATSBlock(result)
+ATS-PROBE variant=default public-ip=192.0.x.x result=URLError -1022 ats-blocked=true
+ATS-PROBE variant=default localhost=success(200)
+✘ Test run with 13 tests in 2 suites failed after 5.070 seconds with 1 issue.
+ATS-PROBE variant=local_networking private-ip=10.71.x.x result=URLError -1001 classified=timeout
+✘ Test plainHTTPToAPrivateLANAddress() recorded an issue at ATSProbeTests.swift:96:52: Expectation failed: error.code == .cannotConnectToHost
+ATS-PROBE variant=local_networking public-ip=192.0.x.x result=URLError -1022 ats-blocked=true
+ATS-PROBE variant=local_networking localhost=success(200)
+✘ Test run with 13 tests in 2 suites failed after 5.096 seconds with 1 issue.
+ATS-PROBE variant=cidr_exception private-ip=10.71.x.x result=URLError -1001 classified=timeout
+✘ Test plainHTTPToAPrivateLANAddress() recorded an issue at ATSProbeTests.swift:96:52: Expectation failed: error.code == .cannotConnectToHost
+ATS-PROBE variant=cidr_exception public-ip=192.0.x.x result=URLError -1022 ats-blocked=true
+ATS-PROBE variant=cidr_exception localhost=success(200)
+✘ Test run with 13 tests in 2 suites failed after 5.077 seconds with 1 issue.

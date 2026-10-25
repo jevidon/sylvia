@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-"""Recheck of the assembly of the M0 exit preparation (24 October 2026; integration log section 30): every request the
-two branches made of other owners' records, as applied or as declined with its reason, and the three things the
+"""Recheck of the assembly of the M0 exit preparation (24 and 26 October 2026; integration log section 30): every request
+the two branches made of other owners' records, as applied or as declined with its reason, the three things the
 assembly recorded besides them (Apple's pages for Xcode 27.1, as relayed; CLAUDE.md's correction of 5aec2518; the gate
-summary's, the integration log's and the Stage 0 README's account of the round).
+summary's, the integration log's and the Stage 0 README's account of the round), and what its continuation of 26
+October 2026 corrected in the first agent's changes (group N). Written by the first agent, which stopped before running
+it; completed by the continuation, which changed the texts of groups R3, R5, R6 and A where it reworded them, and added
+group N.
 
     python3 -I Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/recheck-exit-prep.py <tree>
 
@@ -175,8 +178,8 @@ group("R2", [(GATE, "or have it recorded that they are lost (Section 6.2, last r
              (GATE, "(ADR-0014's added at the assembly of the M0 exit preparation). Every final round reviewed the "
                     "commit that was merged.")],
       "item 4's note on the final-review records")
-group("R3", [(GATE, "| The thirteen M0 items' own final reviews | 91 in the final rounds: the deps item's R4-01 and R4-02 "
-                    "(major, Section 6.1) and 89 minor;"),
+group("R3", [(GATE, "| The thirteen M0 items' own final reviews | each returned accept-with-minor (deps: reject, Section "
+                    "6.1); 91 in the final rounds: the deps item's R4-01 and R4-02 (major, Section 6.1) and 89 minor;"),
              (GATE, "until 24 October 2026 this row said they were held outside the repository, in the workflow "
                     "journals |")],
       "Section 6.2's last row")
@@ -187,15 +190,15 @@ group("R4", [(GATE, "in `evidence/M0-Decisions/stage0/build-mac-state.log`.",
 group("R5", [(GATE, "are in the gate reports or recorded as lost (item 4).", IN),
              (GATE, "and the M0 exit review, once the final-review records are in or recorded as lost.", IN),
              (GATE, "the thirteen M0 items' final-review records handed over or recorded as lost", IN),
-             (GATE, "and the final-review records in, by a pointer in each report or record to its item's record: "
-                    "item 4.)*"),
+             (GATE, "R4-01 and R4-02 closed, reviewed next, and the final-review records in: item 4.)*"),
              (GATE, "and the records in, by a pointer in each report or record to its item's record: item 4)*")],
       "the gate summary's notes that the records are in")
 group("R6", [(GATE, "with mutations M63-M77 (`evidence/G05-AI/mutation-checks.log`: 77 of 77 caught).",
               " *(Dated note, 24 October 2026: the twelve items' final rounds, as handed over, raised no blocker"),
              (GATE, "nor has the M0 exit preparation of 24 October 2026 (Sections 6.2 and 8)."),
              (GATE, "the M0 exit preparation of 24 October 2026 (the Zip guard's fix, the review records' hand-over, "
-                    "their assembly and this summary's updates with it: items 104-109; Section 8)"),
+                    "their assembly, completed on 26 October 2026, and this summary's updates with it: items 104-110; "
+                    "Section 8)"),
              (GATE, "- **The thirteen M0 items' review records, handed over (24 October 2026; integration log section "
                     "29).**"),
              (GATE, "`m0-exit-reviews`, assembled on `m0-exit-prep`, where these records now stand."),
@@ -277,14 +280,49 @@ log = read(LOG)
 group("C-count", [(LOG, "says where the owner commits the change. " + CL)] if log.count(
     "says where the owner commits the change. " + CL) == 4 else [(LOG, "four notes after 25.5-27.5's and 24.5's bullets")],
       "the four identical bullets of 24.5-27.5, each with its note")
-group("A", [(LOG, "## 30. The M0 exit preparation assembled on `m0-exit-prep` (24 October 2026)"),
+group("A", [(LOG, "## 30. The M0 exit preparation assembled on `m0-exit-prep` (24 and 26 October 2026)"),
             (LOG, "### 30.2 The requests, and what became of each"),
             (GATE, "- **The M0 exit preparation (24 October 2026).**"),
             (GATE, "Recorded on 24 October 2026, at the M0 exit preparation (integration log sections 28-30):"),
-            (GATE, "- **The assembly of the M0 exit preparation (24 October 2026; integration log section 30).**"),
+            (GATE, "- **The assembly of the M0 exit preparation (24 and 26 October 2026; integration log section 30).**"),
             (README, "**Where M0 stands (24 October 2026).**"),
             (README, "On 24 October 2026 the M0 exit preparation assembled that work on `m0-exit-prep`")],
       "the round's own account: integration log section 30, the gate summary and the Stage 0 README")
+
+print("== What the continuation of 26 October 2026 corrected or added (integration log 30.3)")
+ZR = "Docs/Stage0/evidence/M0-ExitPrep/zipguard/README.md"
+IR = "Docs/Stage0/evidence/M0-Integration/item-reviews/README.md"
+group("N", [(A14, "until the fix of R4-01 and R4-02, the same day, this record wrote up only those two, and since that fix "
+                  "it gives all seven (Status; section 3; Open items)"),
+            (AMEND, "(9) Product manifests and code reach nothing the check does not see:"),
+            (AMEND, "no change, part of the guard A56 describes (ADR-0014 sections 3 and 5). *(Added on 26 October 2026 at "
+                    "the M0 exit preparation's assembly:"),
+            (AMEND, "(10) The check cannot see transitive requirements that reach an exempted Spikes project:"),
+            (AMEND, "- **The M0 exit preparation** (24 and 26 October 2026; integration log section 30)"),
+            (GATE, "so 0.8 needs nothing from you now.", " *(26 October 2026: on `m0-exit-prep` two scripts have changed "
+                                                     "since `9cdb0a02`"),
+            (GATE, "runs again only if what the drop-in builds, copies or runs changes (Section 1, item 4).",
+             " *(26 October 2026: on `m0-exit-prep`, since `9cdb0a02`, the Zip guard's"),
+            (GATE, "on a workflow's request (Section 7, item 5)", " *(corrected at your request on 24 October 2026, "
+                                                             "`5aec2518`: Section 6.3, item 104)*"),
+            (GATE, "(integration log section 20; Section 6.3, items 48-56)", " *(corrected at your request on 24 October "
+                                                                         "2026: Section 6.3, item 104)*"),
+            (GATE, "No agent changed `CLAUDE.md` (item 46).", " *(Dated note, 26 October 2026: it was made otherwise"),
+            (GATE, "110. **The assembly's continuation (26 October 2026; integration log section 30)**"),
+            (LOG, "`CLAUDE.md` itself is unchanged, the owner's to change", " *(Dated note, 26 October 2026: corrected at "
+                                                                         "the owner's request"),
+            (LOG, "and `CLAUDE.md` (HON-11, not relayed this round)", " *(corrected at the owner's request on 24 October "
+                                                                    "2026: section 30)*"),
+            (LOG, "### 30.3 What the assembly recorded besides the requests, and what its continuation corrected"),
+            (RUNBOOK, "it is in the review `M0-gate.md` Section 7 recommends.", " *(Corrected again at your request on 24 "
+                                                                                "October 2026"),
+            (README, "(completed on 26 October 2026 by a second agent, after the first stopped at its usage limit)"),
+            (ZR, "which the guard does not need.", " *(Dated note, 26 October 2026: the records' changes were applied at "
+                                                 "the assembly"),
+            (IR, "requested of its owner.", " *(Dated note, 26 October 2026: added at the assembly of the M0 exit "
+                                           "preparation")],
+      "ADR-0014's header clause, the amendments' item for ADR-0014's new consequence, the notes on 9cdb0a02 and on "
+      "CLAUDE.md, item 110, and the two evidence READMEs")
 
 print()
 print(f"result: {'pass' if problems == 0 else 'FAIL'} ({problems} group(s) not as stated)")

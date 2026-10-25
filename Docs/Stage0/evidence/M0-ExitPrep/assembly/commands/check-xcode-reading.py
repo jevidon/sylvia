@@ -18,7 +18,11 @@ It reads, in the repository and on the build Mac, read-only, each fact ../xcode-
    summary's item 1, step 7, each say it was read by the orchestrating session and relayed, and that the technical
    lead's confirmation is still pending; neither says the confirmation is given.
 
-    python3 -I Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/check-xcode-reading.py <repository root>
+    python3 -I Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/check-xcode-reading.py <repository root or tree>
+
+<tree> may be an extracted tree (git archive), which the gate checks beside this file use as the control: the files are
+read there, and git's listings of tracked files (parts 1 and 3) are read in the repository that holds this script, whose
+tracked paths are the same.
 
 Host only; no simulator, no device, no network. Exits 1 if any fact does not hold.
 """
@@ -30,6 +34,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(sys.argv[1]).resolve()
+REPO = Path(__file__).resolve().parents[6]  # commands, assembly, M0-ExitPrep, evidence, Stage0, Docs, the root
 problems = 0
 
 
@@ -54,8 +59,8 @@ def env_with_developer_dir():
 
 def run(*cmd):
     try:
-        return subprocess.run(cmd, capture_output=True, text=True, env=env_with_developer_dir(), cwd=ROOT,
-                              timeout=120).stdout
+        return subprocess.run(cmd, capture_output=True, text=True, env=env_with_developer_dir(),
+                              cwd=REPO if cmd[0] == "git" else ROOT, timeout=120).stdout
     except (OSError, subprocess.TimeoutExpired) as e:
         return f"cannot run: {e}"
 

@@ -19,12 +19,22 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 - In `Docs/Stage0/G05-Recovery.md`, change the step's row from pending-device to passed-device or failed, with the date, device model and iOS build (step 3: rows 9 and 26).
 - Never edit an expected result to match what happened. A different result is a failure, recorded as one.
 
+Before the device commands, generate the hosted test project from the repository root:
+
+```sh
+source Scripts/lib/env.sh
+source Scripts/lib/xcodegen.sh
+sylvia_generate Spikes/G05-Recovery/DeviceTests
+```
+
+The device project compiles the existing `Tests/SylviaRecoveryTests` sources and copies their Fixtures folder without changing the tests. Its small app supplies the process and container that physical-device tests require. The Swift package scheme remains available for host and simulator testing; it cannot run on a physical device (recorded device attempts, 26 October 2026).
+
 ## 1. Test suite on the device (T45, T46, T47, T35 on device; protection readback, including the non-default class)
 
 1. Run:
 
    ```sh
-   xcodebuild test -scheme G05Recovery-Package -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
+   xcodebuild test -project DeviceTests/G05RecoveryDeviceTests.xcodeproj -scheme G05RecoveryDeviceTests -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
      -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z 2>&1 | tee step-1-tests.log
    ```
 
@@ -46,7 +56,7 @@ Status of every step: **pending** (not run). Stage 0 agents did not use the phys
 1. Step 1's log already contains `capture save latency synchronous=FULL fullfsync=ON: n=400 p50=… p95=… p99=… max=…`.
 2. Run step 1 two more times with the phone on the cable and not in Low Power Mode (`step-2-run2.log`, `step-2-run3.log`), and once in Low Power Mode on battery (`step-2-low-power.log`): unplug the cable, keep the phone on the Mac's Wi-Fi, check that `xcrun devicectl list devices` still lists it as available, start fully charged, turn on Low Power Mode, keep the phone unlocked by touching the clock in the status bar at least every 20 s until the run ends (Low Power Mode sets Auto-Lock to 30 seconds; if it locks part way, run it again), and check after the run that Low Power Mode stayed on (iOS turns it off once charging reaches 80 %: https://support.apple.com/en-us/101604).
 3. Expected: p95 at most 200 ms in every run. Record all six p95 values (with step 4), each with its configuration and power state. A p95 above 200 ms is a failure of the proposed budget and must be reported, not retried away.
-4. Release build of the latency test (plan 19.1). From `Spikes/G05-Recovery`: `xcodebuild test -scheme G05Recovery-Package -configuration Release ENABLE_TESTABILITY=YES -destination "id=<device UDID>" -derivedDataPath .build/DerivedData-release -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z '-only-testing:SylviaRecoveryTests/DurabilityTests/latency()' 2>&1 | tee step-2-release.log`, once on the cable and once in Low Power Mode on battery as in 2.2 (`step-2-release-low-power.log`). **Expected:** `✔ Test run with 1 test in 1 suite passed` and p95 at most 200 ms in both.
+4. Release build of the latency test (plan 19.1). From `Spikes/G05-Recovery`: `xcodebuild test -project DeviceTests/G05RecoveryDeviceTests.xcodeproj -scheme G05RecoveryDeviceTests -configuration Release ENABLE_TESTABILITY=YES -destination "id=<device UDID>" -derivedDataPath .build/DerivedData-release -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z '-only-testing:SylviaRecoveryTests/DurabilityTests/latency()' 2>&1 | tee step-2-release.log`, once on the cable and once in Low Power Mode on battery as in 2.2 (`step-2-release-low-power.log`). **Expected:** `✔ Test run with 1 test in 1 suite passed` and p95 at most 200 ms in both.
 
 ## 3. Writes continue while the phone is locked, and the library survives a restart (T50), with the lock harness
 
@@ -103,7 +113,7 @@ Every other test deletes its library when it ends. This step uses `DevicePersist
 
    ```sh
    TEST_RUNNER_SYLVIA_DEVICE_PERSIST_PROBE=write \
-   xcodebuild test -scheme G05Recovery-Package -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
+   xcodebuild test -project DeviceTests/G05RecoveryDeviceTests.xcodeproj -scheme G05RecoveryDeviceTests -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
      -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z \
      -only-testing:SylviaRecoveryTests/DevicePersistenceProbeTests 2>&1 | tee step-4-write.log
    ```
@@ -115,7 +125,7 @@ Every other test deletes its library when it ends. This step uses `DevicePersist
 
    ```sh
    TEST_RUNNER_SYLVIA_DEVICE_PERSIST_PROBE=verify \
-   xcodebuild test -scheme G05Recovery-Package -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
+   xcodebuild test -project DeviceTests/G05RecoveryDeviceTests.xcodeproj -scheme G05RecoveryDeviceTests -destination "id=<device-id>" -derivedDataPath .build/DerivedData \
      -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z \
      -only-testing:SylviaRecoveryTests/DevicePersistenceProbeTests 2>&1 | tee step-4-verify.log
    ```

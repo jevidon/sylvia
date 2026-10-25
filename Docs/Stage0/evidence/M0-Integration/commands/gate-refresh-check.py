@@ -146,7 +146,15 @@ FACTS = {
     # ADR-0014's status says so, and the drop-in passes with the self-test that plants each route, on the change's last
     # documents commit (integration log section 28). Until then this entry read
     # ("failed", adr_says(14, "reject", "R4-01", "R4-02")).
+    # Since the fix of the review of the M0 exit preparation (26 October 2026, SEC-ZIPGUARD-01; integration log section
+    # 31), also ADR-0014's status on that fix and the drop-in's run with the guard's rule for local packages, on the
+    # fix's last documents commit; the zip guard's own log stays as its record.
     76: ("passed-host", adr_says(14, "R4-01 and R4-02 are closed in the guard")
+                        + adr_says(14, "a local package inside the product roots must be one git tracks there")
+                        + file_has("Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log",
+                                   "dependency lock check: 0 failure(s)")
+                        + file_has("Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log",
+                                   "self-test: 283 mutations")
                         + file_has("Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log",
                                    "dependency lock check: 0 failure(s)")
                         + file_has("Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log",

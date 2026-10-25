@@ -112,3 +112,7 @@ Evidence logs are in `Docs/Stage0/evidence/G05-Recovery/logs/`. The full clean r
 - **Generated at test time, not committed:** stand-in media and cover bytes (SplitMix64, `DeterministicBytes`), at most 3 MiB per file, and the 64 MiB APFS disk image of the full-volume test, written to temporary directories. No large fixtures and no `Scripts/fixtures/generate-*.sh` script are needed.
 - **Dependencies:** GRDB.swift 7.11.1 only (ADR-0002 pin, MIT). The `SylviaSQLiteShim` C target links the system `libsqlite3` GRDB already uses; it is not a new dependency.
 - **Warnings:** none in the spike's sources on host or iOS builds. The drop-in fails on any such warning.
+
+### Physical-device attempt, 26 October 2026 (25 October UTC)
+
+Checklist steps 1–2 remain pending-device, blocked: Xcode 27.1 cannot execute the tool-hosted `SylviaRecoveryTests` on the iPhone 17 Pro, iOS 27.0.1 (24A446). Build `8404f342`, exit 70, no tests executed. A host application is required. Evidence: `evidence/G05-Recovery/device/step-1-tests.log` and `step-1-2-results.txt`. No device protection or latency result is claimed.

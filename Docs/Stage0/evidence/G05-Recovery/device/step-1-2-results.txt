@@ -1,0 +1,11 @@
+G0.5 recovery steps 1–2: BLOCKED, no device tests executed.
+Attempt: 2026-10-25 17:14 UTC (26 October Pacific/Auckland).
+Build commit: 8404f3426bca692b1a302f165a82d13f2b03ed6d
+Operator: Codex with Justin Evidon.
+Device: iPhone 17 Pro (iPhone18,1), iOS 27.0.1 (24A446).
+Host: macOS 26.6.2 (25G83), Xcode 27.1 (27A9275).
+Requested configuration: Debug, wired, unlocked, Low Power Mode off; user confirmed power settings ready.
+xcodebuild exit: 70.
+Error: Cannot test target “SylviaRecoveryTests” on “Kia Ora”: Tool-hosted testing is unavailable on device destinations. Select a host application for the test target, or use a simulator destination instead.
+Log: step-1-tests.log.
+No protection readback or latency measurements obtained. Cable repeats and Release/Low Power Mode runs not attempted because the package test target requires a host application. Existing G05 Lock harness has separate tests, not the SylviaRecoveryTests suite; it is not a substitute for this step.

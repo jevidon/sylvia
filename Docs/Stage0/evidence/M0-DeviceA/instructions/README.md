@@ -2,8 +2,9 @@
 
 **What this is.** On 24 October 2026 the product owner asked to have what was out of date updated. That day pull
 request #6 had merged `m0-decisions` into `main` (`96bdc7e9`); the orchestrating session had corrected `CLAUDE.md` at the
-owner's request (`5aec2518`) and made the branch `m0-sessions` from that commit (`6cede84a`), which the sessions now
-build from in `~/Git/sylvia-sessions`; an agent run had started on `m0-exit-prep` for run 1's step 5 and `linkage.sh`;
+owner's request (`5aec2518`) and made the branch `m0-sessions` from that commit, committing `6cede84a` on it, which the
+sessions build from in `~/Git/sylvia-sessions` (the owner's first sittings, from 25 October 2026 UTC, were recorded on
+`m0-decisions` instead: [`../fix-1/`](../fix-1/README.md)); an agent run had started on `m0-exit-prep` for run 1's step 5 and `linkage.sh`;
 and the owner had decided D-1 again: the iPhone 11 Pro no longer charges, and device A is the owner's iPhone 13 mini.
 An agent brought the owner's instructions up to date on branch `m0-sessions-instructions`, made from `6cede84a`: the
 device runbook, the gate summary, the Stage 0 README and the eight device checklists. Another workstream of the same
@@ -42,7 +43,10 @@ and changed, beyond what the first attempt left:
 
 Nothing here is a device result, a role sign-off, an ADR approval (decision D-6) or the M0 exit. No 13 mini has been
 registered or run: Session 0.4 records its model identifier, iOS version and build. The update is agent-written and has
-not been reviewed.
+not been reviewed. *(26 October 2026: an agent review read it, with its assembly, at `8082bdb6`; a fix answered its
+fidelity findings the same day ([`../fix-1/`](../fix-1/README.md)), among them FID-DA-07, on the first paragraph above,
+which until then said that `m0-sessions` was made from `6cede84a`, the second commit of `CLAUDE.md`'s correction, made on
+it, and that the sessions now build from it.)*
 
 ## Files
 

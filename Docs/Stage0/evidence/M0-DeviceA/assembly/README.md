@@ -8,6 +8,8 @@ October UTC) an agent of the orchestrating session's workflow assembled them on 
 it merged both, applied what each part asked of the other's files or passed it to the file's owner, made the two say
 the same where they did not, and ran the checks of the merged tree. Agent-written; not reviewed; human sign-off pending.
 Nothing here is a device result, a role sign-off, an ADR approval (decision D-6) or the M0 exit; no device was used.
+*(26 October 2026: an agent review read the update and this assembly at `8082bdb6`; a fix answered its fidelity findings
+the same day, which has not been reviewed: [`../fix-1/`](../fix-1/README.md).)*
 
 ## The merges
 
@@ -94,6 +96,9 @@ none of their results, and changed no record for them. So the update's instructi
 the owner's, on 24 October 2026) do not describe that checkout as it now is. Reconciling `m0-decisions` with
 `m0-sessions` before `~/Git/sylvia-sessions` moves is the orchestrating session's, with the owner; a merge of those
 commits into `m0-sessions` would change `Spikes/G05-Recovery`, so 0.8's check would then call for 0.8 to run again.
+*(26 October 2026: the fix of the review's fidelity findings brought the owner's instructions in line with that state,
+read again ([`../fix-1/checks/branch-state.log`](../fix-1/checks/branch-state.log)), and left the reconciliation to the
+orchestrating session, with the owner: [`../fix-1/README.md`](../fix-1/README.md); integration log 29.2.)*
 
 ## Files
 
@@ -163,4 +168,5 @@ tree; on the tree that merges both they report the other part's changes, and the
 - **The complete CI**: not run. Nothing outside `Docs/` changed but `README.md`; every drop-in that reads a document the
   update changed ran.
 - **Review**: none; the orchestrating session switches `~/Git/sylvia-sessions` to `m0-sessions` once the update is
-  reviewed, and after the reconciliation above.
+  reviewed, and after the reconciliation above. *(26 October 2026: an agent review read the update and this assembly at
+  `8082bdb6`; the fix of its fidelity findings is in [`../fix-1/`](../fix-1/README.md).)*

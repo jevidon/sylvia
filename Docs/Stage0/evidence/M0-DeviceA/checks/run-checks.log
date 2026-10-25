@@ -1,0 +1,256 @@
+# The device-A change of 24 October 2026: the checks its records feed (plan draft 0.8 as revised that day)
+command: Docs/Stage0/evidence/M0-DeviceA/commands/run-checks.sh fdbec8b8a806e6dd3fb4b04bde7ad399975d22f1 6cede84a6f6ac610976b233d875e26dd89419dbd
+commit under test: fdbec8b8a806e6dd3fb4b04bde7ad399975d22f1; the commit this update starts from: 6cede84a6f6ac610976b233d875e26dd89419dbd (m0-sessions)
+HEAD: fdbec8b8a806e6dd3fb4b04bde7ad399975d22f1; uncommitted paths: 0
+the start commit is an ancestor of HEAD
+date (UTC): 2026-10-25T16:39:14Z
+host: macOS 26.6.2 (25G83), arm64; Python 3.14.6
+load:  5:39  up 22 days, 15:49, 4 users, load averages: 6.41 5.57 6.46
+environment: host only; no simulator or device is used by these checks
+files changed since the start commit, by kind:
+     1 Docs/ADRs/0001-platform-baseline-and-toolchain.md
+     1 Docs/ADRs/0002-repository-build-and-ci.md
+     1 Docs/ADRs/0003-persistence.md
+     1 Docs/ADRs/0005-pdf-reading-and-anchors.md
+     1 Docs/ADRs/0007-quick-capture-evaluation.md
+     1 Docs/ADRs/0009-transfer-protocol.md
+     1 Docs/ADRs/0010-intake-handoff-and-wired-bundles.md
+     1 Docs/ADRs/0013-design-language.md
+     1 Docs/ADRs/README.md
+     1 Docs/Stage0/G01-EPUB.md
+     1 Docs/Stage0/G01-PDF.md
+     1 Docs/Stage0/G02-Transfer.md
+     1 Docs/Stage0/G03-Intake.md
+     1 Docs/Stage0/G05-Recovery.md
+     1 Docs/Stage0/G06-Design.md
+     1 Docs/Stage0/M0-plan-amendments.md
+    17 Docs/Stage0/evidence/M0-DeviceA/ (this update's evidence)
+     1 Docs/Stage0/integration-log.md
+     1 Docs/Sylvia_v1_iOS_Implementation_Plan.md
+
+== 1. Docs/Stage0/evidence/M0-DeviceA/commands/check-amendments.py
+PASS cited paths exist (139 checked; the run's own log excluded)
+PASS G01-EPUB.md: 14 findings, each in Section 2 or 3
+PASS G01-PDF.md: 15 findings, each in Section 2 or 3
+PASS G02-Transfer.md: 22 findings, each in Section 2 or 3
+PASS G03-Intake.md: 19 findings, each in Section 2 or 3
+PASS G04-Audio.md: 9 findings, each in Section 2 or 3
+PASS G05-AI.md: 23 findings, each in Section 2 or 3
+PASS G05-Recovery.md: 12 findings, each in Section 2 or 3
+PASS G06-Design.md: 18 findings, each in Section 2 or 3
+PASS G06-Design.md: 13 Other-findings bullets, each in Section 3
+PASS G01-EPUB.md: 8 open questions, each referenced
+PASS G01-PDF.md: 8 open questions, each referenced
+PASS G02-Transfer.md: 12 open questions, each referenced
+PASS G03-Intake.md: 10 open questions, each referenced
+PASS G05-Recovery.md: 8 open questions, each referenced
+PASS G06-Design.md: 14 open questions, each referenced
+PASS G05-AI.md: 8 open questions, each referenced
+PASS G04-Audio.md: 7 open-question bullets (six questions and a warnings note), each matched to the entry that covers it
+PASS Section 3.2: ADR-0001 to ADR-0016, 121 consequences, each mapped to a tag or to no change
+PASS Appendix D has the draft 0.7 entry before draft 0.6, and the draft 0.5 entry before draft 0.4
+PASS Section 6 lists tags A01-A56 (56 rows)
+PASS Appendix D lists tags A01-A56 (56 bullets)
+PASS Appendix D gives A01-A53 their bullets in the draft 0.5 entry and A54-A56 in the draft 0.7 entry
+PASS the plan text carries every tag A01-A56 (56 tags)
+PASS each tag names the same plan sections in the text, Section 6 and Appendix D
+PASS every tag is well formed
+PASS A47 collects exactly the 14 tags plan Section 23.1 carries
+PASS Section 2: 139 rows, each with six cells, a class and a known tag
+PASS Section 1: the tags of 6 forced, 7 unforced and 2 considered-and-kept narrowings, none listed twice
+PASS every scope-narrowing row's tag (12 tags) is in Section 1.1 or 1.2
+PASS every Section 1 tag has a Section 2 row
+PASS every Section 1.2 tag has a Section 2 row classified scope narrowing
+PASS plan Appendix D's draft 0.5 entry names exactly the 15 Section 1 tags
+PASS Section 4 lists PO-01 to PO-44 in order (44 rows)
+PASS Section 4 rows have six cells and known tags
+PASS replaced phrases are absent (70 from the plan, 11 from this document)
+PASS new anchor phrases are present in the plan (41)
+PASS T54 names every section the 4.4.6 gaps table names (17 sections)
+PASS the milestone gating rule includes M1 in all 7 places that state it, and the earlier wording is gone
+PASS plan Sections 1-23: 104 quoted phrases, each in the design package, in the 4.4.6 gaps table or its introduction, or listed as not interface text (26)
+PASS plan: 294 table rows, none ragged
+PASS amendments: 338 table rows, none ragged
+PASS Section 2.2 is byte-identical to draft 0.4 (471b143)
+PASS Section 21.5 is byte-identical to draft 0.4 (471b143)
+PASS Section 24 is byte-identical to draft 0.6 (0ef8c39)
+PASS the 10 budget values of Section 19.2 equal draft 0.4
+PASS draft 0.8: no sentence before Appendix D says a product-owner decision or approval is pending (the dated Revised line excepted)
+PASS draft 0.8: Section 23.1 lists D01-D17, each recorded as approved by the product owner on 22 October 2026 (17 rows)
+PASS draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation (D-1, decided again on 24 October 2026, PO-13, PO-23, PO-33, PO-39) are applied where the plan states them, and before Appendix D only Section 19.1 names iPhone 12-class hardware
+PASS draft 0.8: Section 23.3 records who signs, that no role is signed yet, that every review so far was an agent's, and the outside security review
+PASS draft 0.8: Appendix D opens with the draft 0.8 entry, which lists exactly the five decisions that are not the recommendation and says it is agent-written and not reviewed
+PASS draft 0.8 as revised on 23 October 2026: 15.5 records the product owner's decision on PO-12's sources file and import ledger, and no text before Appendix D leaves them open or says a decision kept them so
+PASS draft 0.8 as revised on 23 October 2026: D13's row records that the product owner took PO-42, with PO-41, PO-43 and PO-44, on for now, a lawyer's review before any public App Store release
+PASS draft 0.8 as revised on 23 October 2026: 19.1, 21.1 and the device-evidence risk row record the product owner's iPad, and no text before Appendix D says none is available or asks to acquire one
+PASS draft 0.8 as revised on 24 October 2026: Appendix D's draft 0.8 entry ends with the dated item that records the answers of 23 October 2026, the item that corrects it and the dated item of 24 October 2026
+PASS draft 0.8 as corrected on 23 October 2026: Appendix D's draft 0.8 entry points its items on PO-12 and PO-42 to the answers of 23 October 2026, and its review note names the fourth review
+PASS draft 0.8 as revised on 24 October 2026: the product owner's decision on device A (the iPhone 13 mini; the A13 floor left for M8) is recorded wherever the plan and this document state device A, and the statements it made stale are gone from the plan before Appendix D
+summary: 132 numbered findings in the eight reports; 56 amendment tags; 44 product-owner questions; 0 failed checks
+exit status: 0
+
+== 2. Docs/Stage0/evidence/M0-DeviceA/commands/mutation-checks.py (each mutation must make the checker fail its guarding check)
+control (no mutation): exit 0, 0 failed checks
+caught an unforced narrowing left out of Section 1.2: exit 1; the guarding check failed: every scope-narrowing row's tag; also failed: plan Appendix D's draft 0.5 entry names exactly the 14 Section 1 tags:
+caught an unforced narrowing's row labelled a clarification: exit 1; the guarding check failed: every Section 1.2 tag has a Section 2 row classified scope narrowing
+caught a narrowing missing from plan Appendix D's scope sentence: exit 1; the guarding check failed: plan Appendix D's draft 0.5 entry names exactly
+caught an ADR consequence left unnumbered: exit 1; the guarding check failed: Section 3.2: ADR-0001 to ADR-0016
+caught an ADR consequence with no destination: exit 1; the guarding check failed: Section 3.2: ADR-0001 to ADR-0016
+caught ADR-0016's row left out (20 October 2026: it was missing until then): exit 1; the guarding check failed: Section 3.2: ADR-0001 to ADR-0016
+caught a G0.4 open-question bullet left uncovered: exit 1; the guarding check failed: G04-Audio.md: 7 open-question bullets
+caught a new quoted phrase with no vocabulary entry: exit 1; the guarding check failed: plan Sections 1-23
+caught a phrase dropped from the vocabulary gaps table: exit 1; the guarding check failed: plan Sections 1-23
+caught a product-owner question renumbered: exit 1; the guarding check failed: Section 4 lists PO-01 to PO-44
+caught a tag left out of the decision register's list (A47): exit 1; the guarding check failed: A47 collects exactly
+caught a gaps-table section dropped from T54: exit 1; the guarding check failed: T54 names every section
+caught M1's earlier exception restored in 21.2 (draft 0.8 wording of the row): exit 1; the guarding check failed: the milestone gating rule
+caught Appendix D's A46 summary without M1: exit 1; the guarding check failed: the milestone gating rule
+caught the narrower uncertain-5xx list restored in 14.4: exit 1; the guarding check failed: replaced phrases are absent; also failed: new anchor phrases are present in the plan (41): Treat every other 5xx
+caught the EPUB-folder narrowing labelled a clarification: exit 1; the guarding check failed: every Section 1.2 tag has a Section 2 row classified scope narrowing
+caught the bundle's completeness proof applied to raw Finder copies again (8.5): exit 1; the guarding check failed: replaced phrases are absent
+caught the bearer-token copies said to be bounded in all again (15.4, draft 0.8 wording): exit 1; the guarding check failed: replaced phrases are absent; also failed: new anchor phrases are present in the plan (41): the task window bound
+caught the failed-gate count turned back to three (21.1): exit 1; the guarding check failed: replaced phrases are absent; also failed: new anchor phrases are present in the plan (41): rows failed in four g
+caught a new tag left out of Appendix D's draft 0.7 entry: exit 1; the guarding check failed: Appendix D lists tags A01-A56; also failed: Appendix D gives A01-A53 their bullets in the draft 0.5 entry and A54- | each tag names the same plan sections in the text, Section 6 and Appen
+caught G0.4's playback-control decision left without its source: exit 1; the guarding check failed: G04-Audio.md: 7 open-question bullets
+caught a finding the re-check added left without its row: exit 1; the guarding check failed: G03-Intake.md: 19 findings
+caught the status turned back to draft 0.7: exit 1; the guarding check failed: new anchor phrases are present in the plan; also failed: replaced phrases are absent (70 from the plan, 11 from this document): | draft 0.8 as revised on 24 October 2026: the product owner's decision 
+caught a decided question said to be pending again (9.4, PO-04): exit 1; the guarding check failed: draft 0.8: no sentence before Appendix D says
+caught a decision of the register left without its approval (D11): exit 1; the guarding check failed: draft 0.8: Section 23.1 lists D01-D17
+caught D-1 reverted: the iPhone 12-class baseline proposed again in 19.1 (24 October 2026: on the iPhone 13 mini's text): exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation
+caught D-1 reverted in 21.1: device A the iPhone 11 Pro again (24 October 2026: until then, the 12-class baseline): exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation; also failed: draft 0.8 as revised on 24 October 2026: the product owner's decision 
+caught PO-13 reverted: the background inbox read dropped from 15.1: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation
+caught PO-23 reverted in T50: the harness built only if step 3 is inconclusive: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation
+caught PO-33 reverted: one onboarding sample: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation
+caught PO-39 reverted: the rewind after a long pause off by default: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation
+caught PO-39's notice dropped from the 4.4.6 gaps table: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation
+caught a role recorded as signed in 23.3: exit 1; the guarding check failed: draft 0.8: Section 23.3 records who signs
+caught the agent-only reviews left out of 23.3: exit 1; the guarding check failed: draft 0.8: Section 23.3 records who signs
+caught a non-recommended decision left out of Appendix D's draft 0.8 entry: exit 1; the guarding check failed: draft 0.8: Appendix D opens with the draft 0.8 entry
+caught PO-12's open parts credited to a decision that kept them so, in 15.5: exit 1; the guarding check failed: draft 0.8 as revised on 23 October 2026: 15.5 records the product owner's decision on PO-12
+caught the revision date turned back to 24 October 2026 (until 26 October 2026: from 24 to 23 October; until 24 October 2026: from 23 to 22 October): exit 1; the guarding check failed: new anchor phrases are present in the plan; also failed: replaced phrases are absent (70 from the plan, 11 from this document):
+caught PO-12's two parts left open again in 15.5: exit 1; the guarding check failed: draft 0.8 as revised on 23 October 2026: 15.5 records the product owner's decision on PO-12
+caught the import ledger's duplicate for review dropped from 15.5: exit 1; the guarding check failed: draft 0.8 as revised on 23 October 2026: 15.5 records the product owner's decision on PO-12
+caught D13's row returned to counsel: exit 1; the guarding check failed: draft 0.8 as revised on 23 October 2026: D13's row records
+caught the old D13 sentence restored beside the new one: exit 1; the guarding check failed: draft 0.8 as revised on 23 October 2026: D13's row records
+caught no iPad again in 19.1: exit 1; the guarding check failed: draft 0.8 as revised on 23 October 2026: 19.1, 21.1 and the device-evidence risk row
+caught acquire an iPad restored in the device-evidence risk row: exit 1; the guarding check failed: draft 0.8 as revised on 23 October 2026: 19.1, 21.1 and the device-evidence risk row
+caught a reading left to confirm in Appendix D's dated item: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: Appendix D's draft 0.8 entry ends with the dated item
+caught the iPad dropped from Appendix D's dated item: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: Appendix D's draft 0.8 entry ends with the dated item
+caught the dated item merged into the entry's previous item: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: Appendix D's draft 0.8 entry ends with the dated item
+caught the companion's public release read into the answer again in D13: exit 1; the guarding check failed: draft 0.8 as revised on 23 October 2026: D13's row records
+caught no device to acquire again in 21.1, before the iPad's iPadOS is known: exit 1; the guarding check failed: draft 0.8 as revised on 23 October 2026: 19.1, 21.1 and the device-evidence risk row
+caught the correction item merged into the dated item of Appendix D: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: Appendix D's draft 0.8 entry ends with the dated item
+caught D13's row said to now leave PO-42 with counsel, in Appendix D: exit 1; the guarding check failed: draft 0.8 as corrected on 23 October 2026: Appendix D's draft 0.8 entry points its items
+caught PO-12's two parts left open in Appendix D's correction item: exit 1; the guarding check failed: draft 0.8 as corrected on 23 October 2026: Appendix D's draft 0.8 entry points its items
+caught the Status line without the decision of 24 October 2026: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught the Revised line without the decision of 24 October 2026: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught the M8 row without the A13 floor: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught the baseline's A13 restored in the device-evidence row: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught the Literata row back on the iPhone 11 Pro: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught D01 back on the iPhone 11 Pro: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught 21.4's older baseline iPhone restored: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught G0.6's check on device A dropped from 21.1: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught the iPhone 11 a second A13 phone again in 19.1: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation
+caught the A13 floor said to be measured in M0, in 19.1: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation
+caught a pass on the iPhone 13 mini read as an A13 pass, in 19.1: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation
+caught the item of 24 October 2026 merged into the entry's previous item: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: Appendix D's draft 0.8 entry ends with the dated item
+caught the Revised line without the completion of 26 October 2026: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught the item of 24 October 2026 without the date of its completion: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+caught the amendments' A46 row without its note of 24 October 2026: exit 1; the guarding check failed: draft 0.8 as revised on 24 October 2026: the product owner's decision on device A
+summary: 66 mutations, 66 caught, 0 missed
+exit status: 0
+tree after the mutation checks: 0 uncommitted paths
+
+== 3. control: the follow-up's fix's checker, Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/check-amendments.py
+   It must fail on exactly three checks, on the anchors this update replaced: the revision date of 23 October 2026,
+   D-1's anchors of 22 October 2026 in 19.1 and 21.1 (its 10c: the iPhone 11 as a second A13 phone, every budget
+   stricter on the A13 phones, 21.1's device A an iPhone 11 Pro), and its 10i, which required the item correcting
+   the dated item of 23 October 2026 to be the entry's last, where the item of 24 October 2026 now follows it.
+FAIL new anchor phrases are present in the plan (41): **Revised:** 23 October 2026
+FAIL draft 0.8: the five decisions that are not the recommendation (D-1, PO-13, PO-23, PO-33, PO-39) are applied where the plan states them, and before Appendix D only Section 19.1 names iPhone 12-class hardware: D-1 (19.1): the iPhone 11 is a second A13 phone; D-1 (19.1): every budget of Section 19.2 measured on them is stricter to meet, while no budget value changes; D-1 (21.1): on the baseline iPhone (device A, an iPhone 11 Pro; Section 19.1) and an iPad
+FAIL draft 0.8 as revised on 23 October 2026: Appendix D's draft 0.8 entry ends with the dated item that records the answers of 23 October 2026 and the item that corrects it: the dated item lacks: *Recorded on 23 October 2026, within draft 0.8:; the dated item lacks: PO-12's sources file and import ledger: set aside and recover; the dated item lacks: PO-41 to PO-44, the questions left for counsel, PO-42 included: the product owner handles them for now; the dated item lacks: a lawyer's review comes before any public App Store release; the dated item lacks: The iPad: the product owner has one with a keyboard and a trackpad or mouse; the dated item lacks: H-1's exception also covers pull request #5; the dated item lacks: The readings of D-6, D-7 and D-9 (b) are confirmed; the last item lacks: - *Corrected on 23 October 2026, after an agent review of the item above, the review of the follow-up of the decisions round (its findings FID4-03, FID4-04 and FID4-05):; the last item lacks: now makes that depend on the device runbook's check, before its Session 0, that the iPad runs iPadOS 26 or later; the last item lacks: so for the companion's notarized builds PO-42 is still settled before one is distributed beyond the team; the last item lacks: No budget, scope or decision changed. Agent-written; not reviewed.*
+summary: 132 numbered findings in the eight reports; 56 amendment tags; 44 product-owner questions; 3 failed checks
+exit status: 1
+control 3: the follow-up's fix's checker fails on exactly those three checks, as it must
+
+== 4. this update's check of the ADRs, the index, the gate reports and the integration log (Docs/Stage0/evidence/M0-DeviceA/commands/check-records.py)
+PASS ADR-0001: the decision of 24 October 2026, the owner's words and choice, device A, the A13 floor, the narrower exception and G0.6's criterion
+PASS ADR-0003: device A the iPhone 13 mini; the narrower exception for the save latency
+PASS ADR-0005: device A the iPhone 13 mini; the narrower exception for the highlight redraw
+PASS ADR-0007: device A the iPhone 13 mini, no Action button; the exception changes nothing but step 12's race
+PASS ADR-0009: step 11 on the iPhone 13 mini; the narrower exception; the words the runbook check reads kept
+PASS ADR-0010: the repeats on device A, the iPhone 13 mini; the narrower exception; "Device runs in" kept
+PASS ADR-0013: G0.6's steps for the oldest supported iPhone made on device A; the exception does not apply
+PASS G0.2 report: row T38 (its name kept, pending-device) records the narrower exception
+PASS G0.2 report: open question 7 measures on device A, the iPhone 13 mini
+PASS G0.1 EPUB and PDF reports: their open questions' notes of 24 October 2026
+PASS G0.3 report: open item 5 on device A, the iPhone 13 mini
+PASS G0.5 recovery report: rows 13 and 26 (pending-device) and open question 6 name the iPhone 13 mini
+PASS G0.5 recovery report: row 26 stays pending-device, on device A, the iPhone 13 mini
+PASS G0.6 report: three rows (pending-device) made on device A, C51's words kept
+PASS G0.6 report: the three rows' statuses unchanged
+PASS the ADR index: its status column dated 24 October 2026, D-1 decided again, rows 0001-0013 on device A
+PASS ADR-0002: pull request #6 and m0-sessions in Branches, the earlier rechecks' texts kept
+PASS the integration log: section 28 and its parts
+summary: 0 failed checks
+exit status: 0
+   control: on the tree of 6cede84a6f6ac610976b233d875e26dd89419dbd it must fail every check but the one on the G0.6 rows' statuses (17 of 18)
+   PASS G0.6 report: the three rows' statuses unchanged
+   summary: 17 failed checks
+   control as required: 17 failed checks, and only the statuses check passing
+
+== 5. the earlier rounds' rechecks of the records, on HEAD and on the tree of 6cede84a6f6ac610976b233d875e26dd89419dbd
+-- Docs/Stage0/evidence/M0-Decisions/followup/commands/recheck-review2.py: exit 0 on HEAD, 0 on 6cede84a6f6ac610976b233d875e26dd89419dbd
+-- Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/recheck-review4.py: exit 1 on HEAD, 1 on 6cede84a6f6ac610976b233d875e26dd89419dbd
+   < answered FID4-04: the iPad, D-6, PO-12, PO-42 and the license statuses the finding listed carry the answers or dated notes, and the ADR index's status column is dated 23 October 2026
+   > PROBLEM  FID4-04: the iPad, D-6, PO-12, PO-42 and the license statuses the finding listed carry the answers or dated notes, and the ADR index's status column is dated 23 October 2026 (the ADR index lacks: | ADR | Title | Status (23 October 2026) | Owner during Stage 0 |)
+   < result: FAIL (2 of the eight not answered)
+   > result: FAIL (3 of the eight not answered)
+-- Docs/Stage0/evidence/M0-Decisions/followup/round-3/commands/recheck-hon4.py: exit 1 on HEAD, 0 on 6cede84a6f6ac610976b233d875e26dd89419dbd
+   < answered HON4-06: the README names the answers of 23 October 2026 on m0-decisions; the Stage 0 README says which lenses' findings were relayed; the ADR index's column is dated 23 October 2026
+   > PROBLEM  HON4-06: the README names the answers of 23 October 2026 on m0-decisions; the Stage 0 README says which lenses' findings were relayed; the ADR index's column is dated 23 October 2026 (the ADR index lacks: | ADR | Title | Status (23 October 2026) | Owner during Stage 0 |)
+   < result: pass (0 of the six not answered)
+   > result: FAIL (1 of the six not answered)
+-- Docs/Stage0/evidence/M0-Decisions/followup/round-4/commands/recheck-own4.py: exit 1 on HEAD, 1 on 6cede84a6f6ac610976b233d875e26dd89419dbd
+-- Docs/Stage0/evidence/M0-Decisions/followup/round-5/commands/recheck-own5.py: exit 0 on HEAD, 0 on 6cede84a6f6ac610976b233d875e26dd89419dbd
+-- Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py: exit 1 on HEAD, 1 on 6cede84a6f6ac610976b233d875e26dd89419dbd
+-- Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/recheck-unl.py: exit 1 on HEAD, 1 on 6cede84a6f6ac610976b233d875e26dd89419dbd
+-- Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-3/commands/recheck-unl2.py: exit 0 on HEAD, 0 on 6cede84a6f6ac610976b233d875e26dd89419dbd
+   HON-11 (CLAUDE.md's milestone paragraph), as each recheck that reads it reports it on HEAD:
+   recheck-review2: changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+   recheck-review4: changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+   recheck-hon4: changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+   recheck-own4: changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+   recheck-own5: changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+as required: six rechecks report exactly what they report on the start commit; the follow-up's fix's recheck now also reports FID4-04 and the second fix's HON4-06, each on exactly the ADR index's status column, dated 24 October 2026 since this update
+
+== 6. the device runbook's content check (Docs/Stage0/evidence/M0-Decisions/assembly/commands/runbook-content-check.py, unchanged)
+== forward: each checklist step's markers, in the runbook
+G01-EPUB.md: 13 steps, 38 markers: 38 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G01-PDF.md: 11 steps, 27 markers: 26 in the runbook, 0 in steps left to the checklist, 1 listed as not carried, 0 missing
+G02-Transfer.md: 23 steps, 76 markers: 68 in the runbook, 0 in steps left to the checklist, 8 listed as not carried, 0 missing
+G03-Intake.md: 27 steps, 59 markers: 59 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G04-Audio.md: 17 steps, 121 markers: 100 in the runbook, 15 in steps left to the checklist, 6 listed as not carried, 0 missing
+G05-AI.md: 9 steps, 73 markers: 57 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+G05-Recovery.md: 5 steps, 62 markers: 60 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+G06-Design.md: 31 steps, 41 markers: 39 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+  57 source fragments of 61 entries looked up in their files
+  RUNBOOK_OWN: 61 entries: 53 with a source whose fragment is read in its file; 8 without one, checked only for being in the runbook (external 1, runbook 7)
+exit status: 0
+
+== 7. the correction-text check on 6cede84a6f6ac610976b233d875e26dd89419dbd and on HEAD (Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py)
+   6cede84a6f6ac610976b233d875e26dd89419dbd: exit 1; 77 texts checked, 68 missing
+   HEAD: exit 1; 77 texts checked, 68 missing
+   as required: no line differs (the first line, a timestamp, left out)
+
+== 8. Scripts/ci.sh contracts
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (60s)
+all 3 steps passed
+exit status: 0
+
+overall: every check as required

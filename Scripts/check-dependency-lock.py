@@ -16,8 +16,9 @@ spike roots (Spikes/). Test code is a Swift or C-family implementation file that
 include and no other target does (by the source paths the manifests declare, and SwiftPM's default paths as SwiftPM
 chooses them); every other file under the product roots is product code, whatever its directory is called, and every
 header and module map there is product code wherever it sits, since product code can include or import it from
-anywhere. A shipping target is a product-manifest target that is not a test target; a product project.yml's own
-settings count as every target's. `check` fails when:
+anywhere (a module map: a file named *.modulemap, module.map or module_private.map, in any letter case, the names
+clang reads one by). A shipping target is a product-manifest target that is not a test target; a product project.yml's
+own settings count as every target's. `check` fails when:
   pin-differs        a Package.resolved pin, or an exact requirement, differs from the inventory's version or revision;
                      a pin's identity differs from the inventory's; or a lock pins one package twice
   pin-missing        a lock lacks a package the inventory says it pins, or a package that its manifest requires directly
@@ -75,7 +76,20 @@ settings count as every target's. `check` fails when:
                      other than PackageDescription and CompilerPluginSupport, or names Context, CommandLine, readLine,
                      _silgen_name, _cdecl, _extern, random numbers or clocks, or holds an #if (MANIFEST_INPUTS: every build
                      evaluates the manifest again, in its own environment). Read in the raw text of a Package.swift, so a
-                     comment that names one is reported too
+                     comment that names one is reported too. Or a product package holds a version-specific manifest, a
+                     file whose name begins with Package@ and ends with .swift, in any letter case
+                     (Package@swift-6.4.swift), which SwiftPM evaluates instead of the Package.swift beside it when the
+                     toolchain's Swift version allows, so that a build can evaluate a manifest whose text the rule above
+                     never reads (VERSION_SPECIFIC_MANIFEST; the fourth review of the M0 exit preparation, SEC-ZIPGUARD-03:
+                     until then such a file passed)
+  letter-case        a tracked path whose name differs only in letter case from the one this check reads, which the
+                     default macOS file system, ignoring case, gives the build all the same: a path whose first directory
+                     is a product or spike root in another letter case (packages/...), which git checks out into that
+                     root, where the build reads it, while this check judges a file by the root its path names and would
+                     read it as neither product nor spike code; or a manifest named Package.swift or project.yml in
+                     another letter case (package.swift, Project.yml), anywhere, which SwiftPM and XcodeGen open by name
+                     and so load, while this check reads manifests by their exact names (found with the fix of
+                     SEC-ZIPGUARD-03; module maps are read whatever the letter case of their names)
   transitive-direct  a product manifest depends directly on a package the inventory admits only as transitive, or
                      product code (not tests) reaches one of its modules: the word `import` followed, after white space,
                      comments and an optional import kind, by the module's name, anywhere in a Swift or C-family file
@@ -163,12 +177,17 @@ from the environment rather than from a tracked file (CPATH, C_INCLUDE_PATH, LIB
 requirements of packages behind an exempted (unlocked) Spikes project; a Package.swift's use of the order in which a
 Set or Dictionary is iterated, which Swift seeds afresh in each process, so that a manifest that used it would vary
 from one evaluation to the next, in CI as in a build, rather than hide a value from CI alone (review R4-01's
-reasoning: random numbers and clocks, the other sources of such variation, are reported); and anything a build fetches
-or runs that no manifest, lock or tracked file names. A C-family include of a plain name (no .., no absolute path, no
-build or checkout directory) that is not beside the including file is found in the search directories: the target's
-own, which the setting and flag rules judge, and its dependencies' public include directories, which for the
-transitive-only packages hold, at the pinned revisions, only the public headers the inventory lists, judged by name,
-and module maps (Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log).
+reasoning: random numbers and clocks, the other sources of such variation, are reported); a file that a tool reads
+under a name this check does not know: it reads a product package's manifest as Package.swift, failing any
+version-specific one, a project's as project.yml, and module maps by the names clang reads them by, in the letter case
+the tools of the pinned toolchain resolve on the default macOS file system
+(Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log), so a tool or a toolchain that reads other names is covered
+only once this check learns them; and anything a build fetches or runs that no manifest, lock or tracked file names. A
+C-family include of a plain name (no .., no absolute path, no build or checkout directory) that is not beside the
+including file is found in the search directories: the target's own, which the setting and flag rules judge, and its
+dependencies' public include directories, which for the transitive-only packages hold, at the pinned revisions, only
+the public headers the inventory lists, judged by name, and module maps
+(Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log).
 """
 import argparse
 import ast
@@ -333,6 +352,25 @@ MANIFEST_IMPORTS_ALLOWED = ('PackageDescription', 'CompilerPluginSupport')
 MANIFEST_INPUTS = re.compile(r'(?<![A-Za-z0-9_])(?:Context|CommandLine|readLine|_silgen_name|_cdecl|_extern|'
                              r'(?:Continuous|Suspending)?Clock)(?![A-Za-z0-9_])|[Rr]andom|[Ss]huffle|'
                              r'#[ \t]*(?:if|elseif)(?![A-Za-z0-9_])')
+# The fourth review of the M0 exit preparation, SEC-ZIPGUARD-03: SwiftPM evaluates a version-specific manifest,
+# Package@swift-<version>.swift, instead of the Package.swift beside it when the toolchain's Swift version allows. On the
+# pinned toolchain (Swift 6.4), dump-package took Package@swift-6.4.swift, Package@swift-6.swift and
+# Package@swift-6.4.0.swift beside a Package.swift of the same tools version, and package@swift-6.4.swift,
+# Package@Swift-6.4.swift and PACKAGE@SWIFT-6.4.SWIFT too, matching the whole name in any letter case; it kept
+# Package.swift beside Package@swift-7.swift, Package@swift-5.9.swift, Package@swift6.4.swift and
+# Package@swift-6.4.swift.bak (Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log, part 2). The manifest-input rule
+# reads Package.swift alone, so a product package may hold no file SwiftPM could take instead: every file under the
+# product roots whose name begins with Package@ and ends with .swift, in any letter case, fails, whatever SwiftPM's rule
+# for choosing among them (a name such as Package@2x.png, an image's, is not one).
+VERSION_SPECIFIC_MANIFEST = re.compile(r'^package@.*\.swift$', re.I | re.S)
+# Found with that fix: the default macOS file system ignores letter case, and SwiftPM and XcodeGen open a package's
+# Package.swift and a project's project.yml by name, so they load package.swift or Project.yml as the manifest, which
+# this check, reading manifests by their exact names (check_manifests), would not read: a product manifest must be named
+# exactly so (check_names). And clang opens a directory's module map by name too, so it loads MODULE.MODULEMAP as
+# module.modulemap, MODULE.MAP as module.map, and module_private.map beside a module.map: module maps are read by every
+# name clang reads one by, in any letter case (is_modulemap_name).
+MANIFEST_NAMES = ('Package.swift', 'project.yml')
+MODULEMAP_NAMES = ('module.map', 'module_private.map')
 # Review R4-02: C-family include directives, judged by where their file can be, not only against Spikes/: a quoted
 # name may resolve beside the including file, and any name is looked up in each search directory, where `..` climbs out
 # of it (from a package's public include directory into its sources, for one). #embed (C23) brings a file's bytes in
@@ -400,6 +438,15 @@ def version_key(v):
 def is_license_name(name):
     stem, ext = os.path.splitext(name)
     return bool(LICENSE_STEM.match(stem)) and ext.lower() in LICENSE_EXT
+
+
+def is_modulemap_name(name):
+    """Whether clang can read the file as a module map: a *.modulemap (module.modulemap, module.private.modulemap, or one
+    a setting names), a module.map or a module_private.map, in any letter case, since the default macOS file system
+    ignores it (until the fix of SEC-ZIPGUARD-03, *.modulemap and module.map as spelled, so MODULE.MODULEMAP and
+    module_private.map, which clang loads, were read by nothing)."""
+    n = name.casefold()
+    return n.endswith('.modulemap') or n in MODULEMAP_NAMES
 
 
 def in_test_named_dir(rel):
@@ -911,10 +958,16 @@ class Checker:
 
     # ----- manifests -------------------------------------------------------------------------------------------------
     def dump_package(self, rel):
+        pkg_dir = os.path.dirname(self.path(rel))
         content = open(self.path(rel), 'rb').read()
-        key = (rel, hashlib.sha256(content).hexdigest())
+        # SwiftPM may evaluate a version-specific manifest beside Package.swift instead of it (SEC-ZIPGUARD-03), so the
+        # cache key holds every file there that it could take as the manifest, and a self-test tree that adds one beside
+        # an unchanged Package.swift is evaluated again.
+        others = tuple((n, sha256_file(os.path.join(pkg_dir, n))) for n in sorted(os.listdir(pkg_dir))
+                       if (n.casefold() == 'package.swift' or VERSION_SPECIFIC_MANIFEST.match(n))
+                       and os.path.isfile(os.path.join(pkg_dir, n)))
+        key = (rel, hashlib.sha256(content).hexdigest()) + others
         if key not in _DUMP_CACHE:
-            pkg_dir = os.path.dirname(self.path(rel))
             with tempfile.TemporaryDirectory(prefix='dump-package-') as tmp:
                 r = subprocess.run(self.swift + ['package', '--package-path', pkg_dir, '--scratch-path', tmp, 'dump-package'],
                                    capture_output=True, text=True)
@@ -1262,6 +1315,7 @@ class Checker:
         spike_roots = inv.get('roots', {}).get('spike', [])
         packages = self.check_inventory(inv, tracked)
         self.check_xcode_projects(files)
+        self.check_names(files, product_roots, spike_roots)
         self.binaries_inv = [b for b in inv.get('binaries', []) if isinstance(b, dict)]
         for p in packages:
             if p['role'] == 'product-transitive':
@@ -1769,9 +1823,11 @@ class Checker:
         headers, umbrella directories and libraries it names are held to the rules for product code. Every module map
         there is product code, whichever target's directory holds it, because product code can import the modules it
         defines from anywhere (review R3-01); so is a file that a shipping target names as a module map (MODULEMAP_FILE,
-        -fmodule-map-file=) or that a module map names as an extern module, whatever the file is called."""
+        -fmodule-map-file=) or that a module map names as an extern module, whatever the file is called. A module map
+        is any file clang reads as one by its name, in any letter case (is_modulemap_name; since the fix of
+        SEC-ZIPGUARD-03)."""
         queue = [f for f in files if self.under(f, product_roots) and os.path.isfile(self.path(f))
-                 and (f.endswith('.modulemap') or os.path.basename(f) == 'module.map')]
+                 and is_modulemap_name(os.path.basename(f))]
         queue += sorted(f for f, kinds in self.named_files.items() if 'modulemap-file' in kinds)
         done = set()
         while queue:
@@ -1808,6 +1864,38 @@ class Checker:
                         reported.add((item['kind'], item['value'], item['where']))
                         self.judge(f, item, test, product_roots, spike_roots)
         self.note(f'module maps read as product code: {len(done)}')
+
+    def check_names(self, files, product_roots, spike_roots):
+        """Files the build reads under a name other than the one this check reads them by (the fourth review of the M0
+        exit preparation, SEC-ZIPGUARD-03, and the routes of the same kind found with its fix):
+          - under the product roots, a version-specific manifest, which SwiftPM evaluates instead of the Package.swift
+            beside it, while the manifest-input rule reads Package.swift alone (VERSION_SPECIFIC_MANIFEST);
+          - a tracked path whose first directory is a product or spike root in another letter case: the default macOS
+            file system ignores case, so git checks the file out into that root and the build reads it there, while
+            this check judges a file by the root its path names, so it would read it as neither product nor spike code;
+          - a manifest named Package.swift or project.yml in another letter case, anywhere, which SwiftPM and XcodeGen
+            open by name and so load, while this check reads manifests by their exact names (every one of the
+            repository for the lock rules, and those under the product roots for the product rules).
+        Module maps are read whatever the letter case of their names (check_modulemaps)."""
+        roots = list(product_roots) + list(spike_roots)
+        exact = {n.casefold(): n for n in MANIFEST_NAMES}
+        n = 0
+        for f in files:
+            if self.under_ci(f, roots) and not self.under(f, roots):
+                root = next(r for r in roots if self.under_ci(f, [r]))
+                first = f[:len(root)]
+                self.fail('letter-case', f, f"its first directory {first!r} is {root}/ in another letter case: the default macOS file system, which ignores case, checks the file out into {root}/, where a build reads it, but this check judges a file by the root its path names, so it would read this one as neither product nor spike code (found with the fix of the fourth review of the M0 exit preparation, SEC-ZIPGUARD-03). Move it under {root}/ as spelled")
+                n += 1
+                continue
+            name = os.path.basename(f)
+            if name.casefold() in exact and name != exact[name.casefold()]:
+                proper = exact[name.casefold()]
+                self.fail('letter-case', f, f"{name} is {proper} in another letter case: {'SwiftPM' if proper == 'Package.swift' else 'XcodeGen'} opens {proper} by name, and the default macOS file system, which ignores case, gives it this file, but this check reads manifests by their exact names, so it would apply none of its rules to this one (found with the fix of SEC-ZIPGUARD-03). Rename it {proper}")
+                n += 1
+            elif self.under(f, product_roots) and VERSION_SPECIFIC_MANIFEST.match(name):
+                self.fail('manifest-input', f, f"{name} is a version-specific manifest: SwiftPM evaluates a file whose name begins with Package@ and ends with .swift (Package@swift-6.4.swift, in any letter case) instead of the Package.swift beside it when the toolchain's Swift version allows, so a build may evaluate a manifest whose text this check's manifest-input rule, which reads Package.swift, never reads (the fourth review of the M0 exit preparation, SEC-ZIPGUARD-03). A product package keeps one manifest, Package.swift: remove this file")
+                n += 1
+        self.note(f'names: {n} tracked path(s) named otherwise than this check reads them (version-specific manifests, roots and manifests in another letter case)')
 
     def check_xcode_projects(self, files):
         """ADR-0002 commits each project's project.yml, never the Xcode project or workspace generated from it. One that
@@ -2491,6 +2579,23 @@ def good_manifest(code, dependencies=None, path=None):
             target = target[:-1] + f', path: {path})'
         edit(r, GOOD_SWIFT, GOOD_TARGET, target)
     return mutate
+
+
+def good_version_specific(name, code='', path=None):
+    """A version-specific manifest named `name` beside the Good package's Package.swift, which stays as it is: Good's
+    manifest with Swift code after its import line and the Good target's path, if given, replaced (SEC-ZIPGUARD-03)."""
+    def mutate(r):
+        text = BASE_FILES[GOOD_SWIFT].replace('import PackageDescription\n', 'import PackageDescription\n' + code, 1)
+        if path:
+            text = text.replace(GOOD_TARGET, GOOD_TARGET[:-1] + f', path: {path})', 1)
+        add_file(r, f'Packages/Good/{name}', text)
+    return mutate
+
+
+def rename(root, rel, new):
+    """Renames a file or directory of the synthetic tree, which may change its letter case alone: os.rename does that
+    on the default macOS file system, which ignores case but keeps it."""
+    os.rename(os.path.join(root, rel), os.path.join(root, new))
 MUTATIONS = [  # (what, category, a fragment of the message that only this rule writes, mutation)
     ('a lock pins another version', 'pin-differs', 'lock 1.0.1',
      lambda r: edit_json(r, 'Packages/Good/Package.resolved', lambda d: lock_pin(d, 'a')['state'].update(version='1.0.1'))),
@@ -3150,6 +3255,36 @@ MUTATIONS = [  # (what, category, a fragment of the message that only this rule 
     ('SEC-ZIPGUARD-01: a local package path names a tracked directory under Apps/ that holds no Package.swift (tracked content is not enough)',
      'outside-product', "depends on the local package Apps/App/Sources, whose Package.swift is not a file git tracks",
      lambda r: edit(r, APP_YML, 'packages:\n', 'packages:\n  AppSources:\n    path: Sources\n')),
+    # The fourth review of the M0 exit preparation, SEC-ZIPGUARD-03: SwiftPM evaluates a version-specific manifest
+    # instead of the Package.swift beside it, and the manifest-input rule read Package.swift alone, so such a file could
+    # read the environment unseen (Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log plants it in the real tree).
+    ("SEC-ZIPGUARD-03: a product package's version-specific manifest takes its target's path from the environment (the review's reproduction)",
+     'manifest-input', 'Package@swift-6.4.swift is a version-specific manifest',
+     good_version_specific('Package@swift-6.4.swift',
+                           'import Foundation\nlet goodPath = ProcessInfo.processInfo.environment["SYLVIA_GOOD_PATH"] ?? "Sources/Good"\n',
+                           path='goodPath')),
+    ('SEC-ZIPGUARD-03: a version-specific manifest named in another letter case, which SwiftPM takes too (package@Swift-6.swift)',
+     'manifest-input', 'package@Swift-6.swift is a version-specific manifest', good_version_specific('package@Swift-6.swift')),
+    # Found with that fix: the default macOS file system ignores letter case, so the build reads, under a name this check
+    # read only as spelled, a file this check did not read as product code or as a manifest (the same log, parts 1 and 2).
+    ('a product root in another letter case (packages/), which the default macOS file system checks out into Packages/',
+     'letter-case', "its first directory 'packages' is Packages/ in another letter case",
+     lambda r: rename(r, 'Packages', 'packages')),
+    ("a product package's manifest named package.swift, which SwiftPM opens as Package.swift", 'letter-case',
+     'package.swift is Package.swift in another letter case', lambda r: rename(r, GOOD_SWIFT, 'Packages/Good/package.swift')),
+    ('a product project named Project.yml, which XcodeGen opens as project.yml', 'letter-case',
+     'Project.yml is project.yml in another letter case', lambda r: rename(r, APP_YML, 'Apps/App/Project.yml')),
+    ("a spike package's manifest named PACKAGE.SWIFT, which the lock rules, reading every manifest, would not read",
+     'letter-case', 'PACKAGE.SWIFT is Package.swift in another letter case',
+     lambda r: rename(r, 'Spikes/S/Package.swift', 'Spikes/S/PACKAGE.SWIFT')),
+    ('a module map named in another letter case (MODULE.MODULEMAP), which clang loads as module.modulemap, names a transitive public header',
+     'transitive-direct', 'names bmodule.h, a public header of acme/B',
+     lambda r: add_file(r, 'Packages/Good/Sources/Good/include/MODULE.MODULEMAP', 'module Mini {\n    header "bmodule.h"\n}\n')),
+    ('a private module map, which clang reads beside a module.map (module_private.map), names a transitive public header',
+     'transitive-direct', 'names bmodule.h, a public header of acme/B',
+     tree(lambda r: add_file(r, 'Packages/Good/Sources/Good/include/good.h', 'int good(void);\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/include/module.map', 'module GoodC {\n    header "good.h"\n}\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/include/module_private.map', 'module Mini {\n    header "bmodule.h"\n}\n'))),
 ]
 
 
@@ -3294,6 +3429,17 @@ NEGATIVES = [  # (what, change[, warning]) that must not produce any failure, an
           lambda r: add_file(r, 'Packages/Other/Sources/Other/Other.swift', 'public struct Other {}\n'),
           lambda r: edit(r, GOOD_SWIFT, 'dependencies: [\n        .package(', 'dependencies: [\n        .package(path: "../Other"),\n        .package('),
           lambda r: edit(r, GOOD_SWIFT, '[.product(name: "A", package: "A")])', '[.product(name: "A", package: "A"), .product(name: "Other", package: "Other")])'))),
+    # SEC-ZIPGUARD-03 fails a version-specific manifest under the product roots only, as the manifest-input rule reads
+    # product manifests only, and by the name SwiftPM reads it by, not by any name that begins like a manifest's.
+    ('a spike package keeps a version-specific manifest (spikes never ship), and product files whose names only begin like one (Package+Model.swift, PackageNotes.md, an image named Package@2x.png)',
+     tree(lambda r: add_file(r, 'Spikes/S/Package@swift-6.4.swift', BASE_FILES['Spikes/S/Package.swift']),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/Package+Model.swift', 'struct PackageModel {}\n'),
+          lambda r: add_file(r, 'Packages/Good/PackageNotes.md', 'notes\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/Images/Package@2x.png', 'not really an image\n'))),
+    # Module maps are read whatever the letter case of their names: one that names only the package's own header passes.
+    ('a product module map named in another letter case (Module.ModuleMap) that names its own header',
+     tree(lambda r: add_file(r, 'Packages/Good/Sources/Good/include/good.h', 'int good(void);\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/include/Module.ModuleMap', 'module GoodC {\n    header "good.h"\n    export *\n}\n'))),
 ]
 
 

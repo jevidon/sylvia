@@ -67,9 +67,10 @@ evidence in ADR-0001 (the `m0-exit-prep` run's).
 
 Each ran on the build Mac (macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275)) on the commit its log's header
 names: `lfs-checkout.log` on `8082bdb6`, before any change; the others on the fix's last documents commit, with no
-uncommitted file, except that `dropin-paths.log` ran with `branch-state.log` in place, `recheck-fix1.log` with both, and
-`13-hard-rules.log` last, with every other log in place and not yet committed, so that the audit read them too (each
-header counts its uncommitted paths); and the gate checks on the commit that adds every other log. Dry runs on the
+uncommitted file (`assembly-gate-checks.log`, `finding-lines.log` and `ci-contracts.log` first), except that
+`dropin-paths.log` ran with `branch-state.log` in place, `recheck-fix1.log` with both, and `13-hard-rules.log` last,
+with every other log in place and not yet committed, so that the audit read them too (each header counts its uncommitted
+paths); and the gate checks on the commit that adds every other log. Dry runs on the
 uncommitted tree came first. Other jobs shared the Mac (the load averages in the logs), so no timing here is a result. No
 simulator was created or used, nothing played audio, no device was contacted, nothing was fetched from or pushed to a git
 remote, and no page was read over the network.
@@ -106,9 +107,12 @@ these reports:
   (`../../M0-Decisions/unlocked-record/round-2/commands/recheck-unl.py`): its UNL-02 line gives the State line's word
   count, now 199 (198 before; at most 200), the State line's last clause now giving the update's fix, not the update, as
   not reviewed. Both are in `commands/expected-rechecks.txt`, with the assembly's 16 lines otherwise unchanged.
-- **The assembly's gate checks** (`checks/assembly-gate-checks.log`): part 1a, which allows only the two parts' files
-  and the assembly's since `6cede84a`, so not this fix's folder; and part 4, for the three reports above (the records
-  check, the six rechecks' 17 lines against its 16, and its own recheck's agree and state). Their other parts pass.
+- **The assembly's gate checks** (`checks/assembly-gate-checks.log`, run on the fix's last documents commit, with no
+  uncommitted file): part 1a, which allows only the two parts' files and the assembly's since `6cede84a`, so not this
+  fix's folder; part 3, on the four logs of this fix that the gate summary cites and that the documents commit does not
+  hold yet (`branch-state.log`, `dropin-paths.log`, `finding-lines.log` and `gate-checks.log`; this fix's gate checks,
+  on the commit that adds them, find every path); and part 4, for the three reports above (the records check, the six
+  rechecks' 17 lines against its 16, and its own recheck's agree and state). Their other parts pass.
 
 What still passes unchanged: the records part's amendments checker and its 66 mutations, the instructions part's runbook
 content check, the step coverage, the correction-text check (no line differs from `8082bdb6`), the follow-up's recheck,

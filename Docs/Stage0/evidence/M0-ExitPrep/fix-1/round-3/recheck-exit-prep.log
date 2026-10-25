@@ -1,0 +1,38 @@
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/recheck-exit-prep.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-9
+commit: f95de709791a49293c61dbba291e22ec5c4dd431; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T21:01:18Z; load: 10:01  up 22 days, 20:11, 3 users, load averages: 5.84 4.67 4.12
+
+== The zipguard branch's requests (m0-exit-zipguard; integration log 30.2)
+PROBLEM  Z1: row 76 passed-host, its Evidence and Source as requested (1 of 3 not as stated; first: Docs/Stage0/M0-gate.md lacks: | 76 | Dependency lock: the CI guard that keeps marmelroy/Zip 2.1.2 (CVE-2023-39135) out o)
+PROBLEM  Z2: the count, Section 6.1's last paragraph and the checker's row 76, changed together (3 of 4 not as stated; first: Docs/Stage0/M0-gate.md: no note after: rs unchanged (`evidence/M0-Decisions/stage0/gate-checks.log`, part 3).)
+PROBLEM  Z3: item 4's two bullets (1 of 2 not as stated; first: Docs/Stage0/M0-gate.md: no note after: before the exit is a further merge your answer did not cover (item 1).)
+PROBLEM  Z4: the gate summary's dated notes (a) to (h) (9 of 15 not as stated; first: Docs/Stage0/M0-gate.md: no note after: and the final reviews' records, which need no device (item 4))
+PROBLEM  Z5: integration log section 28, and the notes on 7.1 and 7.7 (3 of 7 not as stated; first: Docs/Stage0/integration-log.md lacks: ## 28. ADR-0014's R4-01 and R4-02 closed, and `linkage.sh` under Xcode 27.1 (24 October 20)
+PROBLEM  Z6: the Stage 0 README's lines 5 and 36 (2 of 2 not as stated; first: Docs/Stage0/README.md: no note after: which need no device ([M0-gate.md](M0-gate.md) Section 1, item 4))
+PROBLEM  Z7: the runbook's notes: Session 10's two paragraphs and three cells, run 1, 0.3's step 5 and run 12 (6 of 8 not as stated; first: Docs/Stage0/M0-device-runbook.md: no note after: builds: the review of the decisions round's fix, its finding OWN2-01.))
+PROBLEM  Z8: the other records that called R4-01 and R4-02 open (12 of 13 not as stated; first: Docs/ADRs/README.md: no note after: on 10's security sign-off, and so before the M0 exit: its open items).)
+ok       Z9: the recommended --no-env: declined with its reason, the script unchanged (2 texts)
+== The reviews branch's requests (m0-exit-reviews; integration log 30.2)
+ok       R1: ADR-0014's header line, after its Plan references (2 texts)
+ok       R2: item 4's note on the final-review records (2 texts)
+ok       R3: Section 6.2's last row (2 texts)
+ok       R4: Section 5.2's R8-04 note and item 4's build-Mac bullet (2 texts)
+PROBLEM  R5: the gate summary's notes that the records are in (1 of 5 not as stated; first: Docs/Stage0/M0-gate.md lacks: R4-01 and R4-02 closed, reviewed next, and the final-review records in: item 4.)*)
+PROBLEM  R6: Section 6.1's note, and the hand-over in the State line, Section 7, item 5, and Section 8 (2 of 6 not as stated; first: Docs/Stage0/M0-gate.md lacks: nor has the M0 exit preparation of 24 October 2026 (Sections 6.2 and 8).)
+ok       R7: integration log section 29 (requested as 28, which the Zip guard's entry took), and 7.1's note (3 texts)
+ok       R8: the Stage 0 README's lines 5 and 26 (2 texts)
+ok       R9: the runbook's two notes (2 texts)
+ok       R10: the ADR index's rows 0015 and 0016 (2 texts)
+== What the assembly recorded besides the requests
+ok       X: Apple's pages for Xcode 27.1, as relayed, in ADR-0001, the gate summary and the ADR index; the confirmation pending (8 texts)
+ok       C: CLAUDE.md's correction, 5aec2518, where the records gave it as still to do (27 texts)
+ok       C-count: the four identical bullets of 24.5-27.5, each with its note (1 texts)
+PROBLEM  A: the round's own account: integration log section 30, the gate summary and the Stage 0 README (3 of 7 not as stated; first: Docs/Stage0/M0-gate.md lacks: - **The M0 exit preparation (24 October 2026).**)
+== What the continuation of 26 October 2026 corrected or added (integration log 30.3)
+ok       N: ADR-0014's header clause, the amendments' item for ADR-0014's new consequence, the notes on 9cdb0a02 and on CLAUDE.md, item 110, and the two evidence READMEs (18 texts)
+
+result: FAIL (11 group(s) not as stated)
+
+exit status: 1
+end: 2026-10-25T21:01:18Z; load: 10:01  up 22 days, 20:11, 3 users, load averages: 5.84 4.67 4.12

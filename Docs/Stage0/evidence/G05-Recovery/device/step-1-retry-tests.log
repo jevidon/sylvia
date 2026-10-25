@@ -1,0 +1,16 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -scheme G05Recovery-Package -destination id=00008150-000160910139401C -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=A4KBDX665Z
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = A4KBDX665Z
+
+Resolve Package Graph
+2026-10-26 06:15:49.791 xcodebuild[32929:54123850] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+
+
+Resolved source packages:
+  GRDB: https://github.com/groue/GRDB.swift.git @ 7.11.1
+  G05Recovery: /Users/jevidon/Git/sylvia-sessions/Spikes/G05-Recovery
+
+2026-10-26 06:15:50.157 xcodebuild[32929:54123850] Writing error result bundle to /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/ResultBundle_2026-26-10_06-15-0050.xcresult
+xcodebuild: error: Failed to build workspace G05Recovery with scheme G05Recovery-Package.: Cannot test target “SylviaRecoveryTests” on “Kia Ora”: Tool-hosted testing is unavailable on device destinations. Select a host application for the test target, or use a simulator destination instead.

@@ -9,3 +9,5 @@ xcodebuild exit: 70.
 Error: Cannot test target “SylviaRecoveryTests” on “Kia Ora”: Tool-hosted testing is unavailable on device destinations. Select a host application for the test target, or use a simulator destination instead.
 Log: step-1-tests.log.
 No protection readback or latency measurements obtained. Cable repeats and Release/Low Power Mode runs not attempted because the package test target requires a host application. Existing G05 Lock harness has separate tests, not the SylviaRecoveryTests suite; it is not a substitute for this step.
+
+Retry requested by owner: 2026-10-25 17:15 UTC, build commit 38f9604e. Same command, exit 70, same tool-hosted testing error before any tests executed. Evidence: step-1-retry-tests.log. Status remains blocked.

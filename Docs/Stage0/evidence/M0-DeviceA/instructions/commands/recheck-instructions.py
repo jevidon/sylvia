@@ -6,7 +6,8 @@ files this update owns (the device runbook, the gate summary, the Stage 0 README
 asserts, item by item, that each says what the update says it does now, and that the texts it replaced are gone or
 kept only inside a dated note that says what they were:
   device-A    device A is the iPhone 13 mini (iPhone14,4 expected; A15; 375 x 812 pt) wherever the records name it:
-              the runbook's header, 1.1, 1.2, run 8, 0.4, Session 8 and its 8.1, Sections 6 and 7; the gate summary's
+              the runbook's header, 1.1, 1.2, run 8, 0.4, Session 8 and its 8.1, Sections 6 (D-1's record of 22
+              October 2026 kept as it was, with a dated note) and 7; the gate summary's
               opening, item 1's step 8, item 2's run 8, Section 2's rows 62, 74 and 82, Sections 3, 4.3 and 5.1; the
               Stage 0 README; each checklist's device-A line;
   floor       what the change means: the 11 Pro's 375 x 812 pt drawn about 8% smaller; the A15's figures the 13
@@ -102,6 +103,11 @@ m += need(runbook, ["- **Your decision of 24 October 2026, and the branch you bu
                     "## 5. Sessions on device A, the small-screen baseline, and an iPad",
                     "**8.1 Type roles on device A, the small-screen baseline**",
                     "  - **Decided again on 24 October 2026: device A is your iPhone 13 mini.**"], "the runbook")
+d1_record = line_with(runbook, "  - **Decided on 22 October 2026: (b) and (c).**")
+m += need(d1_record, ["Device A is your iPhone 11 Pro (A13, 375 × 812 pt, the narrower of your two A13 phones)",
+                      "*(24 October 2026: your iPhone 11 Pro no longer charges, and you decided D-1 again: device A is "
+                      "your iPhone 13 mini", "This bullet keeps your decision of 22 October 2026 as it was"],
+          "the runbook's D-1 record of 22 October 2026, kept with its dated note")
 m += need(session8, ["### Session 8 · Device A, the small-screen baseline: your iPhone 13 mini (about 6.75 h",
                      "iPhone14,4 is expected for an iPhone 13 mini"], "the runbook's Session 8")
 m += gone(runbook, ["Device A, the oldest supported iPhone, is your iPhone 11 Pro (D-1 (b))",
@@ -226,8 +232,6 @@ report("step-0.8", m, "0.8 gives the paths read from the drop-in, the commit che
 MARKS = ("24 October 2026", "13 mini", "m0-sessions")
 TERMS = re.compile(r"11 Pro|iPhone12,3|m0-decisions")
 HISTORY = {  # (file, the line's first words): why it stays as it is
-    (RUNBOOK, "  - **Decided on 22 October 2026: (b) and (c).**"): "D-1's record of 22 October 2026, kept; the "
-        "addendum after it records the decision of 24 October 2026",
     (RUNBOOK, "- **D-8** Git LFS:"): "D-8's record; its note of 22 October 2026 on what m0-decisions added to LFS",
     (RUNBOOK, "**C50 · ADR-0013's open item on devices"): "a correction's text and its note of 22 October 2026",
     (RUNBOOK, "**C56 · G03 Setup 1, ADR-0010's open item"): "a correction's text and its note of 22 October 2026",

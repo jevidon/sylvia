@@ -22,6 +22,12 @@ correction's text, a review's finding), or a text that is still true (a generic 
 `recheck-instructions.py` (in `commands/`) checks the changed texts, and its sweep lists, with a reason, each line that
 still names the iPhone 11 Pro or `m0-decisions` without a mark of this update.
 
+**The second attempt (26 October 2026)** read the first attempt's work against this list and swept the same files
+again for the same terms, reading each hit on a line that carries no mark of this update ("24 October 2026", "13
+mini", "m0-sessions"): each is a record, a quoted name, a question as it was asked or a correction's text, as below.
+The dispositions it changed or added are marked *(26 October 2026)*; what each changed is in `README.md`, "Finished on
+26 October 2026".
+
 ## The device runbook
 
 | Line | What it says (at `6cede84a`) | Disposition |
@@ -42,7 +48,7 @@ still names the iPhone 11 Pro or `m0-decisions` without a mark of this update.
 | 134 | Run 12: the technical lead's check of the release notes comes first, in run 1 | Changed: since 24 October 2026 a one-line confirmation |
 | 154 | Session 0's order | Changed: only 0.3's steps 1 and 4 left before the first sitting; 0.8 needed nothing on 24 October 2026 |
 | 158 | 0.2: at the root of "the checkout 0.3 made"; the release notes not mentioned | Changed: `~/Git/sylvia-sessions`; Apple's evidence that 27A9275 is the release build (read on 24 October 2026; `checks/apple-pages.log`); the owner's confirmation still to be recorded |
-| 160-171 | 0.3 steps 1-8: `git checkout m0-decisions`; correct `CLAUDE.md` on `m0-decisions`; merge `m0-decisions` into `main` if building from `main`; agent work merged into `m0-decisions`; records committed on `m0-decisions` | Changed: step 1 `git branch --show-current` reads `m0-sessions` in `~/Git/sylvia-sessions`; steps 2 and 3 done; step 4 `m0-sessions`'s head; step 5 the agent run on `m0-exit-prep` (pending), agent work merged into `m0-sessions`; step 6 records committed on `m0-sessions` by the owner or an agent asked; step 7 adds which merged changes need no repeat; history line points to item 104 |
+| 160-171 | 0.3 steps 1-8: `git checkout m0-decisions`; correct `CLAUDE.md` on `m0-decisions`; merge `m0-decisions` into `main` if building from `main`; agent work merged into `m0-decisions`; records committed on `m0-decisions` | Changed: step 1 `git branch --show-current` reads `m0-sessions` in `~/Git/sylvia-sessions`; steps 2 and 3 done; step 4 `m0-sessions`'s head; step 5 the agent run on `m0-exit-prep` (pending), agent work merged into `m0-sessions`; step 6 records committed on `m0-sessions` by the owner or an agent asked; step 7 adds which merged changes need no repeat (*(26 October 2026)*: the checklists' lines rewritten when the session log recorded no sitting of the owner's, not "before any session ran"); history line points to item 104 |
 | 173 | 0.4: "device A, your iPhone 11 Pro" | Changed: the iPhone 13 mini by its Lightning cable, iPhone14,4 expected; dated note |
 | 207 | 0.7: commit the log on `m0-decisions` | Changed: `m0-sessions`; dated note |
 | 209 | 0.8: run again only if what the drop-in builds changes after `9cdb0a02` | Changed: the check of 24 October 2026 (the paths read from the drop-in, `6cede84a`, no change, the command after a merge, the two files of `m0-exit-prep` not used); `checks/dropin-paths.log` |
@@ -59,13 +65,13 @@ still names the iPhone 11 Pro or `m0-decisions` without a mark of this update.
 | 945 | 8.8 | Stays: generic A |
 | 947 | 8.9: "A has no Action button" | Changed: like the 11 Pro; the steps record what iOS does |
 | 949 | 8.10: ADR-0003 asks it "on the baseline" | Changed (record): step 1 does not depend on the chip, step 2's latencies are the 13 mini's |
-| 951, 955, 961 | Repeats: intro; G0.3 "on the oldest iPhone in M2"; G0.2 22 "if available" | Changed: the timed repeats give the 13 mini's figures; Setup 1 repeats on device A; on A it times the 13 mini |
+| 951, 955, 961 | Repeats: intro; G0.3 "on the oldest iPhone in M2"; G0.2 22 "if available" | Changed: the timed repeats give the 13 mini's figures (*(26 October 2026)* with G0.3's memory limit and times, steps 14-16, and G0.4 3's battery figures); Setup 1 repeats on device A; on A it times the 13 mini |
 | 966 | Session 9: "15 and 27 are the oldest iPhone's by their own text" | Changed: device A's; dated note |
 | 995 | Section 6: ask for R4-01 and R4-02 at run 1, base and merge `m0-decisions` | Changed: asked; the agent run on `m0-exit-prep`, merged into `m0-sessions` once reviewed; pending; dated note |
 | 997, 1005 | `linkage.sh`: you run it; the checkout 0.3 made; commit and merge on `m0-decisions` | Changed: the agent run makes it (pending); the checkout 0.3 checks; `m0-sessions`; dated note |
 | 1016 | The decisions, taken on 22 October 2026 | Changed: adds the decision of 24 October 2026 |
 | 1018-1021 | D-1's question, options and recommendation | Stay: the question as asked on 22 October 2026 |
-| 1022 | D-1 decided on 22 October 2026: the iPhone 11 Pro, the iPhone 11 a second A13 phone | Stays (record), with the addendum after it: decided again on 24 October 2026, the owner's words and choice quoted from `relayed-2026-10-24.md` |
+| 1022 | D-1 decided on 22 October 2026: the iPhone 11 Pro, the iPhone 11 a second A13 phone | Stays (record), with the addendum after it: decided again on 24 October 2026, the owner's words and choice quoted from `relayed-2026-10-24.md`; *(26 October 2026)* note added at its end, in the convention of its note of 23 October 2026: device A is no longer the 11 Pro, the bullet kept as decided |
 | 1023 | D-2 decided (a): "You have device A, your iPhone 11 Pro" | Note added: (a) stands, with a narrower form of (b)'s exception for the results that depend on the chip |
 | 1024 | D-3: the release notes still to be read by the technical lead | Note added: read on 24 October 2026; the owner's confirmation left |
 | 1029 | D-8: "Your first push of `m0-integrate` ..."; "`m0-decisions` adds no Git LFS file" | Stays: D-8's record and its note of 22 October 2026 |
@@ -96,7 +102,7 @@ still names the iPhone 11 Pro or `m0-decisions` without a mark of this update.
 | 22 | Step 7: read Apple's release notes | Changed: a one-line confirmation, with Apple's evidence and `checks/apple-pages.log` |
 | 23 | Step 8: "your iPhone 11 Pro (device A)" | Changed: the iPhone 13 mini, iPhone14,4 expected, Lightning |
 | 28 | `linkage.sh` at any time you choose | Changed: the agent run of step 5 makes it, pending |
-| 30 | Item 2: when 0.8 is repeated; the checklists changed | Changed: the check of 24 October 2026, the files of `m0-exit-prep` not used; the checklists' device-A and branch lines changed again before any session |
+| 30 | Item 2: when 0.8 is repeated; the checklists changed | Changed: the check of 24 October 2026, the files of `m0-exit-prep` not used; the checklists' device-A and branch lines changed again (*(26 October 2026)*: when the session log recorded no sitting of the owner's; it said "before any session ran", which no record shows) |
 | 40 | Item 2, run 8: iPhone 11 Pro, "on the oldest supported iPhone" | Changed: iPhone 13 mini, device A (the 11 Pro's points), its speed and memory figures the 13 mini's |
 | 52 | Item 3, technical lead: the release notes come first | Changed: as a one-line confirmation |
 | 64 | Item 4, R4-01 and R4-02: ask, base and merge `m0-decisions` | Changed: asked, `m0-exit-prep`, merged into `m0-sessions`; dated note |
@@ -111,7 +117,7 @@ still names the iPhone 11 Pro or `m0-decisions` without a mark of this update.
 | 225 | Row 62: "on your iPhone 11 Pro (decision D-1 (b))" | Changed: device A, the 13 mini (status unchanged) |
 | 247 | Row 74: "the oldest iPhone is your iPhone 11 Pro" | Changed: the steps on the oldest iPhone run on device A, the 13 mini (status unchanged) |
 | 260 | Row 82: ADR-0001 records the 11 Pro | Note added: D-1 decided again, which ADR-0001's owner records; the release notes read (status unchanged) |
-| 234, 291 | Row 66 and Section 2.10's bullet on Xcode 27.1: the technical lead's confirmation, with the release notes, pending | Stay: they summarize ADR-0001 as it stands on this branch, and the confirmation is still pending |
+| 234, 291 | Row 66 and Section 2.10's bullet on Xcode 27.1: the technical lead's confirmation, with the release notes, pending | Stay: they summarize ADR-0001 as it stands on this branch, and the confirmation is still pending; *(26 October 2026)* note added to each: Apple's pages read on 24 October 2026, the confirmation the owner's, one line |
 | 270, 292 | Row 92; Section 2.10's bullet on the lock harness | Stay: records |
 | 302 | Section 3, D01: the oldest supported iPhone is the iPhone 11 Pro; the release notes | Note added |
 | 370 | 4.1, PO-35: the release notes still to be read | Note added |
@@ -158,8 +164,8 @@ checks, the requests to other owners, not reviewed).
 | G02-Transfer 8 | Step 11 on the oldest supported iPhone when available | Changed: on device A; dated note: the 13 mini's figures, M8 |
 | G02-Transfer 107, 109, 112 | Step 11's title and item 1: the oldest supported iPhone; its record | Changed: device A; the record names the model and says the figures are the 13 mini's; dated note |
 | G02-Transfer 199 | Step 22.5: repeat on the oldest supported iPhone "if available" | Note added: no A13 phone in M0; a repeat on the 13 mini times the 13 mini ("if available" kept, which the runbook quotes) |
-| G03-Intake 7 | The oldest supported iPhone is the iPhone 11 Pro; steps 6-32 repeated on it in M2 | Changed: device A, the 13 mini; repeats on device A in M2; its memory figures not the A13's; dated note |
-| G04-Audio 5 | Repeats on the oldest supported iPhone when one is available | Changed: on device A; dated note: the 13 mini (no Action button), steps 8-13 record iOS behaviour, step 1's timings the 13 mini's |
+| G03-Intake 7 | The oldest supported iPhone is the iPhone 11 Pro; steps 6-32 repeated on it in M2 | Changed: device A, the 13 mini; repeats on device A in M2; its memory figures not the A13's (*(26 October 2026)*: its memory limit and times, steps 14-16, too; "until then" after the new date now names 22 October 2026); dated note |
+| G04-Audio 5 | Repeats on the oldest supported iPhone when one is available | Changed: on device A; dated note: the 13 mini (no Action button), steps 8-13 record iOS behaviour, step 1's timings the 13 mini's (*(26 October 2026)*: and step 3's battery figures) |
 | G04-Audio 11 | Setup: `m0-decisions`, or `main` once it holds it | Changed: `m0-sessions` in `~/Git/sylvia-sessions`; dated note |
 | G05-AI 7 | Setup: `m0-decisions`, or `main` once it holds it | Changed: as G0.4's |
 | G05-AI 23 | Step 1.1: if the oldest supported iPhone has an earlier iOS 26.x | Changed: if device A has one; the dated note at line 40 says what it said |
@@ -169,7 +175,7 @@ checks, the requests to other owners, not reviewed).
 | G06-Design 3 | Note of 22 October 2026: the oldest supported iPhone is the iPhone 11 Pro | Note added: device A, the 13 mini, its steps cover what they covered on the 11 Pro |
 | G06-Design 9 | "on the oldest iPhone, 15 with 25 and 26" | Changed: on device A; dated note |
 | G06-Design 11 | Step 4 on the oldest supported iPhone; steps on the oldest iPhone in M3 | Changed: on device A, its points the 11 Pro's; dated note |
-| G06-Design 36 | Step 15: on the oldest supported iPhone (the iPhone 11 Pro since 22 October 2026) | Changed: on device A, the 13 mini (points the 11 Pro's); the history kept in the parenthesis |
+| G06-Design 36 | Step 15: on the oldest supported iPhone (the iPhone 11 Pro since 22 October 2026) | Changed: on device A, the 13 mini (points the 11 Pro's); the history kept in the parenthesis (*(26 October 2026)*: its "until then" after the new date now names 22 October 2026) |
 | G06-Design 48 | Line A: "Oldest supported iPhone"; note of 22 October 2026: the iPhone 11 Pro (iPhone12,3 expected; A13) | Changed: titled Device A, the small-screen baseline; dated note: the 13 mini (iPhone14,4 expected; A15), not the oldest supported iPhone |
 | G06-Design 63 | Step 27 "on device A" | Stays: generic device A |
 

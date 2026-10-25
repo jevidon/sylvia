@@ -12,7 +12,8 @@
 #    request #6), CLAUDE.md alone besides (5aec2518 and 6cede84a, the orchestrating session's, before this update);
 #    9cdb0a02, the commit of the drop-in's run, an ancestor of HEAD, with the code, scripts, contracts, fixtures and the
 #    workflow unchanged since it, and the drop-in's own paths unchanged (dropin-paths.sh); the checklists unchanged from
-#    9cdb0a02 to 6cede84a and all eight changed by this update; the committed logs of resolve-locks.sh and linkage.sh
+#    9cdb0a02 to 6cede84a and all eight changed by this update, while the session log records no sitting of the owner's
+#    (its only dated rows are agents' runs of 0.8); the committed logs of resolve-locks.sh and linkage.sh
 #    unchanged and no run under Xcode 27.1 on this branch; and, read-only, main, origin/main, m0-sessions and
 #    m0-decisions (no fetch).
 # 2. The Git LFS state of the tree and of the repository configuration (read-only), and the LFS files of HEAD against
@@ -102,11 +103,29 @@ bash "$here/commands/dropin-paths.sh" "$scratch/dropin-paths.log" > /dev/null 2>
 lists_before="$(git diff --name-only "$run" "$start" -- Docs/Stage0/device-checklists)"
 lists_now="$(git diff --name-only "$start" HEAD -- Docs/Stage0/device-checklists)"
 lists_all="$(git ls-files Docs/Stage0/device-checklists | grep -E '\.md$')"
+# The records say the checklists' lines were rewritten when the session log recorded no sitting of the owner's: every
+# dated row of its table must be an agent's (the two runs of 0.8 ahead of Session 0).
+sittings="$(python3 -I - Docs/Stage0/evidence/M0-runbook/sessions.md <<'PY'
+import sys
+rows = [l for l in open(sys.argv[1], encoding="utf-8").read().splitlines() if l.startswith("| ")][2:]
+dated, owner = [], []
+for r in rows:
+    cells = [c.strip() for c in r.strip()[1:-1].split("|")]
+    if len(cells) >= 4 and cells[2]:
+        dated.append(cells[0])
+        if not cells[3].startswith("agent"):
+            owner.append(cells[0])
+print(f"{len(rows)} rows; dated: {len(dated)} ({'; '.join(dated)}); dated and not an agent's: {len(owner)}"
+      + (f" ({'; '.join(owner)})" if owner else ""))
+PY
+)"
 {
-  echo "-- 1e. the checklists, which the rule for repeating a session names: from ${run:0:8} to ${start:0:8}: $( [[ -z "$lists_before" ]] && echo "unchanged" || echo "PROBLEM: $lists_before"); since ${start:0:8}, by this update: $(printf '%s\n' "$lists_now" | grep -c .) of the $(printf '%s\n' "$lists_all" | grep -c .) (device-A and branch lines, before any session ran)"
+  echo "-- 1e. the checklists, which the rule for repeating a session names: from ${run:0:8} to ${start:0:8}: $( [[ -z "$lists_before" ]] && echo "unchanged" || echo "PROBLEM: $lists_before"); since ${start:0:8}, by this update: $(printf '%s\n' "$lists_now" | grep -c .) of the $(printf '%s\n' "$lists_all" | grep -c .) (device-A and branch lines)"
   git diff --stat "$start" HEAD -- Docs/Stage0/device-checklists | sed 's/^/   /'
+  echo "   the session log at HEAD (Docs/Stage0/evidence/M0-runbook/sessions.md, unchanged since ${start:0:8}: 1b), whose dated rows must all be agents': $sittings"
 } >> "$log"
 [[ -n "$lists_before" || "$lists_now" != "$lists_all" ]] && status=1
+[[ "$sittings" == *"dated and not an agent's: 0" ]] || { echo "   PROBLEM: a sitting of the owner's is recorded" >> "$log"; status=1; }
 dep_logs="$(git diff --name-only "$base" HEAD -- Docs/Stage0/evidence/M0-dependencies/linkage.log Docs/Stage0/evidence/M0-dependencies/resolve-locks.log)"
 {
   echo "-- 1f. the committed logs of resolve-locks.sh and linkage.sh since ${base:0:8}: $( [[ -z "$dep_logs" ]] && echo "unchanged" || echo "PROBLEM, changed: $dep_logs")"

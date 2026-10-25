@@ -1,6 +1,6 @@
 command: Docs/Stage0/evidence/M0-DeviceA/instructions/commands/runbook-content-check.sh
-commit: 6a72ce8c66bcbea0b1254049b3c2199ce00314a7; uncommitted files: 8
-date: 2026-10-23T17:55:52Z
+commit: fbf8aae3000b656b151dd07e1a9c48fef522cdc0; uncommitted files: 1
+date: 2026-10-25T16:34:47Z
 
 == 1. the runbook as it stands
 runbook: Docs/Stage0/M0-device-runbook.md
@@ -287,7 +287,7 @@ control: fails, as it must (exit 1), with exactly the 3 problems expected
 == 2o. the owner's words of 24 October 2026 changed in Section 6, the record not: it must fail
 == forward: each checklist step's markers, in the runbook
 == reverse: each marker of the runbook's header and Sections 1-7, in its step's gate checklist or listed as the runbook's own
-  UNLISTED text at offset 249700 (any checklist): iphone 11 pro seems to be no longer charging. i do have a 13 mini that is still working, so update the plan. even better for its screen.
+  UNLISTED text at offset 249916 (any checklist): iphone 11 pro seems to be no longer charging. i do have a 13 mini that is still working, so update the plan. even better for its screen.
   453 in its gate's checklist; 19 in a checklist (no gate named); 82 listed as the runbook's own (by kind: document 24, external 1, harness 37, runbook 13, tool 7)
 PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): iphone 11 pro seems to be no longer charging. i do have a 13 mini that is still working, so update the plan. even better from a screen size.
 result: FAIL (2 problem(s))

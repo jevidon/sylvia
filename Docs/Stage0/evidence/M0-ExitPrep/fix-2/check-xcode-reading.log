@@ -1,0 +1,37 @@
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/check-xcode-reading.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-13
+commit: 9f5edab143304767010c8ad3523053019f9ff662; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T22:40:49Z; load: 11:40  up 22 days, 21:51, 3 users, load averages: 5.25 3.93 3.43
+
+== 1. The build the relay names is the pin, and installed
+ok      ADR-0001's Xcode row: | Xcode | 27.1, build 27A9275 (`/Applications/Xcode.app`), since 20 October 2026; 27.0, bu
+ok      Scripts/lib/env.sh SYLVIA_XCODE_BUILD_PINNED: 27A9275
+ok      Docs/Licenses/inventory.json's toolchain names 27A9275
+ok      .github/workflows/ci.yml's Xcode guard names 27A9275
+ok      CLAUDE.md's toolchain line begins 'Xcode 27.1 (27A9275)'
+ok      xcodebuild -version: Xcode 27.1 Build version 27A9275
+
+== 2. What the notes state, against the records and the build Mac
+ok      ADR-0001's Swift row: | Swift compiler | Apple Swift 6.4 (swiftlang-6.4.0.34.1, clang-2100.3.34.1), th
+ok      xcrun swift --version: Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+ok      ADR-0001's SDK row: | SDKs | iOS 27.1, iOS Simulator 27.1, macOS 27.0 (Xcode 27.0 had iOS 27.0, iOS 
+ok      xcodebuild -showsdks lists iphoneos27.1
+ok      the build Mac's macOS 26.6.2 (25G83) meets macOS Tahoe 26.6 or later
+ok      ADR-0001's build host row: | Build host | macOS 26.6.2 (25G83), Apple M5 Max |
+
+== 3. The known issues, against the repository
+ok      no project.yml or Package.swift of Apps/, Packages/ or Spikes/ (20 read) names Mac Catalyst
+ok      tracked files outside the records that name Mac Catalyst: Scripts/check-dependency-lock.py (the dependency check counts it as iOS when it reads a target's platforms)
+ok      no drop-in, app, package or spike names an iPhone Duo simulator
+
+== 4. The records carry the relay, with the confirmation pending
+ok      ADR-0001's open item records the relay and leaves the confirmation pending
+ok      ADR-0001's status line records the relay, and the confirmation as pending
+ok      ADR-0001's Evidence cites the relay's file
+ok      the gate summary's item 1, step 7, records the relay and leaves the confirmation to the owner
+ok      neither record says the technical lead has confirmed it
+
+result: pass (0 problem(s))
+
+exit status: 0
+end: 2026-10-25T22:40:50Z; load: 11:40  up 22 days, 21:51, 3 users, load averages: 5.25 3.93 3.43

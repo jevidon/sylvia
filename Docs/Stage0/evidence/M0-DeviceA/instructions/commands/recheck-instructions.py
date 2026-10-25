@@ -257,6 +257,7 @@ HISTORY = {  # (file, the line's first words): why it stays as it is
     (GATE, "77. **Agent work and `main`, when you build from `main`**"): "Section 6.3's record of a finding",
     (GATE, "80. **The branch for `CLAUDE.md`**"): "Section 6.3's record of a finding",
     (GATE, "85. **Where your session records go**"): "Section 6.3's record of a finding",
+    (GATE, "108. **The checks**"): "this update's own record of the earlier checks that report the texts it replaced",
     (GATE, "109. **Asked of other owners, not done here**"): "this update's own record of what it asks of other owners",
     (GATE, "- **The fix of the review of the decisions round (22 October 2026;"): "Section 8's record of a round",
     (GATE, "- **The second fix, after the review of the first"): "Section 8's record of a round",

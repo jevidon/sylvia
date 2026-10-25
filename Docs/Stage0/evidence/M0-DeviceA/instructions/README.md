@@ -106,3 +106,5 @@ of the earlier rounds.
 - The repository's `README.md`: its sentence that the records of the decisions "are on the branch `m0-decisions`, which
   reaches main by pull request".
 - The plan, the amendments, the ADRs, the gate reports and the integration log: the other workstream of this update.
+
+*(26 October 2026: an assembly merged this part and the other workstream's into `m0-sessions`, changed the repository's README as asked, and left the session log as it was; it also changed a few of this part's texts to make the two parts agree, and ran the checks of the merged tree, with new versions of this part's gate checks and recheck: [`../assembly/README.md`](../assembly/README.md).)*

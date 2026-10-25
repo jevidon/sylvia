@@ -57,7 +57,7 @@ not been reviewed.
 | [`commands/recheck-instructions.py`](commands/recheck-instructions.py), run by [`commands/recheck-instructions.sh`](commands/recheck-instructions.sh) → [`checks/recheck-instructions.log`](checks/recheck-instructions.log) | This update's recheck: device A, what the change means, the branch, run 1, step 0.8, and a sweep that lists, with a reason, each line that still names the iPhone 11 Pro or `m0-decisions` without a mark of this update; the runner adds its control, on the tree of `6cede84a`, where it must report all six items (the runner since 26 October 2026: the first attempt's log had neither the control nor the commit and time) |
 | [`commands/expected-rechecks.txt`](commands/expected-rechecks.txt) | What each earlier recheck that reads a text this update changed must report on this tree, exactly, and why |
 | [`commands/gate-checks.sh`](commands/gate-checks.sh) → [`checks/gate-checks.log`](checks/gate-checks.log) | The gate checks of this update, the successor of `M0-Decisions/unlocked-record/round-3/commands/gate-checks.sh`: what changed, the session log's dated rows, Git LFS, the gate summary's paths and statuses, the documents' checks (old and new), the drop-ins that read documents; run last, on the commit that adds every other log |
-| [`checks/old-round-3-gate-checks.log`](checks/old-round-3-gate-checks.log) | The previous round's gate checks, run on this update: they fail by design, as below |
+| [`checks/old-round-3-gate-checks-2.log`](checks/old-round-3-gate-checks-2.log), [`checks/old-round-3-gate-checks.log`](checks/old-round-3-gate-checks.log) | The previous round's gate checks, run on this update: they fail by design, as below. The first log is the second attempt's, on `ab03fe2f` (26 October 2026), after this update's own logs were written; the second, the first attempt's, on `6a72ce8c` (24 October 2026), before they were |
 | [`checks/lfs-checkout.log`](checks/lfs-checkout.log), [`checks/lfs-checkout-2.log`](checks/lfs-checkout-2.log) | Each attempt found this worktree's Git LFS files as pointer files; `M0-Decisions/followup/commands/lfs-checkout.sh` filled them from the local LFS store (`git lfs checkout`, nothing downloaded, the configuration untouched), so that `00-git-lfs` can run: on 24 October 2026 and again on 26 October 2026 |
 
 Environment: the build Mac, macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275); the simulators of
@@ -86,8 +86,8 @@ by `commands/gate-checks.sh`, which requires exactly these reports:
   UNL-02 line gives the State line's word count, now 198 (200 before), since the State line was rewritten, within its
   200-word limit, to record the decision of 24 October 2026.
 - **The previous round's gate checks** (`unlocked-record/round-3/commands/gate-checks.sh`;
-  [`checks/old-round-3-gate-checks.log`](checks/old-round-3-gate-checks.log), run on 26 October 2026 after this update's
-  own logs were written): part 1b and 1c (`CLAUDE.md` changed outside `Docs/` since `26530d49`, by `5aec2518` and
+  [`checks/old-round-3-gate-checks-2.log`](checks/old-round-3-gate-checks-2.log), run on `ab03fe2f` on 26 October 2026,
+  after this update's own logs were written): part 1b and 1c (`CLAUDE.md` changed outside `Docs/` since `26530d49`, by `5aec2518` and
   `6cede84a`, the orchestrating session's correction at the owner's request, before this update); part 1e (the
   checklists changed since `9cdb0a02`, by this update, when the session log recorded no sitting of the owner's); and
   part 4 (the content check and the rechecks above, whose expected reports it fixes as they were). Its part 3, the gate

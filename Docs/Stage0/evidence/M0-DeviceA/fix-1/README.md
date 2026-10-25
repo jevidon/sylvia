@@ -11,6 +11,11 @@ human sign-off pending. Nothing here is a device result, a role sign-off, an ADR
 no device was used, and the owner's sittings recorded on `m0-decisions` are not read beyond the first six cells of the
 session log's dated rows there (when, by whom, from which commit, on which device).
 
+*(26 October 2026: the same review's accuracy findings, ACC-01 to ACC-06, were relayed to a second fix that followed on
+the same branch, from `d6315ad3`, this fix's last commit; its record is [`accuracy/`](accuracy/README.md) and integration
+log section 30. That fix read more of `m0-decisions` than this one did, to judge the merge ACC-01 asks for, and records
+none of the sittings' results either.)*
+
 ## The findings, and what was done
 
 | Finding | What was done |

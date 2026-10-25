@@ -5,7 +5,9 @@ d6315ad3, the last commit of the fix of the same review's fidelity findings. One
 review status:
   branch        ACC-01: the gate summary's State line says that no device result is recorded here yet, and its Section
                 5.1 that no result of a device step is recorded here yet and where the first sittings are, each with its
-                history; the first fix's texts for a checkout on another branch kept (run 1's step 1 in both places);
+                history; the runbook header's paragraph on the branch says what a sitting builds from and commits to
+                until the checkout moves; the first fix's texts for a checkout on another branch kept (run 1's step 1 in
+                both places);
                 items 124-130 recorded; the judged branch check and this fix's read of the branches committed, the read
                 showing the checkout on m0-decisions, m0-decisions not behind main, and a merge without a conflict;
   phones        ACC-02: the G0.5 AI checklist's note on step 1 no longer calls device A the phone on hand besides the
@@ -105,6 +107,10 @@ m += need(s51, ["No result of a device step in it is recorded here yet (your fir
 m += gone(s51, ["Nothing in it has been run on a device;"], "M0-gate.md Section 5.1")
 for where, text in (("M0-gate.md item 1, step 1", item11), ("the runbook's 0.3, step 1", step031)):
     m += need(text, ["If it reads another branch, do not switch it yourself"], where)
+m += need(line_with(runbook, "- **Your decision of 24 October 2026, and the branch you build from since then.**"),
+          ["they are merged into `m0-sessions` before your checkout moves to it, and until it moves each sitting builds "
+           "from the branch the checkout is on and commits its records there", "its finding ACC-01)"],
+          "the runbook's paragraph on the branch")
 m += need(gate, ["124. **The branch state, as your instructions give it, and a check that judges it** (ACC-01, blocker)",
                  "Not done here, again: the merge of `m0-decisions` into `m0-sessions` that ACC-01 asks for first, as "
                  "item 115 says"], "M0-gate.md Section 6.3")
@@ -114,7 +120,7 @@ if ("branch refs/heads/m0-decisions" not in branch_log or "m0-decisions behind m
         branch_log or "merge-tree exit: 0" not in branch_log or "exit: 0" not in branch_log):
     m.append("this fix's branch-state.log is missing, or does not show the checkout on m0-decisions, m0-decisions not "
              "behind main and a merge without a conflict")
-report("branch", m, "the State line and Section 5.1 say where no device result is recorded; run 1's case for a checkout "
+report("branch", m, "the State line and Section 5.1 say where no device result is recorded; the runbook header says what a sitting builds from until the checkout moves; run 1's case for a checkout "
        "on another branch kept; items 124-130; the judged branch check and this fix's read of the branches committed")
 
 # phones: ACC-02.

@@ -1,5 +1,5 @@
 environment: host (macOS 26.6.2 25G83), Python 3.9.6
-commit: 944a6302669362e1871f2e40b9f09ab81b19ccd9
+commit: b6713015b899d99d846dc23f6a401caccf2a8b6b
 
 --- self-test (Scripts/audit-hard-rules.sh self-test)
 ok: git work tree: the audit fails when there are findings
@@ -18,7 +18,7 @@ self-test: PASS (0 failure(s))
 --- repository audit (Scripts/audit-hard-rules.sh)
 root: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-7
 file list: git (git ls-files --cached --others --exclude-standard)
-files scanned: 3694 (835 binary, skipped for text rules); not scanned (hold the patterns): Scripts/audit-hard-rules.sh, Scripts/ci.d/13-hard-rules.sh
+files scanned: 3711 (835 binary, skipped for text rules); not scanned (hold the patterns): Scripts/audit-hard-rules.sh, Scripts/ci.d/13-hard-rules.sh
 allowlist: 13 entries
 | Rule | Findings | Allowed |
 | --- | --- | --- |

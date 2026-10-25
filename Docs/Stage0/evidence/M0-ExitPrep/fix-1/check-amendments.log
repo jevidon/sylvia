@@ -1,10 +1,10 @@
 # M0 plan amendments and decisions: consistency checks (plan draft 0.8 as revised and corrected on 23 October 2026, the follow-up's fix's checker)
-command: Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/run-checks.sh 944a6302669362e1871f2e40b9f09ab81b19ccd9
-commit under test: 944a6302669362e1871f2e40b9f09ab81b19ccd9
-HEAD: 944a6302669362e1871f2e40b9f09ab81b19ccd9; uncommitted paths: 0
-date (UTC): 2026-10-25T18:21:46Z
+command: Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/run-checks.sh b6713015b899d99d846dc23f6a401caccf2a8b6b
+commit under test: b6713015b899d99d846dc23f6a401caccf2a8b6b
+HEAD: b6713015b899d99d846dc23f6a401caccf2a8b6b; uncommitted paths: 0
+date (UTC): 2026-10-25T18:34:49Z
 host: macOS 26.6.2 (25G83), arm64; Python 3.14.6
-load:  7:21  up 22 days, 17:32, 3 users, load averages: 5.03 20.93 23.85
+load:  7:34  up 22 days, 17:45, 3 users, load averages: 6.17 5.89 12.25
 environment: host only; no simulator or device is used by these checks
 
 == Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/check-amendments.py
@@ -162,10 +162,10 @@ control 3: the draft 0.7 checker fails on exactly those two checks, listing exac
 
 == control 4, not required (this round changes no contract): Scripts/ci.sh contracts
 ==> 00-git-lfs
-    pass (5s)
+    pass (6s)
 ==> 10-contracts
     pass (1s)
 ==> 11-capture-anchor-contracts
-    pass (57s)
+    pass (56s)
 all 3 steps passed
 exit status: 0

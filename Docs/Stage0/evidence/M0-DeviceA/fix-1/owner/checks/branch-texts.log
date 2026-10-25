@@ -1,0 +1,14 @@
+repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_ce9fb2ad-560-11; texts read from: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_ce9fb2ad-560-11
+HEAD: 6dce0a3212a8772bcc5953fe2b3b1bfc8c4b918b; main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07; m0-decisions: c72247a69a374ce361834550b92689b4abab95ee
+m0-decisions behind main (an ancestor of it): no; commits on it that main lacks: 8
+m0-decisions merged into HEAD (an ancestor of it): no; commits on it that HEAD lacks: 8
+the sessions' checkout (/Users/jevidon/Git/sylvia-sessions): branch m0-decisions, head c72247a69a374ce361834550b92689b4abab95ee
+the session log on that branch: 4 dated rows not an agent's: 3a (2026-10-25 17:12 UTC, Codex with Justin Evidon); 3b (2026-10-25 17:14 UTC, Codex with Justin Evidon); 3c (2026-10-25 UTC, Codex with Justin Evidon); 3d (2026-10-25 17:24–17:26 UTC, Codex with Justin Evidon)
+
+PASS behind: m0-decisions is not behind main, and no live text of the instructions calls it behind main
+PASS merged: m0-decisions is not merged into HEAD (8 commits HEAD lacks), and run 1's step 1, in the gate summary's item 1 and the runbook's 0.3, has the case for a checkout on another branch, which waits for that merge
+PASS checkout: the checkout is on m0-decisions, not m0-sessions, and run 1's step 1 says what to do then
+PASS sittings: the session log on m0-decisions records 4 sittings of the owner's, and no live text says, without saying where, that no device step has run or that no device result is recorded
+reported, not judged: CLAUDE.md calls m0-decisions behind main: ... unless the product owner decides otherwise. Never build on `m0-integrate` or `m0-decisions`: both are behind `main`. On 22 October 2026...
+
+result: pass (every rule as required)

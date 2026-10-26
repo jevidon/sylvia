@@ -1,0 +1,83 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/run-host-tests.sh before-fix-host-tests ProtectedCopyTests|PrivatePathTests
+commit: a65cdc3e6b40ae953da617f19a51c2b7f20f8dc3 (m0-device-fixes-recovery)
+uncommitted changes in Spikes/G05-Recovery included in this run:
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T07:32:39Z; load: 20:32  up 23 days,  6:43, 3 users, load averages: 2.70 4.38 4.27
+---- xcrun swift test --force-resolved-versions --filter 'ProtectedCopyTests|PrivatePathTests' (in Spikes/G05-Recovery)
+Building for debugging...
+[1 / 10]
+[2 / 11] SylviaRecovery
+[7 / 16] SylviaRecovery
+[19 / 28] SylviaRecovery
+[25 / 33] SylviaRecovery
+[26 / 34] g05-recovery-tool-product
+[29 / 38] g05-recovery-tool
+[31 / 37] SylviaRecovery
+[34 / 41] g05-recovery-tool-product
+[36 / 42] g05-recovery-tool-product
+[39 / 45] g05-recovery-tool
+[41 / 44] SylviaRecoveryTests-product
+[55 / 58] SylviaRecoveryTests-product
+[62 / 64] SylviaRecoveryTests-product
+Build complete! (3.90 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Bundle paths under /private (device run of 26 October 2026)" started.
+◇ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" started.
+◇ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" started.
+➜ Test "a v1 library installed from a source of another class is created with the library's class C and opens" skipped: "class A/B keys are unavailable (host screen locked): a class-B source cannot be read now"
+◇ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" started.
+✘ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" recorded an issue at ProtectedCopyTests.swift:101:9: Expectation failed: hits.isEmpty
+↳ copies that keep the source's class:
+  Sources/SylviaRecovery/RestoreCrashDrill.swift:114: try fm.copyItem(at: template, to: root)
+  Sources/SylviaRecovery/MigrationCrashDrill.swift:114: try fm.copyItem(at: template, to: root)
+  Tests/SylviaRecoveryTests/Support.swift:84: try FileManager.default.copyItem(at: from, to: to)
+  Tests/SylviaRecoveryTests/MigrationTests.swift:34: try FileManager.default.copyItem(at: source, to: layout.databaseURL)
+  Tests/SylviaRecoveryTests/PutBackTests.swift:136: try fm.copyItem(at: layout.databaseURL, to: saved)
+↳ hits.isEmpty → false
+↳   hits → ["Sources/SylviaRecovery/RestoreCrashDrill.swift:114: try fm.copyItem(at: template, to: root)", "Sources/SylviaRecovery/MigrationCrashDrill.swift:114: try fm.copyItem(at: template, to: root)", "Tests/SylviaRecoveryTests/Support.swift:84: try FileManager.default.copyItem(at: from, to: to)", "Tests/SylviaRecoveryTests/MigrationTests.swift:34: try FileManager.default.copyItem(at: source, to: layout.databaseURL)", "Tests/SylviaRecoveryTests/PutBackTests.swift:136: try fm.copyItem(at: layout.databaseURL, to: saved)"]
+↳   isEmpty → false
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] copy guard: 61 source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: 5
+✘ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" failed after 0.031 seconds with 1 issue.
+↳ /// The guard against the device run's failure coming back: no code in the recovery spike (the
+↳ /// package, the device host, the lock harness) copies a file in a way that keeps the source's
+↳ /// class; copies go through `FileProtector.copyFile` and `FileProtector.copyTree`. A test, not a
+↳ /// check in the CI drop-in, so that it also runs in every `swift test`; it reads the sources from
+↳ /// the checkout, so it is built for the Mac only. Whole-line comments, and the rest of a line after
+↳ /// `//`, are not code.
+✘ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" failed after 0.031 seconds with 1 issue.
+↳ /// Files put where the recovery code expects the library's class are created with it (plan 18.1,
+↳ /// T50). The first app-hosted device run (26 October 2026, runbook step 1.2; G0.5 recovery checklist
+↳ /// step 1) failed every migration and put-back test because their v1 fixture was copied out of the
+↳ /// app bundle with `FileManager.copyItem`, which keeps the source file's class: the bundle's file had
+↳ /// none, so `library.sqlite` had none, and the open refused it. The host and the simulator did not
+↳ /// show it: on the Mac the fixture in the test bundle is class C, the platform default, and the
+↳ /// simulator reports class C for every file.
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" recorded an issue at PrivatePathTests.swift:46:96: Issue recorded
+↳ through /private, as an iPhone's folders are named: blobs/excerpts/0000000000000000000000000000000000000000000000000000000000000000.mp3: unsafe path in manifest: blobs/excerpts/0000000000000000000000000000000000000000000000000000000000000000.mp3
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" recorded an issue at PrivatePathTests.swift:46:96: Issue recorded
+↳ through /private, as an iPhone's folders are named: blobs/missing/x.mp3: unsafe path in manifest: blobs/missing/x.mp3
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" recorded an issue at PrivatePathTests.swift:46:96: Issue recorded
+↳ through /private, as an iPhone's folders are named: export/markdown/missing.md: unsafe path in manifest: export/markdown/missing.md
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" recorded an issue at PrivatePathTests.swift:62:13: Expectation failed: missingFile
+↳ through /private, as an iPhone's folders are named: expected missingFile, got unsafe path in manifest: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3
+↳ missingFile → <not evaluated>
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] missing listed file, bundle under /var, as the Mac names its temporary folder: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3; through /private, as an iPhone's folders are named: unsafe path in manifest: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" failed after 0.471 seconds with 4 issues.
+✘ Suite "Bundle paths under /private (device run of 26 October 2026)" failed after 0.471 seconds with 4 issues.
+↳ /// The phone's second failure (device run of 26 October 2026, runbook step 1.2): the missing-blob-file
+↳ /// variant of `RestoreTests.rejections` was rejected, but as an unsafe path instead of a missing file.
+↳ /// An iPhone's temporary and container folders are under /private/var/mobile/. The bundle's
+↳ /// containment check resolved both paths with Foundation's `resolvingSymlinksInPath`, which drops a
+↳ /// leading /private only from a path that exists, so the existing root came out as /var/mobile/... and
+↳ /// the missing file as /private/var/mobile/..., and the prefix check failed before the missing-file
+↳ /// check ran. The Mac's temporary folder is /var/folders/... (a link to /private/var/folders/...), which
+↳ /// hides it; the same folder named through /private shows it on the Mac.
+✘ Test run with 3 tests in 2 suites failed after 0.472 seconds with 5 issues.
+Note: Some test targets reported failures:
+  - SylviaRecoveryTests (Swift Testing)
+---- swift test exit: 1
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T07:32:44Z; load: 20:32  up 23 days,  6:43, 3 users, load averages: 2.88 4.39 4.27

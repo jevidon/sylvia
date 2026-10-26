@@ -154,6 +154,57 @@ public struct FileProtector: Sendable {
         }
     }
 
+    /// Copies the directory tree at `source` into a new directory `destination`, which must not exist:
+    /// every directory is created with the protection class (`ensureDirectory`) and every regular file
+    /// by `copyFile`, so each item gets this protector's class whatever the source item's class was.
+    /// A symbolic link or any other kind of item fails the copy, and a failed copy is removed. For a
+    /// library tree copied from a template (the crash drills, the tests): `FileManager.copyItem` keeps
+    /// each source file's class (device run of 26 October 2026: a fixture copied out of the app bundle
+    /// had no class, and the open refused it). Extended attributes are not copied; the open sets the
+    /// backup exclusion of the directories that need it again.
+    public func copyTree(from source: URL, to destination: URL) throws {
+        try requireSupportedClass()
+        let fm = FileManager.default
+        let sourcePath = source.standardizedFileURL.path
+        let destinationPath = destination.standardizedFileURL.path
+        guard destinationPath != sourcePath, !destinationPath.hasPrefix(sourcePath + "/") else {
+            throw FileSystemError.posix("copy", "\(destination.lastPathComponent) is inside \(source.lastPathComponent)", EINVAL)
+        }
+        var info = stat()
+        guard lstat(source.path, &info) == 0 else { throw FileSystemError.posix("lstat", source.lastPathComponent, errno) }
+        guard (info.st_mode & S_IFMT) == S_IFDIR else {
+            throw FileSystemError.posix("copy", "\(source.lastPathComponent) is not a directory", ENOTDIR)
+        }
+        guard lstat(destination.path, &info) != 0, errno == ENOENT else {
+            throw FileSystemError.posix("copy", "\(destination.lastPathComponent) already exists", EEXIST)
+        }
+        do {
+            try ensureDirectory(destination)
+            try copyContents(of: source, into: destination)
+        } catch {
+            try? fm.removeItem(at: destination)
+            throw error
+        }
+    }
+
+    private func copyContents(of directory: URL, into target: URL) throws {
+        for name in try FileManager.default.contentsOfDirectory(atPath: directory.path).sorted() {
+            let from = directory.appending(path: name, directoryHint: .notDirectory)
+            let to = target.appending(path: name, directoryHint: .notDirectory)
+            var info = stat()
+            guard lstat(from.path, &info) == 0 else { throw FileSystemError.posix("lstat", name, errno) }
+            switch info.st_mode & S_IFMT {
+            case S_IFDIR:
+                try ensureDirectory(to)
+                try copyContents(of: from, into: to)
+            case S_IFREG:
+                try copyFile(from: from, to: to)
+            default:
+                throw FileSystemError.posix("copy", "\(name) is not a regular file or a directory", EINVAL)
+            }
+        }
+    }
+
     public func protectionClass(of url: URL) throws -> FileProtectionType? {
         let values = try url.resourceValues(forKeys: [.fileProtectionKey])
         guard let value = values.fileProtection else { return nil }

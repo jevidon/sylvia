@@ -1,0 +1,17 @@
+migration put-back crash drill (T45): environment host (macOS), seed 20261008, 240 iterations, SIGKILL at each put-back step (paused there, or 0-3 ms after it) and at random times, faults: throw and drop rows
+calibration: 74.4 ms from OPEN to DONE
+  40 iterations, 0 failures
+  80 iterations, 0 failures
+  120 iterations, 0 failures
+  160 iterations, 0 failures
+  200 iterations, 0 failures
+  240 iterations, 0 failures
+iterations: 240
+measured unkilled run (open, snapshot, failed migration, put-back): 74.4 ms
+SIGKILLs by plan: delay databaseMovedAside=10, delay intentRemoved=3, delay intentWritten=10, delay migrationFailed=10, delay shmMovedAside=10, delay snapshotMovedIn=8, delay staged=10, delay walMovedAside=10, pause databaseMovedAside=10, pause intentRemoved=10, pause intentWritten=10, pause migrationFailed=10, pause shmMovedAside=10, pause snapshotMovedIn=10, pause staged=10, pause walMovedAside=10, random=72
+SIGKILLs by the last line the child printed: OPEN=29, STEP databaseMovedAside=27, STEP intentRemoved=13, STEP intentWritten=25, STEP migrationFailed=25, STEP shmMovedAside=27, STEP snapshotMovedIn=21, STEP staged=30, STEP walMovedAside=26
+children that finished before the kill: 17
+first reopen: migrated=64 put back, then migrated at the next open=176
+failures: 0
+elapsed: 47.8 s
+RESULT: PASS

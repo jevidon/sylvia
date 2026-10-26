@@ -1,0 +1,7 @@
+sqlite_version: 3.51.0
+sqlite_source_id: 2025-06-12 13:14:41 f0ca7bba1c5e232e5d279fad6338121ab55af0c8c68c84cdfb18ba5114dcaapl
+compile_options (durability-relevant): DEFAULT_CKPTFULLFSYNC DEFAULT_SYNCHRONOUS=2 DEFAULT_WAL_SYNCHRONOUS=1 ENABLE_FTS5 HAS_CODEC_RESTRICTED THREADSAFE=2
+connection defaults: fullfsync=0 checkpoint_fullfsync=1 synchronous=2
+library open: journal_mode=wal synchronous=FULL fullfsync=1 checkpoint_fullfsync=1
+migrations: v1-initial, v2-rating-review-note, v2-recommendation-date-precision, v2-edition-cover-thumbnail
+protection before explicit set: library.sqlite=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-shm=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-wal=NSFileProtectionCompleteUntilFirstUserAuthentication

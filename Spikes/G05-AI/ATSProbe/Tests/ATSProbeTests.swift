@@ -7,7 +7,8 @@ import Testing
 /// minimum OS's ATS behaviour passes testing; never a global ATS disable). Each host app differs only in its ATS
 /// keys; the same tests run hosted in each.
 ///
-/// Every address is loopback or this Mac's own LAN address on a closed port, except `plainHTTPToAPublicIPLiteral`
+/// Every address is loopback or the machine's own LAN address on a closed port (on the simulator the Mac's, whose
+/// interfaces it shares; on a device the phone's Wi-Fi address: `probeAddress`), except `plainHTTPToAPublicIPLiteral`
 /// (a TEST-NET-1 documentation address that no host uses) and the device-only `plainHTTPToAnotherDeviceOnTheLAN`.
 ///
 /// Apple documents that from iOS 17 ATS blocks plain-HTTP loads to IP addresses unless an exception applies;
@@ -42,12 +43,21 @@ struct ATSProbeTests {
         #expect(ats?["NSAllowsArbitraryLoads"] == nil, "no global ATS disable in any variant")
     }
 
-    /// This Mac's own private IPv4 address (the simulator shares the host's interfaces). A load to it on a port
-    /// with no listener is refused by the local kernel if ATS lets it through, so nothing leaves the machine.
-    static func hostPrivateIPv4() -> String? {
+    /// A private IPv4 address (10/8, 172.16/12 or 192.168/16) of this machine and the interface that holds it.
+    struct InterfaceAddress: Equatable {
+        var interface: String
+        var address: String
+        /// The first two octets only, as the device checklist's records keep addresses.
+        var masked: String { address.split(separator: ".").prefix(2).joined(separator: ".") + ".x.x" }
+    }
+
+    /// Every up, non-loopback IPv4 address of this machine in a private range, with its interface's name, in
+    /// `getifaddrs` order. On the simulator these are the Mac's own interfaces (the simulator shares the host's).
+    static func privateIPv4Addresses() -> [InterfaceAddress] {
         var head: UnsafeMutablePointer<ifaddrs>?
-        guard getifaddrs(&head) == 0, let first = head else { return nil }
+        guard getifaddrs(&head) == 0, let first = head else { return [] }
         defer { freeifaddrs(head) }
+        var found: [InterfaceAddress] = []
         for pointer in sequence(first: first, next: { $0.pointee.ifa_next }) {
             let entry = pointer.pointee
             guard let address = entry.ifa_addr, address.pointee.sa_family == UInt8(AF_INET),
@@ -55,9 +65,58 @@ struct ATSProbeTests {
             var buffer = [CChar](repeating: 0, count: Int(NI_MAXHOST))
             guard getnameinfo(address, socklen_t(address.pointee.sa_len), &buffer, socklen_t(buffer.count), nil, 0, NI_NUMERICHOST) == 0 else { continue }
             let text = String(decoding: buffer.prefix { $0 != 0 }.map { UInt8(bitPattern: $0) }, as: UTF8.self)
-            if EndpointPolicy.isEligibleLocalAddress(text), !text.hasPrefix("127."), !text.hasPrefix("169.254.") { return text }
+            if EndpointPolicy.isEligibleLocalAddress(text), !text.hasPrefix("127."), !text.hasPrefix("169.254.") {
+                found.append(InterfaceAddress(interface: String(cString: entry.ifa_name), address: text))
+            }
         }
-        return nil
+        return found
+    }
+
+    /// The iPhone's Wi-Fi interface; phone B's own log of the first device run names it (`interface: en0[802.11]`,
+    /// `Docs/Stage0/evidence/G05-AI/device/step-01-ats.log`). On a device where en0 holds no private address the
+    /// test stops at its precondition and its log lists the interfaces that do.
+    static let wifiInterface = "en0"
+
+    static var runsOnDevice: Bool {
+        #if targetEnvironment(simulator)
+        false
+        #else
+        true
+        #endif
+    }
+
+    /// The address `plainHTTPToAPrivateLANAddress` loads, on a port with no listener: the machine's own address on its
+    /// local network, so that a load ATS lets through is refused by the machine itself (URLError -1004, as on the
+    /// simulator) and goes nowhere else.
+    /// - Simulator: the first private address of any interface, as since the G0.5 run: the Mac's own LAN address.
+    /// - Device: the Wi-Fi interface's (en0), and nothing else. A phone also has private IPv4 addresses on interfaces
+    ///   that are not a local network: cellular (pdp_ip*), VPN and other tunnels (utun*, ipsec*). The first device run
+    ///   took the first private address of any interface, 10.71.x.x, and its load went to iCloud Private Relay over
+    ///   Wi-Fi and timed out (`Docs/Stage0/evidence/M0-DeviceFixes/ats/README.md`).
+    /// nil when there is no such address: the test then reports an unmet precondition, never an ATS result.
+    static func probeAddress(from candidates: [InterfaceAddress], onDevice: Bool) -> InterfaceAddress? {
+        onDevice ? candidates.first(where: { $0.interface == wifiInterface }) : candidates.first
+    }
+
+    /// `probeAddress`'s rule on made-up interface lists. It runs everywhere; which addresses a phone's interfaces really
+    /// hold, and what a load to its Wi-Fi address does, only a device run shows.
+    @Test func onADeviceOnlyTheWiFiAddressIsProbed() {
+        let cellular = InterfaceAddress(interface: "pdp_ip0", address: "10.0.0.2")
+        let tunnel = InterfaceAddress(interface: "utun4", address: "10.8.0.2")
+        let ipsec = InterfaceAddress(interface: "ipsec1", address: "172.16.0.2")
+        let wifi = InterfaceAddress(interface: "en0", address: "192.168.0.20")
+        let otherEthernet = InterfaceAddress(interface: "en2", address: "192.168.2.3")
+        // Device: the Wi-Fi address, even when cellular, tunnel or other interfaces' addresses come first.
+        #expect(Self.probeAddress(from: [cellular, tunnel, ipsec, wifi], onDevice: true) == wifi)
+        #expect(Self.probeAddress(from: [otherEthernet, wifi], onDevice: true) == wifi)
+        // Device, no Wi-Fi address: none, never a cellular, tunnel or other interface's address.
+        #expect(Self.probeAddress(from: [cellular, tunnel, ipsec, otherEthernet], onDevice: true) == nil)
+        #expect(Self.probeAddress(from: [], onDevice: true) == nil)
+        // Simulator: unchanged, the first address whatever its interface.
+        #expect(Self.probeAddress(from: [cellular, wifi], onDevice: false) == cellular)
+        #expect(Self.probeAddress(from: [wifi, otherEthernet], onDevice: false) == wifi)
+        #expect(Self.probeAddress(from: [], onDevice: false) == nil)
+        #expect(InterfaceAddress(interface: "en0", address: "192.168.0.20").masked == "192.168.x.x")
     }
 
     @Test func plainHTTPToLoopbackPassesATSInEveryVariant() async throws {
@@ -69,18 +128,28 @@ struct ATSProbeTests {
     }
 
     @Test func plainHTTPToAPrivateLANAddress() async throws {
-        let address = try #require(Self.hostPrivateIPv4(), "this Mac needs a private IPv4 address (10/8, 172.16/12 or 192.168/16) for the probe")
+        let candidates = Self.privateIPv4Addresses()
+        // What the address was chosen from, so the record shows which interfaces held private addresses.
+        let listed = candidates.isEmpty ? "none" : candidates.map { "\($0.interface):\($0.masked)" }.joined(separator: ",")
+        print("ATS-PROBE variant=\(Self.variant.rawValue) private-ipv4-interfaces=\(listed) rule=\(Self.runsOnDevice ? "device: \(Self.wifiInterface) (Wi-Fi) only" : "simulator: the first of any interface")")
+        let chosen = Self.probeAddress(from: candidates, onDevice: Self.runsOnDevice)
+        let precondition = Self.runsOnDevice
+            ? "the phone needs a private IPv4 address (10/8, 172.16/12 or 192.168/16) on its Wi-Fi interface, \(Self.wifiInterface): join such a Wi-Fi network and run again"
+            : "this Mac needs a private IPv4 address (10/8, 172.16/12 or 192.168/16) for the probe"
+        if chosen == nil {
+            print("ATS-PROBE variant=\(Self.variant.rawValue) private-ip=none precondition-not-met (ATS not probed; not an ATS result): \(precondition)")
+        }
+        let probe = try #require(chosen, "precondition not met, so ATS was not probed (not an ATS result): \(precondition)")
         // A port bound only on loopback, so nothing listens on the LAN address.
         let server = try await FakeHTTPServer { _ in .json(200, "{}") }
-        let result = await Self.load(URL(string: "http://\(address):\(server.port)/v1/models")!)
-        let masked = address.split(separator: ".").prefix(2).joined(separator: ".") + ".x.x"
+        let result = await Self.load(URL(string: "http://\(probe.address):\(server.port)/v1/models")!)
         let outcome = switch result {
         case .success(let status): "http \(status)"
         // The classified kind is what Sylvia would tell the user (device checklist step 2 reads it with Local
         // Network access turned off: expected local_network_permission_denied).
         case .failure(let error): "URLError \(error.code.rawValue) classified=\(ErrorClassifier.classify(error, host: "probe", bodyMayHaveBeenSent: false).kind.rawValue)"
         }
-        print("ATS-PROBE variant=\(Self.variant.rawValue) private-ip=\(masked) result=\(outcome)")
+        print("ATS-PROBE variant=\(Self.variant.rawValue) private-ip=\(probe.masked) interface=\(probe.interface) result=\(outcome)")
         switch Self.variant {
         case .default:
             #if targetEnvironment(simulator)
@@ -89,6 +158,9 @@ struct ATSProbeTests {
             // a simulator result is never taken as the device result.
             #expect(!Self.isATSBlock(result), "simulator behaviour changed; re-check the G0.5 ATS finding; got \(result)")
             #else
+            // Apple's documented behaviour, kept as the device expectation so that a phone that does otherwise is
+            // recorded as a failure of it. The first device run (iPhone 17 Pro, iOS 27.0.1) was not blocked, as on the
+            // simulator: a timeout, not -1022 (Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt).
             #expect(Self.isATSBlock(result), "documented iOS 17+ behaviour: ATS blocks cleartext to an IP literal without an exception; got \(result)")
             #endif
         case .localNetworking, .cidrException:

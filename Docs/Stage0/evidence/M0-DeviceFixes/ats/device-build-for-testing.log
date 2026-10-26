@@ -1,0 +1,49 @@
+# the ATS probe's scheme for a generic iOS device: xcodebuild build-for-testing, unsigned (build only; no device)
+# expected (stated before the run): exit 0, TEST BUILD SUCCEEDED, ATSProbeTests.swift compiled for arm64 in each of the three test targets, no warning in Spikes/G05-AI code
+# commit: 0b0e1e65ba6c4634591f1963079c6d2425ae2212 (m0-device-fixes-ats); uncommitted files before this run: 0
+# host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+# started: 2026-10-26T06:51:21Z; load: 2.80 3.02 4.85 (other jobs share this Mac: timings are indicative only)
+# command (in Spikes/G05-AI/ATSProbe, after sylvia_generate Spikes/G05-AI/ATSProbe):
+#   xcodebuild build-for-testing -project G05ATSProbe.xcodeproj -scheme G05ATSProbe -destination generic/platform=iOS -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO
+# finished: 2026-10-26T06:51:33Z; exit status 0; load: 5.20 3.52 5.01
+--- result lines
+** TEST BUILD SUCCEEDED **
+--- error lines (0 in all)
+--- warning lines (11 in all; unique)
+2026-10-26 19:51:29.581 appintentsmetadataprocessor[1284:57279524] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 19:51:33.112 appintentsmetadataprocessor[1438:57280363] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 19:51:33.112 appintentsmetadataprocessor[1439:57280364] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 19:51:33.112 appintentsmetadataprocessor[1440:57280365] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 19:51:33.242 appintentsmetadataprocessor[1463:57280449] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 19:51:33.242 appintentsmetadataprocessor[1465:57280451] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 19:51:33.243 appintentsmetadataprocessor[1467:57280453] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 19:51:33.427 appintentsmetadataprocessor[1480:57280501] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+--- warnings in Spikes/G05-AI code (the G0.5 AI drop-in fails on any): 0
+--- ATSProbeTests.swift compiled for a device (arm64), by target
+in target 'ProbeCIDRExceptionTests'
+in target 'ProbeDefaultATSTests'
+in target 'ProbeLocalNetworkingTests'
+--- products (Debug-iphoneos)
+ProbeCIDRException.app
+ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest
+ProbeDefaultATS.app
+ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest
+ProbeDefaultATSUITests-Runner.app
+ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest
+ProbeLocalNetworking.app
+ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest
+--- last 10 lines of the output
+    /usr/bin/touch -c Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphoneos/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+** TEST BUILD SUCCEEDED **
+
+# result: as expected (exit 0; ATSProbeTests.swift compiled for arm64 in 3 test targets)

@@ -3,12 +3,13 @@
 // list-login-keychain-items.sh, so it reaches the file-based keychains only (Apple, TN3137: a program without a
 // keychain access group has no data protection keychain), and the query names the login keychain alone in
 // kSecMatchSearchList. Items of other services are read as attributes inside this process to filter them, and
-// never printed.
+// never printed. An argument replaces the prefix (added after the first listing, which used the default; the
+// default output is unchanged).
 import Foundation
 import Security
 
-let prefix = "com.jevidon.sylvia.spike.identityprobe."
-let ownerRunPrefix = prefix + "test."
+let prefix = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "com.jevidon.sylvia.spike.identityprobe."
+let ownerRunPrefix = "com.jevidon.sylvia.spike.identityprobe.test."
 
 /// SecKeychain is deprecated (macOS 10.10), but a SecKeychain is what kSecMatchSearchList takes.
 @available(macOS, deprecated: 10.10)
@@ -67,5 +68,7 @@ for item in items {
         + " label \(text(item[kSecAttrLabel as String])), created \(text(item[kSecAttrCreationDate as String])),"
         + " modified \(text(item[kSecAttrModificationDate as String]))")
 }
-let ownerRun = items.filter { ($0[kSecAttrService as String] as? String)?.hasPrefix(ownerRunPrefix) == true }
-print("of them, with the identity test's prefix \(ownerRunPrefix): \(ownerRun.count)")
+if ownerRunPrefix.hasPrefix(prefix) {
+    let ownerRun = items.filter { ($0[kSecAttrService as String] as? String)?.hasPrefix(ownerRunPrefix) == true }
+    print("of them, with the identity test's prefix \(ownerRunPrefix): \(ownerRun.count)")
+}

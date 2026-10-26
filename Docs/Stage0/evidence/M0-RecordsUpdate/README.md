@@ -20,6 +20,17 @@ nothing, an agent first bringing this branch up to date if `m0-decisions` has mo
 brings, puts `CLAUDE.md`'s two texts in; and after the merge you run the checks of runbook 0.8 and 0.3, step 7, which
 this README no longer answers for you.)*
 
+*(27 October 2026: two more changes reached this branch that day. `CLAUDE.md`'s two texts are in: the orchestrating
+session put them in on this branch, in `6a510880`, with the command named below, at your request of 24 October 2026, as
+that commit's message records, so your merge brings them and you put nothing in by hand ("Left for the owner" and the
+merge section have notes). And `m0-device-fixes`, the fixes of the three failures of your first runs on phone B, made
+from `m0-decisions` at `c72247a6` and reviewed in two rounds to accept-with-minor by its correctness, security and
+honesty lenses, as relayed, is folded in (`cbdb63bc`), with the record requests of its README applied, but for two
+decisions left to you as technical lead and one optional request ([`foldin/`](foldin/README.md); integration log
+section 45). So your merge of this branch also brings the device fixes, after which runbook 0.8 runs again on the Mac
+and 1.2 and 1.3 run again on phone B: the merge section gives the order. Agent-written; the fold-in has not been
+reviewed.)*
+
 ## What it does
 
 `m0-decisions` is the product owner's session branch: since 25 October 2026 UTC the owner, with Codex running the
@@ -66,12 +77,21 @@ milestone paragraph; its code is that of `044ed3cf`, the commit of `m0-decisions
    and 0.8 needs nothing (`checks/step-0.8-paths.log`). *(27 October 2026: on this branch; on `m0-decisions` after your
    merge, 0.8's command, which the merge section has you run, says whether it still holds, since a branch merged there
    before this one, such as a fix of the recovery suite, can change those paths: the review's finding OWN-RU-03.)*
+   *(27 October 2026: no longer on this branch either: the device fixes, folded in since, changed the recovery package
+   after `9cdb0a02`, so 0.8's command prints its `Sources` and `Tests`, and 0.8 runs again after your merge
+   ([`foldin/`](foldin/README.md); the merge section).)*
 6. **What both branches numbered alike** was renumbered: `m0-sessions`'s integration log sections 28-32 are 36-40 and
    its gate summary items 104-150 are 131-177 (`commands/renumber-sessions.py`; its dry run on the merge's records:
    `checks/renumber-sessions-dry-run.log`). *(27 October 2026: not every reference was: four in two lines of the gate
    summary's Section 8 that both branches changed, and one in its item 150, which the script rewrote in part, kept
    `m0-sessions`'s numbers; the fix of the review's completeness findings renumbered them, and its check reads every
    such reference against the two branches: [`fix-1/completeness/`](fix-1/completeness/README.md).)*
+7. **The device fixes folded in** (27 October 2026): `m0-device-fixes` at `a60aa922`, made from `m0-decisions` at
+   `c72247a6`, merged with `--no-ff` (`cbdb63bc`), with no conflict, since the two branches changed different files; its
+   code (the recovery package's `Sources` and `Tests`, the ATS probe's test file) and its evidence folder are as that
+   branch has them, but for dated notes added to its README; and the record requests of its README's Section 8 are
+   applied to these records, requests 5 and 15 recorded as decisions pending for you as technical lead, not applied, and
+   the optional request 10 not applied ([`foldin/`](foldin/README.md); integration log section 45).
 
 **Left for the owner:** `CLAUDE.md`. On `m0-decisions` its milestone paragraph is still that of 22 October 2026, which
 says that the gate branches and the M0 items are combined on `m0-integrate`, and this branch leaves the file exactly as
@@ -97,15 +117,25 @@ brings and you run, puts both texts in, changing nothing else in the file and re
 exactly once; then the lock check and your commit (the merge section). Applied before the merge, by hand, they would
 move `m0-decisions` on, and your merge would then wait for an agent's merge the other way. Until the fix of the
 owner-readability findings of this branch's review, the texts were to be put in by hand, a paragraph of 2,893
-characters, before or after the merge: its finding OWN-RU-04; [`fix-1/owner/`](fix-1/owner/README.md).)*
+characters, before or after the merge: its finding OWN-RU-04; [`fix-1/owner/`](fix-1/owner/README.md).)* *(27 October
+2026, later: no longer left for you. The orchestrating session ran that command on this branch, in `6a510880`, "at the
+owner's request of 24 October 2026 to update what was out of date, as 5aec2518 and 6cede84a were", as the commit's
+message says, and the dependency lock check passed after it, so `CLAUDE.md` here holds both texts and your merge brings
+them; the merge commands below no longer run the command, check its diff, run the lock check for it or commit it. The
+texts' file and the command stay as the record of how it was done ([`foldin/`](foldin/README.md); integration log
+section 45).)*
 
 ## Merging it into `m0-decisions`, between sittings
 
 Between two sittings, once the sitting in progress is done and its records are committed on `m0-decisions` (runbook 0.3,
-step 6). The merge is a fast-forward or nothing: `git merge --ff-only` moves `m0-decisions` to this branch's head only
-when that head already holds every commit of `m0-decisions`, and otherwise stops and changes nothing ("abort if
-fast-forward is not possible": `git merge -h`, git 2.55.0). So you never resolve a conflict, and none of these records
-reaches `m0-decisions` beside a later record of yours that it no longer agrees with. In a terminal:
+step 6), and before Codex or any agent works in `~/Git/sylvia-sessions` again (1.4's audio run was under way at
+`c72247a6`, your last commit this branch holds). The merge is a fast-forward or nothing: `git merge --ff-only` moves
+`m0-decisions` to this branch's head only when that head already holds every commit of `m0-decisions`, and otherwise
+stops and changes nothing ("abort if fast-forward is not possible": `git merge -h`, git 2.55.0). So you never resolve a
+conflict, and none of these records reaches `m0-decisions` beside a later record of yours that it no longer agrees with.
+It brings everything this branch holds: the M0 exit preparation, the device-A change, these records as they now read,
+`CLAUDE.md` with its two texts in (`6a510880`) and the device fixes of your first runs (`m0-device-fixes`, folded in:
+[`foldin/`](foldin/README.md)), so you merge nothing else and put nothing in by hand. In a terminal:
 
 ```sh
 cd ~/Git/sylvia-sessions
@@ -113,13 +143,7 @@ git status --short                                  # nothing uncommitted: commi
 git branch --show-current                           # m0-decisions
 git log --oneline m0-records-update..m0-decisions   # must print nothing; if it prints a commit, stop here (below)
 git merge --ff-only m0-records-update               # "Fast-forward"; if it refuses, nothing has changed (below)
-# Run 1's step 2, in the same pause, before Codex or any agent works in this checkout again. The merge brought this
-# command, which puts the two texts of claude-md-paragraph.md into CLAUDE.md and changes nothing else in it:
-python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/commands/apply-claude-md-texts.py
-git diff --stat                                     # CLAUDE.md | 4 ++-- : the paragraph and the toolchain line, no more
-(source Scripts/lib/env.sh && Scripts/ci.d/12-dependency-lock.sh)  # 0 failure(s): it compares that line's Xcode pin
-git commit -m "Point CLAUDE.md's milestone paragraph at m0-decisions" -- CLAUDE.md
-git rev-parse HEAD                                  # note it in the session log: the next sitting builds from it
+git rev-parse HEAD                                  # note it in the session log, in a row for the merge
 ```
 
 - **If the `log` line printed a commit, or the merge refused** (`fatal: Not possible to fast-forward, aborting.`, with
@@ -130,7 +154,8 @@ git rev-parse HEAD                                  # note it in the session log
   where both changed the same lines of a file this branch changes, which `git diff --name-status c72247a6
   m0-records-update` lists: the ADRs and their index, the gate reports, the checklists, the runbook, the gate summary,
   the plan, the amendments, the integration log, the Stage 0 README, `M0-contracts.md`, the repository `README.md`,
-  `Docs/Licenses/third-party-inventory.md`, the Zip guard's two scripts and one evidence file,
+  `CLAUDE.md`, `Docs/Licenses/third-party-inventory.md`, the Zip guard's two scripts, `Scripts/ci.d/70-g05-ai.sh`, the
+  device fixes' code (the recovery package's `Sources` and `Tests` and the ATS probe's test file) and one evidence file,
   `M0-Integration/commands/gate-refresh-check.py` (the table below), and it is resolved by keeping your text); to bring
   the account of your sittings in these records up to date with your new commits, wherever a text of these records no
   longer agrees with your records, these records changing, never yours (the texts that give it: the gate summary's
@@ -140,10 +165,14 @@ git rev-parse HEAD                                  # note it in the session log
   [`fix-1/owner/commands/owner-records-intact.py`](fix-1/owner/commands/owner-records-intact.py) with `--owner-head`
   set to the commit `m0-decisions` is at, which checks every commit of `m0-decisions` since `044ed3cf`, and this
   branch's other checks, recording what they report; and to commit. Then run the commands above again: the merge is
-  now a fast-forward.
+  now a fast-forward. If you have already merged `m0-device-fixes` on its own, as its README's 7.1 asked before the
+  fold-in, nothing changes: if that merge was a fast-forward, the `log` line prints nothing and this merge
+  fast-forwards; if it made a merge commit, the `log` line prints it, and the agent's merge above takes it in.
+- **If a merge ever stops on a conflict** (only a plain `git merge`, which these commands never use, can stop so):
+  `git merge --abort` puts `m0-decisions` back as it was, with nothing changed; then ask an agent as the bullet above
+  says.
 - **After the merge,** in the same pause, look at what it brought rather than take it from this README, which cannot
-  know what else will have reached `m0-decisions` by then (a branch merged before this one, such as a fix of the
-  recovery suite, changes both answers):
+  know what else will have reached `m0-decisions` by then (a branch merged before this one changes both answers):
 
   ```sh
   git diff --stat 9cdb0a02 HEAD -- Scripts/ci.d/71-g05-recovery.sh Scripts/lib Scripts/tools Spikes/G05-Recovery \
@@ -156,11 +185,24 @@ git rev-parse HEAD                                  # note it in the session log
   The first prints nothing when 0.8 still needs nothing; if it prints anything, 0.8 runs again before Session 6
   (runbook 0.8). The second lists every change since your last sitting that can call for a repeat: judge each under
   step 7's rule, which names the changes of this branch that need none (the checklists' wording, the Zip guard's two
-  scripts and, against a commit before `4be1a1a4`, your own `DeviceTests`), and ask an agent, before the next sitting,
-  what anything else it lists repeats; a repeat writes its logs under new names (runbook Section 2). At this fix's
-  documents commit, with `m0-decisions` at `c72247a6`, the first printed nothing and the second, against `d5336111`,
-  listed the eight checklists and the Zip guard's two scripts alone, in a simulation of these commands in a scratch
-  clone ([`fix-1/owner/checks/merge-simulation.log`](fix-1/owner/checks/merge-simulation.log)). Nothing goes to `main`.
+  scripts, `Scripts/ci.d/70-g05-ai.sh` and, against a commit before `4be1a1a4`, your own `DeviceTests`) and those that
+  call for one, and ask an agent, before the next sitting, what anything else it lists repeats; a repeat writes its
+  logs under new names (runbook Section 2). What this branch itself brings is known: in a simulation of these commands
+  in a scratch clone at the fold-in's documents commit, with `m0-decisions` at `c72247a6`, the first listed the eleven
+  files of the recovery package's `Sources` and `Tests` that the device fixes changed, so 0.8 runs again, and the
+  second, against `d5336111`, listed those, the ATS probe's test file, `Scripts/ci.d/70-g05-ai.sh`, the eight
+  checklists and the Zip guard's two scripts, so 1.2 and 1.3 run again, with 0.8, and nothing else repeats for this
+  merge ([`foldin/checks/merge-simulation.log`](foldin/checks/merge-simulation.log); at the fix of the owner-readability
+  findings, before the fold-in, the first printed nothing and the second listed the checklists and the Zip guard's two
+  scripts alone: [`fix-1/owner/checks/merge-simulation.log`](fix-1/owner/checks/merge-simulation.log)). Nothing goes to
+  `main`.
+- **Then, in order** (the runbook's header and the gate summary's Section 1, item 2, give the same steps): at the Mac,
+  with the screen unlocked for each whole run, the device fixes' two class-B tests, which have never run, then runbook
+  0.8, and, if you like, their host-facts probe for finding F-1
+  ([`../M0-DeviceFixes/README.md`](../M0-DeviceFixes/README.md) 7.2, items 1-3; if a class-B test fails, ask an agent
+  before 1.2); on phone B, 1.2 and then 1.3 again, as its 7.3 and 7.4 give them, under new log names, so that your first
+  runs' records stay as you committed them; then the rest of Session 1, from where your records leave 1.4, and the other
+  sessions in the runbook's order. Each run, and each step run again, gets a row in the session log, as before.
 
 *(This section's history. Until the fix of the owner-readability findings of this branch's review, 27 October 2026, its
 commands merged with `git merge m0-records-update`, which makes a merge commit when `m0-decisions` has moved on, and
@@ -173,7 +215,13 @@ nothing repeats and that 0.8 needs nothing, where it now runs the two checks: it
 bullet named only the gate reports, the checklists, the runbook, the gate summary and the ADRs as where a conflict could
 come, and called the evidence folders untouched (its finding CMP-07), and `CLAUDE.md`'s texts had no latest time
 (CMP-01); and until the fix of its fidelity findings, 26 October 2026, they were to be applied after the merge, which
-then brought `6cede84a`'s paragraph to `m0-decisions` (FID-RU-03).)*
+then brought `6cede84a`'s paragraph to `m0-decisions` (FID-RU-03).)* *(27 October 2026: until the fold-in of the device
+fixes, the commands also ran, in the same pause right after the merge, the command that puts `CLAUDE.md`'s two texts in,
+checked its diff, ran the lock check and committed `CLAUDE.md`, which `6a510880` has since done on this branch; the
+bullet on a moved-on `m0-decisions` named the files this branch changed before the fold-in and said nothing of
+`m0-device-fixes` merged on its own; there was no bullet on a conflict, nor on the steps after the merge; and "After the
+merge" gave as this branch's own result the first check printing nothing and the second listing the checklists and the
+Zip guard's two scripts alone: [`foldin/`](foldin/README.md); integration log section 45.)*
 
 ## The checks
 
@@ -192,7 +240,9 @@ review, 27 October 2026, this paragraph said that each log's header names its co
 and Xcode, the time and the load: its finding CMP-07; [`fix-1/completeness/`](fix-1/completeness/README.md), whose
 runner commits its console log.)* Host only: the build Mac, macOS 26.6.2 (25G83), Apple M5 Max, Xcode
 27.1 (27A9275). No simulator was created or used, no device was contacted, nothing played audio and nothing was
-fetched or pushed. Other jobs may have shared the Mac, so no timing here is a result.
+fetched or pushed. Other jobs may have shared the Mac, so no timing here is a result. *(27 October 2026: the checks of
+the fold-in of the device fixes, with what the earlier checks report since, by design, are in
+[`foldin/`](foldin/README.md).)*
 
 | Log | What ran | What it must show |
 | --- | --- | --- |
@@ -226,4 +276,10 @@ fixes that follow it.)* *(27 October 2026: the fix of its completeness findings,
 fix of its owner-readability findings, [`fix-1/owner/`](fix-1/owner/README.md); and your merge of this branch, a
 fast-forward, waits for an agent's merge of `m0-decisions` into it first if `m0-decisions` has moved on since
 `c72247a6`, as it will have once you commit the records of 1.4's audio run or merge another branch: the merge
-section.)*
+section.)* *(27 October 2026: `CLAUDE.md`'s two texts are no longer pending: they are in, on this branch (`6a510880`).
+Since the fold-in of the device fixes, also pending: after your merge, their two class-B tests and runbook 0.8 on the
+Mac with the screen unlocked, and 1.2 and 1.3 again on phone B (the merge section, "Then, in order"); two decisions for
+you as technical lead, neither applied, findings F-1 (`FileProtector.verify` reads a cached class) and S5 (`copyFile`'s
+`O_NOFOLLOW` covers the last component only), each with its proposed change in the G0.5 recovery report's decisions
+pending for the technical lead, after its open questions; the lock harness's quiet-tone test, which failed in all four runs on the build Mac on 26 October 2026
+and which 0.8 runs again (the report's row 25); and a review of the fold-in ([`foldin/`](foldin/README.md)).)*

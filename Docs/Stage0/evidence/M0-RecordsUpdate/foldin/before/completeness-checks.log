@@ -1,0 +1,108 @@
+command: python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/commands/completeness-checks.py
+commit: cbdb63bc265b98955cc4a297e92c689fb1a9d410; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T16:25:37Z; load:  5:25  up 23 days, 15:36, 4 users, load averages: 8.91 5.60 4.63
+
+commit: cbdb63bc265b98955cc4a297e92c689fb1a9d410; uncommitted paths: 0
+
+FAIL 1 CLAUDE.md is byte for byte c72247a6's
+PASS 1 the gate summary's item 1, step 2: its latest time and both texts
+PASS 1 the runbook's 0.3, step 2: its latest time and both texts
+PASS 1 the runbook's run 1: step 2 with the merge at the latest
+PASS 1 the evidence README's merge commands: the fast-forward merge, the command that puts the texts in, the lock check, the commit, then the commit noted
+PASS 1 the evidence README's Left for the owner and its merge commands give the latest time
+PASS 1 the texts' file has its note of 27 October 2026
+PASS 1 the Stage 0 README opens, after its first line, with the caveat on CLAUDE.md
+PASS 1 the caveat comes before the paragraph on where M0 stands
+PASS 1 Docs/Stage0/README.md: a later note after "*(corrected at the product owner's request on 24 October 2026, `5aec25"
+PASS 1 Docs/Stage0/M0-gate.md: a later note after '(Section 7, item 5) *(corrected at your request on 24 October 2026, `5'
+PASS 1 Docs/Stage0/M0-gate.md: a later note after '(integration log section 20; Section 6.3, items 48-56) *(corrected at '
+PASS 1 Docs/Stage0/M0-gate.md: a later note after '*(HON-11: corrected at your request on 24 October 2026, `5aec2518`: Se'
+PASS 1 Docs/Stage0/M0-gate.md: a later note after 'now in Section 1, item 1 *(corrected at your request on 24 October 202'
+PASS 1 Docs/Stage0/M0-gate.md: a later note after '*(Dated note, 24 October 2026: changed at your request by the orchestr'
+PASS 1 Docs/Stage0/M0-gate.md: a later note after '*(Dated note, 24 October 2026: changed at your request that day: item '
+PASS 1 Docs/Stage0/M0-gate.md: a later note after 'a fourth thing for Section 5.4 (item 127).)*'
+PASS 1 Docs/Stage0/M0-gate.md: a later note after 'It was not put to a review either, and belongs in this one: Section 6.'
+PASS 1 every note in the gate summary that gives the paragraph as corrected or changed at your request has a later note after it on its line (7 lines)
+PASS 1 integration log 41.2 records the merge's message and that no commit rewrote the paragraph
+PASS 1 git diff 4c0fa815 d1fb3dd4 -- CLAUDE.md prints nothing, as that note says
+PASS 2 the runbook's 0.7 has the log committed on m0-decisions
+PASS 2 Section 5.4's bullet on H-1 has the records committed on, and builds from, m0-decisions
+PASS 3 Section 8's Branch bullet dates pull request #6's merge by item 173
+PASS 3 Section 8's bullet on the update of your instructions cites items 131-137, section 36 and items 138-142
+PASS 3 item 150 cites integration log 36 and 37
+PASS 3 item 184 and integration log 41.2 have their notes
+PASS 4 the one existing evidence file this branch changes against c72247a6
+PASS 4 the commits that changed it on this branch's line: 83ed5ff3, 944a6302, f95de709 and 9f5edab1
+PASS 4 m0-decisions's text is 05bdea4d's
+PASS 4 the evidence README, integration log 41.7 and item 180 say so
+PASS 5 M0-device-runbook.md: a later note after 'before the reviews of ADR-0014; *(done by an agent on 24 Oct'
+PASS 5 M0-gate.md: a later note after 'by its owner (Section 1, item 4) *(done by an agent on 24 Oc'
+PASS 5 M0-gate.md: a later note after 'which its ADR-0014 items wait for *(done by an agent on 24 O'
+PASS 5 M0-gate.md: a later note after "ADR-0014's lock and item 7, after `linkage.sh`'s run *(done "
+PASS 5 M0-gate.md: a later note after "and of its lock, after `linkage.sh`'s run *(done by an agent"
+PASS 5 M0-gate.md: a later note after 'so this item stays open until a review accepts the change, a'
+PASS 5 M0-gate.md: a later note after 'The fix of that review answers the three, not reviewed: Sect'
+PASS 5 M0-gate.md: a later note after 'this note called both done: Section 1, item 4; Section 6.3, '
+PASS 5 M0-gate.md: a later note after "the review of the decisions round's fix, OWN2-01) *(24 Octob"
+PASS 5 M0-gate.md: a later note after 'their fix answers both, review pending, so row 76 stays fail'
+PASS 5 M0-gate.md: a later note after 'so the counts are those of 22 October 2026, passed-host 11 a'
+PASS 5 M0-gate.md: a later note after '`evidence/M0-ExitPrep/fix-2/round-2/commands/gate-checks.sh`'
+PASS 5 M0-gate.md: a later note after '`evidence/M0-DeviceA/fix-1/commands/gate-checks.sh`); this f'
+PASS 5 M0-gate.md: a later note after '`evidence/M0-DeviceA/fix-1/accuracy/commands/gate-checks.sh`'
+PASS 5 M0-gate.md: a later note after '`evidence/M0-DeviceA/fix-1/completeness/commands/gate-checks'
+PASS 5 M0-gate.md: a later note after '`evidence/M0-DeviceA/fix-1/owner/commands/gate-checks.sh`); '
+PASS 5 0004-epub-reader-adapter.md: a later note after '(two routes around that rule are still open: ADR-0014, revie'
+PASS 5 0014-dependency-lock-and-license-inventory.md: a later note after 'Since that fix, by an agent and not reviewed, CI fails a ver'
+PASS 5 0015-threat-model.md: a later note after 'which has two open routes around it (ADR-0014 review round 4'
+PASS 5 0015-threat-model.md: a later note after "only once ADR-0014's R4-01 and R4-02 are closed (below) *(24"
+PASS 5 0015-threat-model.md: a later note after 'the open routes around the CI import rule (B12), before the '
+PASS 5 0015-threat-model.md: a later note after 'Revised on 26 October 2026 by the fix of that review (integr'
+PASS 5 README.md: a later note after 'On 26 October 2026 those notes were reworded: R4-01 and R4-0'
+PASS 5 README.md: a later note after "both answered by an agent's change, review pending, so the v"
+PASS 5 README.md: a later note after 'with the branch read read-only and the device results neithe'
+PASS 5 the ADR index's column is dated 27 October 2026, with its history
+PASS 5 no live paragraph's last word on R4-01, R4-02 or linkage.sh is an open one without a later note
+FAIL 6 against 96bdc7e9: the four files of DeviceTests and 25 lines of the G0.5 recovery checklist, with the Zip guard's two scripts and the checklists' wording (26 files: Docs/Stage0/device-checklists/G01-EPUB.md, Docs/Stage0/device-checklists/G01-PDF.md, Docs/Stage0/device-checklists/G02-Transfer.md, Docs/Stage0/device-checklists/G03-Intake.md, Docs/Stage0/device-checklists/G04-Audio.md, Docs/Stage0/device-checklists/G05-AI.md, Docs/Stage0/device-checklists/G05-Recovery.md, Docs/Stage0/device-checklists/G06-Design.md, Scripts/check-dependency-lock.py, Scripts/ci.d/12-dependency-lock.sh, Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift, Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, .../DeviceTests/Support/Bundle+Module.swift, Spikes/G05-Recovery/DeviceTests/project.yml, .../Sources/SylviaRecovery/Backup/Container.swift, .../Sources/SylviaRecovery/FileProtection.swift, .../Sources/SylviaRecovery/FileSystem.swift, .../SylviaRecovery/MigrationCrashDrill.swift, .../Sources/SylviaRecovery/RestoreCrashDrill.swift, .../Tests/SylviaRecoveryTests/BackupTests.swift, .../Tests/SylviaRecoveryTests/MigrationTests.swift, .../SylviaRecoveryTests/PrivatePathTests.swift, .../SylviaRecoveryTests/ProtectedCopyTests.swift, .../Tests/SylviaRecoveryTests/PutBackTests.swift, .../Tests/SylviaRecoveryTests/Support.swift)
+FAIL 6 against 8404f342: the four files of DeviceTests and 25 lines of the G0.5 recovery checklist, with the Zip guard's two scripts and the checklists' wording (26 files: Docs/Stage0/device-checklists/G01-EPUB.md, Docs/Stage0/device-checklists/G01-PDF.md, Docs/Stage0/device-checklists/G02-Transfer.md, Docs/Stage0/device-checklists/G03-Intake.md, Docs/Stage0/device-checklists/G04-Audio.md, Docs/Stage0/device-checklists/G05-AI.md, Docs/Stage0/device-checklists/G05-Recovery.md, Docs/Stage0/device-checklists/G06-Design.md, Scripts/check-dependency-lock.py, Scripts/ci.d/12-dependency-lock.sh, Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift, Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, .../DeviceTests/Support/Bundle+Module.swift, Spikes/G05-Recovery/DeviceTests/project.yml, .../Sources/SylviaRecovery/Backup/Container.swift, .../Sources/SylviaRecovery/FileProtection.swift, .../Sources/SylviaRecovery/FileSystem.swift, .../SylviaRecovery/MigrationCrashDrill.swift, .../Sources/SylviaRecovery/RestoreCrashDrill.swift, .../Tests/SylviaRecoveryTests/BackupTests.swift, .../Tests/SylviaRecoveryTests/MigrationTests.swift, .../SylviaRecoveryTests/PrivatePathTests.swift, .../SylviaRecoveryTests/ProtectedCopyTests.swift, .../Tests/SylviaRecoveryTests/PutBackTests.swift, .../Tests/SylviaRecoveryTests/Support.swift)
+FAIL 6 against 432acc13: the four files of DeviceTests and 25 lines of the G0.5 recovery checklist, with the Zip guard's two scripts and the checklists' wording (26 files: Docs/Stage0/device-checklists/G01-EPUB.md, Docs/Stage0/device-checklists/G01-PDF.md, Docs/Stage0/device-checklists/G02-Transfer.md, Docs/Stage0/device-checklists/G03-Intake.md, Docs/Stage0/device-checklists/G04-Audio.md, Docs/Stage0/device-checklists/G05-AI.md, Docs/Stage0/device-checklists/G05-Recovery.md, Docs/Stage0/device-checklists/G06-Design.md, Scripts/check-dependency-lock.py, Scripts/ci.d/12-dependency-lock.sh, Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift, Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, .../DeviceTests/Support/Bundle+Module.swift, Spikes/G05-Recovery/DeviceTests/project.yml, .../Sources/SylviaRecovery/Backup/Container.swift, .../Sources/SylviaRecovery/FileProtection.swift, .../Sources/SylviaRecovery/FileSystem.swift, .../SylviaRecovery/MigrationCrashDrill.swift, .../Sources/SylviaRecovery/RestoreCrashDrill.swift, .../Tests/SylviaRecoveryTests/BackupTests.swift, .../Tests/SylviaRecoveryTests/MigrationTests.swift, .../SylviaRecoveryTests/PrivatePathTests.swift, .../SylviaRecoveryTests/ProtectedCopyTests.swift, .../Tests/SylviaRecoveryTests/PutBackTests.swift, .../Tests/SylviaRecoveryTests/Support.swift)
+FAIL 6 against 4be1a1a4: nothing under Apps, Packages, Spikes, Fixtures or Contracts; the Zip guard's two scripts and the checklists' wording (22 files: Docs/Stage0/device-checklists/G01-EPUB.md, Docs/Stage0/device-checklists/G01-PDF.md, Docs/Stage0/device-checklists/G02-Transfer.md, Docs/Stage0/device-checklists/G03-Intake.md, Docs/Stage0/device-checklists/G04-Audio.md, Docs/Stage0/device-checklists/G05-AI.md, Docs/Stage0/device-checklists/G05-Recovery.md, Docs/Stage0/device-checklists/G06-Design.md, Scripts/check-dependency-lock.py, Scripts/ci.d/12-dependency-lock.sh, Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift, .../Sources/SylviaRecovery/Backup/Container.swift, .../Sources/SylviaRecovery/FileProtection.swift, .../Sources/SylviaRecovery/FileSystem.swift, .../SylviaRecovery/MigrationCrashDrill.swift, .../Sources/SylviaRecovery/RestoreCrashDrill.swift, .../Tests/SylviaRecoveryTests/BackupTests.swift, .../Tests/SylviaRecoveryTests/MigrationTests.swift, .../SylviaRecoveryTests/PrivatePathTests.swift, .../SylviaRecoveryTests/ProtectedCopyTests.swift, .../Tests/SylviaRecoveryTests/PutBackTests.swift, .../Tests/SylviaRecoveryTests/Support.swift)
+FAIL 6 against d5336111: nothing under Apps, Packages, Spikes, Fixtures or Contracts; the Zip guard's two scripts and the checklists' wording (22 files: Docs/Stage0/device-checklists/G01-EPUB.md, Docs/Stage0/device-checklists/G01-PDF.md, Docs/Stage0/device-checklists/G02-Transfer.md, Docs/Stage0/device-checklists/G03-Intake.md, Docs/Stage0/device-checklists/G04-Audio.md, Docs/Stage0/device-checklists/G05-AI.md, Docs/Stage0/device-checklists/G05-Recovery.md, Docs/Stage0/device-checklists/G06-Design.md, Scripts/check-dependency-lock.py, Scripts/ci.d/12-dependency-lock.sh, Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift, .../Sources/SylviaRecovery/Backup/Container.swift, .../Sources/SylviaRecovery/FileProtection.swift, .../Sources/SylviaRecovery/FileSystem.swift, .../SylviaRecovery/MigrationCrashDrill.swift, .../Sources/SylviaRecovery/RestoreCrashDrill.swift, .../Tests/SylviaRecoveryTests/BackupTests.swift, .../Tests/SylviaRecoveryTests/MigrationTests.swift, .../SylviaRecoveryTests/PrivatePathTests.swift, .../SylviaRecoveryTests/ProtectedCopyTests.swift, .../Tests/SylviaRecoveryTests/PutBackTests.swift, .../Tests/SylviaRecoveryTests/Support.swift)
+FAIL 6 against c72247a6: nothing under Apps, Packages, Spikes, Fixtures or Contracts; the Zip guard's two scripts and the checklists' wording (22 files: Docs/Stage0/device-checklists/G01-EPUB.md, Docs/Stage0/device-checklists/G01-PDF.md, Docs/Stage0/device-checklists/G02-Transfer.md, Docs/Stage0/device-checklists/G03-Intake.md, Docs/Stage0/device-checklists/G04-Audio.md, Docs/Stage0/device-checklists/G05-AI.md, Docs/Stage0/device-checklists/G05-Recovery.md, Docs/Stage0/device-checklists/G06-Design.md, Scripts/check-dependency-lock.py, Scripts/ci.d/12-dependency-lock.sh, Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift, .../Sources/SylviaRecovery/Backup/Container.swift, .../Sources/SylviaRecovery/FileProtection.swift, .../Sources/SylviaRecovery/FileSystem.swift, .../SylviaRecovery/MigrationCrashDrill.swift, .../Sources/SylviaRecovery/RestoreCrashDrill.swift, .../Tests/SylviaRecoveryTests/BackupTests.swift, .../Tests/SylviaRecoveryTests/MigrationTests.swift, .../SylviaRecoveryTests/PrivatePathTests.swift, .../SylviaRecoveryTests/ProtectedCopyTests.swift, .../Tests/SylviaRecoveryTests/PutBackTests.swift, .../Tests/SylviaRecoveryTests/Support.swift)
+PASS 6 the runbook's 0.3, step 7, says both
+PASS 7 the README's nine logs with no header are the ones that have none
+FAIL 7 every file this branch changes against c72247a6 is in a group the merge bullet names (unnamed: CLAUDE.md, Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift, Spikes/G05-Recovery/Sources/SylviaRecovery/Backup/Container.swift, Spikes/G05-Recovery/Sources/SylviaRecovery/FileProtection.swift, Spikes/G05-Recovery/Sources/SylviaRecovery/FileSystem.swift, Spikes/G05-Recovery/Sources/SylviaRecovery/MigrationCrashDrill.swift, Spikes/G05-Recovery/Sources/SylviaRecovery/RestoreCrashDrill.swift, Spikes/G05-Recovery/Tests/SylviaRecoveryTests/BackupTests.swift, Spikes/G05-Recovery/Tests/SylviaRecoveryTests/MigrationTests.swift, Spikes/G05-Recovery/Tests/SylviaRecoveryTests/PutBackTests.swift, Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Support.swift)
+FAIL 7 CLAUDE.md is not among them
+PASS 8 the gate summary's item 199
+PASS 8 the gate summary's item 200
+PASS 8 the gate summary's item 201
+PASS 8 the gate summary's item 202
+PASS 8 the gate summary's item 203
+PASS 8 the gate summary's item 204
+PASS 8 the gate summary's item 205
+PASS 8 the gate summary's item 206
+PASS 8 integration log section 43
+PASS 8 word limits: the opening 596 (600), the State line 173 (200), the two 769 (800), run 1 179 (200)
+
+== the sweep of part 5: every paragraph whose last word on R4-01, R4-02 or linkage.sh is an open one
+history   Docs/Stage0/M0-device-runbook.md:170: in a history clause: ...'(Until 24 October 2026 R4-01 and R4-02 were still to ask for; on `m0-exit-prep` they were '
+history   Docs/Stage0/M0-gate.md:723: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:734: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:738: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:746: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:768: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:925: a record of an earlier round ('review pending')
+
+result: FAIL (9 failed)
+  failed: 1 CLAUDE.md is byte for byte c72247a6's
+  failed: 6 against 96bdc7e9: the four files of DeviceTests and 25 lines of the G0.5 recovery checklist, with the Zip guard's two scripts and the checklists' wording
+  failed: 6 against 8404f342: the four files of DeviceTests and 25 lines of the G0.5 recovery checklist, with the Zip guard's two scripts and the checklists' wording
+  failed: 6 against 432acc13: the four files of DeviceTests and 25 lines of the G0.5 recovery checklist, with the Zip guard's two scripts and the checklists' wording
+  failed: 6 against 4be1a1a4: nothing under Apps, Packages, Spikes, Fixtures or Contracts; the Zip guard's two scripts and the checklists' wording
+  failed: 6 against d5336111: nothing under Apps, Packages, Spikes, Fixtures or Contracts; the Zip guard's two scripts and the checklists' wording
+  failed: 6 against c72247a6: nothing under Apps, Packages, Spikes, Fixtures or Contracts; the Zip guard's two scripts and the checklists' wording
+  failed: 7 every file this branch changes against c72247a6 is in a group the merge bullet names
+  failed: 7 CLAUDE.md is not among them
+
+exit status: 1
+end: 2026-10-26T16:25:37Z; load:  5:25  up 23 days, 15:36, 4 users, load averages: 8.91 5.60 4.63

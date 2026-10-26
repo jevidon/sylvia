@@ -28,6 +28,13 @@ Section 8 lists what they need.
 **What to test on the Mac: Section 7.2. What to run again on phone B: Sections 7.3 and 7.4, after the merge of
 Section 7.1.**
 
+*(27 October 2026: this branch, at `a60aa922`, is folded into `m0-records-update` (merge commit `cbdb63bc`), and the
+record requests of Section 8 are applied there, but for two decisions left to you as technical lead and one optional
+request, each as Section 8's note says. So you merge `m0-records-update`, which brings this branch, rather than this
+branch on its own: Section 7.1 has a note. Sections 7.2-7.4 apply as written, after that merge
+([`../M0-RecordsUpdate/foldin/README.md`](../M0-RecordsUpdate/foldin/README.md); integration log section 45). Nothing
+else in this folder was changed.)*
+
 ## 1. In short
 
 | What failed on phone B | Cause, from the code and the phone's own logs (what is inferred is marked) | Fix | Shown on the Mac | Only the phone can show |
@@ -281,6 +288,14 @@ chain for the drop-in's exit status, and ran the shared checks on its record's c
 
 ### 7.1 Merge this branch into `m0-decisions`, between sittings
 
+*(27 October 2026: no longer this branch on its own. It is folded into `m0-records-update`, which you merge into
+`m0-decisions` instead, between sittings, as a fast-forward (`git merge --ff-only m0-records-update`): the merge section
+of [`../M0-RecordsUpdate/README.md`](../M0-RecordsUpdate/README.md) gives the commands and what to do if
+`m0-decisions` has moved on, and the gate summary's Section 1, item 2, and the runbook's header give the next steps in
+order. If you have already merged this branch, merge `m0-records-update` all the same. The steps below, which merge
+this branch with a plain `git merge`, are kept as the record of what this README asked;
+[`../M0-RecordsUpdate/foldin/README.md`](../M0-RecordsUpdate/foldin/README.md).)*
+
 Do it between sittings, not while a run (such as the audio run of 1.4) or Codex is working in `~/Git/sylvia-sessions`.
 
 1. Commit the last sitting's records on `m0-decisions` first (runbook 0.3, step 6). Then check that nothing is left
@@ -492,6 +507,13 @@ records run applied their earlier text, [`fix-1/README.md`](fix-1/README.md) Sec
 fix changed request 11 and added requests 14 and 15 ([`fix-1/security/README.md`](fix-1/security/README.md) Section 9).
 The honesty fix changed requests 5, 8, 11 and 12; if the records run applied their earlier text,
 [`fix-1/honesty/README.md`](fix-1/honesty/README.md) Section 9 gives what to change.
+
+*(27 October 2026: applied on `m0-records-update`, which folded this branch in, to its records as they stood after its
+own update, each in its current text: requests 1-4, 6-9 and 11-14, where a request's text assumed the records before
+that update, by its intent, as the record of the fold-in says request by request; request 10 not applied, ADR-0011's
+Evidence recording the G0.5 runs, not the current probe; requests 5 and 15 recorded as decisions pending for you as
+technical lead, with their proposed changes, and not applied
+([`../M0-RecordsUpdate/foldin/README.md`](../M0-RecordsUpdate/foldin/README.md); integration log section 45).)*
 
 1. **Recovery suite's expected count.** In `Docs/Stage0/device-checklists/G05-Recovery.md` step 1, item 2
    ("Expected"), and in runbook 1.2's "Expect", replace `Test run with 68 tests in 11 suites passed (the five

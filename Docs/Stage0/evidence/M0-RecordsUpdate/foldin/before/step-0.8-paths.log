@@ -1,0 +1,101 @@
+command: Docs/Stage0/evidence/M0-RecordsUpdate/commands/step-08-paths.sh
+commit: cbdb63bc265b98955cc4a297e92c689fb1a9d410; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T16:25:39Z; load:  5:25  up 23 days, 15:36, 4 users, load averages: 8.91 5.60 4.63
+
+step-08-paths: HEAD cbdb63bc265b98955cc4a297e92c689fb1a9d410, uncommitted paths: 0; 2026-10-26T16:25:40Z
+the run's commit: 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e (2026-10-23 11:11:18 +1300)
+9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e is an ancestor of HEAD
+
+== 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e..4c0fa815 (4c0fa815)
+-- the drop-in's paths, Spikes/G05-Recovery/DeviceTests set apart (must be empty):
+   (no change)
+-- the whole of Spikes/G05-Recovery (DeviceTests alone expected):
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift | 11 ++++
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   | 15 ++++++
+ .../DeviceTests/Support/Bundle+Module.swift        |  8 +++
+ Spikes/G05-Recovery/DeviceTests/project.yml        | 60 ++++++++++++++++++++++
+ 4 files changed, 94 insertions(+)
+-- outside Docs/ (for the record; the drop-in uses none of what is listed unless it is above):
+ CLAUDE.md                                          |   2 +-
+ README.md                                          |   2 +-
+ Scripts/check-dependency-lock.py                   | 687 +++++++++++++++++++--
+ Scripts/ci.d/12-dependency-lock.sh                 |   9 +-
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift |  11 +
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   |  15 +
+ .../DeviceTests/Support/Bundle+Module.swift        |   8 +
+ Spikes/G05-Recovery/DeviceTests/project.yml        |  60 ++
+ 8 files changed, 724 insertions(+), 70 deletions(-)
+
+== 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e..HEAD (cbdb63bc)
+-- the drop-in's paths, Spikes/G05-Recovery/DeviceTests set apart (must be empty):
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +++-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 +++++++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++++++++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 11 files changed, 572 insertions(+), 23 deletions(-)
+PROBLEM: the drop-in's paths changed
+-- the whole of Spikes/G05-Recovery (DeviceTests alone expected):
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift |  11 +
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   |  15 ++
+ .../DeviceTests/Support/Bundle+Module.swift        |   8 +
+ Spikes/G05-Recovery/DeviceTests/project.yml        |  60 +++++
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +++-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 +++++++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++++++++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 15 files changed, 666 insertions(+), 23 deletions(-)
+PROBLEM: changed outside DeviceTests: Spikes/G05-Recovery/Sources/SylviaRecovery/Backup/Container.swift
+Spikes/G05-Recovery/Sources/SylviaRecovery/FileProtection.swift
+Spikes/G05-Recovery/Sources/SylviaRecovery/FileSystem.swift
+Spikes/G05-Recovery/Sources/SylviaRecovery/MigrationCrashDrill.swift
+Spikes/G05-Recovery/Sources/SylviaRecovery/RestoreCrashDrill.swift
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/BackupTests.swift
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/MigrationTests.swift
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/PrivatePathTests.swift
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/ProtectedCopyTests.swift
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/PutBackTests.swift
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Support.swift
+-- outside Docs/ (for the record; the drop-in uses none of what is listed unless it is above):
+ README.md                                          |   2 +-
+ Scripts/check-dependency-lock.py                   | 687 +++++++++++++++++++--
+ Scripts/ci.d/12-dependency-lock.sh                 |   9 +-
+ Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift   |  94 ++-
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift |  11 +
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   |  15 +
+ .../DeviceTests/Support/Bundle+Module.swift        |   8 +
+ Spikes/G05-Recovery/DeviceTests/project.yml        |  60 ++
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 ++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 20 files changed, 1380 insertions(+), 105 deletions(-)
+
+== files the drop-in runs or reads that name DeviceTests (none expected)
+   none
+
+result: FAIL
+
+exit status: 1
+end: 2026-10-26T16:25:40Z; load:  5:25  up 23 days, 15:36, 4 users, load averages: 8.91 5.60 4.63

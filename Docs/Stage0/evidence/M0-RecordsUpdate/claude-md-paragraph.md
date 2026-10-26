@@ -39,6 +39,16 @@ Until the fix of the owner-readability findings of the review of `m0-records-upd
 by hand and set them no order with the merge but "at the latest" after it, and "before you ask an agent for anything",
 which your sittings with Codex had passed: its findings OWN-RU-03 and OWN-RU-04; [`fix-1/owner/`](fix-1/owner/README.md).)*
 
+*(27 October 2026: applied. The orchestrating session ran
+[`fix-1/owner/commands/apply-claude-md-texts.py`](fix-1/owner/commands/apply-claude-md-texts.py) on `m0-records-update`,
+in `6a510880`, "at the owner's request of 24 October 2026 to update what was out of date, as 5aec2518 and 6cede84a
+were", as that commit's message says, and the dependency lock check passed after it; `git show --stat 6a510880` shows
+`CLAUDE.md` alone, two lines changed, and the two texts below are its milestone paragraph and the new words of its
+toolchain line. So your merge of `m0-records-update` brings both texts to `m0-decisions`, and you put nothing in by hand:
+the order above, which had you run the command after the merge, is history, and this file and the command stay as the
+record of how it was done. The fold-in of the device fixes, the same day, brought the records that gave the texts as
+yours up to date: [`foldin/`](foldin/README.md); integration log section 45.)*
+
 Agent-written, not reviewed. Neither text changes the Xcode pin (27.1, 27A9275), which
 `Scripts/ci.d/12-dependency-lock.sh` compares with the inventory's: after a change, run that check again
 (`source Scripts/lib/env.sh; Scripts/ci.d/12-dependency-lock.sh`).

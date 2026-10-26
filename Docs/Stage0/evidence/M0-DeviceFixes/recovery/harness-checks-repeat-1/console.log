@@ -1,0 +1,380 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/run-harness-checks.sh harness-checks-repeat-1
+commit: 345dc9c354bbe4c3a33ba0e514e4d6addac1d45f (m0-device-fixes-recovery); uncommitted files: 8
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T07:52:25Z; load: 20:52  up 23 days,  7:02, 3 users, load averages: 1.49 5.67 6.59
+
+=== 13. harness lock: LockHarness/Package.resolved pins what ../Package.resolved pins
+ok: LockHarness/Package.resolved pins exactly what ../Package.resolved pins: grdb.swift 7.11.1 b83108d10f42680d78f23fe4d4d80fc88dab3212
+originHash equal
+
+=== 14. harness unit tests and the app's UI smoke test on the simulator (Sylvia-M0-devfix-recovery)
+simulator: Sylvia-M0-devfix-recovery 5006CB9D-1C45-4AC2-9D43-349A58671C1C (com.apple.CoreSimulator.SimDeviceType.iPhone-17, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 ; load: 9.14 7.18 7.12
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -project /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/G05LockHarness.xcodeproj -scheme G05LockHarness -destination id=5006CB9D-1C45-4AC2-9D43-349A58671C1C -derivedDataPath /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData -disableAutomaticPackageResolution
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  GRDB: https://github.com/groue/GRDB.swift.git @ 7.11.1
+  G05Recovery: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (10 targets)
+    Target 'G05LockHarnessUITests' in project 'G05LockHarness'
+        ➜ Explicit dependency on target 'G05LockHarness' in project 'G05LockHarness'
+    Target 'G05LockHarnessTests' in project 'G05LockHarness'
+        ➜ Explicit dependency on target 'SylviaRecovery-product' in project 'G05Recovery'
+    Target 'G05LockHarness' in project 'G05LockHarness'
+        ➜ Explicit dependency on target 'SylviaRecovery-product' in project 'G05Recovery'
+    Target 'SylviaRecovery-product' in project 'G05Recovery'
+        ➜ Explicit dependency on target 'SylviaRecovery' in project 'G05Recovery'
+        ➜ Explicit dependency on target 'SylviaSQLiteShim' in project 'G05Recovery'
+        ➜ Explicit dependency on target 'GRDB-product' in project 'GRDB'
+    Target 'SylviaRecovery' in project 'G05Recovery'
+        ➜ Explicit dependency on target 'SylviaSQLiteShim' in project 'G05Recovery'
+        ➜ Explicit dependency on target 'GRDB-product' in project 'GRDB'
+    Target 'GRDB-product' in project 'GRDB'
+        ➜ Explicit dependency on target 'GRDB' in project 'GRDB'
+        ➜ Explicit dependency on target 'GRDB_GRDB' in project 'GRDB'
+    Target 'GRDB' in project 'GRDB'
+        ➜ Explicit dependency on target 'GRDB_GRDB' in project 'GRDB'
+        ➜ Explicit dependency on target 'GRDBSQLite' in project 'GRDB'
+    Target 'GRDBSQLite' in project 'GRDB' (no dependencies)
+    Target 'GRDB_GRDB' in project 'GRDB' (no dependencies)
+    Target 'SylviaSQLiteShim' in project 'G05Recovery' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+ReadFileContents /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/docc/features.json
+
+Build description signature: 40440abb27f664b0375d2f4d93da5de8
+Build description path: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/XCBuildData/40440abb27f664b0375d2f4d93da5de8.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/SDKStatCaches.noindex/iphonesimulator27.1-24A94232-35d3147121984ba087c28d913653d626.sdkstatcache
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/G05LockHarness.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -o /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/SDKStatCaches.noindex/iphonesimulator27.1-24A94232-35d3147121984ba087c28d913653d626.sdkstatcache
+
+ProcessInfoPlistFile /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/GRDB_GRDB.bundle/Info.plist /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/GRDB.build/Debug-iphonesimulator/GRDB_GRDB-b.build/empty-GRDB_GRDB.plist (in target 'GRDB_GRDB' from project 'GRDB')
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/SourcePackages/checkouts/GRDB.swift
+    builtin-infoPlistUtility /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/GRDB.build/Debug-iphonesimulator/GRDB_GRDB-b.build/empty-GRDB_GRDB.plist -producttype com.apple.product-type.bundle -expandbuildsettings -format binary -platform iphonesimulator -o /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/GRDB_GRDB.bundle/Info.plist
+
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/GRDB_GRDB.bundle /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/GRDB_GRDB.bundle (in target 'G05LockHarness' from project 'G05LockHarness')
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/GRDB_GRDB.bundle /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app
+
+ProcessInfoPlistFile /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/Info.plist /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/App/Info.plist (in target 'G05LockHarness' from project 'G05LockHarness')
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness
+    builtin-infoPlistUtility /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/App/Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -scanforprivacyfile /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/GRDB_GRDB.bundle -o /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/Info.plist
+
+CopySwiftLibs /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app (in target 'G05LockHarness' from project 'G05LockHarness')
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/G05LockHarness.debug.dylib --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/Frameworks --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/PlugIns --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/SystemExtensions --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarness.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarness.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+Copy /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/GRDB_GRDB.bundle /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/GRDB_GRDB.bundle (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/GRDB_GRDB.bundle /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest
+
+ProcessInfoPlistFile /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/Info.plist /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessTests.build/empty-G05LockHarnessTests.plist (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness
+    builtin-infoPlistUtility /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessTests.build/empty-G05LockHarnessTests.plist -producttype com.apple.product-type.bundle.unit-test -expandbuildsettings -format binary -platform iphonesimulator -scanforprivacyfile /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/GRDB_GRDB.bundle -o /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/Info.plist
+
+CopySwiftLibs /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest (in target 'G05LockHarnessTests' from project 'G05LockHarness')
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/G05LockHarnessTests --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/Frameworks --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/PlugIns --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/SystemExtensions --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessTests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessTests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+ProcessInfoPlistFile /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest/Info.plist /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessUITests.build/empty-G05LockHarnessUITests.plist (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness
+    builtin-infoPlistUtility /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessUITests.build/empty-G05LockHarnessUITests.plist -producttype com.apple.product-type.bundle.ui-testing -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessUITests.build/ProductTypeInfoPlistAdditions.plist -o /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest/Info.plist
+
+CopySwiftLibs /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest (in target 'G05LockHarnessUITests' from project 'G05LockHarness')
+    cd /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest/G05LockHarnessUITests --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest/Frameworks --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest/PlugIns --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest/SystemExtensions --scan-folder /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Products/Debug-iphonesimulator/G05LockHarnessUITests-Runner.app/PlugIns/G05LockHarnessUITests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/G05LockHarness.build/Debug-iphonesimulator/G05LockHarnessUITests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+PruneExplicitPrecompiledModules /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+2026-10-26 20:52:33.790 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+Test Suite 'All tests' started at 2026-10-26 20:52:34.468.
+Test Suite 'All tests' passed at 2026-10-26 20:52:34.468.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Suite "Lock harness: state transitions on a simulated phone" started.
+◇ Test "first launch: the launch is recorded, there is no previous run, nothing is opened, a refresh is asked for" started.
+✔ Test "first launch: the launch is recorded, there is no previous run, nothing is opened, a refresh is asked for" passed after 0.001 seconds.
+◇ Test "start: the tone at the test volume 0.01, the library opened with D17's durability, the canary made, the run recorded" started.
+✔ Test "start: the tone at the test volume 0.01, the library opened with D17's durability, the canary made, the run recorded" passed after 0.001 seconds.
+◇ Test "SYLVIA_AUDIBLE_PLAYBACK=1 plays at full volume; any other value plays at 0.01" started.
+◇ Test case passing 2 arguments value → "1", expected → 1.0 to "SYLVIA_AUDIBLE_PLAYBACK=1 plays at full volume; any other value plays at 0.01" started.
+​◇ Test case passing 2 arguments value → "0", expected → 0.01 to "SYLVIA_AUDIBLE_PLAYBACK=1 plays at full volume; any other value plays at 0.01" started.
+​◇ Test case passing 2 arguments value → "yes", expected → 0.01 to "SYLVIA_AUDIBLE_PLAYBACK=1 plays at full volume; any other value plays at 0.01" started.
+​◇ Test case passing 2 arguments value → "", expected → 0.01 to "SYLVIA_AUDIBLE_PLAYBACK=1 plays at full volume; any other value plays at 0.01" started.
+​✔ Test "SYLVIA_AUDIBLE_PLAYBACK=1 plays at full volume; any other value plays at 0.01" with 4 test cases passed after 0.004 seconds.
+◇ Test "attempts while unlocked: each saved, read back equal, its file written and read, classes ok, acknowledged" started.
+✔ Test "attempts while unlocked: each saved, read back equal, its file written and read, classes ok, acknowledged" passed after 0.001 seconds.
+◇ Test "locked after the first unlock for 5 minutes: class A unreadable, protected data unavailable, every class-C attempt still acknowledged" started.
+✔ Test "locked after the first unlock for 5 minutes: class A unreadable, protected data unavailable, every class-C attempt still acknowledged" passed after 0.021 seconds.
+◇ Test "restart, then a background launch before the first unlock: recorded in the unified log and kept, nothing written, created or changed" started.
+✔ Test "restart, then a background launch before the first unlock: recorded in the unified log and kept, nothing written, created or changed" passed after 0.005 seconds.
+◇ Test "the first unlock: the lines kept before it are written in order, each marked written-late, then the run's check passes" started.
+✔ Test "the first unlock: the lines kept before it are written in order, each marked written-late, then the run's check passes" passed after 0.004 seconds.
+◇ Test "opened after the first unlock: the run ended by the restart, its counters reported, every acknowledged item verified" started.
+✔ Test "opened after the first unlock: the run ended by the restart, its counters reported, every acknowledged item verified" passed after 0.019 seconds.
+◇ Test "a run that ended in the same boot without Stop is reported as ended-without-stop, not as a restart" started.
+✔ Test "a run that ended in the same boot without Stop is reported as ended-without-stop, not as a restart" passed after 0.001 seconds.
+◇ Test "Stop: the tone stops, the run is recorded as stopped, a summary and a full check follow; the next launch reads stopped-cleanly" started.
+✔ Test "Stop: the tone stops, the run is recorded as stopped, a summary and a full check follow; the next launch reads stopped-cleanly" passed after 0.001 seconds.
+◇ Test "a pause longer than the gap threshold is recorded as a gap; the threshold itself is not" started.
+◇ Test case passing 2 arguments pause → 5.0, isGap → false to "a pause longer than the gap threshold is recorded as a gap; the threshold itself is not" started.
+​◇ Test case passing 2 arguments pause → 5.1, isGap → true to "a pause longer than the gap threshold is recorded as a gap; the threshold itself is not" started.
+​◇ Test case passing 2 arguments pause → 30.0, isGap → true to "a pause longer than the gap threshold is recorded as a gap; the threshold itself is not" started.
+​✔ Test "a pause longer than the gap threshold is recorded as a gap; the threshold itself is not" with 3 test cases passed after 0.002 seconds.
+◇ Test "a read-back that differs is a failure: the item is never acknowledged, and the run keeps recording" started.
+✔ Test "a read-back that differs is a failure: the item is never acknowledged, and the run keeps recording" passed after 0.001 seconds.
+◇ Test "a save that committed but whose read-back failed is acknowledged once, at the retry, as already-saved" started.
+✔ Test "a save that committed but whose read-back failed is acknowledged once, at the retry, as already-saved" passed after 0.005 seconds.
+◇ Test "another class read back is recorded as a failure, and nothing tries to change it" started.
+✔ Test "another class read back is recorded as a failure, and nothing tries to change it" passed after 0.001 seconds.
+◇ Test "class C unavailable while a run is active: each attempt fails safely, the same item is retried, the lines are kept and written late in order" started.
+✔ Test "class C unavailable while a run is active: each attempt fails safely, the same item is retried, the lines are kept and written late in order" passed after 0.003 seconds.
+◇ Test "a write of the run's record that fails while locked fails the attempt: counted on the screen at once, and saved with the next record that can be written (review H-02)" started.
+✔ Test "a write of the run's record that fails while locked fails the attempt: counted on the screen at once, and saved with the next record that can be written (review H-02)" passed after 0.056 seconds.
+◇ Test "a failed write of the record in an attempt that failed anyway is one failure, not two" started.
+✔ Test "a failed write of the record in an attempt that failed anyway is one failure, not two" passed after 0.001 seconds.
+◇ Test "a check without a readable run record is library-only, never ok or passed: no acknowledged item could be checked (review H-07)" started.
+✔ Test "a check without a readable run record is library-only, never ok or passed: no acknowledged item could be checked (review H-07)" passed after 0.003 seconds.
+◇ Test "a canary that could not be made is absent, never counted as unreadable: a missing canary cannot detect the lock (review H-04)" started.
+✔ Test "a canary that could not be made is absent, never counted as unreadable: a missing canary cannot detect the lock (review H-04)" passed after 0.001 seconds.
+◇ Test "a library that cannot be opened: the start and each attempt record the open's error, the open is tried again at every attempt, and the run continues once it opens" started.
+✔ Test "a library that cannot be opened: the start and each attempt record the open's error, the open is tried again at every attempt, and the run continues once it opens" passed after 0.003 seconds.
+◇ Test "a Start after a launch that could not read the last run's record reads it then, and continues the library" started.
+✔ Test "a Start after a launch that could not read the last run's record reads it then, and continues the library" passed after 0.002 seconds.
+◇ Test "an expired background refresh is recorded" started.
+✔ Test "an expired background refresh is recorded" passed after 0.001 seconds.
+◇ Test "a tone that cannot start is recorded; the run still makes its attempts" started.
+✔ Test "a tone that cannot start is recorded; the run still makes its attempts" passed after 0.001 seconds.
+◇ Test "interruptions and resumptions of the tone are recorded" started.
+✔ Test "interruptions and resumptions of the tone are recorded" passed after 0.001 seconds.
+◇ Test "a background refresh while locked after the first unlock reads the library and writes class C" started.
+✔ Test "a background refresh while locked after the first unlock reads the library and writes class C" passed after 0.001 seconds.
+◇ Test "the app's state changes and its termination are recorded" started.
+✔ Test "the app's state changes and its termination are recorded" passed after 0.001 seconds.
+◇ Test "launch is recorded once per process" started.
+✔ Test "launch is recorded once per process" passed after 0.001 seconds.
+◇ Test "lines beyond the limit kept for the log file are counted as dropped; the earliest are kept; all reach the unified log" started.
+✔ Test "lines beyond the limit kept for the log file are counted as dropped; the earliest are kept; all reach the unified log" passed after 0.001 seconds.
+◇ Test "the configuration accepts class C only" started.
+◇ Test case passing 1 argument protection → NSFileProtectionType(rawValue: "NSFileProtectionComplete") to "the configuration accepts class C only" started.
+​◇ Test case passing 1 argument protection → NSFileProtectionType(rawValue: "NSFileProtectionCompleteUnlessOpen") to "the configuration accepts class C only" started.
+​◇ Test case passing 1 argument protection → NSFileProtectionType(rawValue: "NSFileProtectionCompleteWhenUserInactive") to "the configuration accepts class C only" started.
+​✔ Test "the configuration accepts class C only" with 3 test cases passed after 0.001 seconds.
+◇ Test "the default configuration: class C, an attempt every 2 s, gaps above 5 s, the test volume" started.
+✔ Test "the default configuration: class C, an attempt every 2 s, gaps above 5 s, the test volume" passed after 0.001 seconds.
+✔ Suite "Lock harness: state transitions on a simulated phone" passed after 0.152 seconds.
+◇ Suite "Lock harness: log format and the previous run's classification" started.
+◇ Test "times are UTC with milliseconds" started.
+✔ Test "times are UTC with milliseconds" passed after 0.001 seconds.
+◇ Test "a line splits back into its fields; a value's spaces become underscores; the reason is quoted, single-quoted inside, on one line" started.
+✔ Test "a line splits back into its fields; a value's spaces become underscores; the reason is quoted, single-quoted inside, on one line" passed after 0.001 seconds.
+◇ Test "an error's code names it and the errors under it" started.
+✔ Test "an error's code names it and the errors under it" passed after 0.001 seconds.
+◇ Test "a reason never carries an absolute path" started.
+✔ Test "a reason never carries an absolute path" passed after 0.001 seconds.
+◇ Test "paths are cut to their last component; other slashes are kept" started.
+◇ Test case passing 2 arguments input → "open /private/var/mobile/Containers/Data/X/Library/library.sqlite failed", expected → "open …/library.sqlite failed" to "paths are cut to their last component; other slashes are kept" started.
+​◇ Test case passing 2 arguments input → "(/Users/someone/Git/sylvia/a.txt)", expected → "(…/a.txt)" to "paths are cut to their last component; other slashes are kept" started.
+​◇ Test case passing 2 arguments input → ""/var/folders/xy/T/g05/x.bin" missing", expected → ""…/x.bin" missing" to "paths are cut to their last component; other slashes are kept" started.
+​◇ Test case passing 2 arguments input → "path=/a/b", expected → "path=…/b" to "paths are cut to their last component; other slashes are kept" started.
+​◇ Test case passing 2 arguments input → "1/2 and and/or and /single", expected → "1/2 and and/or and /single" to "paths are cut to their last component; other slashes are kept" started.
+​✔ Test "paths are cut to their last component; other slashes are kept" with 5 test cases passed after 0.001 seconds.
+◇ Test "the previous run: none, stopped cleanly, ended by a restart, ended in the same boot, boot unknown" started.
+✔ Test "the previous run: none, stopped cleanly, ended by a restart, ended in the same boot, boot unknown" passed after 0.001 seconds.
+✔ Suite "Lock harness: log format and the previous run's classification" passed after 0.001 seconds.
+◇ Suite "Lock harness: the quiet tone" started.
+◇ Test "one second of 16-bit mono PCM at 44.1 kHz in a RIFF/WAVE header" started.
+✔ Test "one second of 16-bit mono PCM at 44.1 kHz in a RIFF/WAVE header" passed after 0.008 seconds.
+◇ Test "441 Hz at -26 dBFS: 100 samples a cycle, so the second loops without a click" started.
+✔ Test "441 Hz at -26 dBFS: 100 samples a cycle, so the second loops without a click" passed after 0.011 seconds.
+◇ Test "the player plays the tone at the test volume 0.01, unmuted, in the playback category, and stops (simulator; plays through the Mac's output at 1 %)" started.
+2026-10-26 20:52:34.660545+1300 xctest[50191:57485582] [plugin] AddInstanceForFactory: No factory registered for id <CFUUID 0x109805760> F8BB1C28-BAE8-11D6-9C31-00039315CD46
+2026-10-26 20:52:49.747965+1300 xctest[50191:57485655] [aqme]                AQMEIO.cpp:201   timed out after 15.000s (0 0); suspension count=0 (IOSuspensions: , , , , , , , , , , , , ) (maybe stale)
+2026-10-26 20:52:49.790708+1300 xctest[50191:57485655] [aqme]  MEDeviceStreamClient.cpp:455   AQME Default-InputOutput: client stopping after failed start: <CA_UISoundClientBase@0x10962aa00>; running count now 0
+2026-10-26 20:52:49.790831+1300 xctest[50191:57485655]      CA_UISoundClient.cpp:316   CA_UISoundClientBase::StartPlaying: AddRunningClient failed (status = -66681).
+2026-10-26 20:52:49.792778+1300 xctest[50191:57485582] [AQ]        LoudnessManager.mm:1755  ReadPListFile: unable to open stream for LoudnessManager plist
+2026-10-26 20:52:49.793067+1300 xctest[50191:57485582] [AQ]        LoudnessManager.mm:1261  GetHardwarePlatformKey: cannot get acoustic ID
+2026-10-26 20:52:49.793220+1300 xctest[50191:57485582] [AQ]        LoudnessManager.mm:1215  IsHardwareSupported: no plist loaded, returning false
+2026-10-26 20:52:49.793375+1300 xctest[50191:57485582] [AQ]        LoudnessManager.mm:1215  IsHardwareSupported: no plist loaded, returning false
+2026-10-26 20:53:04.815864+1300 xctest[50191:57485582] [aqme]                AQMEIO.cpp:201   timed out after 15.000s (0 0); suspension count=0 (IOSuspensions: , , , , , , , , , , , , ) (maybe stale)
+2026-10-26 20:53:04.858236+1300 xctest[50191:57485582] [aqme]  MEDeviceStreamClient.cpp:455   AQME Default-InputOutput: client stopping after failed start: <AudioQueueObject@0x109820a00; ; [50191]; play>; running count now 0
+✘ Test "the player plays the tone at the test volume 0.01, unmuted, in the playback category, and stops (simulator; plays through the Mac's output at 1 %)" recorded an issue at LogAndToneTests.swift:110:6: Caught error: harness: audio: AVAudioPlayer did not start
+✘ Test "the player plays the tone at the test volume 0.01, unmuted, in the playback category, and stops (simulator; plays through the Mac's output at 1 %)" failed after 30.219 seconds with 1 issue.
+✘ Suite "Lock harness: the quiet tone" failed after 30.239 seconds with 1 issue.
+◇ Suite "Lock harness: production files on the simulator (protection not evaluated)" started.
+◇ Test "the spike's library: saved, read back exactly, already-saved on a retry, verified, D17's durability read back" started.
+✔ Test "the spike's library: saved, read back exactly, already-saved on a retry, verified, D17's durability read back" passed after 0.046 seconds.
+◇ Test "the read-back is byte for byte: a stored quotation that differs only in Unicode composition is not equal" started.
+✔ Test "the read-back is byte for byte: a stored quotation that differs only in Unicode composition is not equal" passed after 0.022 seconds.
+◇ Test "a library that exists but cannot be opened is reported, and nothing is created in its place" started.
+✔ Test "a library that exists but cannot be opened is reported, and nothing is created in its place" passed after 0.022 seconds.
+◇ Test "the log file: lines appended whole and flushed, the tail read back; the record round-trips; the probe and the canary" started.
+✔ Test "the log file: lines appended whole and flushed, the tail read back; the record round-trips; the probe and the canary" passed after 0.016 seconds.
+◇ Test "an append whose flush fails is cut back out of the log file and throws; nothing of it stays, and the retry writes it once (review R2-H-04)" started.
+✔ Test "an append whose flush fails is cut back out of the log file and throws; nothing of it stays, and the retry writes it once (review R2-H-04)" passed after 0.009 seconds.
+◇ Test "a run whose log file fails to flush at three attempts writes every line once: those three later, marked written-late, none twice (review R2-H-04)" started.
+✔ Test "a run whose log file fails to flush at three attempts writes every line once: those three later, marked written-late, none twice (review R2-H-04)" passed after 0.185 seconds.
+◇ Test "every production component asks for class C, from the configuration; only the canary asks for class A" started.
+✔ Test "every production component asks for class C, from the configuration; only the canary asks for class A" passed after 0.001 seconds.
+◇ Test "the inspector reads every class; in the simulator it records them without evaluating them" started.
+✔ Test "the inspector reads every class; in the simulator it records them without evaluating them" passed after 0.026 seconds.
+◇ Test "a whole run on real files: start, attempts, stop; the next launch reads stopped-cleanly and verifies the library" started.
+✔ Test "a whole run on real files: start, attempts, stop; the next launch reads stopped-cleanly and verifies the library" passed after 0.161 seconds.
+◇ Test "the boot time is a moment in the past" started.
+✔ Test "the boot time is a moment in the past" passed after 0.001 seconds.
+✔ Suite "Lock harness: production files on the simulator (protection not evaluated)" passed after 0.490 seconds.
+✘ Test run with 49 tests in 4 suites failed after 30.884 seconds with 1 issue.
+2026-10-26 20:53:05.365 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 20:53:05.366 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 20:53:05.634 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 20:53:06.464746+1300 G05LockHarnessUITests-Runner[50250:57487003] [Default] Running tests...
+objc[50250]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x108578310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x1085cc398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'All tests' started at 2026-10-26 20:53:08.302.
+Test Suite 'G05LockHarnessUITests.xctest' started at 2026-10-26 20:53:08.303.
+Test Suite 'LockHarnessSmokeUITests' started at 2026-10-26 20:53:08.303.
+Test Case '-[G05LockHarnessUITests.LockHarnessSmokeUITests testStartBackgroundForegroundStopRelaunch]' started.
+    t =     0.00s Start Test at 2026-10-26 20:53:08.303
+    t =     0.09s Set Up
+    t =     0.09s Open com.jevidon.sylvia.spike.g05lockharness
+    t =     0.09s     Launch com.jevidon.sylvia.spike.g05lockharness
+2026-10-26 20:53:08.442 xcodebuild[50103:57484627] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-26 20:53:08.442 xcodebuild[50103:57484627] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-26 20:53:08.450 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.55s         Setting up automation session
+    t =     1.12s         Wait for com.jevidon.sylvia.spike.g05lockharness to idle
+    t =     2.33s Waiting 60.0s for "harness.status" StaticText to exist
+    t =     3.38s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.status" StaticText`
+    t =     3.38s         Checking existence of `"harness.status" StaticText`
+    t =     3.43s Find the "harness.status" StaticText
+    t =     3.44s Find the "harness.status" StaticText
+    t =     3.45s Waiting 20.0s for "harness.start" Button to exist
+    t =     4.51s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.start" Button`
+    t =     4.51s         Checking existence of `"harness.start" Button`
+    t =     4.54s Find the "harness.start" Button
+    t =     4.56s Find the "harness.start" Button
+    t =     4.59s Tap "harness.start" Button
+    t =     4.59s     Wait for com.jevidon.sylvia.spike.g05lockharness to idle
+    t =     4.59s     Find the "harness.start" Button
+    t =     4.60s     Check for interrupting elements affecting "harness.start" Button
+    t =     4.61s     Synthesize event
+    t =     5.01s     Wait for com.jevidon.sylvia.spike.g05lockharness to idle
+    t =    35.11s Find the "harness.status" StaticText
+    t =    35.12s Find the "harness.status" StaticText
+    t =    35.64s Find the "harness.status" StaticText
+    t =    36.16s Find the "harness.status" StaticText
+    t =    36.70s Find the "harness.status" StaticText
+    t =    37.22s Find the "harness.status" StaticText
+    t =    37.75s Find the "harness.status" StaticText
+    t =    38.29s Find the "harness.status" StaticText
+    t =    38.82s Find the "harness.status" StaticText
+    t =    39.35s Find the "harness.status" StaticText
+    t =    39.89s Find the "harness.status" StaticText
+    t =    40.42s Find the "harness.status" StaticText
+    t =    40.96s Find the "harness.status" StaticText
+    t =    41.50s Find the "harness.status" StaticText
+    t =    42.03s Find the "harness.status" StaticText
+    t =    42.56s Find the "harness.status" StaticText
+    t =    43.10s Find the "harness.status" StaticText
+    t =    43.63s Find the "harness.status" StaticText
+    t =    43.66s Pressing Home button
+    t =    58.14s Open com.jevidon.sylvia.spike.g05lockharness
+    t =    58.14s     Activate com.jevidon.sylvia.spike.g05lockharness
+    t =    58.17s         Wait for com.jevidon.sylvia.spike.g05lockharness to idle
+    t =    58.19s Find the "harness.status" StaticText
+    t =    58.21s Find the "harness.status" StaticText
+    t =    58.24s Waiting 20.0s for "harness.stop" Button to exist
+    t =    59.27s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.stop" Button`
+    t =    59.27s         Checking existence of `"harness.stop" Button`
+    t =    59.30s Find the "harness.stop" Button
+    t =    59.33s Find the "harness.stop" Button
+    t =    59.35s Tap "harness.stop" Button
+    t =    59.35s     Wait for com.jevidon.sylvia.spike.g05lockharness to idle
+    t =    59.35s     Find the "harness.stop" Button
+    t =    59.36s     Check for interrupting elements affecting "harness.stop" Button
+    t =    59.38s     Synthesize event
+    t =    59.66s     Wait for com.jevidon.sylvia.spike.g05lockharness to idle
+    t =    59.67s Find the "harness.status" StaticText
+    t =    59.69s Find the "harness.status" StaticText
+    t =    59.70s Terminate com.jevidon.sylvia.spike.g05lockharness:50256
+2026-10-26 20:54:08.015 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 20:54:08.015 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    60.76s Open com.jevidon.sylvia.spike.g05lockharness
+    t =    60.76s     Launch com.jevidon.sylvia.spike.g05lockharness
+2026-10-26 20:54:09.066 xcodebuild[50103:57484627] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-26 20:54:09.066 xcodebuild[50103:57484627] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-26 20:54:09.072 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    60.97s         Setting up automation session
+    t =    61.42s         Wait for com.jevidon.sylvia.spike.g05lockharness to idle
+    t =    62.64s Waiting 60.0s for "harness.status" StaticText to exist
+    t =    63.70s     Checking `Expect predicate `existsNoRetry == 1` for object "harness.status" StaticText`
+    t =    63.70s         Checking existence of `"harness.status" StaticText`
+    t =    63.73s Find the "harness.status" StaticText
+    t =    63.74s Find the "harness.status" StaticText
+    t =    63.75s Terminate com.jevidon.sylvia.spike.g05lockharness:50335
+2026-10-26 20:54:12.065 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 20:54:12.065 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    64.84s Tear Down
+Test Case '-[G05LockHarnessUITests.LockHarnessSmokeUITests testStartBackgroundForegroundStopRelaunch]' passed (64.936 seconds).
+Test Suite 'LockHarnessSmokeUITests' passed at 2026-10-26 20:54:13.240.
+	 Executed 1 test, with 0 failures (0 unexpected) in 64.936 (64.937) seconds
+Test Suite 'G05LockHarnessUITests.xctest' passed at 2026-10-26 20:54:13.240.
+	 Executed 1 test, with 0 failures (0 unexpected) in 64.936 (64.937) seconds
+Test Suite 'All tests' passed at 2026-10-26 20:54:13.240.
+	 Executed 1 test, with 0 failures (0 unexpected) in 64.936 (64.938) seconds
+2026-10-26 20:54:13.271 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 20:54:13.271 xcodebuild[50103:57484627] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 20:54:13.539 xcodebuild[50103:57488747]  IDETestOperationsObserverDebug: Failure collecting diagnostics from simulator: Process exited with error 72:
+ xcrun: error: unable to find utility "simctl", not a developer tool or in PATH
+
+2026-10-26 20:54:13.547 xcodebuild[50103:57484627] [MT] IDETestOperationsObserverDebug: 99.981 elapsed -- Testing started completed.
+2026-10-26 20:54:13.547 xcodebuild[50103:57484627] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-26 20:54:13.547 xcodebuild[50103:57484627] [MT] IDETestOperationsObserverDebug: 99.981 sec, +99.981 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/Spikes/G05-Recovery/LockHarness/.build/DerivedData/Logs/Test/Test-G05LockHarness-2026.10.26_20-52-32-+1300.xcresult
+
+Failing tests:
+	ToneTests.playsQuietly()
+
+** TEST FAILED **
+
+Testing started
+harness-checks.sh exit: 65
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T07:54:16Z; load: 20:54  up 23 days,  7:04, 3 users, load averages: 5.03 6.74 6.98

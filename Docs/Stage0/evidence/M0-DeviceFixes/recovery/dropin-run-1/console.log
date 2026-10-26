@@ -1,0 +1,53 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/run-dropin-clean.sh dropin-run-1
+commit: 345dc9c354bbe4c3a33ba0e514e4d6addac1d45f (m0-device-fixes-recovery); uncommitted files before the run: 0
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+deleted before the run: Spikes/G05-Recovery/.build Spikes/G05-Recovery/LockHarness/.build .build/g05-recovery
+simulator name Sylvia-M0-devfix-recovery (iPhone 17, iOS 26.5; created by the drop-in if missing); G05_LOG_DIR=Docs/Stage0/evidence/M0-DeviceFixes/recovery/dropin-run-1/logs; G02_LOOPBACK_ONLY=1
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T07:35:10Z; load: 20:35  up 23 days,  6:45, 3 users, load averages: 2.04 3.40 3.88
+==> 00-git-lfs
+    pass (5s)
+==> 71-g05-recovery
+    FAIL (32s) - see /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-1/.build/ci-logs/71-g05-recovery.log
+    | launch reconciliation: completedRestore=6 keptExistingLibrary=1 nothingToDo=23
+    | failures: 0
+    | ✔ Test "T47: SIGKILL during prepare or the swap leaves exactly the old or the restored library (short run; CI runs 300)" passed after 15.453 seconds.
+    | ✔ Suite "Restore (plan 17.4, T35, T46, T47, J-06)" passed after 15.453 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] crash drill (short)
+    | durability: synchronous=FULL fullfsync=ON
+    | iterations: 60
+    | SIGKILLs by mode: after-ack=20 in-tx=20 random=20
+    | kills while a write transaction was open, in-flight item absent after reopen (in-tx mode): 20
+    | in-tx kills that landed after the commit instead: 0
+    | children that finished before the kill: 0
+    | acknowledged items: 203
+    | committed but unacknowledged items (allowed; UI never said Saved; retry deduplicated): 0
+    | retries answered 'already saved' instead of duplicating: 2
+    | captures in library: 203
+    | failures: 0
+    | ✔ Test "SIGKILL crash drill (short run; the CI drill runs many hundreds of kills)" passed after 9.925 seconds.
+    | ✔ Suite "Durable saves (I-03, T02, plan 19.2)" passed after 15.677 seconds.
+    | [evidence] [host (macOS Version 26.6.2 (Build 25G83))] migration put-back crash drill (short)
+    | iterations: 24
+    | measured unkilled run (open, snapshot, failed migration, put-back): 436.1 ms
+    | SIGKILLs by plan: delay databaseMovedAside=1, delay intentWritten=1, delay migrationFailed=1, delay shmMovedAside=1, delay staged=1, delay walMovedAside=1, pause databaseMovedAside=1, pause intentRemoved=1, pause intentWritten=1, pause migrationFailed=1, pause shmMovedAside=1, pause snapshotMovedIn=1, pause staged=1, pause walMovedAside=1, random=4
+    | SIGKILLs by the last line the child printed: OPEN=2, STEP databaseMovedAside=2, STEP intentRemoved=1, STEP intentWritten=2, STEP migrationFailed=2, STEP shmMovedAside=2, STEP snapshotMovedIn=1, STEP staged=3, STEP walMovedAside=3
+    | children that finished before the kill: 6
+    | first reopen: migrated=8 put back, then migrated at the next open=16
+    | failures: 0
+    | ✔ Test "SIGKILL at every put-back step and at random times never leaves an empty or partial library (short run; CI runs 240)" passed after 16.970 seconds.
+    | ✔ Suite "Migration put-back (plan 7.4, T45)" passed after 16.970 seconds.
+    | ✔ Test run with 79 tests in 13 suites passed after 16.970 seconds.
+    | FAIL: row 10 evidence missing from host-tests.log: [class B (non-default) requested: read back on] [files SQLite created in a class-B directory:]. The class-B protection tests skip while the host screen is locked; unlock it and rerun (or set G05_ALLOW_MISSING_CLASS_B=1 to accept a run without that evidence)
+FAILED: 71-g05-recovery
+ci.sh exit: 1
+---- 71-g05-recovery.log: step headers, warnings and verdict lines (the step logs hold the rest)
+=== 1. toolchain
+=== 2. host build
+=== 3. host tests
+✔ Test run with 79 tests in 13 suites passed after 16.970 seconds.
+FAIL: row 10 evidence missing from host-tests.log: [class B (non-default) requested: read back on] [files SQLite created in a class-B directory:]. The class-B protection tests skip while the host screen is locked; unlock it and rerun (or set G05_ALLOW_MISSING_CLASS_B=1 to accept a run without that evidence)
+---- end
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T07:35:47Z; load: 20:35  up 23 days,  6:46, 3 users, load averages: 7.26 4.58 4.29
+git status --porcelain lines after the run: 1

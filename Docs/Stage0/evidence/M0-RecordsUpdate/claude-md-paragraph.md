@@ -17,6 +17,12 @@ toolchain line is the one quoted below. Until the texts below are applied, an ag
 third paragraph also begins "Current milestone:". The paragraph above, as it read until then, is kept as the record of
 it: the review's finding FID-RU-03; [`fix-1/`](fix-1/README.md).)*
 
+*(27 October 2026: apply them at the latest in the same pause between sittings as your merge of `m0-records-update`,
+right after it, the merge bringing this file into `~/Git/sylvia-sessions`, and in any case before you ask an agent for
+anything: [`README.md`](README.md), "Merging it into `m0-decisions`", gives the commands with the merge's (runbook 0.3,
+step 2). Until the fix of the same review's completeness findings this file set no time but before your first request
+to an agent: its finding CMP-01; [`fix-1/completeness/`](fix-1/completeness/README.md).)*
+
 Agent-written, not reviewed. Neither text changes the Xcode pin (27.1, 27A9275), which
 `Scripts/ci.d/12-dependency-lock.sh` compares with the inventory's: after a change, run that check again
 (`source Scripts/lib/env.sh; Scripts/ci.d/12-dependency-lock.sh`).

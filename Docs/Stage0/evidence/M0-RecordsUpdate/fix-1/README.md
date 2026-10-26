@@ -50,7 +50,7 @@ its forms would pass; the listings let a reader look for one. Integration log 42
 | [`commands/retired-branch-texts.py`](commands/retired-branch-texts.py) → [`checks/retired-branch-texts.log`](checks/retired-branch-texts.log), [`checks/retired-branch-texts-all.log`](checks/retired-branch-texts-all.log) | FID-RU-01's check, on this tree and on its two controls; and every mention it reads |
 | [`commands/check-amendments.py`](commands/check-amendments.py), [`commands/mutation-checks.py`](commands/mutation-checks.py) → [`checks/check-amendments.log`](checks/check-amendments.log), [`checks/mutation-checks.log`](checks/mutation-checks.log) | The amendments' checker, `m0-records-update`'s with its check 10k requiring Applied as to name this version (FID-RU-11) and the plan's Status line to name the four results (FID-RU-09); its 70 mutations and three more |
 | [`commands/run-checks.sh`](commands/run-checks.sh) | Runs every check below on the documents commit and writes the logs |
-| [`checks/`](checks/) | The logs, each headed with its commit, uncommitted paths, time and load |
+| [`checks/`](checks/) | The logs. Those written through the re-pin round's `run-logged.sh` (`finding-lines.log`, `ci-contracts.log`, `12-dependency-lock.log`, `13-hard-rules.log`, `recheck-hon-ep.log`, `decisions-branch.log`, `recheck-own.log`), the two gate checks' and `retired-branch-texts.log` are headed with their commit, uncommitted paths, time and load; `correction-texts.log`, `step-0.8-paths.log` and `runbook-content-check.log` with the commit, the number of uncommitted paths and the time; the others start with their results (`owner-records-intact.log`, `check-records.log`, `check-records-devicea.log`, `check-amendments.log`, `check-amendments-records-update.log`, `check-amendments-accuracy.log`, `mutation-checks.log`, `runbook-coverage.log`, `gate-refresh-check.log`, `retired-branch-texts-all.log`), the runner's console, which named the commit, the host, the time and the load, not being committed *(27 October 2026: until the fix of the same review's completeness findings this row said that each log was so headed, as the branch's README said of its own logs: that review's finding CMP-07, which named the README's; [`completeness/`](completeness/README.md))* |
 
 ## Checks
 
@@ -84,3 +84,5 @@ Not run, and why: the complete CI (outside `Docs/` this fix changed only `CLAUDE
 ## What stays pending
 
 As `../README.md` says, with a review of this fix; the review's other lenses' findings go to the fixes that follow.
+*(27 October 2026: its completeness findings went to the next, [`completeness/`](completeness/README.md), which has not
+been reviewed either.)*

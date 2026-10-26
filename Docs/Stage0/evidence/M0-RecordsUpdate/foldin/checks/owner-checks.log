@@ -1,0 +1,72 @@
+command: python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/commands/owner-checks.py
+commit: 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/foldin/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T18:57:09Z; load:  7:57  up 23 days, 18:07, 4 users, load averages: 3.85 4.37 4.30
+
+commit: 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+
+PASS 1 the runbook's 0.7 has the log committed on m0-decisions, with its history clause
+PASS 1 Section 5.4's bullet on H-1 has the records committed on, and builds from, m0-decisions
+FAIL 2 the merge commands, in order: the log line, the fast-forward merge, the apply command, the diff, the lock check, the commit, the commit noted ([6, 31, 141, 208, 323, -1, -1, -1, -1, 436])
+PASS 2 no plain merge of m0-records-update in the merge commands
+PASS 2 the bullet on a moved-on m0-decisions: no other merge; the agent's merge first; the account of the sittings; the new check with --owner-head
+PASS 2 After the merge runs 0.8's check and 0.3 step 7's, rather than state their answers
+PASS 2 the README no longer states that nothing repeats after the merge
+PASS 2 the README's 0.8 check names runbook 0.8's paths exactly
+PASS 2 the README's items 1 and 5 have their notes
+PASS 2 the new owner-records check takes --owner-head and --base, its defaults those of the version it replaces
+note 2 m0-decisions (read only) is at c72247a6; it is in HEAD's history, so a merge of HEAD into it would be a fast-forward now
+PASS 3 the runbook's 0.3, step 5: git merge --ff-only, the agent's merge first, and its history clause
+PASS 3 the gate summary's item 1, step 5: the fast-forward, the agent's merge first, and its history pointing to item 209
+PASS 3 item 209 quotes step 5's history note as it read at 7c87a82d, word for word, and says why it moved
+PASS 3 that note is step 5's at 7c87a82d
+PASS 3 the paragraph for CLAUDE.md gives the fast-forward, and its note the earlier sentence
+PASS 3 that sentence is in the paragraph itself (the fenced block)
+FAIL 4 CLAUDE.md is byte for byte c72247a6's
+PASS 4 the apply command exists
+FAIL 4 the runbook's 0.3, step 2: the command, the same pause, and its history clause (lacks: python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/commands/apply-claude-md-texts.py; lacks: before Codex or any agent works in the checkout again; lacks: at the latest in the same pause between sittings as your merge of `m0-records-update`, right after i; lacks: its finding OWN-RU-04)
+FAIL 4 the gate summary's item 1, step 2: the command, the same pause, and its history clause (lacks: python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/commands/apply-claude-md-texts.py; lacks: before Codex or any agent works in the checkout again; lacks: at the latest in the same pause between sittings as your merge of `m0-records-update`, right after i; lacks: item 210.))
+PASS 4 the texts' file states the order and names the command
+PASS 4 the README's Left for the owner has its note
+PASS 5 the runbook's Section 2: a step run again writes new names, never over a committed file
+PASS 5 1.2's note: its committed files and their new names; its commands stay
+PASS 5 1.3's note: its committed files and their new names; its command stays
+PASS 5 the command line is as before: | tee ../../Docs/Stage0/evidence/G05-Recovery/device/step-1-
+PASS 5 the command line is as before: 2>&1 | tee ../../../Docs/Stage0/evidence/G05-AI/device/step-
+PASS 5 the runbook's 0.3, step 7, writes each repeat under new names
+PASS 5 the gate summary's rule on repeats says so
+FAIL 5 no checklist changed since 7c87a82d
+PASS 5 every file the notes call committed is committed
+PASS 6 Session 0's order line: the setup record, 0.3 as it stands, and its history clause
+PASS 6 the gate summary's item 1, step 8: before Session 0.4 records it, with its history clause
+PASS 7 the runbook's 0.3, step 7, names DeviceTests against rows 3a-3c's commits
+PASS 7 the integration log's opening has the note on m0-sessions retired
+PASS 7 the gate summary's bullet on the M0 work on main has its later note
+PASS 7 the technical lead's item in Section 5.4 has its later note
+PASS 7 Section 6.3, item 1, has its later note
+PASS 7 the runbook's run 12 has the later note on linkage.sh
+PASS 7 in Section 7, every note on linkage.sh reviewed next has a later note after it (3 lines)
+PASS 8 the gate summary's item 207
+PASS 8 the gate summary's item 208
+PASS 8 the gate summary's item 209
+PASS 8 the gate summary's item 210
+PASS 8 the gate summary's item 211
+PASS 8 the gate summary's item 212
+PASS 8 the gate summary's item 213
+PASS 8 the gate summary's item 214
+PASS 8 integration log section 44
+PASS 8 the runbook's Who wrote it names this fix
+PASS 8 the Stage 0 README and the evidence README name it
+PASS 8 word limits: the opening 596 (600), the State line 190 (200), the two 786 (800), run 1 183 (200)
+PASS 8 each step of the gate summary's item 1 within 400 words (the longest 383)
+
+result: FAIL (5 failed)
+  failed: 2 the merge commands, in order: the log line, the fast-forward merge, the apply command, the diff, the lock check, the commit, the commit noted
+  failed: 4 CLAUDE.md is byte for byte c72247a6's
+  failed: 4 the runbook's 0.3, step 2: the command, the same pause, and its history clause
+  failed: 4 the gate summary's item 1, step 2: the command, the same pause, and its history clause
+  failed: 5 no checklist changed since 7c87a82d
+
+exit status: 1
+end: 2026-10-26T18:57:09Z; load:  7:57  up 23 days, 18:07, 4 users, load averages: 3.85 4.37 4.30

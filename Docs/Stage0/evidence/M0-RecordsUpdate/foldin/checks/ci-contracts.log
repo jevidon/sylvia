@@ -1,0 +1,16 @@
+command: Scripts/ci.sh contracts
+commit: 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/foldin/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T18:55:12Z; load:  7:55  up 23 days, 18:05, 4 users, load averages: 3.63 4.44 4.31
+
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (53s)
+all 3 steps passed
+
+exit status: 0
+end: 2026-10-26T18:56:11Z; load:  7:56  up 23 days, 18:06, 4 users, load averages: 4.84 4.63 4.39

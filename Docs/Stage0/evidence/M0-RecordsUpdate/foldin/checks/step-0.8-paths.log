@@ -1,0 +1,52 @@
+command: Docs/Stage0/evidence/M0-RecordsUpdate/foldin/commands/step-08-paths.sh
+commit: 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/foldin/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T18:55:11Z; load:  7:55  up 23 days, 18:05, 4 users, load averages: 3.63 4.44 4.31
+
+step-08-paths (fold-in): HEAD 2095cbec6c9a10c007b70c1916c41f0bb89f6024, uncommitted paths: 1; 2026-10-26T18:55:11Z
+the unlocked run's commit: 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e (2026-10-23 11:11:18 +1300)
+
+== git diff --stat 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e 6a510880c34f7936c972b6ace9a18c126ecab13d -- <runbook 0.8's paths> ':(exclude)Spikes/G05-Recovery/DeviceTests'
+ok    nothing changed at 6a510880c34f7936c972b6ace9a18c126ecab13d: before the fold-in, 0.8 needed nothing
+
+== git diff --stat 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e a60aa92274d209bff6e1727ed36c078cd94ed8b2 -- <runbook 0.8's paths> ':(exclude)Spikes/G05-Recovery/DeviceTests'
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +++-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 +++++++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++++++++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 11 files changed, 572 insertions(+), 23 deletions(-)
+ok    exactly the eleven files of the recovery package that the device fixes changed: 0.8 runs again
+
+== git diff --stat 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e HEAD -- <runbook 0.8's paths> ':(exclude)Spikes/G05-Recovery/DeviceTests'
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +++-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 +++++++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++++++++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 11 files changed, 572 insertions(+), 23 deletions(-)
+ok    exactly the eleven files of the recovery package that the device fixes changed: 0.8 runs again
+
+== those files at HEAD, as a60aa922 has them
+ok    each is as m0-device-fixes has it
+
+== files the drop-in runs or reads that name DeviceTests (none expected)
+   none
+
+result: pass: row 10's class-B evidence is of the code before the device fixes; 0.8 runs again on theirs, with the screen unlocked
+
+exit status: 0
+end: 2026-10-26T18:55:11Z; load:  7:55  up 23 days, 18:05, 4 users, load averages: 3.63 4.44 4.31

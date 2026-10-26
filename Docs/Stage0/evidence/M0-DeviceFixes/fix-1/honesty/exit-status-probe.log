@@ -1,0 +1,64 @@
+command: /bin/zsh -f Docs/Stage0/evidence/M0-DeviceFixes/fix-1/honesty/commands/exit-status-probe.zsh
+commit: f394e0fc82b7006ad3d9595c497aaec3dbd83a88 (m0-device-fixes); uncommitted files, this probe's log left out: 1
+host: macOS 26.6.2 (25G83); zsh 5.9; the bash that '#!/usr/bin/env bash' finds here (the stand-ins' and the two real scripts' first line): /bin/bash, GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+start: 2026-10-26T12:09:58Z
+expected: with the stand-in xcodebuild exiting 65, the harness stand-in exits 65, the drop-in stand-in exits 65
+  before its closing line, and runbook 0.8's line reads 'drop-in exit 65'; with 0 (the control), every closing line
+  is printed and the line reads 'drop-in exit 0'
+
+---- the harness stand-in (.build/scratch/honesty/exit-status/harness-standin.sh)
+#!/usr/bin/env bash
+# Stand-in for Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh: its shell options (line 28), an EXIT trap like
+# its simulator shutdown (line 74; sylvia_sim_shutdown runs `xcrun simctl shutdown … || true`, Scripts/lib/sim.sh), and
+# its step-14 pipeline (lines 81-82), with a command that exits with $STANDIN_XCODEBUILD_STATUS in place of xcodebuild.
+set -euo pipefail
+LOGS="${G05_LOG_DIR:?}"
+shutdown_standin() { /usr/bin/false >/dev/null 2>&1 || true; }
+trap 'shutdown_standin' EXIT
+echo "=== 14. stand-in: the harness's tests, the stand-in xcodebuild exiting with ${STANDIN_XCODEBUILD_STATUS:?}"
+/bin/sh -c 'echo "stand-in xcodebuild test: exit $1"; exit "$1"' sh "$STANDIN_XCODEBUILD_STATUS" 2>&1 | tee -a "$LOGS/harness-simulator-tests.log"
+echo "after the step-14 pipeline (printed only if it succeeded)"
+trap - EXIT
+shutdown_standin
+echo "G0.5 recovery lock harness: steps 13-15 passed (stand-in)"
+
+---- the drop-in stand-in (.build/scratch/honesty/exit-status/dropin-standin.sh)
+#!/usr/bin/env bash
+# Stand-in for Scripts/ci.d/71-g05-recovery.sh at its steps 13-15: its shell options (line 30), no EXIT trap (line 124
+# removed step 11's), and its call of the harness's script (line 136).
+set -euo pipefail
+LOGS="${G05_LOG_DIR:?}"
+SIM_NAME="${G05_SIM_NAME:?}"
+G05_LOG_DIR="$LOGS" G05_SIM_NAME="$SIM_NAME" "$(dirname "$0")/harness-standin.sh"
+echo
+echo "G0.5 recovery: all steps passed (stand-in; logs in $LOGS)"
+
+---- the harness stand-in alone, the stand-in xcodebuild exiting with 65
+=== 14. stand-in: the harness's tests, the stand-in xcodebuild exiting with 65
+stand-in xcodebuild test: exit 65
+harness stand-in exit: 65
+
+---- runbook 0.8's line with the drop-in stand-in, caffeinate -i, the stand-in xcodebuild exiting with 65
+=== 14. stand-in: the harness's tests, the stand-in xcodebuild exiting with 65
+stand-in xcodebuild test: exit 65
+drop-in exit 65
+as expected: 'drop-in exit 65'
+
+---- the harness stand-in alone, the stand-in xcodebuild exiting with 0
+=== 14. stand-in: the harness's tests, the stand-in xcodebuild exiting with 0
+stand-in xcodebuild test: exit 0
+after the step-14 pipeline (printed only if it succeeded)
+G0.5 recovery lock harness: steps 13-15 passed (stand-in)
+harness stand-in exit: 0
+
+---- runbook 0.8's line with the drop-in stand-in, caffeinate -i, the stand-in xcodebuild exiting with 0
+=== 14. stand-in: the harness's tests, the stand-in xcodebuild exiting with 0
+stand-in xcodebuild test: exit 0
+after the step-14 pipeline (printed only if it succeeded)
+G0.5 recovery lock harness: steps 13-15 passed (stand-in)
+
+G0.5 recovery: all steps passed (stand-in; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-9/.build/scratch/honesty/exit-status/logs)
+drop-in exit 0
+as expected: 'drop-in exit 0'
+
+end: 2026-10-26T12:09:58Z; problems: 0; the stand-ins' scratch folder was removed

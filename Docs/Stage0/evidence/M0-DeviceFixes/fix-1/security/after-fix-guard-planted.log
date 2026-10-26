@@ -1,0 +1,107 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/security/commands/run-scratch-guard.sh after-fix-guard-planted 31e460e643f12113e2f063d775672bdfb7b87ec7 working-tree '<expected>'
+expected (stated before the run): the widened guard finds all six planted calls and nothing else: the test fails with one issue, which lists LockHarness/Core/PlantedS4.swift lines 7, 11 and 15, PlantedS4.m lines 6 and 10, and PlantedS4.c line 6; no pattern sample fails; 64 files read
+working tree: a6c705e453b3a85be0ec8a82c9e4fc0a67e6d1cf (m0-device-fixes)
+scratch copy: .build/scratch/security-fix/s4-guard-31e460e6/Spikes/G05-Recovery, git archive of 31e460e643f12113e2f063d775672bdfb7b87ec7 (31e460e643f12113e2f063d775672bdfb7b87ec7)
+guard used: working-tree: Tests/SylviaRecoveryTests/ProtectedCopyTests.swift with sha256 6bf30d18ae08a5162239e340f1c9704671ee0c288d7112c4c4254dbd784bc2a7
+  (as committed in 31e460e6: sha256 f3fa3c05397ca8bcf6da40daee19b91b08cc86ce06ba925d285e76f57559f6e7;
+   in the working tree: sha256 6bf30d18ae08a5162239e340f1c9704671ee0c288d7112c4c4254dbd784bc2a7)
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T11:25:09Z; load: 2.31 2.31 2.59
+---- planted: LockHarness/Core/PlantedS4.swift
+     1	// Planted in a scratch copy by the security fix's guard check (review of 26 October 2026, finding S4); never in the
+     2	// repository's spike. Each function holds one call that keeps the source file's class.
+     3	import Foundation
+     4	
+     5	enum PlantedS4 {
+     6	    static func copyAfterAStringHoldingSlashes(_ a: URL, _ b: URL) throws {
+     7	        let scheme = "file://"; try FileManager.default.copyItem(at: a, to: b); _ = scheme
+     8	    }
+     9	
+    10	    static func hardLink(_ a: URL, _ b: URL) throws {
+    11	        try FileManager.default.linkItem(at: a, to: b)
+    12	    }
+    13	
+    14	    static func hardLinkThroughDarwin(_ a: String, _ b: String) -> Int32 {
+    15	        link(a, b)
+    16	    }
+    17	}
+---- planted: LockHarness/Core/PlantedS4.m
+     1	// Planted in a scratch copy by the security fix's guard check (review of 26 October 2026, finding S4); never in the
+     2	// repository's spike.
+     3	#import <Foundation/Foundation.h>
+     4	
+     5	BOOL PlantedS4CopyItem(NSURL *a, NSURL *b, NSError **error) {
+     6	    return [[NSFileManager defaultManager] copyItemAtURL:a toURL:b error:error];
+     7	}
+     8	
+     9	BOOL PlantedS4LinkItem(NSString *a, NSString *b, NSError **error) {
+    10	    return [[NSFileManager defaultManager] linkItemAtPath:a toPath:b error:error];
+    11	}
+---- planted: LockHarness/Core/PlantedS4.c
+     1	// Planted in a scratch copy by the security fix's guard check (review of 26 October 2026, finding S4); never in the
+     2	// repository's spike.
+     3	#include <copyfile.h>
+     4	
+     5	int planted_s4_copyfile_split(const char *a, const char *b) {
+     6	    return copyfile
+     7	        (a, b, NULL, COPYFILE_ALL);
+     8	}
+---- xcrun swift test --force-resolved-versions --filter noCopyKeepsTheSourceClass (in the scratch copy)
+Building for debugging...
+[1 / 5]
+[2 / 7] SylviaRecoveryTests-product
+[4 / 9] SylviaRecoveryTests-product
+[11 / 13] SylviaRecoveryTests-product
+Build complete! (1.02 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" started.
+◇ Test "no code in the recovery spike copies or links a file in a way that keeps the source's class (FileManager.copyItem or linkItem, clonefile, copyfile, link)" started.
+✘ Test "no code in the recovery spike copies or links a file in a way that keeps the source's class (FileManager.copyItem or linkItem, clonefile, copyfile, link)" recorded an issue at ProtectedCopyTests.swift:276:9: Expectation failed: found.isEmpty
+↳ copies that keep the source's class:
+  LockHarness/Core/PlantedS4.swift:7: let scheme = "file://"; try FileManager.default.copyItem(at: a, to: b); _ = scheme
+  LockHarness/Core/PlantedS4.swift:11: try FileManager.default.linkItem(at: a, to: b)
+  LockHarness/Core/PlantedS4.swift:15: link(a, b)
+  LockHarness/Core/PlantedS4.m:6: return [[NSFileManager defaultManager] copyItemAtURL:a toURL:b error:error];
+  LockHarness/Core/PlantedS4.m:10: return [[NSFileManager defaultManager] linkItemAtPath:a toPath:b error:error];
+  LockHarness/Core/PlantedS4.c:6: return copyfile
+↳ found.isEmpty → false
+↳   found → ["LockHarness/Core/PlantedS4.swift:7: let scheme = \"file://\"; try FileManager.default.copyItem(at: a, to: b); _ = scheme", "LockHarness/Core/PlantedS4.swift:11: try FileManager.default.linkItem(at: a, to: b)", "LockHarness/Core/PlantedS4.swift:15: link(a, b)", "LockHarness/Core/PlantedS4.m:6: return [[NSFileManager defaultManager] copyItemAtURL:a toURL:b error:error];", "LockHarness/Core/PlantedS4.m:10: return [[NSFileManager defaultManager] linkItemAtPath:a toPath:b error:error];", "LockHarness/Core/PlantedS4.c:6: return copyfile"]
+↳   isEmpty → false
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] copy guard: 64 source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: 6
+✘ Test "no code in the recovery spike copies or links a file in a way that keeps the source's class (FileManager.copyItem or linkItem, clonefile, copyfile, link)" failed after 0.083 seconds with 1 issue.
+↳ /// The guard against the device run's failure coming back: no code in the recovery spike (the
+↳ /// package, the device host, the lock harness) copies or links a file in a way that keeps the
+↳ /// source's class; copies go through `FileProtector.copyFile` and `FileProtector.copyTree`. A test,
+↳ /// not a check in the CI drop-in, so that it also runs in every `swift test`; it reads the sources
+↳ /// from the checkout, so it is built for the Mac only. What it reads: the Swift, C and Objective-C
+↳ /// files (.swift, .c, .h, .m, .mm) of Sources, Tests, DeviceTests and LockHarness, without their `//`
+↳ /// comments (`code(of:)`). It is a text check: a call made another way, such as through a selector
+↳ /// built at run time or a function value, is not found.
+✘ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" failed after 0.083 seconds with 1 issue.
+↳ /// Files put where the recovery code expects the library's class are created with it (plan 18.1,
+↳ /// T50). The first app-hosted device run (26 October 2026, runbook step 1.2; G0.5 recovery checklist
+↳ /// step 1) failed every migration and put-back test because their v1 fixture was copied out of the
+↳ /// app bundle with `FileManager.copyItem`, which keeps the source file's class: the copy had no
+↳ /// protection class (the class, it follows, of the fixture in the app bundle), and the open refused it.
+↳ /// The host and the simulator did not show it: on the Mac the copy reads back class C, the platform
+↳ /// default (the suite passes there), and the simulator reports class C for every file.
+✘ Test run with 1 test in 1 suite failed after 0.083 seconds with 1 issue.
+Note: Some test targets reported failures:
+  - SylviaRecoveryTests (Swift Testing)
+---- summary
+swift test exit: 1
+guard evidence line: copy guard: 64 source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: 6
+planted calls the guard reported: 6
+    LockHarness/Core/PlantedS4.swift:7: let scheme = "file://"; try FileManager.default.copyItem(at: a, to: b); _ = scheme
+    LockHarness/Core/PlantedS4.swift:11: try FileManager.default.linkItem(at: a, to: b)
+    LockHarness/Core/PlantedS4.swift:15: link(a, b)
+    LockHarness/Core/PlantedS4.m:6: return [[NSFileManager defaultManager] copyItemAtURL:a toURL:b error:error];
+    LockHarness/Core/PlantedS4.m:10: return [[NSFileManager defaultManager] linkItemAtPath:a toPath:b error:error];
+    LockHarness/Core/PlantedS4.c:6: return copyfile
+other calls the guard reported: 0
+pattern samples that failed: 0
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T11:25:11Z; load: 2.44 2.34 2.60

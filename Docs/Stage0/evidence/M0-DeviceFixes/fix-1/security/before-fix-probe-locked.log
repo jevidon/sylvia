@@ -1,0 +1,35 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/security/commands/run-probe.sh before-fix-probe-locked
+commit: 31e460e643f12113e2f063d775672bdfb7b87ec7 (m0-device-fixes)
+uncommitted change to the probe in this run (git diff --stat):
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T11:04:03Z; load:  0:04  up 23 days, 10:14, 3 users, load averages: 2.92 2.53 2.99
+temporary folder: /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/
+the probe's folders there before the run:
+  g05-devicefix-probe-2BEBD5E8
+---- xcrun swift Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/probe-host-facts.swift
+host: macOS Version 26.6.2 (Build 25G83)
+temporary folder (FileManager.temporaryDirectory): /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T
+
+== 1. class A/B keys
+class-A file not created or read: keys unavailable (screen locked): You don’t have permission to save the file “a.bin” in the folder “g05-devicefix-probe-4F3AF1C6”.
+
+== 2. resolvingSymlinksInPath and realpath(3), existing and missing paths
+named under /var: root -> /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-4F3AF1C6/bundle
+named under /var: missing file -> /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-4F3AF1C6/bundle/blobs/excerpts/missing.mp3
+named under /var: the check before the fix (missing file's path starts with root + /): true
+named under /var: realpath(3) of the root -> /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-4F3AF1C6/bundle
+named through /private: root -> /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-4F3AF1C6/bundle
+named through /private: missing file -> /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-4F3AF1C6/bundle/blobs/excerpts/missing.mp3
+named through /private: the check before the fix (missing file's path starts with root + /): false
+named through /private: realpath(3) of the root -> /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-4F3AF1C6/bundle
+missing leaf below a link to a folder outside the root: resolvingSymlinksInPath -> /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-4F3AF1C6/bundle/export/escape/missing.md
+the same link's folder by realpath(3) -> /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-4F3AF1C6/outside
+
+== 3, 4. skipped: class B keys unavailable (screen locked)
+---- exit: 0
+the probe's folders there after the run:
+  g05-devicefix-probe-2BEBD5E8
+  g05-devicefix-probe-4F3AF1C6
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T11:04:04Z

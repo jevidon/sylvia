@@ -1,0 +1,66 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/security/commands/run-scratch-isinside.sh fix-1-isinside-31e460e6 31e460e643f12113e2f063d775672bdfb7b87ec7 '<expected>'
+expected (stated before the run): on fix-1's code (31e460e6, CanonicalPath.of returns nil for . or .. below a missing folder) the same expectations pass under /var and through /private: missing/../../Outside/b.md and missing/.. are outside, export/../export/markdown/a.md inside, export/../../Outside/b.md outside
+working tree: a6c705e453b3a85be0ec8a82c9e4fc0a67e6d1cf (m0-device-fixes)
+scratch copy: .build/scratch/security-fix/s2-isinside-31e460e6/Spikes/G05-Recovery, git archive of 31e460e643f12113e2f063d775672bdfb7b87ec7 (31e460e643f12113e2f063d775672bdfb7b87ec7)
+the code under test, Sources/SylviaRecovery/Backup/Container.swift there: sha256 a1f3dc4ab7a04daf5539880dc515059d4aed7084be66ec874f0d69e3c6acc1ba
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T11:25:20Z; load: 2.54 2.36 2.60
+---- the scratch test, Tests/SylviaRecoveryTests/SecurityS2ScratchTests.swift (lines 23-31 are the working tree's PrivatePathTests.swift lines)
+     1	import Foundation
+     2	import Testing
+     3	@testable import SylviaRecovery
+     4	
+     5	/// Scratch copy only (security review of 26 October 2026, finding S2): the expectations the security fix adds to
+     6	/// `PrivatePathTests.containmentFollowsLinks`, with that test's setup, run on another commit's code.
+     7	@Suite("Security fix S2, in a scratch copy")
+     8	struct SecurityS2ScratchTests {
+     9	    @Test("isInside never counts a path with . or .. below a missing folder as inside")
+    10	    func isInsideAlone() throws {
+    11	        let scratch = try Scratch()
+    12	        let fm = FileManager.default
+    13	        let root = scratch.dir("Bundle")
+    14	        try fm.createDirectory(at: root.appending(path: "export/markdown", directoryHint: .isDirectory), withIntermediateDirectories: true)
+    15	        try Data("x".utf8).write(to: root.appending(path: "export/markdown/a.md"))
+    16	        let outside = scratch.dir("Outside")
+    17	        try fm.createDirectory(at: outside, withIntermediateDirectories: true)
+    18	        try Data("y".utf8).write(to: outside.appending(path: "b.md"))
+    19	        for form in PrivatePathTests.forms(root) {
+    20	            let base = form.url
+    21	            print("isInside, \(form.label): " + ["missing/../../Outside/b.md", "missing/..", "export/../export/markdown/a.md", "export/../../Outside/b.md"]
+    22	                .map { "\($0) -> \(BackupValidator.isInside(base.appending(path: $0), base))" }.joined(separator: "; "))
+    23	            // So `isInside` itself, not only `resolve` (which refuses such components first), never counts such a path
+    24	            // as inside (security review of 26 October 2026, finding S2). Once `missing` exists, the first path names
+    25	            // the file outside and the second the root itself. A `..` in the part that exists is resolved, as the file
+    26	            // system resolves it.
+    27	            for path in ["missing/../../Outside/b.md", "missing/.."] {
+    28	                #expect(!BackupValidator.isInside(base.appending(path: path), base), "\(form.label): \(path)")
+    29	            }
+    30	            #expect(BackupValidator.isInside(base.appending(path: "export/../export/markdown/a.md"), base), "\(form.label)")
+    31	            #expect(!BackupValidator.isInside(base.appending(path: "export/../../Outside/b.md"), base), "\(form.label)")
+    32	        }
+    33	    }
+    34	}
+---- xcrun swift test --force-resolved-versions --filter SecurityS2ScratchTests (in the scratch copy)
+Building for debugging...
+[1 / 5]
+[5 / 14] SylviaRecoveryTests-product
+[7 / 16] SylviaRecoveryTests-product
+Build complete! (0.87 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Security fix S2, in a scratch copy" started.
+◇ Test "isInside never counts a path with . or .. below a missing folder as inside" started.
+isInside, under /var, as the Mac names its temporary folder: missing/../../Outside/b.md -> false; missing/.. -> false; export/../export/markdown/a.md -> true; export/../../Outside/b.md -> false
+isInside, through /private, as an iPhone's folders are named: missing/../../Outside/b.md -> false; missing/.. -> false; export/../export/markdown/a.md -> true; export/../../Outside/b.md -> false
+✔ Test "isInside never counts a path with . or .. below a missing folder as inside" passed after 0.002 seconds.
+✔ Suite "Security fix S2, in a scratch copy" passed after 0.002 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.002 seconds.
+---- summary
+swift test exit: 0
+  isInside, under /var, as the Mac names its temporary folder: missing/../../Outside/b.md -> false; missing/.. -> false; export/../export/markdown/a.md -> true; export/../../Outside/b.md -> false
+  isInside, through /private, as an iPhone's folders are named: missing/../../Outside/b.md -> false; missing/.. -> false; export/../export/markdown/a.md -> true; export/../../Outside/b.md -> false
+✔ Test run with 1 test in 1 suite passed after 0.002 seconds.
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T11:25:22Z; load: 2.54 2.36 2.60

@@ -1,0 +1,261 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/security/commands/run-scratch-isinside.sh before-fix-isinside-fdce7cd5 fdce7cd5 '<expected>'
+expected (stated before the run): on the reviewed code (fdce7cd5, before fix-1's CanonicalPath) the new expectations fail: under /var and through /private, missing/../../Outside/b.md and missing/.. are counted as inside (2 issues per form, 4 in all); the two controls hold (export/../export/markdown/a.md inside, export/../../Outside/b.md outside)
+working tree: a6c705e453b3a85be0ec8a82c9e4fc0a67e6d1cf (m0-device-fixes)
+scratch copy: .build/scratch/security-fix/s2-isinside-fdce7cd5/Spikes/G05-Recovery, git archive of fdce7cd5 (fdce7cd5e0a1e83c3c20485e0c0c8270dfccc31c)
+the code under test, Sources/SylviaRecovery/Backup/Container.swift there: sha256 008638debcf7e79f4eb213c8c8671ac3aed69bd3f482230258d691533a3c7d03
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T11:25:19Z; load: 2.41 2.34 2.60
+---- the scratch test, Tests/SylviaRecoveryTests/SecurityS2ScratchTests.swift (lines 23-31 are the working tree's PrivatePathTests.swift lines)
+     1	import Foundation
+     2	import Testing
+     3	@testable import SylviaRecovery
+     4	
+     5	/// Scratch copy only (security review of 26 October 2026, finding S2): the expectations the security fix adds to
+     6	/// `PrivatePathTests.containmentFollowsLinks`, with that test's setup, run on another commit's code.
+     7	@Suite("Security fix S2, in a scratch copy")
+     8	struct SecurityS2ScratchTests {
+     9	    @Test("isInside never counts a path with . or .. below a missing folder as inside")
+    10	    func isInsideAlone() throws {
+    11	        let scratch = try Scratch()
+    12	        let fm = FileManager.default
+    13	        let root = scratch.dir("Bundle")
+    14	        try fm.createDirectory(at: root.appending(path: "export/markdown", directoryHint: .isDirectory), withIntermediateDirectories: true)
+    15	        try Data("x".utf8).write(to: root.appending(path: "export/markdown/a.md"))
+    16	        let outside = scratch.dir("Outside")
+    17	        try fm.createDirectory(at: outside, withIntermediateDirectories: true)
+    18	        try Data("y".utf8).write(to: outside.appending(path: "b.md"))
+    19	        for form in PrivatePathTests.forms(root) {
+    20	            let base = form.url
+    21	            print("isInside, \(form.label): " + ["missing/../../Outside/b.md", "missing/..", "export/../export/markdown/a.md", "export/../../Outside/b.md"]
+    22	                .map { "\($0) -> \(BackupValidator.isInside(base.appending(path: $0), base))" }.joined(separator: "; "))
+    23	            // So `isInside` itself, not only `resolve` (which refuses such components first), never counts such a path
+    24	            // as inside (security review of 26 October 2026, finding S2). Once `missing` exists, the first path names
+    25	            // the file outside and the second the root itself. A `..` in the part that exists is resolved, as the file
+    26	            // system resolves it.
+    27	            for path in ["missing/../../Outside/b.md", "missing/.."] {
+    28	                #expect(!BackupValidator.isInside(base.appending(path: path), base), "\(form.label): \(path)")
+    29	            }
+    30	            #expect(BackupValidator.isInside(base.appending(path: "export/../export/markdown/a.md"), base), "\(form.label)")
+    31	            #expect(!BackupValidator.isInside(base.appending(path: "export/../../Outside/b.md"), base), "\(form.label)")
+    32	        }
+    33	    }
+    34	}
+---- xcrun swift test --force-resolved-versions --filter SecurityS2ScratchTests (in the scratch copy)
+Building for debugging...
+[5 / 14] SylviaRecoveryTests-product
+[7 / 16] SylviaRecoveryTests-product
+Build complete! (0.90 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Security fix S2, in a scratch copy" started.
+◇ Test "isInside never counts a path with . or .. below a missing folder as inside" started.
+isInside, under /var, as the Mac names its temporary folder: missing/../../Outside/b.md -> true; missing/.. -> true; export/../export/markdown/a.md -> true; export/../../Outside/b.md -> false
+✘ Test "isInside never counts a path with . or .. below a missing folder as inside" recorded an issue at SecurityS2ScratchTests.swift:28:17: Expectation failed: !BackupValidator.isInside(base.appending(path: path), base)
+↳ under /var, as the Mac names its temporary folder: missing/../../Outside/b.md
+↳ !BackupValidator.isInside(base.appending(path: path), base) → true
+↳   BackupValidator.isInside(base.appending(path: path), base) → false
+↳     base.appending(path: path) → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/../../Outside/b.md
+↳       _url → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/../../Outside/b.md
+↳         _url → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/../../Outside/b.md
+↳     base → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/
+↳       _url → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/
+↳         _url → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/
+✘ Test "isInside never counts a path with . or .. below a missing folder as inside" recorded an issue at SecurityS2ScratchTests.swift:28:17: Expectation failed: !BackupValidator.isInside(base.appending(path: path), base)
+↳ under /var, as the Mac names its temporary folder: missing/..
+↳ !BackupValidator.isInside(base.appending(path: path), base) → true
+↳   BackupValidator.isInside(base.appending(path: path), base) → false
+↳     base.appending(path: path) → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/..
+↳       _url → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/..
+↳         _url → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/..
+↳     base → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/
+↳       _url → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/
+↳         _url → file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/
+isInside, through /private, as an iPhone's folders are named: missing/../../Outside/b.md -> true; missing/.. -> true; export/../export/markdown/a.md -> true; export/../../Outside/b.md -> false
+✘ Test "isInside never counts a path with . or .. below a missing folder as inside" recorded an issue at SecurityS2ScratchTests.swift:28:17: Expectation failed: !BackupValidator.isInside(base.appending(path: path), base)
+↳ through /private, as an iPhone's folders are named: missing/../../Outside/b.md
+↳ !BackupValidator.isInside(base.appending(path: path), base) → true
+↳   BackupValidator.isInside(base.appending(path: path), base) → false
+↳     base.appending(path: path) → file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/../../Outside/b.md
+↳       _url → Foundation._SwiftURL
+↳         _parseInfo → Foundation.URLParseInfo
+↳           urlString → "file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/../../Outside/b.md"
+↳           schemeRange → 0[utf8] ..< 4[utf8]
+↳             some → 0[utf8] ..< 4[utf8]
+↳               lowerBound → 0[utf8]
+↳                 _rawBits → 4
+↳               upperBound → 4[utf8]
+↳                 _rawBits → 262148
+↳           userRange → nil
+↳           passwordRange → nil
+↳           hostRange → 7[utf8] ..< 7[utf8]
+↳             some → 7[utf8] ..< 7[utf8]
+↳               lowerBound → 7[utf8]
+↳                 _rawBits → 458756
+↳               upperBound → 7[utf8]
+↳                 _rawBits → 458756
+↳           portRange → nil
+↳           pathRange → 7[utf8] ..< 130[utf8]
+↳             some → 7[utf8] ..< 130[utf8]
+↳               lowerBound → 7[utf8]
+↳                 _rawBits → 458756
+↳               upperBound → 130[utf8]
+↳                 _rawBits → 8519684
+↳           queryRange → nil
+↳           fragmentRange → nil
+↳           isIPLiteral → false
+↳           didPercentEncodeHost → false
+↳           pathHasFileID → false
+↳           encodedComponents → EncodedComponentSet(rawValue: 0)
+↳             rawValue → 0
+↳         _baseURL → nil
+↳         _encoding → Unicode (UTF-8)
+↳           rawValue → 4
+↳         _isCanonicalFileURL → false
+↳         _resourceInfo → Foundation._SwiftURL.ResourceInfo
+↳           ref → LockedState<Optional<AnyObject>>(_buffer: Foundation.LockedState<Swift.Optional<Swift.AnyObject>>.(unknown context at $188a693a4)._Buffer)
+↳             _buffer → Foundation.LockedState<Swift.Optional<Swift.AnyObject>>.(unknown context at $188a693a4)._Buffer
+↳         _nsurlLock → LockedState<Optional<NSURL>>(_buffer: Foundation.LockedState<Swift.Optional<__C.NSURL>>.(unknown context at $188a693a4)._Buffer)
+↳           _buffer → Foundation.LockedState<Swift.Optional<__C.NSURL>>.(unknown context at $188a693a4)._Buffer
+↳     base → file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/
+↳       _url → Foundation._SwiftURL
+↳         _parseInfo → Foundation.URLParseInfo
+↳           urlString → "file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/"
+↳           schemeRange → 0[any] ..< 4[utf8]
+↳             some → 0[any] ..< 4[utf8]
+↳               lowerBound → 0[any]
+↳                 _rawBits → 15
+↳               upperBound → 4[utf8]
+↳                 _rawBits → 262148
+↳           userRange → nil
+↳           passwordRange → nil
+↳           hostRange → 7[utf8] ..< 7[utf8]
+↳             some → 7[utf8] ..< 7[utf8]
+↳               lowerBound → 7[utf8]
+↳                 _rawBits → 458756
+↳               upperBound → 7[utf8]
+↳                 _rawBits → 458756
+↳           portRange → nil
+↳           pathRange → 7[utf8] ..< 104[utf8]
+↳             some → 7[utf8] ..< 104[utf8]
+↳               lowerBound → 7[utf8]
+↳                 _rawBits → 458756
+↳               upperBound → 104[utf8]
+↳                 _rawBits → 6815751
+↳           queryRange → nil
+↳           fragmentRange → nil
+↳           isIPLiteral → false
+↳           didPercentEncodeHost → false
+↳           pathHasFileID → false
+↳           encodedComponents → EncodedComponentSet(rawValue: 0)
+↳             rawValue → 0
+↳         _baseURL → nil
+↳         _encoding → Unicode (UTF-8)
+↳           rawValue → 4
+↳         _isCanonicalFileURL → true
+↳         _resourceInfo → Foundation._SwiftURL.ResourceInfo
+↳           ref → LockedState<Optional<AnyObject>>(_buffer: Foundation.LockedState<Swift.Optional<Swift.AnyObject>>.(unknown context at $188a693a4)._Buffer)
+↳             _buffer → Foundation.LockedState<Swift.Optional<Swift.AnyObject>>.(unknown context at $188a693a4)._Buffer
+↳         _nsurlLock → LockedState<Optional<NSURL>>(_buffer: Foundation.LockedState<Swift.Optional<__C.NSURL>>.(unknown context at $188a693a4)._Buffer)
+↳           _buffer → Foundation.LockedState<Swift.Optional<__C.NSURL>>.(unknown context at $188a693a4)._Buffer
+✘ Test "isInside never counts a path with . or .. below a missing folder as inside" recorded an issue at SecurityS2ScratchTests.swift:28:17: Expectation failed: !BackupValidator.isInside(base.appending(path: path), base)
+↳ through /private, as an iPhone's folders are named: missing/..
+↳ !BackupValidator.isInside(base.appending(path: path), base) → true
+↳   BackupValidator.isInside(base.appending(path: path), base) → false
+↳     base.appending(path: path) → file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/..
+↳       _url → Foundation._SwiftURL
+↳         _parseInfo → Foundation.URLParseInfo
+↳           urlString → "file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/missing/.."
+↳           schemeRange → 0[utf8] ..< 4[utf8]
+↳             some → 0[utf8] ..< 4[utf8]
+↳               lowerBound → 0[utf8]
+↳                 _rawBits → 4
+↳               upperBound → 4[utf8]
+↳                 _rawBits → 262148
+↳           userRange → nil
+↳           passwordRange → nil
+↳           hostRange → 7[utf8] ..< 7[utf8]
+↳             some → 7[utf8] ..< 7[utf8]
+↳               lowerBound → 7[utf8]
+↳                 _rawBits → 458756
+↳               upperBound → 7[utf8]
+↳                 _rawBits → 458756
+↳           portRange → nil
+↳           pathRange → 7[utf8] ..< 114[utf8]
+↳             some → 7[utf8] ..< 114[utf8]
+↳               lowerBound → 7[utf8]
+↳                 _rawBits → 458756
+↳               upperBound → 114[utf8]
+↳                 _rawBits → 7471108
+↳           queryRange → nil
+↳           fragmentRange → nil
+↳           isIPLiteral → false
+↳           didPercentEncodeHost → false
+↳           pathHasFileID → false
+↳           encodedComponents → EncodedComponentSet(rawValue: 0)
+↳             rawValue → 0
+↳         _baseURL → nil
+↳         _encoding → Unicode (UTF-8)
+↳           rawValue → 4
+↳         _isCanonicalFileURL → false
+↳         _resourceInfo → Foundation._SwiftURL.ResourceInfo
+↳           ref → LockedState<Optional<AnyObject>>(_buffer: Foundation.LockedState<Swift.Optional<Swift.AnyObject>>.(unknown context at $188a693a4)._Buffer)
+↳             _buffer → Foundation.LockedState<Swift.Optional<Swift.AnyObject>>.(unknown context at $188a693a4)._Buffer
+↳         _nsurlLock → LockedState<Optional<NSURL>>(_buffer: Foundation.LockedState<Swift.Optional<__C.NSURL>>.(unknown context at $188a693a4)._Buffer)
+↳           _buffer → Foundation.LockedState<Swift.Optional<__C.NSURL>>.(unknown context at $188a693a4)._Buffer
+↳     base → file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/
+↳       _url → Foundation._SwiftURL
+↳         _parseInfo → Foundation.URLParseInfo
+↳           urlString → "file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/isInsideAlone-34D03AFB/Bundle/"
+↳           schemeRange → 0[any] ..< 4[utf8]
+↳             some → 0[any] ..< 4[utf8]
+↳               lowerBound → 0[any]
+↳                 _rawBits → 15
+↳               upperBound → 4[utf8]
+↳                 _rawBits → 262148
+↳           userRange → nil
+↳           passwordRange → nil
+↳           hostRange → 7[utf8] ..< 7[utf8]
+↳             some → 7[utf8] ..< 7[utf8]
+↳               lowerBound → 7[utf8]
+↳                 _rawBits → 458756
+↳               upperBound → 7[utf8]
+↳                 _rawBits → 458756
+↳           portRange → nil
+↳           pathRange → 7[utf8] ..< 104[utf8]
+↳             some → 7[utf8] ..< 104[utf8]
+↳               lowerBound → 7[utf8]
+↳                 _rawBits → 458756
+↳               upperBound → 104[utf8]
+↳                 _rawBits → 6815751
+↳           queryRange → nil
+↳           fragmentRange → nil
+↳           isIPLiteral → false
+↳           didPercentEncodeHost → false
+↳           pathHasFileID → false
+↳           encodedComponents → EncodedComponentSet(rawValue: 0)
+↳             rawValue → 0
+↳         _baseURL → nil
+↳         _encoding → Unicode (UTF-8)
+↳           rawValue → 4
+↳         _isCanonicalFileURL → true
+↳         _resourceInfo → Foundation._SwiftURL.ResourceInfo
+↳           ref → LockedState<Optional<AnyObject>>(_buffer: Foundation.LockedState<Swift.Optional<Swift.AnyObject>>.(unknown context at $188a693a4)._Buffer)
+↳             _buffer → Foundation.LockedState<Swift.Optional<Swift.AnyObject>>.(unknown context at $188a693a4)._Buffer
+↳         _nsurlLock → LockedState<Optional<NSURL>>(_buffer: Foundation.LockedState<Swift.Optional<__C.NSURL>>.(unknown context at $188a693a4)._Buffer)
+↳           _buffer → Foundation.LockedState<Swift.Optional<__C.NSURL>>.(unknown context at $188a693a4)._Buffer
+✘ Test "isInside never counts a path with . or .. below a missing folder as inside" failed after 0.008 seconds with 4 issues.
+✘ Suite "Security fix S2, in a scratch copy" failed after 0.008 seconds with 4 issues.
+↳ /// Scratch copy only (security review of 26 October 2026, finding S2): the expectations the security fix adds to
+↳ /// `PrivatePathTests.containmentFollowsLinks`, with that test's setup, run on another commit's code.
+✘ Test run with 1 test in 1 suite failed after 0.008 seconds with 4 issues.
+Note: Some test targets reported failures:
+  - SylviaRecoveryTests (Swift Testing)
+---- summary
+swift test exit: 1
+  isInside, under /var, as the Mac names its temporary folder: missing/../../Outside/b.md -> true; missing/.. -> true; export/../export/markdown/a.md -> true; export/../../Outside/b.md -> false
+  isInside, through /private, as an iPhone's folders are named: missing/../../Outside/b.md -> true; missing/.. -> true; export/../export/markdown/a.md -> true; export/../../Outside/b.md -> false
+✘ Test run with 1 test in 1 suite failed after 0.008 seconds with 4 issues.
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T11:25:20Z; load: 2.54 2.36 2.60

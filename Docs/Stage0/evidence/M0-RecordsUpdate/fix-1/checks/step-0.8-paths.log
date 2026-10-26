@@ -1,0 +1,47 @@
+step-08-paths: HEAD 6cebdb0883d9d2a9a9d1cf65778b2264510dc587, uncommitted paths: 1; 2026-10-26T10:21:09Z
+the run's commit: 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e (2026-10-23 11:11:18 +1300)
+9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e is an ancestor of HEAD
+
+== 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e..4c0fa815 (4c0fa815)
+-- the drop-in's paths, Spikes/G05-Recovery/DeviceTests set apart (must be empty):
+   (no change)
+-- the whole of Spikes/G05-Recovery (DeviceTests alone expected):
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift | 11 ++++
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   | 15 ++++++
+ .../DeviceTests/Support/Bundle+Module.swift        |  8 +++
+ Spikes/G05-Recovery/DeviceTests/project.yml        | 60 ++++++++++++++++++++++
+ 4 files changed, 94 insertions(+)
+-- outside Docs/ (for the record; the drop-in uses none of what is listed unless it is above):
+ CLAUDE.md                                          |   2 +-
+ README.md                                          |   2 +-
+ Scripts/check-dependency-lock.py                   | 687 +++++++++++++++++++--
+ Scripts/ci.d/12-dependency-lock.sh                 |   9 +-
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift |  11 +
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   |  15 +
+ .../DeviceTests/Support/Bundle+Module.swift        |   8 +
+ Spikes/G05-Recovery/DeviceTests/project.yml        |  60 ++
+ 8 files changed, 724 insertions(+), 70 deletions(-)
+
+== 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e..HEAD (6cebdb08)
+-- the drop-in's paths, Spikes/G05-Recovery/DeviceTests set apart (must be empty):
+   (no change)
+-- the whole of Spikes/G05-Recovery (DeviceTests alone expected):
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift | 11 ++++
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   | 15 ++++++
+ .../DeviceTests/Support/Bundle+Module.swift        |  8 +++
+ Spikes/G05-Recovery/DeviceTests/project.yml        | 60 ++++++++++++++++++++++
+ 4 files changed, 94 insertions(+)
+-- outside Docs/ (for the record; the drop-in uses none of what is listed unless it is above):
+ README.md                                          |   2 +-
+ Scripts/check-dependency-lock.py                   | 687 +++++++++++++++++++--
+ Scripts/ci.d/12-dependency-lock.sh                 |   9 +-
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift |  11 +
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   |  15 +
+ .../DeviceTests/Support/Bundle+Module.swift        |   8 +
+ Spikes/G05-Recovery/DeviceTests/project.yml        |  60 ++
+ 7 files changed, 723 insertions(+), 69 deletions(-)
+
+== files the drop-in runs or reads that name DeviceTests (none expected)
+   none
+
+result: row 10's class-B evidence from the run on 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e stands; 0.8 needs nothing

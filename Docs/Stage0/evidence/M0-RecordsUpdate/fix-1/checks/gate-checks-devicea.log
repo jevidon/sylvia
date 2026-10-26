@@ -1,0 +1,1821 @@
+commit: 6cebdb0883d9d2a9a9d1cf65778b2264510dc587 (m0-records-update); uncommitted files before this run: 1
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T10:27:13Z; load: 23:27  up 23 days,  9:37, 3 users, load averages: 22.31 16.61 9.50
+
+== 1. What changed
+PROBLEM: run on a clean tree (1 uncommitted files)
+-- 1a. since caf75a84 (the third fix's last commit, which this fix starts from): 357 files; of them this fix's folder: 20; the documents:
+     CLAUDE.md
+     Docs/ADRs/0001-platform-baseline-and-toolchain.md
+     Docs/ADRs/0002-repository-build-and-ci.md
+     Docs/ADRs/0003-persistence.md
+     Docs/ADRs/0004-epub-reader-adapter.md
+     Docs/ADRs/0005-pdf-reading-and-anchors.md
+     Docs/ADRs/0007-quick-capture-evaluation.md
+     Docs/ADRs/0009-transfer-protocol.md
+     Docs/ADRs/0010-intake-handoff-and-wired-bundles.md
+     Docs/ADRs/0011-ai-providers-context-and-privacy.md
+     Docs/ADRs/0012-retention-backup-restore.md
+     Docs/ADRs/0013-design-language.md
+     Docs/ADRs/0014-dependency-lock-and-license-inventory.md
+     Docs/ADRs/0015-threat-model.md
+     Docs/ADRs/0016-capture-envelope-and-anchors.md
+     Docs/ADRs/README.md
+     Docs/Licenses/inventory.json
+     Docs/Licenses/third-party-inventory.md
+     Docs/Stage0/G01-EPUB.md
+     Docs/Stage0/G01-PDF.md
+     Docs/Stage0/G02-Transfer.md
+     Docs/Stage0/G03-Intake.md
+     Docs/Stage0/G04-Audio.md
+     Docs/Stage0/G05-AI.md
+     Docs/Stage0/G05-Recovery.md
+     Docs/Stage0/G06-Design.md
+     Docs/Stage0/M0-contracts.md
+     Docs/Stage0/M0-device-runbook.md
+     Docs/Stage0/M0-gate.md
+     Docs/Stage0/M0-plan-amendments.md
+     Docs/Stage0/README.md
+     Docs/Stage0/device-checklists/G01-EPUB.md
+     Docs/Stage0/device-checklists/G01-PDF.md
+     Docs/Stage0/device-checklists/G02-Transfer.md
+     Docs/Stage0/device-checklists/G03-Intake.md
+     Docs/Stage0/device-checklists/G04-Audio.md
+     Docs/Stage0/device-checklists/G05-AI.md
+     Docs/Stage0/device-checklists/G05-Recovery.md
+     Docs/Stage0/device-checklists/G06-Design.md
+     Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+     Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md
+     Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt
+     Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log
+     Docs/Stage0/evidence/G05-AI/device/step-01-ats.log
+     Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt
+     Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt
+     Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log
+     Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt
+     Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md
+     Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log
+     Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log
+     Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log
+     Docs/Stage0/evidence/M0-DeviceA/README.md
+     Docs/Stage0/evidence/M0-DeviceA/fix-1/README.md
+     Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/README.md
+     Docs/Stage0/evidence/M0-DeviceA/fix-1/completeness/README.md
+     Docs/Stage0/evidence/M0-DeviceA/fix-2/owner/checks/lfs-checkout.log
+     Docs/Stage0/evidence/M0-DeviceA/fix-2/owner/commands/after-merge-texts.py
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/13-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/README.md
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/audit-probe.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/check-amendments.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/check-item-reviews.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/check-xcode-reading.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/ci-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/check-xcode-reading.py
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/compare-round-3.py
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/gate-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/recheck-exit-prep.py
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/run-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks-round-3-compare.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks-round-3.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/lfs-checkout-2.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/lfs-checkout.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/recheck-exit-prep.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/render-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/run-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/runbook-content-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/assembly/xcode-27.1-release.md
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/README.md
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/audit-probe.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-amendments.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-item-reviews.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-xcode-reading.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-contracts-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/00-git-lfs.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/10-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/11-capture-anchor-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/13-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/gate-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/observation-vsm.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/plant.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/recheck-fix-1.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/reproductions.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/run-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/gate-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/lfs-checkout.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/observation-vsm.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/recheck-exit-prep.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/recheck-fix-1.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/render-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/reproductions.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/13-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/README.md
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/audit-probe.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/branch-reach.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-amendments.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-item-reviews.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-xcode-reading.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/ci-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/branch-reach.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/finding-lines.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/gate-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/recheck-ev.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/run-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/finding-lines.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/gate-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/lfs-checkout.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-ev.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-exit-prep.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-fix-1.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/render-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/runbook-content-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/13-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/README.md
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/audit-probe.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-amendments.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-item-reviews.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-xcode-reading.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/ci-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/changed-lines.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/correction-record.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/finding-lines.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/gate-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/recheck-hon.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/run-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/correction-record.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/finding-lines.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/gate-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/lfs-checkout.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-ev.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-exit-prep.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-fix-1.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-hon.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/render-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/runbook-content-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-1/runbook-content-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/README.md
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/audit-probe.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-amendments.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-item-reviews.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-xcode-reading.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-contracts-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/00-git-lfs.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/10-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/11-capture-anchor-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/13-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/finding-lines.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/gate-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/plant.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/recheck-fix-2.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/reproductions.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/run-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/finding-lines.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/gate-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/lfs-checkout.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-ev.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-exit-prep.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-fix-1.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-fix-2.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-hon.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/render-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/13-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/README.md
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/audit-probe.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-amendments.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-item-reviews.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-xcode-reading.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/ci-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/decisions-branch.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/finding-lines.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/gate-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/recheck-hon-ep.py
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/run-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/decisions-branch.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/finding-lines.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/gate-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/lfs-checkout.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-ev.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-exit-prep.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-fix-1.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-fix-2.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-hon-ep.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-hon.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/render-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/runbook-content-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/fix-2/runbook-content-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/13-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/README.md
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/audit-probe.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/check-amendments.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/check-item-reviews.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/ci-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-at-5aec2518.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-compare.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/lfs-checkout.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/render-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/run-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/reviews/runbook-content-check.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/README.md
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-contracts-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/00-git-lfs.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/10-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/11-capture-anchor-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/13-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-contracts-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/00-git-lfs.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/10-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/11-capture-anchor-contracts.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/13-hard-rules.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/docs-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/ci-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/docs-checks.sh
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/plant.py
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/reproductions.sh
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/docs-checks.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/lfs-checkout.log
+     Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log
+     Docs/Stage0/evidence/M0-Integration/commands/gate-refresh-check.py
+     Docs/Stage0/evidence/M0-Integration/item-reviews/README.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/amendments.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/commands/audit-probe.sh
+     Docs/Stage0/evidence/M0-Integration/item-reviews/commands/compare-gate-checks.py
+     Docs/Stage0/evidence/M0-Integration/item-reviews/commands/item-reviews.py
+     Docs/Stage0/evidence/M0-Integration/item-reviews/commands/run-checks.sh
+     Docs/Stage0/evidence/M0-Integration/item-reviews/contracts.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/deps.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/SUMMARY.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/amendments.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/contracts.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/deps.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g01-epub.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g01-pdf.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g02-transfer.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g03-intake.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g04-audio.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g05-ai.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g05-recovery.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g06-design.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/runbook.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json.txt
+     Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g01-epub.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g01-pdf.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g02-transfer.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g03-intake.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g04-audio.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g05-ai.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g05-recovery.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g06-design.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/runbook.md
+     Docs/Stage0/evidence/M0-Integration/item-reviews/threat.md
+     Docs/Stage0/evidence/M0-RecordsUpdate/README.md
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/12-dependency-lock.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/13-hard-rules.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-amendments-accuracy.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-amendments.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-records-devicea.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-records.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/ci-contracts.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/correction-texts.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/decisions-branch.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-devicea.console.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-devicea.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-exit-prep.console.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-exit-prep.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-refresh-check-old.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-refresh-check.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/mutation-checks.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/owner-records-intact.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/recheck-hon-ep.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/recheck-own.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/renumber-sessions-dry-run.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/runbook-content-check.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/runbook-coverage.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/checks/step-0.8-paths.log
+     Docs/Stage0/evidence/M0-RecordsUpdate/claude-md-paragraph.md
+     Docs/Stage0/evidence/M0-RecordsUpdate/commands/check-amendments.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/commands/check-records.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/commands/correction-texts-compare.sh
+     Docs/Stage0/evidence/M0-RecordsUpdate/commands/gate-refresh-check.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/commands/mutation-checks.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/commands/owner-records-intact.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/commands/renumber-sessions.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/commands/run-checks.sh
+     Docs/Stage0/evidence/M0-RecordsUpdate/commands/step-08-paths.sh
+     Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/README.md
+     Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/check-amendments.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/finding-lines.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/mutation-checks.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/retired-branch-texts.py
+     Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/run-checks.sh
+     Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/relayed-findings.md
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/README.md
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/commands/compare-linkage.py
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/commands/run-offline.sh
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/linkage-compare.log
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/git-network-check.log
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/linkage.log
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/resolve-locks.log
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/run-offline.log
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/git-network-check.log
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/linkage.log
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/resolve-locks.log
+     Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/run-offline.log
+     Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt
+     Docs/Stage0/evidence/M0-runbook/sessions.md
+     Docs/Stage0/integration-log.md
+     Docs/Sylvia_v1_iOS_Implementation_Plan.md
+     README.md
+     Scripts/check-dependency-lock.py
+     Scripts/ci.d/12-dependency-lock.sh
+     Spikes/G05-Recovery/DeviceTests/App/TestHost.swift
+     Spikes/G05-Recovery/DeviceTests/Package.resolved
+     Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift
+     Spikes/G05-Recovery/DeviceTests/project.yml
+   PROBLEM: also CLAUDE.md
+Docs/ADRs/0002-repository-build-and-ci.md
+Docs/ADRs/0003-persistence.md
+Docs/ADRs/0004-epub-reader-adapter.md
+Docs/ADRs/0005-pdf-reading-and-anchors.md
+Docs/ADRs/0007-quick-capture-evaluation.md
+Docs/ADRs/0009-transfer-protocol.md
+Docs/ADRs/0010-intake-handoff-and-wired-bundles.md
+Docs/ADRs/0011-ai-providers-context-and-privacy.md
+Docs/ADRs/0012-retention-backup-restore.md
+Docs/ADRs/0013-design-language.md
+Docs/ADRs/0014-dependency-lock-and-license-inventory.md
+Docs/ADRs/0015-threat-model.md
+Docs/ADRs/0016-capture-envelope-and-anchors.md
+Docs/ADRs/README.md
+Docs/Licenses/inventory.json
+Docs/Licenses/third-party-inventory.md
+Docs/Stage0/G01-EPUB.md
+Docs/Stage0/G01-PDF.md
+Docs/Stage0/G02-Transfer.md
+Docs/Stage0/G03-Intake.md
+Docs/Stage0/G04-Audio.md
+Docs/Stage0/G05-AI.md
+Docs/Stage0/G05-Recovery.md
+Docs/Stage0/G06-Design.md
+Docs/Stage0/M0-contracts.md
+Docs/Stage0/M0-plan-amendments.md
+Docs/Stage0/device-checklists/G01-EPUB.md
+Docs/Stage0/device-checklists/G01-PDF.md
+Docs/Stage0/device-checklists/G02-Transfer.md
+Docs/Stage0/device-checklists/G03-Intake.md
+Docs/Stage0/device-checklists/G04-Audio.md
+Docs/Stage0/device-checklists/G05-AI.md
+Docs/Stage0/device-checklists/G06-Design.md
+Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md
+Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt
+Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log
+Docs/Stage0/evidence/G05-AI/device/step-01-ats.log
+Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt
+Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt
+Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log
+Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt
+Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md
+Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log
+Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log
+Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log
+Docs/Stage0/evidence/M0-DeviceA/fix-2/owner/checks/lfs-checkout.log
+Docs/Stage0/evidence/M0-DeviceA/fix-2/owner/commands/after-merge-texts.py
+Docs/Stage0/evidence/M0-ExitPrep/assembly/12-dependency-lock.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/13-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/README.md
+Docs/Stage0/evidence/M0-ExitPrep/assembly/audit-probe.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/check-amendments.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/check-item-reviews.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/check-xcode-reading.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/ci-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/check-xcode-reading.py
+Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/compare-round-3.py
+Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/gate-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/recheck-exit-prep.py
+Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/run-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks-round-3-compare.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks-round-3.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/lfs-checkout-2.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/lfs-checkout.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/recheck-exit-prep.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/render-check.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/run-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/runbook-content-check.log
+Docs/Stage0/evidence/M0-ExitPrep/assembly/xcode-27.1-release.md
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/README.md
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/audit-probe.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-amendments.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-item-reviews.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-xcode-reading.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-contracts-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/00-git-lfs.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/10-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/11-capture-anchor-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/13-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/gate-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/observation-vsm.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/plant.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/recheck-fix-1.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/reproductions.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/run-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/gate-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/lfs-checkout.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/observation-vsm.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/recheck-exit-prep.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/recheck-fix-1.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/render-check.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/reproductions.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/12-dependency-lock.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/13-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/README.md
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/audit-probe.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/branch-reach.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-amendments.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-item-reviews.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-xcode-reading.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/ci-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/branch-reach.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/finding-lines.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/gate-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/recheck-ev.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/run-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/finding-lines.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/gate-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/lfs-checkout.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-ev.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-exit-prep.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-fix-1.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/render-check.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/runbook-content-check.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/12-dependency-lock.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/13-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/README.md
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/audit-probe.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-amendments.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-item-reviews.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-xcode-reading.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/ci-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/changed-lines.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/correction-record.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/finding-lines.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/gate-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/recheck-hon.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/run-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/correction-record.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/finding-lines.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/gate-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/lfs-checkout.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-ev.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-exit-prep.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-fix-1.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-hon.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/render-check.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/runbook-content-check.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-1/runbook-content-check.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/12-dependency-lock.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/README.md
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/audit-probe.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-amendments.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-item-reviews.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-xcode-reading.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-contracts-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/00-git-lfs.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/10-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/11-capture-anchor-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/13-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/finding-lines.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/gate-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/plant.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/recheck-fix-2.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/reproductions.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/run-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/finding-lines.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/gate-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/lfs-checkout.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-ev.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-exit-prep.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-fix-1.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-fix-2.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-hon.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/render-check.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/12-dependency-lock.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/13-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/README.md
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/audit-probe.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-amendments.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-item-reviews.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-xcode-reading.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/ci-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/decisions-branch.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/finding-lines.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/gate-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/recheck-hon-ep.py
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/run-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/decisions-branch.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/finding-lines.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/gate-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/lfs-checkout.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-ev.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-exit-prep.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-fix-1.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-fix-2.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-hon-ep.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-hon.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/render-check.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/runbook-content-check.log
+Docs/Stage0/evidence/M0-ExitPrep/fix-2/runbook-content-check.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/12-dependency-lock.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/13-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/README.md
+Docs/Stage0/evidence/M0-ExitPrep/reviews/audit-probe.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/check-amendments.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/check-item-reviews.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/ci-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-at-5aec2518.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-compare.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/lfs-checkout.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/render-check.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/run-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/reviews/runbook-content-check.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/README.md
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/12-dependency-lock.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-contracts-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/00-git-lfs.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/10-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/11-capture-anchor-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/13-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-contracts-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/00-git-lfs.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/10-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/11-capture-anchor-contracts.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/13-hard-rules.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/docs-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/ci-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/docs-checks.sh
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/plant.py
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/reproductions.sh
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/docs-checks.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/lfs-checkout.log
+Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log
+Docs/Stage0/evidence/M0-Integration/commands/gate-refresh-check.py
+Docs/Stage0/evidence/M0-Integration/item-reviews/README.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/amendments.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/commands/audit-probe.sh
+Docs/Stage0/evidence/M0-Integration/item-reviews/commands/compare-gate-checks.py
+Docs/Stage0/evidence/M0-Integration/item-reviews/commands/item-reviews.py
+Docs/Stage0/evidence/M0-Integration/item-reviews/commands/run-checks.sh
+Docs/Stage0/evidence/M0-Integration/item-reviews/contracts.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/deps.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/SUMMARY.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/amendments.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/contracts.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/deps.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g01-epub.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g01-pdf.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g02-transfer.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g03-intake.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g04-audio.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g05-ai.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g05-recovery.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g06-design.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/runbook.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json.txt
+Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g01-epub.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g01-pdf.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g02-transfer.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g03-intake.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g04-audio.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g05-ai.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g05-recovery.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g06-design.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/runbook.md
+Docs/Stage0/evidence/M0-Integration/item-reviews/threat.md
+Docs/Stage0/evidence/M0-RecordsUpdate/README.md
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/12-dependency-lock.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/13-hard-rules.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-amendments-accuracy.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-amendments.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-records-devicea.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-records.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/ci-contracts.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/correction-texts.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/decisions-branch.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-devicea.console.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-devicea.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-exit-prep.console.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-exit-prep.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-refresh-check-old.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-refresh-check.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/mutation-checks.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/owner-records-intact.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/recheck-hon-ep.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/recheck-own.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/renumber-sessions-dry-run.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/runbook-content-check.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/runbook-coverage.log
+Docs/Stage0/evidence/M0-RecordsUpdate/checks/step-0.8-paths.log
+Docs/Stage0/evidence/M0-RecordsUpdate/claude-md-paragraph.md
+Docs/Stage0/evidence/M0-RecordsUpdate/commands/check-amendments.py
+Docs/Stage0/evidence/M0-RecordsUpdate/commands/check-records.py
+Docs/Stage0/evidence/M0-RecordsUpdate/commands/correction-texts-compare.sh
+Docs/Stage0/evidence/M0-RecordsUpdate/commands/gate-refresh-check.py
+Docs/Stage0/evidence/M0-RecordsUpdate/commands/mutation-checks.py
+Docs/Stage0/evidence/M0-RecordsUpdate/commands/owner-records-intact.py
+Docs/Stage0/evidence/M0-RecordsUpdate/commands/renumber-sessions.py
+Docs/Stage0/evidence/M0-RecordsUpdate/commands/run-checks.sh
+Docs/Stage0/evidence/M0-RecordsUpdate/commands/step-08-paths.sh
+Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/README.md
+Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/check-amendments.py
+Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/finding-lines.py
+Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/mutation-checks.py
+Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/retired-branch-texts.py
+Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/run-checks.sh
+Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/relayed-findings.md
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/README.md
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/commands/compare-linkage.py
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/commands/run-offline.sh
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/linkage-compare.log
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/git-network-check.log
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/linkage.log
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/resolve-locks.log
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/run-offline.log
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/git-network-check.log
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/linkage.log
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/resolve-locks.log
+Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/run-offline.log
+Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt
+Docs/Stage0/evidence/M0-runbook/sessions.md
+Docs/Sylvia_v1_iOS_Implementation_Plan.md
+Scripts/check-dependency-lock.py
+Scripts/ci.d/12-dependency-lock.sh
+Spikes/G05-Recovery/DeviceTests/App/TestHost.swift
+Spikes/G05-Recovery/DeviceTests/Package.resolved
+Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift
+Spikes/G05-Recovery/DeviceTests/project.yml
+-- 1b. outside Docs/ and README.md since caf75a84: PROBLEM, changed: CLAUDE.md
+Scripts/check-dependency-lock.py
+Scripts/ci.d/12-dependency-lock.sh
+Spikes/G05-Recovery/DeviceTests/App/TestHost.swift
+Spikes/G05-Recovery/DeviceTests/Package.resolved
+Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift
+Spikes/G05-Recovery/DeviceTests/project.yml
+   CLAUDE.md, the session log, the license inventory, the gate reports, the plan and the amendments since caf75a84: PROBLEM, changed: CLAUDE.md
+Docs/Licenses/inventory.json
+Docs/Licenses/third-party-inventory.md
+Docs/Stage0/G01-EPUB.md
+Docs/Stage0/G01-PDF.md
+Docs/Stage0/G02-Transfer.md
+Docs/Stage0/G03-Intake.md
+Docs/Stage0/G04-Audio.md
+Docs/Stage0/G05-AI.md
+Docs/Stage0/G05-Recovery.md
+Docs/Stage0/G06-Design.md
+Docs/Stage0/M0-plan-amendments.md
+Docs/Stage0/evidence/M0-runbook/sessions.md
+Docs/Sylvia_v1_iOS_Implementation_Plan.md
+   the checklists since caf75a84 (git diff --numstat): 1 1 Docs/Stage0/device-checklists/G01-EPUB.md;1 1 Docs/Stage0/device-checklists/G01-PDF.md;2 2 Docs/Stage0/device-checklists/G02-Transfer.md;1 1 Docs/Stage0/device-checklists/G03-Intake.md;3 3 Docs/Stage0/device-checklists/G04-Audio.md;3 3 Docs/Stage0/device-checklists/G05-AI.md;18 7 Docs/Stage0/device-checklists/G05-Recovery.md;2 2 Docs/Stage0/device-checklists/G06-Design.mdPROBLEM: not exactly one line added to the G0.5 recovery checklist
+-- 1c. the evidence: git diff --name-status caf75a84 HEAD -- Docs/Stage0/evidence lists 309 files: 303 added under Docs/Stage0/evidence/M0-DeviceA/fix-1/owner/ and 6 modified, PROBLEM, also: A	Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+A	Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md
+A	Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt
+A	Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log
+A	Docs/Stage0/evidence/G05-AI/device/step-01-ats.log
+A	Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt
+A	Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt
+A	Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log
+A	Docs/Stage0/evidence/M0-DeviceA/fix-2/owner/checks/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-DeviceA/fix-2/owner/commands/after-merge-texts.py
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/check-xcode-reading.py
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/compare-round-3.py
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/recheck-exit-prep.py
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks-round-3-compare.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks-round-3.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/lfs-checkout-2.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/run-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/xcode-27.1-release.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-contracts-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/00-git-lfs.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/10-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/11-capture-anchor-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/observation-vsm.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/plant.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/recheck-fix-1.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/reproductions.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/observation-vsm.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/reproductions.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/branch-reach.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/branch-reach.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/recheck-ev.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/finding-lines.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-ev.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/changed-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/correction-record.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/recheck-hon.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/correction-record.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/finding-lines.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-ev.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-hon.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-contracts-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/00-git-lfs.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/10-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/11-capture-anchor-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/plant.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/recheck-fix-2.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/reproductions.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/finding-lines.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-ev.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-fix-2.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-hon.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/decisions-branch.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/recheck-hon-ep.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/decisions-branch.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/finding-lines.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-ev.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-fix-2.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-hon-ep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-hon.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-at-5aec2518.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-compare.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/run-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-contracts-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/00-git-lfs.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/10-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/11-capture-anchor-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-contracts-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/00-git-lfs.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/10-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/11-capture-anchor-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/docs-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/ci-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/docs-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/plant.py
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/reproductions.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/docs-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log
+M	Docs/Stage0/evidence/M0-Integration/commands/gate-refresh-check.py
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/README.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/amendments.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/commands/audit-probe.sh
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/commands/compare-gate-checks.py
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/commands/item-reviews.py
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/contracts.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/deps.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/SUMMARY.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/amendments.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/contracts.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/deps.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g01-epub.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g01-pdf.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g02-transfer.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g03-intake.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g04-audio.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g05-ai.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g05-recovery.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g06-design.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/runbook.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g01-epub.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g01-pdf.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g02-transfer.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g03-intake.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g04-audio.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g05-ai.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g05-recovery.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g06-design.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/runbook.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/threat.md
+A	Docs/Stage0/evidence/M0-RecordsUpdate/README.md
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-amendments-accuracy.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-amendments.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-records-devicea.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-records.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/ci-contracts.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/correction-texts.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/decisions-branch.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-devicea.console.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-devicea.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-exit-prep.console.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-exit-prep.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-refresh-check-old.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-refresh-check.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/mutation-checks.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/owner-records-intact.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/recheck-hon-ep.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/recheck-own.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/renumber-sessions-dry-run.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/runbook-coverage.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/step-0.8-paths.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/claude-md-paragraph.md
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/check-amendments.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/check-records.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/correction-texts-compare.sh
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/gate-refresh-check.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/mutation-checks.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/owner-records-intact.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/renumber-sessions.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/step-08-paths.sh
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/README.md
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/check-amendments.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/mutation-checks.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/retired-branch-texts.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/relayed-findings.md
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/README.md
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/commands/compare-linkage.py
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/commands/run-offline.sh
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/linkage-compare.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/git-network-check.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/linkage.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/resolve-locks.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/run-offline.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/git-network-check.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/linkage.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/resolve-locks.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/run-offline.log
+A	Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt
+M	Docs/Stage0/evidence/M0-runbook/sessions.md
+     M	Docs/Stage0/evidence/M0-DeviceA/README.md
+     M	Docs/Stage0/evidence/M0-DeviceA/fix-1/README.md
+     M	Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/README.md
+     M	Docs/Stage0/evidence/M0-DeviceA/fix-1/completeness/README.md
+     M	Docs/Stage0/evidence/M0-Integration/commands/gate-refresh-check.py
+     M	Docs/Stage0/evidence/M0-runbook/sessions.md
+-- 1d. since 6cede84a (the update's start): outside Docs/ and README.md PROBLEM: CLAUDE.md
+Scripts/check-dependency-lock.py
+Scripts/ci.d/12-dependency-lock.sh
+Spikes/G05-Recovery/DeviceTests/App/TestHost.swift
+Spikes/G05-Recovery/DeviceTests/Package.resolved
+Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift
+Spikes/G05-Recovery/DeviceTests/project.yml; CLAUDE.md, the session log and the license inventory PROBLEM, changed: CLAUDE.md
+Docs/Licenses/inventory.json
+Docs/Licenses/third-party-inventory.md
+Docs/Stage0/evidence/M0-runbook/sessions.md; under Docs/Stage0/evidence PROBLEM, also: A	Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+A	Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md
+A	Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt
+A	Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log
+A	Docs/Stage0/evidence/G05-AI/device/step-01-ats.log
+A	Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt
+A	Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt
+A	Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log
+A	Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/check-xcode-reading.py
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/compare-round-3.py
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/recheck-exit-prep.py
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks-round-3-compare.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks-round-3.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/lfs-checkout-2.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/run-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/assembly/xcode-27.1-release.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-contracts-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/00-git-lfs.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/10-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/11-capture-anchor-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/ci-logs/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/observation-vsm.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/plant.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/recheck-fix-1.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/reproductions.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/observation-vsm.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/reproductions.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/branch-reach.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/branch-reach.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/recheck-ev.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/finding-lines.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-ev.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/changed-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/correction-record.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/recheck-hon.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/correction-record.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/finding-lines.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-ev.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/recheck-hon.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-1/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-contracts-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/00-git-lfs.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/10-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/11-capture-anchor-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/ci-logs/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/plant.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/recheck-fix-2.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/reproductions.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/finding-lines.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-ev.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-fix-2.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/recheck-hon.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/check-xcode-reading.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/decisions-branch.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/gate-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/recheck-hon-ep.py
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/decisions-branch.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/finding-lines.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-ev.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-exit-prep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-fix-1.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-fix-2.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-hon-ep.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/recheck-hon.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/fix-2/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/audit-probe.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/check-amendments.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/check-item-reviews.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/ci-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-at-5aec2518.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-compare.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/render-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/run-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/reviews/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/README.md
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-contracts-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/00-git-lfs.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/10-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/11-capture-anchor-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-1/ci-logs/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-contracts-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/00-git-lfs.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/10-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/11-capture-anchor-contracts.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/ci-logs/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/docs-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/ci-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/docs-checks.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/plant.py
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/commands/reproductions.sh
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/docs-checks.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/lfs-checkout.log
+A	Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log
+M	Docs/Stage0/evidence/M0-Integration/commands/gate-refresh-check.py
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/README.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/amendments.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/commands/audit-probe.sh
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/commands/compare-gate-checks.py
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/commands/item-reviews.py
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/contracts.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/deps.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/SUMMARY.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/amendments.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/contracts.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/deps.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g01-epub.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g01-pdf.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g02-transfer.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g03-intake.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g04-audio.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g05-ai.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g05-recovery.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g06-design.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/runbook.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json.txt
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g01-epub.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g01-pdf.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g02-transfer.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g03-intake.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g04-audio.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g05-ai.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g05-recovery.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/minors-g06-design.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/runbook.md
+A	Docs/Stage0/evidence/M0-Integration/item-reviews/threat.md
+A	Docs/Stage0/evidence/M0-RecordsUpdate/README.md
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/12-dependency-lock.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/13-hard-rules.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-amendments-accuracy.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-amendments.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-records-devicea.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/check-records.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/ci-contracts.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/correction-texts.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/decisions-branch.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-devicea.console.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-devicea.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-exit-prep.console.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-checks-exit-prep.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-refresh-check-old.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/gate-refresh-check.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/mutation-checks.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/owner-records-intact.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/recheck-hon-ep.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/recheck-own.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/renumber-sessions-dry-run.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/runbook-content-check.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/runbook-coverage.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/checks/step-0.8-paths.log
+A	Docs/Stage0/evidence/M0-RecordsUpdate/claude-md-paragraph.md
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/check-amendments.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/check-records.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/correction-texts-compare.sh
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/gate-refresh-check.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/mutation-checks.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/owner-records-intact.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/renumber-sessions.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-RecordsUpdate/commands/step-08-paths.sh
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/README.md
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/check-amendments.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/finding-lines.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/mutation-checks.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/retired-branch-texts.py
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/run-checks.sh
+A	Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/relayed-findings.md
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/README.md
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/commands/compare-linkage.py
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/commands/run-offline.sh
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/linkage-compare.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/git-network-check.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/linkage.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/resolve-locks.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-1/run-offline.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/git-network-check.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/linkage.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/resolve-locks.log
+A	Docs/Stage0/evidence/M0-dependencies/xcode-27.1/run-2/run-offline.log
+A	Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt
+M	Docs/Stage0/evidence/M0-runbook/sessions.md
+-- 1e. 9cdb0a02, the commit of the drop-in's run, is an ancestor of HEAD: yes
+   code, scripts, contracts, fixtures and the workflow changed since 9cdb0a02: PROBLEM: Scripts/check-dependency-lock.py
+Scripts/ci.d/12-dependency-lock.sh
+Spikes/G05-Recovery/DeviceTests/App/TestHost.swift
+Spikes/G05-Recovery/DeviceTests/Package.resolved
+Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift
+Spikes/G05-Recovery/DeviceTests/project.yml
+   the drop-in's own paths, and what the merge of m0-decisions brings under them (Docs/Stage0/evidence/M0-DeviceA/fix-1/completeness/commands/dropin-paths.sh, the third fix's, unchanged; exit 1; this fix's logged run of it: Docs/Stage0/evidence/M0-DeviceA/fix-1/owner/checks/dropin-paths.log):
+   == 2. git diff --stat 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e <commit> -- Scripts/ci.d/71-g05-recovery.sh Scripts/lib Scripts/tools Spikes/G05-Recovery Contracts/schemas/backup-manifest.v1.schema.json Contracts/fixtures/backup-manifest.v1
+   -- 6cede84a6f6ac610976b233d875e26dd89419dbd (6cede84a6f6ac610976b233d875e26dd89419dbd): no change: the run of 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e stands for what the drop-in builds, copies or runs
+   -- 5e455f706c20d46711030a8b030c9dbf87dd4acd (5e455f706c20d46711030a8b030c9dbf87dd4acd): no change: the run of 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e stands for what the drop-in builds, copies or runs
+   -- 8082bdb6a3f4a8ee8edfef6a9a5d3489f445ce22 (8082bdb6a3f4a8ee8edfef6a9a5d3489f445ce22): no change: the run of 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e stands for what the drop-in builds, copies or runs
+   -- ec91f66a863c70980533f27f53d8e6b44f234485 (ec91f66a863c70980533f27f53d8e6b44f234485): no change: the run of 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e stands for what the drop-in builds, copies or runs
+   -- HEAD (6cebdb0883d9d2a9a9d1cf65778b2264510dc587): CHANGED, so 0.8 runs again:
+       Spikes/G05-Recovery/DeviceTests/App/TestHost.swift | 11 ++++
+       Spikes/G05-Recovery/DeviceTests/Package.resolved   | 15 ++++++
+       .../DeviceTests/Support/Bundle+Module.swift        |  8 +++
+       Spikes/G05-Recovery/DeviceTests/project.yml        | 60 ++++++++++++++++++++++
+       4 files changed, 94 insertions(+)
+   == 3. m0-decisions (c72247a69a374ce361834550b92689b4abab95ee), whose commits after 044ed3cf are to be merged into m0-sessions before the sessions' checkout moves
+   -- git diff --stat 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e m0-decisions -- <the paths>:
+       Spikes/G05-Recovery/DeviceTests/App/TestHost.swift | 11 ++++
+       Spikes/G05-Recovery/DeviceTests/Package.resolved   | 15 ++++++
+       .../DeviceTests/Support/Bundle+Module.swift        |  8 +++
+       Spikes/G05-Recovery/DeviceTests/project.yml        | 60 ++++++++++++++++++++++
+       4 files changed, 94 insertions(+)
+      of them, outside Spikes/G05-Recovery/DeviceTests: none
+   -- the same with ':(exclude)Spikes/G05-Recovery/DeviceTests' (runbook 0.8's check that sets DeviceTests apart): prints nothing
+   == 4. a merge of m0-decisions into HEAD, computed and not made (git merge-tree --write-tree --name-only --no-messages HEAD m0-decisions)
+      merge-tree exit: 0 (0: no conflict); merged tree: 0fe9721fa9abed1a817e6d9b28c4ab86eb996ead
+   -- git diff --stat 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e <the merged tree> -- <the paths>, as runbook 0.8 has the owner run it after that merge:
+       Spikes/G05-Recovery/DeviceTests/App/TestHost.swift | 11 ++++
+       Spikes/G05-Recovery/DeviceTests/Package.resolved   | 15 ++++++
+       .../DeviceTests/Support/Bundle+Module.swift        |  8 +++
+       Spikes/G05-Recovery/DeviceTests/project.yml        | 60 ++++++++++++++++++++++
+       4 files changed, 94 insertions(+)
+      of them, outside Spikes/G05-Recovery/DeviceTests: none
+   -- the same with ':(exclude)Spikes/G05-Recovery/DeviceTests': prints nothing, so 0.8 still needs nothing after that merge
+   == 5. Does the drop-in, or a file it runs, name the files the m0-exit-prep run changes?
+   -- Scripts/check-dependency-lock.py: named by none of them (the drop-in, the harness checks, the manifest checker, Scripts/lib, Scripts/tools/bootstrap.sh): the drop-in does not use it
+   -- Scripts/ci.d/12-dependency-lock.sh: named by none of them (the drop-in, the harness checks, the manifest checker, Scripts/lib, Scripts/tools/bootstrap.sh): the drop-in does not use it
+      (12-dependency-lock is the drop-in Scripts/ci.sh runs as dependency-lock; runbook 0.8 runs 71-g05-recovery.sh alone, not through ci.sh)
+   exit: 1
+-- 1f. the checklists: from 9cdb0a02 to 6cede84a: unchanged; since caf75a84: one line added to the G0.5 recovery checklist, wording only (1b)
+   the session log at HEAD (unchanged since 6cede84a: 1d), whose dated rows are all agents' on this branch: 18 rows; dated: 6 (2 (0.8 only, ahead of the session); 2 (0.8 only, ahead of the session); 3a; 3b; 3c; 3d); dated and not an agent's: 4 (3a; 3b; 3c; 3d)
+   PROBLEM: a sitting of the owner's is recorded on this branch
+-- 1g. the committed logs of resolve-locks.sh and linkage.sh since 4c73da57: unchanged
+   a run under Xcode 27.1 (Docs/Stage0/evidence/M0-dependencies/xcode-27.1/) on this branch: PROBLEM, present: the records call it pending
+-- 1h. branches and the sessions' checkout, read-only (nothing is fetched), judged against the owner's instructions (Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/commands/branch-texts.py, the second fix's, unchanged):
+   main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07; origin/main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07
+   m0-sessions: 1d5ac477e5cb71ce453f74a1676a405fe491bf68; HEAD descends from caf75a84: yes
+   Spikes/G05-Recovery/LockHarness/project.yml at HEAD: present
+   on HEAD's texts: it must pass
+     repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_f23c0c6d-d05-5; texts read from: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_f23c0c6d-d05-5
+     HEAD: 6cebdb0883d9d2a9a9d1cf65778b2264510dc587; main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07; m0-decisions: c72247a69a374ce361834550b92689b4abab95ee
+     m0-decisions behind main (an ancestor of it): no; commits on it that main lacks: 8
+     m0-decisions merged into HEAD (an ancestor of it): yes; commits on it that HEAD lacks: 0
+     the sessions' checkout (/Users/jevidon/Git/sylvia-sessions): branch m0-decisions, head c72247a69a374ce361834550b92689b4abab95ee
+     the session log on that branch: 4 dated rows not an agent's: 3a (2026-10-25 17:12 UTC, Codex with Justin Evidon); 3b (2026-10-25 17:14 UTC, Codex with Justin Evidon); 3c (2026-10-25 UTC, Codex with Justin Evidon); 3d (2026-10-25 17:24–17:26 UTC, Codex with Justin Evidon)
+     
+     FAIL behind: m0-decisions is not behind main, and 3 live texts call it behind main
+          Docs/Stage0/M0-gate.md: ...ame tree, so that the code is the same either way, and that `m0-decisions` is behind `main`, and the State line...
+          Docs/Stage0/M0-gate.md: ... M0 exit unless you decide otherwise; and never to build on `m0-integrate` or `m0-decisions`, both behind `main`. No workflow's agen...
+          Docs/Stage0/M0-gate.md: ...and 30.5, which cites the gate checks' part 1 for it), that `m0-decisions` is behind `main` (item 1's step 1 an...
+     FAIL merged: m0-decisions is merged into HEAD, and 1 live texts still say its commits are not on m0-sessions
+          Docs/Stage0/M0-gate.md: ...e, and add a folder DeviceTests to the G0.5 recovery spike, which is not on `m0-sessions` (`evidence/M0-Devic...
+     FAIL checkout: the checkout is on m0-decisions, not m0-sessions, and the gate summary's item 1, step 1 and the runbook's 0.3, step 1 lack its case
+     FAIL sittings: the session log on m0-decisions records 4 sittings of the owner's, and 6 live texts say, without saying where, that no device step has run or no device result is recorded
+          Docs/Stage0/M0-gate.md: ...he same tree, that `m0-decisions` is behind `main` and that no device step has run, while since 25 Oct...
+          Docs/Stage0/M0-gate.md: ... Section 1, Section 2's opening and the Stage 0 README that no device step has run, while from 17:12 t...
+          Docs/Stage0/M0-gate.md: ... 104, as `CLAUDE.md` says, and the runbook's 0.3), and that no device step has run (the State line, Se...
+          Docs/Stage0/M0-gate.md: ...the same tree, that `m0-decisions` is behind `main` or that no device step has run, with the branch re...
+          Docs/Stage0/README.md: ...il the fix of the fifth review of the M0 exit preparation, "no device step has run, so every gate stay...
+          Docs/Stage0/README.md: ...he same tree, that `m0-decisions` is behind `main` and that no device step has run, while since 25 Oct...
+     reported, not judged: CLAUDE.md has no such claim
+     
+     result: FAIL (behind, merged, checkout, sittings)
+   exit: 1
+   its control on the tree of 8082bdb6, which the findings read: it must fail behind, merged, checkout and sittings; it fails: behind merged checkout sittings (exit 1)
+     FAIL behind: m0-decisions is not behind main, and 5 live texts call it behind main
+          Docs/Stage0/M0-device-runbook.md: ...`git checkout m0-sessions` there yourself. Never build from `m0-integrate` or `m0-decisions`, both behind `main`, nor from `main`, w...
+          Docs/Stage0/M0-gate.md: ...update is reviewed, between your sittings. Never build from `m0-integrate` or `m0-decisions`, both behind `main`, nor from `main`, w...
+          Docs/Stage0/device-checklists/G04-Audio.md: ... the checkout `~/Git/sylvia-sessions`, as runbook 0.3 says; `m0-integrate` and `m0-decisions` are behind `main`, and `m0-integrate`...
+          Docs/Stage0/device-checklists/G05-AI.md: ... the checkout `~/Git/sylvia-sessions`, as runbook 0.3 says; `m0-integrate` and `m0-decisions` are behind `main`, and `m0-integrate`...
+          Docs/Stage0/device-checklists/G05-Recovery.md: ... the checkout `~/Git/sylvia-sessions`, as runbook 0.3 says; `m0-integrate` and `m0-decisions` are behind `main`, and `m0-integrate`...
+     FAIL merged: m0-decisions is merged into HEAD, and 1 live texts still say its commits are not on m0-sessions
+          Docs/Stage0/M0-gate.md: ...e, and add a folder DeviceTests to the G0.5 recovery spike, which is not on `m0-sessions` (`evidence/M0-Devic...
+     FAIL checkout: the checkout is on m0-decisions, not m0-sessions, and the gate summary's item 1, step 1 and the runbook's 0.3, step 1 lack its case
+     FAIL sittings: the session log on m0-decisions records 4 sittings of the owner's, and 7 live texts say, without saying where, that no device step has run or no device result is recorded
+          Docs/Stage0/M0-device-runbook.md: ... and what was carried in, is at the start of Section 8. - **Nothing in this runbook has been run on a device.** Every step stays...
+          Docs/Stage0/M0-gate.md: ...have signed or decided: no sign-off of a plan 23.3 role and no device result is recorded yet. Its inputs were ag...
+          Docs/Stage0/M0-gate.md: ...l wait for (item 3), the ADR approvals and the exit review. None of the gates' device or human steps has run, and the agent work...
+          Docs/Stage0/M0-gate.md: ...ending-device, pending-human. No row is passed on a device: no device step has run.  **Checked on 19 O...
+          Docs/Stage0/M0-gate.md: ...ch block the M0 gate (Section 7, with the reason for each). Nothing in it has been run on a device; of its Mac-only st...
+          Docs/Stage0/M0-gate.md: ...plan 23.3 pending (row 67 is partial); the evidence is not: not one device or human step has run, every Stage 0 ADR ...
+          Docs/Stage0/README.md: ... roles and those the Section 23.1 decisions still wait for; no device step has run, so every gate stay...
+   its control on the tree of d6315ad3, the second fix's start: it must fail exactly sittings; it fails: merged sittings (exit 1)
+     FAIL merged: m0-decisions is merged into HEAD, and 3 live texts still say its commits are not on m0-sessions
+          Docs/Stage0/M0-device-runbook.md: ...g`](evidence/M0-DeviceA/assembly/checks/branch-state.log)). None of that is on `m0-sessions`, and nothing here r...
+          Docs/Stage0/M0-gate.md: ...very suite (`DeviceTests`, in `Spikes/G05-Recovery` there); none of it is on `m0-sessions` yet, and these reco...
+          Docs/Stage0/M0-gate.md: ...e, and add a folder DeviceTests to the G0.5 recovery spike, which is not on `m0-sessions` (`evidence/M0-Devic...
+     FAIL sittings: the session log on m0-decisions records 4 sittings of the owner's, and 2 live texts say, without saying where, that no device step has run or no device result is recorded
+          Docs/Stage0/M0-gate.md: ...have signed or decided: no sign-off of a plan 23.3 role and no device result is recorded yet. Its inputs were ag...
+          Docs/Stage0/M0-gate.md: ...ch block the M0 gate (Section 7, with the reason for each). Nothing in it has been run on a device; of its Mac-only st...
+   NOT as required
+-- 1i. the two merges m0-sessions waits for, computed and not made (Docs/Stage0/evidence/M0-DeviceA/fix-1/owner/commands/merges.sh; exit 1; this fix's logged run of it: Docs/Stage0/evidence/M0-DeviceA/fix-1/owner/checks/merges.log):
+   commit: 6cebdb0883d9d2a9a9d1cf65778b2264510dc587 (m0-records-update); uncommitted paths: 1
+   m0-decisions: c72247a69a374ce361834550b92689b4abab95ee (2026-10-26 06:33:13 +1300, Record setup checks and the audio device run in progress); m0-exit-prep: c3adae682812c2f47ed3bb7f07778ccb25118963 (2026-10-26 13:15:32 +1300)
+   merge bases: HEAD and m0-decisions c72247a69a374ce361834550b92689b4abab95ee; HEAD and m0-exit-prep c3adae682812c2f47ed3bb7f07778ccb25118963
+   m0-decisions is still at c72247a6, where the first three fixes read it: nothing committed on it since
+   == 1. m0-decisions into HEAD
+      merge-tree exit: 0 (0: no conflict); merged tree: 0fe9721fa9abed1a817e6d9b28c4ab86eb996ead
+      into caf75a84, as a control: exit 0; merged tree: d345d3040c665ffb6982d569fdf1e69085157207
+   == 2. m0-exit-prep, as it stands when read, into HEAD and into caf75a84
+      into HEAD: merge-tree exit 0; files that conflict: 0
+      into caf75a84: merge-tree exit 1; files that conflict: 9
+        Docs/ADRs/0001-platform-baseline-and-toolchain.md
+        Docs/ADRs/0002-repository-build-and-ci.md
+        Docs/ADRs/README.md
+        Docs/Stage0/M0-device-runbook.md
+        Docs/Stage0/M0-gate.md
+        Docs/Stage0/M0-plan-amendments.md
+        Docs/Stage0/README.md
+        Docs/Stage0/integration-log.md
+        Docs/Sylvia_v1_iOS_Implementation_Plan.md
+      PROBLEM: the files differ:
+        1,9c1
+        < Docs/ADRs/0001-platform-baseline-and-toolchain.md
+        < Docs/ADRs/0002-repository-build-and-ci.md
+        < Docs/ADRs/README.md
+        < Docs/Stage0/M0-device-runbook.md
+        < Docs/Stage0/M0-gate.md
+        < Docs/Stage0/M0-plan-amendments.md
+        < Docs/Stage0/README.md
+        < Docs/Stage0/integration-log.md
+        < Docs/Sylvia_v1_iOS_Implementation_Plan.md
+        ---
+        > 
+      Docs/ADRs/0001-platform-baseline-and-toolchain.md, whose Status line and technical-lead item this fix changes, already conflicts into caf75a84: the fix adds to a conflict that is there, not a new one
+      (the conflicts listed are in files both this branch and that run changed before this fix; resolving them is the merge's, between sittings)
+   exit: 1
+
+== 2. Git LFS state
+git config --show-origin --get-regexp 'filter\.lfs|lfs\.':
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.repositoryformatversion 0
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.smudge git-lfs smudge -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.process git-lfs filter-process
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.required true
+file:/Users/jevidon/Git/sylvia/.git/config	filter.lfs.clean git-lfs clean -- %f
+file:/Users/jevidon/Git/sylvia/.git/config	lfs.https://github.com/jevidon/sylvia.git/info/lfs.access basic
+git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+files tracked by LFS (git lfs ls-files): 777; of them still pointer files in the working tree: 0
+LFS files (object and path, git lfs ls-files -l) at HEAD and at 4c73da5754f5cbddabde88e11d222a231a29f8ca: identical, 777 each: no LFS object added
+
+== 3. M0-gate.md: paths, and statuses against the records they cite
+== paths: 449 checked
+== gate report rows
+row 1: passed-simulator | G01-EPUB.md G1: 'passed-simulator' -> agrees
+row 2: pending-device | G01-EPUB.md G2: 'pending-device' -> agrees
+row 3: passed-simulator | G01-EPUB.md G3: 'passed-simulator' -> agrees
+row 4: pending-human | G01-EPUB.md G4: 'pending-human' -> agrees
+row 5: passed-simulator | G01-EPUB.md G5: 'passed-simulator' -> agrees
+row 6: passed-simulator | G01-EPUB.md G6: 'passed-simulator' -> agrees
+row 7: passed-simulator | G01-EPUB.md G7: 'passed-simulator' -> agrees
+row 8: passed-simulator | G01-PDF.md 1: 'passed-simulator' -> agrees
+row 9: pending-device | G01-PDF.md 2: 'pending-device' -> agrees
+row 10: failed | G01-PDF.md 10c: 'failed' -> agrees
+row 11: passed-simulator | G01-EPUB.md G8: 'passed-simulator' -> agrees
+row 12: pending-human | G01-EPUB.md G9: 'pending-human' -> agrees
+row 13: passed-simulator | G01-EPUB.md G10: 'passed-simulator' -> agrees
+row 14: passed-simulator | G02-Transfer.md User-mediated trust bootstrap from iOS: 'passed-simulator' -> agrees
+row 15: pending-device | G02-Transfer.md User-mediated trust bootstrap on a physical iPho: 'pending-device' -> agrees
+row 16: passed-simulator | G02-Transfer.md Certificate pinning on iOS: 'passed-simulator' -> agrees
+row 17: partial | G02-Transfer.md Authorized ranged downloads with verified parts: 'partial' -> agrees
+row 18: partial | G02-Transfer.md Recovery after suspension or force-quit: 'partial' -> agrees
+row 19: passed-host | G02-Transfer.md Mac source mutation never yields a mixed-version: 'passed-host' -> agrees
+row 20: passed-host | G02-Transfer.md Manual-address connectivity: IPv4 and IPv6 loopb: 'passed-host' -> agrees
+row 21: passed-simulator | G02-Transfer.md Plan 15.2 Stage 0 gate, local address forms: 'passed-simulator' -> agrees
+row 22: failed | G02-Transfer.md Plan 15.2 Stage 0 gate, Tailscale address forms: 'failed' -> agrees
+row 22: failed | G02-Transfer.md T43 Tailscale address and MagicDNS name on iOS w: 'failed' -> agrees
+row 23: pending-device | G02-Transfer.md Manual-address and Tailscale connectivity betwee: 'pending-device' -> agrees
+row 24: pending-human | G02-Transfer.md Security reviewer approves the pairing protocol: 'pending-human' -> agrees
+row 25: passed-host | G02-Transfer.md No trust-all path, no ATS exception in the harne: 'passed-host' -> agrees
+row 26: passed-simulator | G03-Intake.md G1: 'passed-simulator' -> agrees
+row 27: pending-device | G03-Intake.md G2: 'pending-device' -> agrees
+row 28: pending-device | G03-Intake.md G6: 'pending-device' -> agrees
+row 29: passed-host | G03-Intake.md G3: 'passed-host' -> agrees
+row 30: passed-simulator | G03-Intake.md G4: 'passed-simulator' -> agrees
+row 31: passed-host | G03-Intake.md G5: 'passed-host' -> agrees
+row 32: passed-simulator | G03-Intake.md G7: 'passed-simulator' -> agrees
+row 33: pending-device | G03-Intake.md G8: 'pending-device' -> agrees
+row 34: partial | G03-Intake.md T42: 'partial' -> agrees
+row 35: passed-host | G03-Intake.md G9: 'passed-host' -> agrees
+row 36: pending-device | G03-Intake.md G10: 'pending-device' -> agrees
+row 37: passed-simulator | G04-Audio.md 1: 'passed-simulator' -> agrees
+row 38: pending-device | G04-Audio.md 2: 'pending-device' -> agrees
+row 39: passed-simulator | G04-Audio.md 3: 'passed-simulator' -> agrees
+row 39: passed-simulator | G04-Audio.md 11: 'passed-simulator' -> agrees
+row 40: pending-device | G04-Audio.md 12: 'pending-device' -> agrees
+row 41: passed-simulator | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+row 42: failed | G04-Audio.md 33: 'passed-simulator (opening, positions, timing); start/resume budget ...' -> agrees
+row 43: passed-simulator | G04-Audio.md 4: 'passed-simulator (with the container limits stated)' -> agrees
+row 44: passed-simulator | G04-Audio.md 5: 'passed-simulator' -> agrees
+row 45: passed-simulator | G04-Audio.md 6: 'passed-simulator' -> agrees
+row 46: passed-simulator | G04-Audio.md 7: 'passed-simulator' -> agrees
+row 47: partial | G04-Audio.md 8: 'partial' -> agrees
+row 48: passed-simulator | G04-Audio.md 18: 'passed-simulator (control: both signings; App Shortcut and the cont...' -> agrees
+row 49: pending-device | G04-Audio.md 19: 'pending-device' -> agrees
+row 50: partial | G04-Audio.md 9: 'partial' -> agrees
+row 51: partial | G05-AI.md G1: 'partial' -> agrees
+row 52: partial | G05-AI.md G2: 'partial' -> agrees
+row 53: passed-host | G05-AI.md G3: 'passed-host' -> agrees
+row 54: partial | G05-AI.md G4: 'partial' -> agrees
+row 55: passed-simulator | G05-Recovery.md 1: 'passed-simulator' -> agrees
+row 56: pending-device | G05-Recovery.md 22: 'pending-device' -> agrees
+row 57: passed-host | G05-Recovery.md 2: 'passed-host' -> agrees
+row 58: partial | G05-AI.md G6: 'partial' -> agrees
+row 59: pending-human | G05-Recovery.md 23: 'pending-human' -> agrees
+row 60: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 61: passed-simulator | G06-Design.md G0.6: every token pair's contrast verified: 'passed-simulator' -> agrees
+row 62: pending-device | G06-Design.md G0.6: type roles under Dynamic Type: 'pending-device' -> agrees
+row 63: failed | G06-Design.md Scaling through UIFontMetrics as Section 4.4.3 s: 'failed' -> agrees
+row 64: pending-device | G06-Design.md G0.6: component set viewed on a device: 'pending-device' -> agrees
+row 65: partial | G06-Design.md G0.6: token values adjusted where devices disagr: 'partial' -> agrees
+row 72: passed-simulator | G06-Design.md CI drop-in `Scripts/ci.d/21-design-catalog.sh`: 'passed-simulator' -> agrees
+row 73: pending-human | G06-Design.md Prototype matches the boards where they agree wi: 'pending-human' -> agrees
+row 74: pending-device | G06-Design.md G0.6 device review of the component set and the : 'pending-device' -> agrees
+row 79: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+row 80: pending-human | G06-Design.md Design review of the components and references: 'pending-human' -> agrees
+row 91: passed-host | G06-Design.md Token export with schema, fixtures: 'passed-host' -> agrees
+== ADR and deliverable rows
+row 66: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 71: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 75: passed-host | expected passed-host; 17 of 17 facts hold -> agrees
+PROBLEM: row 76: ADR-0014 status no longer says 'R4-01 and R4-02 are closed in the guard': not so
+row 76: passed-host | expected failed; 11 of 12 facts hold -> DISAGREES
+PROBLEM: row 76: status passed-host, but its record gives failed
+row 77: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 78: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+row 82: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 83: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 84: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 85: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 86: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+row 87: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 88: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 89: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+row 90: passed-host | expected passed-host; 8 of 8 facts hold -> agrees
+row 92: pending-human | expected pending-human; 6 of 6 facts hold -> agrees
+== rows not checked mechanically
+row 67: partial | the Section 23 decisions are signed by people; nothing to read
+row 68: pending-human | a judgement for the exit review
+row 69: partial | a judgement on the amendments' text against the four gates with failed rows
+row 70: partial | summarises rows 1-65
+row 81: pending-human | an exit demonstration by people
+== summary: 92 rows; failed 4, partial 13, passed-host 12, passed-simulator 27, pending-device 15, pending-human 21; 74 report rows and 89 ADR and log facts compared; 2 problem(s)
+
+-- 3b. Negative control on copies with three planted wrong statuses: checker exit 1; rows reported as disagreeing: 22 42 66 71 76 78 92
+   NOT as required (22, 42, 66, 71, 78, 92)
+
+== 4. The documents' own checks
+-- the second fix's amendments checker (Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/commands/check-amendments.py), the newest: it must pass
+FAIL draft 0.8 as revised on 24 October 2026: the product owner's decision on device A (the iPhone 13 mini; the A13 floor left for M8) is recorded wherever the plan and this document state device A, and the statements it made stale are gone from the plan before Appendix D: lacks, in Appendix D's item of 24 October 2026: An agent review read the record the same day, at `8082bdb6`, and found more to fix; after its accuracy findings, D01's row has a dated note on its pending check of Apple's release notes for Xcode 27.1: Apple's pages, read on 24 October 2026, list 27A9275 as released, so the technical lead's confirmation is what remains (its finding ACC-06; `Docs/Stage0/integration-log.md` section 30).; lacks, in this document's dated note of 26 October 2026: *(Dated note, 26 October 2026: an agent review read that record with the rest of the update that day, at `8082bdb6`; the findings of it relayed so far, its fidelity and accuracy lenses', name nothing in this document, and no review has accepted the record (integration log sections 29 and 30).)*; lacks, in Section 9: (the latest, for draft 0.8 as revised on 24 and 26 October 2026, `evidence/M0-DeviceA/commands/check-amendments.py`
+summary: 132 numbered findings in the eight reports; 56 amendment tags; 44 product-owner questions; 1 failed checks
+exit: 1
+-- its mutations (Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/commands/mutation-checks.py): each of the 70 must make the checker fail its guarding check, the tree restored
+   control (no mutation): exit 1, 1 failed checks
+   the unmutated files must pass first
+exit: 1; uncommitted paths before and after: 1, 1
+   PROBLEM: not 70 of 70 caught
+-- the records part's amendments checker (Docs/Stage0/evidence/M0-DeviceA/commands/check-amendments.py): it must fail exactly its check 10k, on exactly the two review-status texts the second fix replaced in Appendix D, as on the second fix
+   FAIL draft 0.8 as revised on 24 October 2026: the product owner's decision on device A (the iPhone 13 mini; the A13 floor left for M8) is recorded wherever the plan and this document state device A, and the statements it made stale are gone from the plan before Appendix D: lacks, in Appendix D's item of 24 October 2026: No budget, scope or other decision changed. Agent-written; not reviewed.*; lacks, in the draft 0.8 entry's review note: which has not been reviewed (since 24 October 2026 the item before the last: the last records the product owner's decision of that day on device A, and has not been reviewed either); lacks, in Section 9: (the latest, for draft 0.8 as revised on 24 and 26 Oct
+   summary: 132 numbered findings in the eight reports; 56 amendment tags; 44 product-owner questions; 1 failed checks
+exit: 1; NOT as required
+-- its control: the follow-up's fix's checker (Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/check-amendments.py) must fail on exactly the three checks whose anchors the records part replaced
+   FAIL new anchor phrases are present in the plan (41): **Revised:** 23 October 2026
+   FAIL draft 0.8: the five decisions that are not the recommendation (D-1, PO-13, PO-23, PO-33, PO-39) are applied where the plan states them, and before Appendix D only Section 19.1 names iPhone 12-cla
+   FAIL draft 0.8 as revised on 23 October 2026: Appendix D's draft 0.8 entry ends with the dated item that records the answers of 23 October 2026 and the item that corrects it: the dated item lacks: *Re
+   summary: 132 numbered findings in the eight reports; 56 amendment tags; 44 product-owner questions; 3 failed checks
+exit: 1; as required: exactly those three
+-- the records part's check of the ADRs, the index, the reports and the integration log (Docs/Stage0/evidence/M0-DeviceA/commands/check-records.py): it must fail exactly its check of the ADR index, whose status column the first fix dated 26 October 2026, as before
+   FAIL the ADR index: its status column dated 24 October 2026, D-1 decided again, rows 0001-0013 on device A (lacks: | ADR | Title | Status (24 October 2026) | Owner during Stage 0 |)
+   FAIL the integration log: section 28 and its parts (lacks: ## 28. Device A is the iPhone 13 mini, and the owner's instructions brought up to date (24 October 2026); lacks: ### 28.1 The state on 24 October 2026; lacks: ### 28.2 The device-A change: the decision, and where each record changed; lacks: 
+   summary: 2 failed checks
+exit: 1
+   NOT as required: exactly its check of the ADR index must fail
+   its control on the tree of 6cede84a: it must fail every check but the one on the G0.6 rows' statuses (17 of 18)
+   PASS G0.6 report: the three rows' statuses unchanged
+   summary: 17 failed checks
+   as required: 17 failed checks, and only the statuses check passing
+-- the instructions part's runbook content check (Docs/Stage0/evidence/M0-DeviceA/instructions/commands/runbook-content-check.py): it must pass
+G01-EPUB.md: 13 steps, 38 markers: 38 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G01-PDF.md: 11 steps, 27 markers: 26 in the runbook, 0 in steps left to the checklist, 1 listed as not carried, 0 missing
+G02-Transfer.md: 23 steps, 76 markers: 68 in the runbook, 0 in steps left to the checklist, 8 listed as not carried, 0 missing
+G03-Intake.md: 27 steps, 59 markers: 59 in the runbook, 0 in steps left to the checklist, 0 listed as not carried, 0 missing
+G04-Audio.md: 17 steps, 121 markers: 100 in the runbook, 15 in steps left to the checklist, 6 listed as not carried, 0 missing
+G05-AI.md: 9 steps, 73 markers: 57 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+G05-Recovery.md: 5 steps, 62 markers: 60 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+G06-Design.md: 31 steps, 41 markers: 39 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+  NOT_CARRIED: 19 entries: 7 a placeholder the runbook fills in; 5 the checklist's history, or a simulator result it quotes; 2 said in other words in the runbook; 2 a description of a log's format, not an expected value; 1 the expected result of a step that can wait for a later milestone; 2 a detail of a review done from the checklist
+  453 in its gate's checklist; 19 in a checklist (no gate named); 83 listed as the runbook's own (by kind: document 25, external 1, harness 37, runbook 13, tool 7)
+  58 source fragments of 62 entries looked up in their files
+  RUNBOOK_OWN: 62 entries: 54 with a source whose fragment is read in its file; 8 without one, checked only for being in the runbook (external 1, runbook 7)
+result: pass (0 problem(s))
+exit: 0
+-- the decisions round's assembly's content check (Docs/Stage0/evidence/M0-Decisions/assembly/commands/runbook-content-check.py): it must report exactly the three texts the instructions part changed, as before
+   UNLISTED text at offset N (any checklist): 13 mini only (Recommended)
+   UNLISTED text at offset N (any checklist): iphone 11 pro seems to be no longer charging. i do have a 13 mini that is still working, so update the plan. even better from a screen size.
+   PROBLEM stale RUNBOOK_OWN entry (no longer in the header or Sections 1-7): is an iPhone 11 Pro: the product owner chose the iPhone 11 family on 22 October 2026
+exit: 1
+   as required: exactly those three
+-- the runbook's step coverage (Docs/Stage0/evidence/M0-Integration/final-fix/commands/runbook-coverage.py): it must pass
+result: pass (0 missing)
+exit: 0
+-- the runbook's correction-text check on 4c73da5754f5cbddabde88e11d222a231a29f8ca, on 8082bdb6a3f4a8ee8edfef6a9a5d3489f445ce22, on d6315ad3f3a69f28258bfa54581c6ab6c005dcc8, on ec91f66a863c70980533f27f53d8e6b44f234485, on caf75a8447597efa5076b53b9a0d36be0fdcc901 and on HEAD (Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py, as committed at HEAD)
+   4c73da5754f5cbddabde88e11d222a231a29f8ca: exit 1; 77 texts checked, 59 missing
+   8082bdb6a3f4a8ee8edfef6a9a5d3489f445ce22: exit 1; 77 texts checked, 68 missing
+   d6315ad3f3a69f28258bfa54581c6ab6c005dcc8: exit 1; 77 texts checked, 68 missing
+   ec91f66a863c70980533f27f53d8e6b44f234485: exit 1; 77 texts checked, 68 missing
+   caf75a8447597efa5076b53b9a0d36be0fdcc901: exit 1; 77 texts checked, 68 missing
+   HEAD: exit 1; 77 texts checked, 68 missing
+   as required: from 4c73da57 to HEAD the nine texts of the corrections the decisions round applied, found before and missing after, and the summary line, nothing else; from 8082bdb6, d6315ad3, ec91f66a or caf75a84 to HEAD no line differs
+-- the follow-up's recheck of the second review's twelve answered findings and HON-11 (Docs/Stage0/evidence/M0-Decisions/followup/commands/recheck-review2.py): it must pass
+   result: pass (0 of the twelve no longer answered)
+exit: 0
+-- the third fix's moved history notes (Docs/Stage0/evidence/M0-Decisions/followup/round-4/commands/moved-notes.py): it must pass
+   result: 7 of 7 notes moved whole
+exit: 0
+-- the fourth fix's moved texts (Docs/Stage0/evidence/M0-Decisions/followup/round-5/commands/moved-notes.py): it must pass
+   result: 4 of 4 texts moved whole
+exit: 0
+-- the record's check of the run's facts (Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/check-run.py): it must pass
+   result: pass (0 fact(s) not as the records state them)
+exit: 0
+-- the fix's check of the run's facts (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/check-run.py): it must pass
+   result: pass (0 fact(s) not as the records state them)
+exit: 0
+   its control, on the decisions round's assembly run with the screen locked: fails, as required, naming the locked screen and the missing row-10 line
+-- the fix's check of its review's cited lines (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/finding-lines.py), at 91c3b46a: it must pass
+   result: 50 of 50 cited lines and counts hold at 91c3b46a
+exit: 0
+-- the second fix's recheck of UNL2-01 to UNL2-03 and of the fix's review status (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-3/commands/recheck-unl2.py), whose sweeps read every Markdown file, this fix's among them: it must pass
+   result: FAIL (2 of 4 not as stated)
+exit: 1
+   its control on the tree of 26530d49: all four reported, as required
+-- the second fix's check of its review's cited lines (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-3/commands/finding-lines.py), at 26530d49: it must pass
+   result: 31 of 31 cited lines and claims hold at 26530d49
+exit: 0
+   its control at 91c3b46a: fails, as required
+-- the six earlier rechecks that read texts the update or its fixes changed: each must report exactly the lines of Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/commands/expected-rechecks.txt, the second fix's list, unchanged (which says why; this fix kept the State line, the opening within its 600 words, 800 with the State line, and item 1's steps within their 400, which recheck-unl, recheck-own5 and recheck-own4 measure)
+   recheck-review4 (Docs/Stage0/evidence/M0-Decisions/followup/round-2/commands/recheck-review4.py): exit 1; result: FAIL (3 of the eight not answered)
+   recheck-hon4 (Docs/Stage0/evidence/M0-Decisions/followup/round-3/commands/recheck-hon4.py): exit 1; result: FAIL (2 of the six not answered)
+   recheck-own4 (Docs/Stage0/evidence/M0-Decisions/followup/round-4/commands/recheck-own4.py): exit 1; result: FAIL (3 of the nine not answered)
+   recheck-own5 (Docs/Stage0/evidence/M0-Decisions/followup/round-5/commands/recheck-own5.py): exit 1; result: FAIL (4 of the six findings and five answers not answered or not recorded; 5 of five answers recorded)
+   recheck-unlocked (Docs/Stage0/evidence/M0-Decisions/unlocked-record/commands/recheck-unlocked.py): exit 1; result: FAIL (6 of 34 records not as stated)
+   recheck-unl (Docs/Stage0/evidence/M0-Decisions/unlocked-record/round-2/commands/recheck-unl.py): exit 1; result: FAIL (2 of 6 not as stated)
+   NOT as required: the reports differ from the expected lines:
+   1c1
+   < recheck-review4	PROBLEM  FID4-02: the runbook's run 1 and 0.3, the gate summary's items 1 and 4 and Section 7, and ADR-0002 route agent work through m0-decisions (the runbook lacks: and it reaches your build only when you merge it into `m0-decisions` (`git checkout m0-decisions`; the runbook lacks: which reaches your build only when you merge it into `m0-decisions` between sessions, never straig
+   ---
+   > recheck-review4	PROBLEM  FID4-02: the runbook's run 1 and 0.3, the gate summary's items 1 and 4 and Section 7, and ADR-0002 route agent work through m0-decisions (the runbook lacks: and it reaches your build only when you merge it into `m0-decisions` (`git checkout m0-decisions`; the runbook lacks: which reaches your build only when you merge it into `m0-decisions` between sessions, never straig
+   4c4
+   < recheck-hon4	PROBLEM  HON4-01: ADR-0002 keeps the rule with only pull requests #4 and #5 and the merge of m0-decisions excepted, and asks the owner whether bringing agent work to main before the exit is covered; the runbook, the gate summary and the session log route that work through m0-decisions and call that a further merge (the runbook lacks: or build from `m0-decisions` until the exit; the 
+   ---
+   > recheck-hon4	PROBLEM  HON4-01: ADR-0002 keeps the rule with only pull requests #4 and #5 and the merge of m0-decisions excepted, and asks the owner whether bringing agent work to main before the exit is covered; the runbook, the gate summary and the session log route that work through m0-decisions and call that a further merge (the runbook lacks: Bringing that work to `main` before the exit is a
+   7d6
+   < recheck-own4	PROBLEM  OWN4-03: ADR-0002 keeps the rule as the owner did and asks about a later merge; agent branches go into m0-decisions; an agent on the same records starts once the other's branch is merged (the runbook's 0.3 lacks: only once the other's branch is merged into `m0-decisions`; M0-gate.md item 1 lacks: only once the other's branch is merged into `m0-decisions`)
+   9c8,12
+   < recheck-own5	PROBLEM  OWN5-02: item 1 and the runbook's 0.3 have the owner commit each session's records and evidence on m0-decisions before an agent works from them, with nothing on main before the exit but the covered merge; step 5's rule covers the owner's own edits; 0.7, 0.8, Section 2, the linkage.sh paragraph and the drop-in run name the branch (M0-gate.md item 1 lacks: 6. **Commit your se
+   ---
+   > recheck-own4	PROBLEM  OWN4-07: item 4, Section 7, the runbook's Session 10 and ADR-0014 give resolve-locks.sh first, a folder of its own for the logs and the update of ADR-0014; the committed log is still Xcode 27.0's and no 27.1 run exists (a run under Xcode 27.1 is now recorded: the records that call it pending need updating)
+   > recheck-own5	PROBLEM  OWN5-01: Session 10 and item 3 give the sign-offs plan 23.1 still waits for (D01, D02, D03, D05, D07, D08, D10, D15, D16, D17), D02's with ADR-0014's lock, D05's after run 3, D03's outcome after runs 8 and 9 and D17's persistence owner assumed the owner's, each with what it reads, when and where it is recorded; QA has a reading list and a record (the table's D02 row lacks t
+   > recheck-own5	PROBLEM  OWN5-02: item 1 and the runbook's 0.3 have the owner commit each session's records and evidence on m0-decisions before an agent works from them, with nothing on main before the exit but the covered merge; step 5's rule covers the owner's own edits; 0.7, 0.8, Section 2, the linkage.sh paragraph and the drop-in run name the branch (M0-gate.md item 1 lacks: 6. **Commit your se
+   > recheck-own5	PROBLEM  OWN5-03: the security sign-off's timing in item 3, the runbook's security part and run 12, and ADR-0015, adds linkage.sh's run, which the runbook puts before ADR-0014's items 4, 5 and 9; the opening names it; D17's cell and the class-C row read 8.10 (the opening lacks: the run of `linkage.sh` under Xcode 27.1 with ADR-0014's section 4 brought up to date from it)
+   > recheck-own5	PROBLEM  OWN5-05: the opening (596 words), the State line (173; 769 together) and run 1 (171) without the review history and notes, each pointing to where they are (the State line lacks: (This line's history: Section 6.2, and Section 6.3, item 88.))
+   16c19
+   < recheck-unl	PROBLEM  UNL-02: the State line (200 words) names the record of the drop-in run and its fix and the last two fixes as unreviewed; the Stage 0 README gives the review of the record and its fix; 25.2's row has its note (the State line lacks: the follow-up and its four fixes, the record of item 4's drop-in run and its fix, and this summary's own updates; the State line lacks: and the la
+   ---
+   > recheck-unl	PROBLEM  UNL-02: the State line (173 words) names the record of the drop-in run and its fix and the last two fixes as unreviewed; the Stage 0 README gives the review of the record and its fix; 25.2's row has its note (the State line lacks: the follow-up and its four fixes, the record of item 4's drop-in run and its fix, and this summary's own updates; the State line lacks: and the la
+-- the instructions part's recheck (Docs/Stage0/evidence/M0-DeviceA/instructions/commands/recheck-instructions.py): it must report exactly its floor item, as before, and its item run-1, on exactly the two texts of pull request #6's date that this fix changed (OWN-DA-06), by design
+   PROBLEM   device-A: device A is the iPhone 13 mini (iPhone14,4 expected; A15; 375 × 812 pt) in the runbook, the gate summary, the Stage 0 README and each checklist's device-A line, the iPhone 11 Pro kept only in dated notes (the runbook lacks: - **Your decision of 24 October 2026, and the branch you build from since then.**)
+   PROBLEM   floor: the 13 mini lays out at the 11 Pro's 375 × 812 pt drawn about 8% smaller; its figures that depend on the chip are its own, never the A13's; no budget changes; M8 measures the A13 floor; D-2 (a) stands with a narrower form of (b)'s exception (the runbook's 1.1 lacks: in M8, the Section 19.2 budgets are measured on an A13 iPhone, your iPhone 11 if it still works then, or a borrowed or bought one)
+   PROBLEM   branch: the runbook, the gate summary, the checklists' setup lines and the Stage 0 README send the owner to m0-sessions in ~/Git/sylvia-sessions, with records and agent work merged into it between sittings (the runbook's 0.3 lacks: 1. `git branch --show-current` reads `m0-sessions`; the runbook's 0.3 lacks: 6. **Your session records, on `m0-sessions`.**; the runbook's 0.3 lacks: only once the other's branch is merged into `m0-sessions`; the runbook's 0.3 lacks: (`git checkout m0-sessions`, then `git merge <its branch>`, by you or by an agent you ask); the runbook's 0.3 still says: 6.
+   PROBLEM   run-1: steps 2 and 3 done, step 5 asked and pending, step 7 a one-line confirmation with Apple's evidence in item 1 and the runbook's 0.2; run 1 within 200 words; the old texts in Section 6.3, item 104 (M0-gate.md item 1 lacks: 2. **Done: `CLAUDE.md` corrected.**; M0-gate.md item 1 lacks: 3. **Done: `m0-decisions` merged into `main`** by pull request #6 on 24 October 2026 (`96bdc7e9`); M0-gate.md item 1 lacks: 5. **The two requests of item 4: asked, and in progress.**; M0-gate.md item 1 lacks: Until then each stays pending; M0-gate.md item 1 lacks: what the steps said until then is i
+   PROBLEM   step-0.8: 0.8 gives the paths read from the drop-in, the commit checked, the result, the command for after a merge, and that the drop-in uses neither file m0-exit-prep changes; dropin-paths.log records no change (the runbook's 0.8 lacks: **Checked on 24 October 2026:**; the runbook's 0.8 lacks: None of them changed between `9cdb0a02` and `6cede84a`, the head of `m0-sessions` that day; the runbook's 0.8 lacks: `git diff --stat 9cdb0a02 HEAD -- Scripts/ci.d/71-g05-recovery.sh Scripts/lib Scripts/tools Spikes/G05-Recovery Contracts/schemas/backup-manifest.v1.schema.json Contracts/fixtur
+   PROBLEM   sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of this update is a record of what happened (34 lines listed, each with its reason) (Docs/Stage0/M0-device-runbook.md: unlisted, with no mark of this update: 3. **Done:** pull request #6 merged `m0-decisions` into `main` on 23 October 2026 at 15:34 UTC (24 O; Docs/Stage0/M0-gate.md: unlisted, with no mark of this update: **Your first sittings** (25 October 2026 UTC, 26 October on the build Mac's clock; phone B, the iPho; Docs/Stage0/M0-gate.md: unlisted, with no mark of this update: **Did each g
+   result: FAIL (6 of 6 not as stated)
+exit: 1
+   NOT as required
+-- the assembly's recheck (Docs/Stage0/evidence/M0-DeviceA/assembly/commands/recheck-assembly.py): it must report exactly run-1 (the two texts of pull request #6's date that this fix changed, OWN-DA-06, by design), agree (ADR-0001's clause on ADR-0013, which FID-DA-05 narrowed) and state (README.md's sentence on the branches and the runbook's Who wrote it, which FID-DA-01 and the review changed), the last two as before
+   PROBLEM   device-A: device A is the iPhone 13 mini (iPhone14,4 expected; A15; 375 × 812 pt) in the runbook, the gate summary, the Stage 0 README and each checklist's device-A line, the iPhone 11 Pro kept only in dated notes (the runbook lacks: - **Your decision of 24 October 2026, and the branch you build from since then.**)
+   as stated floor: the 13 mini lays out at the 11 Pro's 375 × 812 pt drawn about 8% smaller; its figures that depend on the chip are its own, never the A13's; no budget changes; M8 measures the A13 floor on an A13 iPhone, the owner's iPhone 11 or one borrowed or bought if the owner wants one; D-2 (a) stands with a narrower form of (b)'s exception
+   PROBLEM   branch: the runbook, the gate summary, the checklists' setup lines and the Stage 0 README send the owner to m0-sessions in ~/Git/sylvia-sessions, with records and agent work merged into it between sittings (the runbook's 0.3 lacks: 1. `git branch --show-current` reads `m0-sessions`; the runbook's 0.3 lacks: 6. **Your session records, on `m0-sessions`.**; the runbook's 0.3 lacks: only once the other's branch is merged into `m0-sessions`; the runbook's 0.3 lacks: (`git checkout m0-sessions`, then `git merge <its branch>`, by you or by an agent you ask); the runbook's 0.3 still says: 6.
+   PROBLEM   run-1: steps 2 and 3 done, step 5 asked and pending, step 7 a one-line confirmation with Apple's evidence in item 1 and the runbook's 0.2; run 1 within 200 words; the old texts in Section 6.3, item 104 (M0-gate.md item 1 lacks: 2. **Done: `CLAUDE.md` corrected.**; M0-gate.md item 1 lacks: 3. **Done: `m0-decisions` merged into `main`** by pull request #6 on 24 October 2026 (`96bdc7e9`); M0-gate.md item 1 lacks: 5. **The two requests of item 4: asked, and in progress.**; M0-gate.md item 1 lacks: Until then each stays pending; M0-gate.md item 1 lacks: what the steps said until then is i
+   PROBLEM   step-0.8: 0.8 gives the paths read from the drop-in, the commit checked, the result, the command for after a merge, that the drop-in uses neither file m0-exit-prep changes, and the assembly's check on the merged tree; both dropin-paths.log record no change (the runbook's 0.8 lacks: **Checked on 24 October 2026:**; the runbook's 0.8 lacks: None of them changed between `9cdb0a02` and `6cede84a`, the head of `m0-sessions` that day; the runbook's 0.8 lacks: `git diff --stat 9cdb0a02 HEAD -- Scripts/ci.d/71-g05-recovery.sh Scripts/lib Scripts/tools Spikes/G05-Recovery Contracts/schemas/ba
+   PROBLEM   sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of the update is a record of what happened (34 lines listed, each with its reason) (Docs/Stage0/M0-device-runbook.md: unlisted, with no mark of the update: 3. **Done:** pull request #6 merged `m0-decisions` into `main` on 23 October 2026 at 15:34 UTC (24 O; Docs/Stage0/M0-gate.md: unlisted, with no mark of the update: **Your first sittings** (25 October 2026 UTC, 26 October on the build Mac's clock; phone B, the iPho; Docs/Stage0/M0-gate.md: unlisted, with no mark of the update: **Did each gate 
+   PROBLEM   agree: the two parts say the same: M8's A13 phone as the owner's choice had it, the old wording gone; the owner's words and option quoted alike; the repeats on A that give the 13 mini's figures listed alike; the side of 8.9's start-up race as ADR-0007 has it; the narrower exception's records named alike; the 13 mini's facts alike, with no memory size (M0-gate.md item 105 lacks: or one borrowed or bought if you want one; integration log section 28 lacks: iphone 11 pro seems to be no longer charging. i do have a 13 mini that is still working, so update the plan. even better from a scre
+   PROBLEM   state: the branch state the same in the repository README, ADR-0002, the ADR index, the Stage 0 README, the gate summary, the runbook and the integration log, with the assembly named where the update is described (README.md lacks: were made on the branch `m0-decisions`, which pull request #6 merged into main on 24 October 2026 (`96bdc7e9`); since then the M0 work and the device sessions use the branch `m0-sessions`, made from main that day, and nothing else reaches main before the M0 exit unless the product owner decides otherwise; the Stage 0 README lacks: and on 26 October 2026 an 
+   PROBLEM   log: the integration log's section 28 describes both parts (28.3 the instructions part, as its record has it) and the assembly (28.4's merge commits, 28.8, with what it saw of the sessions' checkout, and 28.1's note) (integration log 28.3 lacks: It was made on `m0-sessions-instructions`, from `6cede84a`, in two attempts.; integration log 28.3 lacks: `6a72ce8c`; integration log 28.3 lacks: `e7f3b066`; integration log 28.3 lacks: `fbf8aae3`; integration log 28.3 lacks: `1c69da4c`; integration log 28.3 lacks: - **The runbook**:; integration log 28.3 lacks: - **The gate summary**:; integ
+   result: FAIL (8 of 9 not as stated)
+exit: 1; reported: device-A branch run-1 step-0.8 sweep agree state log
+   NOT as required: exactly run-1, agree and state, on those texts
+   its control on the tree of 6cede84a: 9 of 9 reported (exit 1); on the tree of 5e455f70: floor step-0.8 agree state log (exit 1)
+   as required: all nine on 6cede84a's tree, and floor, step-0.8, agree, state and log on 5e455f70's
+-- the first fix's check of the review's cited lines (Docs/Stage0/evidence/M0-DeviceA/fix-1/commands/finding-lines.py), at 8082bdb6: every one must hold
+   result: every cited line and claim holds (39 citations, 5 claims)
+exit: 0
+   its control at HEAD, where the lines the first fix changed no longer hold the cited text: result: 35 do not hold (39 citations, 5 claims) (exit 1)
+-- the first fix's recheck (Docs/Stage0/evidence/M0-DeviceA/fix-1/commands/recheck-fix1.py), on HEAD: it must report exactly its items checkout and step-0.8, each on exactly the text of 0.8 after the merge that the third fix changed (DA-07), and review, on exactly the State line's clause the second fix changed, as before (by design; the third fix's recheck and the second's assert the new texts)
+   PROBLEM   checkout: the sessions' checkout as found, on m0-decisions, in run 1's step 1, the runbook's header, README.md and 28.1; what to do before it moves; m0-decisions no longer called behind main; no claim that no device step ran (the runbook's 0.3, step 1 lacks: If it reads another branch, do not switch it yourself; the runbook's 0.3, step 1 lacks: once everything the checkout's branch has t
+   as stated a13: the four texts give the owner's decision (the A13 floor left for M8, so no A13 phone measured in M0), each with its dated note; no live record gives the lack of an A13 phone as a fact (11 occurrences, each the record of what a text said)
+   PROBLEM   step-0.8: 0.8 names the commit of each check (6cede84a, 5e455f70, 8082bdb6, the fix's own) and what the merge of m0-decisions adds; item 2 says so; the fix's log records no change at those commits (the runbook's 0.8 lacks: none of those paths changed since `9cdb0a02` in it, at `5e455f70`, before the assembly's own changes; the runbook's 0.8 lacks: whose header names that commit; the runb
+   as stated dates: the Stage 0 README's heading and sentence, the gate summary's bullet and its line over items 104-110, the runbook's Who wrote it, and the ADR index's row of ADR-0013 each give the day each part was done or decided
+   as stated step-12: ADR-0001 limits the exception's absence to the G0.6 steps on device A in M0 and applies it to step 12's repeat in M3; ADR-0013 and the records' evidence README say so
+   as stated release-notes: ADR-0001's Status and open item, and the ADR index's row, give Apple's pages as read on 24 October 2026 and the technical lead's confirmation as what remains; the index's column dated 26 October 2026
+   as stated base: m0-sessions made from 5aec2518, with 6cede84a committed on it, in the gate summary and the instructions part's evidence README
+   PROBLEM   review: the review at 8082bdb6 and this fix, not reviewed, in the gate summary (the State line: 173 words), the runbook, the Stage 0 README, integration log 28 and 29, eight ADRs, the ADR index and the update's evidence READMEs (the State line lacks: nor has the update's fix (Section 6.2); the State line lacks: and the last two fixes, the follow-up's fourth and that record's second, have
+   result: FAIL (3 of 8 not as stated)
+exit: 1
+-- its control on the tree of 8082bdb6, the commit the review read: all eight items must be reported
+   exit: 1; reported: 8 of 8
+   NOT as required: exactly checkout, step-0.8 and review, on those texts
+   its control as required: all eight reported on 8082bdb6's tree
+-- the second fix's check of the accuracy findings' cited lines (Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/commands/finding-lines.py), at 8082bdb6: every one must hold
+   result: every cited line, named text and claim holds (47 citations, 3 of them found within three lines of the line cited; 9 named texts; 5 claims)
+exit: 0
+   its control at HEAD, where the lines the first two fixes changed no longer hold the cited text: result: 27 do not hold (47 citations, 5 of them found within three lines of the line cited; 9 named texts; 5 claims) (exit 1)
+-- the second fix's recheck (Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/commands/recheck-acc.py), on HEAD: it must pass (this fix kept every text it asserts)
+   PROBLEM   branch: the State line and Section 5.1 say where no device result is recorded; the runbook header says what a sitting builds from until the checkout moves; run 1's case for a checkout on another branch kept; items 124-130; the judged branch check and this fix's read of the branches committed (the State line lacks: no sign-off of a plan 23.3 role and no device result is recorded here yet;
+   as stated phones: the G0.5 AI note no longer calls device A the phone on hand besides phone B; step 22.5 says how a result on the iPhone 11 is recorded; the first fix's four texts kept; no live record gives the lack of an A13 phone, or device A as the only phone at hand, as a fact (16 occurrences, each the record of what a text said)
+   as stated step-12: the first fix's answer to FID-DA-05, which is ACC-03's: ADR-0001 limits the exception's absence to the M0 steps on A and applies it to step 12's repeat in M3; ADR-0013 and the README say so
+   as stated g03-times: the runbook's repeats, the G0.3 checklist's Setup 1, ADR-0010's open item, ADR-0001's clause on it and the records' evidence README name G0.3's times in steps 6, 9, 18, 20 and 32 on A
+   as stated g04-17: Section 7's reason for G0.4 on A says that the checklist asks for 1, 3 and 15 there, never for 17, the runbook's own repeat; the checklist's device line as it was
+   PROBLEM   release-notes: plan D01's row has the dated note on Apple's release notes, recorded in the Revised line and Appendix D; the plan's and the amendments' record of 24 October 2026 give the review at 8082bdb6; the ADR index keeps the first fix's answer (plan Appendix D's item of 24 October 2026 lacks: (its finding ACC-06; `Docs/Stage0/integration-log.md` section 30))
+   PROBLEM   review: this fix, not reviewed, in the gate summary (the State line: 173 words), the runbook, the Stage 0 README, integration log 30, ADR-0001's and ADR-0010's Status, and the evidence READMEs (the State line lacks: nor have the update's fixes (Section 6.2); the State line lacks: (This line's history: Section 6.2, and Section 6.3, item 88.); M0-gate.md lacks: The same review's six accura
+   result: FAIL (3 of 7 not as stated)
+exit: 1
+-- its control on the tree of d6315ad3: every item but step-12 must be reported
+   exit: 1; reported: branch phones g03-times g04-17 release-notes review
+   as required: the six items, all but step-12, reported on d6315ad3's tree
+-- the third fix's check of the completeness findings' cited lines (Docs/Stage0/evidence/M0-DeviceA/fix-1/completeness/commands/finding-lines.py), at 8082bdb6: every one must hold
+   result: every cited line, named text and claim holds (61 citations, 0 of them found within three lines of the line cited; 6 named texts; 7 claims)
+exit: 0
+   its control at HEAD, where the lines the first three fixes changed no longer hold the cited text: result: 42 do not hold (61 citations, 4 of them found within three lines of the line cited; 6 named texts; 7 claims) (exit 1)
+-- the third fix's recheck (Docs/Stage0/evidence/M0-DeviceA/fix-1/completeness/commands/recheck-da.py), on HEAD: it must report exactly its item review, on exactly the two texts that gave its fix as the last (Section 6.2's row, now with section 32, and the runbook's Who wrote it, now with the fourth fix), by design; this fix's recheck asserts the new texts
+   PROBLEM   branch: the runbook's 1.2 note on the commands m0-decisions changed, with 6.3, 8.10, 0.3 step 1 and item 1 step 1 pointing to it; run 1's case for a checkout on another branch kept; the branches and the merges logged; the text asked for CLAUDE.md's milestone paragraph (the runbook's 1.2 lacks: This branch keeps the commands above until `m0-decisions` is merged into `m0-sessions` (0.3, step 1), and that merge brings the new ones here: until then, run 1.2, 6.3 and 8.10 with the commands of the runbook on the branch your checkout is on; the runbook's 6.3 lacks: *(26 October 2026: on thi
+   PROBLEM   ran: the runbook's 1.1 row B gives phone B's build as the sittings record it, to be settled at the merge; the earlier fixes' texts on what is recorded here kept; item 132 (the runbook's 1.1 row B lacks: *(26 October 2026: the session log on `m0-decisions`, where your first sittings are recorded, gives phone B as iOS 27.0.1 (24A446) in its sittings of 25 October 2026 UTC, not the 26.7 (23H24) above; the runbook's 1.1 row B lacks: which build these records give for phone B is settled with you when `m0-decisions` is merged into `m0-sessions` (0.3, step 1); the runbook's 1.1 row B lacks:
+   PROBLEM   log-rows: the runbook's Section 2 and item 1's opening say that item 1 and Session 8 supersede the log's rows 1 and 8 until their new text is applied, and where the sittings are logged; the log left as it was (the runbook's Section 2 lacks: **The log's rows 1 and 8 still read as they did before 24 October 2026**; the runbook's Section 2 lacks: Until you, or an agent you ask, apply their new text (`evidence/M0-DeviceA/assembly/README.md` gives it), `M0-gate.md` Section 1, item 1 and Session 8 here supersede them; the runbook's Section 2 lacks: On this branch the log's opening also sti
+   as stated release-notes: the first and second fixes' answers to FID-DA-06 and ACC-06, which are DA-04's but for CLAUDE.md: the ADR index's row of ADR-0001, ADR-0001's Status and plan D01's row give Apple's pages as read on 24 October 2026
+   PROBLEM   adr14: ADR-0014's open items open with the dated note on m0-sessions, the item's own note kept for the m0-exit-prep run, whose merge does not conflict in ADR-0014 (ADR-0014's open items lacks: *(Dated note, 26 October 2026, on `m0-sessions`: the dated note of 23 October 2026 on the item below that closes R4-01 and R4-02, which names `m0-decisions` as the base of the agent's work; M0-gate.md Section 6.3 lacks: 135. **ADR-0014's note on `m0-decisions`** (DA-05))
+   PROBLEM   step-1: Session 8's opening, 8.10 and the D-2 note: the lines of 8.10's step 1 do not depend on the chip, its pass includes the save-latency test; the test as they say (M0-gate.md Section 6.3 lacks: 136. **Step 1 of 8.10 on device A** (DA-06))
+   PROBLEM   dropin: 0.8's rule sets DeviceTests apart, its command kept; 0.8's note, 0.3 step 1, item 1 step 1 and item 2 no longer have 0.8 run again after the merge; the log shows the check that leaves DeviceTests out printing nothing for HEAD and the computed merge (the runbook's 0.8 lacks: `git diff --stat 9cdb0a02 HEAD -- Scripts/ci.d/71-g05-recovery.sh Scripts/lib Scripts/tools Spikes/G05-Recovery Contracts/schemas/backup-manifest.v1.schema.json Contracts/fixtures/backup-manifest.v1`; the runbook's 0.8 lacks: but for output under `Spikes/G05-Recovery/DeviceTests` alone; the runbook's 0.8 l
+   as stated step-12: the first fix's answer to FID-DA-05, which is DA-08's: ADR-0013's open item on devices notes that step 12's result on device A in M3 is the 13 mini's
+   PROBLEM   confirm: item 1's step 7, the runbook's 0.2 and its technical-lead part say where the one-line confirmation goes until m0-exit-prep is merged (M0-gate.md item 1, step 7 lacks: write your line in the session log's row for run 1, on the branch your checkout is on (step 1), and have it copied into ADR-0001's open item for the technical lead once that merge is made; M0-gate.md item 1, step 7 lacks: (until 26 October 2026 this step did not say where the line goes until then: item 139); the runbook's 0.2 lacks: your confirmation of that reading, as technical lead, is still to be recorded: 
+   PROBLEM   review: this fix, not reviewed, in the gate summary (Section 6.2, items 131-140, Section 7, Section 8), the runbook's Who wrote it, the Stage 0 README, integration log 31 and the evidence READMEs; the texts asked for CLAUDE.md in this fix's README; the findings as relayed (M0-gate.md Section 6.2's row lacks: The nine answered the same day by the fix of its completeness findings (items 131-140); M0-gate.md Section 6.2's row lacks: | integration log sections 29, 30 and 31 |; M0-gate.md Sections 6.2 and 6.3 lacks: And its nine completeness findings, one of them a blocker and two major, 
+   result: FAIL (8 of 10 not as stated)
+exit: 1
+-- its control on the tree of ec91f66a, the commit the third fix started from: every item but release-notes and step-12 must be reported, as before
+   exit: 1; reported: branch ran log-rows adr14 step-1 dropin confirm review
+   NOT as required: exactly its item review, on those texts
+   its control as required: the eight items, all but release-notes and step-12, reported on ec91f66a's tree
+-- this fix's check of the owner-readability findings' cited lines (Docs/Stage0/evidence/M0-DeviceA/fix-1/owner/commands/finding-lines.py), at 8082bdb6: every one must hold
+   result: every cited line, named text and claim holds (73 citations, 0 of them found within three lines of the line cited; 12 named texts; 15 claims)
+exit: 0
+   its control at HEAD, where the lines this fix or the first three changed no longer hold the cited text: result: 61 do not hold (73 citations, 4 of them found within three lines of the line cited; 12 named texts; 15 claims) (exit 1)
+-- this fix's recheck (Docs/Stage0/evidence/M0-DeviceA/fix-1/owner/commands/recheck-own.py), on HEAD: it must pass
+   PROBLEM   checkout: run 1's step 1 says when the merge before the switch is made, and what an agent sees until then; the earlier fixes' case for a checkout on another branch kept; the Stage 0 README; item 141; the branches and the merges logged (the runbook's 0.3, step 1 lacks: That merge, too, is made between your sittings, once you have told the orchestrating session that the sitting in progress
+   PROBLEM   ran: the gate summary's opening says where the sittings are recorded; it, Section 5.1, Section 7, the runbook's header and the Stage 0 README say that their records have not been reviewed; item 142 (M0-gate.md's opening lacks: No device or human step's result is recorded here yet (your sittings, on `m0-decisions`, unreviewed: item 1); M0-gate.md Section 5.1 lacks: No result of a device s
+   PROBLEM   host: the runbook's 1.5 says what Session 1 found, Xcode's message as the log on m0-decisions has it; the checklist's setup note; 0.3, step 7, lists it; item 143 (the runbook's 1.5, its bullet on what Session 1 found lacks: (`Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log` on `m0-decisions`, at `c72247a6`, where your first sittings are recorded; not reviewed); the runbook's 1.
+   PROBLEM   confirm: ADR-0001's open item and the D-3 note say where the line goes until m0-exit-prep is merged; the third fix's texts kept; item 144; the merge of m0-exit-prep conflicting in the same files (ADR-0001's open item for the technical lead lacks: Until that run's branch is merged into `m0-sessions`, this record is that run's to change (the device runbook's 0.3, step 5): the technical lea
+   PROBLEM   edits: item 4 lists the edits of the records left to the owner, with the texts asked for CLAUDE.md; item 1's opening and the runbook's Section 2 point to it; the session log left as it was; item 145 (M0-gate.md item 4 lacks: - **Edits of the records left to you, or to an agent or the orchestrating session you ask** (no agent makes them on a workflow's request; Section 6.3, item 145): the
+   PROBLEM   dates: pull request #6's merge dated 23 October 2026 at 15:34 UTC with the build Mac's date, and the second reading of Apple's pages at 17:49 UTC on 23 October, where the texts gave the build Mac's date alone or the same day; the old texts gone; the commit's date and the log as given; item 146 (the runbook's header, on the branch lacks: Pull request #6 merged `m0-decisions` into `main` (
+   PROBLEM   ios27: the runbook's 1.1 row A cites Apple's iOS 27 list, which has the iPhone 13 mini, and allows 27.x in its first cell; this fix's read of the page; item 147 (M0-gate.md Section 6.3 lacks: 147. **iOS 27 on the iPhone 13 mini** (OWN-DA-07))
+   PROBLEM   merge-where: 0.3, step 5, and item 1's step 5 say that agent work is merged in ~/Git/sylvia-sessions itself once it is on m0-sessions, the command kept; item 148 (the runbook's 0.3, step 5 lacks: (`git checkout m0-sessions`, then `git merge <its branch>`, by you or by an agent you ask); the runbook's 0.3, step 5 lacks: Once `~/Git/sylvia-sessions` is on `m0-sessions` (step 1), that merge
+   PROBLEM   d01: the gate summary's D01 row calls device A the small-screen baseline, in the past tense, with a dated note; the plan's wording as the note cites it; item 149 (M0-gate.md's D01 row lacks: Until 26 October 2026 this note called device A the baseline, unqualified, and gave those changes as still to make: Section 6.3, item 149.)*; M0-gate.md Section 6.3 lacks: 149. **Device A in this sum
+   PROBLEM   review: this fix, not reviewed, in the gate summary (Section 6.2, items 141-150, Section 7, Section 8), the runbook's Who wrote it, the Stage 0 README, integration log 32, ADR-0001's Status and the evidence READMEs; the findings as relayed (M0-gate.md Section 6.2's row lacks: The nine answered the same day by the fix of its owner-readability findings (items 141-150); M0-gate.md Section 6
+   result: FAIL (10 of 10 not as stated)
+exit: 1
+-- its control on the tree of caf75a84, the commit this fix started from: all ten items must be reported
+   PROBLEM   checkout: run 1's step 1 says when the merge before the switch is made, and what an agent sees until then; the earlier fixes' case for a checkout on another branch kept; the Stage 0 README; 
+   PROBLEM   ran: the gate summary's opening says where the sittings are recorded; it, Section 5.1, Section 7, the runbook's header and the Stage 0 README say that their records have not been reviewed; i
+   PROBLEM   host: the runbook's 1.5 says what Session 1 found, Xcode's message as the log on m0-decisions has it; the checklist's setup note; 0.3, step 7, lists it; item 143 (the runbook's 1.5, its bull
+   PROBLEM   confirm: ADR-0001's open item and the D-3 note say where the line goes until m0-exit-prep is merged; the third fix's texts kept; item 144; the merge of m0-exit-prep conflicting in the same f
+   PROBLEM   edits: item 4 lists the edits of the records left to the owner, with the texts asked for CLAUDE.md; item 1's opening and the runbook's Section 2 point to it; the session log left as it was; 
+   PROBLEM   dates: pull request #6's merge dated 23 October 2026 at 15:34 UTC with the build Mac's date, and the second reading of Apple's pages at 17:49 UTC on 23 October, where the texts gave the buil
+   PROBLEM   ios27: the runbook's 1.1 row A cites Apple's iOS 27 list, which has the iPhone 13 mini, and allows 27.x in its first cell; this fix's read of the page; item 147 (the runbook's 1.1 row A lack
+   PROBLEM   merge-where: 0.3, step 5, and item 1's step 5 say that agent work is merged in ~/Git/sylvia-sessions itself once it is on m0-sessions, the command kept; item 148 (the runbook's 0.3, step 5 l
+   PROBLEM   d01: the gate summary's D01 row calls device A the small-screen baseline, in the past tense, with a dated note; the plan's wording as the note cites it; item 149 (M0-gate.md's D01 row lacks:
+   PROBLEM   review: this fix, not reviewed, in the gate summary (Section 6.2, items 141-150, Section 7, Section 8), the runbook's Who wrote it, the Stage 0 README, integration log 32, ADR-0001's Status 
+   result: FAIL (10 of 10 not as stated)
+exit: 1; reported: checkout ran host confirm edits dates ios27 merge-where d01 review
+   as required: all ten items reported on caf75a84's tree
+
+== 5. Scripts/ci.sh contracts dependency-lock hard-rules (every drop-in must pass)
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (55s)
+==> 12-dependency-lock
+    pass (40s)
+==> 13-hard-rules
+    pass (9s)
+all 5 steps passed
+ci.sh exit: 0
+summary lines from the drop-ins' own logs (.build/ci-logs/):
+-- 00-git-lfs (last 4 lines)
+LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+pointer files in the working tree: none
+git lfs fsck --pointers (HEAD): Git LFS fsck OK
+00-git-lfs: pass: no file stored with Git LFS is a pointer in the working tree, and every file the LFS attributes match is committed as an LFS pointer
+-- 10-contracts (last 4 lines)
+schemas: 18  fixtures: 657  openapi: 1  instances: 1
+-- 11-capture-anchor-contracts (last 4 lines)
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete minLength
+generic bound, survived: capture-envelope#/properties/word/properties/source_sentence: delete type
+generic bound, survived: capture-envelope#/properties/word: delete type
+result: pass
+-- 12-dependency-lock (last 4 lines)
+ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1) (the pin, compared whole)
+ok    toolchain: xcodegen --version -> Version: 2.46.0 (the pin, compared whole)
+ok    acknowledgements draft: matches the inventory (236499 characters)
+dependency lock check: 0 failure(s), 0 warning(s)
+-- 13-hard-rules (last 4 lines)
+| todo-in-product | 0 | 0 |
+
+result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+13-hard-rules: self-test and repository audit passed; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_f23c0c6d-d05-5/.build/ci-logs/hard-rules
+-- the audit's result line:
+result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+-- FAIL lines in 12-dependency-lock's log:
+(none)
+-- its toolchain lines:
+ok    toolchain: the Xcode pin 27.1 (27A9275) as stated in .github/workflows/ci.yml, CLAUDE.md, Docs/ADRs/0001-platform-baseline-and-toolchain.md
+ok    toolchain: xcodebuild -version -> Build version 27A9275 (the pin, compared whole)
+ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1) (the pin, compared whole)
+ok    toolchain: xcodegen --version -> Version: 2.46.0 (the pin, compared whole)
+
+== 6. Leftover G0.5 temporary directories (read-only count; G05-AI R7-04)
+g05-* directories in the user's temporary folder: 1665
+g05-tests-* directories there: 0
+
+exit: 1
+end: 2026-10-26T10:29:17Z; load: 23:29  up 23 days,  9:39, 3 users, load averages: 6.59 12.62 8.89

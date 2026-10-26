@@ -1,0 +1,63 @@
+command: python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/finding-lines.py
+commit: 6cebdb0883d9d2a9a9d1cf65778b2264510dc587; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T10:21:08Z; load: 23:21  up 23 days,  9:31, 3 users, load averages: 1.63 2.68 3.73
+
+reviewed commit: 832a36361b89b9574e29556d06cd676471fa0350
+
+ok   FID-RU-01 832a3636:Docs/Stage0/M0-device-runbook.md:210
+ok   FID-RU-01 c72247a6:Docs/Stage0/M0-device-runbook.md:207
+ok   FID-RU-01 1d5ac477:Docs/Stage0/M0-device-runbook.md:209
+ok   FID-RU-01 832a3636:Docs/Stage0/M0-device-runbook.md:221
+ok   FID-RU-01 832a3636:Docs/Stage0/M0-device-runbook.md:1011
+ok   FID-RU-01 the owner's setup record: 0.7's Keychain test not run
+ok   FID-RU-01 832a3636:Docs/Stage0/M0-gate.md:774
+ok   FID-RU-01 832a3636:Docs/Stage0/M0-gate.md:839 item 178's list of the runbook's parts names 0.3 and 0.8, not 0.7 (the runbook (its header, 1.1's row B and its OS versions paragraph, 1.5, Section 2, Section 3's runs 1 and 2, 0.2, 0.3, 0.8, 1.2's note, 6.3's record, 8.10, Sec)
+ok   FID-RU-01 the merge 4c0fa815 took m0-sessions's 0.7
+ok   FID-RU-01 d1fb3dd4 left it
+ok   FID-RU-02 832a3636:Docs/Stage0/M0-gate.md:466
+ok   FID-RU-02 c72247a6:Docs/Stage0/M0-gate.md:459
+ok   FID-RU-02 832a3636:Docs/Stage0/M0-gate.md:482
+ok   FID-RU-02 832a3636:Docs/Stage0/M0-gate.md:16
+ok   FID-RU-02 832a3636:Docs/Stage0/M0-gate.md:21
+ok   FID-RU-03 832a3636:CLAUDE.md:5 is 6cede84a's paragraph
+ok   FID-RU-03 c72247a6:CLAUDE.md:5 holds the paragraph of 22 October 2026 (d076f6fe's)
+ok   FID-RU-03 5aec2518's message records the owner's request of 24 October 2026 (Point CLAUDE.md's milestone paragraph at main, where all M0 work now is)
+ok   FID-RU-03 6cede84a's message records the owner's request of 24 October 2026 (Point CLAUDE.md at m0-sessions, the branch the M0 work and device sessions now use)
+ok   FID-RU-04 832a3636:Docs/Stage0/M0-gate.md:122
+ok   FID-RU-04 832a3636:Docs/Stage0/M0-gate.md:471
+ok   FID-RU-04 832a3636:Docs/Stage0/M0-gate.md:556
+ok   FID-RU-04 832a3636:Docs/Stage0/README.md:41
+ok   FID-RU-05 832a3636:Docs/ADRs/0003-persistence.md:3
+ok   FID-RU-05 832a3636:Docs/ADRs/0005-pdf-reading-and-anchors.md:3
+ok   FID-RU-05 832a3636:Docs/ADRs/0007-quick-capture-evaluation.md:3
+ok   FID-RU-05 832a3636:Docs/ADRs/0009-transfer-protocol.md:3
+ok   FID-RU-05 832a3636:Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:3
+ok   FID-RU-05 832a3636:Docs/ADRs/0013-design-language.md:3
+ok   FID-RU-05 832a3636:Docs/ADRs/README.md:29
+ok   FID-RU-05 832a3636:Docs/Stage0/M0-gate.md:4
+ok   FID-RU-05 832a3636:Docs/ADRs/0001-platform-baseline-and-toolchain.md:3
+ok   FID-RU-05 832a3636:Docs/ADRs/README.md:17
+ok   FID-RU-05 832a3636:Docs/Stage0/README.md:5
+ok   FID-RU-05 832a3636:Docs/Stage0/M0-plan-amendments.md:5
+ok   FID-RU-06 832a3636:Docs/Stage0/integration-log.md:2385
+ok   FID-RU-06 git show --stat 4be1a1a4: the runbook, the G0.5 recovery checklist and four DeviceTests files, not the report (.../DeviceTests/Support/Bundle+Module.swift, Docs/Stage0/M0-device-runbook.md, Docs/Stage0/device-checklists/G05-Recovery.md, Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, Spikes/G05-Recovery/DeviceTests/project.yml)
+ok   FID-RU-06 38f9604e changes the G0.5 recovery report
+ok   FID-RU-06 d5336111 changes the G0.5 recovery report
+ok   FID-RU-07 832a3636:Docs/Stage0/M0-gate.md:855 the current note, then the older one
+ok   FID-RU-07 832a3636:Docs/ADRs/0002-repository-build-and-ci.md:41
+ok   FID-RU-08 832a3636:Docs/Stage0/M0-gate.md:10
+ok   FID-RU-08 the owner's step-01-status.txt claims no result
+ok   FID-RU-09 832a3636:Docs/Sylvia_v1_iOS_Implementation_Plan.md:5
+ok   FID-RU-09 832a3636:Docs/Stage0/M0-gate.md:851
+ok   FID-RU-09 832a3636:Docs/Stage0/M0-gate.md:10
+ok   FID-RU-10 832a3636:Docs/Stage0/device-checklists/G06-Design.md:15
+ok   FID-RU-10 c72247a6:Docs/Stage0/device-checklists/G06-Design.md:15
+ok   FID-RU-11 832a3636:Docs/Stage0/M0-plan-amendments.md:529
+ok   FID-RU-11 at the reviewed commit the accuracy fix's checker failed its check 10k, and m0-records-update's passed
+
+summary: 50 citations and claims, 50 hold, 0 do not
+
+exit status: 0
+end: 2026-10-26T10:21:09Z; load: 23:21  up 23 days,  9:31, 3 users, load averages: 1.63 2.68 3.73

@@ -1,0 +1,23 @@
+# F-1 fixed: protection classes read afresh (27 October 2026)
+
+The product owner, as technical lead, decided on 27 October 2026 to fix finding F-1 before re-running Session 1.2.
+
+**Change.** `FileProtector.protectionClass(of:)` (`Spikes/G05-Recovery/Sources/SylviaRecovery/FileProtection.swift`) drops
+the URL's cached `fileProtectionKey` before reading, so `protect`, `verify` and every readback see the file's class as it
+is on disk. A `URL` caches the resource values it has read, so before this a reading through the URL that had read the
+class before `setAttributes` returned the old class. Two comments that said an existing file's class cannot be changed,
+and the refused-branch evidence line of `DataProtectionTests.mismatchDetected`, no longer assert that.
+
+**Result on the Mac** ([`host-tests.log`](host-tests.log), `xcrun swift test --force-resolved-versions` in
+`Spikes/G05-Recovery`, screen unlocked): 79 tests in 13 suites passed; 3 skipped (the two device probes, and the
+locked-screen observation, the screen being unlocked). The mismatch test now prints `changing an existing file's class
+with setAttributes: applied and verified`: on macOS 26.6.2 `setAttributes` does change an existing file's class, and
+the earlier "refused ... the class is fixed at creation here" lines rested on the cached reading.
+
+The same run is the first run of the two class-B tests of the device fixes' failure 1, which had never run (they need
+the screen unlocked): `v1 library installed from a class-B source: ... opened and migrated` and `class-B tree (4 files,
+5 directories) copied with FileProtector.copyTree: ["NSFileProtectionCompleteUntilFirstUserAuthentication": 9]`, with
+the class-B readback on 53 items and the SQLite class-B inheritance line.
+
+The phone's behaviour is shown by the owner's re-run of 1.2. Made by the orchestrating session in lean mode (the
+owner's choice of 27 October 2026); not independently reviewed.

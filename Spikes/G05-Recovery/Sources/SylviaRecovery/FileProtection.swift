@@ -32,9 +32,9 @@ import Foundation
 /// created in a class-B directory (`DataProtectionTests.inheritance`). In a simulator build only, an
 /// item that reports no class is therefore accepted after the class was requested. A different
 /// reported class is still an error everywhere, and device builds always require the readback to
-/// match (device checklist, T50). On the macOS host, `setAttributes` cannot change the class of an
-/// existing file; the class is fixed when the file is created, so files are created inside
-/// protected directories.
+/// match (device checklist, T50). Files are created inside protected directories so that they have
+/// the class from the start; whether `setAttributes` can change an existing file's class is what
+/// `DataProtectionTests.mismatchDetected` records.
 public struct FileProtector: Sendable {
     public let protection: FileProtectionType
 
@@ -218,7 +218,11 @@ public struct FileProtector: Sendable {
     }
 
     public func protectionClass(of url: URL) throws -> FileProtectionType? {
-        let values = try url.resourceValues(forKeys: [.fileProtectionKey])
+        // A URL caches the resource values it has read, so a reading through the URL that read the class
+        // before `setAttributes` would return the old class (finding F-1). Drop the cached value first.
+        var fresh = url
+        fresh.removeCachedResourceValue(forKey: .fileProtectionKey)
+        let values = try fresh.resourceValues(forKeys: [.fileProtectionKey])
         guard let value = values.fileProtection else { return nil }
         // URLFileProtection and FileProtectionType are distinct string enums with different raw
         // values ("NSURLFileProtection…" vs "NSFileProtection…"); map them explicitly.

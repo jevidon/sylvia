@@ -42,8 +42,8 @@ func policy() -> DurabilityPolicy {
     return DurabilityPolicy(synchronous: sync, fullfsync: argument("--fullfsync", default: "1") == "1")
 }
 
-/// Recreates `path` with the library protection class. On macOS a directory's class is fixed when
-/// it is created (`setAttributes` cannot change it later), so the root must be created with it.
+/// Recreates `path` with the library protection class, so that everything created inside it
+/// inherits the class from the start.
 func freshDirectory(_ path: String) -> URL {
     let url = URL(fileURLWithPath: path, isDirectory: true)
     try? FileManager.default.removeItem(at: url)

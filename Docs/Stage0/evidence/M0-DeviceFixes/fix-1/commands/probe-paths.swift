@@ -44,3 +44,9 @@ for form in [bundle, URL(fileURLWithPath: "/private" + bundle.path, isDirectory:
         print("  enumerated \(url.path)\n    standardized \(full)\n    under the root: \(full.hasPrefix(rootPath + "/"))")
     }
 }
+
+print("== Why fix-1's CanonicalPath.relative compares bytes: a name that begins with a combining mark")
+let marked = "/a/b/\u{301}x"
+print("characters in \"/\" followed by U+0301: \("/\u{301}".count)")
+print("String.hasPrefix(\"/a/b/\") of \"/a/b/\" + U+0301 + \"x\": \(marked.hasPrefix("/a/b/"))")
+print("UTF-8 bytes start with those of \"/a/b/\": \(marked.utf8.starts(with: "/a/b/".utf8))")

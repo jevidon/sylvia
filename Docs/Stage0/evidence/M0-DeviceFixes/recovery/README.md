@@ -15,6 +15,12 @@ Load is recorded with each run (other jobs shared the Mac; no timing here is a b
 Commits: `a65cdc3e` the tests that reproduce both failures on the Mac (they fail on the unchanged code), `c778cd63` the
 fixes, then this record.
 
+**Corrected after review (fix-1, 26 October 2026).** The correctness review of the merged branch found the same
+`/private` mismatch as cause 2 in the new `FileProtector.copyTree`: its refusal of a destination inside its source
+failed under `/private/var`, so `copyTreeRefusals` would have failed in the re-run on the phone. It found the mismatch
+also in the bundle walk's naming of a dangling link. Both are fixed on `m0-device-fixes` in `546a8219`. The notes
+marked "fix-1" below correct what this record said; [`../fix-1/README.md`](../fix-1/README.md) has the whole account.
+
 ## 1. What failed on the phone (the owner's records, unchanged)
 
 Runbook Session 1, step 1.2, phone B (iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)), Codex with the owner, 25 October
@@ -163,7 +169,9 @@ before `setAttributes`, and `protect` reports a mismatch whether or not the chan
   `ensureDirectory` and whose regular files are copied by `copyFile`, so each item gets the protector's class whatever
   its source's; a link or any other kind of item fails the copy, and a failed copy is removed; it refuses an existing
   destination, a destination inside the source and a class with no protected writing option (TM-F1). The two crash
-  drills' `reset()` and the tests' `copyTree` (bundle variants) use it.
+  drills' `reset()` and the tests' `copyTree` (bundle variants) use it. (fix-1: as committed here, the refusal of a
+  destination inside the source compared `standardizedFileURL` paths and failed when the folders were named under
+  `/private/var`, as on a phone. Since `546a8219` it compares the paths after realpath(3).)
 - **The guard:** `ProtectedCopyTests.noCopyKeepsTheSourceClass` fails if any `FileManager.copyItem`, `clonefile`,
   `clonefileat`, `fclonefileat`, `copyfile` or `fcopyfile` call comes back anywhere in the spike's code (`Sources`,
   `Tests`, `DeviceTests`, `LockHarness`; whole-line comments and the rest of a line after `//` are not code), and checks
@@ -177,12 +185,14 @@ before `setAttributes`, and `protect` reports a mismatch whether or not the chan
 - **The behavioural tests:** `ProtectedCopyTests.v1LibraryFromAnotherClass` (the phone's failure, with a class-B source
   standing in for the app bundle's file) and `copyTreeGivesTheClass` (a class-B tree copied comes out class C on every
   file and directory, with the same bytes) need a faithful readback and class-B keys: they run on the phone and on an
-  unlocked Mac, and skip in the simulator and on a locked Mac. `copyTreeRefusals` runs everywhere.
+  unlocked Mac, and skip in the simulator and on a locked Mac. `copyTreeRefusals` runs everywhere. (fix-1: on the Mac
+  it now also runs with its folder named through `/private`, and checks each refusal by its reason.)
 
 **Fix 2: the containment check resolves both paths with realpath(3).** `BackupValidator.resolve` now asks
 `isInside(url, root)`, which compares `canonicalPath` of both: realpath(3) of the deepest part of the path that exists,
-followed by the components below it that do not exist, as they are. realpath(3) gives `/private/var/…` for a folder
-named either way, so the root and a missing file inside it agree. Nothing is weaker:
+followed by the components below it that do not exist, as they are. (fix-1 moved `canonicalPath` to
+`CanonicalPath.of` in `FileSystem.swift`, used by `copyTree` and the bundle walk too.) realpath(3) gives
+`/private/var/…` for a folder named either way, so the root and a missing file inside it agree. Nothing is weaker:
 
 - every component is still checked for a symbolic link first, as before (`symlinkInBundle`);
 - links in the path are now followed even above a missing leaf (before, a missing leaf left the whole path unresolved,
@@ -231,8 +241,10 @@ owner's run of 0.8 covers them.
   test cannot show is iOS itself: that Foundation and realpath(3) on iOS 27.0.1 treat the app container's
   `/private/var/mobile/…` folders the same way; the phone's re-run shows it (section 6). Also shown: that the guard
   finds every copy that keeps its source's class, and that none is left; that the new
-  `copyTree` refuses what it must; that the whole suite, the SIGKILL drills with the new template copy (300 restore and
-  240 migration iterations) and the simulator suite pass on the fixed code; that the device host builds for iOS.
+  `copyTree` refuses what it must (fix-1: only with its folder named under `/var`; through `/private` the refusal of a
+  destination inside the source failed until `546a8219`); that the whole suite, the SIGKILL drills with the new
+  template copy (300 restore and 240 migration iterations) and the simulator suite pass on the fixed code; that the
+  device host builds for iOS.
 - **Shown on the Mac only with the screen unlocked, not done here:** the class-B reproduction of cause 1
   (`v1LibraryFromAnotherClass`: a class-B library refused before the fix, created class C and opened after it), the
   class-B tree copy, the probe's sections 3-4 (finding F-1), and **report row 10's class-B evidence on this code:
@@ -253,8 +265,10 @@ unchanged):
 
 - `Test run with 73 tests in 13 suites passed`: the 68 of the first run and 5 new ones in 2 new suites (the copy guard
   is built for the Mac only). Exactly the same four skips as before, with their reasons (the two device probes and the
-  two contract-fixture tests); the new class tests **run** on the phone.
-- In `RestoreTests.rejections`: `rejected missing-blob-file: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3`.
+  two contract-fixture tests); the new class tests **run** on the phone. (fix-1: on this branch's code, `fd2a2624`,
+  `copyTreeRefusals` would fail there; the count and the pass hold on code that includes `546a8219`.)
+- In `RestoreTests.rejections`: `rejected missing-blob-file: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3`,
+  and since fix-1 `rejected unlisted-dangling-link: symbolic link in bundle: export/markdown/dangling.md`.
 - No `protection: library.sqlite has NSFileProtectionNone` anywhere; the migration and put-back tests pass, with their
   evidence lines (for example `v1 fixture upgraded: v1-initial -> …` and `put-back crash after intentWritten: intent on
   disk true, library.sqlite present true`).
@@ -262,7 +276,8 @@ unchanged):
   NSFileProtectionCompleteUntilFirstUserAuthentication when created; opened and migrated`; `class-B tree (4 files, 5
   directories) copied with FileProtector.copyTree: ["NSFileProtectionCompleteUntilFirstUserAuthentication": 9]`;
   `missing listed file, bundle under /private/var, as on an iPhone: missing file: blobs/excerpts/…`; and the containment
-  line.
+  line. Since fix-1 also `copyTree, a destination inside the source: under /private/var, as on an iPhone: copy Copy is
+  inside Template: Invalid argument (errno 22)`.
 - The class-C and class-B readback lines on 53 files and directories, and the SQLite inheritance lines, as in the first
   run.
 - Record which way `a file with the wrong class is detected` reports the change ("refused" or "applied and verified"):
@@ -277,7 +292,8 @@ unchanged):
    6 tests in 2 suites passed`, none skipped, with the class-B line `v1 library installed from a class-B source: …
    opened and migrated`. To see cause 1 fail on the Mac first, put `FileManager.default.copyItem(at: source, to:
    layout.databaseURL)` back in `installV1` for one run: the test then fails with `library.sqlite has
-   NSFileProtectionCompleteUnlessOpen` (and the guard fails too).
+   NSFileProtectionCompleteUnlessOpen` (and the guard fails too). Since fix-1 the run also prints the `copyTree, a
+   destination inside the source: …` line, under `/var` and through `/private` (the owner's README, Section 7.2).
 3. `xcrun swift Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/probe-host-facts.swift` with the screen unlocked:
    section 4 shows finding F-1 on the Mac.
 

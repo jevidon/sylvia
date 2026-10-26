@@ -8,8 +8,10 @@ records of 26 October 2026 NZDT (session log rows 3a-3d). It merges two fix bran
 - `m0-device-fixes-ats` at `e4586a83`, merged at `eebbb457`: the failure of step 1.3, the ATS probe. Its full record is
   [`ats/README.md`](ats/README.md).
 
-`2d188e06` then added the commands that check the merged tree and `eacc8ddb` their logs ([`assembly/`](assembly/)); the
-last two commits add this README and the logs of the shared checks.
+`2d188e06` then added the commands that check the merged tree and `eacc8ddb` their logs ([`assembly/`](assembly/));
+`163d76b8` and `fdce7cd5` add this README and the logs of the shared checks. After the correctness review of
+`fdce7cd5`, fix-1 (from `346716ed`) fixed the same `/private` mismatch in two more checks and corrected Sections 7.3
+and 7.4. Its record is [`fix-1/README.md`](fix-1/README.md).
 
 All of this is agents' work on the build Mac (macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275)) and its
 simulators (iPhone 17, iOS 26.5) on 26 October 2026. Times are UTC; the Mac's clock reads NZDT, UTC+13. **Nothing
@@ -27,6 +29,12 @@ Section 7.1.**
 | Step 1.2: the migration and put-back tests refused `library.sqlite` as `NSFileProtectionNone` (107 of the 108 issues) | The tests' setup, not D17. They copied the v1 fixture out of the app bundle with `FileManager.copyItem`, which keeps the source file's protection class, and the copy came out with none. The recovery code's own class check then refused it, as it should | Every copy into a library is now created with the library's class. A guard test fails if a class-keeping copy comes back | The guard found all 5 class-keeping copies before the fix and finds none now. The class-B reproduction needs the screen unlocked and **has not run yet** (Section 2) | That the copy gets class C on iOS and that the 16 migration and put-back tests pass |
 | Step 1.2: the missing-blob-file backup was rejected as "unsafe path" instead of "missing file" (1 issue) | A small bug with a safe outcome. The path check compared `/private/var/…` with `/var/…` for a file that does not exist | The containment check now uses realpath(3) | Reproduced and fixed: "unsafe path" before the fix, "missing file" after | That iOS 27 resolves the app's folders the same way |
 | Step 1.3: the private-address load timed out in all three variants | The probe took the phone's first private IPv4 address, 10.71.x.x, which is not Wi-Fi's. The phone sent the load to iCloud Private Relay, which could not reach it | On a device the probe loads only the Wi-Fi (en0) address, and it logs every interface's private address | The simulator's choice and every expectation are unchanged, and the device code builds | What the phone does with its Wi-Fi address |
+
+**After review (fix-1).** The same `/private` mismatch as in failure 2 was in two more checks. One is
+`FileProtector.copyTree`'s refusal of a destination inside its source: the re-run of 1.2 would have failed
+`copyTreeRefusals`. The other is the bundle walk's naming of a dangling link. Both now use realpath(3) too, and on the
+Mac `copyTreeRefusals` now also runs with its folder named through `/private`
+([`fix-1/README.md`](fix-1/README.md)).
 
 The first run already answered step 1.3's main question: on iOS 27.0.1, ATS did **not** block cleartext HTTP to a
 private IP literal (Section 4). The fix keeps the default variant's expectation of Apple's documented block. So in the
@@ -78,6 +86,9 @@ the spike keeps its source's class (recovery README Section 2.1).
   its planted `-wal` and `-shm` files are also created with the library's class.
 - A new `FileProtector.copyTree` copies a folder tree and gives every folder and file the protector's class. It refuses
   links and other special files, and leaves nothing behind when it fails. The crash drills and the bundle helper use it.
+  As committed in `c778cd63`, its refusal of a destination inside the source compared Foundation's standardized paths.
+  Under `/private/var`, as on the phone, that refusal failed, and the copy ran into itself until a name was too long.
+  fix-1 (`546a8219`) compares the paths after realpath(3) instead ([`fix-1/README.md`](fix-1/README.md) Section 2).
 - A guard, `ProtectedCopyTests.noCopyKeepsTheSourceClass`, fails if `copyItem`, `clonefile` or `copyfile` comes back
   anywhere in the recovery spike. It reads the source files, so it runs on the Mac only.
 
@@ -114,7 +125,9 @@ and safe: the backup was still rejected, only with the wrong reason.
 **The fix** (`c778cd63`). The check resolves both paths with realpath(3), which gives `/private/var/…` however the
 folder is named. For a file that does not exist, it resolves the deepest part of the path that does and keeps the rest
 as it is. Nothing is weaker: links are still refused, and they are now followed even above a missing file; `resolve`
-now also refuses, itself, every path the manifest stage refuses.
+now also refuses, itself, every path the manifest stage refuses. fix-1 moved this realpath(3) helper to
+`CanonicalPath` (`FileSystem.swift`) and made `copyTree` and the bundle walk use it as well
+([`fix-1/README.md`](fix-1/README.md)).
 
 **Shown on the Mac.** `PrivatePathTests` names the backup's folder through `/private`, as a phone does. On the
 unchanged code it gave the phone's exact error for the same file
@@ -194,13 +207,20 @@ was compiled, the products); their whole xcodebuild output stayed in the job's s
 
 Each fix branch's own checks, before the merge: recovery README Section 4 and ATS README Section 4.
 
+The checks above are records of `2d188e06`. fix-1 changed the recovery spike's code after them and ran again what that
+change affects, on `3814a161`: the two suites it touches before and after the fix; the host suite from clean (79 tests
+in 13 suites); the restore and migration put-back crash drills, which reset with `copyTree`; the simulator suite (73 in
+13); and the app host's iOS build. It ran the shared checks on its record's commit ([`fix-1/README.md`](fix-1/README.md)
+Section 5). The screen was again locked throughout.
+
 ## 6. What only the phone can show
 
 - Failure 1: that `FileProtector.copyFile` gives the library class C on iOS 27 when its source is in the app, and that
   the 16 migration and put-back tests then pass. Also the first run of the two class-B tests, unless the Mac runs them
   first (Section 7.2).
 - Failure 2: that iOS resolves the app's `/private/var/mobile/…` folders as the fix expects, so the missing file is
-  reported as missing.
+  reported as missing. With fix-1, the same goes for `copyTree`'s refusal of a destination inside its source (`copy
+  Copy is inside Template`) and for the dangling link refused as a link.
 - F-1: whether `setAttributes` changes an existing file's class on iOS 27. The first run suggests it does; the
   mismatch test still reads the stale class until F-1 is fixed.
 - Failure 3: what the phone does with a load to its own Wi-Fi address in each variant, and which interface held
@@ -231,7 +251,8 @@ Do it between sittings, not while a run (such as the audio run of 1.4) or Codex 
 
 What the merge changes outside its own evidence folder: the recovery spike's `Sources` and `Tests`, and the ATS probe's
 test file (`git diff --stat c72247a6 m0-device-fixes -- Apps Packages Spikes Fixtures Scripts Contracts
-Docs/Stage0/device-checklists` lists these 10 files and nothing else). So steps 1.1 and 1.4, which build none of
+Docs/Stage0/device-checklists` lists these 12 files and nothing else: 10 before fix-1, which added `FileSystem.swift`
+and `BackupTests.swift`). So steps 1.1 and 1.4, which build none of
 them, need no repeat (runbook 0.3, step 7). Steps 1.2 and 1.3 run again (7.3, 7.4), and runbook 0.8 must run again
 (7.2), because it builds the recovery spike.
 
@@ -251,8 +272,12 @@ them from the root of `~/Git/sylvia-sessions` after the merge, in zsh. Commit th
    screen's state. Expect `✔ Test run with 6 tests in 2 suites passed`, no test skipped, and the lines `v1 library
    installed from a class-B source: library.sqlite NSFileProtectionCompleteUntilFirstUserAuthentication when created;
    opened and migrated` and `class-B tree (4 files, 5 directories) copied with FileProtector.copyTree:
-   ["NSFileProtectionCompleteUntilFirstUserAuthentication": 9]`. If either test fails, ask an agent before you run step
-   1.2 on the phone, which runs the same tests.
+   ["NSFileProtectionCompleteUntilFirstUserAuthentication": 9]`. Also expect, since fix-1, `copyTree, a destination
+   inside the source: under /var, as the Mac names its temporary folder: copy Copy is inside Template: Invalid
+   argument (errno 22); through /private, as an iPhone's folders are named: copy Copy is inside Template: Invalid
+   argument (errno 22)`. `copyTreeRefusals` now also names its folder through `/private`, as the phone does, so this
+   run checks the fix of review finding F1 on the Mac before the phone does. If any test fails, ask an agent before
+   you run step 1.2 on the phone, which runs the same tests.
 2. **Runbook 0.8**, exactly as the runbook gives it (10-15 minutes). It must run again because the recovery spike
    changed after `9cdb0a02`. Expect what 0.8 says, now with 79 host tests in 13 suites and 73 simulator tests in 13
    suites. The lock harness's quiet-tone test failed on this Mac in every run on 26 October 2026. If it fails again
@@ -289,16 +314,24 @@ cd ../..
 `sylvia_generate` must run first: it adds the two new test files to the generated project. Expected now:
 
 - `✔ Test run with 73 tests in 13 suites passed` and `** TEST SUCCEEDED **`: the first run's 68 tests plus 5 new ones
-  in 2 new suites (the copy guard runs on the Mac only).
+  in 2 new suites (the copy guard runs on the Mac only). This needs fix-1: on `fdce7cd5`, `copyTreeRefusals` would
+  have failed here (review finding F1; [`fix-1/README.md`](fix-1/README.md) Section 2).
 - Exactly the same four skipped tests as before, each with its reason: the lock probe, the persistence probe and the
   two contract-fixture tests. The new class-B tests run.
-- No `NSFileProtectionNone` anywhere. The migration and put-back tests pass with their lines, such as `v1 fixture
-  upgraded: v1-initial -> v2-rating-review-note -> v2-recommendation-date-precision -> v2-edition-cover-thumbnail;
-  snapshot …` and `put-back crash after intentWritten: intent on disk true, library.sqlite present true`.
+- No `protection: library.sqlite has NSFileProtectionNone` anywhere. One line still names `NSFileProtectionNone`, as
+  in the first run (its line 2364), and is expected: `file written with .noFileProtection into the test's temporary
+  directory reports: NSFileProtectionNone`. It comes from the unchanged `DataProtectionTests.mismatchDetected`, which
+  writes such a file on purpose and passes. The migration and put-back tests pass with their lines, such as `v1
+  fixture upgraded: v1-initial -> v2-rating-review-note -> v2-recommendation-date-precision ->
+  v2-edition-cover-thumbnail; snapshot …` and `put-back crash after intentWritten: intent on disk true, library.sqlite
+  present true`.
 - `rejected missing-blob-file: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3`.
-- The four new lines:
+- `rejected unlisted-dangling-link: symbolic link in bundle: export/markdown/dangling.md`: a damaged-bundle variant
+  that fix-1 added to the same test (review finding F3).
+- The five new lines:
   - `v1 library installed from a class-B source: library.sqlite NSFileProtectionCompleteUntilFirstUserAuthentication when created; opened and migrated`
   - `class-B tree (4 files, 5 directories) copied with FileProtector.copyTree: ["NSFileProtectionCompleteUntilFirstUserAuthentication": 9]`
+  - `copyTree, a destination inside the source: under /private/var, as on an iPhone: copy Copy is inside Template: Invalid argument (errno 22)` (since fix-1)
   - `missing listed file, bundle under /private/var, as on an iPhone: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3`
   - `containment check (realpath of the deepest existing part): under /private/var, as on an iPhone: a missing leaf is inside; a missing leaf below a link to outside the root is outside; resolve refuses links and the manifest's unsafe paths`
 - As in the first run: class C and class B each read back on 53 files and directories, the class-B SQLite line and the
@@ -306,8 +339,9 @@ cd ../..
 - Record whether the line `changing an existing file's class with setAttributes:` says "refused" or "applied and
   verified". "Refused" is expected while F-1 is unfixed.
 
-If a migration or put-back test still names a protection class, or the missing file is still an unsafe path, record
-it as it is and ask an agent. Then carry on with step 1.2's latency runs as the runbook says. Since the recovery code
+If a migration or put-back test still names a protection class, the missing file is still an unsafe path, the dangling
+link is not refused as a link, or the `copyTree` line names anything but `is inside`, record it as it is and ask an
+agent. Then carry on with step 1.2's latency runs as the runbook says. Since the recovery code
 changed, this run's p95 replaces the first run's 2.292 ms as the first of the six (runbook 0.3, step 7: the later
 result counts).
 
@@ -340,13 +374,14 @@ probe's expectations are unchanged since `d5336111`; ATS README Section 5):
 
 | Variant | Expected `ATS-PROBE` lines | Expected result |
 | --- | --- | --- |
-| `default` (no ATS key) | `private-ipv4-interfaces=en0:<a.b>.x.x,… rule=device: en0 (Wi-Fi) only`, then `private-ip=<a.b>.x.x interface=en0 result=URLError -1004 …` (the phone refuses a load to itself, as the Mac does for the simulator); `public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true`; `localhost=success(200)` | `✘ Test run with 14 tests in 2 suites failed … with 1 issue`: `plainHTTPToAPrivateLANAddress()` fails at `ATSProbeTests.swift:164` ("documented iOS 17+ behaviour: ATS blocks cleartext to an IP literal without an exception"). **That failure is the device finding (ATS did not block), not a fault of the probe.** If this line shows -1022 instead, ATS blocked the Wi-Fi address and the test passes: record it, since it differs from the first run |
+| `default` (no ATS key) | `private-ipv4-interfaces=<interface>:<a.b>.x.x,… rule=device: en0 (Wi-Fi) only`, listing every interface that holds a private address in the order the system gives them, `en0:<a.b>.x.x` among them but not necessarily first (for example `pdp_ip0:10.71.x.x,en0:192.168.x.x`); then `private-ip=<a.b>.x.x interface=en0 result=URLError -1004 …` (the phone refuses a load to itself, as the Mac does for the simulator); `public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true`; `localhost=success(200)` | `✘ Test run with 14 tests in 2 suites failed … with 1 issue`: `plainHTTPToAPrivateLANAddress()` fails at `ATSProbeTests.swift:164` ("documented iOS 17+ behaviour: ATS blocks cleartext to an IP literal without an exception"). **That failure is the device finding (ATS did not block), not a fault of the probe.** If this line shows -1022 instead, ATS blocked the Wi-Fi address and the test passes: record it, since it differs from the first run |
 | `local_networking` | The same lines, with -1004 for the private address | `✔ Test run with 14 tests in 2 suites passed` |
 | `cidr_exception` | The same | `✔ Test run with 14 tests in 2 suites passed` |
 
 Also expected: `plainHTTPToAnotherDeviceOnTheLAN()` skipped in each variant, and the suspension UI test passing again.
 Because of the default variant's expected failure, xcodebuild ends with `** TEST FAILED **`. The new
-`private-ipv4-interfaces=` lines should name en0 and the interface that held 10.71.x.x.
+`private-ipv4-interfaces=` lines should name en0 and the interface that held 10.71.x.x, in the order of the system's
+interface list (`getifaddrs`), which the probe keeps (`ATSProbeTests.swift`, `privateIPv4Addresses`).
 
 Results that are not ATS results (ATS README Section 5):
 
@@ -365,7 +400,8 @@ file. Until then G0.5 AI row D1 stays failed, as you recorded it.
 ## 8. Record changes this needs (requests)
 
 Another run updates the runbook, checklists and reports on `m0-records-update`; this branch changes none of them. Each
-request gives the change; most come from the fix branches' open items.
+request gives the change; most come from the fix branches' open items. fix-1 changed requests 1, 3, 4 and 11. If the
+records run applied their earlier text, [`fix-1/README.md`](fix-1/README.md) Section 6 gives what to add.
 
 1. **Recovery suite's expected count.** In `Docs/Stage0/device-checklists/G05-Recovery.md` step 1, item 2
    ("Expected"), and in runbook 1.2's "Expect", replace `Test run with 68 tests in 11 suites passed (the five
@@ -373,21 +409,23 @@ request gives the change; most come from the fix branches' open items.
    built for iOS)` with `Test run with 73 tests in 13 suites passed (the six macOS-only tests, the three SIGKILL
    drills, the real full-volume test, the locked-host observation and the copy guard, are not built for iOS)`. Say
    that the simulator's count on this code is 73 in 13
-   (`Docs/Stage0/evidence/M0-DeviceFixes/assembly/dropin-steps-4-15/logs/simulator-tests.log`). The four skips stay.
-   Add the expected lines of Section 7.3: the missing-blob-file line and the four new lines.
+   (`Docs/Stage0/evidence/M0-DeviceFixes/assembly/dropin-steps-4-15/logs/simulator-tests.log`, and after fix-1
+   `Docs/Stage0/evidence/M0-DeviceFixes/fix-1/simulator-tests.log`). The four skips stay. Add the expected lines of
+   Section 7.3: the missing-blob-file and unlisted-dangling-link lines and the five new lines.
 2. **Log names of a repeated run.** Runbook 1.2 and 1.3 write fixed log names (`step-1-tests.log`,
    `step-01-ats.log`), so a repeat would overwrite a first run's record. Name a repeat's files apart, as Sections 7.3
    and 7.4 do (`step-1-hosted-run2-tests.log`, `step-01-ats-run2.log`, `step-01-ats-run2.txt`).
 3. **Runbook 0.8, `Docs/Stage0/G05-Recovery.md` row 10 and the session log's paragraph on 0.8.** The recovery
-   package changed after `9cdb0a02` (`a65cdc3e`, `c778cd63`), so 0.8 must run again on this code with the screen
-   unlocked. Both agent runs of the drop-in on this code stopped at its guard, the screen being locked
-   (`Docs/Stage0/evidence/M0-DeviceFixes/recovery/dropin-run-1/console.log` and
+   package changed after `9cdb0a02` (`a65cdc3e`, `c778cd63`, and fix-1's `346716ed` and `546a8219`), so 0.8 must run
+   again on this code with the screen unlocked. Both agent runs of the drop-in on this code stopped at its guard, the
+   screen being locked (`Docs/Stage0/evidence/M0-DeviceFixes/recovery/dropin-run-1/console.log` and
    `Docs/Stage0/evidence/M0-DeviceFixes/assembly/dropin/console.log`).
 4. **`Docs/Stage0/G05-Recovery.md` rows 6 and 7, and its section "App-hosted physical-device result".** Add the
    diagnosis, pointing to this README: row 6's failure was the tests' setup (the `copyItem` of the app-bundle fixture,
    refused by the library's own class check); row 7's was the containment check's `/private` mismatch for a missing
-   file (the right rejection with the wrong reason). Add the fixes, on `m0-device-fixes` (`c778cd63`), and that the
-   re-run of 1.2 is pending. Both rows stay "failed (device)" until it passes.
+   file (the right rejection with the wrong reason). Add the fixes, on `m0-device-fixes`: `c778cd63`, and `546a8219`
+   (fix-1), which fixed the same mismatch in `copyTree` and the bundle walk; without it the re-run would fail
+   `copyTreeRefusals`. Add that the re-run of 1.2 is pending. Both rows stay "failed (device)" until it passes.
 5. **Finding F-1, your decision with the technical lead; left unfixed here.** `FileProtector.verify` reads the class
    through the same `URL` value that `protect` read before `setAttributes`, so it sees the cached class (Apple's
    `URL.resourceValues(forKeys:)` page). `protect` therefore reports a mismatch even when the change took effect: seen
@@ -429,7 +467,9 @@ request gives the change; most come from the fix branches' open items.
     39 tests: still true of that run. Add "(42 since `907538f5`, which added a test of the device address rule)" only if
     the ADR should describe the current probe.
 11. **`Docs/Stage0/integration-log.md` and the gate summary (`Docs/Stage0/M0-gate.md`):** record `m0-device-fixes`,
-    its two fix branches, their merges and the checks of Section 5 (this README).
+    its two fix branches, their merges and the checks of Section 5 (this README). Also record the correctness review
+    of `fdce7cd5` (26 October 2026: findings F1-F4) and fix-1, with its commits and checks
+    ([`fix-1/README.md`](fix-1/README.md) Sections 1 and 5).
 12. **The lock harness's quiet-tone test** (`LogAndToneTests.playsQuietly`): record as an open item of the lock
     harness that it failed in all four runs on this Mac on 26 October 2026 (three from 07:38 to 07:58 UTC in the
     recovery job, one of them on the unchanged code `c72247a6`, and one at about 08:23 UTC here), each time with

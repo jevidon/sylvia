@@ -1,0 +1,18 @@
+command: python3 -I Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/commands/recheck-acc.py .
+commit: 059686cbd5db206fd0cb264ac644e626c6a54214; uncommitted paths: 2
+  uncommitted: ?? Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/checks/branch-state.log
+  uncommitted: ?? Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/checks/dropin-paths.log
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T20:37:58Z; load:  9:37  up 22 days, 19:48, 3 users, load averages: 4.01 3.97 3.16
+
+as stated branch: the State line and Section 5.1 say where no device result is recorded; the runbook header says what a sitting builds from until the checkout moves; run 1's case for a checkout on another branch kept; items 124-130; the judged branch check and this fix's read of the branches committed
+as stated phones: the G0.5 AI note no longer calls device A the phone on hand besides phone B; step 22.5 says how a result on the iPhone 11 is recorded; the first fix's four texts kept; no live record gives the lack of an A13 phone, or device A as the only phone at hand, as a fact (16 occurrences, each the record of what a text said)
+as stated step-12: the first fix's answer to FID-DA-05, which is ACC-03's: ADR-0001 limits the exception's absence to the M0 steps on A and applies it to step 12's repeat in M3; ADR-0013 and the README say so
+as stated g03-times: the runbook's repeats, the G0.3 checklist's Setup 1, ADR-0010's open item, ADR-0001's clause on it and the records' evidence README name G0.3's times in steps 6, 9, 18, 20 and 32 on A
+as stated g04-17: Section 7's reason for G0.4 on A says that the checklist asks for 1, 3 and 15 there, never for 17, the runbook's own repeat; the checklist's device line as it was
+as stated release-notes: plan D01's row has the dated note on Apple's release notes, recorded in the Revised line and Appendix D; the plan's and the amendments' record of 24 October 2026 give the review at 8082bdb6; the ADR index keeps the first fix's answer
+as stated review: this fix, not reviewed, in the gate summary (the State line: 200 words), the runbook, the Stage 0 README, integration log 30, ADR-0001's and ADR-0010's Status, and the evidence READMEs
+result: pass (0 of 7 not as stated)
+
+exit status: 0
+end: 2026-10-25T20:37:58Z; load:  9:37  up 22 days, 19:48, 3 users, load averages: 4.01 3.97 3.16

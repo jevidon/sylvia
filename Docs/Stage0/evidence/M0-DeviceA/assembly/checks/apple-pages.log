@@ -1,0 +1,59 @@
+commit: 9ecd7ec16b9df7544e69cfc541eb1e0b2ef47a15 (m0-sessions)
+read: 2026-10-25T17:47:29Z (UTC; the build Mac's date: 2026-10-26)
+
+fetched https://support.apple.com/en-nz/111873 -> HTTP 200, 202804 bytes
+fetched https://support.apple.com/en-nz/111879 -> HTTP 200, 187546 bytes
+fetched https://support.apple.com/guide/iphone/iphone-models-compatible-with-ios-26-iphe3fa5df43/26/ios/26 -> HTTP 200, 1463481 bytes
+fetched https://developer.apple.com/news/releases/?id=10152026a -> HTTP 200, 105620 bytes
+fetched https://developer.apple.com/news/releases/?id=09182026a -> HTTP 200, 105677 bytes
+fetched https://developer.apple.com/tutorials/data/documentation/xcode-release-notes/xcode-27_1-release-notes.json -> HTTP 200, 6868 bytes
+
+-- https://support.apple.com/en-nz/111873
+   fetched: 202804 bytes; text read: 25230 characters
+   present: "iPhone 13 mini - Technical Specifications"
+   present: "5.4-inch (diagonal) all-screen OLED display"
+   present: "2340-by-1080-pixel resolution at 476 ppi"
+   present: "A15 Bionic chip"
+   present: "6-core CPU with 2 performance and 4 efficiency cores"
+   present: "4-core GPU"
+   present: "16-core Neural Engine"
+   present: "Lightning connector"
+   present: "Enabled by TrueDepth camera for facial recognition"
+   present: "Ring/Silent switch"
+   absent, as required (any letter case): "Action button"
+-- https://support.apple.com/en-nz/111879
+   fetched: 187546 bytes; text read: 17522 characters
+   present: "iPhone 11 Pro - Technical Specifications"
+   present: "5.8-inch (diagonal) all-screen OLED Multi-Touch display"
+   present: "2436-by-1125-pixel resolution at 458 ppi"
+   present: "A13 Bionic chip"
+   present: "Lightning connector"
+-- https://support.apple.com/guide/iphone/iphone-models-compatible-with-ios-26-iphe3fa5df43/26/ios/26
+   fetched: 1463481 bytes; text read: 31599 characters
+   present: "iPhone models compatible with iOS 26"
+   present: "which is compatible with the following models: iPhone 11 iPhone 11 Pro iPhone 11 Pro Max iPhone 12 mini iPhone 12 iPhone 12 Pro iPhone 12 Pro Max iPhone 13 mini iPhone 13"
+   present: "iPhone SE (2nd generation) iPhone SE (3rd generation)"
+-- https://developer.apple.com/news/releases/?id=10152026a
+   fetched: 105620 bytes; text read: 3002 characters
+   present: "Xcode 27.1 (27A9275)"
+   present: "October 15, 2026"
+   absent, as required (any letter case): "Xcode 27.1 beta (27A9275)"
+   absent, as required (any letter case): "Xcode 27.1 RC (27A9275)"
+   absent, as required (any letter case): "Xcode 27.1 Release Candidate (27A9275)"
+-- https://developer.apple.com/news/releases/?id=09182026a
+   fetched: 105677 bytes; text read: 3019 characters
+   present: "Xcode 27.1 beta (27A9269)"
+   present: "September 18, 2026"
+-- https://developer.apple.com/tutorials/data/documentation/xcode-release-notes/xcode-27_1-release-notes.json (the data of https://developer.apple.com/documentation/xcode-release-notes/xcode-27_1-release-notes)
+   fetched: 6868 bytes; text read: 1882 characters
+   present: "Xcode 27.1 Release Notes"
+   present: "Xcode 27.1 includes Swift 6.4 and SDKs for iOS 27.1, iPadOS 27, tvOS 27, watchOS 27, macOS 27, and visionOS 27."
+   present: "Xcode 27.1 supports on-device debugging in iOS 17 and later, tvOS 17 and later, watchOS 10 and later, and visionOS."
+   present: "Xcode 27.1 requires a Mac running macOS Tahoe 26.6 or later."
+   present: "Projects that use APIs specific to iOS 27.1 show compile errors when building for Mac Catalyst"
+   present: "Projects that target iOS 27.1 show no Mac Catalyst run destination available."
+   present: "Initial Simulator launch can take several minutes."
+   present: "StandBy is unavailable in the iPhone Duo Simulator runtime."
+   absent, as required (any letter case): "Beta Release Notes"
+result: pass (0 problem(s))
+exit: 0

@@ -1,0 +1,102 @@
+command: Docs/Stage0/evidence/M0-DeviceA/fix-1/commands/branch-state.sh
+commit: 059686cbd5db206fd0cb264ac644e626c6a54214 (m0-sessions); uncommitted paths: 0
+date: 2026-10-25T20:37:41Z (UTC; the build Mac's clock: 2026-10-26 09:37 NZDT)
+
+== the sessions' checkout, as git worktree list shows it (the entry of ~/Git/sylvia-sessions only)
+worktree /Users/jevidon/Git/sylvia-sessions
+HEAD c72247a69a374ce361834550b92689b4abab95ee
+branch refs/heads/m0-decisions
+
+
+== branches
+main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07 (2026-10-24 04:34:37 +1300)
+origin/main: 96bdc7e996f99fcd2571ea983cc32a04076a5a07 (2026-10-24 04:34:37 +1300)
+m0-sessions: 059686cbd5db206fd0cb264ac644e626c6a54214 (2026-10-26 09:34:02 +1300)
+m0-decisions: c72247a69a374ce361834550b92689b4abab95ee (2026-10-26 06:33:13 +1300)
+the commit the review read: 8082bdb6a3f4a8ee8edfef6a9a5d3489f445ce22; m0-sessions descends from it: yes
+m0-decisions behind main (an ancestor of it): no
+commits on m0-decisions that main lacks: 8
+commits on m0-decisions that m0-sessions lacks (git log --oneline m0-sessions..m0-decisions): 8
+commits on m0-sessions that main lacks: 27
+
+== m0-decisions after 044ed3cf, the commit pull request #6 merged (96bdc7e9): its commits and their parents, oldest last
+c72247a6 (parent 1bbca07e) 2026-10-26 06:33:13 +1300 Justin Evidon Record setup checks and the audio device run in progress
+1bbca07e (parent d5336111) 2026-10-26 06:27:44 +1300 Justin Evidon Record device ATS and streaming interruption results
+d5336111 (parent ea01b412) 2026-10-26 06:21:11 +1300 Justin Evidon Record the first hosted recovery device run and failures
+ea01b412 (parent 4be1a1a4) 2026-10-26 06:21:11 +1300 Justin Evidon Inventory the recovery device test lock
+4be1a1a4 (parent 432acc13) 2026-10-26 06:19:34 +1300 Justin Evidon Host the recovery suite in an iOS test app
+432acc13 (parent 38f9604e) 2026-10-26 06:15:59 +1300 Justin Evidon Record the requested recovery device retry
+38f9604e (parent 8404f342) 2026-10-26 06:15:27 +1300 Justin Evidon Record the recovery suite device-host blocker
+8404f342 (parent 044ed3cf) 2026-10-26 06:12:41 +1300 Justin Evidon Record the first physical iPhone Keychain test result
+the first of them: 8404f342, whose parent is 044ed3cf (044ed3cf, the tip of m0-decisions that pull request #6 merged)
+
+== the files those commits change (git diff --stat 044ed3cf m0-decisions)
+ Docs/Licenses/inventory.json                       |    3 +-
+ Docs/Stage0/G02-Transfer.md                        |    2 +-
+ Docs/Stage0/G05-AI.md                              |    4 +-
+ Docs/Stage0/G05-Recovery.md                        |   12 +-
+ Docs/Stage0/M0-device-runbook.md                   |   13 +-
+ Docs/Stage0/device-checklists/G05-Recovery.md      |   18 +-
+ .../G02-Transfer/device/01-keychain-class.log      | 1729 +++++++++++
+ .../G02-Transfer/device/01-keychain-class.md       |   38 +
+ .../evidence/G04-Audio/device/step-01-status.txt   |    1 +
+ .../evidence/G05-AI/device/step-01-ats-initial.log | 2798 +++++++++++++++++
+ Docs/Stage0/evidence/G05-AI/device/step-01-ats.log |  827 ++++++
+ Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt |   20 +
+ .../evidence/G05-AI/device/step-04-suspension.txt  |    7 +
+ .../G05-Recovery/device/host-dependency-check.log  |  295 ++
+ .../G05-Recovery/device/step-1-2-results.txt       |   15 +
+ .../G05-Recovery/device/step-1-hosted-results.md   |   43 +
+ .../G05-Recovery/device/step-1-hosted-tests.log    | 3132 ++++++++++++++++++++
+ .../G05-Recovery/device/step-1-retry-tests.log     |   16 +
+ .../evidence/G05-Recovery/device/step-1-tests.log  |   22 +
+ .../evidence/M0-runbook/2026-10-26-setup.txt       |    7 +
+ Docs/Stage0/evidence/M0-runbook/sessions.md        |   10 +-
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift |   11 +
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   |   15 +
+ .../DeviceTests/Support/Bundle+Module.swift        |    8 +
+ Spikes/G05-Recovery/DeviceTests/project.yml        |   60 +
+ 25 files changed, 9089 insertions(+), 17 deletions(-)
+
+== of them, files the update of 24 October 2026, its assembly or this fix also changed on m0-sessions since 6cede84a
+Docs/Stage0/G02-Transfer.md
+Docs/Stage0/G05-Recovery.md
+Docs/Stage0/M0-device-runbook.md
+Docs/Stage0/device-checklists/G05-Recovery.md
+
+== of them, paths runbook 0.8 checks (what G0.5 recovery's drop-in builds, copies or runs)
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift | 11 ++++
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   | 15 ++++++
+ .../DeviceTests/Support/Bundle+Module.swift        |  8 +++
+ Spikes/G05-Recovery/DeviceTests/project.yml        | 60 ++++++++++++++++++++++
+ 4 files changed, 94 insertions(+)
+
+== the session log as committed on m0-decisions (git show m0-decisions:Docs/Stage0/evidence/M0-runbook/sessions.md):
+   its dated rows, the first six cells only (run | session | date | who | commit | devices); the steps run and their
+   results, the last two cells, are not read here
+   2 (0.8 only, ahead of the session) | 0 Mac setup, step 0.8 | 2026-10-19, 15:14-15:20 | agent (M0 final fix, second round) | `c4fbfbd` | build Mac: macOS 26.6.2 (25G83), Xcode 27.1 (27A9275); simulator Sylvia-M0-final-fix (iPhone 17, iOS 26.5)
+   2 (0.8 only, ahead of the session) | 0 Mac setup, step 0.8: the whole drop-in, its steps 13-15 for the lock harness included | 2026-10-22, 22:36-22:44 | agent (a waiter of the orchestrating session, after the follow-up's fourth fix; not the product owner) | `9cdb0a02` | build Mac: macOS 26.6.2 (25G83), Xcode 27.1 (27A9275); simulator Sylvia-M0-dec-assembly (iPhone 17, iOS 26.5)
+   3a | 1 Automated suites, step 1.1 only | 2026-10-25 17:12 UTC | Codex with Justin Evidon | `96bdc7e996f99fcd2571ea983cc32a04076a5a07` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3b | 1 Automated suites, step 1.2 | 2026-10-25 17:14 UTC | Codex with Justin Evidon | `8404f342` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3c | 1 Automated suites, step 1.2 hosted | 2026-10-25 UTC | Codex with Justin Evidon | `432acc13` plus DeviceTests code committed unchanged as `4be1a1a4` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3d | 1 Automated suites, step 1.3 | 2026-10-25 17:24–17:26 UTC | Codex with Justin Evidon | `d5336111` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   (6 dated rows of 18)
+-- the same file at HEAD (this branch): dated rows, first six cells
+   2 (0.8 only, ahead of the session) | 0 Mac setup, step 0.8 | 2026-10-19, 15:14-15:20 | agent (M0 final fix, second round) | `c4fbfbd` | build Mac: macOS 26.6.2 (25G83), Xcode 27.1 (27A9275); simulator Sylvia-M0-final-fix (iPhone 17, iOS 26.5)
+   2 (0.8 only, ahead of the session) | 0 Mac setup, step 0.8: the whole drop-in, its steps 13-15 for the lock harness included | 2026-10-22, 22:36-22:44 | agent (a waiter of the orchestrating session, after the follow-up's fourth fix; not the product owner) | `9cdb0a02` | build Mac: macOS 26.6.2 (25G83), Xcode 27.1 (27A9275); simulator Sylvia-M0-dec-assembly (iPhone 17, iOS 26.5)
+   (2 dated rows of 14)
+
+== runbook 0.3 at 96bdc7e9 (main after pull request #6): the start of its steps 1 and 6
+1. `git checkout m0-decisions`: the branch that holds the lock harness of 6.1 (`Spikes/G05-Recovery/LockHarness`) and the records of your decisions of 22 and 23 October 2026. Not `m0-integrate`, not `
+6. **Your session records, on `m0-decisions`.** After each sitting, commit what it produced on `m0-decisions`: the session log's row, the evidence its steps wrote (Section 2's table names the folders)
+
+== a merge of m0-decisions into HEAD, computed and not made (git merge-tree --write-tree --name-only --messages HEAD m0-decisions)
+f1be214efb1f79a64ade19683a8e1c6aa457fbef
+
+Auto-merging Docs/Stage0/G02-Transfer.md
+Auto-merging Docs/Stage0/G05-Recovery.md
+Auto-merging Docs/Stage0/M0-device-runbook.md
+Auto-merging Docs/Stage0/device-checklists/G05-Recovery.md
+merge-tree exit: 0 (0: no conflict; 1: conflicts)
+
+exit: 0

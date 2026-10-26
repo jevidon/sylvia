@@ -1,0 +1,54 @@
+command: python3 -I Docs/Stage0/evidence/M0-DeviceA/fix-1/commands/finding-lines.py .
+commit: a4d07bac3b4391a4364e129316c9a9e58347348e; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T19:32:37Z; load:  8:32  up 22 days, 18:43, 3 users, load averages: 6.63 5.18 4.27
+
+commit read: 8082bdb6a3f4a8ee8edfef6a9a5d3489f445ce22
+holds FID-DA-01 Docs/Stage0/M0-gate.md:16: 1. **Check that `~/Git/sylvia-sessions` is on `m0-sessions`**
+holds FID-DA-01 Docs/Stage0/M0-gate.md:16: The orchestrating session switches the checkout to it, from `main` at `96bdc7e9`
+holds FID-DA-01 Docs/Stage0/M0-device-runbook.md:163: The orchestrating session switches this checkout to it, from `main` at `96bdc7e9`
+holds FID-DA-01 Docs/Stage0/M0-device-runbook.md:163: if it still reads `main`, the switch is not made yet: ask for it, or run `git checkout m0-sessions` there your
+holds FID-DA-01 Docs/Stage0/integration-log.md:1570: on `main` at `96bdc7e9`, as `git worktree list` showed it on 26 October 2026
+holds FID-DA-01 README.md:49: since then the M0 work and the device sessions use the branch `m0-sessions`
+holds FID-DA-01 Docs/Stage0/M0-device-runbook.md:6: - **Nothing in this runbook has been run on a device.**
+holds FID-DA-01 Docs/Stage0/M0-gate.md:714: 115. **Seen at the assembly, and not in these records**
+holds FID-DA-01 Docs/Stage0/integration-log.md:1682: #### 28.8.6 Seen at the assembly: the sessions' checkout on `m0-decisions`
+holds FID-DA-02 Docs/Stage0/device-checklists/G02-Transfer.md:199: (24 October 2026: no A13 phone is at hand in M0.
+holds FID-DA-02 Docs/Stage0/device-checklists/G02-Transfer.md:199: 5. Repeat once on the oldest supported iPhone if available
+holds FID-DA-02 Docs/Stage0/M0-device-runbook.md:383: which no device of M0 has (Section 1.1)
+holds FID-DA-02 Docs/Stage0/device-checklists/G01-EPUB.md:65: which no device in M0 has
+holds FID-DA-02 Docs/Stage0/device-checklists/G06-Design.md:48: whose A13 no device in M0 has
+holds FID-DA-02 Docs/Stage0/M0-device-runbook.md:25: your iPhone 11
+holds FID-DA-03 Docs/Stage0/M0-device-runbook.md:210: **Checked on 24 October 2026:**
+holds FID-DA-03 Docs/Stage0/M0-device-runbook.md:210: None of them changed between `9cdb0a02` and `6cede84a`
+holds FID-DA-03 Docs/Stage0/M0-device-runbook.md:210: ran that check again on the merged tree: none of those paths changed since `9cdb0a02`, so 0.8 still needs noth
+holds FID-DA-04 Docs/Stage0/README.md:5: **Where M0 stands (24 October 2026).**
+holds FID-DA-04 Docs/Stage0/README.md:5: an agent brought the owner's instructions up to date that day
+holds FID-DA-04 Docs/Stage0/README.md:5: and on 26 October 2026 an assembly merged both into `m0-sessions`
+holds FID-DA-04 Docs/Stage0/M0-gate.md:128: The same day an agent brought your instructions up to date
+holds FID-DA-04 Docs/Stage0/M0-device-runbook.md:12: on 24 October 2026 to record your decision
+holds FID-DA-04 Docs/Stage0/M0-gate.md:698: Recorded on 24 October 2026, after pull request #6
+holds FID-DA-04 Docs/Stage0/M0-gate.md:704: 108. **The checks**
+holds FID-DA-04 Docs/Stage0/evidence/M0-DeviceA/instructions/README.md:13: **Finished on 26 October 2026.**
+holds FID-DA-04 Docs/ADRs/README.md:29: then the iPhone 13 mini at the same 375 × 812 pt, on which G0.6's type roles are checked; the iPad in M0) and 
+holds FID-DA-05 Docs/ADRs/0001-platform-baseline-and-toolchain.md:57: ADR-0013 (it does not apply to G0.6's steps on device A, which depend on the screen)
+holds FID-DA-05 Docs/Stage0/evidence/M0-DeviceA/README.md:63: ADR-0013 (it does not apply to G0.6's steps on A, which depend on the screen)
+holds FID-DA-05 Docs/Stage0/M0-device-runbook.md:952: depends on the phone's speed too, so on A it is the 13 mini's result
+holds FID-DA-05 Docs/ADRs/0013-design-language.md:290: In M3, when the screens are built and reviewed on device: steps 1-3, 5-9, 12 and 16-19 on device A
+holds FID-DA-05 Docs/ADRs/0013-design-language.md:136: does not apply to these steps: they depend on the screen
+holds FID-DA-06 Docs/ADRs/0001-platform-baseline-and-toolchain.md:3: has not been checked against Apple's release notes
+holds FID-DA-06 Docs/ADRs/0001-platform-baseline-and-toolchain.md:116: no agent has read them
+holds FID-DA-06 Docs/ADRs/README.md:17: still awaits a check of Apple's release notes
+holds FID-DA-06 Docs/Stage0/M0-device-runbook.md:159: Apple's pages show that 27A9275 is Xcode 27.1's release build
+holds FID-DA-07 Docs/Stage0/M0-gate.md:128: made `m0-sessions` from that commit (`6cede84a`)
+holds FID-DA-07 Docs/Stage0/evidence/M0-DeviceA/instructions/README.md:5: made the branch `m0-sessions` from that commit (`6cede84a`)
+holds FID-DA-07 Docs/Stage0/M0-gate.md:700: made `m0-sessions` from that commit (`6cede84a` points `CLAUDE.md` at it)
+holds FID-DA-01 claim: the assembly's branch-state.log: read at 2026-10-25T17:46:45Z, the checkout on m0-decisions at c72247a6
+holds FID-DA-01 claim: c72247a6 is 8 commits past 044ed3cf (8), adds Spikes/G05-Recovery/DeviceTests and changes the session log
+holds FID-DA-01 claim: 28.1's reading of `git worktree list` came in fdbec8b8 (commits that added or removed it: fdbec8b8), and no evidence file holds it
+holds FID-DA-03 claim: the assembly's dropin-paths.log checked 5e455f70
+holds FID-DA-07 claim: 6cede84a's parent is 5aec2518 (5aec2518), so m0-sessions was made from 5aec2518
+result: every cited line and claim holds (39 citations, 5 claims)
+
+exit status: 0
+end: 2026-10-25T19:32:38Z; load:  8:32  up 22 days, 18:43, 3 users, load averages: 6.63 5.18 4.27

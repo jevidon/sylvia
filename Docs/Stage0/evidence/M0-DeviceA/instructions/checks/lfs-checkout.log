@@ -1,0 +1,13 @@
+command: Docs/Stage0/evidence/M0-Decisions/followup/commands/lfs-checkout.sh
+commit: 6a72ce8c66bcbea0b1254049b3c2199ce00314a7; date: 2026-10-23T17:50:49Z
+uncommitted paths before: 2
+git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+LFS files: 777; still pointer files before: 777
+-- git lfs fsck --objects
+Git LFS fsck OK
+fsck exit: 0
+-- git lfs checkout
+Checking out LFS objects: 100% (777/777), 68 MB | 0 B/s, done.
+checkout exit: 0
+still pointer files after: 0
+git status --porcelain lines after (the log this writes, if it is written inside the tree): 2

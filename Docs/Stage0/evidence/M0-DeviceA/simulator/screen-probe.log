@@ -1,0 +1,172 @@
+command: Docs/Stage0/evidence/M0-DeviceA/simulator/screen-probe.sh
+commit: 58c0d4d40deb82aea5d339f067c22e730b76a58e; uncommitted paths: 2
+host: macOS 26.6.2 (25G83), arm64; Xcode 27.1 Build version 27A9275 
+sylvia_check_xcode: the installed build is the pin, 27A9275
+start: 2026-10-25T16:08:12Z; load:  5:08  up 22 days, 15:18, 4 users, load averages: 3.72 4.26 5.33
+runtime: com.apple.CoreSimulator.SimRuntime.iOS-26-5
+iOS 26.5 (26.5 - 23F77) - com.apple.CoreSimulator.SimRuntime.iOS-26-5
+
+== the test package (written by this script; not committed)
+--- Package.swift
+// swift-tools-version: 6.2
+import PackageDescription
+
+let package = Package(
+    name: "ScreenProbe",
+    platforms: [.iOS(.v26), .macOS(.v26)],
+    products: [.library(name: "ScreenProbe", targets: ["ScreenProbe"])],
+    targets: [
+        .target(name: "ScreenProbe"),
+        .testTarget(name: "ScreenProbeTests", dependencies: ["ScreenProbe"]),
+    ]
+)
+--- Sources/ScreenProbe/ScreenProbe.swift
+/// A throwaway package for the device-A change's screen probe (Docs/Stage0/evidence/M0-DeviceA/simulator/).
+public enum ScreenProbe {
+    public static let name = "ScreenProbe"
+}
+--- Tests/ScreenProbeTests/ScreenProbeTests.swift
+import ScreenProbe
+import XCTest
+#if canImport(UIKit)
+import UIKit
+#endif
+
+final class ScreenProbeTests: XCTestCase {
+    @MainActor
+    func testMainScreen() throws {
+        #if canImport(UIKit)
+        let environment = ProcessInfo.processInfo.environment
+        let screen = UIScreen.main
+        print("SCREEN-PROBE simulator: \(environment["SIMULATOR_DEVICE_NAME"] ?? "?"); "
+              + "model identifier \(environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "?"); "
+              + "runtime \(environment["SIMULATOR_RUNTIME_VERSION"] ?? "?") (\(environment["SIMULATOR_RUNTIME_BUILD_VERSION"] ?? "?"))")
+        print("SCREEN-PROBE UIScreen.main.bounds: \(screen.bounds.size.width) x \(screen.bounds.size.height) pt")
+        print("SCREEN-PROBE UIScreen.main.scale: \(screen.scale)")
+        print("SCREEN-PROBE UIScreen.main.nativeScale: \(screen.nativeScale)")
+        print("SCREEN-PROBE UIScreen.main.nativeBounds: \(screen.nativeBounds.size.width) x \(screen.nativeBounds.size.height) px")
+        print("SCREEN-PROBE bounds x scale: \(screen.bounds.size.width * screen.scale) x \(screen.bounds.size.height * screen.scale) px")
+        XCTAssertGreaterThan(screen.bounds.size.width, 0)
+        #else
+        throw XCTSkip("UIKit is not available on this platform")
+        #endif
+    }
+}
+
+== Sylvia-M0-DeviceA-13mini (com.apple.CoreSimulator.SimDeviceType.iPhone-13-mini, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+created simulator E4C09238-55B1-4BA8-AD89-675EC5BEB304
+booted; load:  5:08  up 22 days, 15:19, 4 users, load averages: 22.51 8.23 6.72
+xcodebuild test exit: 0 (its full output: .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-13mini.log, not committed)
+Test Suite 'ScreenProbeTests.xctest' started at 2026-10-26 05:08:42.063.
+Test Suite 'ScreenProbeTests' started at 2026-10-26 05:08:42.063.
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' started.
+SCREEN-PROBE simulator: Sylvia-M0-DeviceA-13mini; model identifier iPhone14,4; runtime 26.5 (23F77)
+SCREEN-PROBE UIScreen.main.bounds: 375.0 x 812.0 pt
+SCREEN-PROBE UIScreen.main.scale: 3.0
+SCREEN-PROBE UIScreen.main.nativeScale: 2.88
+SCREEN-PROBE UIScreen.main.nativeBounds: 1080.0 x 2340.0 px
+SCREEN-PROBE bounds x scale: 1125.0 x 2436.0 px
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' passed (0.013 seconds).
+Test Suite 'ScreenProbeTests' passed at 2026-10-26 05:08:42.078.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.013 (0.014) seconds
+Test Suite 'ScreenProbeTests.xctest' passed at 2026-10-26 05:08:42.078.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.013 (0.015) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.013 (0.016) seconds
+** TEST SUCCEEDED **
+
+== Sylvia-M0-DeviceA-11Pro (com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+created simulator A1E8798E-395F-4983-94F8-87E68F6E6254
+booted; load:  5:09  up 22 days, 15:19, 4 users, load averages: 44.46 15.55 9.46
+xcodebuild test exit: 0 (its full output: .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-11Pro.log, not committed)
+Test Suite 'ScreenProbeTests.xctest' started at 2026-10-26 05:09:06.000.
+Test Suite 'ScreenProbeTests' started at 2026-10-26 05:09:06.000.
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' started.
+SCREEN-PROBE simulator: Sylvia-M0-DeviceA-11Pro; model identifier iPhone12,3; runtime 26.5 (23F77)
+SCREEN-PROBE UIScreen.main.bounds: 375.0 x 812.0 pt
+SCREEN-PROBE UIScreen.main.scale: 3.0
+SCREEN-PROBE UIScreen.main.nativeScale: 3.0
+SCREEN-PROBE UIScreen.main.nativeBounds: 1125.0 x 2436.0 px
+SCREEN-PROBE bounds x scale: 1125.0 x 2436.0 px
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' passed (0.013 seconds).
+Test Suite 'ScreenProbeTests' passed at 2026-10-26 05:09:06.013.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.013 (0.013) seconds
+Test Suite 'ScreenProbeTests.xctest' passed at 2026-10-26 05:09:06.013.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.013 (0.013) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.013 (0.014) seconds
+** TEST SUCCEEDED **
+
+== Sylvia-M0-DeviceA-11 (com.apple.CoreSimulator.SimDeviceType.iPhone-11, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+created simulator 0E563E96-3810-4916-8D2C-DFC62831B47A
+booted; load:  5:09  up 22 days, 15:19, 4 users, load averages: 59.04 20.46 11.35
+xcodebuild test exit: 0 (its full output: .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-11.log, not committed)
+Test Suite 'ScreenProbeTests.xctest' started at 2026-10-26 05:09:29.414.
+Test Suite 'ScreenProbeTests' started at 2026-10-26 05:09:29.414.
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' started.
+SCREEN-PROBE simulator: Sylvia-M0-DeviceA-11; model identifier iPhone12,1; runtime 26.5 (23F77)
+SCREEN-PROBE UIScreen.main.bounds: 414.0 x 896.0 pt
+SCREEN-PROBE UIScreen.main.scale: 2.0
+SCREEN-PROBE UIScreen.main.nativeScale: 2.0
+SCREEN-PROBE UIScreen.main.nativeBounds: 828.0 x 1792.0 px
+SCREEN-PROBE bounds x scale: 828.0 x 1792.0 px
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' passed (0.012 seconds).
+Test Suite 'ScreenProbeTests' passed at 2026-10-26 05:09:29.427.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.012 (0.013) seconds
+Test Suite 'ScreenProbeTests.xctest' passed at 2026-10-26 05:09:29.427.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.012 (0.013) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.012 (0.014) seconds
+** TEST SUCCEEDED **
+
+== Sylvia-M0-DeviceA-11ProMax (com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+created simulator 6ECFA790-5099-407E-BBD7-097055F8EEAE
+booted; load:  5:09  up 22 days, 15:20, 4 users, load averages: 61.56 24.05 12.90
+xcodebuild test exit: 0 (its full output: .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-11ProMax.log, not committed)
+Test Suite 'ScreenProbeTests.xctest' started at 2026-10-26 05:09:56.363.
+Test Suite 'ScreenProbeTests' started at 2026-10-26 05:09:56.363.
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' started.
+SCREEN-PROBE simulator: Sylvia-M0-DeviceA-11ProMax; model identifier iPhone12,5; runtime 26.5 (23F77)
+SCREEN-PROBE UIScreen.main.bounds: 414.0 x 896.0 pt
+SCREEN-PROBE UIScreen.main.scale: 3.0
+SCREEN-PROBE UIScreen.main.nativeScale: 3.0
+SCREEN-PROBE UIScreen.main.nativeBounds: 1242.0 x 2688.0 px
+SCREEN-PROBE bounds x scale: 1242.0 x 2688.0 px
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' passed (0.023 seconds).
+Test Suite 'ScreenProbeTests' passed at 2026-10-26 05:09:56.387.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.023 (0.024) seconds
+Test Suite 'ScreenProbeTests.xctest' passed at 2026-10-26 05:09:56.388.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.023 (0.024) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.023 (0.025) seconds
+** TEST SUCCEEDED **
+
+== Sylvia-M0-DeviceA-SE2 (com.apple.CoreSimulator.SimDeviceType.iPhone-SE--2nd-generation-, com.apple.CoreSimulator.SimRuntime.iOS-26-5)
+created simulator DBB950C2-6340-43E0-8CCB-977FA44F62B4
+booted; load:  5:10  up 22 days, 15:20, 4 users, load averages: 72.34 29.52 15.19
+xcodebuild test exit: 0 (its full output: .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-SE2.log, not committed)
+Test Suite 'ScreenProbeTests.xctest' started at 2026-10-26 05:10:20.031.
+Test Suite 'ScreenProbeTests' started at 2026-10-26 05:10:20.031.
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' started.
+SCREEN-PROBE simulator: Sylvia-M0-DeviceA-SE2; model identifier iPhone12,8; runtime 26.5 (23F77)
+SCREEN-PROBE UIScreen.main.bounds: 375.0 x 667.0 pt
+SCREEN-PROBE UIScreen.main.scale: 2.0
+SCREEN-PROBE UIScreen.main.nativeScale: 2.0
+SCREEN-PROBE UIScreen.main.nativeBounds: 750.0 x 1334.0 px
+SCREEN-PROBE bounds x scale: 750.0 x 1334.0 px
+Test Case '-[ScreenProbeTests.ScreenProbeTests testMainScreen]' passed (0.089 seconds).
+Test Suite 'ScreenProbeTests' passed at 2026-10-26 05:10:20.121.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.089 (0.090) seconds
+Test Suite 'ScreenProbeTests.xctest' passed at 2026-10-26 05:10:20.121.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.089 (0.091) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.089 (0.091) seconds
+** TEST SUCCEEDED **
+
+end: 2026-10-25T16:10:23Z; load:  5:10  up 22 days, 15:20, 4 users, load averages: 69.64 30.41 15.68
+probe exit: 0
+deleted simulator E4C09238-55B1-4BA8-AD89-675EC5BEB304
+deleted simulator A1E8798E-395F-4983-94F8-87E68F6E6254
+deleted simulator 0E563E96-3810-4916-8D2C-DFC62831B47A
+deleted simulator 6ECFA790-5099-407E-BBD7-097055F8EEAE
+deleted simulator DBB950C2-6340-43E0-8CCB-977FA44F62B4
+no simulator named Sylvia-M0-DeviceA-13mini remains
+no simulator named Sylvia-M0-DeviceA-11Pro remains
+no simulator named Sylvia-M0-DeviceA-11 remains
+no simulator named Sylvia-M0-DeviceA-11ProMax remains
+no simulator named Sylvia-M0-DeviceA-SE2 remains

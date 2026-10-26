@@ -1,0 +1,38 @@
+command: Docs/Stage0/evidence/M0-DeviceA/fix-1/owner/commands/merges.sh
+commit: 6dce0a3212a8772bcc5953fe2b3b1bfc8c4b918b (m0-sessions); uncommitted paths: 1
+date: 2026-10-25T23:19:26Z
+m0-decisions: c72247a69a374ce361834550b92689b4abab95ee (2026-10-26 06:33:13 +1300, Record setup checks and the audio device run in progress); m0-exit-prep: 941ac9a298730b7cf46a44faf1db1274166cb930 (2026-10-26 11:45:43 +1300)
+merge bases: HEAD and m0-decisions 044ed3cf86db838c93cda7e2ca4829474b234ae5; HEAD and m0-exit-prep 5aec2518c90427a283d9c8195e11bb9ab23e5d12
+
+m0-decisions is still at c72247a6, where the first three fixes read it: nothing committed on it since
+
+== 1. m0-decisions into HEAD
+   merge-tree exit: 0 (0: no conflict); merged tree: 7a1fc4c56102c078ccddecc22e5cd367cf031ef0
+   into caf75a84, as a control: exit 0; merged tree: d345d3040c665ffb6982d569fdf1e69085157207
+
+== 2. m0-exit-prep, as it stands when read, into HEAD and into caf75a84
+   into HEAD: merge-tree exit 1; files that conflict: 9
+     Docs/ADRs/0001-platform-baseline-and-toolchain.md
+     Docs/ADRs/0002-repository-build-and-ci.md
+     Docs/ADRs/README.md
+     Docs/Stage0/M0-device-runbook.md
+     Docs/Stage0/M0-gate.md
+     Docs/Stage0/M0-plan-amendments.md
+     Docs/Stage0/README.md
+     Docs/Stage0/integration-log.md
+     Docs/Sylvia_v1_iOS_Implementation_Plan.md
+   into caf75a84: merge-tree exit 1; files that conflict: 9
+     Docs/ADRs/0001-platform-baseline-and-toolchain.md
+     Docs/ADRs/0002-repository-build-and-ci.md
+     Docs/ADRs/README.md
+     Docs/Stage0/M0-device-runbook.md
+     Docs/Stage0/M0-gate.md
+     Docs/Stage0/M0-plan-amendments.md
+     Docs/Stage0/README.md
+     Docs/Stage0/integration-log.md
+     Docs/Sylvia_v1_iOS_Implementation_Plan.md
+   the same files: this fix adds no file that conflicts
+   Docs/ADRs/0001-platform-baseline-and-toolchain.md, whose Status line and technical-lead item this fix changes, already conflicts into caf75a84: the fix adds to a conflict that is there, not a new one
+   (the conflicts listed are in files both this branch and that run changed before this fix; resolving them is the merge's, between sittings)
+
+exit: 0

@@ -1,0 +1,25 @@
+command: Docs/Stage0/evidence/M0-DeviceA/simulator/screen-probe-build-warnings.sh
+run: 2026-10-25T16:22:24Z (UTC), on the xcodebuild logs screen-probe.sh wrote in .build/scratch/m0-devicea-screen-probe
+
+== .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-13mini.log (472 lines; its result line: ** TEST SUCCEEDED **)
+lines with "error:": 0
+lines with "warning:": 3
+364:/Users/jevidon/Git/sylvia/.claude/worktrees/wf_ce9fb2ad-560-2/.build/scratch/m0-devicea-screen-probe/Tests/ScreenProbeTests/ScreenProbeTests.swift:12:31: warning: 'main' was deprecated in iOS 26.0: Use a UIScreen instance found through context instead (i.e, view.window.windowScene.screen), or for properties like UIScreen.scale with trait equivalents, use a traitCollection found through context. [#DeprecatedDeclaration]
+368:   |                               `- warning: 'main' was deprecated in iOS 26.0: Use a UIScreen instance found through context instead (i.e, view.window.windowScene.screen), or for properties like UIScreen.scale with trait equivalents, use a traitCollection found through context. [#DeprecatedDeclaration]
+413:2026-10-26 05:08:40.353 appintentsmetadataprocessor[92220:53657446] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+
+== .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-11Pro.log (89 lines; its result line: ** TEST SUCCEEDED **)
+lines with "error:": 0
+lines with "warning:": 0
+
+== .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-11.log (89 lines; its result line: ** TEST SUCCEEDED **)
+lines with "error:": 0
+lines with "warning:": 0
+
+== .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-11ProMax.log (89 lines; its result line: ** TEST SUCCEEDED **)
+lines with "error:": 0
+lines with "warning:": 0
+
+== .build/scratch/m0-devicea-screen-probe/xcodebuild-Sylvia-M0-DeviceA-SE2.log (89 lines; its result line: ** TEST SUCCEEDED **)
+lines with "error:": 0
+lines with "warning:": 0

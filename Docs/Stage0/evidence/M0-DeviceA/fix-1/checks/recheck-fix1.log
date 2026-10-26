@@ -1,0 +1,19 @@
+command: python3 -I Docs/Stage0/evidence/M0-DeviceA/fix-1/commands/recheck-fix1.py .
+commit: a4d07bac3b4391a4364e129316c9a9e58347348e; uncommitted paths: 2
+  uncommitted: ?? Docs/Stage0/evidence/M0-DeviceA/fix-1/checks/branch-state.log
+  uncommitted: ?? Docs/Stage0/evidence/M0-DeviceA/fix-1/checks/dropin-paths.log
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T19:33:57Z; load:  8:33  up 22 days, 18:44, 3 users, load averages: 5.11 5.18 4.35
+
+as stated checkout: the sessions' checkout as found, on m0-decisions, in run 1's step 1, the runbook's header, README.md and 28.1; what to do before it moves; m0-decisions no longer called behind main; no claim that no device step ran
+as stated a13: the four texts give the owner's decision (the A13 floor left for M8, so no A13 phone measured in M0), each with its dated note; no live record gives the lack of an A13 phone as a fact (8 occurrences, each the record of what a text said)
+as stated step-0.8: 0.8 names the commit of each check (6cede84a, 5e455f70, 8082bdb6, the fix's own) and what the merge of m0-decisions adds; item 2 says so; the fix's log records no change at those commits
+as stated dates: the Stage 0 README's heading and sentence, the gate summary's bullet and its line over items 104-110, the runbook's Who wrote it, and the ADR index's row of ADR-0013 each give the day each part was done or decided
+as stated step-12: ADR-0001 limits the exception's absence to the G0.6 steps on device A in M0 and applies it to step 12's repeat in M3; ADR-0013 and the records' evidence README say so
+as stated release-notes: ADR-0001's Status and open item, and the ADR index's row, give Apple's pages as read on 24 October 2026 and the technical lead's confirmation as what remains; the index's column dated 26 October 2026
+as stated base: m0-sessions made from 5aec2518, with 6cede84a committed on it, in the gate summary and the instructions part's evidence README
+as stated review: the review at 8082bdb6 and this fix, not reviewed, in the gate summary (the State line: 199 words), the runbook, the Stage 0 README, integration log 28 and 29, eight ADRs, the ADR index and the update's evidence READMEs
+result: pass (0 of 8 not as stated)
+
+exit status: 0
+end: 2026-10-25T19:33:57Z; load:  8:33  up 22 days, 18:44, 3 users, load averages: 5.11 5.18 4.35

@@ -76,41 +76,97 @@ struct ProtectedCopyTests {
         evidence("class-B tree (\(files.count) files, 5 directories) copied with FileProtector.copyTree: \(seen)")
     }
 
+    /// Each refusal is checked by its reason, not only by its type, and in every form of the test's folder
+    /// (`PrivatePathTests.forms`): on the Mac also through /private, as an iPhone names its folders. There the
+    /// inside check used to compare Foundation's `standardizedFileURL` of the existing source (/var/…) with that of
+    /// the destination, which did not exist yet and kept /private, so it missed it: the copy went on into itself
+    /// until a name was too long and failed with a Cocoa error (review of 26 October 2026, finding F1; fix-1).
     @Test("FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy")
     func copyTreeRefusals() throws {
         let scratch = try Scratch()
         let fm = FileManager.default
-        let source = scratch.dir("Template")
-        try FileProtector.library.ensureDirectory(source.appending(path: "Library", directoryHint: .isDirectory))
-        try FileProtector.library.write(Data("db".utf8), to: source.appending(path: "Library/library.sqlite"))
+        var insideRefusals: [String] = []
+        for (index, form) in PrivatePathTests.forms(scratch.url).enumerated() {
+            let base = form.url.appending(path: "form-\(index + 1)", directoryHint: .isDirectory)
+            let source = base.appending(path: "Template", directoryHint: .isDirectory)
+            try FileProtector.library.ensureDirectory(source.appending(path: "Library", directoryHint: .isDirectory))
+            try FileProtector.library.write(Data("db".utf8), to: source.appending(path: "Library/library.sqlite"))
+            let sourceTree = try Set(fm.subpathsOfDirectory(atPath: source.path))
 
-        let existing = scratch.dir("Existing")
-        try fm.createDirectory(at: existing, withIntermediateDirectories: true)
-        #expect(throws: FileSystemError.self) { try FileProtector.library.copyTree(from: source, to: existing) }
-        #expect(try fm.contentsOfDirectory(atPath: existing.path).isEmpty, "the existing destination was changed")
+            let existing = base.appending(path: "Existing", directoryHint: .isDirectory)
+            try fm.createDirectory(at: existing, withIntermediateDirectories: true)
+            Self.expectRefusal("\(form.label): an existing destination", saying: "already exists") {
+                try FileProtector.library.copyTree(from: source, to: existing)
+            }
+            #expect(try fm.contentsOfDirectory(atPath: existing.path).isEmpty, "\(form.label): the existing destination was changed")
 
-        let inside = source.appending(path: "Library/Copy", directoryHint: .isDirectory)
-        #expect(throws: FileSystemError.self) { try FileProtector.library.copyTree(from: source, to: inside) }
-        #expect(!fm.fileExists(atPath: inside.path))
+            let inside = source.appending(path: "Library/Copy", directoryHint: .isDirectory)
+            let insideRefusal = Self.expectRefusal("\(form.label): a destination inside the source", saying: "is inside") {
+                try FileProtector.library.copyTree(from: source, to: inside)
+            }
+            insideRefusals.append("\(form.label): \(insideRefusal)")
+            #expect(!fm.fileExists(atPath: inside.path), "\(form.label): a copy was left inside the source")
+            #expect(try Set(fm.subpathsOfDirectory(atPath: source.path)) == sourceTree, "\(form.label): the source tree changed")
 
-        let linkToSource = scratch.url.appending(path: "link-to-template", directoryHint: .notDirectory)
-        try fm.createSymbolicLink(at: linkToSource, withDestinationURL: source)
-        #expect(throws: FileSystemError.self) { try FileProtector.library.copyTree(from: linkToSource, to: scratch.dir("FromLink")) }
-        #expect(!fm.fileExists(atPath: scratch.dir("FromLink").path))
+            // Through a link to the source's folder, and named with `..` below a folder that does not exist (its
+            // meaning depends on what a copy would create, so the check cannot place it and refuses it).
+            let linkToBase = base.appending(path: "link-to-base", directoryHint: .notDirectory)
+            try fm.createSymbolicLink(at: linkToBase, withDestinationURL: base)
+            Self.expectRefusal("\(form.label): a destination inside the source, named through a link", saying: "is inside") {
+                try FileProtector.library.copyTree(from: source, to: linkToBase.appending(path: "Template/Library/Copy", directoryHint: .isDirectory))
+            }
+            Self.expectRefusal("\(form.label): a destination named with .. below a missing folder", saying: "cannot be resolved") {
+                try FileProtector.library.copyTree(from: source, to: base.appending(path: "Missing/../Template/Library/Copy", directoryHint: .isDirectory))
+            }
+            #expect(!fm.fileExists(atPath: inside.path) && !fm.fileExists(atPath: base.appending(path: "Missing").path),
+                    "\(form.label): a refused copy left something behind")
+            #expect(try Set(fm.subpathsOfDirectory(atPath: source.path)) == sourceTree, "\(form.label): the source tree changed")
 
-        let unsupported = FileProtectionType(rawValue: "NSFileProtectionCompleteWhenUserInactive")
-        #expect(throws: ProtectionError.unsupportedClass(unsupported.rawValue)) {
-            try FileProtector(protection: unsupported).copyTree(from: source, to: scratch.dir("Unsupported"))
+            let linkToSource = base.appending(path: "link-to-template", directoryHint: .notDirectory)
+            try fm.createSymbolicLink(at: linkToSource, withDestinationURL: source)
+            let fromLink = base.appending(path: "FromLink", directoryHint: .isDirectory)
+            Self.expectRefusal("\(form.label): a link as the source", saying: "is not a directory") {
+                try FileProtector.library.copyTree(from: linkToSource, to: fromLink)
+            }
+            #expect(!fm.fileExists(atPath: fromLink.path), "\(form.label): a copy from the link was left")
+
+            let unsupported = FileProtectionType(rawValue: "NSFileProtectionCompleteWhenUserInactive")
+            let unsupportedCopy = base.appending(path: "Unsupported", directoryHint: .isDirectory)
+            #expect(throws: ProtectionError.unsupportedClass(unsupported.rawValue), "\(form.label)") {
+                try FileProtector(protection: unsupported).copyTree(from: source, to: unsupportedCopy)
+            }
+            #expect(!fm.fileExists(atPath: unsupportedCopy.path), "\(form.label): a copy with an unsupported class was left")
+
+            // A link anywhere in the tree fails the copy after part of it was made; nothing of it is left.
+            let outside = base.appending(path: "outside.txt", directoryHint: .notDirectory)
+            try Data("outside".utf8).write(to: outside)
+            try fm.createSymbolicLink(at: source.appending(path: "Library/link.sqlite", directoryHint: .notDirectory), withDestinationURL: outside)
+            let copy = base.appending(path: "Install", directoryHint: .isDirectory)
+            Self.expectRefusal("\(form.label): a link in the tree", saying: "is not a regular file or a directory") {
+                try FileProtector.library.copyTree(from: source, to: copy)
+            }
+            #expect(!fm.fileExists(atPath: copy.path), "\(form.label): a partial copy was left")
         }
-        #expect(!fm.fileExists(atPath: scratch.dir("Unsupported").path))
+        evidence("copyTree, a destination inside the source: \(insideRefusals.joined(separator: "; "))")
+    }
 
-        // A link anywhere in the tree fails the copy after part of it was made; nothing of it is left.
-        let outside = scratch.url.appending(path: "outside.txt", directoryHint: .notDirectory)
-        try Data("outside".utf8).write(to: outside)
-        try fm.createSymbolicLink(at: source.appending(path: "Library/link.sqlite", directoryHint: .notDirectory), withDestinationURL: outside)
-        let copy = scratch.dir("Install")
-        #expect(throws: FileSystemError.self) { try FileProtector.library.copyTree(from: source, to: copy) }
-        #expect(!fm.fileExists(atPath: copy.path), "a partial copy was left")
+    /// Expects `copy` to throw the `FileSystemError` of a refusal whose text contains `reason`, and returns what it
+    /// threw (or "not refused"), so that a refusal for another reason, or another kind of error, fails the test.
+    @discardableResult
+    static func expectRefusal(_ what: String, saying reason: String, sourceLocation: SourceLocation = #_sourceLocation,
+                              _ copy: () throws -> Void) -> String {
+        do {
+            try copy()
+            Issue.record("\(what): not refused", sourceLocation: sourceLocation)
+            return "not refused"
+        } catch let error as FileSystemError {
+            let text = String(describing: error)
+            #expect(text.contains(reason), "\(what): expected a refusal saying \"\(reason)\", got \(text)", sourceLocation: sourceLocation)
+            return text
+        } catch {
+            Issue.record("\(what): expected a FileSystemError saying \"\(reason)\", got \(error)", sourceLocation: sourceLocation)
+            return "\(error)"
+        }
     }
 
     #if os(macOS)

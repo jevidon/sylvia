@@ -86,8 +86,8 @@ struct ATSProbeTests {
     }
 
     /// The address `plainHTTPToAPrivateLANAddress` loads, on a port with no listener: the machine's own address on its
-    /// local network, so that a load ATS lets through is refused by the machine itself (URLError -1004, as on the
-    /// simulator) and goes nowhere else.
+    /// local network. A load ATS lets through is expected to be refused there by the machine itself (URLError -1004):
+    /// seen on the simulator; not yet seen on a phone, where the first run's load went to iCloud Private Relay (below).
     /// - Simulator: the first private address of any interface, as since the G0.5 run: the Mac's own LAN address.
     /// - Device: the Wi-Fi interface's (en0), and nothing else. A phone also has private IPv4 addresses on interfaces
     ///   that are not a local network: cellular (pdp_ip*), VPN and other tunnels (utun*, ipsec*). The first device run

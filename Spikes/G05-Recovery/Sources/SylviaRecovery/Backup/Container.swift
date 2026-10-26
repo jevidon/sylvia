@@ -188,7 +188,11 @@ public enum BackupValidator {
     /// Foundation's `resolvingSymlinksInPath`, which also drops a leading `/private`, but only from a
     /// path that exists: under /private/var (an iPhone's temporary and container folders) an existing
     /// root and a missing file inside it then had different prefixes, and the missing file was
-    /// reported as an unsafe path (device run of 26 October 2026, `PrivatePathTests`).
+    /// reported as an unsafe path (device run of 26 October 2026, `PrivatePathTests`). A path with a
+    /// `.` or `..` below a component that does not exist is never inside: `CanonicalPath.of` cannot
+    /// place it, since where it leads depends on what is created later. `resolve` refuses such
+    /// components before it asks; this function refuses them on its own too (security review of 26
+    /// October 2026, finding S2).
     static func isInside(_ url: URL, _ root: URL) -> Bool {
         guard let resolvedRoot = CanonicalPath.of(root), let resolved = CanonicalPath.of(url) else { return false }
         return CanonicalPath.relative(resolved, to: resolvedRoot) != nil

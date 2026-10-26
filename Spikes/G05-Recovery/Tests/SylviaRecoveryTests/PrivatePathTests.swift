@@ -99,6 +99,15 @@ struct PrivatePathTests {
             #expect(CanonicalPath.of(base) == CanonicalPath.of(root), "\(form.label)")
             // `.` or `..` below a folder that does not exist cannot be placed (review of 26 October 2026, fix-1).
             #expect(CanonicalPath.of(base.appending(path: "missing/../export/markdown/a.md")) == nil, "\(form.label)")
+            // So `isInside` itself, not only `resolve` (which refuses such components first), never counts such a path
+            // as inside (security review of 26 October 2026, finding S2). Once `missing` exists, the first path names
+            // the file outside and the second the root itself. A `..` in the part that exists is resolved, as the file
+            // system resolves it.
+            for path in ["missing/../../Outside/b.md", "missing/.."] {
+                #expect(!BackupValidator.isInside(base.appending(path: path), base), "\(form.label): \(path)")
+            }
+            #expect(BackupValidator.isInside(base.appending(path: "export/../export/markdown/a.md"), base), "\(form.label)")
+            #expect(!BackupValidator.isInside(base.appending(path: "export/../../Outside/b.md"), base), "\(form.label)")
         }
         // Paths are compared byte by byte: a name that begins with a combining mark is still below its folder,
         // though Swift's `String.hasPrefix` joins it to the `/` before it.

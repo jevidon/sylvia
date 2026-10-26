@@ -123,9 +123,13 @@ public struct FileProtector: Sendable {
     /// the protection class, then verifies the class. `FileManager.copyItem` must not be used for
     /// files Sylvia keeps: it clones the source and keeps the source's class (shown on the host:
     /// a class-C file copied into a class-B directory stays class C), and the class of an existing
-    /// file cannot be changed afterwards on macOS. The source is opened without following links and
-    /// must be a regular file at the moment it is opened, so a bundle changed after validation
-    /// cannot substitute a link, FIFO or device. Fails if `destination` exists.
+    /// file cannot be changed afterwards on macOS. The source is opened without following a link in
+    /// its last component (`O_NOFOLLOW`) and must be a regular file at the moment it is opened, so a
+    /// bundle changed after validation cannot substitute a link, FIFO or device for the file itself.
+    /// `O_NOFOLLOW` covers the last component only: a folder above the file that is swapped for a
+    /// link after the caller's checks is followed (security review of 26 October 2026, finding S5;
+    /// left as it was, a request to the technical lead). A restore still keeps only a copy with the
+    /// manifest's size and digest (`BackupRestorer.prepare`). Fails if `destination` exists.
     public func copyFile(from source: URL, to destination: URL) throws {
         let fd = open(source.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
         guard fd >= 0 else { throw FileSystemError.posix("open", source.lastPathComponent, errno) }

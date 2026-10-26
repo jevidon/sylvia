@@ -174,56 +174,107 @@ struct ProtectedCopyTests {
     static let packageRoot = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
         .deletingLastPathComponent()
 
-    /// Calls that copy a file and keep the source's class: `FileManager.copyItem` (both forms), and
-    /// the clone and copyfile(3) calls beneath it. Built from parts so that this file does not match.
-    /// An ICU pattern (`NSRegularExpression`), whose `\b` falls between `\w` and `\W`, so it matches
-    /// after a dot; Swift's `Regex` uses Unicode word boundaries, where `default.copyItem` is one word
-    /// (a first version of this test found nothing that way).
-    static let keepingCallPattern = "\\b(" + ["copy" + "Item", "clone" + "file", "clone" + "fileat", "fclone" + "fileat",
-                                              "copy" + "file", "fcopy" + "file"].joined(separator: "|") + ")\\s*\\("
+    /// Calls that copy or link a file and keep the source's class, as code spells them: FileManager's
+    /// `copyItem` and `linkItem` (Swift, and the Objective-C `copyItemAtURL:`, `copyItemAtPath:`,
+    /// `linkItemAtURL:` and `linkItemAtPath:`), and the C calls beneath or beside them: clonefile(2)
+    /// and its variants, copyfile(3) and fcopyfile(3), and link(2) and linkat(2), whose hard link is the
+    /// source file itself. The links and the Objective-C forms were added after the security review of
+    /// 26 October 2026 (finding S4). Built from parts so that this file does not match. An ICU pattern
+    /// (`NSRegularExpression`), whose `\b` falls between `\w` and `\W`, so it matches after a dot;
+    /// Swift's `Regex` uses Unicode word boundaries, where `default.copyItem` is one word (a first
+    /// version of this test found nothing that way). `\s` matches a line break too, so a call split
+    /// across lines is found.
+    static let keepingCallNames: [String] = ["copy" + "Item", "link" + "Item", "clone" + "file", "clone" + "fileat",
+                                             "fclone" + "fileat", "copy" + "file", "fcopy" + "file", "lin" + "k", "lin" + "kat"]
+    static let keepingSelectorNames: [String] = ["copy" + "Item", "link" + "Item"]
+    static let keepingCallPattern: String = "\\b(?:(?:" + keepingCallNames.joined(separator: "|") + ")\\s*\\(|(?:"
+        + keepingSelectorNames.joined(separator: "|") + ")At(?:URL|Path)\\s*:)"
+
+    /// A source file's code: each line without its `//` comment, joined again by line breaks, so that a
+    /// hit's line number is the line's. A `//` inside a string literal ("file://…") starts no comment:
+    /// cutting every line at its first `//` hid a call written after such a literal (security review of
+    /// 26 October 2026, finding S4). Block comments stay in as text: they can add a hit, never hide one.
+    static func code(of source: String) -> String {
+        source.split(omittingEmptySubsequences: false, whereSeparator: \.isNewline).map { line -> String in
+            var kept = ""
+            var inString = false
+            var escaped = false
+            var previous: Character?
+            for character in line {
+                if inString {
+                    if escaped { escaped = false } else if character == "\\" { escaped = true } else if character == "\"" { inString = false }
+                } else if character == "\"" {
+                    inString = true
+                } else if character == "/" && previous == "/" {
+                    kept.removeLast()
+                    return kept
+                }
+                kept.append(character)
+                previous = inString ? nil : character
+            }
+            return kept
+        }.joined(separator: "\n")
+    }
 
     /// The guard against the device run's failure coming back: no code in the recovery spike (the
-    /// package, the device host, the lock harness) copies a file in a way that keeps the source's
-    /// class; copies go through `FileProtector.copyFile` and `FileProtector.copyTree`. A test, not a
-    /// check in the CI drop-in, so that it also runs in every `swift test`; it reads the sources from
-    /// the checkout, so it is built for the Mac only. Whole-line comments, and the rest of a line after
-    /// `//`, are not code.
-    @Test("no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class")
+    /// package, the device host, the lock harness) copies or links a file in a way that keeps the
+    /// source's class; copies go through `FileProtector.copyFile` and `FileProtector.copyTree`. A test,
+    /// not a check in the CI drop-in, so that it also runs in every `swift test`; it reads the sources
+    /// from the checkout, so it is built for the Mac only. What it reads: the Swift, C and Objective-C
+    /// files (.swift, .c, .h, .m, .mm) of Sources, Tests, DeviceTests and LockHarness, without their `//`
+    /// comments (`code(of:)`). It is a text check: a call made another way, such as through a selector
+    /// built at run time or a function value, is not found.
+    @Test("no code in the recovery spike copies or links a file in a way that keeps the source's class (FileManager.copyItem or linkItem, clonefile, copyfile, link)")
     func noCopyKeepsTheSourceClass() throws {
         let fm = FileManager.default
         let keepingCalls = try NSRegularExpression(pattern: Self.keepingCallPattern)
-        func matches(_ text: String) -> Bool { keepingCalls.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)) != nil }
-        // The pattern itself: it finds each call as code writes it, and not FileProtector's copies.
-        for (sample, keeps) in [("try FileManager.default." + "copy" + "Item(at: a, to: b)", true),
-                                ("try fm." + "copy" + "Item(atPath: a, toPath: b)", true),
-                                ("guard " + "clone" + "file(a, b, 0) == 0", true),
-                                ("_ = " + "copy" + "file(a, b, nil, flags)", true),
-                                ("try protector.copyFile(from: a, to: b)", false),
-                                ("try FileProtector.library.copyTree(from: a, to: b)", false)] {
+        func hits(in code: String) -> [NSTextCheckingResult] { keepingCalls.matches(in: code, range: NSRange(code.startIndex..., in: code)) }
+        func matches(_ source: String) -> Bool { !hits(in: Self.code(of: source)).isEmpty }
+        // The pattern and the comment handling: each call is found as code writes it, and neither FileProtector's
+        // copies nor a call in a comment is. The samples from the URL string on came with finding S4.
+        let samples: [(String, Bool)] = [
+            ("try FileManager.default." + "copy" + "Item(at: a, to: b)", true),
+            ("try fm." + "copy" + "Item(atPath: a, toPath: b)", true),
+            ("guard " + "clone" + "file(a, b, 0) == 0", true),
+            ("_ = " + "copy" + "file(a, b, nil, flags)", true),
+            ("let u = URL(string: \"file:/" + "/x\")!; try fm." + "copy" + "Item(at: a, to: b)", true),
+            ("try fm." + "link" + "Item(at: a, to: b)", true),
+            ("guard " + "lin" + "k(a, b) == 0", true),
+            ("[fm " + "copy" + "ItemAtURL:a toURL:b error:&error];", true),
+            ("[fm " + "link" + "ItemAtPath:a toPath:b error:nil];", true),
+            ("return " + "copy" + "file\n    (a, b, NULL, COPYFILE_ALL);", true),
+            ("try protector.copyFile(from: a, to: b)", false),
+            ("try FileProtector.library.copyTree(from: a, to: b)", false),
+            ("try fm.createSymbolicLink(at: a, withDestinationURL: b); un" + "lin" + "k(c); sym" + "lin" + "k(d, e)", false),
+            ("let s = \"a\" /" + "/ try fm." + "copy" + "Item(at: a, to: b)", false),
+            ("    /" + "// try fm." + "copy" + "Item(at: a, to: b)", false),
+        ]
+        for (sample, keeps) in samples {
             #expect(matches(sample) == keeps, "pattern \(keeps ? "missed" : "matched") \(sample)")
         }
         var scanned = 0
-        var hits: [String] = []
+        var found: [String] = []
         for directory in ["Sources", "Tests", "DeviceTests", "LockHarness"] {
             let base = Self.packageRoot.appending(path: directory, directoryHint: .isDirectory)
             #expect(fm.fileExists(atPath: base.path), "\(directory) not found under \(Self.packageRoot.path)")
             guard let walk = fm.enumerator(at: base, includingPropertiesForKeys: [.isRegularFileKey], options: [.skipsHiddenFiles]) else { continue }
             for case let url as URL in walk {
                 if url.pathExtension == "xcodeproj" { walk.skipDescendants(); continue }
-                guard ["swift", "c", "h", "m"].contains(url.pathExtension) else { continue }
+                guard ["swift", "c", "h", "m", "mm"].contains(url.pathExtension) else { continue }
                 scanned += 1
                 let relative = String(url.standardizedFileURL.path.dropFirst(Self.packageRoot.standardizedFileURL.path.count + 1))
-                for (index, line) in try String(contentsOf: url, encoding: .utf8).split(separator: "\n", omittingEmptySubsequences: false).enumerated() {
-                    let text = line.trimmingCharacters(in: .whitespaces)
-                    if text.hasPrefix("//") { continue }
-                    let code = text.components(separatedBy: "//")[0]
-                    if matches(code) { hits.append("\(relative):\(index + 1): \(text)") }
+                let source = try String(contentsOf: url, encoding: .utf8)
+                let lines = source.split(omittingEmptySubsequences: false, whereSeparator: \.isNewline)
+                let code = Self.code(of: source)
+                for hit in hits(in: code) {
+                    let line = (code as NSString).substring(to: hit.range.location).components(separatedBy: "\n").count
+                    found.append("\(relative):\(line): \(lines[line - 1].trimmingCharacters(in: .whitespaces))")
                 }
             }
         }
         #expect(scanned > 40, "only \(scanned) source files found under \(Self.packageRoot.path)")
-        #expect(hits.isEmpty, "copies that keep the source's class:\n\(hits.joined(separator: "\n"))")
-        evidence("copy guard: \(scanned) source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: \(hits.count)")
+        #expect(found.isEmpty, "copies that keep the source's class:\n\(found.joined(separator: "\n"))")
+        evidence("copy guard: \(scanned) source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: \(found.count)")
     }
     #endif
 }

@@ -104,7 +104,13 @@ Notes on the logs:
 
 ### 5.1 Repository checks
 
-*(Filled in after the checks ran on this README's commit; see the next commit.)*
+The three checks ran through `Docs/Stage0/evidence/M0-Integration/repin-27.1/commands/run-logged.sh` on `1da42a45`, the commit that added this README, with no uncommitted path (each header says so), on 26 October 2026 between 16:43 and 16:45 UTC. The logs were written to `.build/scratch` and copied here afterwards, in the next commit, which adds only these logs and this section.
+
+| Log | Command | Result |
+| --- | --- | --- |
+| `checks/ci-contracts.log` | `Scripts/ci.sh contracts` | `00-git-lfs`, `10-contracts` and `11-capture-anchor-contracts` passed ("all 3 steps passed"); exit 0 |
+| `checks/13-hard-rules.log` | `Scripts/ci.d/13-hard-rules.sh` | Self-test PASS; audit `result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))`; none of the allowed hits is in this branch's files; exit 0 |
+| `checks/12-dependency-lock.log` | `Scripts/ci.d/12-dependency-lock.sh` | Self-test: 111 of 111 failure branches reached, 0 wrong; check: `0 failure(s), 0 warning(s)` (no lock or manifest changed here); exit 0 |
 
 ## 6. What you do next
 

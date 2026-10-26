@@ -1,0 +1,32 @@
+run-checks: HEAD 789c904911a0787d8d144f87ba755f6b374ece16, uncommitted paths: 0; logs in Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/checks; start 2026-10-26T14:11:56Z; load:  3:11  up 23 days, 13:22, 3 users, load averages: 2.35 3.82 3.77
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+finding-lines.log: exit 0 (0 required)
+owner-checks.log: exit 0 (0 required)
+merge-simulation.log: exit 0 (0 required)
+owner-records-intact.log: exit 0 (0 required, all three)
+retired-branch-texts.log: exit 0 (0 required)
+completeness-checks.log: exit 0 (0 required)
+completeness-checks-completeness.log: exit 1 (1 expected, failing exactly 3 check(s), by design); FAIL lines: 3; as expected: 1
+renumbered-references.log: exit 0 (0 required)
+step-0.8-paths.log: exit 0 (0 required)
+ci-contracts.log: exit 0 (0 required)
+12-dependency-lock.log: exit 0 (0 required)
+13-hard-rules.log: exit 0 (0 required)
+runbook-content-check.log: exit 0 (0 required)
+runbook-coverage.log: exit 0 (0 required)
+correction-texts.log: exit 0 (0 required)
+check-amendments.log: exit 0 (0 required)
+mutation-checks.log: exit 0 (0 required)
+check-amendments-records-update.log: exit 1 (1 expected, failing exactly 1 check(s), by design); FAIL lines: 1; as expected: 1
+check-amendments-accuracy.log: exit 1 (1 expected, failing exactly 1 check(s), by design); FAIL lines: 1; as expected: 1
+check-records.log: exit 0 (0 required)
+check-records-records-update.log: exit 1 (1 expected, failing exactly 1 check(s), by design); FAIL lines: 1; as expected: 1
+check-records-devicea.log: exit 1 (1 expected, failing exactly 2 check(s), by design); FAIL lines: 2; as expected: 1
+recheck-hon-ep.log: exit 1 (recorded as it reports)
+decisions-branch.log: exit 1 (recorded as it reports)
+recheck-own.log: exit 1 (recorded as it reports)
+gate-checks-exit-prep.log: exit 1 (recorded as it reports)
+gate-checks-devicea.log: exit 1 (recorded as it reports)
+gate-refresh-check.log: exit 0 (0 required)
+tree after the checks: 1 uncommitted paths (the logs); end 2026-10-26T14:19:33Z; load:  3:19  up 23 days, 13:30, 3 users, load averages: 3.94 4.37 4.08
+result: pass

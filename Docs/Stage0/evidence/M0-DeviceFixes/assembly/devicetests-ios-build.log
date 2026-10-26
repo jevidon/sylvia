@@ -1,0 +1,35 @@
+# the recovery suite's app host (Spikes/G05-Recovery/DeviceTests) for a generic iOS device: sylvia_generate, then xcodebuild build-for-testing, unsigned (build only; no device)
+# expected (stated before the run): exit 0, TEST BUILD SUCCEEDED; PrivatePathTests.swift and ProtectedCopyTests.swift compiled for arm64 in SylviaRecoveryTests; no warning in Spikes/G05-Recovery sources and tests
+# commit: 2d188e06fa0c57bf8564606132058f0bfc754654 (m0-device-fixes); uncommitted files before this run: 0
+# host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+# screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+# started: 2026-10-26T08:23:57Z; load: 11.15 12.82 8.37 (other jobs may share this Mac: timings are indicative only)
+# command (in Spikes/G05-Recovery, after sylvia_generate Spikes/G05-Recovery/DeviceTests):
+#   xcodebuild build-for-testing -project DeviceTests/G05RecoveryDeviceTests.xcodeproj -scheme G05RecoveryDeviceTests -destination generic/platform=iOS -derivedDataPath DeviceTests/.build/DerivedData -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO
+--- result lines
+** TEST BUILD SUCCEEDED **
+--- error lines (0 in all)
+--- warning lines (3 in all; unique)
+2026-10-26 21:24:06.043 appintentsmetadataprocessor[64094:57563529] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 21:24:08.361 appintentsmetadataprocessor[64133:57563838] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'G05RecoveryTestHost' from project 'G05RecoveryDeviceTests')
+--- warnings in Spikes/G05-Recovery sources and tests: 0
+--- Swift sources compiled for arm64 in target SylviaRecoveryTests (SwiftCompile and SwiftDriverJobDiscovery lines)
+BackupTests.swift Bundle+Module.swift DataProtectionTests.swift DeviceLockProbeTests.swift DevicePersistenceProbeTests.swift DurabilityTests.swift ManifestContractTests.swift MediaRemovalTests.swift MigrationTests.swift PrivatePathTests.swift ProtectedCopyTests.swift PutBackTests.swift SchemaTests.swift Support.swift 
+--- products (Debug-iphoneos)
+G05RecoveryTestHost.app
+G05RecoveryTestHost.app/PlugIns/SylviaRecoveryTests.xctest
+--- last 10 lines of the output
+    /usr/bin/touch -c Spikes/G05-Recovery/DeviceTests/.build/DerivedData/Build/Products/Debug-iphoneos/G05RecoveryTestHost.app
+
+PruneExplicitPrecompiledModules Spikes/G05-Recovery/DeviceTests/.build/DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-Recovery/DeviceTests/.build/DerivedData/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-Recovery/DeviceTests/.build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+** TEST BUILD SUCCEEDED **
+
+# screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+# finished: 2026-10-26T08:24:08Z; exit status 0; load: 9.70 12.42 8.30
+# result: as expected (exit 0; of the two new test files, 2 compiled for arm64 in SylviaRecoveryTests)

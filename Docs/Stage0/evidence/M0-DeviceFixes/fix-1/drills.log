@@ -1,0 +1,51 @@
+# the drop-in's steps 8 and 9 with its own arguments (restore crash drill, 300 iterations; migration put-back crash drill, 240 iterations), with the tool step 1 built; every iteration resets its library with FileProtector.copyTree
+# expected (stated before the run): each exits 0 with 'failures: 0' and 'RESULT: PASS'
+# commit: 3814a1615a884eb821996839019e61c23f79b33b (m0-device-fixes); uncommitted files before this run: 2
+# host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+# screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+# started: 2026-10-26T10:23:37Z; load: 6.49 4.06 4.10 (other jobs may share this Mac: timings are indicative only)
+tool: Spikes/G05-Recovery/.build/out/Products/Debug/g05-recovery-tool (built by step 1)
+
+=== 8. restore crash drill, 300 iterations
+restore crash drill (T47): environment host (macOS), seed 20261007, 300 iterations, SIGKILL during prepare and during the swap
+calibration: prepare 100.0 ms, commit 27.3 ms
+  50 iterations, 0 failures
+  100 iterations, 0 failures
+  150 iterations, 0 failures
+  200 iterations, 0 failures
+  250 iterations, 0 failures
+  300 iterations, 0 failures
+iterations: 300
+measured unkilled run: prepare 100.0 ms, commit (swap) 27.3 ms
+SIGKILLs by window: commit=150 prepare=150
+SIGKILLs by the last step the child reported: COMMIT=46, PREPARE=140, STEP activeMovedAside=31, STEP intentWritten=40, STEP restoredMovedIn=43
+children that finished before the kill: 0
+library after reopen: old library kept=187 restored library=113
+launch reconciliation: completedRestore=71 keptExistingLibrary=9 nothingToDo=220
+failures: 0
+elapsed: 47.5 s
+RESULT: PASS
+step 8 exit: 0
+
+=== 9. migration put-back crash drill, 240 iterations
+migration put-back crash drill (T45): environment host (macOS), seed 20261008, 240 iterations, SIGKILL at each put-back step (paused there, or 0-3 ms after it) and at random times, faults: throw and drop rows
+calibration: 81.8 ms from OPEN to DONE
+  40 iterations, 0 failures
+  80 iterations, 0 failures
+  120 iterations, 0 failures
+  160 iterations, 0 failures
+  200 iterations, 0 failures
+  240 iterations, 0 failures
+iterations: 240
+measured unkilled run (open, snapshot, failed migration, put-back): 81.8 ms
+SIGKILLs by plan: delay databaseMovedAside=10, delay intentRemoved=3, delay intentWritten=10, delay migrationFailed=10, delay shmMovedAside=10, delay snapshotMovedIn=8, delay staged=10, delay walMovedAside=10, pause databaseMovedAside=10, pause intentRemoved=10, pause intentWritten=10, pause migrationFailed=10, pause shmMovedAside=10, pause snapshotMovedIn=10, pause staged=10, pause walMovedAside=10, random=72
+SIGKILLs by the last line the child printed: OPEN=28, STEP databaseMovedAside=30, STEP intentRemoved=13, STEP intentWritten=26, STEP migrationFailed=30, STEP shmMovedAside=27, STEP snapshotMovedIn=19, STEP staged=25, STEP walMovedAside=25
+children that finished before the kill: 17
+first reopen: migrated=64 put back, then migrated at the next open=176
+failures: 0
+elapsed: 49.8 s
+RESULT: PASS
+step 9 exit: 0
+# screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+# finished: 2026-10-26T10:25:15Z; exit status 0; load: 5.82 4.48 4.26
+# result: as expected (exit 0; 2 of 2 drills 'RESULT: PASS')

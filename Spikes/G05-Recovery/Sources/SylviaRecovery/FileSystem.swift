@@ -55,6 +55,50 @@ public enum FileSystemError: Error, CustomStringConvertible {
     }
 }
 
+/// Absolute paths with every symbolic link resolved by realpath(3), whether or not the path exists yet: the form
+/// every containment check in this package compares (`BackupValidator.isInside` and `checkTree`,
+/// `FileProtector.copyTree`).
+///
+/// Never Foundation's `standardizedFileURL` or `resolvingSymlinksInPath` for that: they drop a leading /private, but
+/// only from a path that exists. Under /private/var (an iPhone's container and temporary folders, and the Mac's
+/// temporary folder when it is named that way) an existing folder and a path inside it that does not exist then
+/// have different prefixes (device run of 26 October 2026: a missing backup file reported as an unsafe path; review of
+/// the same day, findings F1 and F3: a copy into its own source not refused, a dangling link reported as an unsafe
+/// path). realpath(3) gives /private/var/... for a folder named either way.
+enum CanonicalPath {
+    /// realpath(3) of the deepest part of `url`'s path that exists, followed by the components below it that do not
+    /// exist, as they are. nil if no part of the path resolves, or if a component that does not exist is `.` or `..`:
+    /// where that leads depends on what is created later, so no containment check may place such a path.
+    static func of(_ url: URL) -> String? {
+        var existing = url.path.split(separator: "/").map(String.init)
+        var missing: [String] = []
+        while true {
+            if let resolved = realPath("/" + existing.joined(separator: "/")) {
+                guard !missing.contains(where: { $0 == "." || $0 == ".." }) else { return nil }
+                return missing.reversed().reduce(resolved) { ($0.hasSuffix("/") ? $0 : $0 + "/") + $1 }
+            }
+            guard let last = existing.popLast() else { return nil }
+            missing.append(last)
+        }
+    }
+
+    /// The part of `path` below `root`, both canonical (`of`), or nil when `path` is not strictly below `root`.
+    /// Compared byte by byte, as the file system names them: Swift's `String.hasPrefix` compares characters, and a
+    /// name that begins with a combining mark joins the `/` before it into one character.
+    static func relative(_ path: String, to root: String) -> String? {
+        let prefix = Array(root.utf8) + (root.utf8.last == UInt8(ascii: "/") ? [] : [UInt8(ascii: "/")])
+        let bytes = Array(path.utf8)
+        guard bytes.count > prefix.count, bytes.starts(with: prefix) else { return nil }
+        return String(decoding: bytes[prefix.count...], as: UTF8.self)
+    }
+
+    static func realPath(_ path: String) -> String? {
+        guard let resolved = realpath(path, nil) else { return nil }
+        defer { free(resolved) }
+        return String(cString: resolved)
+    }
+}
+
 public enum Digest {
     public static func sha256Hex(_ data: Data) -> String {
         SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()

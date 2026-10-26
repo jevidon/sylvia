@@ -1,0 +1,753 @@
+# the G0.5 AI drop-in's probe output (Spikes/G05-AI/.build/g05-ci/sim-probe-test.log), from the run recorded in ci-run.log
+# commit: 0b0e1e65ba6c4634591f1963079c6d2425ae2212 (m0-device-fixes-ats)
+
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -project G05ATSProbe.xcodeproj -scheme G05ATSProbe -destination id=8AC2F512-D5EF-4C35-B17D-EB07ED40C990 -derivedDataPath Spikes/G05-AI/ATSProbe/.build/DerivedData -disableAutomaticPackageResolution
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  GRDB: https://github.com/groue/GRDB.swift.git @ 7.11.1
+  G05AI: Spikes/G05-AI
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (11 targets)
+    Target 'ProbeDefaultATSUITests' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'ProbeDefaultATS' in project 'G05ATSProbe'
+    Target 'ProbeCIDRExceptionTests' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'ProbeCIDRException' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'SylviaAI-product' in project 'G05AI'
+        ➜ Explicit dependency on target 'G05TestSupport-product' in project 'G05AI'
+    Target 'ProbeLocalNetworkingTests' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'ProbeLocalNetworking' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'SylviaAI-product' in project 'G05AI'
+        ➜ Explicit dependency on target 'G05TestSupport-product' in project 'G05AI'
+    Target 'ProbeDefaultATSTests' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'ProbeDefaultATS' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'SylviaAI-product' in project 'G05AI'
+        ➜ Explicit dependency on target 'G05TestSupport-product' in project 'G05AI'
+    Target 'ProbeLocalNetworking' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'SylviaAI-product' in project 'G05AI'
+        ➜ Explicit dependency on target 'G05TestSupport-product' in project 'G05AI'
+    Target 'ProbeDefaultATS' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'SylviaAI-product' in project 'G05AI'
+        ➜ Explicit dependency on target 'G05TestSupport-product' in project 'G05AI'
+    Target 'ProbeCIDRException' in project 'G05ATSProbe'
+        ➜ Explicit dependency on target 'SylviaAI-product' in project 'G05AI'
+        ➜ Explicit dependency on target 'G05TestSupport-product' in project 'G05AI'
+    Target 'G05TestSupport-product' in project 'G05AI'
+        ➜ Explicit dependency on target 'G05TestSupport' in project 'G05AI'
+        ➜ Explicit dependency on target 'SylviaAI' in project 'G05AI'
+    Target 'G05TestSupport' in project 'G05AI'
+        ➜ Explicit dependency on target 'SylviaAI' in project 'G05AI'
+    Target 'SylviaAI-product' in project 'G05AI'
+        ➜ Explicit dependency on target 'SylviaAI' in project 'G05AI'
+    Target 'SylviaAI' in project 'G05AI' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: c870a4821fab99b22a48e1287faaeec9
+Build description path: Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/XCBuildData/c870a4821fab99b22a48e1287faaeec9.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk Spikes/G05-AI/ATSProbe/.build/DerivedData/SDKStatCaches.noindex/iphonesimulator27.1-24A94232-35d3147121984ba087c28d913653d626.sdkstatcache
+    cd Spikes/G05-AI/ATSProbe/G05ATSProbe.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -o Spikes/G05-AI/ATSProbe/.build/DerivedData/SDKStatCaches.noindex/iphonesimulator27.1-24A94232-35d3147121984ba087c28d913653d626.sdkstatcache
+
+ProcessInfoPlistFile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework/Info.plist Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05AI.build/Debug-iphonesimulator/SylviaAI-t.build/empty-SylviaAI.plist (in target 'SylviaAI' from project 'G05AI')
+    cd Spikes/G05-AI
+    builtin-infoPlistUtility Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05AI.build/Debug-iphonesimulator/SylviaAI-t.build/empty-SylviaAI.plist -producttype com.apple.product-type.framework -expandbuildsettings -format binary -platform iphonesimulator -o Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework/Info.plist
+
+ProcessInfoPlistFile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework/Info.plist Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05AI.build/Debug-iphonesimulator/G05TestSupport-product-t.build/empty-G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.plist (in target 'G05TestSupportdynamic-product' from project 'G05AI')
+    cd Spikes/G05-AI
+    builtin-infoPlistUtility Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05AI.build/Debug-iphonesimulator/G05TestSupport-product-t.build/empty-G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.plist -producttype com.apple.product-type.framework -expandbuildsettings -format binary -platform iphonesimulator -o Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework/Info.plist
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks
+
+ProcessInfoPlistFile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Info.plist Spikes/G05-AI/ATSProbe/App/Info-CIDRException.plist (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-infoPlistUtility Spikes/G05-AI/ATSProbe/App/Info-CIDRException.plist -producttype com.apple.product-type.application -genpkginfo Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -scanforprivacyfile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework -scanforprivacyfile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/SylviaAI.framework -o Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Info.plist
+
+CopySwiftLibs Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/ProbeCIDRException.debug.dylib --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/SystemExtensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Extensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeCIDRException.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/SylviaAI.framework (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/SylviaAI.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/Frameworks/SylviaAI.framework: replacing existing signature
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks
+
+ProcessInfoPlistFile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Info.plist Spikes/G05-AI/ATSProbe/App/Info-DefaultATS.plist (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-infoPlistUtility Spikes/G05-AI/ATSProbe/App/Info-DefaultATS.plist -producttype com.apple.product-type.application -genpkginfo Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -scanforprivacyfile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework -scanforprivacyfile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/SylviaAI.framework -o Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Info.plist
+
+CopySwiftLibs Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/ProbeDefaultATS.debug.dylib --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/SystemExtensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Extensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeDefaultATS.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/SylviaAI.framework (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/SylviaAI.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/Frameworks/SylviaAI.framework: replacing existing signature
+
+ProcessInfoPlistFile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Info.plist Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeDefaultATSTests.build/empty-ProbeDefaultATSTests.plist (in target 'ProbeDefaultATSTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-infoPlistUtility Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeDefaultATSTests.build/empty-ProbeDefaultATSTests.plist -producttype com.apple.product-type.bundle.unit-test -expandbuildsettings -format binary -platform iphonesimulator -o Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Info.plist
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeDefaultATSTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework (in target 'ProbeDefaultATSTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeDefaultATSTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework: replacing existing signature
+
+CopySwiftLibs Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest (in target 'ProbeDefaultATSTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/ProbeDefaultATSTests --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/PlugIns --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/SystemExtensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Extensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeDefaultATSTests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks/SylviaAI.framework (in target 'ProbeDefaultATSTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks/SylviaAI.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest/Frameworks/SylviaAI.framework: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest (in target 'ProbeDefaultATSTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/ProbeDefaultATS.debug.dylib (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/ProbeDefaultATS.debug.dylib
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/ProbeDefaultATS.debug.dylib: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/__preview.dylib (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/__preview.dylib
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app/__preview.dylib: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app: replacing existing signature
+
+Validate Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-validationUtility Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATS.app -shallow-bundle -infoplist-subpath Info.plist
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks
+
+ProcessInfoPlistFile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Info.plist Spikes/G05-AI/ATSProbe/App/Info-LocalNetworking.plist (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-infoPlistUtility Spikes/G05-AI/ATSProbe/App/Info-LocalNetworking.plist -producttype com.apple.product-type.application -genpkginfo Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -scanforprivacyfile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework -scanforprivacyfile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/SylviaAI.framework -o Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Info.plist
+
+CopySwiftLibs Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/ProbeLocalNetworking.debug.dylib --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/SystemExtensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Extensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeLocalNetworking.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/SylviaAI.framework (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/SylviaAI.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/Frameworks/SylviaAI.framework: replacing existing signature
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework (in target 'ProbeLocalNetworkingTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeLocalNetworkingTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework (in target 'ProbeCIDRExceptionTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/SylviaAI.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks
+
+Copy Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeCIDRExceptionTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks
+
+ProcessInfoPlistFile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest/Info.plist Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeDefaultATSUITests.build/empty-ProbeDefaultATSUITests.plist (in target 'ProbeDefaultATSUITests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-infoPlistUtility Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeDefaultATSUITests.build/empty-ProbeDefaultATSUITests.plist -producttype com.apple.product-type.bundle.ui-testing -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeDefaultATSUITests.build/ProductTypeInfoPlistAdditions.plist -o Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest/Info.plist
+
+ProcessInfoPlistFile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Info.plist Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeLocalNetworkingTests.build/empty-ProbeLocalNetworkingTests.plist (in target 'ProbeLocalNetworkingTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-infoPlistUtility Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeLocalNetworkingTests.build/empty-ProbeLocalNetworkingTests.plist -producttype com.apple.product-type.bundle.unit-test -expandbuildsettings -format binary -platform iphonesimulator -o Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Info.plist
+
+ProcessInfoPlistFile Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Info.plist Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeCIDRExceptionTests.build/empty-ProbeCIDRExceptionTests.plist (in target 'ProbeCIDRExceptionTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-infoPlistUtility Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeCIDRExceptionTests.build/empty-ProbeCIDRExceptionTests.plist -producttype com.apple.product-type.bundle.unit-test -expandbuildsettings -format binary -platform iphonesimulator -o Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Info.plist
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeLocalNetworkingTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework (in target 'ProbeCIDRExceptionTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks/SylviaAI.framework (in target 'ProbeLocalNetworkingTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks/SylviaAI.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks/SylviaAI.framework: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks/SylviaAI.framework (in target 'ProbeCIDRExceptionTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks/SylviaAI.framework
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks/SylviaAI.framework: replacing existing signature
+
+CopySwiftLibs Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest (in target 'ProbeDefaultATSUITests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest/ProbeDefaultATSUITests --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest/Frameworks --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest/PlugIns --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest/SystemExtensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeDefaultATSUITests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CopySwiftLibs Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest (in target 'ProbeCIDRExceptionTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/ProbeCIDRExceptionTests --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/PlugIns --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/SystemExtensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Extensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeCIDRExceptionTests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CopySwiftLibs Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest (in target 'ProbeLocalNetworkingTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/ProbeLocalNetworkingTests --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/PlugIns --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/SystemExtensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Extensions --scan-folder Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/PackageFrameworks/G05TestSupport_-3EAAF2D51BCE20A9_PackageProduct.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/G05ATSProbe.build/Debug-iphonesimulator/ProbeLocalNetworkingTests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest (in target 'ProbeCIDRExceptionTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest (in target 'ProbeLocalNetworkingTests' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/ProbeCIDRException.debug.dylib (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/ProbeCIDRException.debug.dylib
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/ProbeCIDRException.debug.dylib: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/ProbeLocalNetworking.debug.dylib (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/ProbeLocalNetworking.debug.dylib
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/ProbeLocalNetworking.debug.dylib: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/__preview.dylib (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/__preview.dylib
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app/__preview.dylib: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/__preview.dylib (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/__preview.dylib
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app/__preview.dylib: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app: replacing existing signature
+
+CodeSign Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app
+Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app: replacing existing signature
+
+Validate Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-validationUtility Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeLocalNetworking.app -shallow-bundle -infoplist-subpath Info.plist
+
+Validate Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+    cd Spikes/G05-AI/ATSProbe
+    builtin-validationUtility Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphonesimulator/ProbeCIDRException.app -shallow-bundle -infoplist-subpath Info.plist
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+2026-10-26 19:53:41.275 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+Test Suite 'All tests' started at 2026-10-26 19:53:43.890.
+Test Suite 'All tests' passed at 2026-10-26 19:53:43.890.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Suite "ATS probe" started.
+◇ Test variantIsKnown() started.
+✔ Test variantIsKnown() passed after 0.001 seconds.
+◇ Test onADeviceOnlyTheWiFiAddressIsProbed() started.
+✔ Test onADeviceOnlyTheWiFiAddressIsProbed() passed after 0.001 seconds.
+◇ Test plainHTTPToLoopbackPassesATSInEveryVariant() started.
+2026-10-26 19:53:43.893601+1300 ProbeDefaultATS[5638:57302039] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+✔ Test plainHTTPToLoopbackPassesATSInEveryVariant() passed after 0.012 seconds.
+2026-10-26 19:53:43.905195+1300 ProbeDefaultATS[5638:57302040] [connection] [C2 127.0.0.1:49530 tcp, local: 127.0.0.1:49529, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+◇ Test plainHTTPToAPrivateLANAddress() started.
+ATS-PROBE variant=default private-ipv4-interfaces=en0:192.168.x.x rule=simulator: the first of any interface
+2026-10-26 19:53:43.905585+1300 ProbeDefaultATS[5638:57302044] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+2026-10-26 19:53:43.906865+1300 ProbeDefaultATS[5638:57302038] [connection] nw_socket_handle_socket_event [C3:2] Socket SO_ERROR [61: Connection refused]
+2026-10-26 19:53:43.906934+1300 ProbeDefaultATS[5638:57302038] [connection] nw_endpoint_flow_failed_with_error [C3 192.168.x.x:49531 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+2026-10-26 19:53:43.907007+1300 ProbeDefaultATS[5638:57302038] [Default] Connection 3: received failure notification
+2026-10-26 19:53:43.907053+1300 ProbeDefaultATS[5638:57302038] [Default] Connection 3: failed to connect 1:61, reason -1
+2026-10-26 19:53:43.907085+1300 ProbeDefaultATS[5638:57302038] [Default] Connection 3: encountered error(1:61)
+2026-10-26 19:53:43.907163+1300 ProbeDefaultATS[5638:57302038] [connection] nw_connection_copy_protocol_metadata_internal_block_invoke [C3] Client called nw_connection_copy_protocol_metadata_internal on unconnected nw_connection
+2026-10-26 19:53:43.907205+1300 ProbeDefaultATS[5638:57302038] [connection] nw_connection_copy_protocol_metadata_internal_block_invoke [C3] Client called nw_connection_copy_protocol_metadata_internal on unconnected nw_connection
+2026-10-26 19:53:43.907264+1300 ProbeDefaultATS[5638:57302038] [connection] nw_connection_copy_connected_local_endpoint_block_invoke [C3] Client called nw_connection_copy_connected_local_endpoint on unconnected nw_connection
+2026-10-26 19:53:43.907298+1300 ProbeDefaultATS[5638:57302038] [connection] nw_connection_copy_connected_remote_endpoint_block_invoke [C3] Client called nw_connection_copy_connected_remote_endpoint on unconnected nw_connection
+2026-10-26 19:53:43.907411+1300 ProbeDefaultATS[5638:57302038] [Default] Task <F3897CF1-594E-48A1-9C0C-D9ADE0156FA1>.<1> HTTP load failed, 0/0 bytes (error code: -1004 [1:61])
+2026-10-26 19:53:43.907750+1300 ProbeDefaultATS[5638:57302038] [Default] Task <F3897CF1-594E-48A1-9C0C-D9ADE0156FA1>.<1> finished with error [-1004] Error Domain=NSURLErrorDomain Code=-1004 "Could not connect to the server." UserInfo={_kCFStreamErrorCodeKey=61, NSUnderlyingError=0x10aa4c300 {Error Domain=kCFErrorDomainCFNetwork Code=-1004 "(null)" UserInfo={_NSURLErrorNWPathKey=satisfied (Path is satisfied), interface: lo0, _kCFStreamErrorCodeKey=61, _kCFStreamErrorDomainKey=1}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <F3897CF1-594E-48A1-9C0C-D9ADE0156FA1>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <F3897CF1-594E-48A1-9C0C-D9ADE0156FA1>.<1>"
+), NSLocalizedDescription=Could not connect to the server., NSErrorFailingURLStringKey=http://192.168.x.x:49531/v1/models, NSErrorFailingURLKey=http://192.168.x.x:49531/v1/models, _kCFStreamErrorDomainKey=1}
+ATS-PROBE variant=default private-ip=192.168.x.x interface=en0 result=URLError -1004 classified=host_unreachable
+✔ Test plainHTTPToAPrivateLANAddress() passed after 0.003 seconds.
+◇ Test plainHTTPToAPublicIPLiteral() started.
+2026-10-26 19:53:43.909520+1300 ProbeDefaultATS[5638:57302044] [Default] Cannot start load of Task <286F91C6-055A-4CDA-B590-328033712948>.<1> since it does not conform to ATS policy
+2026-10-26 19:53:43.909619+1300 ProbeDefaultATS[5638:57302045] [Default] Task <286F91C6-055A-4CDA-B590-328033712948>.<1> finished with error [-1022] Error Domain=NSURLErrorDomain Code=-1022 "The resource could not be loaded because the App Transport Security policy requires the use of a secure connection." UserInfo={NSLocalizedDescription=The resource could not be loaded because the App Transport Security policy requires the use of a secure connection., NSErrorFailingURLStringKey=http://192.0.2.1/v1/models, NSErrorFailingURLKey=http://192.0.2.1/v1/models, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <286F91C6-055A-4CDA-B590-328033712948>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <286F91C6-055A-4CDA-B590-328033712948>.<1>, NSUnderlyingError=0x10aa4ce10 {Error Domain=kCFErrorDomainCFNetwork Code=-1022 "(null)"}}
+ATS-PROBE variant=default public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true
+✔ Test plainHTTPToAPublicIPLiteral() passed after 0.003 seconds.
+​➜ Test plainHTTPToAnotherDeviceOnTheLAN() skipped: "device checklist step 2 only: needs G05_LAN_TARGET and G05_EXPECT_LOCAL_NETWORK"
+​◇ Test plainHTTPToAQualifiedNameIsBlockedInEveryVariant() started.
+2026-10-26 19:53:43.913275+1300 ProbeDefaultATS[5638:57302045] [Default] Cannot start load of Task <A2B5D651-2E28-4CE6-A57C-EE794A3CCDA1>.<1> since it does not conform to ATS policy
+2026-10-26 19:53:43.913396+1300 ProbeDefaultATS[5638:57302039] [Default] Task <A2B5D651-2E28-4CE6-A57C-EE794A3CCDA1>.<1> finished with error [-1022] Error Domain=NSURLErrorDomain Code=-1022 "The resource could not be loaded because the App Transport Security policy requires the use of a secure connection." UserInfo={NSLocalizedDescription=The resource could not be loaded because the App Transport Security policy requires the use of a secure connection., NSErrorFailingURLStringKey=http://sylvia-ats-probe.invalid/v1/models, NSErrorFailingURLKey=http://sylvia-ats-probe.invalid/v1/models, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <A2B5D651-2E28-4CE6-A57C-EE794A3CCDA1>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <A2B5D651-2E28-4CE6-A57C-EE794A3CCDA1>.<1>, NSUnderlyingError=0x10aa4c270 {Error Domain=kCFErrorDomainCFNetwork Code=-1022 "(null)"}}
+✔ Test plainHTTPToAQualifiedNameIsBlockedInEveryVariant() passed after 0.001 seconds.
+◇ Test plainHTTPToLocalhostName() started.
+2026-10-26 19:53:43.914011+1300 ProbeDefaultATS[5638:57302038] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+2026-10-26 19:53:43.915799+1300 ProbeDefaultATS[5638:57302039] [connection] nw_socket_handle_socket_event [C4.1.1:2] Socket SO_ERROR [61: Connection refused]
+2026-10-26 19:53:43.915861+1300 ProbeDefaultATS[5638:57302039] [connection] nw_endpoint_flow_failed_with_error [C4.1.1 ::1.49533 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+ATS-PROBE variant=default localhost=success(200)
+✔ Test plainHTTPToLocalhostName() passed after 0.005 seconds.
+2026-10-26 19:53:43.918922+1300 ProbeDefaultATS[5638:57302039] [connection] [C5 127.0.0.1:49535 tcp, local: 127.0.0.1:49533, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+◇ Test sylviaPolicyStillGatesWhatATSAllows() started.
+2026-10-26 19:53:43.919255+1300 ProbeDefaultATS[5638:57302039] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+✔ Test sylviaPolicyStillGatesWhatATSAllows() passed after 0.001 seconds.
+◇ Test httpsToANonTLSServerIsClassifiedAsTLS() started.
+2026-10-26 19:53:43.919676+1300 ProbeDefaultATS[5638:57302040] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+2026-10-26 19:53:43.924803+1300 ProbeDefaultATS[5638:57302039] [connection] nw_endpoint_flow_failed_with_error [C6.1.1 127.0.0.1:49537 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+2026-10-26 19:53:43.924986+1300 ProbeDefaultATS[5638:57302039] [connection] nw_endpoint_flow_failed_with_error [C6.1.1 127.0.0.1:49537 cancelled socket-flow ((null))] already failing, returning
+2026-10-26 19:53:43.925112+1300 ProbeDefaultATS[5638:57302039] [Default] Connection 6: received failure notification
+2026-10-26 19:53:43.925165+1300 ProbeDefaultATS[5638:57302039] [Default] Connection 6: failed to connect 3:-9816, reason -1
+2026-10-26 19:53:43.925215+1300 ProbeDefaultATS[5638:57302039] [Default] Connection 6: encountered error(3:-9816)
+2026-10-26 19:53:43.930934+1300 ProbeDefaultATS[5638:57302039] [connection] nw_endpoint_flow_failed_with_error [C8.1.1 127.0.0.1:49537 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+2026-10-26 19:53:43.931650+1300 ProbeDefaultATS[5638:57302039] [connection] nw_endpoint_flow_failed_with_error [C8.1.1 127.0.0.1:49537 cancelled socket-flow ((null))] already failing, returning
+2026-10-26 19:53:43.932061+1300 ProbeDefaultATS[5638:57302039] [Default] Connection 8: received failure notification
+2026-10-26 19:53:43.932128+1300 ProbeDefaultATS[5638:57302039] [Default] Connection 8: failed to connect 3:-9816, reason -1
+2026-10-26 19:53:43.932257+1300 ProbeDefaultATS[5638:57302039] [Default] Connection 8: encountered error(3:-9816)
+2026-10-26 19:53:43.933130+1300 ProbeDefaultATS[5638:57302039] [Default] Task <7587E2B6-6276-4571-BD67-1F3E3B25A120>.<1> HTTP load failed, 0/0 bytes (error code: -1200 [3:-9816])
+2026-10-26 19:53:43.933348+1300 ProbeDefaultATS[5638:57302045] [Default] Task <7587E2B6-6276-4571-BD67-1F3E3B25A120>.<1> finished with error [-1200] Error Domain=NSURLErrorDomain Code=-1200 "A TLS error caused the secure connection to fail." UserInfo={_kCFStreamErrorCodeKey=-9816, NSUnderlyingError=0x10aa4cd20 {Error Domain=kCFErrorDomainCFNetwork Code=-1200 "(null)" UserInfo={_kCFStreamPropertySSLClientCertificateState=0, _kCFNetworkCFStreamSSLErrorOriginalValue=-9816, _kCFStreamErrorDomainKey=3, _kCFStreamErrorCodeKey=-9816, _NSURLErrorNWPathKey=satisfied (Path is satisfied), interface: lo0}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <7587E2B6-6276-4571-BD67-1F3E3B25A120>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <7587E2B6-6276-4571-BD67-1F3E3B25A120>.<1>"
+), NSLocalizedDescription=A TLS error caused the secure connection to fail., NSErrorFailingURLStringKey=https://127.0.0.1:49537/v1/chat/completions, NSErrorFailingURLKey=https://127.0.0.1:49537/v1/chat/completions, _kCFStreamErrorDomainKey=3}
+✔ Test httpsToANonTLSServerIsClassifiedAsTLS() passed after 0.014 seconds.
+✔ Suite "ATS probe" passed after 0.041 seconds.
+◇ Suite "Keychain credential store (simulator)" started.
+◇ Test roundTripUpdateAndDelete() started.
+2026-10-26 19:53:43.933966+1300 ProbeDefaultATS[5638:57302045] [connection] [C7 127.0.0.1:49538 tcp, local: 127.0.0.1:49537, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+2026-10-26 19:53:43.934210+1300 ProbeDefaultATS[5638:57302045] [connection] [C9 127.0.0.1:49539 tcp, local: 127.0.0.1:49537, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+✔ Test roundTripUpdateAndDelete() passed after 0.010 seconds.
+◇ Test storedWithWhenUnlockedThisDeviceOnlyAndNotSynchronized() started.
+✔ Test storedWithWhenUnlockedThisDeviceOnlyAndNotSynchronized() passed after 0.001 seconds.
+◇ Test aKeyIsStoredForOneOriginOnly() started.
+✔ Test aKeyIsStoredForOneOriginOnly() passed after 0.002 seconds.
+◇ Test providerReadsTheKeyFromTheKeychainOnly() started.
+2026-10-26 19:53:43.948902+1300 ProbeDefaultATS[5638:57302040] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+✔ Test providerReadsTheKeyFromTheKeychainOnly() passed after 0.005 seconds.
+2026-10-26 19:53:43.954286+1300 ProbeDefaultATS[5638:57302040] [connection] [C11 127.0.0.1:49541 tcp, local: 127.0.0.1:49540, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+✔ Suite "Keychain credential store (simulator)" passed after 0.020 seconds.
+✔ Test run with 14 tests in 2 suites passed after 0.061 seconds.
+2026-10-26 19:53:43.963 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:53:43.963 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:53:44.224 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:53:44.873232+1300 ProbeLocalNetworking[5646:57302149] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+Test Suite 'All tests' started at 2026-10-26 19:53:44.910.
+Test Suite 'All tests' passed at 2026-10-26 19:53:44.911.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Suite "ATS probe" started.
+◇ Test variantIsKnown() started.
+✔ Test variantIsKnown() passed after 0.001 seconds.
+◇ Test onADeviceOnlyTheWiFiAddressIsProbed() started.
+✔ Test onADeviceOnlyTheWiFiAddressIsProbed() passed after 0.001 seconds.
+◇ Test plainHTTPToLoopbackPassesATSInEveryVariant() started.
+2026-10-26 19:53:44.913698+1300 ProbeLocalNetworking[5646:57302153] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+✔ Test plainHTTPToLoopbackPassesATSInEveryVariant() passed after 0.012 seconds.
+2026-10-26 19:53:44.925079+1300 ProbeLocalNetworking[5646:57302149] [connection] [C2 127.0.0.1:49543 tcp, local: 127.0.0.1:49542, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+◇ Test plainHTTPToAPrivateLANAddress() started.
+ATS-PROBE variant=local_networking private-ipv4-interfaces=en0:192.168.x.x rule=simulator: the first of any interface
+2026-10-26 19:53:44.925424+1300 ProbeLocalNetworking[5646:57302151] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+2026-10-26 19:53:44.926649+1300 ProbeLocalNetworking[5646:57302152] [connection] nw_socket_handle_socket_event [C3:2] Socket SO_ERROR [61: Connection refused]
+2026-10-26 19:53:44.926722+1300 ProbeLocalNetworking[5646:57302152] [connection] nw_endpoint_flow_failed_with_error [C3 192.168.x.x:49544 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+2026-10-26 19:53:44.926862+1300 ProbeLocalNetworking[5646:57302152] [Default] Connection 3: received failure notification
+2026-10-26 19:53:44.926903+1300 ProbeLocalNetworking[5646:57302152] [Default] Connection 3: failed to connect 1:61, reason -1
+2026-10-26 19:53:44.926947+1300 ProbeLocalNetworking[5646:57302152] [Default] Connection 3: encountered error(1:61)
+2026-10-26 19:53:44.927052+1300 ProbeLocalNetworking[5646:57302152] [connection] nw_connection_copy_protocol_metadata_internal_block_invoke [C3] Client called nw_connection_copy_protocol_metadata_internal on unconnected nw_connection
+2026-10-26 19:53:44.927154+1300 ProbeLocalNetworking[5646:57302152] [connection] nw_connection_copy_protocol_metadata_internal_block_invoke [C3] Client called nw_connection_copy_protocol_metadata_internal on unconnected nw_connection
+2026-10-26 19:53:44.927191+1300 ProbeLocalNetworking[5646:57302152] [connection] nw_connection_copy_connected_local_endpoint_block_invoke [C3] Client called nw_connection_copy_connected_local_endpoint on unconnected nw_connection
+2026-10-26 19:53:44.927230+1300 ProbeLocalNetworking[5646:57302152] [connection] nw_connection_copy_connected_remote_endpoint_block_invoke [C3] Client called nw_connection_copy_connected_remote_endpoint on unconnected nw_connection
+2026-10-26 19:53:44.927405+1300 ProbeLocalNetworking[5646:57302152] [Default] Task <6C977ACF-EB36-4032-BC5C-11D1BA8C025C>.<1> HTTP load failed, 0/0 bytes (error code: -1004 [1:61])
+2026-10-26 19:53:44.927732+1300 ProbeLocalNetworking[5646:57302152] [Default] Task <6C977ACF-EB36-4032-BC5C-11D1BA8C025C>.<1> finished with error [-1004] Error Domain=NSURLErrorDomain Code=-1004 "Could not connect to the server." UserInfo={_kCFStreamErrorCodeKey=61, NSUnderlyingError=0x109ec0450 {Error Domain=kCFErrorDomainCFNetwork Code=-1004 "(null)" UserInfo={_NSURLErrorNWPathKey=satisfied (Path is satisfied), interface: lo0, _kCFStreamErrorCodeKey=61, _kCFStreamErrorDomainKey=1}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <6C977ACF-EB36-4032-BC5C-11D1BA8C025C>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <6C977ACF-EB36-4032-BC5C-11D1BA8C025C>.<1>"
+), NSLocalizedDescription=Could not connect to the server., NSErrorFailingURLStringKey=http://192.168.x.x:49544/v1/models, NSErrorFailingURLKey=http://192.168.x.x:49544/v1/models, _kCFStreamErrorDomainKey=1}
+ATS-PROBE variant=local_networking private-ip=192.168.x.x interface=en0 result=URLError -1004 classified=host_unreachable
+✔ Test plainHTTPToAPrivateLANAddress() passed after 0.003 seconds.
+◇ Test plainHTTPToAPublicIPLiteral() started.
+2026-10-26 19:53:44.929519+1300 ProbeLocalNetworking[5646:57302152] [Default] Cannot start load of Task <2713BE4C-E3CA-4D30-99BC-E3BAE95E680D>.<1> since it does not conform to ATS policy
+2026-10-26 19:53:44.929616+1300 ProbeLocalNetworking[5646:57302152] [Default] Task <2713BE4C-E3CA-4D30-99BC-E3BAE95E680D>.<1> finished with error [-1022] Error Domain=NSURLErrorDomain Code=-1022 "The resource could not be loaded because the App Transport Security policy requires the use of a secure connection." UserInfo={NSLocalizedDescription=The resource could not be loaded because the App Transport Security policy requires the use of a secure connection., NSErrorFailingURLStringKey=http://192.0.2.1/v1/models, NSErrorFailingURLKey=http://192.0.2.1/v1/models, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <2713BE4C-E3CA-4D30-99BC-E3BAE95E680D>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <2713BE4C-E3CA-4D30-99BC-E3BAE95E680D>.<1>, NSUnderlyingError=0x109ec02d0 {Error Domain=kCFErrorDomainCFNetwork Code=-1022 "(null)"}}
+ATS-PROBE variant=local_networking public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true
+✔ Test plainHTTPToAPublicIPLiteral() passed after 0.004 seconds.
+​➜ Test plainHTTPToAnotherDeviceOnTheLAN() skipped: "device checklist step 2 only: needs G05_LAN_TARGET and G05_EXPECT_LOCAL_NETWORK"
+​◇ Test plainHTTPToAQualifiedNameIsBlockedInEveryVariant() started.
+2026-10-26 19:53:44.933545+1300 ProbeLocalNetworking[5646:57302152] [Default] Cannot start load of Task <5235AB01-EDEE-402C-A104-C68A81CD1BBC>.<1> since it does not conform to ATS policy
+2026-10-26 19:53:44.933636+1300 ProbeLocalNetworking[5646:57302151] [Default] Task <5235AB01-EDEE-402C-A104-C68A81CD1BBC>.<1> finished with error [-1022] Error Domain=NSURLErrorDomain Code=-1022 "The resource could not be loaded because the App Transport Security policy requires the use of a secure connection." UserInfo={NSLocalizedDescription=The resource could not be loaded because the App Transport Security policy requires the use of a secure connection., NSErrorFailingURLStringKey=http://sylvia-ats-probe.invalid/v1/models, NSErrorFailingURLKey=http://sylvia-ats-probe.invalid/v1/models, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <5235AB01-EDEE-402C-A104-C68A81CD1BBC>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <5235AB01-EDEE-402C-A104-C68A81CD1BBC>.<1>, NSUnderlyingError=0x109ec0450 {Error Domain=kCFErrorDomainCFNetwork Code=-1022 "(null)"}}
+✔ Test plainHTTPToAQualifiedNameIsBlockedInEveryVariant() passed after 0.001 seconds.
+◇ Test plainHTTPToLocalhostName() started.
+2026-10-26 19:53:44.934178+1300 ProbeLocalNetworking[5646:57302148] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+2026-10-26 19:53:44.936197+1300 ProbeLocalNetworking[5646:57302152] [connection] nw_socket_handle_socket_event [C4.1.1:2] Socket SO_ERROR [61: Connection refused]
+2026-10-26 19:53:44.936260+1300 ProbeLocalNetworking[5646:57302152] [connection] nw_endpoint_flow_failed_with_error [C4.1.1 ::1.49546 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+ATS-PROBE variant=local_networking localhost=success(200)
+✔ Test plainHTTPToLocalhostName() passed after 0.005 seconds.
+◇ Test sylviaPolicyStillGatesWhatATSAllows() started.
+2026-10-26 19:53:44.938951+1300 ProbeLocalNetworking[5646:57302152] [connection] [C5 127.0.0.1:49548 tcp, local: 127.0.0.1:49546, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+2026-10-26 19:53:44.939219+1300 ProbeLocalNetworking[5646:57302152] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+✔ Test sylviaPolicyStillGatesWhatATSAllows() passed after 0.001 seconds.
+◇ Test httpsToANonTLSServerIsClassifiedAsTLS() started.
+2026-10-26 19:53:44.939693+1300 ProbeLocalNetworking[5646:57302152] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+2026-10-26 19:53:44.940412+1300 ProbeLocalNetworking[5646:57302152] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-10-26 19:53:44.943933+1300 ProbeLocalNetworking[5646:57302148] [connection] nw_endpoint_flow_failed_with_error [C6.1.1 127.0.0.1:49550 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+2026-10-26 19:53:44.944028+1300 ProbeLocalNetworking[5646:57302148] [connection] nw_endpoint_flow_failed_with_error [C6.1.1 127.0.0.1:49550 cancelled socket-flow ((null))] already failing, returning
+2026-10-26 19:53:44.944150+1300 ProbeLocalNetworking[5646:57302148] [Default] Connection 6: received failure notification
+2026-10-26 19:53:44.944217+1300 ProbeLocalNetworking[5646:57302148] [Default] Connection 6: failed to connect 3:-9816, reason -1
+2026-10-26 19:53:44.944237+1300 ProbeLocalNetworking[5646:57302148] [Default] Connection 6: encountered error(3:-9816)
+2026-10-26 19:53:44.946047+1300 ProbeLocalNetworking[5646:57302148] [connection] nw_endpoint_flow_failed_with_error [C8.1.1 127.0.0.1:49550 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+2026-10-26 19:53:44.946190+1300 ProbeLocalNetworking[5646:57302148] [connection] nw_endpoint_flow_failed_with_error [C8.1.1 127.0.0.1:49550 cancelled socket-flow ((null))] already failing, returning
+2026-10-26 19:53:44.946322+1300 ProbeLocalNetworking[5646:57302148] [Default] Connection 8: received failure notification
+2026-10-26 19:53:44.946387+1300 ProbeLocalNetworking[5646:57302148] [Default] Connection 8: failed to connect 3:-9816, reason -1
+2026-10-26 19:53:44.946439+1300 ProbeLocalNetworking[5646:57302148] [Default] Connection 8: encountered error(3:-9816)
+2026-10-26 19:53:44.946588+1300 ProbeLocalNetworking[5646:57302148] [Default] Task <58587384-4655-4F46-92C3-1F4D9D5D0B32>.<1> HTTP load failed, 0/0 bytes (error code: -1200 [3:-9816])
+2026-10-26 19:53:44.946774+1300 ProbeLocalNetworking[5646:57302152] [Default] Task <58587384-4655-4F46-92C3-1F4D9D5D0B32>.<1> finished with error [-1200] Error Domain=NSURLErrorDomain Code=-1200 "A TLS error caused the secure connection to fail." UserInfo={_kCFStreamErrorCodeKey=-9816, NSUnderlyingError=0x109ec15f0 {Error Domain=kCFErrorDomainCFNetwork Code=-1200 "(null)" UserInfo={_kCFStreamPropertySSLClientCertificateState=0, _kCFNetworkCFStreamSSLErrorOriginalValue=-9816, _kCFStreamErrorDomainKey=3, _kCFStreamErrorCodeKey=-9816, _NSURLErrorNWPathKey=satisfied (Path is satisfied), interface: lo0}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <58587384-4655-4F46-92C3-1F4D9D5D0B32>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <58587384-4655-4F46-92C3-1F4D9D5D0B32>.<1>"
+), NSLocalizedDescription=A TLS error caused the secure connection to fail., NSErrorFailingURLStringKey=https://127.0.0.1:49550/v1/chat/completions, NSErrorFailingURLKey=https://127.0.0.1:49550/v1/chat/completions, _kCFStreamErrorDomainKey=3}
+✔ Test httpsToANonTLSServerIsClassifiedAsTLS() passed after 0.007 seconds.
+2026-10-26 19:53:44.946983+1300 ProbeLocalNetworking[5646:57302152] [connection] [C7 127.0.0.1:49551 tcp, local: 127.0.0.1:49550, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+✔ Suite "ATS probe" passed after 0.034 seconds.
+2026-10-26 19:53:44.947021+1300 ProbeLocalNetworking[5646:57302152] [connection] [C9 127.0.0.1:49552 tcp, local: 127.0.0.1:49550, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+◇ Suite "Keychain credential store (simulator)" started.
+◇ Test roundTripUpdateAndDelete() started.
+✔ Test roundTripUpdateAndDelete() passed after 0.004 seconds.
+◇ Test storedWithWhenUnlockedThisDeviceOnlyAndNotSynchronized() started.
+✔ Test storedWithWhenUnlockedThisDeviceOnlyAndNotSynchronized() passed after 0.001 seconds.
+◇ Test aKeyIsStoredForOneOriginOnly() started.
+✔ Test aKeyIsStoredForOneOriginOnly() passed after 0.002 seconds.
+◇ Test providerReadsTheKeyFromTheKeychainOnly() started.
+2026-10-26 19:53:44.956260+1300 ProbeLocalNetworking[5646:57302149] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+✔ Test providerReadsTheKeyFromTheKeychainOnly() passed after 0.003 seconds.
+✔ Suite "Keychain credential store (simulator)" passed after 0.012 seconds.
+2026-10-26 19:53:44.959770+1300 ProbeLocalNetworking[5646:57302151] [connection] [C11 127.0.0.1:49554 tcp, local: 127.0.0.1:49553, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+✔ Test run with 14 tests in 2 suites passed after 0.047 seconds.
+2026-10-26 19:53:44.968 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:53:44.968 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:53:45.234 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:53:46.012830+1300 ProbeCIDRException[5653:57302246] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+Test Suite 'All tests' started at 2026-10-26 19:53:46.047.
+Test Suite 'All tests' passed at 2026-10-26 19:53:46.048.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Suite "ATS probe" started.
+◇ Test variantIsKnown() started.
+✔ Test variantIsKnown() passed after 0.001 seconds.
+◇ Test onADeviceOnlyTheWiFiAddressIsProbed() started.
+✔ Test onADeviceOnlyTheWiFiAddressIsProbed() passed after 0.001 seconds.
+◇ Test plainHTTPToLoopbackPassesATSInEveryVariant() started.
+2026-10-26 19:53:46.050697+1300 ProbeCIDRException[5653:57302257] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+✔ Test plainHTTPToLoopbackPassesATSInEveryVariant() passed after 0.012 seconds.
+2026-10-26 19:53:46.062073+1300 ProbeCIDRException[5653:57302246] [connection] [C2 127.0.0.1:49557 tcp, local: 127.0.0.1:49556, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+◇ Test plainHTTPToAPrivateLANAddress() started.
+ATS-PROBE variant=cidr_exception private-ipv4-interfaces=en0:192.168.x.x rule=simulator: the first of any interface
+2026-10-26 19:53:46.062417+1300 ProbeCIDRException[5653:57302257] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+2026-10-26 19:53:46.063668+1300 ProbeCIDRException[5653:57302257] [connection] nw_socket_handle_socket_event [C3:2] Socket SO_ERROR [61: Connection refused]
+2026-10-26 19:53:46.063749+1300 ProbeCIDRException[5653:57302257] [connection] nw_endpoint_flow_failed_with_error [C3 192.168.x.x:49558 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+2026-10-26 19:53:46.063808+1300 ProbeCIDRException[5653:57302257] [Default] Connection 3: received failure notification
+2026-10-26 19:53:46.063876+1300 ProbeCIDRException[5653:57302257] [Default] Connection 3: failed to connect 1:61, reason -1
+2026-10-26 19:53:46.063918+1300 ProbeCIDRException[5653:57302257] [Default] Connection 3: encountered error(1:61)
+2026-10-26 19:53:46.064004+1300 ProbeCIDRException[5653:57302257] [connection] nw_connection_copy_protocol_metadata_internal_block_invoke [C3] Client called nw_connection_copy_protocol_metadata_internal on unconnected nw_connection
+2026-10-26 19:53:46.064031+1300 ProbeCIDRException[5653:57302257] [connection] nw_connection_copy_protocol_metadata_internal_block_invoke [C3] Client called nw_connection_copy_protocol_metadata_internal on unconnected nw_connection
+2026-10-26 19:53:46.064084+1300 ProbeCIDRException[5653:57302257] [connection] nw_connection_copy_connected_local_endpoint_block_invoke [C3] Client called nw_connection_copy_connected_local_endpoint on unconnected nw_connection
+2026-10-26 19:53:46.064125+1300 ProbeCIDRException[5653:57302257] [connection] nw_connection_copy_connected_remote_endpoint_block_invoke [C3] Client called nw_connection_copy_connected_remote_endpoint on unconnected nw_connection
+2026-10-26 19:53:46.064280+1300 ProbeCIDRException[5653:57302257] [Default] Task <951DF0E6-E79C-4869-BBB8-C072C3B2EDBA>.<1> HTTP load failed, 0/0 bytes (error code: -1004 [1:61])
+2026-10-26 19:53:46.064593+1300 ProbeCIDRException[5653:57302257] [Default] Task <951DF0E6-E79C-4869-BBB8-C072C3B2EDBA>.<1> finished with error [-1004] Error Domain=NSURLErrorDomain Code=-1004 "Could not connect to the server." UserInfo={_kCFStreamErrorCodeKey=61, NSUnderlyingError=0x105e95c80 {Error Domain=kCFErrorDomainCFNetwork Code=-1004 "(null)" UserInfo={_NSURLErrorNWPathKey=satisfied (Path is satisfied), interface: lo0, _kCFStreamErrorCodeKey=61, _kCFStreamErrorDomainKey=1}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <951DF0E6-E79C-4869-BBB8-C072C3B2EDBA>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <951DF0E6-E79C-4869-BBB8-C072C3B2EDBA>.<1>"
+), NSLocalizedDescription=Could not connect to the server., NSErrorFailingURLStringKey=http://192.168.x.x:49558/v1/models, NSErrorFailingURLKey=http://192.168.x.x:49558/v1/models, _kCFStreamErrorDomainKey=1}
+ATS-PROBE variant=cidr_exception private-ip=192.168.x.x interface=en0 result=URLError -1004 classified=host_unreachable
+✔ Test plainHTTPToAPrivateLANAddress() passed after 0.003 seconds.
+◇ Test plainHTTPToAPublicIPLiteral() started.
+2026-10-26 19:53:46.066194+1300 ProbeCIDRException[5653:57302257] [Default] Cannot start load of Task <F8DD3F13-CF40-4B83-8812-BAC5BB7BF69F>.<1> since it does not conform to ATS policy
+2026-10-26 19:53:46.066283+1300 ProbeCIDRException[5653:57302249] [Default] Task <F8DD3F13-CF40-4B83-8812-BAC5BB7BF69F>.<1> finished with error [-1022] Error Domain=NSURLErrorDomain Code=-1022 "The resource could not be loaded because the App Transport Security policy requires the use of a secure connection." UserInfo={NSLocalizedDescription=The resource could not be loaded because the App Transport Security policy requires the use of a secure connection., NSErrorFailingURLStringKey=http://192.0.2.1/v1/models, NSErrorFailingURLKey=http://192.0.2.1/v1/models, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <F8DD3F13-CF40-4B83-8812-BAC5BB7BF69F>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <F8DD3F13-CF40-4B83-8812-BAC5BB7BF69F>.<1>, NSUnderlyingError=0x105e969d0 {Error Domain=kCFErrorDomainCFNetwork Code=-1022 "(null)"}}
+ATS-PROBE variant=cidr_exception public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true
+✔ Test plainHTTPToAPublicIPLiteral() passed after 0.003 seconds.
+​➜ Test plainHTTPToAnotherDeviceOnTheLAN() skipped: "device checklist step 2 only: needs G05_LAN_TARGET and G05_EXPECT_LOCAL_NETWORK"
+​◇ Test plainHTTPToAQualifiedNameIsBlockedInEveryVariant() started.
+2026-10-26 19:53:46.069807+1300 ProbeCIDRException[5653:57302249] [Default] Cannot start load of Task <6DCFCA8E-30E0-48CF-A5A3-01C09C18EBB9>.<1> since it does not conform to ATS policy
+2026-10-26 19:53:46.069898+1300 ProbeCIDRException[5653:57302257] [Default] Task <6DCFCA8E-30E0-48CF-A5A3-01C09C18EBB9>.<1> finished with error [-1022] Error Domain=NSURLErrorDomain Code=-1022 "The resource could not be loaded because the App Transport Security policy requires the use of a secure connection." UserInfo={NSLocalizedDescription=The resource could not be loaded because the App Transport Security policy requires the use of a secure connection., NSErrorFailingURLStringKey=http://sylvia-ats-probe.invalid/v1/models, NSErrorFailingURLKey=http://sylvia-ats-probe.invalid/v1/models, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <6DCFCA8E-30E0-48CF-A5A3-01C09C18EBB9>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <6DCFCA8E-30E0-48CF-A5A3-01C09C18EBB9>.<1>, NSUnderlyingError=0x105e95ce0 {Error Domain=kCFErrorDomainCFNetwork Code=-1022 "(null)"}}
+✔ Test plainHTTPToAQualifiedNameIsBlockedInEveryVariant() passed after 0.001 seconds.
+◇ Test plainHTTPToLocalhostName() started.
+2026-10-26 19:53:46.070419+1300 ProbeCIDRException[5653:57302257] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+2026-10-26 19:53:46.072219+1300 ProbeCIDRException[5653:57302246] [connection] nw_socket_handle_socket_event [C4.1.1:2] Socket SO_ERROR [61: Connection refused]
+2026-10-26 19:53:46.072286+1300 ProbeCIDRException[5653:57302246] [connection] nw_endpoint_flow_failed_with_error [C4.1.1 ::1.49560 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+ATS-PROBE variant=cidr_exception localhost=success(200)
+✔ Test plainHTTPToLocalhostName() passed after 0.005 seconds.
+2026-10-26 19:53:46.075065+1300 ProbeCIDRException[5653:57302248] [connection] [C5 127.0.0.1:49562 tcp, local: 127.0.0.1:49560, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+◇ Test sylviaPolicyStillGatesWhatATSAllows() started.
+2026-10-26 19:53:46.075366+1300 ProbeCIDRException[5653:57302248] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+✔ Test sylviaPolicyStillGatesWhatATSAllows() passed after 0.001 seconds.
+◇ Test httpsToANonTLSServerIsClassifiedAsTLS() started.
+2026-10-26 19:53:46.075849+1300 ProbeCIDRException[5653:57302251] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+2026-10-26 19:53:46.080070+1300 ProbeCIDRException[5653:57302251] [connection] nw_endpoint_flow_failed_with_error [C6.1.1 127.0.0.1:49564 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+2026-10-26 19:53:46.080170+1300 ProbeCIDRException[5653:57302251] [connection] nw_endpoint_flow_failed_with_error [C6.1.1 127.0.0.1:49564 cancelled socket-flow ((null))] already failing, returning
+2026-10-26 19:53:46.080264+1300 ProbeCIDRException[5653:57302251] [Default] Connection 6: received failure notification
+2026-10-26 19:53:46.080331+1300 ProbeCIDRException[5653:57302251] [Default] Connection 6: failed to connect 3:-9816, reason -1
+2026-10-26 19:53:46.080355+1300 ProbeCIDRException[5653:57302251] [Default] Connection 6: encountered error(3:-9816)
+2026-10-26 19:53:46.080476+1300 ProbeCIDRException[5653:57302249] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-10-26 19:53:46.082213+1300 ProbeCIDRException[5653:57302257] [connection] nw_endpoint_flow_failed_with_error [C8.1.1 127.0.0.1:49564 in_progress socket-flow (satisfied (Path is satisfied), interface: lo0)] already failing, returning
+2026-10-26 19:53:46.082295+1300 ProbeCIDRException[5653:57302257] [connection] nw_endpoint_flow_failed_with_error [C8.1.1 127.0.0.1:49564 cancelled socket-flow ((null))] already failing, returning
+2026-10-26 19:53:46.082390+1300 ProbeCIDRException[5653:57302257] [Default] Connection 8: received failure notification
+2026-10-26 19:53:46.082437+1300 ProbeCIDRException[5653:57302257] [Default] Connection 8: failed to connect 3:-9816, reason -1
+2026-10-26 19:53:46.082466+1300 ProbeCIDRException[5653:57302257] [Default] Connection 8: encountered error(3:-9816)
+2026-10-26 19:53:46.082599+1300 ProbeCIDRException[5653:57302257] [Default] Task <B4337FEE-CCD0-4099-8C1C-398C29F397DE>.<1> HTTP load failed, 0/0 bytes (error code: -1200 [3:-9816])
+2026-10-26 19:53:46.082706+1300 ProbeCIDRException[5653:57302249] [Default] Task <B4337FEE-CCD0-4099-8C1C-398C29F397DE>.<1> finished with error [-1200] Error Domain=NSURLErrorDomain Code=-1200 "A TLS error caused the secure connection to fail." UserInfo={_kCFStreamErrorCodeKey=-9816, NSUnderlyingError=0x105e95980 {Error Domain=kCFErrorDomainCFNetwork Code=-1200 "(null)" UserInfo={_kCFStreamPropertySSLClientCertificateState=0, _kCFNetworkCFStreamSSLErrorOriginalValue=-9816, _kCFStreamErrorDomainKey=3, _kCFStreamErrorCodeKey=-9816, _NSURLErrorNWPathKey=satisfied (Path is satisfied), interface: lo0}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <B4337FEE-CCD0-4099-8C1C-398C29F397DE>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <B4337FEE-CCD0-4099-8C1C-398C29F397DE>.<1>"
+), NSLocalizedDescription=A TLS error caused the secure connection to fail., NSErrorFailingURLStringKey=https://127.0.0.1:49564/v1/chat/completions, NSErrorFailingURLKey=https://127.0.0.1:49564/v1/chat/completions, _kCFStreamErrorDomainKey=3}
+✔ Test httpsToANonTLSServerIsClassifiedAsTLS() passed after 0.007 seconds.
+2026-10-26 19:53:46.082925+1300 ProbeCIDRException[5653:57302251] [connection] [C7 127.0.0.1:49565 tcp, local: 127.0.0.1:49564, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+✔ Suite "ATS probe" passed after 0.033 seconds.
+◇ Suite "Keychain credential store (simulator)" started.
+◇ Test roundTripUpdateAndDelete() started.
+2026-10-26 19:53:46.082994+1300 ProbeCIDRException[5653:57302251] [connection] [C9 127.0.0.1:49566 tcp, local: 127.0.0.1:49564, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+✔ Test roundTripUpdateAndDelete() passed after 0.004 seconds.
+◇ Test storedWithWhenUnlockedThisDeviceOnlyAndNotSynchronized() started.
+✔ Test storedWithWhenUnlockedThisDeviceOnlyAndNotSynchronized() passed after 0.001 seconds.
+◇ Test aKeyIsStoredForOneOriginOnly() started.
+✔ Test aKeyIsStoredForOneOriginOnly() passed after 0.002 seconds.
+◇ Test providerReadsTheKeyFromTheKeychainOnly() started.
+2026-10-26 19:53:46.092333+1300 ProbeCIDRException[5653:57302248] [] nw_listener_socket_inbox_create_socket setsockopt SO_NECP_LISTENUUID failed [2: No such file or directory]
+✔ Test providerReadsTheKeyFromTheKeychainOnly() passed after 0.003 seconds.
+2026-10-26 19:53:46.096055+1300 ProbeCIDRException[5653:57302248] [connection] [C11 127.0.0.1:49568 tcp, local: 127.0.0.1:49567, definite, attribution: developer, server, prohibit joining protocols] is already cancelled, ignoring cancel
+✔ Suite "Keychain credential store (simulator)" passed after 0.013 seconds.
+✔ Test run with 14 tests in 2 suites passed after 0.046 seconds.
+2026-10-26 19:53:46.104 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:53:46.104 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:53:46.369 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:53:46.747345+1300 ProbeDefaultATSUITests-Runner[5655:57302269] [Default] Running tests...
+objc[5655]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x108dc4310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x10823c398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'All tests' started at 2026-10-26 19:53:48.883.
+Test Suite 'ProbeDefaultATSUITests.xctest' started at 2026-10-26 19:53:48.884.
+Test Suite 'SuspensionUITests' started at 2026-10-26 19:53:48.884.
+Test Case '-[ProbeDefaultATSUITests.SuspensionUITests testLeavingTheForegroundMidStreamLeavesAnInterruptedPartialAnswer]' started.
+    t =     0.00s Start Test at 2026-10-26 19:53:48.884
+    t =     0.08s Set Up
+    t =     0.09s Open com.jevidon.sylvia.spike.atsprobe.default
+    t =     0.09s     Launch com.jevidon.sylvia.spike.atsprobe.default
+2026-10-26 19:53:49.008 xcodebuild[5562:57301289] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-26 19:53:49.008 xcodebuild[5562:57301289] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-26 19:53:49.013 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.34s         Setting up automation session
+    t =     0.82s         Wait for com.jevidon.sylvia.spike.atsprobe.default to idle
+    t =     1.97s Tap "suspension.start" Button
+    t =     1.97s     Wait for com.jevidon.sylvia.spike.atsprobe.default to idle
+    t =     1.97s     Find the "suspension.start" Button
+    t =     1.99s     Check for interrupting elements affecting "suspension.start" Button
+    t =     2.00s     Synthesize event
+    t =     2.40s     Wait for com.jevidon.sylvia.spike.atsprobe.default to idle
+    t =     2.40s Find the "suspension.status" StaticText
+    t =     2.63s Find the "suspension.status" StaticText
+    t =     2.64s Find the "suspension.chars" StaticText
+    t =     2.86s Find the "suspension.status" StaticText
+    t =     2.87s Find the "suspension.chars" StaticText
+    t =     3.09s Find the "suspension.status" StaticText
+    t =     3.10s Find the "suspension.chars" StaticText
+    t =     3.10s Find the "suspension.chars" StaticText
+    t =     3.11s Pressing Home button
+    t =     8.59s Open com.jevidon.sylvia.spike.atsprobe.default
+    t =     8.59s     Activate com.jevidon.sylvia.spike.atsprobe.default
+    t =     8.61s         Wait for com.jevidon.sylvia.spike.atsprobe.default to idle
+    t =     8.61s Wait for com.jevidon.sylvia.spike.atsprobe.default to become Running Foreground
+    t =     8.61s Waiting 10.0s for StaticText (First Match) to exist
+    t =     9.68s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =     9.68s         Checking existence of `StaticText (First Match)`
+    t =     9.70s Find the "suspension.status" StaticText
+    t =     9.71s Find the "suspension.stored" StaticText
+    t =     9.72s Find the "suspension.chars" StaticText
+    t =     9.73s Find the "suspension.requests" StaticText
+    t =     9.73s Find the "suspension.question" StaticText
+    t =    12.75s Find the "suspension.requests" StaticText
+    t =    12.76s Find the "suspension.chars" StaticText
+    t =    12.77s Find the "suspension.status" StaticText
+    t =    12.78s Find the "suspension.status" StaticText
+    t =    12.79s Find the "suspension.stored" StaticText
+    t =    12.80s Find the "suspension.requests" StaticText
+    t =    12.80s Find the "suspension.question" StaticText
+SUSPENSION-PROBE before-home=20 after-return=50 status=interrupted · Interrupted · partial answer stored interrupted · Interrupted · partial answer · 50 characters requests 1 question sent 1 times
+    t =    12.81s Tear Down
+Test Case '-[ProbeDefaultATSUITests.SuspensionUITests testLeavingTheForegroundMidStreamLeavesAnInterruptedPartialAnswer]' passed (13.037 seconds).
+Test Suite 'SuspensionUITests' passed at 2026-10-26 19:54:01.922.
+	 Executed 1 test, with 0 failures (0 unexpected) in 13.037 (13.038) seconds
+Test Suite 'ProbeDefaultATSUITests.xctest' passed at 2026-10-26 19:54:01.922.
+	 Executed 1 test, with 0 failures (0 unexpected) in 13.037 (13.038) seconds
+Test Suite 'All tests' passed at 2026-10-26 19:54:01.922.
+	 Executed 1 test, with 0 failures (0 unexpected) in 13.037 (13.039) seconds
+2026-10-26 19:54:01.937 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:54:01.937 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:54:01.950 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:54:01.950 xcodebuild[5562:57301289] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-26 19:54:02.211 xcodebuild[5562:57301289] [MT] IDETestOperationsObserverDebug: 20.999 elapsed -- Testing started completed.
+2026-10-26 19:54:02.211 xcodebuild[5562:57301289] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-26 19:54:02.211 xcodebuild[5562:57301289] [MT] IDETestOperationsObserverDebug: 20.999 sec, +20.999 sec -- end
+
+Test session results, code coverage, and logs:
+	Spikes/G05-AI/ATSProbe/.build/DerivedData/Logs/Test/Test-G05ATSProbe-2026.10.26_19-53-40-+1300.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

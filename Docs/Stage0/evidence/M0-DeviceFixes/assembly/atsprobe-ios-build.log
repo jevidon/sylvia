@@ -1,0 +1,51 @@
+# the ATS probe (Spikes/G05-AI/ATSProbe) for a generic iOS device: sylvia_generate, then xcodebuild build-for-testing, unsigned (build only; no device)
+# expected (stated before the run): exit 0, TEST BUILD SUCCEEDED; ATSProbeTests.swift compiled for arm64 in each of the three test targets; no warning in Spikes/G05-AI code
+# commit: 2d188e06fa0c57bf8564606132058f0bfc754654 (m0-device-fixes); uncommitted files before this run: 0
+# host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+# screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+# started: 2026-10-26T08:24:08Z; load: 9.70 12.42 8.30 (other jobs may share this Mac: timings are indicative only)
+# command (in Spikes/G05-AI/ATSProbe, after sylvia_generate Spikes/G05-AI/ATSProbe):
+#   xcodebuild build-for-testing -project G05ATSProbe.xcodeproj -scheme G05ATSProbe -destination generic/platform=iOS -derivedDataPath .build/DerivedData -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO
+--- result lines
+** TEST BUILD SUCCEEDED **
+--- error lines (0 in all)
+--- warning lines (11 in all; unique)
+2026-10-26 21:24:17.839 appintentsmetadataprocessor[64358:57564823] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 21:24:21.295 appintentsmetadataprocessor[64510:57565681] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 21:24:21.295 appintentsmetadataprocessor[64511:57565682] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 21:24:21.295 appintentsmetadataprocessor[64512:57565683] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 21:24:21.421 appintentsmetadataprocessor[64534:57565764] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 21:24:21.424 appintentsmetadataprocessor[64537:57565767] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 21:24:21.424 appintentsmetadataprocessor[64539:57565769] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+2026-10-26 21:24:21.608 appintentsmetadataprocessor[64551:57565813] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'ProbeCIDRException' from project 'G05ATSProbe')
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'ProbeDefaultATS' from project 'G05ATSProbe')
+warning: All interface orientations must be supported unless the app requires full screen. (in target 'ProbeLocalNetworking' from project 'G05ATSProbe')
+--- warnings in Spikes/G05-AI code: 0
+--- ATSProbeTests.swift compiled for a device (arm64), by target
+in target 'ProbeCIDRExceptionTests'
+in target 'ProbeDefaultATSTests'
+in target 'ProbeLocalNetworkingTests'
+--- products (Debug-iphoneos)
+ProbeCIDRException.app
+ProbeCIDRException.app/PlugIns/ProbeCIDRExceptionTests.xctest
+ProbeDefaultATS.app
+ProbeDefaultATS.app/PlugIns/ProbeDefaultATSTests.xctest
+ProbeDefaultATSUITests-Runner.app
+ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest
+ProbeLocalNetworking.app
+ProbeLocalNetworking.app/PlugIns/ProbeLocalNetworkingTests.xctest
+--- last 10 lines of the output
+    /usr/bin/touch -c Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Products/Debug-iphoneos/ProbeDefaultATSUITests-Runner.app/PlugIns/ProbeDefaultATSUITests.xctest
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules Spikes/G05-AI/ATSProbe/.build/DerivedData/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+** TEST BUILD SUCCEEDED **
+
+# screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+# finished: 2026-10-26T08:24:21Z; exit status 0; load: 8.90 12.16 8.26
+# result: as expected (exit 0; ATSProbeTests.swift compiled for arm64 in 3 test targets)

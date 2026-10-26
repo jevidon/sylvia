@@ -130,10 +130,12 @@ struct PutBackTests {
     /// Leaves the failed library's real `-wal`, holding a committed frame that is not in the database
     /// file, and its `-shm` beside it, as a process killed after a commit would. Paired with the
     /// snapshot, that frame would be applied to the wrong database. Returns the files' bytes by name.
+    /// The files put back into `Library/` are created with the library's class (`FileProtector`), never
+    /// with `FileManager.copyItem`, which keeps the source's class (device run of 26 October 2026).
     func plantWALAndSHM(_ layout: LibraryLayout) throws -> [String: Data] {
         let fm = FileManager.default
         let saved = layout.root.appending(path: "database-before-frame.sqlite")
-        try fm.copyItem(at: layout.databaseURL, to: saved)
+        try FileProtector.library.copyFile(from: layout.databaseURL, to: saved)
         let queue = try DatabaseQueue(path: layout.databaseURL.path)
         #expect(try queue.read { try String.fetchOne($0, sql: "PRAGMA journal_mode") } == "wal")
         try queue.write { try $0.execute(sql: "UPDATE work SET title = 'only in the old -wal'") }
@@ -142,8 +144,8 @@ struct PutBackTests {
         try queue.close()
         try fm.removeItem(at: layout.databaseURL)
         try fm.moveItem(at: saved, to: layout.databaseURL)
-        try wal.write(to: layout.walURL)
-        try shm.write(to: layout.shmURL)
+        try FileProtector.library.write(wal, to: layout.walURL, atomic: false)
+        try FileProtector.library.write(shm, to: layout.shmURL, atomic: false)
         #expect(wal.count > 32, "the -wal must hold a frame, not only its header")
         return [layout.walURL.lastPathComponent: wal, layout.shmURL.lastPathComponent: shm]
     }

@@ -1,0 +1,39 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/security/commands/remove-probe-leftovers.sh probe-leftovers-removed g05-devicefix-probe-2BEBD5E8 g05-devicefix-probe-4F3AF1C6
+commit: 31e460e643f12113e2f063d775672bdfb7b87ec7 (m0-device-fixes)
+time: 2026-10-26T11:10:02Z
+temporary folder: /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/
+---- g05-devicefix-probe-2BEBD5E8, before its removal (ls -lR, made 2026-10-26T20:59:21+1300)
+total 0
+drwxr-xr-x@ 3 jevidon  staff  96 Oct 26 20:59 bundle
+drwxr-xr-x@ 2 jevidon  staff  64 Oct 26 20:59 outside
+
+g05-devicefix-probe-2BEBD5E8/bundle:
+total 0
+drwxr-xr-x@ 3 jevidon  staff  96 Oct 26 20:59 export
+
+g05-devicefix-probe-2BEBD5E8/bundle/export:
+total 0
+lrwxr-xr-x@ 1 jevidon  staff  85 Oct 26 20:59 escape -> /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-2BEBD5E8/outside
+
+g05-devicefix-probe-2BEBD5E8/outside:
+total 0
+removed: g05-devicefix-probe-2BEBD5E8
+---- g05-devicefix-probe-4F3AF1C6, before its removal (ls -lR, made 2026-10-27T00:04:04+1300)
+total 0
+drwxr-xr-x@ 3 jevidon  staff  96 Oct 27 00:04 bundle
+drwxr-xr-x@ 2 jevidon  staff  64 Oct 27 00:04 outside
+
+g05-devicefix-probe-4F3AF1C6/bundle:
+total 0
+drwxr-xr-x@ 3 jevidon  staff  96 Oct 27 00:04 export
+
+g05-devicefix-probe-4F3AF1C6/bundle/export:
+total 0
+lrwxr-xr-x@ 1 jevidon  staff  85 Oct 27 00:04 escape -> /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-devicefix-probe-4F3AF1C6/outside
+
+g05-devicefix-probe-4F3AF1C6/outside:
+total 0
+removed: g05-devicefix-probe-4F3AF1C6
+the probe's folders left in the temporary folder:
+  none
+exit: 0

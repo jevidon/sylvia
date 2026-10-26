@@ -1,0 +1,79 @@
+# Scripts/ci.sh hard-rules, after the README and the logs of steps 1-3 were written (they are among the files it reads)
+# expected (stated before the run): "all 2 steps passed" (00-git-lfs and 13-hard-rules)
+# commit: 0b0e1e65ba6c4634591f1963079c6d2425ae2212 (m0-device-fixes-ats); uncommitted files before this run: 5
+# host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+# started: 2026-10-26T07:29:11Z; load: 6.28 4.45 4.15 (other jobs share this Mac: timings are indicative only)
+# command: G02_LOOPBACK_ONLY=1 Scripts/ci.sh hard-rules
+## Scripts/ci.sh console
+==> 00-git-lfs
+    pass (7s)
+==> 13-hard-rules
+    pass (10s)
+all 2 steps passed
+
+## .build/ci-logs/00-git-lfs.log
+00-git-lfs 2026-10-26T07:29:11Z at commit 0b0e1e65ba6c4634591f1963079c6d2425ae2212
+
+--- self-test (Scripts/ci.d/00-git-lfs.sh --self-test shows each case's output)
+self-test: temporary repository .build/scratch/ci-00-git-lfs.em5cDx/repo with this repository's .gitattributes (git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3))
+self-test: 1, a correct checkout: the check passed, as it must
+self-test: 2, pointer text in a plain-git file (outside the LFS patterns) is not reported: the check passed, as it must
+self-test: 3, a snapshot reference left as a pointer file: the check failed, as it must (its output names Scripts/setup-repo.sh and "Packages/Design/Tests/SylviaDesignSnapshotTests/__Snapshots__/ComponentSnapshotTests/sample.light-default.png")
+self-test: 4, an evidence photo (.JPG) left as a pointer file: the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G02-Transfer/DEVICE-PHOTO.JPG")
+self-test: 5, a pointer file added at a new path (staged, not committed): the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G01-PDF/copied-from-another-checkout.png")
+self-test: 6, a pointer file that only the LFS attribute catches (git lfs ls-files does not list it): the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G01-EPUB/staged-without-lfs.png")
+self-test: 7, a pointer committed outside the LFS patterns (only git lfs ls-files catches it): the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Design/images/committed-as-a-pointer.png")
+self-test: 8, the repository-local LFS filter not configured: the check failed, as it must (its output names Scripts/setup-repo.sh and "repository-local Git LFS filter is not configured")
+self-test: 9, git-lfs not installed: the check failed, as it must (its output names Scripts/setup-repo.sh and "git-lfs is not installed")
+self-test: 10, an image committed as a plain git blob: the check failed, as it must (its output names Scripts/setup-repo.sh and "Docs/Stage0/evidence/G06-Design/committed-without-lfs.png")
+self-test: passed (10 cases)
+
+--- this checkout
+repository: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-2 (git directory /Users/jevidon/Git/sylvia/.git); git version 2.55.0; git-lfs/3.7.1 (GitHub; darwin arm64; go 1.25.3)
+repository-local LFS filter: set in /Users/jevidon/Git/sylvia/.git/config (clean, smudge, process, required)
+LFS files: 777 listed by git lfs ls-files, 777 tracked paths matched by an LFS attribute, 777 distinct
+pointer files in the working tree: none
+git lfs fsck --pointers (HEAD): Git LFS fsck OK
+00-git-lfs: pass: no file stored with Git LFS is a pointer in the working tree, and every file the LFS attributes match is committed as an LFS pointer
+
+## .build/ci-logs/13-hard-rules.log
+environment: host (macOS 26.6.2 25G83), Python 3.9.6
+commit: 0b0e1e65ba6c4634591f1963079c6d2425ae2212
+
+--- self-test (Scripts/audit-hard-rules.sh self-test)
+ok: git work tree: the audit fails when there are findings
+ok: git work tree: an allowlisted probe plist is reported as allowed, not as a finding
+ok: git work tree: the two canary keys are allowed as canaries under both credential rules (4 of 4)
+ok: git work tree: the binary file is skipped and the Spikes/, test-target and Markdown lookalikes are not findings
+ok: git work tree: no matched credential value is printed (only length and first four characters)
+ok: git work tree: ignored files are not listed
+ok: an allowlist entry that matches nothing is reported STALE and fails the audit
+ok: allowlisting a never-allowlistable rule is refused
+ok: an allowlist entry whose reason names no ADR is refused, and excuses nothing
+ok: a clean tree passes with no finding
+
+self-test: PASS (0 failure(s))
+
+--- repository audit (Scripts/audit-hard-rules.sh)
+root: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_1e3bd166-fd2-2
+file list: git (git ls-files --cached --others --exclude-standard)
+files scanned: 3609 (835 binary, skipped for text rules); not scanned (hold the patterns): Scripts/audit-hard-rules.sh, Scripts/ci.d/13-hard-rules.sh
+allowlist: 13 entries
+| Rule | Findings | Allowed |
+| --- | --- | --- |
+| ats-arbitrary-loads | 0 | 0 |
+| ats-exception | 0 | 14 |
+| trust-override | 0 | 2 |
+| weak-tls | 0 | 0 |
+| file-protection-none | 0 | 4 |
+| keychain-accessible-always | 0 | 0 |
+| key-like-string | 0 | 10 |
+| private-key-block | 0 | 0 |
+| generic-secret | 0 | 19 |
+| secret-file | 0 | 0 |
+| todo-in-product | 0 | 0 |
+
+result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+13-hard-rules: self-test and repository audit passed; logs in .build/ci-logs/hard-rules
+# finished: 2026-10-26T07:29:28Z; exit status 0; load: 8.05 4.99 4.35
+# result: as expected (ci.sh exit 0)

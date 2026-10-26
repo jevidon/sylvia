@@ -1,0 +1,9 @@
+# Now Playing and remote commands (MPRemoteCommandCenter.shared, MPNowPlayingInfoCenter.default). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs)
+# What the lock screen and Control Center show is a device item.
+registered=play,pause,togglePlayPause,skipForward,skipBackward,changePlaybackRate,changePlaybackPosition,nextTrack,previousTrack
+disabled: seekForward, seekBackward, bookmark, like, dislike, rating, changeRepeatMode, changeShuffleMode, language options, stop
+paused: MPNowPlayingInfoPropertyChapterCount=5 MPNowPlayingInfoPropertyChapterNumber=0 MPNowPlayingInfoPropertyDefaultPlaybackRate=1.0 MPNowPlayingInfoPropertyElapsedPlaybackTime=0.0 MPNowPlayingInfoPropertyMediaType=1 MPNowPlayingInfoPropertyPlaybackRate=0.0 playbackDuration=570.018 title=G0.4 multi-file fixture playbackState=2
+playing: playbackState=1 (recorded, not asserted: iOS derives it from the audio session)
+after play, skip, next chapter, rate 2x, position 400 s, pause: MPNowPlayingInfoPropertyChapterCount=5 MPNowPlayingInfoPropertyChapterNumber=3 MPNowPlayingInfoPropertyDefaultPlaybackRate=2.0 MPNowPlayingInfoPropertyElapsedPlaybackTime=400.0 MPNowPlayingInfoPropertyMediaType=1 MPNowPlayingInfoPropertyPlaybackRate=0.0 playbackDuration=570.018 title=G0.4 multi-file fixture playbackState=2
+during a preview of 30-60 s of member 1: MPNowPlayingInfoPropertyDefaultPlaybackRate=1.0 MPNowPlayingInfoPropertyElapsedPlaybackTime=1.084383741 MPNowPlayingInfoPropertyMediaType=1 MPNowPlayingInfoPropertyPlaybackRate=1.0 playbackDuration=30.0 title=G0.4 multi-file fixture playbackState=1
+during the preview: skipForward -> commandFailed; togglePlayPause -> success, preview stopped, book paused at 100166 ms of its member, session released (deactivations 1 -> 2)

@@ -1,0 +1,21 @@
+# Excerpt export timing per source format (AAC .m4a output). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs)
+# 14 excerpts per format; errors = true content position minus intended, ms (positive = later); budget 500 ms
+# claimed = the actual range the exporter stores (decoder timestamps) minus the true start
+# mp3-librivox-22k is the real 1,356 s LibriVox file: its spans are the same (all inside the 600 s master), so its clamped-end span is 570-600 s, not the end of that file
+format	n	start_p50_abs	start_p95_abs	start_max_abs	end_p50_abs	end_p95_abs	end_max_abs	claimed_vs_true_max_abs	min_peak	within_budget
+mp3-cbr	14	25.2	37.4	38.1	13.0	13.1	13.1	38.1	0.993	yes
+mp3-vbr-xing	14	25.2	37.4	38.1	13.0	13.1	13.1	38.1	0.992	yes
+mp3-vbr-noxing	14	25.2	37.4	38.1	13.0	13.1	13.1	38.1	0.992	yes
+mp3-id3-chap	14	25.2	37.4	38.1	13.0	13.1	13.1	38.1	0.993	yes
+mp3-librivox-22k	14	38.2	50.4	51.1	2.2	21.8	21.8	51.1	0.992	yes
+m4a-aac-lc	14	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.994	yes
+m4a-he-aac-v1	14	47.9	47.9	47.9	47.9	47.9	47.9	47.9	0.978	yes
+m4a-he-aac-v2	14	47.9	47.9	47.9	47.9	47.9	47.9	47.9	0.978	yes
+m4a-alac	14	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.998	yes
+flac	14	18.9	68.5	75.6	0.0	0.0	0.0	75.6	0.997	yes
+mp4-flac	14	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.998	yes
+ogg-opus	14	31.0	39.5	39.6	1.0	1.0	1.0	39.6	0.962	yes
+opus-ext	14	31.0	39.5	39.6	1.0	1.0	1.0	39.6	0.962	yes
+mp4-opus	14	0.0	0.1	0.1	1.0	1.0	1.0	0.1	0.961	yes
+caf-opus	14	31.1	39.6	39.7	1.0	1.0	1.0	39.7	0.858	yes
+wav	14	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.998	yes

@@ -1,0 +1,4 @@
+# Indicative budgets (plan 19.2). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs); at the start: device load averages 1.41 1.73 2.81 (1, 5, 15 min)
+# warm start/resume = play() to the first buffer at the position reaching the analysis tap (excludes output latency),
+# for files this process has already inspected or opened (start after a seek, resume after a pause); cold resume is below
+# at the end: device load averages 1.50 1.73 2.80 (1, 5, 15 min)

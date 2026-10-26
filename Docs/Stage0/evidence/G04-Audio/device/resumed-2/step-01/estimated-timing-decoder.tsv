@@ -1,0 +1,50 @@
+# Decoder windows (AVAssetReader time range, the excerpt export's path) with estimated and precise timing. Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs); at the start: device load averages 2.41 2.13 3.67 (1, 5, 15 min)
+# error = true content position (cross-correlation with the master) minus the requested position (ms); sample_diff = the largest absolute
+# difference between the estimated and the precise decode of the same window (0 = the same samples); decode_s = wall time of the decode
+# (estimated on a fresh copy of the file, cold; precise on the fixture itself, which earlier tests may have opened)
+kind	file	point_s	estimated_error_ms	estimated_peak	precise_error_ms	precise_peak	sample_diff	estimated_decode_s	precise_decode_s
+proved-cbr	fmt-mp3-cbr.mp3	37.30	36.3	1.000	36.3	1.000	0.000000	0.020	0.020
+proved-cbr	fmt-mp3-cbr.mp3	151.70	20.0	1.000	20.0	1.000	0.000000	0.020	0.022
+proved-cbr	fmt-mp3-cbr.mp3	333.30	16.7	0.998	16.7	0.998	0.000000	0.020	0.027
+proved-cbr	fmt-mp3-cbr.mp3	587.20	32.7	0.999	32.7	0.999	0.000000	0.020	0.033
+proved-cbr	fmt-mp3-chap.mp3	37.30	36.3	1.000	36.3	1.000	0.000000	0.019	0.021
+proved-cbr	fmt-mp3-chap.mp3	333.30	16.7	0.998	16.7	0.998	0.000000	0.020	0.026
+proved-cbr	fmt-mp3-chap.mp3	587.20	32.7	0.999	32.7	0.999	0.000000	0.020	0.032
+proved-cbr	variant: cbr-no-info-tag.mp3	37.30	36.3	1.000	36.3	1.000	0.000000	0.021	0.027
+proved-cbr	variant: cbr-no-info-tag.mp3	333.30	16.7	0.998	16.7	0.998	0.000000	0.020	0.028
+proved-cbr	variant: cbr-no-info-tag.mp3	587.20	32.7	0.999	32.7	0.999	0.000000	0.021	0.028
+proved-cbr	fmt-librivox-mp3-22k.mp3	37.30	49.3	1.000	49.3	1.000	0.000000	0.019	0.021
+proved-cbr	fmt-librivox-mp3-22k.mp3	333.30	29.8	1.000	29.8	1.000	0.000000	0.022	0.029
+proved-cbr	fmt-librivox-mp3-22k.mp3	900.50	33.0	1.000	33.0	1.000	0.000000	0.020	0.041
+proved-cbr	fmt-librivox-mp3-22k.mp3	1300.25	31.2	1.000	31.2	1.000	0.000000	0.020	0.049
+proved-cbr	multi/Part 1.mp3	20.50	33.1	0.998	33.1	0.998	0.000000	0.017	0.020
+proved-cbr	multi/Part 1.mp3	100.25	31.2	1.000	31.2	1.000	0.000000	0.018	0.022
+proved-cbr	multi/Part 1.mp3	150.00	18.0	0.999	18.0	0.999	0.000000	0.018	0.023
+proved-cbr	long-mp3-cbr-10h.mp3	3601.30	20.0	0.996	20.0	0.996	0.000000	0.022	0.101
+proved-cbr	long-mp3-cbr-10h.mp3	12345.60	13.1	0.980	13.1	0.980	0.000000	0.021	0.313
+proved-cbr	long-mp3-cbr-10h.mp3	18000.70	20.8	1.000	20.8	1.000	0.000000	0.020	0.458
+proved-cbr	long-mp3-cbr-10h.mp3	29876.50	33.1	0.995	33.1	0.995	0.000000	0.020	0.759
+proved-cbr	long-mp3-cbr-10h.mp3	34170.00	21.2	0.997	21.2	0.997	0.000000	0.019	0.862
+proved-cbr	long-mp3-cbr-10h.mp3	36700.90	21.6	0.993	21.6	0.993	0.000000	0.019	0.923
+# proved-CBR windows: n=23, |estimated - precise| max 0.0 ms
+kind	file	point_s	estimated_error_ms(decoder, or 'not found within ±radius')	peak	radius_s	metadata
+estimated-not-chosen	fmt-mp3-vbr-xing.mp3	151.70	202.9	0.999	30	-
+estimated-not-chosen	fmt-mp3-vbr-xing.mp3	333.30	-1393.9	0.994	30	-
+estimated-not-chosen	fmt-mp3-vbr-xing.mp3	587.20	-1586.9	0.999	30	-
+estimated-not-chosen	long-mp3-vbr-10h.mp3	12345.60	-1502.0	0.996	150	-
+estimated-not-chosen	long-mp3-vbr-10h.mp3	29876.50	-16215.1	0.998	150	-
+estimated-not-chosen	long-mp3-vbr-10h.mp3	34170.00	-129415.5	0.998	150	-
+estimated-not-chosen	fmt-flac.flac	151.70	not found within ±30 s	0.301	30	STREAMINFO,VORBIS_COMMENT,PADDING
+estimated-not-chosen	fmt-flac.flac	333.30	not found within ±30 s	0.223	30	STREAMINFO,VORBIS_COMMENT,PADDING
+estimated-not-chosen	fmt-flac.flac	587.20	not found within ±30 s	0.231	30	STREAMINFO,VORBIS_COMMENT,PADDING
+estimated-not-chosen	long-formats/long-flac-3h.flac	3601.30	not found within ±150 s	0.233	150	STREAMINFO,SEEKTABLE(1081 points),VORBIS_COMMENT,PADDING
+estimated-not-chosen	long-formats/long-flac-3h.flac	9000.50	not found within ±150 s	0.326	150	STREAMINFO,SEEKTABLE(1081 points),VORBIS_COMMENT,PADDING
+estimated-not-chosen	long-formats/long-flac-10h.flac	3601.30	not found within ±150 s	0.307	150	STREAMINFO,SEEKTABLE(3675 points),VORBIS_COMMENT,PADDING
+estimated-not-chosen	long-formats/long-flac-10h.flac	18000.70	not found within ±150 s	0.181	150	STREAMINFO,SEEKTABLE(3675 points),VORBIS_COMMENT,PADDING
+estimated-not-chosen	long-formats/long-flac-10h.flac	34170.00	not found within ±150 s	0.314	150	STREAMINFO,SEEKTABLE(3675 points),VORBIS_COMMENT,PADDING
+kind	file	point_s	seek_to_audio_s	start_offset_ms(player, or 'not found')	steady_peak
+estimated-not-chosen-player	long-formats/long-flac-3h.flac	3601.30	0.179	not found within ±150 s	0.233
+estimated-not-chosen-player	long-formats/long-flac-3h.flac	9000.50	0.030	not found within ±150 s	0.269
+estimated-not-chosen-player	long-formats/long-flac-10h.flac	18000.70	0.103	not found within ±150 s	0.106
+estimated-not-chosen-player	long-formats/long-flac-10h.flac	34170.00	0.033	not found within ±150 s	0.090
+# at the end: device load averages 1.93 2.03 3.57 (1, 5, 15 min)

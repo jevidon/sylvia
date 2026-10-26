@@ -1,0 +1,24 @@
+# Open time against file length (review R3-01). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs); at the start: device load averages 2.03 2.16 2.18 (1, 5, 15 min)
+# Every open on its own fresh copy of the file. inspect_s = AssetInspector.inspect (the import's first codec inspection: precise
+# duration, tracks, chapters, tags); ready_precise_s = AVPlayerItem creation to readyToPlay with AVURLAssetPreferPreciseDurationAndTimingKey
+# (the player opens every member this way on every launch, unless the import proved a constant-bit-rate MP3), the median of
+# 3 trials listed in ready_precise_trials_s; ready_estimated_s = the same without the key (1 trial).
+# Review R5-05: utc and load_1m_start/load_1m_end = the time and the host's 1-minute load average when the row's measurements began
+# and ended (open times of the scanning formats grow with the host's load; host-load.tsv has the load every 30 s).
+format	file	hours	bytes	inspect_s	ready_precise_s	ready_precise_trials_s	ready_estimated_s	precise_duration_ms	duration_error_ms	chapters	utc	load_1m_start	load_1m_end
+flac	fmt-flac.flac	0.17	15670386	0.007	0.521	0.521,0.521,0.504	0.018	600000	0	4	2026-10-25T20:41:51Z	2.0	2.0
+flac	long-formats/long-flac-3h.flac	3.00	284731653	0.009	9.911	9.652,9.911,10.194	0.027	10807249	0	5	2026-10-25T20:41:53Z	2.0	1.7
+flac	long-formats/long-flac-10h.flac	10.21	968229905	0.011	39.127	50.012,36.557,39.127	0.026	36744647	0	17	2026-10-25T20:42:25Z	1.7	1.5
+ogg-opus	fmt-opus.ogg	0.17	2368743	0.034	0.202	0.345,0.202,0.049	0.019	600000	0	4	2026-10-25T20:44:44Z	1.5	1.5
+ogg-opus	long-formats/long-opus-3h.ogg	3.00	42834682	0.688	0.732	0.732,0.740,0.691	0.018	10807249	0	5	2026-10-25T20:44:45Z	1.5	1.5
+ogg-opus	long-formats/long-opus-10h.ogg	10.21	145634993	2.402	2.653	2.428,2.653,2.730	0.025	36744647	0	17	2026-10-25T20:44:48Z	1.5	1.5
+opus-ext	fmt-opus.opus	0.17	2368743	0.024	0.048	0.048,0.047,0.050	0.019	600000	0	4	2026-10-25T20:44:59Z	1.5	1.5
+opus-ext	long-formats/long-opus-10h.opus	10.21	145634993	2.944	2.988	2.601,3.158,2.988	0.025	36744647	0	17	2026-10-25T20:45:00Z	1.5	1.9
+mp4-flac	fmt-mp4-flac.m4a	0.17	15686615	0.101	0.025	0.056,0.025,0.019	0.019	600000	0	4	2026-10-25T20:45:15Z	1.9	1.9
+mp4-flac	long-formats/long-mp4-flac-10h.m4a	10.21	969577700	0.014	0.025	0.024,0.026,0.025	0.025	36744647	0	17	2026-10-25T20:45:19Z	1.9	1.8
+mp4-opus	fmt-mp4-opus.m4a	0.17	2443773	0.008	0.024	0.025,0.024,0.024	0.025	600000	0	4	2026-10-25T20:45:32Z	1.8	1.8
+mp4-opus	long-formats/long-mp4-opus-10h.m4a	10.21	150157797	0.040	0.036	0.043,0.036,0.036	0.036	36744647	0	17	2026-10-25T20:45:32Z	1.8	1.8
+caf-opus	fmt-caf-opus.caf	0.17	2954730	0.006	0.024	0.025,0.024,0.023	0.024	600000	0	0	2026-10-25T20:45:35Z	1.8	1.8
+caf-opus	long-formats/long-caf-opus-10h.caf	10.21	180692242	0.049	0.044	0.074,0.044,0.043	0.044	36744647	0	0	2026-10-25T20:45:35Z	1.8	1.7
+wav	fmt-wav.wav	0.17	52920260	0.007	0.019	0.019,0.018,0.019	0.024	600000	0	0	2026-10-25T20:45:42Z	1.7	1.7
+# at the end: device load averages 2.88 2.14 2.14 (1, 5, 15 min)

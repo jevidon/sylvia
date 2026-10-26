@@ -1,0 +1,4 @@
+# Loading another edition while a capture preview plays (review R5-02; ADR-0006 decision 16). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs)
+# The preview (a 30 s pending source range) had played about 1.5 s; the load took 0.166 s.
+after the load: preview_playing=false preview_player_rate=0.0 preview_items=0 preview_tap_chunks_later_than_1s=0 mode=main status=paused main_player_rate=0.0 session_active=false edition_is_new=true
+outgoing edition checkpoint: reason=editionChange last=113954 ms saved_main_point=113954 ms furthest=0 (before the preview 0) listened=1488 (before the preview 1488)

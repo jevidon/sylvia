@@ -1,0 +1,20 @@
+# Container probes (review R5-08). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs)
+## Vorbis-comment chapters by numbering: 60 s probes with the same table (Opening 0 s, Chapter Two 20 s, Chapter Three 40 s), read by AssetInspector.inspect
+file	numbering	chapters_read	starts_ms	titles	last_end_closed_at_duration	expected
+probes/chapters-3digit-001.flac	CHAPTER001.. (three digits from 001)	3	0,20000,40000	Opening,Chapter Two,Chapter Three	1	read
+probes/chapters-3digit-001.ogg	CHAPTER001.. (three digits from 001)	3	0,20000,40000	Opening,Chapter Two,Chapter Three	1	read
+probes/chapters-3digit-000.flac	CHAPTER000.. (three digits from 000)	3	0,20000,40000	Opening,Chapter Two,Chapter Three	1	read
+probes/chapters-3digit-000.ogg	CHAPTER000.. (three digits from 000)	3	0,20000,40000	Opening,Chapter Two,Chapter Three	1	read
+probes/chapters-2digit-01.flac	CHAPTER01.. (two digits)	0			0	not read
+probes/chapters-2digit-01.ogg	CHAPTER01.. (two digits)	0			0	not read
+## MP3 packets copied unchanged (ImportRemuxer.remux: AVAssetReader without output settings into AVAssetWriter without output settings)
+source	container	result	detail
+fmt-mp3-vbr-xing.mp3	mpeg4 (.m4a)	refused	cannotRemux("the mpeg4 writer does not take .mp3/44100/1 packets")
+fmt-mp3-vbr-xing.mp3	mpeg4 (.mp4, AVAssetWriter.canAdd only)	refused	canAdd=false
+fmt-mp3-vbr-xing.mp3	caf	written	300 sample buffers, 4190760 bytes, duration 600033 ms (source 600033 ms)
+fmt-mp3-vbr-noxing.mp3	mpeg4 (.m4a)	refused	cannotRemux("the mpeg4 writer does not take .mp3/44100/1 packets")
+fmt-mp3-vbr-noxing.mp3	mpeg4 (.mp4, AVAssetWriter.canAdd only)	refused	canAdd=false
+fmt-mp3-vbr-noxing.mp3	caf	written	300 sample buffers, 4190760 bytes, duration 600033 ms (source 600033 ms)
+fmt-mp3-cbr.mp3	mpeg4 (.m4a)	refused	cannotRemux("the mpeg4 writer does not take .mp3/44100/1 packets")
+fmt-mp3-cbr.mp3	mpeg4 (.mp4, AVAssetWriter.canAdd only)	refused	canAdd=false
+fmt-mp3-cbr.mp3	caf	written	300 sample buffers, 4870813 bytes, duration 600033 ms (source 600033 ms)

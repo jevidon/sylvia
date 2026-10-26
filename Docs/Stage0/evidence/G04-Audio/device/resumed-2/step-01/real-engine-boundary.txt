@@ -1,0 +1,10 @@
+# Member boundaries on AVQueuePlayer (multi-file MP3 book), with every member opened with precise timing and, second, as the
+# import opens them (the per-file timing mode: estimated timing for these constant-bit-rate MP3 files; review R4-01). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs)
+members opened: precise,precise,precise,precise
+boundary 1: previous member rendered 134.535-137.972 s of 137.535 s (content error 17.4 ms, peak 1.000); next member from 0.000 s for 3.53 s (content error -13.1 ms, peak 0.999); tap processing gap 0.128 s
+boundary 2: previous member rendered 159.299-162.736 s of 162.299 s (content error 17.3 ms, peak 1.000); next member from 0.000 s for 3.44 s (content error -13.1 ms, peak 1.000); tap processing gap 0.128 s
+boundary 3: previous member rendered 147.047-150.484 s of 150.047 s (content error 16.8 ms, peak 0.999); next member from 0.000 s for 3.44 s (content error -13.1 ms, peak 0.999); tap processing gap 0.128 s
+members opened: estimatedCBR,estimatedCBR,estimatedCBR,estimatedCBR
+boundary 1: previous member rendered 134.535-137.972 s of 137.535 s (content error 17.4 ms, peak 1.000); next member from 0.000 s for 3.44 s (content error -13.1 ms, peak 0.999); tap processing gap 0.128 s
+boundary 2: previous member rendered 159.299-162.736 s of 162.299 s (content error 17.3 ms, peak 1.000); next member from 0.000 s for 3.44 s (content error -13.1 ms, peak 1.000); tap processing gap 0.128 s
+boundary 3: previous member rendered 147.047-150.484 s of 150.047 s (content error 16.8 ms, peak 0.999); next member from 0.000 s for 3.53 s (content error -13.1 ms, peak 0.999); tap processing gap 0.128 s

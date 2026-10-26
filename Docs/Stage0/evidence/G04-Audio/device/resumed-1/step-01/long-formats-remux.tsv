@@ -1,0 +1,7 @@
+# Remux at import (ImportRemuxer: the compressed packets copied unchanged, no decode; FLAC and Opus into .m4a, MP3 into .caf)
+# of the files whose open or first deep seek is slow, then the remuxed copy opened and resumed cold like the originals.
+# Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs); at the start: device load averages 18.71 31.00 19.50 (1, 5, 15 min)
+remux	long-formats/long-flac-10h.flac	into m4a	source flac/44100/1	remux_s=27.071	bytes=969718367 (source 968229905)	sample_buffers=17584	source_ready_precise_s=36.648	remuxed_ready_precise_s=0.023	duration_ms=36744672 (source 36744647, diff 25)	chapters=0 (source 17; the importer keeps the source's)	load_1m=18.7,12.4,7.5
+decoder_seek	long-formats/long-flac-10h.flac	t=3601.3	remuxed_error_ms=0.0 (peak 1.000)	source_error_ms=59.2 (peak 1.000)	max_abs_sample_difference=0.610779 over 173790 samples
+decoder_seek	long-formats/long-flac-10h.flac	t=36344.0	remuxed_error_ms=-0.0 (peak 1.000)	source_error_ms=17.7 (peak 1.000)	max_abs_sample_difference=0.657410 over 175620 samples
+# at the end: device load averages 3.21 18.66 16.39 (1, 5, 15 min)

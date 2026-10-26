@@ -1,0 +1,5 @@
+# Audio session use. Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs)
+# The test sets the shared session's category to ambient first, as a sentinel.
+after inspect, decode, capture, excerpt export, load and seek: category=AVAudioSessionCategoryAmbient activations=0
+after play: category=AVAudioSessionCategoryPlayback mode=AVAudioSessionModeSpokenAudio routeSharingPolicy=1 activations=1
+after a user pause: setActive(false, notifyOthersOnDeactivation) calls=1 error=none service_session_error=none service_holds_session=false

@@ -1,0 +1,20 @@
+# Seek-to-audio latency (play() to first tap buffer at the target). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs); at the start: device load averages 2.29 5.29 9.85 (1, 5, 15 min)
+# Each probe opens a fresh copy of the file (a new file, so no state AVFoundation keeps per file is reused);
+# whether the copy's data is in the host page cache is not controlled. prepare_s = AVPlayerItem creation to readyToPlay.
+file	precise	prepare_s	point_s	seek_call_s	seek_to_audio_s	start_offset_ms	steady_clock_error_ms
+long-aac-10h.m4b	true	0.1	12345.6	0.0	0.1	0.0	0.0
+long-aac-10h.m4b	true	0.1	29876.5	0.0	0.0	46.4	0.0
+long-aac-10h.m4b	false	0.1	12345.6	0.0	0.1	0.0	0.0
+long-aac-10h.m4b	false	0.1	29876.5	0.0	0.0	46.4	0.0
+long-mp3-cbr-10h.mp3	true	0.7	12345.6	0.0	0.1	13.1	13.1
+long-mp3-cbr-10h.mp3	true	0.7	29876.5	0.0	0.0	79.5	33.1
+long-mp3-cbr-10h.mp3	false	0.0	12345.6	0.0	0.1	13.1	13.1
+long-mp3-cbr-10h.mp3	false	0.0	29876.5	0.0	0.0	79.5	33.1
+long-mp3-vbr-10h.mp3	true	0.6	12345.6	0.0	0.1	13.1	13.1
+long-mp3-vbr-10h.mp3	true	0.6	29876.5	0.0	0.0	79.5	33.1
+long-mp3-vbr-10h.mp3	false	0.0	12345.6	0.0	0.1	-1502.0	-1502.0
+long-mp3-vbr-10h.mp3	false	0.0	29876.5	0.0	0.0	14081.1	14034.7
+precise_mp3_seek_to_audio_s=0.1,0.0,0.1,0.0
+max_abs_start_offset_ms_estimated_cbr_mp3=79.5
+abs_start_offset_ms_estimated_vbr_mp3=1502.0,14081.1
+abs_start_offset_ms_precise_vbr_mp3=13.1,79.5

@@ -1,0 +1,7 @@
+# Cold resume (review R3-01): fresh copy, stored checkpoint at depth_h, new service: load (open + zero-tolerance seek) then play().
+# status_after_load must be paused (a slow open is .preparing while it lasts, never .failed). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs); at the start: device load averages 2.88 2.14 2.14 (1, 5, 15 min)
+# load_1m = the host's 1-minute load average when the trial ended (review R4-02: open and first-seek times grow with the host's load)
+cold_resume	format	file	trial	depth_h	checkpoint_ms	load_s	play_to_audio_s	load_plus_play_s	saw_preparing	status_after_load	content_error_ms	load_1m
+cold_resume	flac	long-formats/long-flac-10h.flac	0	0.33	1203400	35.527	0.111	35.638	yes	paused	95.5	2.3
+cold_resume	flac	long-formats/long-flac-10h.flac	0	5.03	18123400	36.947	0.973	37.920	yes	paused	62.9	2.8
+# at the end: device load averages 2.28 2.23 2.17 (1, 5, 15 min)

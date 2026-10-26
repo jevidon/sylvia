@@ -21,8 +21,8 @@ and `Packages/`, the runbook, the device checklists, the gate reports, the gate 
 Stage 0 README. Section 9 lists what the records run needs.
 
 Commits on `m0-device-fixes`: `f394e0fc` the commands that check the findings; `1480c7e1` the checks before any
-correction, and the stand-in probe of the drop-in's exit status; then this record, with the corrections; then the logs
-of the checks after the corrections and of the shared checks.
+correction, and the stand-in probe of the drop-in's exit status; `ccc47d7b` this record, with the corrections; then the
+logs of the checks after the corrections and of the shared checks, which ran on `ccc47d7b`.
 
 **What to test on the Mac** is still the owner's README, [Section 7.2](../../README.md#72-what-to-test-on-the-mac-screen-unlocked),
 with the screen unlocked: (1) the class-B tests of failure 1, which have never run; (2) runbook 0.8, whose last line on
@@ -35,9 +35,9 @@ would save F-1's evidence on the Mac (HON-4).
 | --- | --- | --- | --- |
 | HON-1, major: 7.3 expected no `NSFileProtectionNone` anywhere, but a passing test prints it | Confirmed for `fdce7cd5` (its README line 295): the first run's log line 2364, from `DataProtectionTests.mismatchDetected` (unchanged, lines 249-250), which passed (line 2366). Already corrected by fix-1 (`29afe758`, its F2): 7.3 expects no `protection: library.sqlite has NSFileProtectionNone` and names that line as expected | The recovery README's list for the re-run (its Section 6) now names that line as expected too | [`check-findings-before.log`](check-findings-before.log): the old wording is in no README; the first run's only line naming the class outside the failing tests' refusals and their details is line 2364 |
 | HON-2: 7.2, item 2, says a repeat tone-test failure ends 0.8 with `drop-in exit 1` | Confirmed: the harness's script ended with 65 on that failure in all four runs on 26 October; both scripts run with `set -euo pipefail`, and the drop-in calls the harness's script as a plain command with no EXIT trap set; caffeinate passes the status on (Section 3) | 7.2, item 2, now says `drop-in exit 65` and why, and that a stop at the row-10 guard ends with `drop-in exit 1` | [`exit-status-probe.log`](exit-status-probe.log): a stand-in of the chain prints `drop-in exit 65`, and `drop-in exit 0` in its control |
-| HON-3: that 10.71.x.x was not phone B's Wi-Fi address was presented as confirmed | Confirmed: no line of either ATS log holds the Wi-Fi address; en0 is named only as the relay flow's interface, with no address; the only private address in the logs is 10.71.x.x; the session log names no Wi-Fi network; your own record says "whether it is the intended Wi-Fi interface needs diagnosis" | Marked as inferred, with what supports it, in the owner's README (Section 1's table and its heading, Sections 4 and 6, 7.4, request 8), the ATS README (sections 2, 5 and 6) and the security record (S8); 7.4 and the ATS README now say what in the re-run would refute it: en0 holding 10.71.x.x | Both check logs, section HON-3 |
+| HON-3: that 10.71.x.x was not phone B's Wi-Fi address was presented as confirmed | Confirmed: no line of either ATS log holds the Wi-Fi address; en0 is named only as the relay flow's interface, with no address; the only address in the probe's private ranges in the logs is 10.71.x.x; the session log names no Wi-Fi network; your own record says "whether it is the intended Wi-Fi interface needs diagnosis" | Marked as inferred, with what supports it, in the owner's README (Section 1's table and its heading, Sections 4 and 6, 7.4, request 8), the ATS README (sections 2, 5 and 6) and the security record (S8); 7.4 and the ATS README now say what in the re-run would refute it: en0 holding 10.71.x.x | Both check logs, section HON-3 |
 | HON-4: two claims rest on Mac readings that no committed log holds | Confirmed: every saved run of the host-facts probe skipped sections 3 and 4 (screen locked), and no log under `M0-DeviceFixes` holds a reading of the audio devices. The screen was locked here too, so neither could be saved now | F-1's evidence on the Mac is now pending until 7.2, item 3, runs (owner's README: Section 2, 7.2 item 3, request 5, Section 9; recovery README: 2.1, 2.4, 7 and 8); the reading of the audio output is marked as not saved (recovery README Section 4) | Both check logs, section HON-4 |
-| HON-5: the cited locked pass of the quiet-tone test ran an older version of it, and its name was wrong | Confirmed: xcodebuild names it `ToneTests.playsQuietly()`; the 08:09 UTC run (`9aee51b8`, which lacks `84e599b1`) ran its earlier version; the current version passed with the screen locked at 11:07 UTC and in the controls' baseline at 11:15 UTC (22 October), and the lock harness has not changed since `84e599b1` | Request 12 and the recovery README's Section 4 give the name, the runs of the current version and UTC dates, with the Mac's clock in words | Both check logs, section HON-5 |
+| HON-5: the cited locked pass of the quiet-tone test ran an older version of it, and its name was wrong | Confirmed: xcodebuild names it `ToneTests.playsQuietly()`; the 08:09 UTC run (`9aee51b8`, which lacks `84e599b1`) ran its earlier version; the current version passed with the screen locked at 11:07 UTC and in the controls' baseline at 11:15 UTC (22 October), and the lock harness has not changed since `84e599b1` | Request 12 and the recovery README's Section 4 give the name and the runs of the current version, with dates in UTC and the Mac's clock's dates marked as such | Both check logs, section HON-5 |
 | HON-6: the part READMEs' re-run instructions would overwrite the first runs' logs | Confirmed: runbook 1.2's command writes `step-1-tests.log` (session log row 3b's blocked attempt) and 1.3's `step-01-ats.log` (row 3d) | The recovery README's Section 6 and the ATS README's Section 5 send the re-runs to 7.3 and 7.4, which name the new logs apart; the recovery README's Section 7 points to 7.2 | Both check logs, section HON-6 |
 
 The re-runs' expected results are unchanged: the re-run of step 1.2 still expects `73 tests in 13 suites passed`, and
@@ -54,7 +54,8 @@ prints `file written with .noFileProtection into the test's temporary directory 
 
 - The first hosted run on phone B printed it at line 2364 of
   [`step-1-hosted-tests.log`](../../../G05-Recovery/device/step-1-hosted-tests.log), and the test passed (line 2366).
-  The test is unchanged on this branch (`DataProtectionTests.swift` lines 249-250).
+  The test (`DataProtectionTests.swift` lines 249-250) is the same on this branch as at `c72247a6`: `git diff c72247a6
+  HEAD` lists no change to that file.
 - 81 lines of that log name the class: 66 hold the library's refusal (`protection: library.sqlite has …`), 40 are issue
   details (`↳`), some of them holding the refusal too, and the only line that is neither is line 2364. So in a passing
   re-run that line is expected, and the library's refusal is not.
@@ -148,14 +149,14 @@ Mac's default output that no log holds.
 probe on this branch skipped sections 3 and 4 (`== 3, 4. skipped: class B keys unavailable (screen locked)`:
 [`../../recovery/probe-host-facts-locked.log`](../../recovery/probe-host-facts-locked.log) line 25, and the security
 fix's two runs); no log or command under `M0-DeviceFixes` names `SPAudioDataType` or a default output device (the
-check leaves out Markdown files and this folder). The screen was locked at every reading of this job, so neither
-reading could be saved now. Reading the audio
-devices again would also show only today's output, not that of 26 October.
+check leaves out Markdown files and this folder). The screen was locked at every reading of this job, so the probe's
+sections 3 and 4 could not be saved now; and reading the audio devices again would show only today's output, not that
+of the runs of 26 October.
 
 **Changed.**
 
-- The owner's README: F-1's evidence on the Mac is pending until 7.2, item 3, runs (7.2 item 3, which now gives the
-  expected section-4 lines as expected, from the unsaved run; request 5; Section 9); Section 2 says that no reading
+- The owner's README: F-1's evidence on the Mac is pending until 7.2, item 3, runs (7.2 item 3, which now presents the
+  section-4 lines it expects as taken from the unsaved run; request 5; Section 9); Section 2 says that no reading
   shows the change directly yet; request 5 says "most likely" of the records that rest on the stale reading.
 - The recovery README: section 2.4's Mac bullet is headed "pending"; section 2.1's correction and request 3 say "most
   likely"; section 7, item 3, says "should show"; section 4 says that the audio reading was not saved.
@@ -172,10 +173,11 @@ devices again would also show only today's output, not that of 26 October.
   (its `harness-simulator-tests.log` line 2244). The playback-category check came with `84e599b1`, the last commit to
   `Spikes/G05-Recovery/LockHarness`, which `9aee51b8` does not hold.
 - The current version passed with the screen locked in `M0-Decisions/fix-2/harness-checks-clean/` (commit `13d999fc`,
-  started 11:07 UTC; `harness-simulator-tests.log` line 2458) and in the baseline of `M0-Decisions/fix-2/harness-controls/`
+  11:07-11:08 UTC; `harness-simulator-tests.log` line 2458) and in the baseline of `M0-Decisions/fix-2/harness-controls/`
   (commit `52215b13`, 11:15-11:17 UTC; `baseline.log` line 852), both on 22 October UTC with the screen locked at start
-  and end; and with the screen unlocked in `M0-Decisions/assembly/unlocked-run-1/` (commit `9cdb0a02`, from 22:36 UTC;
-  line 2460). All three commits hold `84e599b1`, and the lock harness has not changed from `13d999fc` to this branch.
+  and end (their `console.log` lines 5 and 65, and 5 and 29); and with the screen unlocked in
+  `M0-Decisions/assembly/unlocked-run-1/` (commit `9cdb0a02`, 22:36-22:44 UTC; `logs/harness-simulator-tests.log` line
+  2460). All three commits hold `84e599b1`, and the lock harness has not changed from `13d999fc` to this branch.
 - "22 and 23 October" in the recovery README mixed UTC (08:09 UTC on 22 October) with the Mac's clock (11:07 UTC is
   00:07 on 23 October in NZDT).
 
@@ -206,8 +208,8 @@ corrections), [`commands/exit-status-probe.zsh`](commands/exit-status-probe.zsh)
 | --- | --- | --- | --- |
 | 1 | `check-findings.sh before`, on `f394e0fc` (the commands' commit; no uncommitted file) | [`check-findings-before.log`](check-findings-before.log) | As expected: 43 of 43. Each flagged phrase was present, except HON-1's, which fix-1 had removed; none of the corrections was |
 | 2 | `exit-status-probe.zsh`, on `f394e0fc` (one uncommitted file: check 1's log) | [`exit-status-probe.log`](exit-status-probe.log) | As expected: the harness stand-in exits 65 and 0.8's line reads `drop-in exit 65`; the control reads `drop-in exit 0` |
-| 3 | `check-findings.sh after`, on the commit of this record | [`check-findings-after.log`](check-findings-after.log) | Expected: 43 of 43, every flagged phrase gone and every correction present |
-| 4 | `Scripts/ci.sh contracts`, `Scripts/ci.d/13-hard-rules.sh`, `Scripts/ci.d/12-dependency-lock.sh`, on the commit of this record | [`shared-checks/`](shared-checks/) | Expected: all pass, the audit reading this record, its commands and logs, and the corrected READMEs |
+| 3 | `check-findings.sh after`, on `ccc47d7b`, the commit of this record (no uncommitted file) | [`check-findings-after.log`](check-findings-after.log) | As expected: 43 of 43. Every flagged phrase is gone and every correction is present; the evidence it prints is the same as in check 1 |
+| 4 | `Scripts/ci.sh contracts`, `Scripts/ci.d/13-hard-rules.sh`, `Scripts/ci.d/12-dependency-lock.sh`, on `ccc47d7b` (one uncommitted file: check 3's log) | [`shared-checks/`](shared-checks/) | All passed: `all 3 steps passed` for the contracts; the hard-rules audit `PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))`, which read this record as `ccc47d7b` has it (the log commit after it changes only its wording and this table), its commands and logs and the corrected READMEs; the dependency lock with `0 failure(s), 0 warning(s)` |
 
 Not run again, and why:
 
@@ -232,11 +234,13 @@ now carries these changes in requests 5, 8, 11 and 12. If the records run applie
    line 2458) and 11:15 UTC (`Docs/Stage0/evidence/M0-Decisions/fix-2/harness-controls/baseline.log` line 852) on 22
    October 2026 UTC; the run of 08:09 UTC ran an earlier version of the test.
 3. **Request 5 (F-1):** if a record says F-1 was seen on the Mac, say instead that on the Mac it is pending: the one
-   run that showed it was not saved, and the owner's README, 7.2 item 3, saves it. Records that rest on the stale
-   reading "most likely" do; the phone's change of class is inferred from 8 tests' later opens.
+   run that showed it was not saved, and the owner's README, 7.2 item 3, saves it. If a record says that the lines
+   "refused … the class is fixed at creation here" rest on a stale reading, say "most likely": the phone's change of
+   class is inferred from 8 tests' later opens.
 4. **Request 11** (`Docs/Stage0/integration-log.md` and `Docs/Stage0/M0-gate.md`): also record the honesty review of
-   `fdce7cd5` (26 October 2026, findings HON-1 to HON-6) and this fix: commits `f394e0fc` and `1480c7e1`, this record,
-   the log commit after it, and Section 8's checks. HON-1 was fixed by fix-1 (its F2); the fix changed text only.
+   `fdce7cd5` (26 October 2026, findings HON-1 to HON-6) and this fix: commits `f394e0fc`, `1480c7e1` and `ccc47d7b`
+   (this record), the log commit after it, and Section 8's checks. HON-1 was fixed by fix-1 (its F2); the fix changed
+   text only.
 5. **If a record copied 7.2, item 2's expectation** for a repeat failure of the quiet-tone test, it is `drop-in exit
    65`; a stop at the row-10 guard is `drop-in exit 1`.
 6. **If a record says that 10.71.x.x was not phone B's Wi-Fi address**, mark it as inferred, as the owner's README's

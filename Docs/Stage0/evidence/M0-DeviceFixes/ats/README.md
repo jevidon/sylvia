@@ -4,6 +4,8 @@ Branch `m0-device-fixes-ats`, made from `m0-decisions` at `c72247a6`, which hold
 
 Every run recorded here was on the build Mac (macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275)) and on this job's own simulator, Sylvia-M0-devfix-ats (iPhone 17, iOS 26.5). **Nothing here ran on a phone.** None of it is a device result. G0.5 AI row D1 stays as the owner recorded it, failed, until the owner runs runbook 1.3 again.
 
+Corrected after the honesty review of the merged branch ([`../fix-1/honesty/README.md`](../fix-1/honesty/README.md), findings HON-3 and HON-6): section 2 now marks as inferred that 10.71.x.x was not phone B's Wi-Fi address, and section 5 sends the re-run to the owner's README, Section 7.4, which keeps the first run's log.
+
 ## 1. What the owner's run showed
 
 The owner ran runbook 1.3 on phone B: iPhone 17 Pro (iPhone18,1), iOS 27.0.1 (24A446), built from `d5336111` (session log row 3d; [`step-01-ats.txt`](../../G05-AI/device/step-01-ats.txt) and [`step-01-ats.log`](../../G05-AI/device/step-01-ats.log)).
@@ -14,14 +16,14 @@ The owner ran runbook 1.3 on phone B: iPhone 17 Pro (iPhone18,1), iOS 27.0.1 (24
 
 ## 2. Diagnosis: the probe chose an address that is not on the phone's Wi-Fi
 
-This confirms the orchestrating session's diagnosis 3, with two refinements (below).
+This confirms the orchestrating session's diagnosis 3 as far as the code and the logs go, with two refinements (below). Its central step, that 10.71.x.x was not the Wi-Fi address, stays an inference, as the diagnosis itself put it ("most likely").
 
 **The code.** At `c72247a6`, `hostPrivateIPv4()` (`ATSProbeTests.swift:45-61`, with its comment) returned the first IPv4 address that was up, not loopback, and in 10/8, 172.16/12 or 192.168/16. It took addresses in `getifaddrs` order, from any interface. Its comment shows it was written for the simulator: "This Mac's own private IPv4 address (the simulator shares the host's interfaces). A load to it on a port with no listener is refused by the local kernel if ATS lets it through, so nothing leaves the machine." On a phone, nothing made it prefer Wi-Fi.
 
 **The phone's log.**
 
 - en0 is phone B's Wi-Fi interface: `interface: en0[802.11], ipv4, dns, uses wifi` (`step-01-ats.log:394`).
-- Phone B's cellular interface was up as well: `fallback: {interface: pdp_ip0, …}` ([`step-01-ats-initial.log:2571`](../../G05-AI/device/step-01-ats-initial.log)).
+- Phone B's cellular interface was there as well: the relay's flow names it as its fallback, `fallback: {interface: pdp_ip0, …}` ([`step-01-ats-initial.log:2571`](../../G05-AI/device/step-01-ats-initial.log)).
 - The phone did not refuse the load to 10.71.x.x. In every variant, the load went to iCloud Private Relay over Wi-Fi. On a flow to `mask.icloud.com:443 … interface: en0[802.11]`, the relay answered `Received response code 502 for 10.71.x.x:58688, unreachable through proxy`:
   - `step-01-ats.log:393-394`, then 500-501 and 599-600 for the other two variants;
   - the same in the first attempt: `step-01-ats-initial.log:2364-2365`, 2471-2472 and 2570-2571.
@@ -29,11 +31,11 @@ This confirms the orchestrating session's diagnosis 3, with two refinements (bel
   The request then ran to its 5-second timeout. Apple's page names this kind of traffic as the relay's: "Private Relay protects users’ web browsing in Safari, DNS resolution queries, and insecure http app traffic." ([Prepare your network or web server for iCloud Private Relay](https://developer.apple.com/icloud/prepare-your-network-for-icloud-private-relay/), read 26 October 2026.)
 - On the simulator, the same test loads the Mac's own LAN address (en0's, in this job's run), and the Mac refuses it at once (-1004) in all three variants. This held in the G0.5 run ([`simulator-ats-keychain-probe.log`](../../G05-AI/simulator-ats-keychain-probe.log)) and in this job's run ([`simulator-probe-test.log`](simulator-probe-test.log)).
 
-So 10.71.x.x was not phone B's Wi-Fi address but a private address on another of its interfaces. If that interface is cellular or a VPN tunnel (refinement 1), it is no local network at all: "A local network is an IP network associated with a broadcast-capable network interface. Such interfaces include Wi-Fi and Ethernet, but not cellular (WWAN) or VPN." ([TN3179: Understanding local network privacy](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy), read 26 October 2026.)
+So 10.71.x.x was most likely not phone B's Wi-Fi address but a private address on another of its interfaces. That is inferred, not shown: no log holds the Wi-Fi address or names the interface that held 10.71.x.x (en0 appears only as the interface of the relay's flow, with no address), and no record says that the phone was on the Mac's network (the Mac's own private address was 192.168.x.x on en0 when this job's simulator runs read it, a day later). The inference rests on three things: the probe took the first private address of any interface, so it could take one that is not Wi-Fi's; the cellular interface was there; and a phone is expected to refuse a load to its own address itself, as the Mac does for the simulator, rather than send it to the relay (expected; not yet seen on a phone). If that interface is cellular or a VPN tunnel (refinement 1), it is no local network at all: "A local network is an IP network associated with a broadcast-capable network interface. Such interfaces include Wi-Fi and Ethernet, but not cellular (WWAN) or VPN." ([TN3179: Understanding local network privacy](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy), read 26 October 2026.)
 
 **Refinements.**
 
-1. **The interface is not named.** No log says which interface held 10.71.x.x. The cellular interface is the likelier one, since the log shows it up. A tunnel (utun\*, ipsec\*) is also possible. The re-run's new `private-ipv4-interfaces=` line will name it.
+1. **The interface is not named.** No log says which interface held 10.71.x.x. The cellular interface is the likelier one, since the log shows it there. A tunnel (utun\*, ipsec\*) is also possible. The re-run's new `private-ipv4-interfaces=` line will list the interfaces that hold a private address then; it can support or refute the inference, not prove it (section 5).
 2. **The load went to Private Relay, not to the phone's own network stack.** The phone did not refuse the load: it handed the destination address and port to Apple's relay, which could not reach them (502). So the old comment's "nothing leaves the machine" did not hold on a phone. The probe's request reached no server: `#expect(server.requests.isEmpty)` held. In each variant, the test's one issue was its ATS or refusal expectation. What the request did during the rest of the five seconds is not in the log.
 
 ## 3. The fix (`907538f5`)
@@ -72,7 +74,7 @@ An earlier run at `e5e1cede` reported step 2 as not as expected, although all it
 
 ## 5. What the owner's re-run of 1.3 should show
 
-Run runbook 1.3 as written, from a commit that holds `907538f5`. (After the security review: run it as the owner's README gives it in [Section 7.4](../README.md#74-phone-b-step-13-again-the-ats-probe), which keeps the first run's log by naming the new one apart, and cuts every address in the new log to its first two octets before anything is copied from it or committed. The probe's own lines mask the address, but CFNetwork's lines and the default variant's expected failure print the phone's Wi-Fi address whole. [`../fix-1/security/README.md`](../fix-1/security/README.md), Section 6.)
+Run it as the owner's README gives it in [Section 7.4](../README.md#74-phone-b-step-13-again-the-ats-probe), from a commit that holds `907538f5`, not as runbook 1.3 is written: 1.3's command writes `Docs/Stage0/evidence/G05-AI/device/step-01-ats.log`, the first run's record (session log row 3d), and a re-run as written would replace it. 7.4 names the new log apart and cuts every address in it to its first two octets before anything is copied from it or committed: the probe's own lines mask the address, but CFNetwork's lines and the default variant's expected failure print the phone's Wi-Fi address whole ([`../fix-1/security/README.md`](../fix-1/security/README.md), Section 6). (Honesty fix: this section began by sending the re-run to runbook 1.3 as it stands.)
 
 **Before the run:**
 
@@ -92,7 +94,7 @@ The load now goes to an address on the phone's local network. TN3179 says: "Outg
 On the simulator, the `classified=` value after -1004 is `host_unreachable`. If the default variant shows -1022 instead, ATS blocked the Wi-Fi address and the test passes. Record that: it differs from the first run, which was not blocked (section 6).
 
 - **The address** is the phone's own Wi-Fi address: 192.168.x.x if the phone is on the Mac's network.
-- **The new line.** Before each `private-ip` line, a `private-ipv4-interfaces=` line lists every interface with a private address. It should name en0 and the interface that held 10.71.x.x. Record it: it settles which interface the first run used.
+- **The new line.** Before each `private-ip` line, a `private-ipv4-interfaces=` line lists every interface with a private address at the time of the re-run, en0 among them. Record it. It tests section 2's inference only in part: a 10.71.x.x address on another interface (most likely `pdp_ip0`) supports it, but cannot show that the first run's address was the same one, since the records keep two octets and an address can change between runs. **If en0's own address is 10.71.x.x, the first run may have loaded the Wi-Fi address after all, and section 2's diagnosis is wrong: record it and ask an agent.**
 - **Everything else is as in the first run:**
   - `public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true` in all three variants (the first run's file shows it masked, as 192.0.x.x);
   - `localhost=success(200)` in all three;
@@ -113,7 +115,7 @@ On the simulator, the `classified=` value after -1004 is `host_unreachable`. If 
 
 **The question.** The default variant has no ATS key. It asks whether ATS on the phone blocks cleartext HTTP to a private IP literal. Apple documents that it does from iOS 17: "In iOS 17, iPadOS 17, and macOS 14, ATS no longer allows connections to IP addresses by default." ([NSAllowsLocalNetworking](https://developer.apple.com/documentation/bundleresources/information-property-list/nsapptransportsecurity/nsallowslocalnetworking), Discussion, read 26 October 2026.)
 
-**The answer.** The first run answered it, though with the wrong address: ATS did not block the load.
+**The answer.** The first run answered it, with a private IP literal that was most likely not the Wi-Fi address (section 2): ATS did not block the load.
 
 - When ATS blocks a load, the phone logs `Cannot start load of Task <…> since it does not conform to ATS policy`, and the load fails at once with -1022.
 - In each variant, that line appears for the public IP literal and for the qualified name (`step-01-ats.log:416` and 424, 515 and 523, 614 and 622). It never appears for the private address.

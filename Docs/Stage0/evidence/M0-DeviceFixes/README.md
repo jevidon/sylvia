@@ -14,7 +14,10 @@ records of 26 October 2026 NZDT (session log rows 3a-3d). It merges two fix bran
 and 7.4. Its record is [`fix-1/README.md`](fix-1/README.md). The security review of the same commit (findings S1-S8)
 was then answered from `e022cea7`: a wider copy guard, a test of the containment check's refusal of `..`, the
 host-facts probe's cleanup, two comments, and the redaction of addresses in 7.4. Its record is
-[`fix-1/security/README.md`](fix-1/security/README.md).
+[`fix-1/security/README.md`](fix-1/security/README.md). The honesty review of the same commit (findings HON-1 to
+HON-6) was answered last, in the text only: claims that rest on an inference or on a reading whose output was not
+saved now say so, and the instructions they touched are corrected. Its record is
+[`fix-1/honesty/README.md`](fix-1/honesty/README.md).
 
 All of this is agents' work on the build Mac (macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275)) and its
 simulators (iPhone 17, iOS 26.5) on 26 October 2026. Times are UTC; the Mac's clock reads NZDT, UTC+13. **Nothing
@@ -27,11 +30,11 @@ Section 7.1.**
 
 ## 1. In short
 
-| What failed on phone B | Cause, confirmed from the code and the phone's own logs | Fix | Shown on the Mac | Only the phone can show |
+| What failed on phone B | Cause, from the code and the phone's own logs (what is inferred is marked) | Fix | Shown on the Mac | Only the phone can show |
 | --- | --- | --- | --- | --- |
 | Step 1.2: the migration and put-back tests refused `library.sqlite` as `NSFileProtectionNone` (107 of the 108 issues) | The tests' setup, not D17. They copied the v1 fixture out of the app bundle with `FileManager.copyItem`, which keeps the source file's protection class, and the copy came out with none. The recovery code's own class check then refused it, as it should | Every copy into a library is now created with the library's class. A guard test fails if a class-keeping copy comes back | The guard found all 5 class-keeping copies before the fix and finds none now. The class-B reproduction needs the screen unlocked and **has not run yet** (Section 2) | That the copy gets class C on iOS and that the 16 migration and put-back tests pass |
 | Step 1.2: the missing-blob-file backup was rejected as "unsafe path" instead of "missing file" (1 issue) | A small bug with a safe outcome. The path check compared `/private/var/…` with `/var/…` for a file that does not exist | The containment check now uses realpath(3) | Reproduced and fixed: "unsafe path" before the fix, "missing file" after | That iOS 27 resolves the app's folders the same way |
-| Step 1.3: the private-address load timed out in all three variants | The probe took the phone's first private IPv4 address, 10.71.x.x, which is not Wi-Fi's. The phone sent the load to iCloud Private Relay, which could not reach it | On a device the probe loads only the Wi-Fi (en0) address, and it logs every interface's private address | The simulator's choice and every expectation are unchanged, and the device code builds | What the phone does with its Wi-Fi address |
+| Step 1.3: the private-address load timed out in all three variants | The probe took the first private IPv4 address of any of the phone's interfaces, 10.71.x.x. **Inferred, not shown:** that this was not the Wi-Fi address (no log names its interface or holds the Wi-Fi address; Section 4). Shown in the log: the phone sent the load to iCloud Private Relay over Wi-Fi, which could not reach it | On a device the probe loads only the Wi-Fi (en0) address, and it logs every interface's private address | The simulator's choice and every expectation are unchanged, and the device code builds | What the phone does with its Wi-Fi address, and which of its interfaces hold private addresses |
 
 **After review (fix-1).** The same `/private` mismatch as in failure 2 was in two more checks. One is
 `FileProtector.copyTree`'s refusal of a destination inside its source: the re-run of 1.2 would have failed
@@ -46,6 +49,14 @@ own, counted a `..` below a missing folder as inside (S2: fixed by fix-1, now te
 folder behind when the screen was locked (S7: fixed); 7.4 would have committed the phone's whole Wi-Fi address (S6: 7.4
 now cuts it); and two code comments said more than was shown (S5, S8). One hardening, older than this branch, is left
 for the technical lead: request 15 in Section 8 ([`fix-1/security/README.md`](fix-1/security/README.md)).
+
+**After the honesty review.** Its major finding, HON-1 (7.3 expected no `NSFileProtectionNone` at all, which a passing
+test prints), had already been corrected by fix-1 (its F2). The others changed text only. That 10.71.x.x was not phone
+B's Wi-Fi address is now marked as inferred (HON-3). F-1's observation on the Mac comes from a run whose output was not
+saved, so it is pending until 7.2, item 3, saves it (HON-4). A repeat failure of the quiet-tone test ends runbook 0.8
+with `drop-in exit 65`, not with exit 1 (HON-2). Request 12 names that test `ToneTests.playsQuietly()` and cites the
+runs of its current version (HON-5). The part READMEs send each re-run to 7.3 or 7.4, which keep the first runs' logs
+(HON-6) ([`fix-1/honesty/README.md`](fix-1/honesty/README.md)).
 
 The first run already answered step 1.3's main question: on iOS 27.0.1, ATS did **not** block cleartext HTTP to a
 private IP literal (Section 4). The fix keeps the default variant's expectation of Apple's documented block. So in the
@@ -76,13 +87,15 @@ Recovery README Section 2.3 traces each of the 108 issues to its cause.
   ([`recovery/baseline-host-tests.log`](recovery/baseline-host-tests.log): 73 tests in 11 suites on `c72247a6`), and
   the simulator reports class C for every file.
 
-**A correction, finding F-1, for you and the technical lead.** The class named in the refusal is a stale reading.
-`FileProtector.protect` reads the class, changes it with `setAttributes`, then reads it again through the same `URL`
-value, and a `URL` caches what it has read. Apple: "This method first checks if the URL instance already caches the
-specified resource values. If so, it returns the cached resource values to the caller."
+**A correction, finding F-1, for you and the technical lead.** The class named in the refusal is the one the file had
+before the open tried to change it: a cached reading. `FileProtector.protect` reads the class, changes it with
+`setAttributes`, then reads it again through the same `URL` value, and a `URL` caches what it has read. Apple: "This
+method first checks if the URL instance already caches the specified resource values. If so, it returns the cached
+resource values to the caller."
 ([`URL.resourceValues(forKeys:)`](https://developer.apple.com/documentation/foundation/url/resourcevalues(forkeys:)),
 read 26 October 2026.) In 8 of the failing tests (22 test cases), a later open of the same library passed the check
-and migrated. So `setAttributes` almost certainly did change the class on the phone (recovery README Section 2.4).
+and migrated. So `setAttributes` almost certainly did change the class on the phone (recovery README Section 2.4); no
+reading on the phone or saved reading on the Mac shows it directly yet (7.2, item 3).
 The fixes do not depend on this: the copies now have class C from the start, so these tests never change a class.
 F-1 itself is left for your decision (Section 8, request 5).
 
@@ -162,15 +175,23 @@ variant ([`step-01-ats.txt`](../G05-AI/device/step-01-ats.txt)).
 **Why.**
 
 - The probe's address function was written for the simulator, which shares the Mac's network interfaces. It took the
-  first private IPv4 address of any interface (`ATSProbeTests.swift` lines 45-61 at `c72247a6`). On a phone that need
-  not be the Wi-Fi address, and 10.71.x.x was not: phone B's Wi-Fi interface is en0
-  (`interface: en0[802.11]`, [`step-01-ats.log`](../G05-AI/device/step-01-ats.log) line 394), and the build Mac's only
-  address in the probe's private ranges (10/8, 172.16/12 and 192.168/16) is 192.168.x.x on en0.
+  first private IPv4 address of any interface, in the system's order (`ATSProbeTests.swift` lines 45-61 at
+  `c72247a6`). On a phone that need not be the Wi-Fi address. Phone B's Wi-Fi interface is en0
+  (`interface: en0[802.11]`, [`step-01-ats.log`](../G05-AI/device/step-01-ats.log) line 394).
 - The phone's log shows the load going to iCloud Private Relay over Wi-Fi, which answered `Received response code 502
   for 10.71.x.x:58688, unreachable through proxy` (`step-01-ats.log` lines 393-394, and the same in each variant). The
   request then ran to its timeout.
-- No log names the interface that held 10.71.x.x. The cellular one is likelier (`pdp_ip0` was up:
-  `step-01-ats-initial.log` line 2571); a VPN tunnel is possible. The re-run's new line will name it.
+- **Inferred, not shown: that 10.71.x.x was not phone B's Wi-Fi address.** No log holds the Wi-Fi address or names
+  the interface that held 10.71.x.x: en0 appears only as the interface of the relay's flow, with no address
+  (`step-01-ats.log` lines 394, 501 and 600). The build Mac's only address in the probe's private ranges (10/8,
+  172.16/12 and 192.168/16) was 192.168.x.x on en0 when the probe ran on its simulator (Section 5, check 6), but no
+  record says that the phone was on the Mac's network. What supports the inference: the probe took the first private
+  address of any interface, so it could take one that is not Wi-Fi's; the relay's flow names the cellular interface,
+  `pdp_ip0`, as its fallback (`step-01-ats-initial.log` line 2571), so that interface was there; and a load to the
+  phone's own address is expected to be refused by the phone itself, as the Mac refuses the simulator's, not sent to
+  the relay (expected, not yet seen on a phone). The cellular interface is the likelier holder of 10.71.x.x; a VPN
+  tunnel is possible. The re-run's new line lists every interface that holds a private address then, which can
+  support the inference or refute it (7.4) but not prove it.
 
 **The default variant's answer: a device finding, recorded as it is.** When ATS blocks a load, the phone logs
 `Cannot start load of Task … since it does not conform to ATS policy`. That line appears for the public IP literal and
@@ -235,6 +256,11 @@ tests in 13 suites), the simulator suite (73 in 13), the app host and the ATS pr
 each finding before and after its change; then the shared checks on its record's commit
 ([`fix-1/security/README.md`](fix-1/security/README.md) Section 8). The screen was locked throughout.
 
+The honesty fix changed no code, so none of the checks above had to run again. It read the evidence each of its
+findings rests on and checked the READMEs' wording before any change and after it, ran a stand-in of runbook 0.8's
+chain for the drop-in's exit status, and ran the shared checks on its record's commit
+([`fix-1/honesty/README.md`](fix-1/honesty/README.md) Section 8). The screen was locked throughout.
+
 ## 6. What only the phone can show
 
 - Failure 1: that `FileProtector.copyFile` gives the library class C on iOS 27 when its source is in the app, and that
@@ -246,8 +272,9 @@ each finding before and after its change; then the shared checks on its record's
   `containmentFollowsLinks`'s checks that a `..` below a missing folder is never inside.
 - F-1: whether `setAttributes` changes an existing file's class on iOS 27. The first run suggests it does; the
   mismatch test still reads the stale class until F-1 is fixed.
-- Failure 3: what the phone does with a load to its own Wi-Fi address in each variant, and which interface held
-  10.71.x.x.
+- Failure 3: what the phone does with a load to its own Wi-Fi address in each variant, and which of its interfaces hold
+  private addresses. Whether 10.71.x.x was another interface's in the first run stays inferred: the re-run can support
+  that or refute it (7.4), not prove it.
 - The rest of step 1.2, the latency runs, is still pending, as before.
 
 ## 7. What to do next
@@ -307,19 +334,32 @@ them from the root of `~/Git/sylvia-sessions` after the merge, in zsh. Commit th
    changed after `9cdb0a02`. Expect what 0.8 says, now with 79 host tests in 13 suites and 73 simulator tests in 13
    suites. The lock harness's quiet-tone test failed on this Mac in every run on 26 October 2026. If it fails again
    (`harness: audio: AVAudioPlayer did not start`), the drop-in stops at its step 14 and the last line reads `drop-in
-   exit 1`. Report row 10's class-B lines are then still in `row10-unlocked/host-tests.log`, since step 3 writes them
-   before the harness runs, but the whole drop-in has not passed: record that and ask an agent.
+   exit 65`: xcodebuild's status for a failed test, which the harness's script and the drop-in pass on, each running
+   with `set -euo pipefail`. The harness's script ended with 65 on this failure in all four runs that day (for example
+   [`recovery/harness-checks-repeat-1/console.log`](recovery/harness-checks-repeat-1/console.log) line 378), and a
+   stand-in of the whole chain prints `drop-in exit 65`
+   ([`fix-1/honesty/exit-status-probe.log`](fix-1/honesty/exit-status-probe.log); corrected after the honesty review,
+   finding HON-2). Report row 10's class-B lines are then still in `row10-unlocked/host-tests.log`, since step 3 writes
+   them before the harness runs, but the whole drop-in has not passed: record that and ask an agent. (A stop at the
+   row-10 guard, after step 3, ends with `drop-in exit 1` instead, after a `FAIL: row 10 evidence missing` line:
+   `Scripts/ci.d/71-g05-recovery.sh` lines 85-86.)
 3. **Optional, for finding F-1** (seconds):
 
    ```sh
    Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/run-probe.sh probe-host-facts-unlocked
    ```
 
-   It writes `Docs/Stage0/evidence/M0-DeviceFixes/recovery/probe-host-facts-unlocked.log`. Its section 4 should show
-   `setAttributes` changing a class-B file and folder to class C while the same `URL` value still reports class B, and a
-   new `URL` reporting class C: the stale reading behind F-1, saved on the Mac. The probe's output should end with `its
-   folder was removed: g05-devicefix-probe-…`, just before the `---- exit: 0` line (since the security fix it removes
-   its temporary folder however it ends).
+   It writes `Docs/Stage0/evidence/M0-DeviceFixes/recovery/probe-host-facts-unlocked.log`. Its section 4 would be the
+   Mac's evidence for F-1, which no saved log holds yet: an agent saw it once, at about 02:15 UTC on 26 October, in a
+   scratch run whose output was not kept (recovery README Section 2.4). So F-1 on the Mac is pending until this run
+   (corrected after the honesty review, finding HON-4). Expected, from that unsaved run: on the `file of class B` line
+   and on the `directory of class B` line, `setAttributes(class C): no error`, the same URL value reporting
+   `NSFileProtectionCompleteUnlessOpen` (class B) before and after it, and
+   `NSFileProtectionCompleteUntilFirstUserAuthentication` (class C) after `removeAllCachedResourceValues`, from a new
+   URL and from `attributesOfItem`: the stale reading behind F-1. If section 4 shows anything else, or is skipped,
+   record it as it is and ask an agent. The probe's output should end with `its folder was removed:
+   g05-devicefix-probe-…`, just before the `---- exit: 0` line (since the security fix it removes its temporary folder
+   however it ends).
 4. Nothing new for the ATS probe: it ran on the simulator here (Section 5, check 6).
 
 ### 7.3 Phone B: step 1.2 again (the app-hosted recovery suite)
@@ -422,8 +462,13 @@ Expected in each variant (the probe's expectations are unchanged since `d5336111
 
 Also expected: `plainHTTPToAnotherDeviceOnTheLAN()` skipped in each variant, and the suspension UI test passing again.
 Because of the default variant's expected failure, xcodebuild ends with `** TEST FAILED **`. The new
-`private-ipv4-interfaces=` lines should name en0 and the interface that held 10.71.x.x, in the order of the system's
-interface list (`getifaddrs`), which the probe keeps (`ATSProbeTests.swift`, `privateIPv4Addresses`).
+`private-ipv4-interfaces=` lines list every interface that holds a private address at the time of the re-run, in the
+order of the system's interface list (`getifaddrs`), which the probe keeps (`ATSProbeTests.swift`,
+`privateIPv4Addresses`). They test Section 4's inference only in part: another interface's `10.71.x.x` (most likely
+`pdp_ip0`'s) supports it, but cannot show that the first run's address was the same one, since the records keep two
+octets and an address can change between runs. **If en0's own address is `10.71.x.x`, the first run may have loaded
+the Wi-Fi address after all, and Section 4's diagnosis is wrong: record it and ask an agent** (honesty review, finding
+HON-3).
 
 Results that are not ATS results (ATS README Section 5):
 
@@ -445,6 +490,8 @@ Another run updates the runbook, checklists and reports on `m0-records-update`; 
 request gives the change; most come from the fix branches' open items. fix-1 changed requests 1, 3, 4 and 11. If the
 records run applied their earlier text, [`fix-1/README.md`](fix-1/README.md) Section 6 gives what to add. The security
 fix changed request 11 and added requests 14 and 15 ([`fix-1/security/README.md`](fix-1/security/README.md) Section 9).
+The honesty fix changed requests 5, 8, 11 and 12; if the records run applied their earlier text,
+[`fix-1/honesty/README.md`](fix-1/honesty/README.md) Section 9 gives what to change.
 
 1. **Recovery suite's expected count.** In `Docs/Stage0/device-checklists/G05-Recovery.md` step 1, item 2
    ("Expected"), and in runbook 1.2's "Expect", replace `Test run with 68 tests in 11 suites passed (the five
@@ -471,15 +518,16 @@ fix changed request 11 and added requests 14 and 15 ([`fix-1/security/README.md`
    `copyTreeRefusals`. Add that the re-run of 1.2 is pending. Both rows stay "failed (device)" until it passes.
 5. **Finding F-1, your decision with the technical lead; left unfixed here.** `FileProtector.verify` reads the class
    through the same `URL` value that `protect` read before `setAttributes`, so it sees the cached class (Apple's
-   `URL.resourceValues(forKeys:)` page). `protect` therefore reports a mismatch even when the change took effect: seen
-   on this Mac in an earlier probe run whose output was not saved, and inferred on the phone from 8 tests whose later
-   opens passed. Proposed change, for the technical lead to check: in `verify`, `var fresh = url;
+   `URL.resourceValues(forKeys:)` page). `protect` therefore reports a mismatch even when the change took effect. On
+   the phone that is inferred from 8 tests whose later opens passed. On the Mac it is pending: an agent saw it once, in
+   a probe run whose output was not saved, and no saved log shows it until 7.2, item 3, runs (honesty review, finding
+   HON-4). Proposed change, for the technical lead to check: in `verify`, `var fresh = url;
    fresh.removeAllCachedResourceValues(); let actual = try protectionClass(of: fresh)`. Then correct the records that
    say an existing file's class cannot be changed: `DataProtectionTests.mismatchDetected`'s reading,
    `Docs/Stage0/G05-Recovery.md` row 10 and F3, `Docs/ADRs/0012-retention-backup-restore.md` (the copied-files
    paragraph and the class-B evidence list), `FileProtection.swift` lines 35-37, and the `freshDirectory` comment in
    `g05-recovery-tool/main.swift`. Until then the device and host lines "refused … the class is fixed at creation
-   here" rest on a stale reading.
+   here" most likely rest on a stale reading.
 6. **`Docs/Stage0/device-checklists/G05-AI.md` step 1.** In item 3 ("Expected"), first bullet, after `be refused
    locally (URLError -1004).` append: "On a device the test loads only the phone's Wi-Fi (en0) private address (since
    `907538f5`). Its line reads `ATS-PROBE variant=… private-ip=<a.b>.x.x interface=en0 result=…`, after a
@@ -500,10 +548,11 @@ fix changed request 11 and added requests 14 and 15 ([`fix-1/security/README.md`
    the backticked `interface=en0` and `private-ipv4-interfaces=` count as markers, so they must appear in both
    documents.
 8. **`Docs/Stage0/G05-AI.md` row D1**, results column: after "D-9 exception remains; no minimum-OS claim." append
-   "Diagnosed in `evidence/M0-DeviceFixes/ats/README.md`: the probe loaded a non-Wi-Fi private address (10.71.x.x),
-   which the phone sent to iCloud Private Relay; ATS did not block it in any variant (no ATS-policy line for it, unlike
-   the public IP and the qualified name). On a device the probe now loads the Wi-Fi (en0) address (`907538f5`, on
-   `m0-device-fixes`); the re-run of 1.3 is pending."
+   "Diagnosed in `evidence/M0-DeviceFixes/ats/README.md`: the probe loaded the first private address of any interface
+   (10.71.x.x; that it was not the Wi-Fi address is inferred, since no log names its interface), which the phone sent
+   to iCloud Private Relay; ATS did not block it in any variant (no ATS-policy line for it, unlike the public IP and the
+   qualified name). On a device the probe now loads only the Wi-Fi (en0) address (`907538f5`, on `m0-device-fixes`);
+   the re-run of 1.3 is pending."
 9. **Optional, `Scripts/ci.d/70-g05-ai.sh` line 31:** `MIN_PROBE_TESTS=39` to `MIN_PROBE_TESTS=42`. The probe now
    reports 42 tests (14 per variant), so with 39 the loss of up to 3 tests would go unnoticed.
 10. **Optional, `Docs/ADRs/0011-ai-providers-context-and-privacy.md` line 89**, which records the G0.5 simulator run as
@@ -515,14 +564,24 @@ fix changed request 11 and added requests 14 and 15 ([`fix-1/security/README.md`
     ([`fix-1/README.md`](fix-1/README.md) Sections 1 and 5). Also record the security review of `fdce7cd5` (26 October
     2026: findings S1-S8) and its fix, with its commits and checks
     ([`fix-1/security/README.md`](fix-1/security/README.md) Sections 1 and 8): S1 and S3 were fixed by fix-1; S5's
-    hardening is open (request 15).
-12. **The lock harness's quiet-tone test** (`LogAndToneTests.playsQuietly`): record as an open item of the lock
-    harness that it failed in all four runs on this Mac on 26 October 2026 (three from 07:38 to 07:58 UTC in the
-    recovery job, one of them on the unchanged code `c72247a6`, and one at about 08:23 UTC here), each time with
-    `AVAudioPlayer did not start`. It had passed on 22 October 2026 with the screen locked, at 08:09 UTC
-    (`Docs/Stage0/evidence/M0-Decisions/assembly/harness-checks-clean/`), and with it unlocked, at 22:36-22:44 UTC
-    (`Docs/Stage0/evidence/M0-Decisions/assembly/unlocked-run-1/logs/harness-simulator-tests.log`). Its cause is not
-    established; your run of 0.8 shows whether it still fails.
+    hardening is open (request 15). Also record the honesty review of `fdce7cd5` (26 October 2026: findings HON-1 to
+    HON-6) and its fix, with its commits and checks ([`fix-1/honesty/README.md`](fix-1/honesty/README.md) Sections 1
+    and 8): HON-1 was fixed by fix-1 (its F2); the honesty fix changed text only.
+12. **The lock harness's quiet-tone test** (`ToneTests.playsQuietly()`, in
+    `Spikes/G05-Recovery/LockHarness/Tests/LogAndToneTests.swift`, suite "Lock harness: the quiet tone"): record as an
+    open item of the lock harness that it failed in all four runs on this Mac on 26 October 2026 (three from 07:38 to
+    07:58 UTC in the recovery job, one of them on the unchanged code `c72247a6`, and one at about 08:23 UTC here), each
+    time with `AVAudioPlayer did not start`. The same version of the test (the lock harness has not changed since
+    `84e599b1`) had passed on 22 October 2026 UTC with the screen locked, in a run that started at 11:07 UTC
+    (`Docs/Stage0/evidence/M0-Decisions/fix-2/harness-checks-clean/harness-simulator-tests.log` line 2458) and in the
+    baseline of a run of controls that started at 11:15 UTC
+    (`Docs/Stage0/evidence/M0-Decisions/fix-2/harness-controls/baseline.log` line 852), 00:07 and 00:15 on 23 October
+    on the build Mac's clock; and with the screen unlocked, at 22:36-22:44 UTC
+    (`Docs/Stage0/evidence/M0-Decisions/assembly/unlocked-run-1/logs/harness-simulator-tests.log` line 2460). Its cause
+    is not established; your run of 0.8 shows whether it still fails. (Corrected after the honesty review, finding
+    HON-5: this request named the test after its file, and cited for the locked pass the run of 08:09 UTC in
+    `M0-Decisions/assembly/harness-checks-clean/`, which ran an earlier version of the test, without its check of the
+    playback category.)
 13. **The session log:** rows for the merge's commit and for each repeated step, which you fill in as before.
 14. **Runbook 1.3: cut the log's addresses** (security review, finding S6). After its command block, add: "Before you
     copy any line from the log or commit it, cut every IPv4 address in it to its first two octets (Section 2; G0.5 AI
@@ -539,7 +598,7 @@ fix changed request 11 and added requests 14 and 15 ([`fix-1/security/README.md`
 
 ## 9. Left open here
 
-- Finding F-1: request 5.
+- Finding F-1: request 5. Its observation on the Mac has no saved log yet: Section 7.2, item 3.
 - Finding S5's hardening of `copyFile`: request 15.
 - The two class-B tests of failure 1 have never run: Section 7.2, item 1.
 - The lock harness's quiet-tone test: request 12.

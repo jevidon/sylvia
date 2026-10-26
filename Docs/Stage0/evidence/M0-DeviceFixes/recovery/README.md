@@ -23,7 +23,10 @@ marked "fix-1" below correct what this record said; [`../fix-1/README.md`](../fi
 The security review of the same commit led to `e022cea7`: the guard below was widened, the containment check's helper
 is tested on `..` below a missing folder, and `commands/probe-host-facts.swift` now removes its folder however it ends.
 The notes marked "security fix" below say what changed; [`../fix-1/security/README.md`](../fix-1/security/README.md) has
-the whole account.
+the whole account. The honesty review of the same commit led to corrections of this record's wording, marked "honesty
+fix" below: what rests on a reading whose output was not saved now says so, the quiet-tone test's name and the runs
+cited for its earlier passes are corrected, and the re-run of step 1.2 goes through the owner's README, Section 7.3;
+[`../fix-1/honesty/README.md`](../fix-1/honesty/README.md) has the whole account.
 
 ## 1. What failed on the phone (the owner's records, unchanged)
 
@@ -56,9 +59,10 @@ Three suites failed: Restore (1 issue), Migrations (6) and Migration put-back (1
   `DataProtectionTests.mismatchDetected`'s host line), so the Mac's reproduction installs the v1 library from a class-B
   source instead: `ProtectedCopyTests.v1LibraryFromAnotherClass`. It needs class-B keys, so it was skipped in every run
   here, the screen being locked (section 5).
-- **Correction.** The class the refusal reports is the one the file had before the open tried to set it, not a class the
-  open could not change: see finding F-1 (section 2.4). The tests' setup was wrong, as diagnosed; the check failed
-  closed, but the reason it gave is a stale reading.
+- **Correction.** The class the refusal reports is the one the file had before the open tried to set it (a cached
+  reading), most likely not a class the open could not change: see finding F-1 (section 2.4). The tests' setup was
+  wrong, as diagnosed; the check failed closed, but the reason it gave most likely rests on a stale reading (honesty
+  fix: "most likely", since the change itself was not read back on the phone and the Mac's reading is not saved).
 
 The other copies in the spike's Sources and Tests (all five `copyItem` calls; [`before-fix-host-tests.log`](before-fix-host-tests.log)
 lists them):
@@ -142,12 +146,15 @@ before `setAttributes`, and `protect` reports a mismatch whether or not the chan
   file's class: "To change the data protection level of an existing file, use the setResourceValue(_:forKey:) method of
   NSURL." ([Encrypting your app's files](https://developer.apple.com/documentation/uikit/encrypting-your-app-s-files),
   read 26 October 2026.) Only a device run can confirm it by a direct reading.
-- **On the Mac:** `commands/probe-host-facts.swift`, section 4, shows it with the screen unlocked: `setAttributes`
-  changes a class-B file and a class-B directory to class C without error, the same `URL` value still reports class B,
-  and the same value after `removeAllCachedResourceValues()`, a new `URL` and `attributesOfItem` report class C. This job
-  saw exactly that at about 02:15 UTC, with the screen unlocked, in a scratch run of the same checks whose output was
-  not kept; the saved run, [`probe-host-facts-locked.log`](probe-host-facts-locked.log), was made with the screen
-  locked, so its sections 3 and 4 were skipped and the host evidence for F-1 is still to be saved (section 5).
+- **On the Mac: pending.** `commands/probe-host-facts.swift`, section 4, is written to show it with the screen
+  unlocked: whether `setAttributes` changes a class-B file and a class-B directory to class C without error while the
+  same `URL` value still reports class B, and whether the same value after `removeAllCachedResourceValues()`, a new
+  `URL` and `attributesOfItem` then report class C. This job saw exactly that at about 02:15 UTC, with the screen
+  unlocked, in a scratch run of the same checks whose output was not kept, so no log holds it; the saved run,
+  [`probe-host-facts-locked.log`](probe-host-facts-locked.log), was made with the screen locked, so its sections 3 and 4
+  were skipped (line 25) and the host evidence for F-1 is still to be saved (section 5). Until a saved run shows it
+  (the owner's README, Section 7.2, item 3), F-1 rests on Apple's page, the code and the phone's later opens, not on a
+  reading on the Mac (honesty fix).
 - **What rests on the stale reading:** `DataProtectionTests.mismatchDetected`'s evidence line "changing an existing
   file's class with setAttributes: refused (…); the class is fixed at creation here", on the host
   ([`baseline-host-tests.log`](baseline-host-tests.log)) and on the phone (`step-1-hosted-results.md`), and the records
@@ -233,17 +240,23 @@ followed by the components below it that do not exist, as they are. (fix-1 moved
 | Lock harness on the unchanged code, as a control | `commands/run-harness-checks-control.sh harness-checks-control-c72247a6` | [`harness-checks-control-c72247a6/console.log`](harness-checks-control-c72247a6/console.log) | the same failure on `c72247a6` (Scripts/lib and Spikes/G05-Recovery taken with `git archive` into `.build/scratch`) |
 
 **The lock harness's quiet-tone test failed in every run here, on the unchanged code too.**
-`LogAndToneTests.playsQuietly` ("the player plays the tone at the test volume 0.01, unmuted, in the playback category,
-and stops (simulator; …)") failed in all three runs (07:38-07:46, 07:52-07:54 and 07:56-07:58 UTC), each time after
-about 30 s with `harness: audio: AVAudioPlayer did not start` (`TonePlayer.swift` line 90: `prepareToPlay()` or `play()`
+`ToneTests.playsQuietly()` (in `LockHarness/Tests/LogAndToneTests.swift`: "the player plays the tone at the test volume
+0.01, unmuted, in the playback category, and stops (simulator; …)") failed in all three runs (07:38-07:46,
+07:52-07:54 and 07:56-07:58 UTC), each time after about 30 s with `harness: audio: AVAudioPlayer did not start` (`TonePlayer.swift` line 90: `prepareToPlay()` or `play()`
 returned false), on this branch and on `c72247a6` alike; the harness's other 48 unit tests passed, and so did its UI
 smoke test, which ran after them in each run (07:46, 07:54 and 07:58 UTC). So it is not caused by
-this branch, whose changes the tone does not reach. Its cause is not established: the Mac's default output was its
-built-in speakers (`system_profiler SPAudioDataType`, read only; nothing on the Mac's audio was changed), and the screen
-was locked, but the same test passed with the screen locked on 22 and 23 October
-(`Docs/Stage0/evidence/M0-Decisions/assembly/harness-checks-clean/harness-simulator-tests.log`, whose console log
-records the lock). The harness's smoke-log check and its step 15 (the app built for a phone) did not run here; the
-owner's run of 0.8 covers them.
+this branch, whose changes the tone does not reach. Its cause is not established. The Mac's default output was its
+built-in speakers when this job read it with `system_profiler SPAudioDataType` (read only; nothing on the Mac's audio
+was changed), but that reading's output was not saved, so no log holds it. The screen was locked, but the same version
+of the test (the lock harness has not changed since `84e599b1`) passed with the screen locked on 22 October 2026 UTC:
+in a run that started at 11:07 UTC (`Docs/Stage0/evidence/M0-Decisions/fix-2/harness-checks-clean/harness-simulator-tests.log`
+line 2458; its `console.log` records the lock) and in the baseline of a run of controls that started at 11:15 UTC
+(`Docs/Stage0/evidence/M0-Decisions/fix-2/harness-controls/baseline.log` line 852), 00:07 and 00:15 on 23 October on
+the Mac's clock. (Honesty fix: this paragraph named the test after its file, did not say that the audio reading was
+not saved, and cited for the locked pass the run of 08:09 UTC in `M0-Decisions/assembly/harness-checks-clean/`, which
+ran an earlier version of the test, without its check of the playback category; its dates mixed UTC with the Mac's
+clock.) The harness's smoke-log check and its step 15 (the app built for a phone) did not run here; the owner's run of
+0.8 covers them.
 
 ## 5. What the Mac shows, and what only the phone can show
 
@@ -271,9 +284,13 @@ owner's run of 0.8 covers them.
 
 ## 6. What the owner's re-run of step 1.2 must show
 
-On this branch's code (or `m0-decisions` once it is merged), with the commands of runbook 1.2 (`sylvia_generate
-Spikes/G05-Recovery/DeviceTests` first, so the project picks up the two new test files; `DeviceTests` itself is
-unchanged):
+On this branch's code (or `m0-decisions` once it is merged), run as the owner's README gives it in
+[Section 7.3](../README.md#73-phone-b-step-12-again-the-app-hosted-recovery-suite): runbook 1.2's command, with
+`sylvia_generate Spikes/G05-Recovery/DeviceTests` first, so the project picks up the two new test files (`DeviceTests`
+itself is unchanged), and with its log saved under a new name, `step-1-hosted-run2-tests.log`. Section 7.3 also has
+the full list of what to expect. (Honesty fix: this section said to use runbook 1.2's commands as they stand. Their
+log, `Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log`, is the owner's record of the blocked attempt of
+session log row 3b, which a re-run as written would replace.) In short:
 
 - `Test run with 73 tests in 13 suites passed`: the 68 of the first run and 5 new ones in 2 new suites (the copy guard
   is built for the Mac only). Exactly the same four skips as before, with their reasons (the two device probes and the
@@ -283,7 +300,10 @@ unchanged):
   and since fix-1 `rejected unlisted-dangling-link: symbolic link in bundle: export/markdown/dangling.md`.
 - No `protection: library.sqlite has NSFileProtectionNone` anywhere; the migration and put-back tests pass, with their
   evidence lines (for example `v1 fixture upgraded: v1-initial -> …` and `put-back crash after intentWritten: intent on
-  disk true, library.sqlite present true`).
+  disk true, library.sqlite present true`). One line still names that class, as in the first run (its line 2364), and
+  is expected: `file written with .noFileProtection into the test's temporary directory reports: NSFileProtectionNone`,
+  from `DataProtectionTests.mismatchDetected`, which writes such a file on purpose and passes (honesty fix, as the
+  owner's README already says).
 - The new evidence lines: `v1 library installed from a class-B source: library.sqlite
   NSFileProtectionCompleteUntilFirstUserAuthentication when created; opened and migrated`; `class-B tree (4 files, 5
   directories) copied with FileProtector.copyTree: ["NSFileProtectionCompleteUntilFirstUserAuthentication": 9]`;
@@ -297,18 +317,24 @@ unchanged):
 
 ## 7. What to test on the Mac
 
+Since the merge, the owner's README, [Section 7.2](../README.md#72-what-to-test-on-the-mac-screen-unlocked), gives
+these with commands that save their logs, and with what each should print; use it. In short:
+
 1. With the screen unlocked, runbook step 0.8 on this code: the class-B evidence of report row 10 must be taken again
    (section 5). Expected as 0.8 says, with 79 host tests in 13 suites and 73 simulator tests in 13 suites.
 2. With the screen unlocked, from `Spikes/G05-Recovery`:
    `xcrun swift test --force-resolved-versions --filter 'ProtectedCopyTests|PrivatePathTests'`. Expected: `Test run with
    6 tests in 2 suites passed`, none skipped, with the class-B line `v1 library installed from a class-B source: …
    opened and migrated`. To see cause 1 fail on the Mac first, put `FileManager.default.copyItem(at: source, to:
-   layout.databaseURL)` back in `installV1` for one run: the test then fails with `library.sqlite has
-   NSFileProtectionCompleteUnlessOpen` (and the guard fails too). Since fix-1 the run also prints the `copyTree, a
-   destination inside the source: …` line, under `/var` and through `/private` (the owner's README, Section 7.2).
+   layout.databaseURL)` back in `installV1` for one run: the test should then fail with `library.sqlite has
+   NSFileProtectionCompleteUnlessOpen`, and the guard should fail too (expected, not run: the class-B test has never
+   run). Since fix-1 the run also prints the `copyTree, a destination inside the source: …` line, under `/var` and
+   through `/private` (the owner's README, Section 7.2).
 3. `xcrun swift Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/probe-host-facts.swift` with the screen unlocked:
-   section 4 shows finding F-1 on the Mac. (Security fix: the probe now removes its temporary folder however it ends,
-   and its last line says so; before `e022cea7` a run with the screen locked left the folder behind.)
+   section 4 should show finding F-1 on the Mac, as it did once in a run whose output was not kept (section 2.4;
+   honesty fix: this said that it shows it, which no saved log does yet). (Security fix: the probe now removes its
+   temporary folder however it ends, and its last line says so; before `e022cea7` a run with the screen locked left
+   the folder behind.)
 
 ## 8. Requests for the records (also the job's open items)
 
@@ -326,5 +352,5 @@ These records are outside this branch (another run updates them on `m0-records-u
    through a `URL` whose cached values are removed, for example `var fresh = url; fresh.removeAllCachedResourceValues();
    let actual = try protectionClass(of: fresh)`, and then correct `DataProtectionTests.mismatchDetected`'s reading and
    the records that say an existing file's class cannot be changed (G05-Recovery.md row 10 and F3, ADR-0012, the two
-   code comments named in 2.4). Until then those records state a conclusion that rests on a stale reading.
+   code comments named in 2.4). Until then those records state a conclusion that most likely rests on a stale reading.
 4. The integration log and the gate summary: record this branch, its two fixes and its checks (this README).

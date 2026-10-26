@@ -225,8 +225,12 @@ owner's run of 0.8 covers them.
 
 ## 5. What the Mac shows, and what only the phone can show
 
-- **Shown on the Mac:** cause 2 and its fix, completely, by the same code path the phone took (the folder named through
-  `/private`); that the guard finds every copy that keeps its source's class, and that none is left; that the new
+- **Shown on the Mac:** cause 2 and its fix, by the same code path the phone took (`BackupRestorer.prepare`,
+  `BackupValidator.validate` and `resolve`, with the bundle's folder named through `/private`): before the fix a missing
+  listed file is an unsafe path, after it a missing file, and the containment check still follows every link. What that
+  test cannot show is iOS itself: that Foundation and realpath(3) on iOS 27.0.1 treat the app container's
+  `/private/var/mobile/…` folders the same way; the phone's re-run shows it (section 6). Also shown: that the guard
+  finds every copy that keeps its source's class, and that none is left; that the new
   `copyTree` refuses what it must; that the whole suite, the SIGKILL drills with the new template copy (300 restore and
   240 migration iterations) and the simulator suite pass on the fixed code; that the device host builds for iOS.
 - **Shown on the Mac only with the screen unlocked, not done here:** the class-B reproduction of cause 1

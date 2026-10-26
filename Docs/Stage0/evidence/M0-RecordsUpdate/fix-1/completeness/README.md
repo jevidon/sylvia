@@ -36,7 +36,11 @@ byte, and the owner's records are kept exactly as committed ([`checks/owner-reco
 ## Checks
 
 `commands/run-checks.sh` ran every check on this fix's last documents commit, with no uncommitted file; the commit after
-it adds the logs and nothing else. A dry run on the uncommitted tree came first (`--dry`), its logs set aside. Host only:
+it adds the logs and nothing else. A dry run on the uncommitted tree came first (`--dry`), its logs set aside; then a
+first run on `e19d1550`, the first documents commit, gave the same results, and its logs of the earlier rechecks and
+gate checks showed one more thing they report, which integration log 43.8 had not given (the Stage 0 README's lines,
+two further down since its caveat), so the next commit gives it, and that run's logs were set aside, not committed (43.6).
+Host only:
 the build Mac, macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275). No simulator was created or used, no device
 was contacted, nothing played audio and nothing was fetched or pushed. Other jobs may have shared the Mac (the load
 averages in the logs), so no timing here is a result.

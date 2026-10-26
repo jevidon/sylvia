@@ -16,8 +16,9 @@ spike roots (Spikes/). Test code is a Swift or C-family implementation file that
 include and no other target does (by the source paths the manifests declare, and SwiftPM's default paths as SwiftPM
 chooses them); every other file under the product roots is product code, whatever its directory is called, and every
 header and module map there is product code wherever it sits, since product code can include or import it from
-anywhere. A shipping target is a product-manifest target that is not a test target; a product project.yml's own
-settings count as every target's. `check` fails when:
+anywhere (a module map: a file named *.modulemap, module.map or module_private.map, in any letter case, the names
+clang reads one by). A shipping target is a product-manifest target that is not a test target; a product project.yml's
+own settings count as every target's. `check` fails when:
   pin-differs        a Package.resolved pin, or an exact requirement, differs from the inventory's version or revision;
                      a pin's identity differs from the inventory's; or a lock pins one package twice
   pin-missing        a lock lacks a package the inventory says it pins, or a package that its manifest requires directly
@@ -34,22 +35,61 @@ settings count as every target's. `check` fails when:
                      product C-family file #includes or #imports a file there
   outside-product    a product manifest builds from somewhere outside Apps/ and Packages/, where the product rules would
                      not see the code: a local package; a source of a shipping target; a build-settings file it uses
-                     (configFiles, and the files those #include); a referenced Xcode project; a header, module-map,
-                     bridging-header or prefix-header path in its settings or flags (or in a module map under the product
-                     roots); or a symbolic link under Apps/ or Packages/ resolves outside them. And, for a shipping target
-                     (review R3-01): a path it names inside the product roots holds nothing git tracks (a build product, a
-                     package checkout under .build, a generated file), or a header or module map it takes is not a file
-                     git tracks there; a path that starts with a build-product, SDK or toolchain variable leaves that
-                     directory (..), reaches package checkouts (SourcePackages, checkouts), or is where it takes a header,
-                     module map or sources from; a path uses any other variable, which the check cannot evaluate; or a
-                     setting replaces a compiler, linker, SDK or toolchain input (CC, LD, LIBTOOL, SWIFT_EXEC, TOOLCHAINS,
-                     SDKROOT other than an SDK's name, a header map, a response file, pkg-config and the like)
+                     (configFiles, and the files those #include, each of which must be a file git tracks under the
+                     product roots, so neither "<DEVELOPER_DIR>/..." nor an untracked #include? passes, and a # line the
+                     check cannot read as an #include fails; review R4-02); a referenced Xcode project; a header,
+                     module-map, bridging-header or prefix-header path in its settings or flags (or in a module map under
+                     the product roots); or a symbolic link under Apps/ or Packages/ resolves outside them. A local
+                     package inside them must be one git tracks there, its Package.swift a tracked file, which the check
+                     then reads as a product manifest: a package checkout under .build/checkouts, a build product or a
+                     generated package fails, whichever targets use it (review of the M0 exit preparation,
+                     SEC-ZIPGUARD-01: until then a local package was judged only against Spikes/ and the roots). And, for a
+                     shipping target (review R3-01): a path it names inside the product roots holds nothing git tracks (a
+                     build product, a package checkout under .build, a generated file), or a header or module map it
+                     takes is not a file git tracks there; a path that starts with a build-product, SDK or toolchain
+                     variable leaves that directory (..), reaches package checkouts (SourcePackages, checkouts), or is
+                     where it takes a header, module map or sources from; a path uses any other variable, which the check
+                     cannot evaluate; a setting assigns a variable the check evaluates itself (TRUSTED_VARS: the
+                     build-product, SDK, toolchain and project-directory variables, SDKROOT to an SDK's name excepted;
+                     review R4-03); a setting replaces a compiler, linker, SDK or toolchain input (CC, LD, LIBTOOL,
+                     SWIFT_EXEC, TOOLCHAINS, SDKROOT other than an SDK's name, a header map, a response file, pkg-config
+                     and the like); or the target declares build rules, which decide what compiles a file. And product
+                     code that is not a test (review R4-02: until then only a path into Spikes/ was judged) brings in a
+                     file (#include, #import, #include_next, #embed, or the assembler's .include and .incbin, in an
+                     assembly file or in inline assembly) by a name that is absolute, that climbs out of the directory it
+                     is found in with .. (unless, quoted, it resolves beside the including file to a file git tracks
+                     under the product roots), or that passes through a build or package-checkout directory; or by a
+                     computed include, whose file macros decide
   flag               a shipping target passes a compiler or linker flag (SwiftPM unsafeFlags; any build setting whose name
                      contains FLAGS; XcodeGen per-file compilerFlags; with -Xcc, -Xlinker, -Xfrontend, -Xclang and -Wl,
                      unwrapped) that is not one product targets may pass: FLAGS_ALLOWED, FLAG_PATTERNS_ALLOWED and
                      FLAGS_WITH_NAME, the search-path, header-file, module-map-file, library, framework, module-alias and
                      definition flags (each judged as described here), and nothing else, an input file among the flags
-                     included (review R3-01: -import-module, -imacros, -vfsoverlay, -fplugin= and the like all fail)
+                     included (review R3-01: -import-module, -imacros, -vfsoverlay, -fplugin= and the like all fail;
+                     review R4-04: only the Swift compiler's -Werror and -Wwarning take a diagnostic group after them, so
+                     in a C or linker flag setting the word after them is an input file and fails)
+  manifest-input     a product manifest's values depend on something the check does not read, so the value the build
+                     uses is not the one the check judges (review R4-01): a key or value of a product project.yml (test
+                     targets included) holds ${, which XcodeGen replaces from the environment or a template's attributes
+                     when it generates the project (a YAML escape such as \x24{ too), or starts with ~, which XcodeGen
+                     expands to a home directory in the paths it resolves; or a product Package.swift imports a module
+                     other than PackageDescription and CompilerPluginSupport, or names Context, CommandLine, readLine,
+                     _silgen_name, _cdecl, _extern, random numbers or clocks, or holds an #if (MANIFEST_INPUTS: every build
+                     evaluates the manifest again, in its own environment). Read in the raw text of a Package.swift, so a
+                     comment that names one is reported too. Or a product package holds a version-specific manifest, a
+                     file whose name begins with Package@ and ends with .swift, in any letter case
+                     (Package@swift-6.4.swift), which SwiftPM evaluates instead of the Package.swift beside it when the
+                     toolchain's Swift version allows, so that a build can evaluate a manifest whose text the rule above
+                     never reads (VERSION_SPECIFIC_MANIFEST; the fourth review of the M0 exit preparation, SEC-ZIPGUARD-03:
+                     until then such a file passed)
+  letter-case        a tracked path whose name differs only in letter case from the one this check reads, which the
+                     default macOS file system, ignoring case, gives the build all the same: a path whose first directory
+                     is a product or spike root in another letter case (packages/...), which git checks out into that
+                     root, where the build reads it, while this check judges a file by the root its path names and would
+                     read it as neither product nor spike code; or a manifest named Package.swift or project.yml in
+                     another letter case (package.swift, Project.yml), anywhere, which SwiftPM and XcodeGen open by name
+                     and so load, while this check reads manifests by their exact names (found with the fix of
+                     SEC-ZIPGUARD-03; module maps are read whatever the letter case of their names)
   transitive-direct  a product manifest depends directly on a package the inventory admits only as transitive, or
                      product code (not tests) reaches one of its modules: the word `import` followed, after white space,
                      comments and an optional import kind, by the module's name, anywhere in a Swift or C-family file
@@ -134,8 +174,20 @@ actions compute (a script that names Spikes/ or a transitive-only package's publ
 scripts are not judged); build settings outside the lists above (drawn from Xcode 27.0's specifications), which are
 read only for a transitive-only package's header names and for paths into Spikes/; what the compiler and linker take
 from the environment rather than from a tracked file (CPATH, C_INCLUDE_PATH, LIBRARY_PATH and the like); the
-requirements of packages behind an exempted (unlocked) Spikes project; and anything a build fetches or runs that no
-manifest, lock or tracked file names.
+requirements of packages behind an exempted (unlocked) Spikes project; a Package.swift's use of the order in which a
+Set or Dictionary is iterated, which Swift seeds afresh in each process, so that a manifest that used it would vary
+from one evaluation to the next, in CI as in a build, rather than hide a value from CI alone (review R4-01's
+reasoning: random numbers and clocks, the other sources of such variation, are reported); a file that a tool reads
+under a name this check does not know: it reads a product package's manifest as Package.swift, failing any
+version-specific one, a project's as project.yml, and module maps by the names clang reads them by, in the letter case
+the tools of the pinned toolchain resolve on the default macOS file system
+(Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log), so a tool or a toolchain that reads other names is covered
+only once this check learns them; and anything a build fetches or runs that no manifest, lock or tracked file names. A
+C-family include of a plain name (no .., no absolute path, no build or checkout directory) that is not beside the
+including file is found in the search directories: the target's own, which the setting and flag rules judge, and its
+dependencies' public include directories, which for the transitive-only packages hold, at the pinned revisions, only
+the public headers the inventory lists, judged by name, and module maps
+(Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log).
 """
 import argparse
 import ast
@@ -183,7 +235,12 @@ VERSION = re.compile(r'^\d+(\.\d+){1,3}([-+][0-9A-Za-z.-]+)?$')
 SHA = re.compile(r'^[0-9a-f]{64}$')
 REV = re.compile(r'^[0-9a-f]{40}$')
 C_EXTENSIONS = ('.c', '.h', '.m', '.mm', '.cc', '.cp', '.cpp', '.cxx', '.c++', '.hh', '.hpp', '.hxx', '.h++', '.inc',
-                '.ipp', '.inl', '.tcc', '.pch')
+                '.ipp', '.inl', '.tcc', '.pch',
+                # Other sources that Xcode (or SwiftPM, for assembly) runs through the C preprocessor or the assembler,
+                # whose #include, .include and .incbin can bring in a file as C does (review R4-02): assembly, Metal,
+                # OpenCL, lex and yacc (C code with a grammar around it), MIG and IIG.
+                '.s', '.sx', '.asm', '.metal', '.cl', '.l', '.lm', '.lmm', '.lpp', '.lxx', '.y', '.ym', '.ymm', '.ypp',
+                '.yxx', '.defs', '.mig', '.iig')
 C_HEADER_EXTENSIONS = ('.h', '.hh', '.hpp', '.hxx', '.h++', '.inc', '.ipp', '.inl', '.tcc', '.pch')
 # First bytes of a Mach-O file (thin, either byte order) or a universal binary, and of a static library (ar archive).
 MACHO_MAGIC = (b'\xfe\xed\xfa\xce', b'\xfe\xed\xfa\xcf', b'\xce\xfa\xed\xfe', b'\xcf\xfa\xed\xfe',
@@ -222,10 +279,18 @@ SDK_NAME = re.compile(r'^(?:auto|[a-z]+(?:[0-9]+(?:\.[0-9]+)*)?)$')
 # A setting value that starts with one of these Xcode variables names build products, the SDK or the toolchain; what
 # follows it may not leave that directory (no `..`) or name a package checkout. Inside a product target, any other
 # variable cannot be evaluated by the check and fails (review R3-01); `$(inherited)` counts only as a word of its own.
-BUILD_VARS = re.compile(r'^\$[({](?:BUILT_PRODUCTS_DIR|TARGET_BUILD_DIR|CONFIGURATION_BUILD_DIR|BUILD_DIR|'
-                        r'BUILD_ROOT|OBJROOT|SYMROOT|DERIVED_FILE_DIR|DERIVED_FILES_DIR|PROJECT_TEMP_DIR|TARGET_TEMP_DIR|'
-                        r'SDKROOT|SDK_DIR|PLATFORM_DIR|PLATFORM_DEVELOPER_FRAMEWORKS_DIR|PLATFORM_DEVELOPER_LIBRARY_DIR|'
-                        r'DEVELOPER_DIR|DEVELOPER_FRAMEWORKS_DIR|TOOLCHAIN_DIR|DT_TOOLCHAIN_DIR)[)}]')
+BUILD_VAR_NAMES = ('BUILT_PRODUCTS_DIR', 'TARGET_BUILD_DIR', 'CONFIGURATION_BUILD_DIR', 'BUILD_DIR', 'BUILD_ROOT',
+                   'OBJROOT', 'SYMROOT', 'DERIVED_FILE_DIR', 'DERIVED_FILES_DIR', 'PROJECT_TEMP_DIR', 'TARGET_TEMP_DIR',
+                   'SDKROOT', 'SDK_DIR', 'PLATFORM_DIR', 'PLATFORM_DEVELOPER_FRAMEWORKS_DIR',
+                   'PLATFORM_DEVELOPER_LIBRARY_DIR', 'DEVELOPER_DIR', 'DEVELOPER_FRAMEWORKS_DIR', 'TOOLCHAIN_DIR',
+                   'DT_TOOLCHAIN_DIR')
+BUILD_VARS = re.compile(r'^\$[({](?:' + '|'.join(BUILD_VAR_NAMES) + r')[)}]')
+# The variables the check evaluates itself: a path that starts with a build-product, SDK or toolchain variable is
+# trusted to stay in that directory, and the project-directory variables are replaced by the manifest's directory. A
+# product manifest or build-settings file that assigns one of them would make such a path point anywhere, so it may
+# not (review R4-03); SDKROOT is the exception, which a product target may set to an SDK's name (TOOL_SETTINGS judges
+# it), and which then still names an SDK.
+TRUSTED_VARS = frozenset(BUILD_VAR_NAMES + ('SRCROOT', 'PROJECT_DIR', 'SOURCE_ROOT')) - {'SDKROOT'}
 INHERITED = ('$(inherited)', '${inherited}')
 VARIABLE = re.compile(r'\$(?:[({]([A-Za-z_][A-Za-z0-9_]*)|([A-Za-z_][A-Za-z0-9_]*))')
 # Directories that hold build products and package checkouts (SwiftPM's .build, Xcode's DerivedData and SourcePackages).
@@ -258,7 +323,8 @@ FLAG_PATTERNS_ALLOWED = re.compile(
 FLAGS_WITH_NAME = ('-enable-upcoming-feature', '-enable-experimental-feature', '-disable-upcoming-feature',
                    '-swift-version', '-language-mode', '-default-isolation', '-U')
 NAME_ARG = re.compile(r'^[A-Za-z0-9_.]+$')
-# Swift's -Werror and -Wwarning take an optional diagnostic group (Swift 6.1 and later); Clang's -Werror takes none.
+# Swift's -Werror and -Wwarning take an optional diagnostic group (Swift 6.1 and later); Clang's -Werror takes none, so
+# in a C, C++ or linker flag setting the word after it is an input file, not a group (review R4-04).
 DIAG_FLAGS = ('-Werror', '-Wwarning')
 DIAG_GROUP = re.compile(r'^[A-Z][A-Za-z0-9]*$')
 BINARY_PATH = re.compile(r'(\.(a|dylib|tbd|so|o)$|\.x?c?framework(/|$))')
@@ -266,6 +332,55 @@ MODULEMAP_PATHS = re.compile(r'\b(?:umbrella\s+header|private\s+header|textual\s
                              r'|extern\s+module\s+[A-Za-z_][\w.]*)\s*"([^"]+)"')
 MODULEMAP_LINKS = re.compile(r'\blink\s+(framework\s+)?"([^"]+)"')
 EXTERN_MODULE = re.compile(r'\bextern\s+module\s+[A-Za-z_][\w.]*\s*"([^"]+)"')
+# Review R4-01: when it generates a project, XcodeGen 2.46.0 replaces `${NAME}` in every key and value of a project.yml:
+# from the environment (unless `--no-env`, which sylvia_generate does not pass; Scripts/lib/env.sh exports SYLVIA_ROOT),
+# and in a target template from the target's name and platform and the template's attributes (`${target_name}`,
+# `${platform}`, templateAttributes; --no-env or not). A YAML escape (`"\x24{NAME}"`) is the same text once parsed and
+# is replaced too. And it does not take a path that starts with ~ (a local package's path, a source path) from the
+# project's directory: it expands the ~ to a home directory. The value the build uses is then not the one this check
+# reads, so a product project.yml may hold neither (Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log,
+# part 2a).
+XCODEGEN_EXPANSION = re.compile(r'\$\{')
+# A product Package.swift is evaluated again by every build, in that build's environment. It may read nothing but its
+# own text: it may import only PackageDescription and CompilerPluginSupport, and may not name what reads the
+# environment, the package's directory or git (Context), the manifest process's arguments, in which SwiftPM passes that
+# context (CommandLine), standard input (readLine), a C function bound by name without an import (_silgen_name, _cdecl,
+# _extern: getenv, fopen ...), random numbers or clocks, or hold a compilation condition (#if), which the compiler
+# evaluates for the host and flags of each evaluation (review R4-01's reasoning, for SwiftPM). Read in the raw text, so
+# a comment that names one counts too.
+MANIFEST_IMPORTS_ALLOWED = ('PackageDescription', 'CompilerPluginSupport')
+MANIFEST_INPUTS = re.compile(r'(?<![A-Za-z0-9_])(?:Context|CommandLine|readLine|_silgen_name|_cdecl|_extern|'
+                             r'(?:Continuous|Suspending)?Clock)(?![A-Za-z0-9_])|[Rr]andom|[Ss]huffle|'
+                             r'#[ \t]*(?:if|elseif)(?![A-Za-z0-9_])')
+# The fourth review of the M0 exit preparation, SEC-ZIPGUARD-03: SwiftPM evaluates a version-specific manifest,
+# Package@swift-<version>.swift, instead of the Package.swift beside it when the toolchain's Swift version allows. On the
+# pinned toolchain (Swift 6.4), dump-package took Package@swift-6.4.swift, Package@swift-6.swift and
+# Package@swift-6.4.0.swift beside a Package.swift of the same tools version, and package@swift-6.4.swift,
+# Package@Swift-6.4.swift and PACKAGE@SWIFT-6.4.SWIFT too, matching the whole name in any letter case; it kept
+# Package.swift beside Package@swift-7.swift, Package@swift-5.9.swift, Package@swift6.4.swift and
+# Package@swift-6.4.swift.bak (Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log, part 2). The manifest-input rule
+# reads Package.swift alone, so a product package may hold no file SwiftPM could take instead: every file under the
+# product roots whose name begins with Package@ and ends with .swift, in any letter case, fails, whatever SwiftPM's rule
+# for choosing among them (a name such as Package@2x.png, an image's, is not one).
+VERSION_SPECIFIC_MANIFEST = re.compile(r'^package@.*\.swift$', re.I | re.S)
+# Found with that fix: the default macOS file system ignores letter case, and SwiftPM and XcodeGen open a package's
+# Package.swift and a project's project.yml by name, so they load package.swift or Project.yml as the manifest, which
+# this check, reading manifests by their exact names (check_manifests), would not read: a product manifest must be named
+# exactly so (check_names). And clang opens a directory's module map by name too, so it loads MODULE.MODULEMAP as
+# module.modulemap, MODULE.MAP as module.map, and module_private.map beside a module.map: module maps are read by every
+# name clang reads one by, in any letter case (is_modulemap_name).
+MANIFEST_NAMES = ('Package.swift', 'project.yml')
+MODULEMAP_NAMES = ('module.map', 'module_private.map')
+# Review R4-02: C-family include directives, judged by where their file can be, not only against Spikes/: a quoted
+# name may resolve beside the including file, and any name is looked up in each search directory, where `..` climbs out
+# of it (from a package's public include directory into its sources, for one). #embed (C23) brings a file's bytes in
+# the same way. A directive whose operand is neither "..." nor <...> is a computed include: its file is decided by
+# macros, which the check does not evaluate. The assembler's .include and .incbin are looked up in the working and
+# search directories, never beside the file; they are read anywhere in the text, so inline assembly in a C string
+# (`asm(".incbin \"file\"")`) counts too.
+C_INCLUDE_DIRECTIVE = re.compile(r'^[ \t]*(?:#|%:)[ \t]*(include_next|include|import|embed)(?![A-Za-z0-9_])[ \t]*(.*)$',
+                                 re.M)
+ASM_INCLUDE_DIRECTIVE = re.compile(r'\.(?:include|incbin)[ \t]+\\?"([^"\n\\]*)\\?"')
 
 
 def norm_url(url):
@@ -325,6 +440,15 @@ def is_license_name(name):
     return bool(LICENSE_STEM.match(stem)) and ext.lower() in LICENSE_EXT
 
 
+def is_modulemap_name(name):
+    """Whether clang can read the file as a module map: a *.modulemap (module.modulemap, module.private.modulemap, or one
+    a setting names), a module.map or a module_private.map, in any letter case, since the default macOS file system
+    ignores it (until the fix of SEC-ZIPGUARD-03, *.modulemap and module.map as spelled, so MODULE.MODULEMAP and
+    module_private.map, which clang loads, were read by nothing)."""
+    n = name.casefold()
+    return n.endswith('.modulemap') or n in MODULEMAP_NAMES
+
+
 def in_test_named_dir(rel):
     """Whether a path has a directory named Tests or ending in Tests. Only the test-layout rule uses the name: a file is
     test code because test targets include it (Checker.is_test_file), never because of what its directory is called."""
@@ -349,6 +473,24 @@ def strings_in(value, skip=()):
             skip = ()  # only at the top level
         elif isinstance(v, list):
             stack.extend(v)
+    return out
+
+
+def yaml_texts(value, where=''):
+    """[(where, text)] for every key and every string value in a YAML structure, with where naming its place
+    (targets.App.settings.base, or 'the key targets.App' for a key)."""
+    out = []
+    if isinstance(value, dict):
+        for k, v in value.items():
+            here = f'{where}.{k}' if where else str(k)
+            if isinstance(k, str):
+                out.append((f'the key {here}', k))
+            out += yaml_texts(v, here)
+    elif isinstance(value, list):
+        for i, v in enumerate(value):
+            out += yaml_texts(v, f'{where}[{i}]')
+    elif isinstance(value, str):
+        out.append((where, value))
     return out
 
 
@@ -387,14 +529,17 @@ def sdk_names():
 
 def setting_items(pairs, text=False):
     """[(kind, value)] for the build settings among (key, value) pairs that bring something into the build: the kinds of
-    flag_items, and ('tool', 'KEY = value') for a setting that replaces a compiler, linker, SDK or toolchain input.
-    With text=True (a build-settings file, whose values are not manifest strings), every other setting's value as
-    ('text', value), which judge() reads for the names of transitive-only packages' public headers."""
+    flag_items, ('tool', 'KEY = value') for a setting that replaces a compiler, linker, SDK or toolchain input, and
+    ('redefine', 'KEY = value') for one that assigns a variable the check evaluates itself (TRUSTED_VARS, review
+    R4-03). With text=True (a build-settings file, whose values are not manifest strings), every other setting's value
+    as ('text', value), which judge() reads for the names of transitive-only packages' public headers."""
     out = []
     for key, value in pairs:
         k = str(key).split('[', 1)[0].strip()
         words = [w for w in split_setting(value) if w not in INHERITED]
-        if k in DIR_SETTINGS:
+        if k in TRUSTED_VARS:
+            out.append(('redefine', f"{k} = {' '.join(words)}"))  # review R4-03
+        elif k in DIR_SETTINGS:
             out += [('include', w) for w in words]
         elif k in LIBPATH_SETTINGS:
             out += [('libpath', w) for w in words]
@@ -411,7 +556,7 @@ def setting_items(pairs, text=False):
         elif k in DEFINE_SETTINGS:
             out += [('define', w) for w in words]
         elif 'FLAGS' in k:
-            out += flag_items(words)
+            out += flag_items(words, swift='SWIFT' in k)
         elif TOOL_SETTINGS.match(k) or (k == 'SDKROOT' and not all(SDK_NAME.match(w) for w in words)):
             out.append(('tool', f"{k} = {' '.join(words)}"))
         elif text:
@@ -431,7 +576,7 @@ def split_setting(value):
     return words
 
 
-def flag_items(tokens):
+def flag_items(tokens, swift=False):
     """[(kind, value)] for compiler and linker flags, once the -Xcc, -Xlinker, -Xfrontend, -Xclang and -Wl, wrappers are
     unwrapped: ('include', path) for a header or module search directory; ('libpath', path) for a library or framework
     search directory; ('header-file', path) for a header included into every file (-include, -import-objc-header);
@@ -439,7 +584,10 @@ def flag_items(tokens):
     name) and ('framework', name) for what is linked by name; ('alias', 'A=B') for -module-alias; ('import', module)
     for a module imported into every file (-import-module); ('define', text) for -D; and ('flag', token) for every
     token that is none of these and not one of the flags a product target may pass (FLAGS_ALLOWED,
-    FLAG_PATTERNS_ALLOWED, FLAGS_WITH_NAME), an input file among the flags included."""
+    FLAG_PATTERNS_ALLOWED, FLAGS_WITH_NAME), an input file among the flags included. `swift` says that the flags are
+    the Swift compiler's (OTHER_SWIFT_FLAGS, a SwiftPM swiftSettings unsafeFlags, a Swift file's compilerFlags): only
+    there does -Werror or -Wwarning take the diagnostic group after it; for Clang and the linker that word is an input
+    file (review R4-04)."""
     flat, i = [], 0
     while i < len(tokens):
         t = tokens[i]
@@ -496,7 +644,7 @@ def flag_items(tokens):
             items.append(('define', t[2:]))
         elif t in FLAGS_WITH_NAME and NAME_ARG.match(arg):
             i += 1
-        elif t in DIAG_FLAGS and DIAG_GROUP.match(arg):
+        elif swift and t in DIAG_FLAGS and DIAG_GROUP.match(arg):
             i += 1
         elif t in FLAGS_ALLOWED or FLAG_PATTERNS_ALLOWED.match(t):
             pass
@@ -529,8 +677,8 @@ HEADER_WORD = re.compile(r'[A-Za-z0-9_.+-]*[A-Za-z0-9_+-]\.(?:h|hh|hpp|hxx|inc|i
 FRAMEWORK_PATH = re.compile(r'[<"][ \t]*([A-Za-z_][A-Za-z0-9_]*)[ \t]*/')
 # A C++ raw string literal's opening, with any encoding prefix: R"delim( ... )delim".
 RAW_STRING = re.compile(r'(?:u8|u|U|L)?R"([^ ()\\\t\v\f\n]{0,16})\(')
-# A preprocessing directive that includes a file: `#` or its digraph `%:` (C95 and C++), after comments are blanked.
-C_DIRECTIVE = re.compile(r'^[ \t]*(?:#|%:)[ \t]*(?:include|import|include_next)[ \t]*([<"])([^>"\n]+)[>"]', re.M)
+# The preprocessing directives that include a file (`#` or its digraph `%:`, C95 and C++) are C_INCLUDE_DIRECTIVE,
+# above, read after comments are blanked.
 
 
 def _skip_block_comment(text, i):
@@ -657,16 +805,27 @@ def c_code(text, keep_strings):
 
 
 def c_imports(text):
-    """[(kind, name, line)] for C-family source, under every way the preprocessor may read it (c_variants):
-    ('include', path, line) for each #include, #import and #include_next directive (`#` or `%:`) once comments are
-    blanked, and three kinds that read the raw text, so no comment or literal can hide them: ('module', name, line)
-    for every module raw_imports finds (@import, #pragma clang module import, _Pragma, C++ import); ('header', name,
-    line) for every header file name, which covers any include of it, computed ones and __has_include among them; and
-    ('framework', module, line) for every framework-style path (<M/...> or "M/...")."""
+    """[(kind, name, line)] for C-family source, under every way the preprocessor may read it (c_variants), with
+    comments blanked: ('include', path, line) for each #include, #import, #include_next and #embed directive (`#` or
+    `%:`) of a quoted name, ('include<', path, line) for one of a <name>, and for each assembler .include or .incbin
+    (in an assembly file, or in inline assembly in a string), and ('computed-include', directive, line) for a directive
+    whose operand is neither, which macros decide (review R4-02); and three kinds that read the raw text, so no comment
+    or literal can hide them: ('module', name, line) for every module raw_imports finds (@import, #pragma clang module
+    import, _Pragma, C++ import); ('header', name, line) for every header file name, which covers any include of it,
+    computed ones and __has_include among them; and ('framework', module, line) for every framework-style path
+    (<M/...> or "M/...")."""
     found = set()
     for t, line_of in c_variants(text):
-        for m in C_DIRECTIVE.finditer(c_code(t, keep_strings=True)):
-            found.add(('include', m.group(2).strip(), line_of(m.start())))
+        code = c_code(t, keep_strings=True)
+        for m in C_INCLUDE_DIRECTIVE.finditer(code):
+            operand = m.group(2).strip()
+            quoted = re.match(r'"([^"\n]*)"', operand) or re.match(r'<([^>\n]*)>', operand)
+            if quoted:
+                found.add(('include' if operand[0] == '"' else 'include<', quoted.group(1).strip(), line_of(m.start())))
+            elif operand:
+                found.add(('computed-include', f'#{m.group(1)} {operand[:80]}', line_of(m.start())))
+        for m in ASM_INCLUDE_DIRECTIVE.finditer(code):
+            found.add(('include<', m.group(1).strip(), line_of(m.start())))
         for name, pos in raw_imports(t, nested=False):
             found.add(('module', name, line_of(pos)))
         for m in HEADER_WORD.finditer(t):
@@ -799,10 +958,16 @@ class Checker:
 
     # ----- manifests -------------------------------------------------------------------------------------------------
     def dump_package(self, rel):
+        pkg_dir = os.path.dirname(self.path(rel))
         content = open(self.path(rel), 'rb').read()
-        key = (rel, hashlib.sha256(content).hexdigest())
+        # SwiftPM may evaluate a version-specific manifest beside Package.swift instead of it (SEC-ZIPGUARD-03), so the
+        # cache key holds every file there that it could take as the manifest, and a self-test tree that adds one beside
+        # an unchanged Package.swift is evaluated again.
+        others = tuple((n, sha256_file(os.path.join(pkg_dir, n))) for n in sorted(os.listdir(pkg_dir))
+                       if (n.casefold() == 'package.swift' or VERSION_SPECIFIC_MANIFEST.match(n))
+                       and os.path.isfile(os.path.join(pkg_dir, n)))
+        key = (rel, hashlib.sha256(content).hexdigest()) + others
         if key not in _DUMP_CACHE:
-            pkg_dir = os.path.dirname(self.path(rel))
             with tempfile.TemporaryDirectory(prefix='dump-package-') as tmp:
                 r = subprocess.run(self.swift + ['package', '--package-path', pkg_dir, '--scratch-path', tmp, 'dump-package'],
                                    capture_output=True, text=True)
@@ -818,6 +983,12 @@ class Checker:
         base = os.path.dirname(rel)
         pkg_dir = self.path(base)
         model = {'remote': [], 'local': [], 'targets': [], 'binaries': [], 'strings': [], 'items': [], 'texts': []}
+        # What the manifest reads besides its own text (MANIFEST_INPUTS), as (line, what): check_product_manifest
+        # fails a product manifest on any. The raw text is read, so a comment that names one counts too.
+        text = open(self.path(rel), encoding='utf-8', errors='replace').read()
+        model['inputs'] = sorted(
+            [(line, f'imports {name}') for name, line in swift_import_hits(text) if name not in MANIFEST_IMPORTS_ALLOWED]
+            + [(text.count('\n', 0, m.start()) + 1, f'names {m.group(0)!r}') for m in MANIFEST_INPUTS.finditer(text)])
         for dep in d.get('dependencies', []):
             if 'sourceControl' in dep:
                 sc = dep['sourceControl'][0]
@@ -895,7 +1066,8 @@ class Checker:
                     if kind == 'headerSearchPath':
                         items.append(('include', str(value), [self.path(tdir)]))
                     elif kind == 'unsafeFlags':
-                        items += [(k, v, [pkg_dir, self.path(tdir)]) for k, v in flag_items([str(x) for x in as_list(value)])]
+                        items += [(k, v, [pkg_dir, self.path(tdir)])
+                                  for k, v in flag_items([str(x) for x in as_list(value)], swift=s.get('tool') == 'swift')]
                     elif kind in ('linkedLibrary', 'linkedFramework'):
                         items.append(('library' if kind == 'linkedLibrary' else 'framework', str(value), []))
                     elif kind == 'define':
@@ -927,21 +1099,31 @@ class Checker:
                 out += Checker.settings_pairs(groups.get(g), groups, seen + (g,))
         return out
 
-    def xcconfig_pairs(self, path, seen=None):
+    def xcconfig_pairs(self, path, seen=None, includes=None):
         """(key, value, file relative to the root) for the .xcconfig file at path and every file it #includes
-        (relative to the including file). A `//` starts a comment, as Xcode reads these files."""
+        (relative to the including file, or to Xcode's directory for "<DEVELOPER_DIR>/..."). A `//` starts a comment,
+        as Xcode reads these files. Each #include and optional #include? is also added to `includes`, as (the path it
+        names, as a build-setting value relative to the including file's directory, that directory, the including file
+        and line), and each other line that starts with #, which the check cannot read, as (None, the line, ...):
+        config_items judges them (review R4-02: until then where an included file is was not judged)."""
         seen = set() if seen is None else seen
+        includes = [] if includes is None else includes
         real = os.path.realpath(path)
         if real in seen or not os.path.isfile(real):
             return []
         seen.add(real)
         rel = os.path.relpath(real, self.real_root)
         out = []
-        for line in open(real, encoding='utf-8', errors='replace').read().splitlines():
+        for n, line in enumerate(open(real, encoding='utf-8', errors='replace').read().splitlines(), 1):
             line = line.split('//', 1)[0].strip()
-            m = re.match(r'^#include\??\s*"([^"]+)"', line)
-            if m:
-                out += self.xcconfig_pairs(os.path.join(os.path.dirname(real), m.group(1)), seen)
+            if line.startswith('#'):
+                # A path with a variable in it cannot be read here (the check would have to guess what Xcode
+                # substitutes), so it counts as a line the check cannot read.
+                m = re.match(r'^#include\??[ \t]*"([^"$]+)"$', line)
+                named = re.sub(r'^<DEVELOPER_DIR>', '$(DEVELOPER_DIR)', m.group(1)) if m else None
+                includes.append((named, line, os.path.dirname(real), f'{rel}:{n}'))
+                if named is not None and '$' not in named:
+                    out += self.xcconfig_pairs(os.path.join(os.path.dirname(real), named), seen, includes)
                 continue
             m = re.match(r'^([A-Za-z_][A-Za-z0-9_]*(?:\[[^\]]*\])*)\s*=\s*(.*)$', line)
             if m:
@@ -960,7 +1142,11 @@ class Checker:
                  'strings': [(s, [self.path(base)]) for s in strings_in(y, skip=('packages', 'localPackages'))],
                  # (value, whether only test targets use it): read for transitive-only packages' header names; the
                  # project's own values (settings, schemes and their scripts ...) apply to every target.
-                 'texts': [(s, False) for s in strings_in(y, skip=('packages', 'localPackages', 'targets', 'targetTemplates'))]}
+                 'texts': [(s, False) for s in strings_in(y, skip=('packages', 'localPackages', 'targets', 'targetTemplates'))],
+                 # Keys and values that XcodeGen replaces or expands when it generates the project (XCODEGEN_EXPANSION,
+                 # review R4-01), as (where, text): check_product_manifest fails a product project.yml on any.
+                 'expansions': [(where, s) for where, s in yaml_texts(y)
+                                if XCODEGEN_EXPANSION.search(s) or s.lstrip().startswith('~')]}
         packages = dict(y.get('packages') or {})
         for p in y.get('localPackages') or []:
             packages[os.path.basename(str(p).rstrip('/'))] = {'path': p}
@@ -983,15 +1169,20 @@ class Checker:
         here = [self.path(base)]
 
         def config_items(configs):
-            """A configFiles block: each file as a 'source' item, and the settings it holds (every value read as text
-            too, since a build-settings file's values are not manifest strings)."""
+            """A configFiles block: each file as a 'source' item, each file it #includes as a 'config' item (review
+            R4-02; a #include line the check cannot read as an 'unreadable' one), and the settings they hold (every
+            value read as text too, since a build-settings file's values are not manifest strings)."""
             out = []
             for path in (configs or {}).values() if isinstance(configs, dict) else []:
                 full = os.path.join(self.path(base), str(path))
                 out.append(dict(kind='source', value=str(path), bases=here, where=rel, spike=False))
-                for k, v, f in self.xcconfig_pairs(full):
+                includes = []
+                for k, v, f in self.xcconfig_pairs(full, includes=includes):
                     out += [dict(kind=kind, value=value, bases=here, where=f, spike=True)
                             for kind, value in setting_items([(k, v)], text=True)]
+                for named, line, directory, where in includes:
+                    out.append(dict(kind='config' if named is not None else 'unreadable',
+                                    value=named if named is not None else line, bases=[directory], where=where, spike=True))
             return out
 
         model['items'] = [dict(kind=k, value=v, bases=here, where=rel, spike=False)
@@ -1008,7 +1199,8 @@ class Checker:
                  'destinations': target.get('supportedDestinations'),
                  'settings': self.settings_pairs(target.get('settings'), groups),
                  'configs': dict(target.get('configFiles') or {}) if isinstance(target.get('configFiles'), dict) else {},
-                 'plugins': as_list(target.get('buildToolPlugins')), 'texts': strings_in(target)}
+                 'plugins': as_list(target.get('buildToolPlugins')), 'rules': as_list(target.get('buildRules')),
+                 'texts': strings_in(target)}
             for name in as_list(target.get('templates')):
                 if name in seen or name not in templates:
                     continue
@@ -1021,6 +1213,7 @@ class Checker:
                 r['settings'] = t['settings'] + r['settings']
                 r['configs'] = dict(t['configs'], **r['configs'])
                 r['plugins'] = t['plugins'] + r['plugins']
+                r['rules'] = t['rules'] + r['rules']
                 r['texts'] = t['texts'] + r['texts']
             return r
 
@@ -1037,10 +1230,15 @@ class Checker:
                 if p:
                     dirs.append(os.path.normpath(os.path.join(base, str(p))))
                 if isinstance(s, dict) and s.get('compilerFlags'):
-                    flags += flag_items(split_setting(s['compilerFlags']))  # per-file flags (review R3-01)
+                    # Per-file flags (review R3-01); a Swift file's are the Swift compiler's (review R4-04).
+                    flags += flag_items(split_setting(s['compilerFlags']), swift=str(p or '').lower().endswith('.swift'))
             items = [dict(kind='source', value=d, bases=[self.root], where=rel, spike=False) for d in dirs]
             items += [dict(kind=k, value=v, bases=here, where=rel, spike=False) for k, v in setting_items(r['settings']) + flags]
             items += config_items(r['configs'])
+            # A build rule decides which compiler or script processes which files, so it can compile as code a file
+            # this check does not read as code, and whose includes it does not judge (review R4-02's reasoning).
+            items += [dict(kind='tool', value=f'buildRules {json.dumps(rule)[:160]}', bases=[], where=rel, spike=False)
+                      for rule in r['rules']]
             model['texts'] += [(s, r['type'] in TEST_TYPES) for s in r['texts']]
             for d in deps:
                 if 'sdk' in d:
@@ -1117,6 +1315,7 @@ class Checker:
         spike_roots = inv.get('roots', {}).get('spike', [])
         packages = self.check_inventory(inv, tracked)
         self.check_xcode_projects(files)
+        self.check_names(files, product_roots, spike_roots)
         self.binaries_inv = [b for b in inv.get('binaries', []) if isinstance(b, dict)]
         for p in packages:
             if p['role'] == 'product-transitive':
@@ -1338,11 +1537,35 @@ class Checker:
 
     def check_product_manifest(self, rel, m, refs, product_roots, spike_roots):
         """Rules for a manifest under Apps/ or Packages/."""
+        # Review R4-01: what the generator or the build evaluates from outside the manifest's text, so that the value
+        # the build uses is not the one this check reads: XcodeGen's ${...} and ~ (any key or value of a project.yml,
+        # test targets included, since a key or a template name can move code between targets), and what a
+        # Package.swift reads besides its own text.
+        for where, text in m.get('expansions', []):
+            how = ('XcodeGen expands a leading ~ in the paths it resolves, such as a local package\'s path or a source '
+                   'path, to a home directory: it does not take such a path from the project\'s directory'
+                   if not XCODEGEN_EXPANSION.search(text) else
+                   'XcodeGen replaces ${NAME} with the environment variable NAME when it generates the project (and, in a '
+                   'target template, with the target\'s name, its platform or a template attribute), a YAML escape such '
+                   'as \\x24{ included')
+            self.fail('manifest-input', rel, f"{where} is {text[:120]!r}: {how}, so the value the build uses is not the one this check reads (review R4-01). Write the value out; a build setting may use Xcode's $(NAME), which the path rules judge")
+        for line, what in m.get('inputs', []):
+            self.fail('manifest-input', f'{rel}:{line}', f"{what}: every build evaluates a Package.swift again, in its own environment, so a product manifest may read nothing but its own text: it may import only {' and '.join(MANIFEST_IMPORTS_ALLOWED)}, and may not name Context (the environment, the package directory, git), CommandLine, readLine, _silgen_name, _cdecl or _extern, random numbers or clocks, or hold an #if (review R4-01's reasoning). Found in the raw text: a comment that names one counts too")
         for local in m['local']:
             if self.under_ci(local['path'], spike_roots):
                 self.fail('spike-in-product', rel, f"depends on {local['path']} under {'/'.join(spike_roots)}, which is never shipped")
             elif not self.under_ci(local['path'], product_roots):
                 self.fail('outside-product', rel, f"depends on the local package {local['path']}, outside {' and '.join(product_roots)}, where the product rules do not apply")
+            elif self.tracked_file(os.path.join(local['path'], 'Package.swift')) is None:
+                # Inside the product roots, a local package is product code only if git tracks it: its Package.swift is
+                # then one of the manifests this check reads, and its sources are files it scans. One that git does not
+                # track (a package checkout under .build/checkouts, a build product, a package generated or copied in
+                # before the build) is read by neither, yet the build would compile and link it, as it would anything
+                # its manifest brings in (review of the M0 exit preparation, SEC-ZIPGUARD-01: until then only the
+                # paths a target names were held to this rule, judge_inside, and a local package was not).
+                where = ' (a build or package-checkout directory)' if any(
+                    p.casefold() in CHECKOUT_DIRS for p in local['path'].split('/')) else ''
+                self.fail('outside-product', rel, f"depends on the local package {local['path']}{where}, whose Package.swift is not a file git tracks: a local package inside {' or '.join(product_roots)} must be one git tracks there, which the check reads as a product manifest and scans as product code; an untracked one (a package checkout, a build product or a generated package) is read by neither, yet the build would compile and link it (ADR-0014 section 1, rule 5)")
         for value, bases in m['strings']:
             for hit in self.spike_paths(value, bases, spike_roots):
                 self.fail('spike-in-product', rel, f'names {hit[0]!r}, which resolves to {hit[1]} under {"/".join(spike_roots)}; Spikes code is never shipped')
@@ -1400,10 +1623,14 @@ class Checker:
             if not test:
                 self.judge_linked(rel, label, kind, value)
             return
-        if kind in ('flag', 'tool', 'import', 'define', 'text'):
+        if kind in ('flag', 'tool', 'import', 'define', 'text', 'redefine', 'unreadable'):
             if test:
                 return
-            if kind == 'flag':
+            if kind == 'redefine':
+                self.fail('outside-product', label, f"sets {value}: the check evaluates that variable itself (a path that starts with a build-product, SDK or toolchain variable is trusted to stay in that directory, and $(SRCROOT), $(PROJECT_DIR) and $(SOURCE_ROOT) are the project's directory), so a manifest or build-settings file that assigns it could point such a path anywhere (review R4-03)")
+            elif kind == 'unreadable':
+                self.fail('outside-product', label, f"has the line {value!r}: a build-settings file may hold only settings, comments and #include \"<path>\" or #include? \"<path>\" lines whose path holds no variable, and this check cannot read which file this one brings in (review R4-02)")
+            elif kind == 'flag':
                 self.fail('flag', label, f"passes {value!r}, which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judged. Remove it, or add it there with a rule for its argument and a self-test case (ADR-0014 section 6)")
             elif kind == 'tool':
                 self.fail('outside-product', label, f"sets {value}: it replaces a compiler, linker, SDK or toolchain input, or takes flags from outside the manifests, so what the target is built with cannot be judged")
@@ -1424,9 +1651,9 @@ class Checker:
                     continue
                 elif not self.under_ci(path, product_roots):
                     what = {'include': 'takes headers or a module map from', 'source': 'builds from',
-                            'project': 'builds from', 'header-file': 'includes into every file',
-                            'modulemap-file': 'takes a module map from', 'libpath': 'searches for libraries or frameworks in',
-                            'binary': 'links'}[kind]
+                            'project': 'builds from', 'config': 'takes build settings from',
+                            'header-file': 'includes into every file', 'modulemap-file': 'takes a module map from',
+                            'libpath': 'searches for libraries or frameworks in', 'binary': 'links'}[kind]
                     self.fail('binary' if kind in ('libpath', 'binary') else 'outside-product', label,
                               f"{what} {value!r}, which resolves to {path}, outside {' and '.join(product_roots)}, where the product rules do not apply")
                 else:
@@ -1437,8 +1664,11 @@ class Checker:
             self.fail('outside-product', label, f"names {value!r}, which uses {', '.join('$(' + v + ')' for v in found)}: a variable the check cannot evaluate. A path in a product target may use only $(SRCROOT), $(PROJECT_DIR) or $(SOURCE_ROOT), or start with a build-product, SDK or toolchain variable")
         elif '..' in found or any(p.casefold() in CHECKOUT_DIRS for p in found):
             self.fail('outside-product', label, f"names {value!r}, which leaves the build-product, SDK or toolchain directory it starts from, or reaches package checkouts: code outside Apps/ and Packages/ (Xcode keeps package checkouts beside the build products, in SourcePackages/checkouts)")
-        elif kind in ('header-file', 'modulemap-file', 'source', 'project'):
-            self.fail('outside-product', label, f"takes {'a header' if kind == 'header-file' else 'a module map' if kind == 'modulemap-file' else 'sources'} from {value!r}, a build directory: what a product target compiles must be a file git tracks under {' or '.join(product_roots)}, where the check can read it")
+        elif kind in ('header-file', 'modulemap-file', 'source', 'project', 'config'):
+            self.fail('outside-product', label,
+                      f"takes build settings from {value!r}, a build, SDK or toolchain directory: the build-settings files a product target uses, and the files they #include, must be files git tracks under {' or '.join(product_roots)}, where the check can read them (review R4-02)"
+                      if kind == 'config' else
+                      f"takes {'a header' if kind == 'header-file' else 'a module map' if kind == 'modulemap-file' else 'sources'} from {value!r}, a build directory: what a product target compiles must be a file git tracks under {' or '.join(product_roots)}, where the check can read it")
 
     def judge_inside(self, label, kind, value, path):
         """A path a shipping target takes from inside the product roots must name content git tracks: a tracked file,
@@ -1446,7 +1676,7 @@ class Checker:
         Anything else there is a build product, a package checkout (.build/checkouts) or a generated file, which the
         product rules cannot read. A header or module map a setting or flag names is then read as product code."""
         tracked_file = self.tracked_file(path)
-        if kind in ('header-file', 'modulemap-file'):
+        if kind in ('header-file', 'modulemap-file', 'config'):
             ok = tracked_file is not None
         elif kind == 'project':
             ok = self.tracked_dir(path) or self.tracked_file(os.path.join(os.path.dirname(path), 'project.yml')) is not None
@@ -1455,7 +1685,7 @@ class Checker:
         if not ok:
             where = ' (a build or package-checkout directory)' if any(p.casefold() in CHECKOUT_DIRS for p in path.split('/')) else ''
             also = '; a referenced Xcode project must be generated from a project.yml tracked beside it' if kind == 'project' else ''
-            self.fail('outside-product', label, f"names {value!r}, which resolves to {path}{where}: {'that is not a file' if kind in ('header-file', 'modulemap-file') else 'nothing there is'} tracked by git, so it can hold only build products, package checkouts or generated files, which the product rules cannot read{also}")
+            self.fail('outside-product', label, f"names {value!r}, which resolves to {path}{where}: {'that is not a file' if kind in ('header-file', 'modulemap-file', 'config') else 'nothing there is'} tracked by git, so it can hold only build products, package checkouts or generated files, which the product rules cannot read{also}")
         elif kind in ('header-file', 'modulemap-file'):
             self.named_files.setdefault(tracked_file, set()).add(kind)
 
@@ -1475,6 +1705,29 @@ class Checker:
                 if hit:
                     self.fail('transitive-direct', label, f"names {hit[0]}, a module of {hit[1]['name']}, in {what} ({value[:120]!r}): a macro can carry a module's name into an import, so a definition may not name one")
                     return
+
+    def judge_include(self, where, f, name, angled, product_roots):
+        """A file that product code (not tests) brings in by #include, #import, #include_next or #embed, or the
+        assembler's .include or .incbin, must be code the check reads (review R4-02: until then only a path into
+        Spikes/ was judged). A quoted name that resolves beside the including file to a file git tracks under the
+        product roots is that file, which the check reads as product code. Any other name is looked up in the search
+        directories (the target's own, which the setting rules judge, and the public include directories of the
+        packages it depends on, Minizip's among them), so it may not be absolute, climb out of the directory it is found
+        in with `..` (from a package's include directory into the package's own sources, for one), or pass through a
+        build or package-checkout directory."""
+        parts = [p for p in re.split(r'[\\/]+', name) if p not in ('', '.')]
+        here = None
+        if not angled:
+            here = self.rel_real(os.path.join(os.path.dirname(f), name))
+            if self.tracked_file(here) and self.under_ci(here, product_roots):
+                return
+        beside = f'; beside this file it would be {here}, which is not a file git tracks under {" or ".join(product_roots)}' if here else ''
+        if os.path.isabs(name):
+            self.fail('outside-product', where, f"includes {name!r}, an absolute path{beside}: what a product file brings in must be a file git tracks under {' or '.join(product_roots)}, where the product rules read it")
+        elif '..' in parts:
+            self.fail('outside-product', where, f"includes {name!r}{beside}, and in a search directory its `..` climbs out of that directory (from a package's public include directory into the package's own sources, for one), to code the product rules do not read (Minizip's unzip.c, for one)")
+        elif any(p.casefold() in CHECKOUT_DIRS for p in parts):
+            self.fail('outside-product', where, f"includes {name!r}, a path through a build or package-checkout directory ({next(p for p in parts if p.casefold() in CHECKOUT_DIRS)}), whose files the product rules do not read")
 
     def tracked_file(self, path):
         """The tracked file at path (compared ignoring case, as the default macOS file system does), or None."""
@@ -1570,9 +1823,11 @@ class Checker:
         headers, umbrella directories and libraries it names are held to the rules for product code. Every module map
         there is product code, whichever target's directory holds it, because product code can import the modules it
         defines from anywhere (review R3-01); so is a file that a shipping target names as a module map (MODULEMAP_FILE,
-        -fmodule-map-file=) or that a module map names as an extern module, whatever the file is called."""
+        -fmodule-map-file=) or that a module map names as an extern module, whatever the file is called. A module map
+        is any file clang reads as one by its name, in any letter case (is_modulemap_name; since the fix of
+        SEC-ZIPGUARD-03)."""
         queue = [f for f in files if self.under(f, product_roots) and os.path.isfile(self.path(f))
-                 and (f.endswith('.modulemap') or os.path.basename(f) == 'module.map')]
+                 and is_modulemap_name(os.path.basename(f))]
         queue += sorted(f for f, kinds in self.named_files.items() if 'modulemap-file' in kinds)
         done = set()
         while queue:
@@ -1609,6 +1864,38 @@ class Checker:
                         reported.add((item['kind'], item['value'], item['where']))
                         self.judge(f, item, test, product_roots, spike_roots)
         self.note(f'module maps read as product code: {len(done)}')
+
+    def check_names(self, files, product_roots, spike_roots):
+        """Files the build reads under a name other than the one this check reads them by (the fourth review of the M0
+        exit preparation, SEC-ZIPGUARD-03, and the routes of the same kind found with its fix):
+          - under the product roots, a version-specific manifest, which SwiftPM evaluates instead of the Package.swift
+            beside it, while the manifest-input rule reads Package.swift alone (VERSION_SPECIFIC_MANIFEST);
+          - a tracked path whose first directory is a product or spike root in another letter case: the default macOS
+            file system ignores case, so git checks the file out into that root and the build reads it there, while
+            this check judges a file by the root its path names, so it would read it as neither product nor spike code;
+          - a manifest named Package.swift or project.yml in another letter case, anywhere, which SwiftPM and XcodeGen
+            open by name and so load, while this check reads manifests by their exact names (every one of the
+            repository for the lock rules, and those under the product roots for the product rules).
+        Module maps are read whatever the letter case of their names (check_modulemaps)."""
+        roots = list(product_roots) + list(spike_roots)
+        exact = {n.casefold(): n for n in MANIFEST_NAMES}
+        n = 0
+        for f in files:
+            if self.under_ci(f, roots) and not self.under(f, roots):
+                root = next(r for r in roots if self.under_ci(f, [r]))
+                first = f[:len(root)]
+                self.fail('letter-case', f, f"its first directory {first!r} is {root}/ in another letter case: the default macOS file system, which ignores case, checks the file out into {root}/, where a build reads it, but this check judges a file by the root its path names, so it would read this one as neither product nor spike code (found with the fix of the fourth review of the M0 exit preparation, SEC-ZIPGUARD-03). Move it under {root}/ as spelled")
+                n += 1
+                continue
+            name = os.path.basename(f)
+            if name.casefold() in exact and name != exact[name.casefold()]:
+                proper = exact[name.casefold()]
+                self.fail('letter-case', f, f"{name} is {proper} in another letter case: {'SwiftPM' if proper == 'Package.swift' else 'XcodeGen'} opens {proper} by name, and the default macOS file system, which ignores case, gives it this file, but this check reads manifests by their exact names, so it would apply none of its rules to this one (found with the fix of SEC-ZIPGUARD-03). Rename it {proper}")
+                n += 1
+            elif self.under(f, product_roots) and VERSION_SPECIFIC_MANIFEST.match(name):
+                self.fail('manifest-input', f, f"{name} is a version-specific manifest: SwiftPM evaluates a file whose name begins with Package@ and ends with .swift (Package@swift-6.4.swift, in any letter case) instead of the Package.swift beside it when the toolchain's Swift version allows, so a build may evaluate a manifest whose text this check's manifest-input rule, which reads Package.swift, never reads (the fourth review of the M0 exit preparation, SEC-ZIPGUARD-03). A product package keeps one manifest, Package.swift: remove this file")
+                n += 1
+        self.note(f'names: {n} tracked path(s) named otherwise than this check reads them (version-specific manifests, roots and manifests in another letter case)')
 
     def check_xcode_projects(self, files):
         """ADR-0002 commits each project's project.yml, never the Xcode project or workspace generated from it. One that
@@ -1699,12 +1986,16 @@ class Checker:
                 c_n += 0 if test else 1
                 for kind, name, line in c_imports(open(full, encoding='utf-8', errors='replace').read()):
                     where = f'{f}:{line}'
-                    if kind == 'include':
+                    if kind in ('include', 'include<'):
                         rel = self.rel_real(os.path.join(os.path.dirname(f), name))
                         if self.under_ci(rel, spike_roots):
                             self.fail('spike-in-product', where, f'includes {name}, which resolves to {rel} under {"/".join(spike_roots)}; Spikes code is never shipped')
+                        elif not test:
+                            self.judge_include(where, f, name, kind == 'include<', product_roots)
                     elif test:
                         continue
+                    elif kind == 'computed-include':
+                        self.fail('outside-product', where, f"{name}: a computed include, whose file macros decide, so this check cannot tell which file it brings in (review R4-02). Write the file's name out, as \"...\" or <...>, where the include rules can judge it")
                     elif kind == 'module':
                         banned(where, name, '')
                     elif kind == 'framework':
@@ -2267,6 +2558,44 @@ def app_config(text, included=None):
 def tree(*changes):
     """Several changes applied in order."""
     return lambda r: [change(r) for change in changes]
+
+
+def app_declares_t(r):
+    """The App project declares the test-only package T (for its test targets), and the inventory records that
+    requirement as the update procedure asks, so that nothing but the rule under test is reported."""
+    edit(r, APP_YML, 'exactVersion: 1.0.0\n', 'exactVersion: 1.0.0\n  T:\n    url: https://example.com/acme/T.git\n    exactVersion: 3.0.0\n')
+    edit_json(r, INVENTORY, lambda d: inv_pkg(d, 'acme/T')['direct_in'].append(APP_YML))
+
+
+def good_manifest(code, dependencies=None, path=None):
+    """The Good package's manifest with Swift code after its import line, and the Good target's dependencies (a Swift
+    expression) or path replaced (review R4-01's reasoning: a manifest that reads something besides its own text)."""
+    def mutate(r):
+        edit(r, GOOD_SWIFT, 'import PackageDescription\n', 'import PackageDescription\n' + code)
+        target = GOOD_TARGET
+        if dependencies:
+            target = target.replace('[.product(name: "A", package: "A")]', dependencies)
+        if path:
+            target = target[:-1] + f', path: {path})'
+        edit(r, GOOD_SWIFT, GOOD_TARGET, target)
+    return mutate
+
+
+def good_version_specific(name, code='', path=None):
+    """A version-specific manifest named `name` beside the Good package's Package.swift, which stays as it is: Good's
+    manifest with Swift code after its import line and the Good target's path, if given, replaced (SEC-ZIPGUARD-03)."""
+    def mutate(r):
+        text = BASE_FILES[GOOD_SWIFT].replace('import PackageDescription\n', 'import PackageDescription\n' + code, 1)
+        if path:
+            text = text.replace(GOOD_TARGET, GOOD_TARGET[:-1] + f', path: {path})', 1)
+        add_file(r, f'Packages/Good/{name}', text)
+    return mutate
+
+
+def rename(root, rel, new):
+    """Renames a file or directory of the synthetic tree, which may change its letter case alone: os.rename does that
+    on the default macOS file system, which ignores case but keeps it."""
+    os.rename(os.path.join(root, rel), os.path.join(root, new))
 MUTATIONS = [  # (what, category, a fragment of the message that only this rule writes, mutation)
     ('a lock pins another version', 'pin-differs', 'lock 1.0.1',
      lambda r: edit_json(r, 'Packages/Good/Package.resolved', lambda d: lock_pin(d, 'a')['state'].update(version='1.0.1'))),
@@ -2772,6 +3101,190 @@ MUTATIONS = [  # (what, category, a fragment of the message that only this rule 
      lambda r: add_file(r, 'Apps/App/App.xcodeproj/project.pbxproj', '/* XCRemoteSwiftPackageReference "Zed" */ repositoryURL = "https://example.com/acme/Zed.git"; requirement = {kind = branch; branch = main;};\n')),
     ('a workspace is committed under Spikes/', 'xcode-project', 'is a committed Xcode workspace',
      lambda r: add_file(r, 'Spikes/S/S.xcworkspace/contents.xcworkspacedata', '<Workspace version="1.0"/>\n')),
+    # Review R4-01: XcodeGen expands ${NAME} from the environment, so a product project.yml could reach Spikes/ code,
+    # import a transitive module or use a test-only package with no literal value the check could judge (what XcodeGen
+    # 2.46.0 expands is shown in Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log, part 2a).
+    ('R4-01 (a): a local package path that XcodeGen expands from the environment into Spikes/', 'manifest-input',
+     "packages.SpikeCode.path is '${SYLVIA_ROOT}/Spikes/S'",
+     lambda r: edit(r, APP_YML, 'packages:\n', 'packages:\n  SpikeCode:\n    path: ${SYLVIA_ROOT}/Spikes/S\n')),
+    ('R4-01 (b): a target template named from the environment, which passes -import-module for a transitive module',
+     'manifest-input', "targets.App.templates[0] is '${SYLVIA_TEMPLATE}'",
+     tree(app_project('targetTemplates:\n  Quiet:\n    settings:\n      base:\n'
+                      '        OTHER_SWIFT_FLAGS: "-Xfrontend -import-module -Xfrontend BModule"\n'),
+          lambda r: edit(r, APP_YML, APP_SOURCES, APP_SOURCES + '    templates:\n      - ${SYLVIA_TEMPLATE}\n'))),
+    ('R4-01 (c): a dependency of the app target on a package named from the environment, a test-only one',
+     'manifest-input', "targets.App.dependencies[2].package is '${SYLVIA_EXTRA_PACKAGE}'",
+     tree(app_declares_t, lambda r: edit(r, APP_YML, APP_DEPS, APP_DEPS + '      - package: ${SYLVIA_EXTRA_PACKAGE}\n        product: T\n'))),
+    ('R4-01: a YAML escape that parses to ${NAME} (\\x24{), in a local package path', 'manifest-input',
+     "packages.SpikeCode.path is '${SYLVIA_ROOT}/Spikes/S'",
+     lambda r: edit(r, APP_YML, 'packages:\n', 'packages:\n  SpikeCode:\n    path: "\\x24{SYLVIA_ROOT}/Spikes/S"\n')),
+    ('R4-01: a build setting whose name XcodeGen takes from the environment (keys are expanded too)', 'manifest-input',
+     'the key targets.App.settings.base.${SYLVIA_SEARCH_SETTING}',
+     app_settings('        ${SYLVIA_SEARCH_SETTING}: "$(SRCROOT)/../../Shared/include"\n')),
+    ('R4-01: a target template that takes a dependency from a template attribute (templateAttributes)', 'manifest-input',
+     "targetTemplates.WithDep.dependencies[0].package is '${dep_package}'",
+     tree(app_declares_t,
+          app_project('targetTemplates:\n  WithDep:\n    dependencies:\n      - package: ${dep_package}\n        product: T\n'),
+          lambda r: edit(r, APP_YML, APP_SOURCES, APP_SOURCES + '    templates: [WithDep]\n    templateAttributes:\n      dep_package: T\n'))),
+    ('R4-01: a local package path with a leading ~, which XcodeGen expands to a home directory', 'manifest-input',
+     "packages.Home.path is '~/Vendor/Zip': XcodeGen expands a leading ~",
+     lambda r: edit(r, APP_YML, 'packages:\n', 'packages:\n  Home:\n    path: ~/Vendor/Zip\n')),
+    ('R4-01: a source path with a leading ~', 'manifest-input', "targets.App.sources[1].path is '~/Shared/Code'",
+     lambda r: edit(r, APP_YML, APP_SOURCES, APP_SOURCES + '      - path: ~/Shared/Code\n')),
+    # The same reasoning for SwiftPM: every build evaluates a Package.swift again, in its own environment.
+    ('a product Package.swift reads the environment through Context, to add a test-only package', 'manifest-input',
+     "names 'Context'",
+     good_manifest('let extra: [Target.Dependency] = Context.environment["SYLVIA_EXTRA"] == nil ? [] : [.product(name: "T", package: "T")]\n',
+                   dependencies='[.product(name: "A", package: "A")] + extra')),
+    ('a product Package.swift imports Foundation to read the environment, for a source path', 'manifest-input',
+     'imports Foundation',
+     good_manifest('import Foundation\nlet goodPath = ProcessInfo.processInfo.environment["SYLVIA_GOOD_PATH"] ?? "Sources/Good"\n',
+                   path='goodPath')),
+    ('a product Package.swift binds getenv by name without an import (_silgen_name)', 'manifest-input',
+     "names '_silgen_name'",
+     good_manifest('@_silgen_name("getenv") func cGetenv(_ name: UnsafePointer<CChar>) -> UnsafeMutablePointer<CChar>?\n'
+                   'let extra: [Target.Dependency] = cGetenv("SYLVIA_EXTRA") == nil ? [] : [.product(name: "T", package: "T")]\n',
+                   dependencies='[.product(name: "A", package: "A")] + extra')),
+    ("a product Package.swift reads its process's arguments, in which SwiftPM passes the environment (CommandLine)",
+     'manifest-input', "names 'CommandLine'",
+     good_manifest('let extra: [Target.Dependency] = CommandLine.arguments.contains("-sylvia") ? [.product(name: "T", package: "T")] : []\n',
+                   dependencies='[.product(name: "A", package: "A")] + extra')),
+    ('a product Package.swift holds a compilation condition (#if)', 'manifest-input', "names '#if'",
+     good_manifest('#if compiler(>=99)\nlet extra: [Target.Dependency] = [.product(name: "T", package: "T")]\n#else\n'
+                   'let extra: [Target.Dependency] = []\n#endif\n', dependencies='[.product(name: "A", package: "A")] + extra')),
+    ('a product Package.swift draws a random number', 'manifest-input', "names 'random'",
+     good_manifest('let extra: [Target.Dependency] = Int.random(in: 0..<1_000_000) == 0 ? [.product(name: "T", package: "T")] : []\n',
+                   dependencies='[.product(name: "A", package: "A")] + extra')),
+    ('a product Package.swift reads a clock', 'manifest-input', "names 'ContinuousClock'",
+     good_manifest('let start = ContinuousClock.now\nlet extra: [Target.Dependency] = ContinuousClock.now - start > .seconds(1) ? [.product(name: "T", package: "T")] : []\n',
+                   dependencies='[.product(name: "A", package: "A")] + extra')),
+    # Review R4-02: C-family include paths judged only against Spikes/, so an include outside the product roots or into
+    # a package checkout passed; the forms compile against Minizip's own sources and the routes passed the check before
+    # the fix (Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log, parts 1 and 2c).
+    ('R4-02 (a): a product header includes a file outside Apps/ and Packages/', 'outside-product',
+     "includes '../../../../../Shared/include/x.h'; beside this file it would be Shared/include/x.h",
+     tree(lambda r: add_file(r, 'Shared/include/x.h', 'int x(void);\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/include/shim.h', '#include "../../../../../Shared/include/x.h"\n'))),
+    ("R4-02 (b): a product header includes a transitive package's C source from its checkout under .build", 'outside-product',
+     "includes '../../../.build/checkouts/B/Sources/CB/b.c'",
+     lambda r: add_file(r, 'Packages/Good/Sources/Good/include/shim.h', '#include "../../../.build/checkouts/B/Sources/CB/b.c"\n')),
+    ("a product C file includes a transitive package's source through `..` from a search directory (Minizip's include directory: ../unzip.c)",
+     'outside-product', "includes '../b.c'; beside this file it would be Packages/Good/Sources/b.c",
+     c_use('use.c', '#include "../b.c"\nint use(void) { return 0; }\n')),
+    ('a product C file includes <../...>, found only in a search directory', 'outside-product', "includes '../src/b.c', and in a search directory",
+     c_use('use.c', '#include <../src/b.c>\n')),
+    ('a product C file includes a path through package checkouts without ..', 'outside-product',
+     'a path through a build or package-checkout directory (SourcePackages)',
+     c_use('use.c', '#include <SourcePackages/checkouts/B/Sources/CB/b.c>\n')),
+    ('a product C file includes an absolute path', 'outside-product', "includes '/opt/vendor/b.c', an absolute path",
+     c_use('use.c', '#include "/opt/vendor/b.c"\n')),
+    ('Objective-C #imports a file outside the product roots', 'outside-product', "includes '../../../../Shared/include/x.h'",
+     tree(lambda r: add_file(r, 'Shared/include/x.h', 'int x(void);\n'),
+          c_use('Use.m', '#import "../../../../Shared/include/x.h"\n'))),
+    ('#include_next climbs out of a search directory', 'outside-product', "includes '../b.h'",
+     c_use('use.h', '#include_next <../b.h>\n')),
+    ('#embed brings in the bytes of a file outside the product roots (C23)', 'outside-product', "includes '../../../../Shared/blob.bin'",
+     tree(lambda r: add_file(r, 'Shared/blob.bin', 'blob\n'),
+          c_use('use.c', 'static const unsigned char blob[] = {\n#embed "../../../../Shared/blob.bin"\n};\n'))),
+    ('an assembly file brings in a file outside the product roots with .incbin', 'outside-product', "includes '../../../../Shared/blob.bin'",
+     tree(lambda r: add_file(r, 'Shared/blob.bin', 'blob\n'),
+          c_use('blob.s', '.data\n.incbin "../../../../Shared/blob.bin"\n'))),
+    ('inline assembly in a C file brings in a file outside the product roots with .incbin', 'outside-product',
+     "includes '../../../../Shared/blob.bin'",
+     tree(lambda r: add_file(r, 'Shared/blob.bin', 'blob\n'),
+          c_use('use.c', '__asm__(".data\\n.incbin \\"../../../../Shared/blob.bin\\"");\n'))),
+    ('a lex file includes a file outside the product roots in its C code', 'outside-product', "includes '../../../../Shared/include/x.h'",
+     tree(lambda r: add_file(r, 'Shared/include/x.h', 'int x(void);\n'),
+          c_use('scan.l', '%{\n#include "../../../../Shared/include/x.h"\n%}\n%%\n.\t;\n%%\n'))),
+    ('an include written with the digraph %: climbs out of a search directory', 'outside-product', "includes '../b.c'",
+     c_use('use.c', '%:include "../b.c"\n')),
+    ('a computed include, whose file a macro decides', 'outside-product', 'a computed include, whose file macros decide',
+     c_use('use.c', '#define SRC "../b.c"\n#include SRC\n')),
+    # The same reasoning for build-settings files: where an #include'd file is was not judged at all.
+    ('a product xcconfig #includes a build-settings file outside Apps/ and Packages/', 'outside-product',
+     "takes build settings from '../../../Shared/Base.xcconfig', which resolves to Shared/Base.xcconfig, outside",
+     tree(lambda r: add_file(r, 'Shared/Base.xcconfig', 'OTHER_LDFLAGS = -ObjC\n'),
+          app_config('#include "../../../Shared/Base.xcconfig"\n'))),
+    ("a product xcconfig #includes a build-settings file from Xcode's directory (<DEVELOPER_DIR>)", 'outside-product',
+     "takes build settings from '$(DEVELOPER_DIR)/Makefiles/CoreOS/Xcode/BSD.xcconfig', a build, SDK or toolchain directory",
+     app_config('#include "<DEVELOPER_DIR>/Makefiles/CoreOS/Xcode/BSD.xcconfig"\n')),
+    ('a product xcconfig optionally #includes a file git does not track (#include?)', 'outside-product',
+     'resolves to Apps/App/Config/Generated.xcconfig: that is not a file tracked by git',
+     app_config('#include? "Generated.xcconfig"\n')),
+    ('a product xcconfig holds an #include the check cannot read', 'outside-product', "has the line '#include <Base.xcconfig>'",
+     app_config('#include <Base.xcconfig>\n', ('Base.xcconfig', 'OTHER_LDFLAGS = -ObjC\n'))),
+    ('a product xcconfig #includes a path with a variable in it', 'outside-product', 'has the line \'#include "$(SRCROOT)/../../Shared/Base.xcconfig"\'',
+     tree(lambda r: add_file(r, 'Shared/Base.xcconfig', 'OTHER_LDFLAGS = -ObjC\n'),
+          app_config('#include "$(SRCROOT)/../../Shared/Base.xcconfig"\n'))),
+    ('a product target builds files with a build rule (it can compile as C a file the check does not read as code)',
+     'outside-product', 'sets buildRules',
+     lambda r: edit(r, APP_YML, APP_SOURCES, APP_SOURCES + '    buildRules:\n      - filePattern: "*.txt"\n'
+                                                           '        compilerSpec: com.apple.compilers.llvm.clang.1_0\n')),
+    # Review R4-03: a product manifest or build-settings file redefines a variable the check evaluates itself.
+    ('R4-03: a product target redefines DERIVED_FILE_DIR, then searches it for headers', 'outside-product',
+     'sets DERIVED_FILE_DIR = /opt/elsewhere/B/include',
+     app_settings('        DERIVED_FILE_DIR: /opt/elsewhere/B/include\n        HEADER_SEARCH_PATHS: $(DERIVED_FILE_DIR)\n'
+                  '        SWIFT_INCLUDE_PATHS: $(DERIVED_FILE_DIR)\n')),
+    ('R4-03: a product xcconfig redefines SRCROOT', 'outside-product', 'sets SRCROOT = /opt/elsewhere',
+     app_config('SRCROOT = /opt/elsewhere\nHEADER_SEARCH_PATHS = $(SRCROOT)/include\n')),
+    # Review R4-04: Clang's -Werror takes no argument, so the word after it in a C or linker flag setting is an input.
+    ('R4-04: -Werror followed by an input file in OTHER_LDFLAGS', 'flag', "passes 'Evil'",
+     app_settings('        OTHER_LDFLAGS: "-Werror Evil"\n')),
+    ('R4-04: -Werror followed by an input file in a SwiftPM linker unsafeFlags', 'flag', "passes 'Evil'",
+     good_settings('linkerSettings: [.unsafeFlags(["-Werror", "Evil"])]')),
+    # The review of the M0 exit preparation, SEC-ZIPGUARD-01: a local package inside the product roots was judged only
+    # against Spikes/ and the roots, so one that git does not track passed, its manifest and sources read by nothing
+    # (Docs/Stage0/evidence/M0-ExitPrep/fix-1/reproductions.log plants the review's routes in the real tree).
+    ("SEC-ZIPGUARD-01 (b00): a product project depends on a local package in a package's checkouts under .build, populated as at build time, and the app target uses its product",
+     'outside-product', "depends on the local package Packages/Good/.build/checkouts/B (a build or package-checkout directory), whose Package.swift is not a file git tracks",
+     tree(lambda r: add_file(r, 'Packages/Good/.build/checkouts/B/Package.swift',
+                             '// swift-tools-version: 6.2\nimport PackageDescription\nlet package = Package(name: "B", products: [.library(name: "B", targets: ["B"])], targets: [.target(name: "B")])\n'),
+          lambda r: add_file(r, 'Packages/Good/.build/checkouts/B/Sources/B/B.swift', 'public struct B {}\n'),
+          lambda r: edit(r, APP_YML, 'packages:\n', 'packages:\n  Vendored:\n    path: ../../Packages/Good/.build/checkouts/B\n'),
+          lambda r: edit(r, APP_YML, APP_DEPS, APP_DEPS + '      - package: Vendored\n        product: B\n'))),
+    ('SEC-ZIPGUARD-01 (b02): a product Package.swift depends on a local package under its own .build', 'outside-product',
+     "depends on the local package Packages/Good/.build/checkouts/B (a build or package-checkout directory), whose Package.swift is not a file git tracks",
+     lambda r: edit(r, GOOD_SWIFT, 'dependencies: [\n        .package(', 'dependencies: [\n        .package(path: ".build/checkouts/B"),\n        .package(')),
+    ('SEC-ZIPGUARD-01 (b03): a product Package.swift depends on a directory under Packages/ that holds only build products',
+     'outside-product', "depends on the local package Packages/Vendored, whose Package.swift is not a file git tracks",
+     tree(lambda r: add_file(r, 'Packages/Vendored/.build/checkouts/B/Package.swift', '// swift-tools-version: 6.2\n'),
+          lambda r: edit(r, GOOD_SWIFT, 'dependencies: [\n        .package(', 'dependencies: [\n        .package(path: "../Vendored"),\n        .package('))),
+    ("SEC-ZIPGUARD-01: XcodeGen's localPackages list names a package checkout under .build", 'outside-product',
+     "depends on the local package Packages/Good/.build/checkouts/B (a build or package-checkout directory), whose Package.swift is not a file git tracks",
+     lambda r: edit(r, APP_YML, 'targets:\n', 'localPackages:\n  - ../../Packages/Good/.build/checkouts/B\ntargets:\n')),
+    ('SEC-ZIPGUARD-01: a local package path names a tracked directory under Apps/ that holds no Package.swift (tracked content is not enough)',
+     'outside-product', "depends on the local package Apps/App/Sources, whose Package.swift is not a file git tracks",
+     lambda r: edit(r, APP_YML, 'packages:\n', 'packages:\n  AppSources:\n    path: Sources\n')),
+    # The fourth review of the M0 exit preparation, SEC-ZIPGUARD-03: SwiftPM evaluates a version-specific manifest
+    # instead of the Package.swift beside it, and the manifest-input rule read Package.swift alone, so such a file could
+    # read the environment unseen (Docs/Stage0/evidence/M0-ExitPrep/fix-2/reproductions.log plants it in the real tree).
+    ("SEC-ZIPGUARD-03: a product package's version-specific manifest takes its target's path from the environment (the review's reproduction)",
+     'manifest-input', 'Package@swift-6.4.swift is a version-specific manifest',
+     good_version_specific('Package@swift-6.4.swift',
+                           'import Foundation\nlet goodPath = ProcessInfo.processInfo.environment["SYLVIA_GOOD_PATH"] ?? "Sources/Good"\n',
+                           path='goodPath')),
+    ('SEC-ZIPGUARD-03: a version-specific manifest named in another letter case, which SwiftPM takes too (package@Swift-6.swift)',
+     'manifest-input', 'package@Swift-6.swift is a version-specific manifest', good_version_specific('package@Swift-6.swift')),
+    # Found with that fix: the default macOS file system ignores letter case, so the build reads, under a name this check
+    # read only as spelled, a file this check did not read as product code or as a manifest (the same log, parts 1 and 2).
+    ('a product root in another letter case (packages/), which the default macOS file system checks out into Packages/',
+     'letter-case', "its first directory 'packages' is Packages/ in another letter case",
+     lambda r: rename(r, 'Packages', 'packages')),
+    ("a product package's manifest named package.swift, which SwiftPM opens as Package.swift", 'letter-case',
+     'package.swift is Package.swift in another letter case', lambda r: rename(r, GOOD_SWIFT, 'Packages/Good/package.swift')),
+    ('a product project named Project.yml, which XcodeGen opens as project.yml', 'letter-case',
+     'Project.yml is project.yml in another letter case', lambda r: rename(r, APP_YML, 'Apps/App/Project.yml')),
+    ("a spike package's manifest named PACKAGE.SWIFT, which the lock rules, reading every manifest, would not read",
+     'letter-case', 'PACKAGE.SWIFT is Package.swift in another letter case',
+     lambda r: rename(r, 'Spikes/S/Package.swift', 'Spikes/S/PACKAGE.SWIFT')),
+    ('a module map named in another letter case (MODULE.MODULEMAP), which clang loads as module.modulemap, names a transitive public header',
+     'transitive-direct', 'names bmodule.h, a public header of acme/B',
+     lambda r: add_file(r, 'Packages/Good/Sources/Good/include/MODULE.MODULEMAP', 'module Mini {\n    header "bmodule.h"\n}\n')),
+    ('a private module map, which clang reads beside a module.map (module_private.map), names a transitive public header',
+     'transitive-direct', 'names bmodule.h, a public header of acme/B',
+     tree(lambda r: add_file(r, 'Packages/Good/Sources/Good/include/good.h', 'int good(void);\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/include/module.map', 'module GoodC {\n    header "good.h"\n}\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/include/module_private.map', 'module Mini {\n    header "bmodule.h"\n}\n'))),
 ]
 
 
@@ -2885,6 +3398,48 @@ NEGATIVES = [  # (what, change[, warning]) that must not produce any failure, an
     ('a referenced Xcode project generated from a project.yml tracked beside it',
      tree(lambda r: add_file(r, 'Apps/Lib/project.yml', 'name: Lib\ntargets: {}\n'),
           app_project('projectReferences:\n  Lib:\n    path: ../Lib/Lib.xcodeproj\n'))),
+    # Review round 4: what product code and manifests may still do after the fixes of R4-01 to R4-04.
+    ('product C files that include their own tracked header through .., headers by plain name (system, generated) and data by plain name',
+     tree(lambda r: add_file(r, 'Packages/Good/Sources/Good/include/good.h', 'int good(void);\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/src/impl.c',
+                             '#include "../include/good.h"\n#include <stdio.h>\n#include "Good-Swift.h"\n'
+                             '#include_next <limits.h>\n#import <Foundation/Foundation.h>\nint good(void) { return 1; }\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/data.s', '.data\n.incbin "blob.bin"\n'))),
+    ("a product project uses Xcode's $(NAME) and a script's $NAME and ~ inside its text, which XcodeGen leaves alone",
+     lambda r: edit(r, APP_YML, APP_SOURCES, APP_SOURCES + '    postBuildScripts:\n      - name: Stamp\n'
+                                                           '        script: echo "$BUILT_PRODUCTS_DIR" "$(date)" ~\n'
+                                                           '    settings:\n      base:\n        PRODUCT_NAME: $(TARGET_NAME)\n')),
+    ('spike manifests may read the environment and use ${NAME} (they never ship)',
+     tree(lambda r: edit(r, 'Spikes/S/Package.swift', 'import PackageDescription\n',
+                         'import PackageDescription\nlet spikeFlag = Context.environment["SYLVIA_SPIKE"] != nil\n'),
+          lambda r: edit(r, 'Spikes/Probe/project.yml', '    platform: iOS\n',
+                         '    platform: iOS\n    postBuildScripts:\n      - name: Env\n        script: echo "${HOME}"\n'))),
+    ('a product Package.swift that imports CompilerPluginSupport as well as PackageDescription',
+     lambda r: edit(r, GOOD_SWIFT, 'import PackageDescription\n', 'import PackageDescription\nimport CompilerPluginSupport\n')),
+    ("Swift's -Werror with a diagnostic group, in swiftSettings and in a Swift file's compilerFlags (review R4-04 keeps it allowed there)",
+     tree(good_settings('swiftSettings: [.unsafeFlags(["-Werror", "DeprecatedDeclaration"])]'),
+          lambda r: edit(r, APP_YML, APP_SOURCES, '    sources:\n      - path: Sources/App.swift\n'
+                                                  '        compilerFlags: ["-Werror", "DeprecatedDeclaration"]\n'))),
+    # SEC-ZIPGUARD-01 keeps a local package that git tracks under the product roots allowed (the App project's local
+    # package Packages/Good, in the base tree, is the XcodeGen form): here the SwiftPM form, a product package that
+    # depends on another product package by path, whose manifest the check reads as a product manifest.
+    ('a product package depends on another product package by a path inside the product roots, whose Package.swift git tracks',
+     tree(lambda r: add_file(r, 'Packages/Other/Package.swift',
+                             '// swift-tools-version: 6.2\nimport PackageDescription\nlet package = Package(name: "Other", products: [.library(name: "Other", targets: ["Other"])], targets: [.target(name: "Other")])\n'),
+          lambda r: add_file(r, 'Packages/Other/Sources/Other/Other.swift', 'public struct Other {}\n'),
+          lambda r: edit(r, GOOD_SWIFT, 'dependencies: [\n        .package(', 'dependencies: [\n        .package(path: "../Other"),\n        .package('),
+          lambda r: edit(r, GOOD_SWIFT, '[.product(name: "A", package: "A")])', '[.product(name: "A", package: "A"), .product(name: "Other", package: "Other")])'))),
+    # SEC-ZIPGUARD-03 fails a version-specific manifest under the product roots only, as the manifest-input rule reads
+    # product manifests only, and by the name SwiftPM reads it by, not by any name that begins like a manifest's.
+    ('a spike package keeps a version-specific manifest (spikes never ship), and product files whose names only begin like one (Package+Model.swift, PackageNotes.md, an image named Package@2x.png)',
+     tree(lambda r: add_file(r, 'Spikes/S/Package@swift-6.4.swift', BASE_FILES['Spikes/S/Package.swift']),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/Package+Model.swift', 'struct PackageModel {}\n'),
+          lambda r: add_file(r, 'Packages/Good/PackageNotes.md', 'notes\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/Images/Package@2x.png', 'not really an image\n'))),
+    # Module maps are read whatever the letter case of their names: one that names only the package's own header passes.
+    ('a product module map named in another letter case (Module.ModuleMap) that names its own header',
+     tree(lambda r: add_file(r, 'Packages/Good/Sources/Good/include/good.h', 'int good(void);\n'),
+          lambda r: add_file(r, 'Packages/Good/Sources/Good/include/Module.ModuleMap', 'module GoodC {\n    header "good.h"\n    export *\n}\n'))),
 ]
 
 

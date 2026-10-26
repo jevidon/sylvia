@@ -1,0 +1,15 @@
+command: Scripts/ci.sh contracts
+commit: 7c981bd11e9df1d09380565c6701b20f0c64c1cb; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T16:54:37Z; load:  5:54  up 22 days, 16:05, 4 users, load averages: 3.47 5.23 6.11
+
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (0s)
+==> 11-capture-anchor-contracts
+    pass (55s)
+all 3 steps passed
+
+exit status: 0
+end: 2026-10-25T16:55:37Z; load:  5:55  up 22 days, 16:06, 4 users, load averages: 6.78 5.75 6.24

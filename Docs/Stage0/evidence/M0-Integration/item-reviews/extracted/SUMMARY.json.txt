@@ -1,0 +1,143 @@
+{
+ "contracts": {
+  "records": 9,
+  "reviews": 6,
+  "runs": [
+   "wf_5552ba19-d21",
+   "wf_744b95c1-309"
+  ],
+  "final_review": "contracts:review-3b",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "ef0d5de68f3bd7bdd301275796611e857bf663fb"
+ },
+ "deps": {
+  "records": 8,
+  "reviews": 4,
+  "runs": [
+   "wf_3f1b0c6a-cad",
+   "wf_5552ba19-d21",
+   "wf_744b95c1-309",
+   "wf_9ea3b4d5-f4f"
+  ],
+  "final_review": "deps:review-4",
+  "final_verdict": "reject",
+  "final_commit": "67682c2394d7d6ed488cf2902c944efd2e12d539"
+ },
+ "threat": {
+  "records": 3,
+  "reviews": 2,
+  "runs": [
+   "wf_5552ba19-d21",
+   "wf_5ce13c9e-6bf"
+  ],
+  "final_review": "threat:review-1",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "6bb2b9e8811d4ce1d7786c9c2f971ce4416facfe"
+ },
+ "runbook": {
+  "records": 6,
+  "reviews": 3,
+  "runs": [
+   "wf_9ea3b4d5-f4f",
+   "wf_eaa493fa-c4f"
+  ],
+  "final_review": "runbook:review-3",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "6f339473eec57fd4dc6b989efde195519c019f5b"
+ },
+ "amendments": {
+  "records": 9,
+  "reviews": 6,
+  "runs": [
+   "wf_3f1b0c6a-cad",
+   "wf_9ea3b4d5-f4f"
+  ],
+  "final_review": "amendments:review-3b",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "694518f2e189ed4a7424a466d24533c106f686d3"
+ },
+ "minors-g01-epub": {
+  "records": 2,
+  "reviews": 1,
+  "runs": [
+   "wf_5ce13c9e-6bf"
+  ],
+  "final_review": "minors-g01-epub:review-1",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "d31705419c15da68cd4208dc243e696b2f6d8346 (m0-int-minors-g01-epub, detached; base b354dc7b7ee026d7ca45b13259f4b93780535bfb is an ancestor)"
+ },
+ "minors-g01-pdf": {
+  "records": 6,
+  "reviews": 3,
+  "runs": [
+   "wf_5552ba19-d21",
+   "wf_744b95c1-309"
+  ],
+  "final_review": "minors-g01-pdf:review-3",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "a44b746c6a83f77aa20cf8cc43f399fe1d628717"
+ },
+ "minors-g02-transfer": {
+  "records": 2,
+  "reviews": 1,
+  "runs": [
+   "wf_5552ba19-d21"
+  ],
+  "final_review": "minors-g02-transfer:review-1",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "c83a3b9ff051aa023391c16904ca075de4ab52dd"
+ },
+ "minors-g03-intake": {
+  "records": 6,
+  "reviews": 3,
+  "runs": [
+   "wf_3f1b0c6a-cad",
+   "wf_5552ba19-d21",
+   "wf_744b95c1-309"
+  ],
+  "final_review": "minors-g03-intake:review-3",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "77ceaf3f5228b91c1e000047014618a9f783a6b1"
+ },
+ "minors-g04-audio": {
+  "records": 2,
+  "reviews": 1,
+  "runs": [
+   "wf_9ea3b4d5-f4f"
+  ],
+  "final_review": "minors-g04-audio:review-1",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "d0c612031d2e0e625ea3a26fef134876d390cd54"
+ },
+ "minors-g05-ai": {
+  "records": 4,
+  "reviews": 2,
+  "runs": [
+   "wf_5552ba19-d21",
+   "wf_5ce13c9e-6bf"
+  ],
+  "final_review": "minors-g05-ai:review-2",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "4090d590e1c09335b3c2124bda18598bb3797d18"
+ },
+ "minors-g05-recovery": {
+  "records": 4,
+  "reviews": 2,
+  "runs": [
+   "wf_5552ba19-d21"
+  ],
+  "final_review": "minors-g05-recovery:review-2",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "cd3e42b0345b3f1fb21e21a109deff0c4a2e26d6 (m0-int-minors-g05-recovery, checked out detached). The author result supplied with this review is the round-3 result for ce535e0. I reviewed the branch head, which adds the round-4 fixes a377b17 and cd3e42b. The evidence run is from f0df970, and `git diff f0df970..HEAD -- Spikes Scripts Contracts Fixtures` is empty, so it applies to the head's code."
+ },
+ "minors-g06-design": {
+  "records": 2,
+  "reviews": 1,
+  "runs": [
+   "wf_5552ba19-d21"
+  ],
+  "final_review": "minors-g06-design:review-1",
+  "final_verdict": "accept-with-minor",
+  "final_commit": "98125421e27490aa11c7c4151c8457ce36bd2c34"
+ }
+}

@@ -1,0 +1,45 @@
+command: Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/correction-record.sh
+commit: 415ae25b33f2b79f46e689b433392d261207c21f (m0-exit-prep); uncommitted paths: 23; date: 2026-10-25T20:57:37Z
+
+== 1. The commit, as git records it (git show --no-patch --format=fuller)
+commit 5aec2518c90427a283d9c8195e11bb9ab23e5d12
+Author:     Justin Evidon <jevidon@gmail.com>
+AuthorDate: Sat Oct 24 04:38:24 2026 +1300
+Commit:     Justin Evidon <jevidon@gmail.com>
+CommitDate: Sat Oct 24 04:38:24 2026 +1300
+
+    Point CLAUDE.md's milestone paragraph at main, where all M0 work now is
+    
+    The paragraph still said the M0 work is combined on m0-integrate. That
+    branch has neither the lock harness nor the records of the owner's
+    decisions, which continued on m0-decisions and reached main with pull
+    request #6 on 24 October 2026. The gate summary (Section 1, item 1;
+    Section 7, item 5; finding HON-11) leaves this correction to the owner,
+    because agents do not edit the instructions they follow. The owner asked
+    the orchestrating session to make it on 24 October 2026, before the
+    agent work that the M0 exit waits for starts from this branch.
+    
+    The paragraph now names main as the home of the M0 work, says which pull
+    requests brought it there, restates that H-1's exception covered those
+    merges only, and warns against building on the two older branches. The
+    rest of the paragraph is unchanged.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+== 2. What it changed, and on top of what
+parent: 96bdc7e996f99fcd2571ea983cc32a04076a5a07 (main after pull request #6)
+files changed: CLAUDE.md (1 1 CLAUDE.md)
+main is 96bdc7e996f99fcd2571ea983cc32a04076a5a07; it holds 5aec2518c90427a283d9c8195e11bb9ab23e5d12: no
+HEAD holds it: yes; commits on HEAD that main lacks: 23
+
+== 3. The message's sentence on the request
+The owner asked the orchestrating session to make it on 24 October 2026, before the agent work that the M0 exit waits for starts from this branch.
+
+== 4. The committed relays: does either name the correction or the request?
+Docs/Stage0/evidence/M0-Decisions/followup/owner-answers-2026-10-23.md: lines naming 5aec2518: 0; naming the milestone paragraph or the request: 0; lines naming CLAUDE.md at all: 0
+Docs/Stage0/evidence/M0-Decisions/fix-1/decision-page-record.json: lines naming 5aec2518: 0; naming the milestone paragraph or the request: 0; lines naming CLAUDE.md at all: 0
+Docs/Stage0/evidence/M0-ExitPrep/assembly/xcode-27.1-release.md: lines naming 5aec2518: 0; naming the milestone paragraph or the request: 0; lines naming CLAUDE.md at all: 2
+   23:- **The known issues, against the repository.** Mac Catalyst: no project or package of the repository builds for Mac Catalyst (`git grep -i catalyst` finds the word only in `Scripts/check-dependenc
+   28:- **Then** the texts that still say the release notes await a check, which this round leaves as they are because the confirmation is still pending: `CLAUDE.md`'s toolchain line (the owner's file) a
+
+result: pass: the commit message is the only record of the request among them

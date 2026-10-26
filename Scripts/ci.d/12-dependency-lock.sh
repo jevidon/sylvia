@@ -10,8 +10,13 @@
 # outside Apps/ and Packages/, package checkouts and build products included) can reach a product target, a product
 # target passes a flag outside the allowed list or replaces a build tool, product code reaches a transitive-only
 # package's modules or headers (by import, include, module map, module alias, -import-module, -include, a prefix or
-# bridging header, a definition or any manifest value), or a third-party binary is not inventoried; the full list is
-# in Scripts/check-dependency-lock.py. It warns, without failing, when the tools virtualenv's pip (which nothing pins,
+# bridging header, a definition or any manifest value), or a third-party binary is not inventoried. Since ADR-0014's
+# review round 4 (R4-01 to R4-04), also when a product manifest's values depend on what the check does not read
+# (XcodeGen's ${NAME} and leading ~ in a product project.yml; a product Package.swift that reads anything but its own
+# text), product code brings in a file by an include whose path is absolute, climbs out with .., passes through a
+# build or checkout directory or is computed, a build-settings file #includes one that is not tracked under the
+# product roots, or a product manifest redefines a variable the check evaluates itself; the full list is in
+# Scripts/check-dependency-lock.py. It warns, without failing, when the tools virtualenv's pip (which nothing pins,
 # so a fresh virtualenv holds the one its Python bundles) is below the minimum the inventory records (ADR-0014 section
 # 3). Scripts/ci.sh prints a drop-in's log only when it fails, so in a passing run that warning appears only in
 # .build/ci-logs/12-dependency-lock.log, where the check prints its warnings last, just before its summary line.

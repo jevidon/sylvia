@@ -1,0 +1,13 @@
+run-checks: HEAD 480d1757f94da220c73e13f833ef16f70c3631ea, uncommitted paths: 0; logs in .build/scratch/exit-reviews-logs
+check-item-reviews.log: exit 0
+render-check.log: exit 0
+audit-probe.log: exit 0
+ci-contracts.log: exit 0
+12-dependency-lock.log: exit 0
+13-hard-rules.log: exit 0
+runbook-content-check.log: exit 0
+check-amendments.log: exit 0
+gate-checks.log: exit 1 (1 expected, from its parts 1b and 1c on CLAUDE.md; compared next)
+gate-checks-compare.log: exit 0
+tree after the checks: 0 uncommitted paths
+result: pass

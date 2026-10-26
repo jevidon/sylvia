@@ -1,0 +1,37 @@
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/finding-lines.py
+commit: 9f5edab143304767010c8ad3523053019f9ff662; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T22:39:22Z; load: 11:39  up 22 days, 21:49, 3 users, load averages: 3.53 3.40 3.22
+
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-2/commands/finding-lines.py fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc
+reading the cited lines at fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc (the review read fcbd6c89); HEAD is 9f5edab143304767010c8ad3523053019f9ff662
+
+== ADR-0014: rule 5, section 5 and the list of what the check cannot see
+ok      SEC-ZIPGUARD-03: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:39 at fcbd6c89 has: 5. **Product code comes only from what git tracks under `Apps/` and `Packages/`.**
+ok      SEC-ZIPGUARD-03: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:39 at fcbd6c89 has: a product `Package.swift`, which every build evaluates again in its own environment, reads nothing but its own
+ok      SEC-ZIPGUARD-03: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:147 at fcbd6c89 has: **One advisory applies to a pinned version: marmelroy/Zip 2.1.2, CVE-2023-39135**
+ok      SEC-ZIPGUARD-03: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:147 at fcbd6c89 has: CI also reads every value a product manifest gives as the build uses it
+ok      SEC-ZIPGUARD-03: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:147 at fcbd6c89 has: no `Package.swift` that reads anything but its own text
+ok      SEC-ZIPGUARD-03: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:110 at fcbd6c89 has: **What the check cannot see**, and so does not claim:
+ok      SEC-ZIPGUARD-03: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:111-120 at fcbd6c89 are the ten items of that list
+ok      SEC-ZIPGUARD-03: Docs/ADRs/0014-dependency-lock-and-license-inventory.md at fcbd6c89 names no version-specific manifest anywhere (neither 'version-specific' nor 'Package@')
+
+== the check: what it evaluates and what its manifest-input rule reads
+ok      SEC-ZIPGUARD-03: Scripts/check-dependency-lock.py:913 at fcbd6c89 has:     def dump_package(self, rel):
+ok      SEC-ZIPGUARD-03: Scripts/check-dependency-lock.py:919 at fcbd6c89 has: r = subprocess.run(self.swift + ['package', '--package-path', pkg_dir, '--scratch-path', tmp, 'dump-package'],
+ok      SEC-ZIPGUARD-03: Scripts/check-dependency-lock.py:925 at fcbd6c89 has: return _rebase(copy.deepcopy(_DUMP_CACHE[key]), [_ROOT_PLACEHOLDER], self.root)
+ok      SEC-ZIPGUARD-03: Scripts/check-dependency-lock.py:935 at fcbd6c89 has: text = open(self.path(rel), encoding='utf-8', errors='replace').read()
+ok      SEC-ZIPGUARD-03: Scripts/check-dependency-lock.py:1401 at fcbd6c89 has: manifests = [f for f in files if os.path.basename(f) in ('Package.swift', 'project.yml')
+ok      SEC-ZIPGUARD-03: Scripts/check-dependency-lock.py:1498 at fcbd6c89 has: for line, what in m.get('inputs', []):
+ok      SEC-ZIPGUARD-03: Scripts/check-dependency-lock.py:1499 at fcbd6c89 has: self.fail('manifest-input', f'{rel}:{line}'
+ok      SEC-ZIPGUARD-03: Scripts/check-dependency-lock.py at fcbd6c89 names no version-specific manifest
+
+== the gate summary's disclosure, and the first fix's observation
+ok      SEC-ZIPGUARD-03: Docs/Stage0/M0-gate.md row 76 at fcbd6c89 names the route as open, that no finding names
+ok      SEC-ZIPGUARD-03: Docs/Stage0/M0-gate.md item 113 at fcbd6c89 gives the route to ADR-0014's owner and the next review
+ok      SEC-ZIPGUARD-03: Docs/Stage0/evidence/M0-ExitPrep/fix-1/observation-vsm.log at fcbd6c89: dump-package follows SYLVIA_EXTRA, and the check reports 0 failures
+
+result: pass (0 citation(s) not as the finding gives them)
+
+exit status: 0
+end: 2026-10-25T22:39:22Z; load: 11:39  up 22 days, 21:49, 3 users, load averages: 3.53 3.40 3.22

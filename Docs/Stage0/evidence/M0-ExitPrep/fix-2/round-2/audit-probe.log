@@ -1,0 +1,72 @@
+command: Docs/Stage0/evidence/M0-Integration/item-reviews/commands/audit-probe.sh
+commit: 314f216b7b0849619bb8729753e169d81c59c898; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T00:10:12Z; load: 13:10  up 22 days, 23:20, 3 users, load averages: 3.34 4.87 10.75
+
+copies: 14 files named <file>.json, 14 named <file>.json.txt
+
+== the files named as extracted (<file>.json): the audit must FAIL
+FINDING ats-exception Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/amendments.json:296
+FINDING ats-exception Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/amendments.json:626
+FINDING ats-exception Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/amendments.json:920
+FINDING ats-exception Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/amendments.json:976
+FINDING ats-arbitrary-loads Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g01-pdf.json:542
+FINDING ats-arbitrary-loads Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g02-transfer.json:187
+FINDING ats-exception Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g02-transfer.json:121
+FINDING ats-arbitrary-loads Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/minors-g04-audio.json:150
+FINDING ats-arbitrary-loads Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:9
+FINDING ats-arbitrary-loads Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:83
+FINDING ats-arbitrary-loads Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:145
+FINDING ats-arbitrary-loads Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:212
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:9
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:39
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:69
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:79
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:106
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:136
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:169
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:184
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:261
+FINDING file-protection-none Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:272
+FINDING keychain-accessible-always Docs/Stage0/evidence/M0-Integration/item-reviews/extracted/threat.json:83
+| Rule | Findings | Allowed |
+| --- | --- | --- |
+| ats-arbitrary-loads | 7 | 0 |
+| ats-exception | 5 | 0 |
+| trust-override | 0 | 0 |
+| weak-tls | 0 | 0 |
+| file-protection-none | 10 | 0 |
+| keychain-accessible-always | 1 | 0 |
+| key-like-string | 0 | 0 |
+| private-key-block | 0 | 0 |
+| generic-secret | 0 | 0 |
+| secret-file | 0 | 0 |
+| todo-in-product | 0 | 0 |
+
+result: FAIL (23 finding(s), 0 allowed, 13 stale allowlist entries, 0 allowlist error(s))
+audit exit: 1
+as expected: it fails, among others on rules that can never be allowlisted
+
+== the files named as committed (<file>.json.txt): the audit must PASS with no finding
+| Rule | Findings | Allowed |
+| --- | --- | --- |
+| ats-arbitrary-loads | 0 | 0 |
+| ats-exception | 0 | 0 |
+| trust-override | 0 | 0 |
+| weak-tls | 0 | 0 |
+| file-protection-none | 0 | 0 |
+| keychain-accessible-always | 0 | 0 |
+| key-like-string | 0 | 0 |
+| private-key-block | 0 | 0 |
+| generic-secret | 0 | 0 |
+| secret-file | 0 | 0 |
+| todo-in-product | 0 | 0 |
+
+result: PASS (0 finding(s), 0 allowed, 13 stale allowlist entries, 0 allowlist error(s))
+audit exit: 0
+as expected
+
+result: pass
+
+exit status: 0
+end: 2026-10-26T00:10:12Z; load: 13:10  up 22 days, 23:20, 3 users, load averages: 3.34 4.87 10.75

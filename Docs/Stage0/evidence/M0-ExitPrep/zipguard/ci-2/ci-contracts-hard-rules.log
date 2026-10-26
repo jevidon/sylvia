@@ -1,0 +1,16 @@
+Scripts/ci.sh contracts hard-rules, 2026-10-23T17:18:04Z, at commit 16bff438bc6e3ed483a7ce78b35dda5248910695 (m0-exit-zipguard)
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+uncommitted tracked files: 0; LFS files still pointer files: 0
+load before:  6:18  up 20 days, 16:28, 3 users, load averages: 12.98 15.40 11.20
+
+==> 00-git-lfs
+    pass (5s)
+==> 10-contracts
+    pass (0s)
+==> 11-capture-anchor-contracts
+    pass (53s)
+==> 13-hard-rules
+    pass (8s)
+all 4 steps passed
+ci.sh exit: 0 (66 s)
+load after:  6:19  up 20 days, 16:29, 3 users, load averages: 7.53 13.34 10.74

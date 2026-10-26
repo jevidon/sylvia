@@ -1,0 +1,67 @@
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/branch-reach.py
+commit: 9e14b1a41e4d08c74f04f8b6197ed1c24d4565bd; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T19:37:39Z; load:  8:37  up 22 days, 18:48, 3 users, load averages: 5.61 4.97 4.39
+
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/branch-reach.py
+commit: 9e14b1a41e4d08c74f04f8b6197ed1c24d4565bd (m0-exit-prep); uncommitted paths: 0
+
+== 1. The records and the commits they cite
+records read: 63; distinct commits cited: 28; not resolved here: 0
+
+== 2. The refs that could keep them (read-only; nothing fetched)
+remote-tracking refs: refs/remotes/origin/HEAD, refs/remotes/origin/codex/gloss-docs-only, refs/remotes/origin/codex/readme-platform-vision, refs/remotes/origin/codex/repo-readme, refs/remotes/origin/m0-decisions, refs/remotes/origin/m0-integrate, refs/remotes/origin/main
+of them an m0-int-* branch: 0
+tags: 0
+local m0-int-* branches: 13 (m0-int-amendments, m0-int-contracts, m0-int-deps, m0-int-minors-g01-epub, m0-int-minors-g01-pdf, m0-int-minors-g02-transfer, m0-int-minors-g03-intake, m0-int-minors-g04-audio, m0-int-minors-g05-ai, m0-int-minors-g05-recovery, m0-int-minors-g06-design, m0-int-runbook, m0-int-threat)
+
+== 3. Each commit: the refs that contain it, and whether the branches the work went on to hold it
+ok      200b0ae432c7 (cited by 3: amendments:author, amendments:review-1b, amendments:review-1): contained by m0-int-amendments; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      c6b02bcadc89 (cited by 3: amendments:fix-1, amendments:review-2, amendments:review-2b): contained by m0-int-amendments; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      694518f2e189 (cited by 3: amendments:fix-2, amendments:review-3, amendments:review-3b): contained by m0-int-amendments; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      ea2bef6ea038 (cited by 3: contracts:author, contracts:review-1, contracts:review-1b): contained by m0-int-contracts; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      bed92afd2fb8 (cited by 3: contracts:fix-1, contracts:review-2, contracts:review-2b): contained by m0-int-contracts; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      ef0d5de68f3b (cited by 3: contracts:fix-2, contracts:review-3, contracts:review-3b): contained by m0-int-contracts; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      a4a24c7441f5 (cited by 2: deps:author, deps:review-1): contained by m0-int-deps; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      1442a6686057 (cited by 2: deps:fix-1, deps:review-2): contained by m0-int-deps; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      e38124785c5e (cited by 2: deps:fix-2, deps:review-3): contained by m0-int-deps; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      67682c2394d7 (cited by 2: deps:fix-3, deps:review-4): contained by m0-int-deps; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      d31705419c15 (cited by 2: minors-g01-epub:author, minors-g01-epub:review-1): contained by m0-int-minors-g01-epub; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      7884a59c212f (cited by 2: minors-g01-pdf:author, minors-g01-pdf:review-1): contained by m0-int-minors-g01-pdf; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      11736d159fbc (cited by 2: minors-g01-pdf:fix-1, minors-g01-pdf:review-2): contained by m0-int-minors-g01-pdf; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      a44b746c6a83 (cited by 2: minors-g01-pdf:fix-2, minors-g01-pdf:review-3): contained by m0-int-minors-g01-pdf; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      c83a3b9ff051 (cited by 2: minors-g02-transfer:author, minors-g02-transfer:review-1): contained by m0-int-minors-g02-transfer; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      4b8c6342dd1a (cited by 2: minors-g03-intake:author, minors-g03-intake:review-1): contained by m0-int-minors-g03-intake; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      937d53a570f2 (cited by 2: minors-g03-intake:fix-1, minors-g03-intake:review-2): contained by m0-int-minors-g03-intake; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      77ceaf3f5228 (cited by 2: minors-g03-intake:fix-2, minors-g03-intake:review-3): contained by m0-int-minors-g03-intake; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      d0c612031d2e (cited by 2: minors-g04-audio:author, minors-g04-audio:review-1): contained by m0-int-minors-g04-audio; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      f838379682a6 (cited by 2: minors-g05-ai:author, minors-g05-ai:review-1): contained by m0-int-minors-g05-ai; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      4090d590e1c0 (cited by 2: minors-g05-ai:fix-1, minors-g05-ai:review-2): contained by m0-int-minors-g05-ai; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      ce535e0d29a4 (cited by 2: minors-g05-recovery:author, minors-g05-recovery:review-1): contained by m0-int-minors-g05-recovery; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      cd3e42b0345b (cited by 2: minors-g05-recovery:fix-1, minors-g05-recovery:review-2): contained by m0-int-minors-g05-recovery; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      98125421e274 (cited by 2: minors-g06-design:author, minors-g06-design:review-1): contained by m0-int-minors-g06-design; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      73c1ae2bb274 (cited by 2: runbook:author, runbook:review-1): contained by m0-int-runbook; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      9806a5a336ab (cited by 2: runbook:fix-1, runbook:review-2): contained by m0-int-runbook; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      6f339473eec5 (cited by 2: runbook:fix-2, runbook:review-3): contained by m0-int-runbook; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+ok      6bb2b9e8811d (cited by 3: threat:author, threat:review-1b, threat:review-1): contained by m0-int-threat; by any other ref: none; an ancestor of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: none of them
+
+== 4. In all
+28 distinct commits, cited by 63 records; each contained by a local m0-int-* branch and by no other ref, and an ancestor of none of main, m0-integrate, m0-exit-prep, origin/main, origin/m0-integrate, origin/m0-decisions: 28 of 28
+        m0-int-amendments: holds 3 of them
+        m0-int-contracts: holds 3 of them
+        m0-int-deps: holds 4 of them
+        m0-int-minors-g01-epub: holds 1 of them
+        m0-int-minors-g01-pdf: holds 3 of them
+        m0-int-minors-g02-transfer: holds 1 of them
+        m0-int-minors-g03-intake: holds 3 of them
+        m0-int-minors-g04-audio: holds 1 of them
+        m0-int-minors-g05-ai: holds 2 of them
+        m0-int-minors-g05-recovery: holds 2 of them
+        m0-int-minors-g06-design: holds 1 of them
+        m0-int-runbook: holds 3 of them
+        m0-int-threat: holds 1 of them
+
+result: pass (0 problem(s))
+
+exit status: 0
+end: 2026-10-25T19:37:40Z; load:  8:37  up 22 days, 18:48, 3 users, load averages: 5.48 4.96 4.39

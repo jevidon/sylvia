@@ -4,6 +4,7 @@
 **Spike:** `Spikes/G04-Audio` (XcodeGen project `G04Audio`: framework `G04AudioKit`, app `G04AudioHarness`, control extension `G04CaptureControl`, test bundles `G04AudioTests` and `G04QuickCaptureUITests`). Stage 0 evidence code; never shipped.
 **Decisions:** ADR-0006 (playback, timeline and excerpts; provisional codec list), ADR-0007 (quick capture). Both Proposed.
 **Device steps:** `Docs/Stage0/device-checklists/G04-Audio.md` (all pending).
+**M0 item review record:** the author result and the one review of `m0-int-minors-g04-audio`, handed over on 24 October 2026 from the orchestrating session's workflow journals (agent reviews; human sign-off pending): the review, round 7, accepted `d0c61203` with six minor findings, R7-01 to R7-06, left open at the merge and not written up in this report: [`evidence/M0-Integration/item-reviews/minors-g04-audio.md`](evidence/M0-Integration/item-reviews/minors-g04-audio.md).
 
 ## Decisions for the product owner
 

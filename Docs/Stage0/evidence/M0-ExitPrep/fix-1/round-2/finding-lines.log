@@ -1,0 +1,61 @@
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/finding-lines.py
+commit: 9e14b1a41e4d08c74f04f8b6197ed1c24d4565bd; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T19:37:38Z; load:  8:37  up 22 days, 18:48, 3 users, load averages: 5.61 4.97 4.39
+
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/commands/finding-lines.py 83030fba191735fa237c2cec014e590ee73a645c
+reading the cited lines at 83030fba191735fa237c2cec014e590ee73a645c (the review read 83030fba), those placed at 609ed492 there; HEAD is 9e14b1a41e4d08c74f04f8b6197ed1c24d4565bd
+
+== EV-01: the deps item's record on ADR-0014, and the texts gone stale with it
+ok      EV-01: Docs/Stage0/evidence/M0-Integration/item-reviews/deps.md:115 at 609ed492 has: The final round's minor findings R4-03 to R4-07 are not in ADR-0014, which names R4-01 and R4-02 only (searche
+ok      EV-01: Docs/Stage0/evidence/M0-Integration/item-reviews/deps.md:115 at 83030fba has: The final round's minor findings R4-03 to R4-07 are not in ADR-0014, which names R4-01 and R4-02 only (searche
+ok      EV-01: Docs/Stage0/evidence/M0-Integration/item-reviews/commands/item-reviews.py:101 at 83030fba has: "The final round's minor findings R4-03 to R4-07 are not in ADR-0014, which names R4-01 and R4-02 only "
+ok      EV-01: Docs/Stage0/evidence/M0-Integration/item-reviews/commands/item-reviews.py:102 at 83030fba has: "(searched by ID on this branch).",
+ok      EV-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md at 609ed492: R4-03 on lines [3, 88, 104, 214, 257] outside the pointer line, line 7 (the finding: [3, 88, 104, 214, 257])
+ok      EV-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md at 609ed492: R4-04 on lines [3, 87, 104, 214, 257] outside the pointer line, line 7 (the finding: [3, 87, 104, 214, 257])
+ok      EV-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md at 609ed492: R4-05 on lines [257] outside the pointer line, line 7 (the finding: [257])
+ok      EV-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md at 609ed492: R4-06 on lines [257] outside the pointer line, line 7 (the finding: [257])
+ok      EV-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md at 609ed492: R4-07 on lines [257] outside the pointer line, line 7 (the finding: [257])
+        at 83030fba: R4-03 on lines [3, 88, 104, 214, 258]; R4-04 on lines [3, 87, 104, 214, 258]; R4-05 on lines [258]; R4-06 on lines [258]; R4-07 on lines [258]
+ok      EV-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:7 at 83030fba has: and since that fix it gives all seven
+ok      EV-01: Docs/Stage0/evidence/M0-ExitPrep/assembly/check-item-reviews.log:500 at 83030fba has: ADR-0014 names R4-03, R4-04, R4-05, R4-06, R4-07
+ok      EV-01: Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks.log:436 at 83030fba has: ADR-0014 names R4-03, R4-04, R4-05, R4-06, R4-07
+ok      EV-01: Docs/Stage0/integration-log.md:1690 at 83030fba has: *ADR-0014's header line.*
+ok      EV-01: Docs/Stage0/integration-log.md:1690 at 83030fba has: The item-reviews README's line on that pointer has a dated note.
+ok      EV-01: Docs/Stage0/evidence/M0-Integration/item-reviews/README.md:93 at 83030fba has: *(Dated note, 26 October 2026: added at the assembly of the M0 exit preparation
+ok      EV-01: from 480d1757 to 609ed492 the hand-over's folder changed in: Docs/Stage0/evidence/M0-Integration/item-reviews/README.md (the finding: README.md alone)
+ok      EV-01: the assembly's recheck (its group N) reads the hand-over's README and not deps.md
+ok      EV-01: Docs/Stage0/evidence/M0-Integration/item-reviews/README.md:77 at 83030fba has: the others appear only where those documents cite other reviews' findings under the same IDs
+ok      EV-01: Docs/Stage0/evidence/M0-Integration/item-reviews/README.md:90 at 83030fba has: A parallel agent's task of 24 October 2026 is to close them
+ok      EV-01: Docs/Stage0/evidence/M0-Integration/item-reviews/deps.md:114 at 83030fba has: A parallel agent's task of 24 October 2026 is to close them
+ok      EV-01: Docs/Stage0/integration-log.md:1614 at 83030fba has: none of which but those two was written into any report
+
+== EV-02: the reason given for the 25 findings no later record names
+ok      EV-02: Docs/Stage0/M0-gate.md:65 at 83030fba has: 25 of them named by no later record because the lists handed to two items' fixers were cut off
+ok      EV-02: Docs/Stage0/integration-log.md:1614 at 83030fba has: 5 left unresolved and 25 named by no later record, because the lists handed to the contracts and amendments it
+ok      EV-02: Docs/Stage0/evidence/M0-Integration/item-reviews/README.md:82 at 83030fba has: The 25 findings no later record names are of those two items' second lenses.
+ok      EV-02: Docs/Stage0/evidence/M0-Integration/item-reviews/amendments.md:142 at 83030fba has: fix-2 names none of review-2b's L2-12 to L2-17
+ok      EV-02: amendments fix-2 names none of L2-12 to L2-17 and says nothing of a list cut off (no such word)
+ok      EV-02: amendments fix-1 left L2-06 and L2-07: "the findings list was cut off partway through L2-01"
+ok      EV-02: amendments review-3, in its gate gaps: "The brief truncates partway through R2-06"
+ok      EV-02: amendments review-3b, in its status of R2-06: "The brief was cut off after R2-06"
+ok      EV-02: contracts fix-2 declined R2-05: "The move is outside this work's ownership"
+ok      EV-02: minors-g05-ai fix-1 left R7-04 pending-human (the owner's action)
+ok      EV-02: contracts fix-2: "The task's finding list was cut off partway through L2-R2-01"
+ok      EV-02: contracts fix-1 on R1-10: "Reconstructed from the title and location because the detail was truncated"
+
+== EV-03: the check log's part for R8-04
+ok      EV-03: Docs/Stage0/evidence/M0-Integration/item-reviews/README.md:91 at 83030fba has: The command is still there (the check log's part 6 notes it)
+ok      EV-03: Docs/Stage0/evidence/M0-ExitPrep/reviews/check-item-reviews.log:463 at 83030fba has: the cleanup command R8-04 names is still in G05-AI.md
+ok      EV-03: Docs/Stage0/evidence/M0-ExitPrep/reviews/check-item-reviews.log:402 at 83030fba has: == 7. What stayed open at the merge
+ok      EV-03: Docs/Stage0/evidence/M0-ExitPrep/assembly/check-item-reviews.log:501 at 83030fba has: the cleanup command R8-04 names is still in G05-AI.md
+ok      EV-03: Docs/Stage0/evidence/M0-ExitPrep/assembly/check-item-reviews.log:402 at 83030fba has: == 7. What stayed open at the merge
+
+== EV-04: where the records' commits are kept
+ok      EV-04: Docs/Stage0/evidence/M0-Integration/item-reviews/README.md:45 at 83030fba has: on the item's branch, which still exists here
+ok      EV-04: item-reviews.py's part 5 reads the branch with git's default check=True, so a missing branch stops it
+
+result: pass (0 citation(s) not as the findings give them)
+
+exit status: 0
+end: 2026-10-25T19:37:39Z; load:  8:37  up 22 days, 18:48, 3 users, load averages: 5.61 4.97 4.39

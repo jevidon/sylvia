@@ -1,0 +1,121 @@
+reproductions started 2026-10-25T17:57:04Z; reviewed commit 609ed49250da6a44984359bddc8219cdc6ad7c13; working tree at ad7090591f559cf3ce2e79f1768a49768aa4584e with Scripts/check-dependency-lock.py as committed
+check before the fix: Scripts/check-dependency-lock.py at 609ed49250da6a44984359bddc8219cdc6ad7c13, sha256 3427e76fb9dd1b949a892bd132593705e0a7e4321796af060ce3f13bb64d0f3f
+check after the fix: Scripts/check-dependency-lock.py, sha256 71514489291fe34ceda1731fb1d9874d0946977fdc74db97df75e3cb51f4a826
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 ; swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1); xcodegen Version: 2.46.0
+load:  6:57  up 22 days, 17:07, 3 users, load averages: 4.73 5.37 6.00
+
+=== Part 1: each route in a copy of the tree at the reviewed commit, the check before and after the fix
+  the unplanted copy, check before the fix: exit 0 -> dependency lock check: 0 failure(s), 0 warning(s)
+  the unplanted copy, check after the fix: exit 0 -> dependency lock check: 0 failure(s), 0 warning(s)
+
+--- route 1: b00 the app project depends on a local package in Packages/Design/.build/checkouts, populated, and the app uses its product: ok (passed before the fix; fails after it, with exactly the new rule's finding)
+    before the fix (609ed49250da6a44984359bddc8219cdc6ad7c13):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Apps/DesignCatalog/project.yml: depends on the local package Packages/Design/.build/checkouts/Zip (a build or package-checkout directory), whose Package.swift is not a file git tracks: a local package inside Apps or Packages must be one git tracks there, which the check reads as a product manifest and scans as product code; an untracked one (a package checkout, a build product or a generated pack
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 2: b01 (control) the same local package at the repository root, outside the product roots: ok (the control: fails before the fix and after it, the same way)
+    before the fix (609ed49250da6a44984359bddc8219cdc6ad7c13):
+      FAIL outside-product Apps/DesignCatalog/project.yml: depends on the local package .build/checkouts/Zip, outside Apps and Packages, where the product rules do not apply
+      dependency lock check: 1 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Apps/DesignCatalog/project.yml: depends on the local package .build/checkouts/Zip, outside Apps and Packages, where the product rules do not apply
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 3: b02 Packages/Design depends on a local package under its own .build, and SylviaDesign uses its product: ok (passed before the fix; fails after it, with exactly the new rule's finding)
+    before the fix (609ed49250da6a44984359bddc8219cdc6ad7c13):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Package.swift: depends on the local package Packages/Design/.build/checkouts/Zip (a build or package-checkout directory), whose Package.swift is not a file git tracks: a local package inside Apps or Packages must be one git tracks there, which the check reads as a product manifest and scans as product code; an untracked one (a package checkout, a build product or a generated packa
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 4: b03 Packages/Design depends on Packages/Vendored, which holds only an untracked .build: ok (passed before the fix; fails after it, with exactly the new rule's finding)
+    before the fix (609ed49250da6a44984359bddc8219cdc6ad7c13):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Package.swift: depends on the local package Packages/Vendored, whose Package.swift is not a file git tracks: a local package inside Apps or Packages must be one git tracks there, which the check reads as a product manifest and scans as product code; an untracked one (a package checkout, a build product or a generated package) is read by neither, yet the build would compile and lin
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 5: localPackages the app project's localPackages list names the package checkout: ok (passed before the fix; fails after it, with exactly the new rule's finding)
+    before the fix (609ed49250da6a44984359bddc8219cdc6ad7c13):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Apps/DesignCatalog/project.yml: depends on the local package Packages/Design/.build/checkouts/Zip (a build or package-checkout directory), whose Package.swift is not a file git tracks: a local package inside Apps or Packages must be one git tracks there, which the check reads as a product manifest and scans as product code; an untracked one (a package checkout, a build product or a generated pack
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 6: tracked-dir the app project names a tracked directory with no Package.swift (Packages/Design/Sources) as a local package: ok (passed before the fix; fails after it, with exactly the new rule's finding)
+    before the fix (609ed49250da6a44984359bddc8219cdc6ad7c13):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Apps/DesignCatalog/project.yml: depends on the local package Packages/Design/Sources, whose Package.swift is not a file git tracks: a local package inside Apps or Packages must be one git tracks there, which the check reads as a product manifest and scans as product code; an untracked one (a package checkout, a build product or a generated package) is read by neither, yet the build would compile 
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+    (route 7's copy is a git repository: 3688 files tracked, the base committed as c3c3e19)
+    after planting, git status in that copy:  M Packages/Design/Package.swift;?? Packages/Generated/
+
+--- route 7: git in a git repository, Packages/Design depends on Packages/Generated, a package git does not track: ok (passed before the fix; fails after it, with exactly the new rule's finding)
+    before the fix (609ed49250da6a44984359bddc8219cdc6ad7c13):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL outside-product Packages/Design/Package.swift: depends on the local package Packages/Generated, whose Package.swift is not a file git tracks: a local package inside Apps or Packages must be one git tracks there, which the check reads as a product manifest and scans as product code; an untracked one (a package checkout, a build product or a generated package) is read by neither, yet the build would compile and li
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+=== Part 2a: SwiftPM reads the planted b02 manifest with its local package's directory absent
+the local package's directory: Packages/Design/.build/checkouts/Zip does not exist
+swift package dump-package (the call the check makes): exit 0; stderr lines: 0
+  dependency: fileSystem zip Packages/Design/.build/checkouts/Zip (in the copy)
+  dependency: sourceControl swift-snapshot-testing
+  SylviaDesign (a shipping library) depends on: [{"byName": ["SylviaDesignTokens", null]}, {"product": ["Zip", "Zip", null, null]}]
+
+=== Part 2b: XcodeGen 2.46.0 on a probe project with a local package under Vendor/.build/checkouts
+project.yml:
+  | name: Probe
+  | options:
+  |   bundleIdPrefix: com.example
+  |   deploymentTarget:
+  |     macOS: "26.0"
+  | packages:
+  |   Vendored:
+  |     path: Vendor/.build/checkouts/Zip
+  | targets:
+  |   Probe:
+  |     type: tool
+  |     platform: macOS
+  |     sources:
+  |       - path: Sources
+  |     dependencies:
+  |       - package: Vendored
+  |         product: Zip
+Sources/main.swift:
+  | import Zip
+  | print("probe links: \(StandIn.name)")
+case 1, Vendor/.build/checkouts/Zip absent: xcodegen generate exit 1:
+  Spec validation error: Invalid local package "Vendored"
+case 2, the directory populated with plant.py's stand-in (untracked: under .build):
+  Vendor/.build/checkouts/Zip/Package.swift
+  Vendor/.build/checkouts/Zip/Sources/Zip/StandIn.swift
+  xcodegen generate exit 0; the generated project's package reference and product dependency:
+    6A3EBAEB72B3963414520324 /* XCLocalSwiftPackageReference "Vendor/.build/checkouts/Zip" */,
+    isa = XCLocalSwiftPackageReference;
+    productName = Zip;
+    relativePath = Vendor/.build/checkouts/Zip;
+    6A3EBAEB72B3963414520324 /* XCLocalSwiftPackageReference "Vendor/.build/checkouts/Zip" */ = {
+    /* Begin XCLocalSwiftPackageReference section */
+    /* End XCLocalSwiftPackageReference section */
+
+=== Part 2c: xcodebuild builds the probe's tool from the generated project, the stand-in compiled and linked into it
+xcodebuild build exit 0 (3 s); its last lines:
+  
+  ** BUILD SUCCEEDED **
+  
+the stand-in's sources the build compiled (SwiftCompile lines naming them):
+  SwiftCompile normal arm64 Compiling\ StandIn.swift Vendor/.build/checkouts/Zip/Sources/Zip/StandIn.swift (in target 'Zip' from project 'Zip')
+  SwiftCompile normal arm64 Vendor/.build/checkouts/Zip/Sources/Zip/StandIn.swift (in target 'Zip' from project 'Zip')
+the stand-in's type in the tool's symbols (nm): 12 symbols naming StandIn, for example:
+  0000000100000c8c T _$s3Zip7StandInO4nameSSvau
+  0000000100000cdc T _$s3Zip7StandInO4nameSSvgZ
+the tool's output: probe links: a stand-in package named Zip
+
+reproductions finished 2026-10-25T17:57:34Z; load:  6:57  up 22 days, 17:08, 3 users, load averages: 5.55 5.52 6.03
+result: every route as expected

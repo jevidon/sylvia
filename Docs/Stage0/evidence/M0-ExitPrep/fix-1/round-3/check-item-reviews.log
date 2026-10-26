@@ -1,0 +1,550 @@
+command: python3 -I Docs/Stage0/evidence/M0-Integration/item-reviews/commands/item-reviews.py check --extraction /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews
+commit: f95de709791a49293c61dbba291e22ec5c4dd431; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T20:59:50Z; load:  9:59  up 22 days, 20:10, 3 users, load averages: 4.17 4.17 3.90
+
+command: python3 -I Docs/Stage0/evidence/M0-Integration/item-reviews/commands/item-reviews.py check --extraction /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews
+commit: f95de709791a49293c61dbba291e22ec5c4dd431; uncommitted paths: 0
+
+== 1. The files
+ok      extracted/ holds exactly the 14 files of the extraction, each named <file>.json.txt: 14 found
+ok      extracted/SUMMARY.json.txt: 3786 bytes, SHA-256 263c6aa5852e563c... equal to the extracted file's
+ok      extracted/SUMMARY.json.txt parses as JSON (UTF-8)
+ok      extracted/SUMMARY.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/SUMMARY.json
+ok      extracted/amendments.json.txt: 166802 bytes, SHA-256 5fe1568bae95cca1... equal to the extracted file's
+ok      extracted/amendments.json.txt parses as JSON (UTF-8)
+ok      extracted/amendments.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/amendments.json
+ok      extracted/contracts.json.txt: 199634 bytes, SHA-256 cb1773d2a21c96f4... equal to the extracted file's
+ok      extracted/contracts.json.txt parses as JSON (UTF-8)
+ok      extracted/contracts.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/contracts.json
+ok      extracted/deps.json.txt: 137111 bytes, SHA-256 474a341b6c759ada... equal to the extracted file's
+ok      extracted/deps.json.txt parses as JSON (UTF-8)
+ok      extracted/deps.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/deps.json
+ok      extracted/minors-g01-epub.json.txt: 20347 bytes, SHA-256 6ca04f0e73eaf9f7... equal to the extracted file's
+ok      extracted/minors-g01-epub.json.txt parses as JSON (UTF-8)
+ok      extracted/minors-g01-epub.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/minors-g01-epub.json
+ok      extracted/minors-g01-pdf.json.txt: 96798 bytes, SHA-256 538928a3122c92c6... equal to the extracted file's
+ok      extracted/minors-g01-pdf.json.txt parses as JSON (UTF-8)
+ok      extracted/minors-g01-pdf.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/minors-g01-pdf.json
+ok      extracted/minors-g02-transfer.json.txt: 35223 bytes, SHA-256 e5285ee87cab9a6b... equal to the extracted file's
+ok      extracted/minors-g02-transfer.json.txt parses as JSON (UTF-8)
+ok      extracted/minors-g02-transfer.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/minors-g02-transfer.json
+ok      extracted/minors-g03-intake.json.txt: 102676 bytes, SHA-256 c64d3f4c5198f7c7... equal to the extracted file's
+ok      extracted/minors-g03-intake.json.txt parses as JSON (UTF-8)
+ok      extracted/minors-g03-intake.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/minors-g03-intake.json
+ok      extracted/minors-g04-audio.json.txt: 31826 bytes, SHA-256 18875feef4fd00bb... equal to the extracted file's
+ok      extracted/minors-g04-audio.json.txt parses as JSON (UTF-8)
+ok      extracted/minors-g04-audio.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/minors-g04-audio.json
+ok      extracted/minors-g05-ai.json.txt: 57097 bytes, SHA-256 66be74695e9686c6... equal to the extracted file's
+ok      extracted/minors-g05-ai.json.txt parses as JSON (UTF-8)
+ok      extracted/minors-g05-ai.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/minors-g05-ai.json
+ok      extracted/minors-g05-recovery.json.txt: 62973 bytes, SHA-256 cdbb66f87047b697... equal to the extracted file's
+ok      extracted/minors-g05-recovery.json.txt parses as JSON (UTF-8)
+ok      extracted/minors-g05-recovery.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/minors-g05-recovery.json
+ok      extracted/minors-g06-design.json.txt: 33615 bytes, SHA-256 5f452e918011d533... equal to the extracted file's
+ok      extracted/minors-g06-design.json.txt parses as JSON (UTF-8)
+ok      extracted/minors-g06-design.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/minors-g06-design.json
+ok      extracted/runbook.json.txt: 116014 bytes, SHA-256 cc2e3d7fd84adde8... equal to the extracted file's
+ok      extracted/runbook.json.txt parses as JSON (UTF-8)
+ok      extracted/runbook.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/runbook.json
+ok      extracted/threat.json.txt: 54284 bytes, SHA-256 607827b588470f7f... equal to the extracted file's
+ok      extracted/threat.json.txt parses as JSON (UTF-8)
+ok      extracted/threat.json.txt is byte for byte /private/tmp/claude-501/-Users-jevidon-Git-sylvia/5bdb0d98-f700-47fd-ab1d-8b1a7a65cdbb/scratchpad/item-reviews/threat.json
+ok      README.md lists the SHA-256 of each of the fourteen files
+ok      SUMMARY.json names the thirteen items of integration log 7.1: contracts, deps, threat, runbook, amendments, minors-g01-epub, minors-g01-pdf, minors-g02-transfer, minors-g03-intake, minors-g04-audio, minors-g05-ai, minors-g05-recovery, minors-g06-design
+
+== 2. SUMMARY.json against the item files
+ok      contracts: 9 records, 6 reviews, runs wf_5552ba19-d21, wf_744b95c1-309, as SUMMARY.json says
+ok      contracts: SUMMARY.json's final review contracts:review-3b (accept-with-minor) is the last record of the final round, round 3 (its lenses: review-3, review-3b)
+ok      deps: 8 records, 4 reviews, runs wf_3f1b0c6a-cad, wf_5552ba19-d21, wf_744b95c1-309, wf_9ea3b4d5-f4f, as SUMMARY.json says
+ok      deps: SUMMARY.json's final review deps:review-4 (reject) is the last record of the final round, round 4
+ok      threat: 3 records, 2 reviews, runs wf_5552ba19-d21, wf_5ce13c9e-6bf, as SUMMARY.json says
+ok      threat: SUMMARY.json's final review threat:review-1 (accept-with-minor) is the last record of the final round, round 1 (its lenses: review-1b, review-1)
+ok      minors-g06-design: 2 records, 1 review, runs wf_5552ba19-d21, as SUMMARY.json says
+ok      minors-g06-design: SUMMARY.json's final review minors-g06-design:review-1 (accept-with-minor) is the last record of the final round, round 1
+ok      minors-g05-recovery: 4 records, 2 reviews, runs wf_5552ba19-d21, as SUMMARY.json says
+ok      minors-g05-recovery: SUMMARY.json's final review minors-g05-recovery:review-2 (accept-with-minor) is the last record of the final round, round 2
+ok      minors-g01-epub: 2 records, 1 review, runs wf_5ce13c9e-6bf, as SUMMARY.json says
+ok      minors-g01-epub: SUMMARY.json's final review minors-g01-epub:review-1 (accept-with-minor) is the last record of the final round, round 1
+ok      minors-g01-pdf: 6 records, 3 reviews, runs wf_5552ba19-d21, wf_744b95c1-309, as SUMMARY.json says
+ok      minors-g01-pdf: SUMMARY.json's final review minors-g01-pdf:review-3 (accept-with-minor) is the last record of the final round, round 3
+ok      minors-g03-intake: 6 records, 3 reviews, runs wf_3f1b0c6a-cad, wf_5552ba19-d21, wf_744b95c1-309, as SUMMARY.json says
+ok      minors-g03-intake: SUMMARY.json's final review minors-g03-intake:review-3 (accept-with-minor) is the last record of the final round, round 3
+ok      minors-g02-transfer: 2 records, 1 review, runs wf_5552ba19-d21, as SUMMARY.json says
+ok      minors-g02-transfer: SUMMARY.json's final review minors-g02-transfer:review-1 (accept-with-minor) is the last record of the final round, round 1
+ok      minors-g05-ai: 4 records, 2 reviews, runs wf_5552ba19-d21, wf_5ce13c9e-6bf, as SUMMARY.json says
+ok      minors-g05-ai: SUMMARY.json's final review minors-g05-ai:review-2 (accept-with-minor) is the last record of the final round, round 2
+ok      runbook: 6 records, 3 reviews, runs wf_9ea3b4d5-f4f, wf_eaa493fa-c4f, as SUMMARY.json says
+ok      runbook: SUMMARY.json's final review runbook:review-3 (accept-with-minor) is the last record of the final round, round 3
+ok      amendments: 9 records, 6 reviews, runs wf_3f1b0c6a-cad, wf_9ea3b4d5-f4f, as SUMMARY.json says
+ok      amendments: SUMMARY.json's final review amendments:review-3b (accept-with-minor) is the last record of the final round, round 3 (its lenses: review-3, review-3b)
+ok      minors-g04-audio: 2 records, 1 review, runs wf_9ea3b4d5-f4f, as SUMMARY.json says
+ok      minors-g04-audio: SUMMARY.json's final review minors-g04-audio:review-1 (accept-with-minor) is the last record of the final round, round 1
+
+== 3. Labels and the timeline
+ok      contracts: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      contracts: one author, review rounds 1-3, a fix after each round but the last (fixes: fix-1, fix-2)
+ok      contracts: the records' runs and seqs run forward in the order of the rounds: author wf_5552ba19-d21#24 -> review-1 wf_5552ba19-d21#27 -> review-1b wf_5552ba19-d21#37 -> fix-1 wf_5552ba19-d21#53 -> review-2 wf_744b95c1-309#9 -> review-2b wf_744b95c1-309#10 -> fix-2 wf_744b95c1-309#23 -> review-3 wf_744b95c1-309#26 -> review-3b wf_744b95c1-309#29
+ok      deps: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      deps: one author, review rounds 1-4, a fix after each round but the last (fixes: fix-1, fix-2, fix-3)
+ok      deps: the records' runs and seqs run forward in the order of the rounds: author wf_5552ba19-d21#45 -> review-1 wf_5552ba19-d21#51 -> fix-1 wf_744b95c1-309#21 -> review-2 wf_744b95c1-309#27 -> fix-2 wf_3f1b0c6a-cad#9 -> review-3 wf_3f1b0c6a-cad#11 -> fix-3 wf_9ea3b4d5-f4f#20 -> review-4 wf_9ea3b4d5-f4f#25
+ok      threat: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      threat: one author, one review round, no fix
+ok      threat: the records' runs and seqs run forward in the order of the rounds: author wf_5ce13c9e-6bf#20 -> review-1b wf_5552ba19-d21#15 -> review-1 wf_5552ba19-d21#16
+ok      minors-g06-design: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      minors-g06-design: one author, one review round, no fix
+ok      minors-g06-design: the records' runs and seqs run forward in the order of the rounds: author wf_5552ba19-d21#33 -> review-1 wf_5552ba19-d21#39
+ok      minors-g05-recovery: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      minors-g05-recovery: one author, review rounds 1-2, a fix after each round but the last (fixes: fix-1)
+ok      minors-g05-recovery: the records' runs and seqs run forward in the order of the rounds: author wf_5552ba19-d21#20 -> review-1 wf_5552ba19-d21#31 -> fix-1 wf_5552ba19-d21#47 -> review-2 wf_5552ba19-d21#56
+ok      minors-g01-epub: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      minors-g01-epub: one author, one review round, no fix
+ok      minors-g01-epub: the records' runs and seqs run forward in the order of the rounds: author wf_5ce13c9e-6bf#15 -> review-1 wf_5ce13c9e-6bf#17
+ok      minors-g01-pdf: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      minors-g01-pdf: one author, review rounds 1-3, a fix after each round but the last (fixes: fix-1, fix-2)
+ok      minors-g01-pdf: the records' runs and seqs run forward in the order of the rounds: author wf_5552ba19-d21#18 -> review-1 wf_5552ba19-d21#28 -> fix-1 wf_5552ba19-d21#57 -> review-2 wf_744b95c1-309#7 -> fix-2 wf_744b95c1-309#14 -> review-3 wf_744b95c1-309#20
+ok      minors-g03-intake: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      minors-g03-intake: one author, review rounds 1-3, a fix after each round but the last (fixes: fix-1, fix-2)
+ok      minors-g03-intake: the records' runs and seqs run forward in the order of the rounds: author wf_5552ba19-d21#43 -> review-1 wf_5552ba19-d21#49 -> fix-1 wf_744b95c1-309#12 -> review-2 wf_744b95c1-309#18 -> fix-2 wf_744b95c1-309#30 -> review-3 wf_3f1b0c6a-cad#4
+ok      minors-g02-transfer: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      minors-g02-transfer: one author, one review round, no fix
+ok      minors-g02-transfer: the records' runs and seqs run forward in the order of the rounds: author wf_5552ba19-d21#22 -> review-1 wf_5552ba19-d21#30
+ok      minors-g05-ai: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      minors-g05-ai: one author, review rounds 1-2, a fix after each round but the last (fixes: fix-1)
+ok      minors-g05-ai: the records' runs and seqs run forward in the order of the rounds: author wf_5ce13c9e-6bf#18 -> review-1 wf_5552ba19-d21#13 -> fix-1 wf_5552ba19-d21#35 -> review-2 wf_5552ba19-d21#40
+ok      runbook: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      runbook: one author, review rounds 1-3, a fix after each round but the last (fixes: fix-1, fix-2)
+ok      runbook: the records' runs and seqs run forward in the order of the rounds: author wf_9ea3b4d5-f4f#9 -> review-1 wf_9ea3b4d5-f4f#18 -> fix-1 wf_9ea3b4d5-f4f#23 -> review-2 wf_9ea3b4d5-f4f#26 -> fix-2 wf_eaa493fa-c4f#2 -> review-3 wf_eaa493fa-c4f#4
+ok      amendments: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      amendments: one author, review rounds 1-3, a fix after each round but the last (fixes: fix-1, fix-2)
+ok      amendments: the records' runs and seqs run forward in the order of the rounds: author wf_3f1b0c6a-cad#12 -> review-1b wf_3f1b0c6a-cad#15 -> review-1 wf_3f1b0c6a-cad#16 -> fix-1 wf_3f1b0c6a-cad#18 -> review-2 wf_9ea3b4d5-f4f#6 -> review-2b wf_9ea3b4d5-f4f#7 -> fix-2 wf_9ea3b4d5-f4f#11 -> review-3 wf_9ea3b4d5-f4f#16 -> review-3b wf_9ea3b4d5-f4f#17
+ok      minors-g04-audio: every label is <item>:author, review-N, review-Nb or fix-N, for this item
+ok      minors-g04-audio: one author, one review round, no fix
+ok      minors-g04-audio: the records' runs and seqs run forward in the order of the rounds: author wf_9ea3b4d5-f4f#14 -> review-1 wf_9ea3b4d5-f4f#22
+        the runs the records come from, in order: wf_5ce13c9e-6bf, wf_5552ba19-d21, wf_744b95c1-309, wf_3f1b0c6a-cad, wf_9ea3b4d5-f4f, wf_eaa493fa-c4f
+        named by the gate summary (Section 1, item 4) and holding no extracted record: wf_84f4e4ba-f4a
+        holding records and not named by the gate summary: wf_5ce13c9e-6bf (wf_5ce13c9e-6bf: threat:author, minors-g01-epub:author, minors-g01-epub:review-1, minors-g05-ai:author)
+
+== 4. Every commit: it is a commit of this repository, on the item's branch, and the rounds chain
+ok      contracts: branch m0-int-contracts exists, at ef0d5de68f3b
+ok      contracts author: ea2bef6ea038 is a commit of this repository (git cat-file -e), on m0-int-contracts (committed 2026-10-13T11:00:12+13:00)
+ok      contracts review-1: ea2bef6ea038 is a commit of this repository (git cat-file -e), on m0-int-contracts (committed 2026-10-13T11:00:12+13:00)
+ok      contracts review-1: reviewed ea2bef6ea038, the commit of the author (ea2bef6ea038)
+ok      contracts review-1b: ea2bef6ea038 is a commit of this repository (git cat-file -e), on m0-int-contracts (committed 2026-10-13T11:00:12+13:00)
+ok      contracts review-1b: reviewed ea2bef6ea038, the commit of the author (ea2bef6ea038)
+ok      contracts fix-1: bed92afd2fb8 is a commit of this repository (git cat-file -e), on m0-int-contracts (committed 2026-10-13T15:04:22+13:00)
+ok      contracts fix-1: bed92afd2fb8 comes after the commit review 1 read (ea2bef6ea038)
+ok      contracts review-2: bed92afd2fb8 is a commit of this repository (git cat-file -e), on m0-int-contracts (committed 2026-10-13T15:04:22+13:00)
+ok      contracts review-2: reviewed bed92afd2fb8, the commit of fix-1 (bed92afd2fb8)
+ok      contracts review-2b: bed92afd2fb8 is a commit of this repository (git cat-file -e), on m0-int-contracts (committed 2026-10-13T15:04:22+13:00)
+ok      contracts review-2b: reviewed bed92afd2fb8, the commit of fix-1 (bed92afd2fb8)
+ok      contracts fix-2: ef0d5de68f3b is a commit of this repository (git cat-file -e), on m0-int-contracts (committed 2026-10-13T19:30:45+13:00)
+ok      contracts fix-2: ef0d5de68f3b comes after the commit review 2 read (bed92afd2fb8)
+ok      contracts review-3: ef0d5de68f3b is a commit of this repository (git cat-file -e), on m0-int-contracts (committed 2026-10-13T19:30:45+13:00) (given as 'ef0d5de68f3bd7bdd301275796611e857bf663fb (m0-int-contracts, '...)
+ok      contracts review-3: reviewed ef0d5de68f3b, the commit of fix-2 (ef0d5de68f3b)
+ok      contracts review-3b: ef0d5de68f3b is a commit of this repository (git cat-file -e), on m0-int-contracts (committed 2026-10-13T19:30:45+13:00)
+ok      contracts review-3b: reviewed ef0d5de68f3b, the commit of fix-2 (ef0d5de68f3b)
+ok      contracts: every lens of the final round reviewed the same commit
+ok      deps: branch m0-int-deps exists, at 67682c2394d7
+ok      deps author: a4a24c7441f5 is a commit of this repository (git cat-file -e), on m0-int-deps (committed 2026-10-13T13:58:52+13:00)
+ok      deps review-1: a4a24c7441f5 is a commit of this repository (git cat-file -e), on m0-int-deps (committed 2026-10-13T13:58:52+13:00)
+ok      deps review-1: reviewed a4a24c7441f5, the commit of the author (a4a24c7441f5)
+ok      deps fix-1: 1442a6686057 is a commit of this repository (git cat-file -e), on m0-int-deps (committed 2026-10-13T19:22:29+13:00)
+ok      deps fix-1: 1442a6686057 comes after the commit review 1 read (a4a24c7441f5)
+ok      deps review-2: 1442a6686057 is a commit of this repository (git cat-file -e), on m0-int-deps (committed 2026-10-13T19:22:29+13:00)
+ok      deps review-2: reviewed 1442a6686057, the commit of fix-1 (1442a6686057)
+ok      deps fix-2: e38124785c5e is a commit of this repository (git cat-file -e), on m0-int-deps (committed 2026-10-14T05:52:48+13:00)
+ok      deps fix-2: e38124785c5e comes after the commit review 2 read (1442a6686057)
+ok      deps review-3: e38124785c5e is a commit of this repository (git cat-file -e), on m0-int-deps (committed 2026-10-14T05:52:48+13:00)
+ok      deps review-3: reviewed e38124785c5e, the commit of fix-2 (e38124785c5e)
+ok      deps fix-3: 67682c2394d7 is a commit of this repository (git cat-file -e), on m0-int-deps (committed 2026-10-14T15:41:33+13:00)
+ok      deps fix-3: 67682c2394d7 comes after the commit review 3 read (e38124785c5e)
+ok      deps review-4: 67682c2394d7 is a commit of this repository (git cat-file -e), on m0-int-deps (committed 2026-10-14T15:41:33+13:00)
+ok      deps review-4: reviewed 67682c2394d7, the commit of fix-3 (67682c2394d7)
+ok      deps: every lens of the final round reviewed the same commit
+ok      threat: branch m0-int-threat exists, at 6bb2b9e8811d
+ok      threat author: 6bb2b9e8811d is a commit of this repository (git cat-file -e), on m0-int-threat (committed 2026-10-13T07:54:37+13:00)
+ok      threat review-1b: 6bb2b9e8811d is a commit of this repository (git cat-file -e), on m0-int-threat (committed 2026-10-13T07:54:37+13:00) (given as '6bb2b9e8811d4ce1d7786c9c2f971ce4416facfe (detached; branch m'...)
+ok      threat review-1b: reviewed 6bb2b9e8811d, the commit of the author (6bb2b9e8811d)
+ok      threat review-1: 6bb2b9e8811d is a commit of this repository (git cat-file -e), on m0-int-threat (committed 2026-10-13T07:54:37+13:00)
+ok      threat review-1: reviewed 6bb2b9e8811d, the commit of the author (6bb2b9e8811d)
+ok      threat: every lens of the final round reviewed the same commit
+ok      minors-g06-design: branch m0-int-minors-g06-design exists, at 98125421e274
+ok      minors-g06-design author: 98125421e274 is a commit of this repository (git cat-file -e), on m0-int-minors-g06-design (committed 2026-10-13T12:23:16+13:00)
+ok      minors-g06-design review-1: 98125421e274 is a commit of this repository (git cat-file -e), on m0-int-minors-g06-design (committed 2026-10-13T12:23:16+13:00)
+ok      minors-g06-design review-1: reviewed 98125421e274, the commit of the author (98125421e274)
+ok      minors-g06-design: every lens of the final round reviewed the same commit
+ok      minors-g05-recovery: branch m0-int-minors-g05-recovery exists, at cd3e42b0345b
+ok      minors-g05-recovery author: ce535e0d29a4 is a commit of this repository (git cat-file -e), on m0-int-minors-g05-recovery (committed 2026-10-13T10:54:48+13:00)
+ok      minors-g05-recovery review-1: ce535e0d29a4 is a commit of this repository (git cat-file -e), on m0-int-minors-g05-recovery (committed 2026-10-13T10:54:48+13:00)
+ok      minors-g05-recovery review-1: reviewed ce535e0d29a4, the commit of the author (ce535e0d29a4)
+ok      minors-g05-recovery fix-1: cd3e42b0345b is a commit of this repository (git cat-file -e), on m0-int-minors-g05-recovery (committed 2026-10-13T14:30:23+13:00)
+ok      minors-g05-recovery fix-1: cd3e42b0345b comes after the commit review 1 read (ce535e0d29a4)
+ok      minors-g05-recovery review-2: cd3e42b0345b is a commit of this repository (git cat-file -e), on m0-int-minors-g05-recovery (committed 2026-10-13T14:30:23+13:00) (given as 'cd3e42b0345b3f1fb21e21a109deff0c4a2e26d6 (m0-int-minors-g05-'...)
+ok      minors-g05-recovery review-2: reviewed cd3e42b0345b, the commit of fix-1 (cd3e42b0345b)
+ok      minors-g05-recovery: every lens of the final round reviewed the same commit
+ok      minors-g01-epub: branch m0-int-minors-g01-epub exists, at d31705419c15
+ok      minors-g01-epub author: d31705419c15 is a commit of this repository (git cat-file -e), on m0-int-minors-g01-epub (committed 2026-10-13T06:42:02+13:00)
+ok      minors-g01-epub review-1: d31705419c15 is a commit of this repository (git cat-file -e), on m0-int-minors-g01-epub (committed 2026-10-13T06:42:02+13:00) (given as 'd31705419c15da68cd4208dc243e696b2f6d8346 (m0-int-minors-g01-'...)
+ok      minors-g01-epub review-1: reviewed d31705419c15, the commit of the author (d31705419c15)
+ok      minors-g01-epub: every lens of the final round reviewed the same commit
+ok      minors-g01-pdf: branch m0-int-minors-g01-pdf exists, at a44b746c6a83
+ok      minors-g01-pdf author: 7884a59c212f is a commit of this repository (git cat-file -e), on m0-int-minors-g01-pdf (committed 2026-10-13T10:47:00+13:00)
+ok      minors-g01-pdf review-1: 7884a59c212f is a commit of this repository (git cat-file -e), on m0-int-minors-g01-pdf (committed 2026-10-13T10:47:00+13:00)
+ok      minors-g01-pdf review-1: reviewed 7884a59c212f, the commit of the author (7884a59c212f)
+ok      minors-g01-pdf fix-1: 11736d159fbc is a commit of this repository (git cat-file -e), on m0-int-minors-g01-pdf (committed 2026-10-13T15:31:44+13:00)
+ok      minors-g01-pdf fix-1: 11736d159fbc comes after the commit review 1 read (7884a59c212f)
+ok      minors-g01-pdf review-2: 11736d159fbc is a commit of this repository (git cat-file -e), on m0-int-minors-g01-pdf (committed 2026-10-13T15:31:44+13:00)
+ok      minors-g01-pdf review-2: reviewed 11736d159fbc, the commit of fix-1 (11736d159fbc)
+ok      minors-g01-pdf fix-2: a44b746c6a83 is a commit of this repository (git cat-file -e), on m0-int-minors-g01-pdf (committed 2026-10-13T18:46:23+13:00)
+ok      minors-g01-pdf fix-2: a44b746c6a83 comes after the commit review 2 read (11736d159fbc)
+ok      minors-g01-pdf review-3: a44b746c6a83 is a commit of this repository (git cat-file -e), on m0-int-minors-g01-pdf (committed 2026-10-13T18:46:23+13:00)
+ok      minors-g01-pdf review-3: reviewed a44b746c6a83, the commit of fix-2 (a44b746c6a83)
+ok      minors-g01-pdf: every lens of the final round reviewed the same commit
+ok      minors-g03-intake: branch m0-int-minors-g03-intake exists, at 77ceaf3f5228
+ok      minors-g03-intake author: 4b8c6342dd1a is a commit of this repository (git cat-file -e), on m0-int-minors-g03-intake (committed 2026-10-13T13:55:20+13:00)
+ok      minors-g03-intake review-1: 4b8c6342dd1a is a commit of this repository (git cat-file -e), on m0-int-minors-g03-intake (committed 2026-10-13T13:55:20+13:00)
+ok      minors-g03-intake review-1: reviewed 4b8c6342dd1a, the commit of the author (4b8c6342dd1a)
+ok      minors-g03-intake fix-1: 937d53a570f2 is a commit of this repository (git cat-file -e), on m0-int-minors-g03-intake (committed 2026-10-13T18:33:20+13:00)
+ok      minors-g03-intake fix-1: 937d53a570f2 comes after the commit review 1 read (4b8c6342dd1a)
+ok      minors-g03-intake review-2: 937d53a570f2 is a commit of this repository (git cat-file -e), on m0-int-minors-g03-intake (committed 2026-10-13T18:33:20+13:00)
+ok      minors-g03-intake review-2: reviewed 937d53a570f2, the commit of fix-1 (937d53a570f2)
+ok      minors-g03-intake fix-2: 77ceaf3f5228 is a commit of this repository (git cat-file -e), on m0-int-minors-g03-intake (committed 2026-10-13T21:02:21+13:00)
+ok      minors-g03-intake fix-2: 77ceaf3f5228 comes after the commit review 2 read (937d53a570f2)
+ok      minors-g03-intake review-3: 77ceaf3f5228 is a commit of this repository (git cat-file -e), on m0-int-minors-g03-intake (committed 2026-10-13T21:02:21+13:00)
+ok      minors-g03-intake review-3: reviewed 77ceaf3f5228, the commit of fix-2 (77ceaf3f5228)
+ok      minors-g03-intake: every lens of the final round reviewed the same commit
+ok      minors-g02-transfer: branch m0-int-minors-g02-transfer exists, at c83a3b9ff051
+ok      minors-g02-transfer author: c83a3b9ff051 is a commit of this repository (git cat-file -e), on m0-int-minors-g02-transfer (committed 2026-10-13T10:51:59+13:00)
+ok      minors-g02-transfer review-1: c83a3b9ff051 is a commit of this repository (git cat-file -e), on m0-int-minors-g02-transfer (committed 2026-10-13T10:51:59+13:00)
+ok      minors-g02-transfer review-1: reviewed c83a3b9ff051, the commit of the author (c83a3b9ff051)
+ok      minors-g02-transfer: every lens of the final round reviewed the same commit
+ok      minors-g05-ai: branch m0-int-minors-g05-ai exists, at 4090d590e1c0
+ok      minors-g05-ai author: f838379682a6 is a commit of this repository (git cat-file -e), on m0-int-minors-g05-ai (committed 2026-10-13T07:21:42+13:00)
+ok      minors-g05-ai review-1: f838379682a6 is a commit of this repository (git cat-file -e), on m0-int-minors-g05-ai (committed 2026-10-13T07:21:42+13:00)
+ok      minors-g05-ai review-1: reviewed f838379682a6, the commit of the author (f838379682a6)
+ok      minors-g05-ai fix-1: 4090d590e1c0 is a commit of this repository (git cat-file -e), on m0-int-minors-g05-ai (committed 2026-10-13T12:24:08+13:00)
+ok      minors-g05-ai fix-1: 4090d590e1c0 comes after the commit review 1 read (f838379682a6)
+ok      minors-g05-ai review-2: 4090d590e1c0 is a commit of this repository (git cat-file -e), on m0-int-minors-g05-ai (committed 2026-10-13T12:24:08+13:00)
+ok      minors-g05-ai review-2: reviewed 4090d590e1c0, the commit of fix-1 (4090d590e1c0)
+ok      minors-g05-ai: every lens of the final round reviewed the same commit
+ok      runbook: branch m0-int-runbook exists, at 6f339473eec5
+ok      runbook author: 73c1ae2bb274 is a commit of this repository (git cat-file -e), on m0-int-runbook (committed 2026-10-14T13:38:27+13:00)
+ok      runbook review-1: 73c1ae2bb274 is a commit of this repository (git cat-file -e), on m0-int-runbook (committed 2026-10-14T13:38:27+13:00)
+ok      runbook review-1: reviewed 73c1ae2bb274, the commit of the author (73c1ae2bb274)
+ok      runbook fix-1: 9806a5a336ab is a commit of this repository (git cat-file -e), on m0-int-runbook (committed 2026-10-14T16:59:36+13:00)
+ok      runbook fix-1: 9806a5a336ab comes after the commit review 1 read (73c1ae2bb274)
+ok      runbook review-2: 9806a5a336ab is a commit of this repository (git cat-file -e), on m0-int-runbook (committed 2026-10-14T16:59:36+13:00)
+ok      runbook review-2: reviewed 9806a5a336ab, the commit of fix-1 (9806a5a336ab)
+ok      runbook fix-2: 6f339473eec5 is a commit of this repository (git cat-file -e), on m0-int-runbook (committed 2026-10-14T19:58:11+13:00)
+ok      runbook fix-2: 6f339473eec5 comes after the commit review 2 read (9806a5a336ab)
+ok      runbook review-3: 6f339473eec5 is a commit of this repository (git cat-file -e), on m0-int-runbook (committed 2026-10-14T19:58:11+13:00)
+ok      runbook review-3: reviewed 6f339473eec5, the commit of fix-2 (6f339473eec5)
+ok      runbook: every lens of the final round reviewed the same commit
+ok      amendments: branch m0-int-amendments exists, at 694518f2e189
+ok      amendments author: 200b0ae432c7 is a commit of this repository (git cat-file -e), on m0-int-amendments (committed 2026-10-14T07:26:19+13:00)
+ok      amendments review-1b: 200b0ae432c7 is a commit of this repository (git cat-file -e), on m0-int-amendments (committed 2026-10-14T07:26:19+13:00)
+ok      amendments review-1b: reviewed 200b0ae432c7, the commit of the author (200b0ae432c7)
+ok      amendments review-1: 200b0ae432c7 is a commit of this repository (git cat-file -e), on m0-int-amendments (committed 2026-10-14T07:26:19+13:00)
+ok      amendments review-1: reviewed 200b0ae432c7, the commit of the author (200b0ae432c7)
+ok      amendments fix-1: c6b02bcadc89 is a commit of this repository (git cat-file -e), on m0-int-amendments (committed 2026-10-14T10:19:07+13:00)
+ok      amendments fix-1: c6b02bcadc89 comes after the commit review 1 read (200b0ae432c7)
+ok      amendments review-2: c6b02bcadc89 is a commit of this repository (git cat-file -e), on m0-int-amendments (committed 2026-10-14T10:19:07+13:00)
+ok      amendments review-2: reviewed c6b02bcadc89, the commit of fix-1 (c6b02bcadc89)
+ok      amendments review-2b: c6b02bcadc89 is a commit of this repository (git cat-file -e), on m0-int-amendments (committed 2026-10-14T10:19:07+13:00)
+ok      amendments review-2b: reviewed c6b02bcadc89, the commit of fix-1 (c6b02bcadc89)
+ok      amendments fix-2: 694518f2e189 is a commit of this repository (git cat-file -e), on m0-int-amendments (committed 2026-10-14T13:49:55+13:00)
+ok      amendments fix-2: 694518f2e189 comes after the commit review 2 read (c6b02bcadc89)
+ok      amendments review-3: 694518f2e189 is a commit of this repository (git cat-file -e), on m0-int-amendments (committed 2026-10-14T13:49:55+13:00)
+ok      amendments review-3: reviewed 694518f2e189, the commit of fix-2 (694518f2e189)
+ok      amendments review-3b: 694518f2e189 is a commit of this repository (git cat-file -e), on m0-int-amendments (committed 2026-10-14T13:49:55+13:00)
+ok      amendments review-3b: reviewed 694518f2e189, the commit of fix-2 (694518f2e189)
+ok      amendments: every lens of the final round reviewed the same commit
+ok      minors-g04-audio: branch m0-int-minors-g04-audio exists, at d0c612031d2e
+ok      minors-g04-audio author: d0c612031d2e is a commit of this repository (git cat-file -e), on m0-int-minors-g04-audio (committed 2026-10-14T14:01:41+13:00)
+ok      minors-g04-audio review-1: d0c612031d2e is a commit of this repository (git cat-file -e), on m0-int-minors-g04-audio (committed 2026-10-14T14:01:41+13:00)
+ok      minors-g04-audio review-1: reviewed d0c612031d2e, the commit of the author (d0c612031d2e)
+ok      minors-g04-audio: every lens of the final round reviewed the same commit
+
+== 5. The merge: the final round reviewed the commit integration log 7.1 merged
+ok      integration log 7.1 lists the thirteen items: 13 rows
+ok      contracts: 7.1's final commit ef0d5de68f3b = the commit the final round reviewed = the head of m0-int-contracts
+ok      contracts: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      contracts: the squash commit 5670e3a names m0-int-contracts and ef0d5de68f3b in its message
+ok      contracts: the 499 paths the branch changes are identical in mode and blob in the squash commit (7.1: 499 paths)
+ok      contracts: the squash commit is in this branch's history
+ok      contracts: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      deps: 7.1's final commit 67682c2394d7 = the commit the final round reviewed = the head of m0-int-deps
+ok      deps: 7.1's verdict 'reject' = the final round's reject
+ok      deps: the squash commit 358a5bc names m0-int-deps and 67682c2394d7 in its message
+ok      deps: the 107 paths the branch changes are identical in mode and blob in the squash commit, except Docs/ADRs/0014-dependency-lock-and-license-inventory.md (7.1: 107 paths; its one conflict, in wording only, as 7.1 records)
+ok      deps: the squash commit is in this branch's history
+ok      deps: 7.1's open serious findings (R4-01, R4-02 (below)) = the final round's blocker and major findings (R4-01, R4-02)
+ok      threat: 7.1's final commit 6bb2b9e8811d = the commit the final round reviewed = the head of m0-int-threat
+ok      threat: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      threat: the squash commit 10d758f names m0-int-threat and 6bb2b9e8811d in its message
+ok      threat: the 10 paths the branch changes are identical in mode and blob in the squash commit (7.1: 10 paths)
+ok      threat: the squash commit is in this branch's history
+ok      threat: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      minors-g06-design: 7.1's final commit 98125421e274 = the commit the final round reviewed = the head of m0-int-minors-g06-design
+ok      minors-g06-design: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      minors-g06-design: the squash commit 8a59a16 names m0-int-minors-g06-design and 98125421e274 in its message
+ok      minors-g06-design: the 244 paths the branch changes are identical in mode and blob in the squash commit (7.1: 244 paths)
+ok      minors-g06-design: the squash commit is in this branch's history
+ok      minors-g06-design: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      minors-g05-recovery: 7.1's final commit cd3e42b0345b = the commit the final round reviewed = the head of m0-int-minors-g05-recovery
+ok      minors-g05-recovery: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      minors-g05-recovery: the squash commit 740aa46 names m0-int-minors-g05-recovery and cd3e42b0345b in its message
+ok      minors-g05-recovery: the 39 paths the branch changes are identical in mode and blob in the squash commit (7.1: 39 paths)
+ok      minors-g05-recovery: the squash commit is in this branch's history
+ok      minors-g05-recovery: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      minors-g01-epub: 7.1's final commit d31705419c15 = the commit the final round reviewed = the head of m0-int-minors-g01-epub
+ok      minors-g01-epub: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      minors-g01-epub: the squash commit b7b3ae9 names m0-int-minors-g01-epub and d31705419c15 in its message
+ok      minors-g01-epub: the 32 paths the branch changes are identical in mode and blob in the squash commit (7.1: 32 paths)
+ok      minors-g01-epub: the squash commit is in this branch's history
+ok      minors-g01-epub: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      minors-g01-pdf: 7.1's final commit a44b746c6a83 = the commit the final round reviewed = the head of m0-int-minors-g01-pdf
+ok      minors-g01-pdf: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      minors-g01-pdf: the squash commit 483ca01 names m0-int-minors-g01-pdf and a44b746c6a83 in its message
+ok      minors-g01-pdf: the 115 paths the branch changes are identical in mode and blob in the squash commit (7.1: 115 paths)
+ok      minors-g01-pdf: the squash commit is in this branch's history
+ok      minors-g01-pdf: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      minors-g03-intake: 7.1's final commit 77ceaf3f5228 = the commit the final round reviewed = the head of m0-int-minors-g03-intake
+ok      minors-g03-intake: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      minors-g03-intake: the squash commit 932d08c names m0-int-minors-g03-intake and 77ceaf3f5228 in its message
+ok      minors-g03-intake: the 121 paths the branch changes are identical in mode and blob in the squash commit (7.1: 121 paths)
+ok      minors-g03-intake: the squash commit is in this branch's history
+ok      minors-g03-intake: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      minors-g02-transfer: 7.1's final commit c83a3b9ff051 = the commit the final round reviewed = the head of m0-int-minors-g02-transfer
+ok      minors-g02-transfer: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      minors-g02-transfer: the squash commit 41e918a names m0-int-minors-g02-transfer and c83a3b9ff051 in its message
+ok      minors-g02-transfer: the 124 paths the branch changes are identical in mode and blob in the squash commit (7.1: 124 paths)
+ok      minors-g02-transfer: the squash commit is in this branch's history
+ok      minors-g02-transfer: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      minors-g05-ai: 7.1's final commit 4090d590e1c0 = the commit the final round reviewed = the head of m0-int-minors-g05-ai
+ok      minors-g05-ai: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      minors-g05-ai: the squash commit 7060c10 names m0-int-minors-g05-ai and 4090d590e1c0 in its message
+ok      minors-g05-ai: the 25 paths the branch changes are identical in mode and blob in the squash commit (7.1: 25 paths)
+ok      minors-g05-ai: the squash commit is in this branch's history
+ok      minors-g05-ai: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      runbook: 7.1's final commit 6f339473eec5 = the commit the final round reviewed = the head of m0-int-runbook
+ok      runbook: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      runbook: the squash commit 6be1cb7 names m0-int-runbook and 6f339473eec5 in its message
+ok      runbook: the 39 paths the branch changes are identical in mode and blob in the squash commit (7.1: 39 paths)
+ok      runbook: the squash commit is in this branch's history
+ok      runbook: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      amendments: 7.1's final commit 694518f2e189 = the commit the final round reviewed = the head of m0-int-amendments
+ok      amendments: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      amendments: the squash commit 8d34e8c names m0-int-amendments and 694518f2e189 in its message
+ok      amendments: the 6 paths the branch changes are identical in mode and blob in the squash commit (7.1: 6 paths)
+ok      amendments: the squash commit is in this branch's history
+ok      amendments: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+ok      minors-g04-audio: 7.1's final commit d0c612031d2e = the commit the final round reviewed = the head of m0-int-minors-g04-audio
+ok      minors-g04-audio: 7.1's verdict 'accept-with-minor' = the final round's accept-with-minor
+ok      minors-g04-audio: the squash commit 70f6f54 names m0-int-minors-g04-audio and d0c612031d2e in its message
+ok      minors-g04-audio: the 81 paths the branch changes are identical in mode and blob in the squash commit (7.1: 81 paths)
+ok      minors-g04-audio: the squash commit is in this branch's history
+ok      minors-g04-audio: 7.1's open serious findings (none) = the final round's blocker and major findings (none)
+
+== 6. What the integration log, the gate summary and the reports say happened
+ok      minors-g06-design: integration log section 2 says: fixed with finding 18 on `m0-int-minors-g06-design` at `9812542` (clean run from `d3b4bb2`)...
+ok      minors-g06-design: 9812542 is the author's commit
+ok      minors-g06-design: d3b4bb2 is on m0-int-minors-g06-design
+ok      minors-g06-design: the author's criteria name the gate findings the log says the branch closed (R3-01, R3-02, 18)
+ok      minors-g05-recovery: integration log section 2 says: fixed on `m0-int-minors-g05-recovery` (`ce535e0`, with the round-4 fixes `a377b17` and `cd3e42b`)...
+ok      minors-g05-recovery: ce535e0 is the author's commit
+ok      minors-g05-recovery: a377b17 is between the author's commit and fix-1's
+ok      minors-g05-recovery: cd3e42b is the fix-1's commit
+ok      minors-g05-recovery: review-1's findings are R4- as the log says (R4-01, R4-02, R4-03, R4-04, R4-05)
+ok      minors-g05-recovery: the author's criteria name the gate findings the log says the branch closed (R3-01, R3-02, R3-03, R3-04, R3-05)
+ok      minors-g01-epub: integration log section 2 says: R3-01 closed on `m0-int-minors-g01-epub` (`d317054`; R3-02 resolved at integration, below)...
+ok      minors-g01-epub: d317054 is the author's commit
+ok      minors-g01-epub: 7f3b072 is on m0-int-minors-g01-epub
+ok      minors-g01-epub: the author's criteria name the gate findings the log says the branch closed (R3-01, R3-02)
+ok      minors-g01-pdf: integration log section 2 says: closed on `m0-int-minors-g01-pdf` (`7884a59`), with the later rounds' R3-01 to R3-06 (`11736d1`) and R4-01 to ...
+ok      minors-g01-pdf: 7884a59 is the author's commit
+ok      minors-g01-pdf: 11736d1 is the fix-1's commit
+ok      minors-g01-pdf: a44b746 is the commit the final round reviewed
+ok      minors-g01-pdf: review-1's findings are R3-01..R3-06 as the log says (R3-01, R3-02, R3-03, R3-04, R3-05, R3-06)
+ok      minors-g01-pdf: review-2's findings are R4-01..R4-07 as the log says (R4-01, R4-02, R4-03, R4-04, R4-05, R4-06, R4-07)
+ok      minors-g01-pdf: the author's criteria name the gate findings the log says the branch closed (R2-01, R2-02, R2-03)
+ok      minors-g03-intake: integration log section 2 says: closed on `m0-int-minors-g03-intake` (head `4b8c634` for them, clean CI run at `c0affa9`), with the later roun...
+ok      minors-g03-intake: 4b8c634 is the author's commit
+ok      minors-g03-intake: c0affa9 is on m0-int-minors-g03-intake
+ok      minors-g03-intake: 77ceaf3 is the commit the final round reviewed
+ok      minors-g03-intake: review-1's findings are R3- as the log says (R3-01, R3-02, R3-03, R3-04, R3-05)
+ok      minors-g03-intake: review-2's findings are R4- as the log says (R4-01, R4-02, R4-03, R4-04, R4-05, R4-06)
+ok      minors-g03-intake: the author's criteria name the gate findings the log says the branch closed (R2-01, R2-02, R2-03, R2-04, R2-05, R2-06)
+ok      minors-g02-transfer: integration log section 2 says: fixed or handed to device and human steps on `m0-int-minors-g02-transfer` (`c83a3b9`)...
+ok      minors-g02-transfer: c83a3b9 is the author's commit
+ok      minors-g02-transfer: c83a3b9 is the commit the final round reviewed
+ok      minors-g02-transfer: the author's criteria name the gate findings the log says the branch closed (R3-01, R3-02, R3-03, R3-04, R3-05, R3-06)
+ok      minors-g05-ai: integration log section 2 says: That branch's review round 7 then found R7-01 (blocker), R7-02 (major), R7-03 and R7-04 (minor): R7-01 to R7-0...
+ok      minors-g05-ai: f838379 is the author's commit
+ok      minors-g05-ai: 4090d59 is the fix-1's commit
+ok      minors-g05-ai: b7fadb1 is on m0-int-minors-g05-ai
+ok      minors-g05-ai: review-1's findings are R7-01:blocker,R7-02:major,R7-03:minor,R7-04:minor as the log says (R7-01, R7-02, R7-03, R7-04)
+ok      minors-g05-ai: the author's criteria name the gate findings the log says the branch closed (R6-01, R6-02, R6-03, R6-04)
+ok      minors-g04-audio: integration log section 2 says: closed on `m0-int-minors-g04-audio` (`d0c6120`) with a final clean run...
+ok      minors-g04-audio: d0c6120 is the author's commit
+ok      minors-g04-audio: d0c6120 is the commit the final round reviewed
+ok      minors-g04-audio: the author's criteria name the gate findings the log says the branch closed (R6-01, R6-02, R6-03, R6-04, R6-05, R6-06)
+ok      minors-g05-ai: fix-1 records R7-01 to R7-03 fixed and R7-04 not fixed, as the log says
+ok      deps: integration log 7.2 cites review R3-05 of the deps item, and deps review-3 has R3-05
+ok      deps: integration log section 6 says it was merged with its final verdict reject and two serious findings open (part 5 reads them in the final round)
+ok      the gate summary (Section 6.2, last row): each final review returned accept-with-minor, deps reject
+ok      the gate summary (Section 6.1): the twelve other items' final rounds raised no serious finding
+ok      minors-g03-intake: G03-Intake.md says 'Round 3 found one major and four minor findings, R3-01 to R3-05'; review-1 has 1 major, 4 minor
+ok      minors-g03-intake: G03-Intake.md says 'Round 4 found one blocker and five minor findings, R4-01 to R4-06'; review-2 has 1 blocker, 5 minor
+ok      minors-g05-ai: G05-AI.md says 'The seventh review found 4 issues (1 blocker, 1 major, 2 minor)'; review-1 has 1 blocker, 1 major, 2 minor
+
+== 7. What stayed open at the merge, by the records (as each item's Markdown gives it)
+        contracts: final round 3 (review-3, review-3b): 16 raised (16 minor); 21 earlier with no recorded resolution (1 carried-open, 19 no-outcome, 1 open; 1 major, 20 minor); 0 earlier items the final round marks not resolved
+note    contracts: earlier blocker or major findings these records leave without a resolution, by ID: L2-03 (review-1b, major, no later record names it)
+        deps: final round 4 (review-4): 7 raised (2 major, 5 minor); 0 earlier with no recorded resolution; 0 earlier items the final round marks not resolved
+        threat: final round 1 (review-1b, review-1): 16 raised (16 minor); 0 earlier with no recorded resolution; 0 earlier items the final round marks not resolved
+        minors-g06-design: final round 1 (review-1): 5 raised (5 minor); 0 earlier with no recorded resolution; 3 earlier items the final round marks not resolved
+        minors-g05-recovery: final round 2 (review-2): 2 raised (2 minor); 0 earlier with no recorded resolution; 1 earlier items the final round marks not resolved
+        minors-g01-epub: final round 1 (review-1): 5 raised (5 minor); 0 earlier with no recorded resolution; 0 earlier items the final round marks not resolved
+        minors-g01-pdf: final round 3 (review-3): 3 raised (3 minor); 0 earlier with no recorded resolution; 1 earlier items the final round marks not resolved
+        minors-g03-intake: final round 3 (review-3): 5 raised (5 minor); 0 earlier with no recorded resolution; 0 earlier items the final round marks not resolved
+        minors-g02-transfer: final round 1 (review-1): 5 raised (5 minor); 0 earlier with no recorded resolution; 0 earlier items the final round marks not resolved
+        minors-g05-ai: final round 2 (review-2): 4 raised (4 minor); 1 earlier with no recorded resolution (1 open; 1 minor); 0 earlier items the final round marks not resolved
+        runbook: final round 3 (review-3): 4 raised (4 minor); 0 earlier with no recorded resolution; 0 earlier items the final round marks not resolved
+        amendments: final round 3 (review-3, review-3b): 13 raised (13 minor); 8 earlier with no recorded resolution (6 no-outcome, 2 not-fixed; 8 minor); 0 earlier items the final round marks not resolved
+        minors-g04-audio: final round 1 (review-1): 6 raised (6 minor); 0 earlier with no recorded resolution; 0 earlier items the final round marks not resolved
+-- the final rounds' finding IDs in each item's report or record (the deps item's: ADR-0014), outside this hand-over's pointer lines; each hit with its context, for a reader to judge which review's finding it cites
+        contracts: none of L2-01, L2-02, L2-03, L2-04, L2-05, L2-06, L2-07, L2-08, L2-09, R3-01, R3-02, R3-03, R3-04, R3-05, R3-06, R3-07
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...gent review's two serious findings**: that review's verdict, reject, stands for R4-01 and R4-02 (below), which must still be ...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...the security reviewer (items 4, 5 and 9; the Zip advisory is accepted only once R4-01 and R4-02 are closed), the release owne...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...uct code, and neither links Readium; M0 final review round 2, evidence R2-05*): R4-01, XcodeGen expands '${VAR}' from the env...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ... branch of its own from 'main' at '5aec2518' ('m0-exit-zipguard'), by an agent: R4-01 and R4-02 are answered in the guard by ...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...ange: until one does, round 4's verdict, given on the record before it, stands, R4-01 and R4-02 stay open, and the gate summa...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...26 the bolded sentence said that an agent review reads the change next and that R4-01 and R4-02 are closed in it, where it no...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...f of item 4, which accepts the marmelroy/Zip advisory's residual risk only once R4-01 and R4-02 are closed (plan 23.3, A56), ...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...EC-ZIPGUARD-02 (minor), on the gate summary's counts. Whether the review judged R4-01 and R4-02 answered was not relayed, so ...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...rd, which said that this record names none of R4-03 to R4-07; whether it judged R4-01 and R4-02 answered was not relayed, so ...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...ings as the complete list; the major one, HON-EP-01, is that the records called R4-01 and R4-02 closed, and the gate summary'...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...w's two serious findings**: that review's verdict, reject, stands for R4-01 and R4-02 (below), which must still be closed bef...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...ty reviewer (items 4, 5 and 9; the Zip advisory is accepted only once R4-01 and R4-02 are closed), the release owner (item 6)...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...dd '-import-module Zip' or use a test-only package without the check seeing it; R4-02, C-family '#include' paths are judged o...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ... its own from 'main' at '5aec2518' ('m0-exit-zipguard'), by an agent: R4-01 and R4-02 are answered in the guard by its change...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...l one does, round 4's verdict, given on the record before it, stands, R4-01 and R4-02 stay open, and the gate summary's row 7...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...ded sentence said that an agent review reads the change next and that R4-01 and R4-02 are closed in it, where it now says ans...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...4, which accepts the marmelroy/Zip advisory's residual risk only once R4-01 and R4-02 are closed (plan 23.3, A56), is still p...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...D-02 (minor), on the gate summary's counts. Whether the review judged R4-01 and R4-02 answered was not relayed, so round 4's ...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...said that this record names none of R4-03 to R4-07; whether it judged R4-01 and R4-02 answered was not relayed, so round 4's ...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...e complete list; the major one, HON-EP-01, is that the records called R4-01 and R4-02 closed, and the gate summary's row 76 p...
+        deps: R4-03 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...**, with the routes the same reasoning exposes, review round 4's minor findings R4-03 and R4-04 among them (sections 1, 3 and...
+        deps: R4-03 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ... EV-01, is on the deps item's record, which said that this record names none of R4-03 to R4-07; whether it judged R4-01 and R...
+        deps: R4-04 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...he routes the same reasoning exposes, review round 4's minor findings R4-03 and R4-04 among them (sections 1, 3 and 5; the ch...
+        deps: R4-07 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3: ...s on the deps item's record, which said that this record names none of R4-03 to R4-07; whether it judged R4-01 and R4-02 answ...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:39: ...age references inside one. *(Since 24 October 2026, the fix of review round 4's R4-01 and R4-02:)* the values a product manif...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:39: ...nces inside one. *(Since 24 October 2026, the fix of review round 4's R4-01 and R4-02:)* the values a product manifest gives ...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:74: ...f their public include directory into their sources among them, review round 4, R4-02), module map or module alias (a '-modul...
+        deps: R4-04 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:87: ...having to be listed (review round 3). *(Since 24 October 2026, review round 4's R4-04: only the Swift compiler's '-Werror' an...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:88: ...  - *(Since 24 October 2026, review round 4's R4-02 and the routes of the same kind.)* A C-...
+        deps: R4-03 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:88: ...oject-directory variable ('SDKROOT' to an SDK's name excepted; review round 4's R4-03: until then 'DERIVED_FILE_DIR: /opt/els...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:89: ...  - *(Since 24 October 2026, review round 4's R4-01: category 'manifest-input'.)* A product...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:104: ...or missing; 239 until 24 October 2026, when the fix of review round 4 added 39: R4-01's three routes as the review reproduced...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:104: ... bound with '_silgen_name', 'CommandLine', an '#if', a random number, a clock); R4-02's two, with an include through '..' fro...
+        deps: R4-03 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:104: ...clude?', a path with a variable in it, and a line it cannot read; a build rule; R4-03 in a project and in a build-settings fi...
+        deps: R4-04 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:104: ...cannot read; a build rule; R4-03 in a project and in a build-settings file; and R4-04 in a project and in a SwiftPM linker se...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:147: ...akes from the environment. *(24 October 2026: since the fix of review round 4's R4-01 and R4-02, by an agent and reviewed nex...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:147: ...the environment. *(24 October 2026: since the fix of review round 4's R4-01 and R4-02, by an agent and reviewed next, CI also...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:184: ...October 2026: the two routes around the CI rule that this acceptance waits for, R4-01 and R4-02, are answered by an agent's c...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:184: ...26: the two routes around the CI rule that this acceptance waits for, R4-01 and R4-02, are answered by an agent's change, wit...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:214: ...commands/reproductions.sh', with 'commands/plant.py') plants each of 23 routes (R4-01's three, R4-02's two, R4-03, R4-04 and ...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:214: ...uctions.sh', with 'commands/plant.py') plants each of 23 routes (R4-01's three, R4-02's two, R4-03, R4-04 and sixteen of the ...
+        deps: R4-03 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:214: ...with 'commands/plant.py') plants each of 23 routes (R4-01's three, R4-02's two, R4-03, R4-04 and sixteen of the same kind) in...
+        deps: R4-04 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:214: ...ommands/plant.py') plants each of 23 routes (R4-01's three, R4-02's two, R4-03, R4-04 and sixteen of the same kind) in a copy...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:239: ...- **Close R4-01 with '--no-env' in 'sylvia_generate' al...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:240: ...- **Narrow sections 3 and 5 and list R4-02 as a limit** (the review's second optio...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:244: ...recorded (D-6), it is approved only with the security sign-off, which waits for R4-01 and R4-02, and its final agent review's...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:244: ...D-6), it is approved only with the security sign-off, which waits for R4-01 and R4-02, and its final agent review's verdict, ...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:245: ...nally, a solo project, recorded only once its evidence exists; item 4 only once R4-01 and R4-02 are closed.) *(24 October 202...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:245: ...idence exists; item 4 only once R4-01 and R4-02 are closed.) *(24 October 2026: R4-01 and R4-02 are answered by an agent's ch...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:245: ...olo project, recorded only once its evidence exists; item 4 only once R4-01 and R4-02 are closed.) *(24 October 2026: R4-01 a...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:245: ...sts; item 4 only once R4-01 and R4-02 are closed.) *(24 October 2026: R4-01 and R4-02 are answered by an agent's change, revi...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:247: ...owner gives it personally, in the device runbook's Session 10, after the fix of R4-01 and R4-02, which changes section 3's ru...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:247: ...em 7 alone.)* *(24 October 2026: section 3's rules have changed with the fix of R4-01 and R4-02, as this item expected, and '...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:247: ...s it personally, in the device runbook's Session 10, after the fix of R4-01 and R4-02, which changes section 3's rules, and a...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:247: ....)* *(24 October 2026: section 3's rules have changed with the fix of R4-01 and R4-02, as this item expected, and 'linkage.sh...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258: ...omes first; the deadline since 19 October 2026, Status): close review round 4's R4-01 and R4-02 (Status). *(Dated note, 23 Oc...
+        deps: R4-01 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258: ... exit unless the product owner decides otherwise ('CLAUDE.md'). The fix answers R4-01 and R4-02 and the routes the same reaso...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258: ...; the deadline since 19 October 2026, Status): close review round 4's R4-01 and R4-02 (Status). *(Dated note, 23 October 2026...
+        deps: R4-02 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258: ...ss the product owner decides otherwise ('CLAUDE.md'). The fix answers R4-01 and R4-02 and the routes the same reasoning expos...
+        deps: R4-03 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258: ...4-02 and the routes the same reasoning exposes, review round 4's minor findings R4-03 and R4-04 among them (sections 1, 3 and...
+        deps: R4-04 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258: ...he routes the same reasoning exposes, review round 4's minor findings R4-03 and R4-04 among them (sections 1, 3 and 5; 'Docs/...
+        deps: R4-05 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258: ...findings are not routes around the guard, and this fix leaves them as they are: R4-05 (the drop-in owners' request for '--for...
+        deps: R4-06 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258: ...lf has passed the flag since M0 assembly, at its 'swift build', line 61 today), R4-06 (section 4 and the acknowledgements dra...
+        deps: R4-07 at Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258: ...he Mac companion, to which ADR-0010 gives the '.sylviapack' writer; for M6) and R4-07 ('third-party-inventory.md''s summary r...
+        threat: R1-05 at Docs/ADRs/0015-threat-model.md:3: ...0 final fix, after the M0 final review's findings SEC-01 to SEC-08 and evidence R1-05: the hard-rule audit's reach (section 6...
+        threat: R1-05 at Docs/ADRs/0015-threat-model.md:170: ...'M0-Integration/final-fix/lock-state.log') (refreshed 19 October 2026, evidence R1-05); done on 20 October 2026: the fix's se...
+        threat: R1-09 at Docs/ADRs/0015-threat-model.md:210: ...g', 'M0-Integration/final-fix/durable-file-protection-probe-locked.log'; review R1-09). The class a device reads back is stil...
+        threat: R1-05 at Docs/ADRs/0015-threat-model.md:288: ...written; it passes since that fix (M0 assembly; dated 19 October 2026, evidence R1-05). The allowlist can only grow with a re...
+        threat: R1-05 at Docs/ADRs/0015-threat-model.md:307: ...M0 assembly ('G05-Recovery.md' row 10). *(Dated note, 19 October 2026, evidence R1-05: that run predates assembly's TM-F1 cha...
+        minors-g06-design: none of R4-01, R4-02, R4-03, R4-04, R4-05
+        minors-g05-recovery: none of R5-01, R5-02
+        minors-g01-epub: none of R4-01, R4-02, R4-03, R4-04, R4-05
+        minors-g01-pdf: none of R5-01, R5-02, R5-03
+        minors-g03-intake: none of R5-01, R5-02, R5-03, R5-04, R5-05
+        minors-g02-transfer: none of R4-01, R4-02, R4-03, R4-04, R4-05
+        minors-g05-ai: none of R8-01, R8-02, R8-03, R8-04
+        runbook: R3-01 at Docs/Stage0/M0-device-runbook.md:383: ...ication scripts and remote resources). **Sanitizer time near its caps** (review R3-01): among the 38, 'SanitizerAtCapsTimingT...
+        runbook: R3-03 at Docs/Stage0/M0-device-runbook.md:569: ...- **The logging source** (G0.2 "Before you start"; review R3-03; in this runbook since 20 October 2026)...
+        runbook: R3-02 at Docs/Stage0/M0-device-runbook.md:617: ... LAN step; corrected, C35, C36; expected message corrected by the gate's review R3-02). Do: start "Download large-5GiB"; duri...
+        runbook: R3-02 at Docs/Stage0/M0-device-runbook.md:617: ...20 October 2026 this runbook expected that message, the checklist's text before R3-02.) Then pair again ('invite', send, past...
+        runbook: R3-04 at Docs/Stage0/M0-device-runbook.md:647: ...ll-file check while the phone is locked** (G0.2 step 22; plan 6.4, 15.5; review R3-04; blocks M0: ADR-0009's pending device l...
+        runbook: R3-02 at Docs/Stage0/M0-device-runbook.md:892: ...uns first, the lift activation or the button's own action (ADR-0013 Section 10, R3-02). The stated limits, for the accessibil...
+        runbook: R3-01 at Docs/Stage0/M0-device-runbook.md:1260: ...: 38 tests, not 37, and the sanitizer's time near its caps on the phone (review R3-01)....
+        runbook: R3-02 at Docs/Stage0/M0-device-runbook.md:1263: ...ntication_required'), not "This iPhone's access was removed on the Mac" (review R3-02); 4.11: the single import explained as ...
+        runbook: R3-03 at Docs/Stage0/M0-device-runbook.md:1263: ...- Session 4: the logging source of the checklist's "Before you start" (review R3-03: the code never written to a file, the ...
+        amendments: R3-04 at Docs/Stage0/M0-plan-amendments.md:119: ...| 21 (R3-04). Holding the background-events complet...
+        amendments: R3-01 at Docs/Stage0/M0-plan-amendments.md:275: ...| G0.2 finding 21 (R3-01, R3-02, R3-03, R3-06) | Round 3 review ...
+        amendments: R3-02 at Docs/Stage0/M0-plan-amendments.md:275: ...| G0.2 finding 21 (R3-01, R3-02, R3-03, R3-06) | Round 3 review fixes: ...
+        amendments: R3-03 at Docs/Stage0/M0-plan-amendments.md:275: ...| G0.2 finding 21 (R3-01, R3-02, R3-03, R3-06) | Round 3 review fixes: the dis...
+        amendments: R3-04 at Docs/Stage0/M0-plan-amendments.md:275: ... checklist fixes; 15.4's reservation rule unchanged, now applied at launch too. R3-04 and R3-05 are Section 2 rows |...
+        amendments: R3-04 at Docs/Stage0/M0-plan-amendments.md:401: ...r and the promise | 6.4, 15.1, 15.4, 15.5, 18.1, 23.2 | G0.2 findings 4, 5, 21 (R3-04, R3-05) and open questions 2, 3, 8, 11,...
+        minors-g04-audio: none of R7-01, R7-02, R7-03, R7-04, R7-05, R7-06
+        in all: 63 records, 35 reviews, 247 findings; open at the merge: 91 raised by the final rounds, 30 earlier findings with no recorded resolution, 5 earlier items the final rounds mark not resolved
+ok      deps: the record's note on ADR-0014 holds: before 6cd842d3, the Zip guard's fix, ADR-0014 named none of R4-03 to R4-07; 6cd842d3 is in this branch's history; and ADR-0014 now names R4-03, R4-04, R4-05, R4-06, R4-07 of them outside its pointer line
+ok      minors-g05-ai: the cleanup command R8-04 names is still in G05-AI.md; the record's note and the README say it is still there: yes, yes
+ok      minors-g05-ai: G0.5 recovery's tests still make their scratch directories under g05-tests/ in the temporary folder (Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Support.swift); the README says they still do: yes
+
+== 8. The Markdown records
+ok      contracts.md is what `render` writes from extracted/contracts.json.txt
+ok      deps.md is what `render` writes from extracted/deps.json.txt
+ok      threat.md is what `render` writes from extracted/threat.json.txt
+ok      minors-g06-design.md is what `render` writes from extracted/minors-g06-design.json.txt
+ok      minors-g05-recovery.md is what `render` writes from extracted/minors-g05-recovery.json.txt
+ok      minors-g01-epub.md is what `render` writes from extracted/minors-g01-epub.json.txt
+ok      minors-g01-pdf.md is what `render` writes from extracted/minors-g01-pdf.json.txt
+ok      minors-g03-intake.md is what `render` writes from extracted/minors-g03-intake.json.txt
+ok      minors-g02-transfer.md is what `render` writes from extracted/minors-g02-transfer.json.txt
+ok      minors-g05-ai.md is what `render` writes from extracted/minors-g05-ai.json.txt
+ok      runbook.md is what `render` writes from extracted/runbook.json.txt
+ok      amendments.md is what `render` writes from extracted/amendments.json.txt
+ok      minors-g04-audio.md is what `render` writes from extracted/minors-g04-audio.json.txt
+
+== 9. The pointers
+ok      contracts: Docs/Stage0/M0-contracts.md has one line linking to evidence/M0-Integration/item-reviews/contracts.md
+ok      contracts: Docs/ADRs/0016-capture-envelope-and-anchors.md has one line linking to ../Stage0/evidence/M0-Integration/item-reviews/contracts.md
+note    deps: ADR-0014 belongs to another workstream; the pointer is requested of its owner (present on this branch)
+ok      threat: Docs/ADRs/0015-threat-model.md has one line linking to ../Stage0/evidence/M0-Integration/item-reviews/threat.md
+ok      minors-g06-design: Docs/Stage0/G06-Design.md has one line linking to evidence/M0-Integration/item-reviews/minors-g06-design.md
+ok      minors-g05-recovery: Docs/Stage0/G05-Recovery.md has one line linking to evidence/M0-Integration/item-reviews/minors-g05-recovery.md
+ok      minors-g01-epub: Docs/Stage0/G01-EPUB.md has one line linking to evidence/M0-Integration/item-reviews/minors-g01-epub.md
+ok      minors-g01-pdf: Docs/Stage0/G01-PDF.md has one line linking to evidence/M0-Integration/item-reviews/minors-g01-pdf.md
+ok      minors-g03-intake: Docs/Stage0/G03-Intake.md has one line linking to evidence/M0-Integration/item-reviews/minors-g03-intake.md
+ok      minors-g02-transfer: Docs/Stage0/G02-Transfer.md has one line linking to evidence/M0-Integration/item-reviews/minors-g02-transfer.md
+ok      minors-g05-ai: Docs/Stage0/G05-AI.md has one line linking to evidence/M0-Integration/item-reviews/minors-g05-ai.md
+ok      runbook: Docs/Stage0/M0-device-runbook.md has one line linking to evidence/M0-Integration/item-reviews/runbook.md
+ok      amendments: Docs/Stage0/M0-plan-amendments.md has one line linking to evidence/M0-Integration/item-reviews/amendments.md
+ok      minors-g04-audio: Docs/Stage0/G04-Audio.md has one line linking to evidence/M0-Integration/item-reviews/minors-g04-audio.md
+
+result: pass (0 problem(s))
+
+exit status: 0
+end: 2026-10-25T21:00:06Z; load: 10:00  up 22 days, 20:10, 3 users, load averages: 4.18 4.17 3.91

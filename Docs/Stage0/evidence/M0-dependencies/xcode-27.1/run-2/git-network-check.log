@@ -1,0 +1,22 @@
+git commands started by the run (from GIT_TRACE), by subcommand:
+   143 rev-parse
+    58 status
+    57 describe
+    48 clone
+    44 upload-pack
+    44 config
+    44 checkout
+    44 cat-file
+    13 diff
+     8 fetch
+     4 submodule--helper
+     4 remote
+     4 clean
+of them, commands that name a remote URL (https://, ssh://, git://, git@): 4
+     2 trace: built-in: git clone -c core.symlinks=true -c core.fsmonitor=false -c core.longpaths=true --mirror https://github.com/readium/swift-toolkit.git Spikes/G03-Intake/ZipEval/IdentityProbe/.build/repositories/swift-toolkit-ed0c4c74 --progress
+     2 trace: built-in: git clone -c core.symlinks=true -c core.fsmonitor=false -c core.longpaths=true --mirror https://github.com/weichsel/ZIPFoundation.git Spikes/G03-Intake/ZipEval/IdentityProbe/.build/repositories/ZIPFoundation-789121e4 --progress
+git's refusals of a non-local transport in the trace ("transport '...' not allowed"):    9 transport 'https' not allowed;
+fetches and remote updates (each from a repository whose only remote is a URL, so refused, or a local path):
+     4 trace: built-in: git fetch --prune -v --multiple --all
+     4 trace: built-in: git remote -v update -p
+     4 trace: run_command: git fetch --prune -v --multiple --all

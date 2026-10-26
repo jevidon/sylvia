@@ -93,6 +93,7 @@ So the check counts an item written the way a login-keychain copy of the key wou
 | `host-sourceservice.log` | `xcrun swift test --force-resolved-versions --package-path Spikes/G02-Transfer/SourceService --skip LargeTransferTests` (the drop-in's `host-sourceservice` step, the store's host tests among them), with `G02_EVIDENCE_DIR` in `.build/scratch` so no committed evidence was rewritten, through `M0-Integration/repin-27.1/commands/run-logged.sh`, on `d8ed94a2`, 16:25 UTC | `✔ Test run with 67 tests in 7 suites passed`; no line skipped or failed (the drop-in's own check: `➜ Test .* skipped` or `✘`, 0) |
 | `login-keychain-items-after.log` | The same listing after every run, 16:26 UTC | 0 |
 | `login-keychain-items-after-host-tests.log` | The listing for the host tests' own services (`com.jevidon.sylvia.spike.source-identity-test.`; the prefix argument was added for it), 16:37 UTC | 0 |
+| `diagnostic-final.log` | The diagnostic alone again, as `diagnostic-run1.log`, on `a50bd272`, 16:48 UTC, screen locked, after every other run | Passed; `earlier runs: ... 0`: neither your run nor any of these runs left a probe item in the data protection keychain |
 | `apple-pages.txt` | The Apple pages and SDK header lines cited here, verbatim (`commands/apple-pages.sh`, `commands/apple-doc-text.py`) | |
 | `checks/` | `Scripts/ci.sh contracts`, `Scripts/ci.d/13-hard-rules.sh` and `Scripts/ci.d/12-dependency-lock.sh`, through `run-logged.sh` | See section 5.1 |
 
@@ -104,7 +105,7 @@ Notes on the logs:
 
 ### 5.1 Repository checks
 
-The three checks ran through `Docs/Stage0/evidence/M0-Integration/repin-27.1/commands/run-logged.sh` on `1da42a45`, the commit that added this README, with no uncommitted path (each header says so), on 26 October 2026 between 16:43 and 16:45 UTC. The logs were written to `.build/scratch` and copied here afterwards, in the next commit (`776be517`), which adds only these logs and this section. The commits after that change only this README's wording.
+The three checks ran through `Docs/Stage0/evidence/M0-Integration/repin-27.1/commands/run-logged.sh` on `1da42a45`, the commit that added this README, with no uncommitted path (each header says so), on 26 October 2026 between 16:43 and 16:45 UTC. The logs were written to `.build/scratch` and copied here afterwards, in the next commit (`776be517`), which adds only these logs and this section. The commits after that change only this README's wording and add `diagnostic-final.log`.
 
 | Log | Command | Result |
 | --- | --- | --- |
@@ -157,4 +158,4 @@ Another run updates the records, after your re-run. This branch edits none of th
 
 - One Mac, one macOS build (26.6.2, 25G83), one signed app. What the flagless query returns may differ in another macOS version or another kind of program (TN3137 notes that the file-based keychain's shim "has limitations"). The fixed check does not depend on it.
 - The probe checks the store in a probe app signed with a development profile. The companion app (M6) is re-tested when it exists (ADR-0008, Consequences). Keychain behaviour after a reboot and while a phone is locked is still pending on a device (checklist step 8).
-- The keychains: the runs added and deleted only items under services unique to each run (the store's, the diagnostic's and the control's, and the host tests' own), and never read an item's data. Your earlier run's items were only listed. The listings found none, before or after, in the login keychain under the probe's or the host tests' prefix.
+- The keychains: the runs added and deleted only items under services unique to each run (the store's, the diagnostic's and the control's, and the host tests' own), and never read an item's data. Your earlier run's items were only listed. The listings found none, before or after, in the login keychain under the probe's or the host tests' prefix, and none of the probe's in the data protection keychain after every run (`diagnostic-final.log`).

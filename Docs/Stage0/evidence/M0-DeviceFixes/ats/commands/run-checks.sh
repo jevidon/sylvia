@@ -134,9 +134,9 @@ UDID="$(sylvia_sim_udid "$SIM_NAME")"
 sylvia_sim_boot "$UDID"
 log="$OUT/simulator-probe-test.log"
 header "the ATS probe's tests in each variant on the simulator: the checklist's step 1 command, destination this job's simulator, no signing flags (Scripts/ci.d/70-g05-ai.sh runs the same)" \
-  "exit 0; three 'Test run with 14 tests in 2 suites passed' (one per variant); in each variant a 'private-ipv4-interfaces=' line with the simulator's rule and a 'private-ip=... interface=... result=URLError -1004' line for the Mac's own address; the suspension UI test passes" > "$log"
+  "exit 0; three 'Test run with 14 tests in 2 suites passed' (one per variant); in each variant a 'private-ipv4-interfaces=' line with the simulator's rule and a 'private-ip=<a.b>.x.x interface=<name> result=URLError -1004' line for the Mac's own address; no failure; the suspension UI test passes" > "$log"
 {
-  echo "# simulator: $SIM_NAME ($UDID), $(xcrun simctl list devices | grep "$UDID" | sed 's/^ *//'), $SYLVIA_SIM_DEVICE_TYPE, $SYLVIA_SIM_RUNTIME"
+  echo "# simulator: $SIM_NAME ($UDID), $SYLVIA_SIM_DEVICE_TYPE, $SYLVIA_SIM_RUNTIME; state $(xcrun simctl list devices | grep "$UDID" | grep -oE '\((Booted|Shutdown)\)')"
   echo "# this Mac's IPv4 addresses by interface, loopback left out (the simulator shares them): ${mac_addresses:-none}"
 } >> "$log"
 sylvia_generate "$PROBE" > "$FULL/generate-2.log" 2>&1 || echo "sylvia_generate failed: $(cat "$FULL/generate-2.log")" >> "$log"
@@ -156,7 +156,8 @@ mask < "$full" >> "$log"
   echo "--- warnings in Spikes/G05-AI code: $(grep -cE 'Spikes/G05-AI/(Sources|Tests|ATSProbe)/.*warning:' "$full")"
 } >> "$log"
 runs="$(grep -c 'Test run with 14 tests in 2 suites passed' "$full")"
-refused="$(grep -cE '^ATS-PROBE variant=[a-z_]+ private-ip=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ interface=[a-z0-9_]+ result=URLError -1004 ' "$full")"
+# The probe prints the address masked (a.b.x.x) and the interface beside it.
+refused="$(grep -cE '^ATS-PROBE variant=[a-z_]+ private-ip=[0-9]+\.[0-9]+\.x\.x interface=[a-z0-9_]+ result=URLError -1004 ' "$full")"
 listed="$(grep -cE '^ATS-PROBE variant=[a-z_]+ private-ipv4-interfaces=.* rule=simulator: the first of any interface$' "$full")"
 ok=1
 [[ "$status" == 0 ]] && [[ "$runs" == 3 ]] && [[ "$refused" == 3 ]] && [[ "$listed" == 3 ]] \

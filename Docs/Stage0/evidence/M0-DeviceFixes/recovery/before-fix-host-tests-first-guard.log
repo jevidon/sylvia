@@ -1,0 +1,59 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/run-host-tests.sh before-fix-host-tests ProtectedCopyTests|PrivatePathTests
+commit: c72247a69a374ce361834550b92689b4abab95ee (m0-device-fixes-recovery)
+uncommitted changes in Spikes/G05-Recovery included in this run:
+   Spikes/G05-Recovery/Tests/SylviaRecoveryTests/MigrationTests.swift | 5 +++--
+   1 file changed, 3 insertions(+), 2 deletions(-)
+  new: Spikes/G05-Recovery/Tests/SylviaRecoveryTests/PrivatePathTests.swift
+  new: Spikes/G05-Recovery/Tests/SylviaRecoveryTests/ProtectedCopyTests.swift
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T05:21:15Z; load: 18:21  up 23 days,  4:31, 3 users, load averages: 29.71 36.36 19.79
+---- xcrun swift test --force-resolved-versions --filter 'ProtectedCopyTests|PrivatePathTests' (in Spikes/G05-Recovery)
+Building for debugging...
+[Computing dependencies]
+[Pre-planning 1 / 273]
+[Planning deferred tasks]
+[6 / 32]
+[10 / 19] SylviaRecoveryTests-product
+[14 / 23] SylviaRecoveryTests-product
+[16 / 25] SylviaRecoveryTests-product
+[21 / 25] SylviaRecoveryTests-product
+[23 / 25] SylviaRecoveryTests-product
+Build complete! (4.66 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Bundle paths under /private (device run of 26 October 2026)" started.
+◇ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" started.
+◇ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" started.
+➜ Test "a v1 library installed from a source of another class is created with the library's class C and opens" skipped: "class A/B keys are unavailable (host screen locked): a class-B source cannot be read now"
+◇ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] copy guard: 61 source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: 0
+✔ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" passed after 0.109 seconds.
+✔ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" passed after 0.110 seconds.
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" recorded an issue at PrivatePathTests.swift:46:96: Issue recorded
+↳ through /private, as an iPhone's folders are named: blobs/excerpts/0000000000000000000000000000000000000000000000000000000000000000.mp3: unsafe path in manifest: blobs/excerpts/0000000000000000000000000000000000000000000000000000000000000000.mp3
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" recorded an issue at PrivatePathTests.swift:46:96: Issue recorded
+↳ through /private, as an iPhone's folders are named: blobs/missing/x.mp3: unsafe path in manifest: blobs/missing/x.mp3
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" recorded an issue at PrivatePathTests.swift:46:96: Issue recorded
+↳ through /private, as an iPhone's folders are named: export/markdown/missing.md: unsafe path in manifest: export/markdown/missing.md
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" recorded an issue at PrivatePathTests.swift:62:13: Expectation failed: missingFile
+↳ through /private, as an iPhone's folders are named: expected missingFile, got unsafe path in manifest: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3
+↳ missingFile → <not evaluated>
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] missing listed file, bundle under /var, as the Mac names its temporary folder: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3; through /private, as an iPhone's folders are named: unsafe path in manifest: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3
+✘ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" failed after 0.470 seconds with 4 issues.
+✘ Suite "Bundle paths under /private (device run of 26 October 2026)" failed after 0.470 seconds with 4 issues.
+↳ /// The phone's second failure (device run of 26 October 2026, runbook step 1.2): the missing-blob-file
+↳ /// variant of `RestoreTests.rejections` was rejected, but as an unsafe path instead of a missing file.
+↳ /// An iPhone's temporary and container folders are under /private/var/mobile/. The bundle's
+↳ /// containment check resolved both paths with Foundation's `resolvingSymlinksInPath`, which drops a
+↳ /// leading /private only from a path that exists, so the existing root came out as /var/mobile/... and
+↳ /// the missing file as /private/var/mobile/..., and the prefix check failed before the missing-file
+↳ /// check ran. The Mac's temporary folder is /var/folders/... (a link to /private/var/folders/...), which
+↳ /// hides it; the same folder named through /private shows it on the Mac.
+✘ Test run with 3 tests in 2 suites failed after 0.470 seconds with 4 issues.
+Note: Some test targets reported failures:
+  - SylviaRecoveryTests (Swift Testing)
+---- swift test exit: 1
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T05:26:11Z; load: 18:26  up 23 days,  4:36, 3 users, load averages: 27.49 35.79 19.69

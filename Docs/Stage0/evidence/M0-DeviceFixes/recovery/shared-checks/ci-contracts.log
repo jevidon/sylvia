@@ -1,0 +1,12 @@
+command: Scripts/ci.sh contracts
+commit: c72247a69a374ce361834550b92689b4abab95ee (m0-device-fixes-recovery); uncommitted files: 10
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T07:28:52Z; load: 20:28  up 23 days,  6:39, 3 users, load averages: 4.50 4.06 4.01
+==> 00-git-lfs
+    pass (6s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (66s)
+all 3 steps passed
+ci.sh contracts exit: 0

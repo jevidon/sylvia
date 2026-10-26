@@ -54,8 +54,10 @@ its forms would pass; the listings let a reader look for one. Integration log 42
 
 ## Checks
 
-`commands/run-checks.sh` ran every check on this fix's documents commit, with no uncommitted file; the commit after it
-adds the logs and nothing else. Host only: the build Mac, macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275). No
+`commands/run-checks.sh` ran every check on this fix's last documents commit, with no uncommitted file; the commit after
+it adds the logs and nothing else. A first run, on `0562250b`, the first documents commit, gave the same results; its
+logs of the earlier rechecks and gate checks showed what integration log 42.7 had described loosely, so the next commit
+gives 42.7 as they report, and that run's logs were set aside, not committed (integration log 42.5). Host only: the build Mac, macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275). No
 simulator was created or used, no device was contacted, nothing played audio and nothing was fetched or pushed. Other
 jobs may have shared the Mac (the load averages in the logs), so no timing here is a result. Dry runs on the uncommitted
 tree came first.

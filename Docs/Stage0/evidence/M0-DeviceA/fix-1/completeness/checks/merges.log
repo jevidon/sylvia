@@ -1,0 +1,36 @@
+command: Docs/Stage0/evidence/M0-DeviceA/fix-1/completeness/commands/merges.sh
+commit: f78ee97499828afbda1b89dd72b27323fd730771 (m0-sessions); uncommitted paths: 1
+date: 2026-10-25T21:42:30Z
+m0-decisions: c72247a69a374ce361834550b92689b4abab95ee; m0-exit-prep: fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc (2026-10-26 10:05:51 +1300)
+merge bases: HEAD and m0-decisions 044ed3cf86db838c93cda7e2ca4829474b234ae5; HEAD and m0-exit-prep 5aec2518c90427a283d9c8195e11bb9ab23e5d12
+
+== 1. m0-decisions into HEAD
+   merge-tree exit: 0 (0: no conflict); merged tree: 7a1ffd5c30fde357507ceb5c6045c5e42a30e5ed
+   into ec91f66a, as a control: exit 0; merged tree: 710a1e7700a4b22e4b58bcb865355efdd5433387
+
+== 2. m0-exit-prep, as it stands when read, into HEAD and into ec91f66a
+   into HEAD: merge-tree exit 1; files that conflict: 9
+     Docs/ADRs/0001-platform-baseline-and-toolchain.md
+     Docs/ADRs/0002-repository-build-and-ci.md
+     Docs/ADRs/README.md
+     Docs/Stage0/M0-device-runbook.md
+     Docs/Stage0/M0-gate.md
+     Docs/Stage0/M0-plan-amendments.md
+     Docs/Stage0/README.md
+     Docs/Stage0/integration-log.md
+     Docs/Sylvia_v1_iOS_Implementation_Plan.md
+   into ec91f66a: merge-tree exit 1; files that conflict: 9
+     Docs/ADRs/0001-platform-baseline-and-toolchain.md
+     Docs/ADRs/0002-repository-build-and-ci.md
+     Docs/ADRs/README.md
+     Docs/Stage0/M0-device-runbook.md
+     Docs/Stage0/M0-gate.md
+     Docs/Stage0/M0-plan-amendments.md
+     Docs/Stage0/README.md
+     Docs/Stage0/integration-log.md
+     Docs/Sylvia_v1_iOS_Implementation_Plan.md
+   the same files: this fix adds no file that conflicts
+   Docs/ADRs/0014-dependency-lock-and-license-inventory.md does not conflict: this fix's note at the head of its open items merges with that run's changes
+   (the conflicts listed are in files both this branch and that run changed before this fix; resolving them is the merge's, between sittings)
+
+exit: 0

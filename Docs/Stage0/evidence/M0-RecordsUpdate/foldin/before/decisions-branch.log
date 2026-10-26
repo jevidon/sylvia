@@ -1,0 +1,140 @@
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/decisions-branch.py
+commit: cbdb63bc265b98955cc4a297e92c689fb1a9d410; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T16:27:53Z; load:  5:27  up 23 days, 15:38, 4 users, load averages: 7.06 7.13 5.48
+
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/decisions-branch.py
+HEAD: cbdb63bc265b98955cc4a297e92c689fb1a9d410 (m0-records-update); uncommitted paths: 0
+start: 2026-10-26T16:27:53Z; nothing is fetched, no ref is written
+
+== 1. The refs, read-only (the remote-tracking ones as last fetched)
+   main                  96bdc7e996f99fcd2571ea983cc32a04076a5a07  tree 576168b6c4742560f844a3b3709fa46279aa0f98
+   origin/main           96bdc7e996f99fcd2571ea983cc32a04076a5a07  tree 576168b6c4742560f844a3b3709fa46279aa0f98
+   m0-decisions          c72247a69a374ce361834550b92689b4abab95ee  tree 6e46ef591da8c37a914ef0d92c06099aa1c9e5b1
+   origin/m0-decisions   044ed3cf86db838c93cda7e2ca4829474b234ae5  tree 576168b6c4742560f844a3b3709fa46279aa0f98
+   m0-integrate          40ba6bcdce024f0b0845e1fb1e5b9295a4e1c07b  tree f782ab058b5c390e87e011ac005bb990dc8e2c75
+   origin/m0-integrate   40ba6bcdce024f0b0845e1fb1e5b9295a4e1c07b  tree f782ab058b5c390e87e011ac005bb990dc8e2c75
+   HEAD                  cbdb63bc265b98955cc4a297e92c689fb1a9d410  tree 1d44ffa76b559928b54810597d8299f4d7c27a28
+   commits on m0-decisions that main lacks: 8; on main that m0-decisions lacks: 1 (96bdc7e9 Merge pull request #6 from jevidon/m0-decisions)
+   their merge base: 044ed3cf86db838c93cda7e2ca4829474b234ae5; main is an ancestor of m0-decisions: no
+   main's tree is 044ed3cf's: yes; is m0-decisions': no
+   m0-integrate: an ancestor of main: yes, 122 commits behind it, 0 ahead
+   as the records state it: main and origin/main are 96bdc7e9, pull request #6
+   as the records state it: m0-decisions is c72247a6
+   as the records state it: origin/m0-decisions, as last fetched, is 044ed3cf, the commit pull request #6 merged
+   as the records state it: m0-decisions holds 8 commits main lacks, made on 044ed3cf, and main, whose merge commit it lacks, is not an ancestor of it: neither branch is behind the other
+   as the records state it: main's tree is 044ed3cf's and no longer m0-decisions'
+   as the records state it: m0-integrate is behind main
+
+== 2. The commits on m0-decisions that main lacks, oldest first
+-- 8404f3426bca692b1a302f165a82d13f2b03ed6d  2026-10-25 17:12:41 UTC (26 October 06:12 on the build Mac's clock)  Justin Evidon: Record the first physical iPhone Keychain test result
+      M	Docs/Stage0/G02-Transfer.md
+      A	Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+      A	Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md
+      M	Docs/Stage0/evidence/M0-runbook/sessions.md
+-- 38f9604e0b70d16eba80655f2a0fc094d12eec73  2026-10-25 17:15:27 UTC (26 October 06:15 on the build Mac's clock)  Justin Evidon: Record the recovery suite device-host blocker
+      M	Docs/Stage0/G05-Recovery.md
+      A	Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt
+      A	Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log
+      M	Docs/Stage0/evidence/M0-runbook/sessions.md
+-- 432acc1307f173b696d0afd9e44bcf73fdabc8ee  2026-10-25 17:15:59 UTC (26 October 06:15 on the build Mac's clock)  Justin Evidon: Record the requested recovery device retry
+      M	Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt
+      A	Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log
+-- 4be1a1a4a8acf5a0453e874f3d24b25ed1121e52  2026-10-25 17:19:34 UTC (26 October 06:19 on the build Mac's clock)  Justin Evidon: Host the recovery suite in an iOS test app
+      M	Docs/Stage0/M0-device-runbook.md
+      M	Docs/Stage0/device-checklists/G05-Recovery.md
+      A	Spikes/G05-Recovery/DeviceTests/App/TestHost.swift
+      A	Spikes/G05-Recovery/DeviceTests/Package.resolved
+      A	Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift
+      A	Spikes/G05-Recovery/DeviceTests/project.yml
+-- ea01b4127a9477180d6560c965ae72db9ef6cae1  2026-10-25 17:21:11 UTC (26 October 06:21 on the build Mac's clock)  Justin Evidon: Inventory the recovery device test lock
+      M	Docs/Licenses/inventory.json
+-- d5336111b6ba76e4c248b7cf647e1c3fa9d2500b  2026-10-25 17:21:11 UTC (26 October 06:21 on the build Mac's clock)  Justin Evidon: Record the first hosted recovery device run and failures
+      M	Docs/Stage0/G05-Recovery.md
+      A	Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log
+      M	Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt
+      A	Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md
+      A	Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log
+      M	Docs/Stage0/evidence/M0-runbook/sessions.md
+-- 1bbca07ec91fb38a55074f7c2738703c673883b6  2026-10-25 17:27:44 UTC (26 October 06:27 on the build Mac's clock)  Justin Evidon: Record device ATS and streaming interruption results
+      M	Docs/Stage0/G05-AI.md
+      A	Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log
+      A	Docs/Stage0/evidence/G05-AI/device/step-01-ats.log
+      A	Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt
+      A	Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt
+      M	Docs/Stage0/evidence/M0-runbook/sessions.md
+-- c72247a69a374ce361834550b92689b4abab95ee  2026-10-25 17:33:13 UTC (26 October 06:33 on the build Mac's clock)  Justin Evidon: Record setup checks and the audio device run in progress
+      A	Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt
+      A	Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt
+   from 17:12 to 17:33 UTC on 25 October 2026; held by main, HEAD or origin/m0-decisions: 8
+   PROBLEM, not as the records state it: the 8, 8404f342 to c72247a6, from 17:12 to 17:33 UTC on 25 October 2026, are in none of main, HEAD and origin/m0-decisions
+
+== 3. What they change, from 044ed3cf to m0-decisions (as recorded there; not judged here)
+   outside Docs/Stage0/: Docs/Licenses/inventory.json, Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift, Spikes/G05-Recovery/DeviceTests/project.yml
+   Docs/Licenses/inventory.json, the lines added:
+      {"path": "Spikes/G05-Recovery/DeviceTests/Package.resolved", "manifest": "Spikes/G05-Recovery/DeviceTests/project.yml", "note": "Device-hosted tests reuse the recovery pa
+      "locks": ["Spikes/G05-AI/Package.resolved", "Spikes/G05-AI/ATSProbe/Package.resolved", "Spikes/G05-Recovery/Package.resolved", "Spikes/G05-Recovery/LockHarness/Package.re
+   the gate reports' rows whose status cell changed (first cell; old -> new):
+      Docs/Stage0/G02-Transfer.md: 1. Device token in the Keychain with `kSecAttrAccessibleAfterFirstUnlo: passed-simulator -> passed-device
+      Docs/Stage0/G05-AI.md: D1: pending-device -> failed
+      Docs/Stage0/G05-AI.md: D4: pending-device -> passed-device
+      Docs/Stage0/G05-Recovery.md: 6: passed-simulator (SIGKILL drill: passed-host) -> failed (device); prior simulator evidence retained
+      Docs/Stage0/G05-Recovery.md: 7: passed-simulator -> failed (device); prior simulator evidence retained
+      Docs/Stage0/G05-Recovery.md, a section added: Physical-device attempt, 26 October 2026 (25 October UTC)
+      Docs/Stage0/G05-Recovery.md, a section added: App-hosted physical-device result, 26 October 2026
+   Docs/Stage0/M0-device-runbook.md: 7 lines added, 6 removed
+   Docs/Stage0/device-checklists/G05-Recovery.md: 14 lines added, 4 removed
+   the session log (Docs/Stage0/evidence/M0-runbook/sessions.md), its first sentence and the rows added (cells 1-5 and 7, each cut at 90 characters):
+      first sentence now: Device testing began on 2026-10-25 UTC: Session 1.1 passed on phone B; see the appended row.
+      3a | 1 Automated suites, step 1.1 only | 2026-10-25 17:12 UTC | Codex with Justin Evidon | `96bdc7e996f99fcd2571ea983cc32a04076a5a07` | 1.1 passed-device: 3 Keychain tests; G02-Transfer/device/01-keychain-class.md
+      3b | 1 Automated suites, step 1.2 | 2026-10-25 17:14 UTC | Codex with Justin Evidon | `8404f342` | Attempt blocked before tests: Xcode requires a host app for SylviaRecoveryTests; G05-Recov
+      3c | 1 Automated suites, step 1.2 hosted | 2026-10-25 UTC | Codex with Justin Evidon | `432acc13` plus DeviceTests code committed unchanged as `4be1a1a4` | Recovery suite failed: 68 tests, 4 expected skips, 108 issues; G05-Recovery/device/step-1-
+      3d | 1 Automated suites, step 1.3 | 2026-10-25 17:24–17:26 UTC | Codex with Justin Evidon | `d5336111` | AI step 1 failed: private-address timeouts; step 4 passed-device: streaming interruption. 
+   new evidence files (14):
+      Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+      Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md
+      Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt
+      Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log
+      Docs/Stage0/evidence/G05-AI/device/step-01-ats.log
+      Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt
+      Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt
+      Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log
+      Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt
+      Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md
+      Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log
+      Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log
+      Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log
+      Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt
+   as the records state it: outside the Stage 0 records they add Spikes/G05-Recovery/DeviceTests (a test host for the recovery suite) and change Docs/Licenses/inventory.json
+   as the records state it: five report rows changed status: G0.2's device-token row to passed-device, G0.5 AI's D1 to failed and D4 to passed-device, G0.5 recovery's rows 6 and 7 to failed (device)
+   as the records state it: the session log has four rows more, 3a to 3d
+   what G0.5 recovery's drop-in builds, copies or runs (Spikes/G05-Recovery, Scripts/lib, Contracts, Scripts/ci.d/71-g05-recovery.sh, Scripts/ci.sh), changed from 9cdb0a02, the commit its whole run was made on, to m0-decisions: Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift, Spikes/G05-Recovery/DeviceTests/project.yml; of the drop-in, the package's manifest and Scripts/lib there, the files that name DeviceTests: none
+   as the records state it: of what the drop-in builds, copies or runs, only the new Spikes/G05-Recovery/DeviceTests changed there, a folder beside the recovery package that neither the drop-in, the package's manifest nor Scripts/lib names
+
+== 4. The files both branches changed since their common tree, and a merge of the two (git merge-tree)
+   941ac9a2: files both changed: Docs/Stage0/G02-Transfer.md, Docs/Stage0/G05-AI.md, Docs/Stage0/G05-Recovery.md, Docs/Stage0/M0-device-runbook.md, Docs/Stage0/evidence/M0-runbook/sessions.md
+   941ac9a2: merge-tree exit 1; conflicted files: Docs/Stage0/evidence/M0-runbook/sessions.md; conflict hunks: 1
+   HEAD: files both changed: Docs/Licenses/inventory.json, Docs/Stage0/G02-Transfer.md, Docs/Stage0/G05-AI.md, Docs/Stage0/G05-Recovery.md, Docs/Stage0/M0-device-runbook.md, Docs/Stage0/device-checklists/G05-Recovery.md, Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log, Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md, Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt, Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log, Docs/Stage0/evidence/G05-AI/device/step-01-ats.log, Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt, Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt, Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log, Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt, Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md, Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log, Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log, Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log, Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt, Docs/Stage0/evidence/M0-runbook/sessions.md, Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift, Spikes/G05-Recovery/DeviceTests/project.yml
+   HEAD: merge-tree exit 0; conflicted files: none; conflict hunks: 0
+   PROBLEM, not as the records state it: a merge would meet one conflict, in the session log, at both commits: this fix adds none
+
+== 5. The gate summary's checker with m0-decisions' gate reports in place of this tree's
+   reports taken from m0-decisions: Docs/Stage0/G02-Transfer.md, Docs/Stage0/G05-AI.md, Docs/Stage0/G05-Recovery.md
+   checker exit 1; rows disagreeing: 76
+   == summary: 92 rows; failed 4, partial 13, passed-host 12, passed-simulator 27, pending-device 15, pending-human 21; 74 report rows and 89 ADR and log facts compared; 2 problem(s)
+   PROBLEM: row 76: ADR-0014 status no longer says 'R4-01 and R4-02 are closed in the guard': not so
+   PROBLEM: row 76: status passed-host, but its record gives failed
+   PROBLEM, not as the records state it: the checker finds every Section 2 status as it is here with those reports
+
+== 6. The earlier rounds' gate checks, their part 1g
+   Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks.log (start 2026-10-25T17:01:07Z), line 62: m0-decisions: 044ed3cf86db838c93cda7e2ca4829474b234ae5; origin/m0-decisions: 044ed3cf86db838c93cda7e2ca4829474b234ae5; its tree is main's: yes
+   Docs/Stage0/evidence/M0-ExitPrep/fix-1/gate-checks.log (start 2026-10-25T18:36:56Z), line 62: m0-decisions: c72247a69a374ce361834550b92689b4abab95ee; origin/m0-decisions: 044ed3cf86db838c93cda7e2ca4829474b234ae5; its tree is main's: no
+   Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/gate-checks.log (start 2026-10-25T19:39:37Z), line 62: m0-decisions: c72247a69a374ce361834550b92689b4abab95ee; origin/m0-decisions: 044ed3cf86db838c93cda7e2ca4829474b234ae5; its tree is main's: no
+   Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/gate-checks.log (start 2026-10-25T21:02:00Z), line 62: m0-decisions: c72247a69a374ce361834550b92689b4abab95ee; origin/m0-decisions: 044ed3cf86db838c93cda7e2ca4829474b234ae5; its tree is main's: no
+   Docs/Stage0/evidence/M0-ExitPrep/fix-2/gate-checks.log (start 2026-10-25T22:41:44Z), line 62: m0-decisions: c72247a69a374ce361834550b92689b4abab95ee; origin/m0-decisions: 044ed3cf86db838c93cda7e2ca4829474b234ae5; its tree is main's: no
+   as the records state it: the assembly's run read the two trees as the same, and each of the four fixes' runs, all after 17:33 UTC, as different
+
+result: FAIL (3 fact(s) not as the records state them)
+
+exit status: 1
+end: 2026-10-26T16:27:54Z; load:  5:27  up 23 days, 15:38, 4 users, load averages: 7.06 7.13 5.48

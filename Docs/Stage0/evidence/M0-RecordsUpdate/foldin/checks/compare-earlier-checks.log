@@ -1,0 +1,168 @@
+command: python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/foldin/commands/compare-earlier-checks.py Docs/Stage0/evidence/M0-RecordsUpdate/foldin/checks
+commit: 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/foldin/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T19:02:57Z; load:  8:02  up 23 days, 18:13, 4 users, load averages: 4.77 4.75 4.51
+
+== recheck-hon-ep.log
+   lines naming a problem or a result: 5 at the owner-readability fix, 5 now; 1 only then, 1 only now
+   - PROBLEM  S: the sweep over 161 Markdown files: 186 texts in its phrasings, 31 in this fix's own account (items 127-130, integration log section 35, its README), 53 with a marker of this fix or a history clause in their context, 14 in the 15 of the 18 listed texts found, 88 unlisted (2 of 2 not as stated; first: no unlisted text (unlisted: 88; first: Docs/ADRs/0002-repository-build-and-ci.md:<line>
+   + PROBLEM  S: the sweep over 168 Markdown files: 186 texts in its phrasings, 31 in this fix's own account (items 127-130, integration log section 35, its README), 53 with a marker of this fix or a history clause in their context, 14 in the 15 of the 18 listed texts found, 88 unlisted (2 of 2 not as stated; first: no unlisted text (unlisted: 88; first: Docs/ADRs/0002-repository-build-and-ci.md:<line>
+
+== decisions-branch.log
+   lines naming a problem or a result: 18 at the owner-readability fix, 20 now; 6 only then, 8 only now
+   - == summary: 92 rows; failed 4, partial 13, passed-host 12, passed-simulator 27, pending-device 15, pending-human 21; 74 report rows and 89 ADR and log facts compared; 7 problem(s)
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/finding-lines.log
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/merge-simulation.log
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/owner-checks.log
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/owner-records-intact.log
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/retired-branch-texts.log
+   + == summary: 92 rows; failed 4, partial 13, passed-host 12, passed-simulator 27, pending-device 15, pending-human 21; 74 report rows and 89 ADR and log facts compared; 9 problem(s)
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/12-dependency-lock.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/foldin-checks.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/merge-check.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/merge-simulation.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/owner-records-intact.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/probe-count-check.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/runbook-content-check.log
+
+== recheck-own.log
+   lines naming a problem or a result: 11 at the owner-readability fix, 11 now; 0 only then, 0 only now
+
+== gate-checks-exit-prep.log
+   lines naming a problem or a result: 431 at the owner-readability fix, 433 now; 49 only then, 51 only now
+   - PROBLEM: also Spikes/G05-Recovery/DeviceTests/App/TestHost.swift
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/finding-lines.log
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/merge-simulation.log
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/owner-checks.log
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/owner-records-intact.log
+   - PROBLEM: missing path: evidence/M0-RecordsUpdate/fix-1/owner/checks/retired-branch-texts.log
+   - -- 1n. this fix, from 941ac9a2 (the fourth fix's last commit, which the fifth review read) to HEAD: 345 files, 297 of them new, 0 deleted
+   - the evidence READMEs, the ADR index, the Stage 0 README, the runbook and the session log, each on the lines this fix names alone: PROBLEM: Docs/ADRs/README.md(lines 13, 15, 17-19, 21, 23, 25-27, 29-31, 34, not 30) Docs/Stage0/README.md(lines 5-7, 38, 41, 43, not 5) Docs/Stage0/M0-device-runbook.md(lines 6-8, 12, 15, 23-24, 31, 35, 77, 79, 107-108, 127-128, 132, 134, 138, 158, 162, 164, 166-172,
+   - new files: 297, PROBLEM, outside Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/: Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+   - == paths: 470 checked
+   - G05-AI.md: 9 steps, 73 markers: 57 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+   - G05-Recovery.md: 5 steps, 62 markers: 60 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+   - PROBLEM  OWN5-05: the opening (596 words), the State line (173; 769 together) and run 1 (179) without the review history and notes, each pointing to where they are (the State line lacks: (This line's history: Section 6.2, and Section 6.3, item 88.))
+   - PROBLEM  UNL-02: the State line (173 words) names the record of the drop-in run and its fix and the last two fixes as unreviewed; the Stage 0 README gives the review of the record and its fix; 25.2's row has its note (the State line lacks: the follow-up and its four fixes, the record of item 4's drop-in run and its fix, and this summary's own updates; the State line lacks: and the last two fixe
+   - PROBLEM  UNL2-01: the two rows each with its dated note; the eight statements of coverage each with its note; sweep 1 over 161 Markdown files: 28 texts in its phrasings, 28 with a dated note naming `9cdb0a02` after them; sweep 2: 40 sentences that name the drop-in, its run or step 0.8 with a word of status and no such note, 30 of them read and listed (7 account, 3 earlier, 5 history, 1 locked,
+   - PROBLEM  review: the record's fix read by an agent review at 26530d49 and this second fix not reviewed, in the gate summary (the State line: 173 words), the runbook, the integration log, the fix's README and the Stage 0 README (the State line lacks: the follow-up and its four fixes, the record of item 4's drop-in run and its two fixes, and this summary's own updates; the State line lacks: and t
+   - PROBLEM  S: the sweep over 161 Markdown files: 100 texts in its phrasings, 34 with a marker of this fix in the same sentence or note, 21 in the 21 of the 23 listed texts found, 45 unlisted (2 of 2 not as stated; first: no unlisted text (unlisted: 45; first: Docs/ADRs/0002-repository-build-and-ci.md:<line>: ts security l
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: row 76, an M0 deliverable, stays failed until they are closed (it reads: '**4. Two requests the exit waits for, your answers of 23 October
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: Closing them is an agent's change to the guard, which `12-dependency-lock` runs, with an agent review of it (it reads: '**4. Two requests
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: once the review of the change accepts it, merge that branch (it reads: '**4. Two requests the exit waits for, your answers of 23 October 2
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-device-runbook.md:<line> at <HEAD> has: the M0 deliverable row 76 stays failed until they are closed (it reads: '| Keys, their origin binding, the cleartext rule, redi
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-device-runbook.md:<line> at <HEAD> has: Closing them is an agent's change to ADR-0014's CI guard (its section 3, checked by `12-dependency-lock`) with (it reads: '| Ke
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: | 76 | Dependency lock: the CI guard that keeps marmelroy/Zip 2.1.2 (CVE-2023-39135) out of product code | pas (it reads: '| 70 | G0.1-G0
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: *(Failed until 24 October 2026, on round 4's verdict, reject, with R4-01 and R4-02 open: Section 6.1. (it reads: '| 70 | G0.1-G0.6 | part
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: Since 24 October 2026 row 76 is passed-host (ADR-0014's R4-01 and R4-02 closed by an agent, reviewed next), so (it reads: '| 88 | ADR: re
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: *(24 October 2026: done by an agent at the M0 exit preparation (it reads: '**4. Two requests the exit waits for, your answers of 23 Octobe
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: ADR-0014's R4-01 and R4-02 closed in the guard, with R4-03 and R4-04 and the routes of the same kind, so row 7 (it reads: '- **The decisi
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: 105. **R4-01 and R4-02 closed in the guard** (it reads: "96. **Session 0's time** (UNL-03): the runbook's Session 0 h
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-device-runbook.md:<line> at <HEAD> has: *(24 October 2026: done by an agent, reviewed next, (it reads: '| Keys, their origin binding, the cleartext rule, redirects and
+   - PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: has the security sign-off accept the marmelroy/Zip advisory's residual risk only once R4-01 and R4-02 are clos (it reads: '**3. Then Sessi
+   - PROBLEM HON-EP-02: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: the M0 exit preparation was made on branches of its own from `5aec2518` (it reads: '121. **The record of your request
+   - PROBLEM HON-EP-02: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: No workflow's agent changed it (item 46). (it reads: '95. **What has had no review** (UNL-02): the State line listed the agent edits that
+   - PROBLEM HON-EP-02: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: and commit the change on `m0-decisions` (it reads: "2. **`CLAUDE.md`'s milestone paragraph: yours to correct, at the latest in the same pa
+   - PROBLEM HON-EP-03: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: *(Done on 24 October 2026, at your request, by the orchestrating session: `5aec2518` (it reads: "2. **`CLAUDE.md`'s milestone paragraph: y
+   - PROBLEM HON-EP-03: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: on 24 October 2026 you asked the orchestrating session to correct it (it reads: '95. **What has had no review** (UNL-
+   - PROBLEM HON-EP-04: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: says that all M0 work is on `main` (it reads: "- The validator's owner (ADR-0002, CI): `Scripts/validate-contracts.py` requests (a) and (
+   - PROBLEM HON-EP-04: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: The paragraph now says that all M0 work is on `main` (it reads: '95. **What has had no review** (UNL-02): the State l
+   - PROBLEM HON-EP-04: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: The correction itself is not yet on `main` (it reads: "- The validator's owner (ADR-0002, CI): `Scripts/validate-contracts.py` requests (
+   - PROBLEM HON-EP-05: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: nor has the M0 exit preparation of 24 October 2026 (sections 28-30) (it reads: "128. **The first fix's route, still c
+   - PROBLEM  S: the sweep over 161 Markdown files: 186 texts in its phrasings, 31 in this fix's own account (items 127-130, integration log section 35, its README), 53 with a marker of this fix or a history clause in their context, 14 in the 15 of the 18 listed texts found, 88 unlisted (2 of 2 not as stated; first: no u
+   - PROBLEM HON-EP-06: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: The code is the same either way for now: `main` (`96bdc7e9`) and `m0-decisions` (`044ed3cf`) have the same tre (it reads: "- The validato
+   - PROBLEM HON-EP-06: Docs/Stage0/M0-device-runbook.md:<line> at <HEAD> has: says never to build on `m0-decisions`, which is behind `main` (it reads: '')
+   - PROBLEM HON-EP-06: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: nothing has been run on a phone (it reads: '(Until 22 October 2026 this section listed what you needed to do next: the decisions, then pre
+   - PROBLEM HON-EP-06: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: No row is passed on a device: no device step has run. (it reads: '- **The M0 exit preparation (24 and 26 October 2026).** Pull request #6
+   - PROBLEM HON-EP-06: no Markdown record at <HEAD> names c72247a6 (it is named only in the gate checks' logs): Docs/ADRs/0002-repository-build-and-ci.md, Docs/Stage0/M0-gate.md, Docs/Stage0/README.md,
+   - PROBLEM HON-EP-07: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: which the fix of that review closes, not reviewed (it reads: '- **The decisions round assembled (22 October 2026).** The four workstreams
+   - PROBLEM HON-EP-07: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: which the fix of that review closes the same day, not reviewed (it reads: '')
+   - PROBLEM HON-EP-07: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: so that both routes, R4-03 and R4-04 and the other routes of the same kind fail `12-dependency-lock` (it reads: "98. **What was read in t
+   - PROBLEM HON-EP-08: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: from `5aec2518` (`main` after pull request #6, with `CLAUDE.md`'s correction (it reads: '**4. Two requests the exit waits for, your answer
+   + PROBLEM: also Scripts/ci.d/70-g05-ai.sh
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/12-dependency-lock.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/foldin-checks.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/merge-check.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/merge-simulation.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/owner-records-intact.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/probe-count-check.log
+   + PROBLEM: missing path: evidence/M0-RecordsUpdate/foldin/checks/runbook-content-check.log
+   + -- 1n. this fix, from 941ac9a2 (the fourth fix's last commit, which the fifth review read) to HEAD: 574 files, 515 of them new, 0 deleted
+   + the evidence READMEs, the ADR index, the Stage 0 README, the runbook and the session log, each on the lines this fix names alone: PROBLEM: Docs/ADRs/README.md(lines 13, 15, 17-19, 21, 23, 25-27, 29-31, 34, not 30) Docs/Stage0/README.md(lines 5-7, 38, 41, 43, not 5) Docs/Stage0/M0-device-runbook.md(lines 6-9, 13, 16, 24-25, 32, 36, 78, 80, 108-109, 128-130, 133, 135, 139, 159, 163, 165, 167-173,
+   + new files: 515, PROBLEM, outside Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/: Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+   + == paths: 486 checked
+   + G05-AI.md: 9 steps, 76 markers: 60 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+   + G05-Recovery.md: 5 steps, 64 markers: 62 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+   + PROBLEM  OWN5-05: the opening (596 words), the State line (190; 786 together) and run 1 (183) without the review history and notes, each pointing to where they are (the State line lacks: (This line's history: Section 6.2, and Section 6.3, item 88.); the runbook's run 1 lacks: (This run's history: `M0-gate.md` Section 6.3, items 74 and 88.))
+   + PROBLEM  UNL-02: the State line (190 words) names the record of the drop-in run and its fix and the last two fixes as unreviewed; the Stage 0 README gives the review of the record and its fix; 25.2's row has its note (the State line lacks: the follow-up and its four fixes, the record of item 4's drop-in run and its fix, and this summary's own updates; the State line lacks: and the last two fixe
+   + PROBLEM  UNL2-01: the two rows each with its dated note; the eight statements of coverage each with its note; sweep 1 over 168 Markdown files: 29 texts in its phrasings, 28 with a dated note naming `9cdb0a02` after them; sweep 2: 57 sentences that name the drop-in, its run or step 0.8 with a word of status and no such note, 30 of them read and listed (7 account, 3 earlier, 5 history, 1 locked,
+   + PROBLEM  review: the record's fix read by an agent review at 26530d49 and this second fix not reviewed, in the gate summary (the State line: 190 words), the runbook, the integration log, the fix's README and the Stage 0 README (the State line lacks: the follow-up and its four fixes, the record of item 4's drop-in run and its two fixes, and this summary's own updates; the State line lacks: and t
+   + PROBLEM  S: the sweep over 168 Markdown files: 102 texts in its phrasings, 34 with a marker of this fix in the same sentence or note, 21 in the 21 of the 23 listed texts found, 47 unlisted (2 of 2 not as stated; first: no unlisted text (unlisted: 47; first: Docs/ADRs/0002-repository-build-and-ci.md:<line>: ts security l
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: row 76, an M0 deliverable, stays failed until they are closed (it reads: "Every Stage 0 ADR stays Proposed until then: your decision D-6 a
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: Closing them is an agent's change to the guard, which `12-dependency-lock` runs, with an agent review of it (it reads: "Every Stage 0 ADR
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: once the review of the change accepts it, merge that branch (it reads: "Every Stage 0 ADR stays Proposed until then: your decision D-6 app
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-device-runbook.md:<line> at <HEAD> has: the M0 deliverable row 76 stays failed until they are closed (it reads: '| The pairing protocol, the `sylvia://` link risk and
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-device-runbook.md:<line> at <HEAD> has: Closing them is an agent's change to ADR-0014's CI guard (its section 3, checked by `12-dependency-lock`) with (it reads: '| Th
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: | 76 | Dependency lock: the CI guard that keeps marmelroy/Zip 2.1.2 (CVE-2023-39135) out of product code | pas (it reads: '')
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: *(Failed until 24 October 2026, on round 4's verdict, reject, with R4-01 and R4-02 open: Section 6.1. (it reads: '')
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: Since 24 October 2026 row 76 is passed-host (ADR-0014's R4-01 and R4-02 closed by an agent, reviewed next), so (it reads: '| 85 | ADR: au
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: *(24 October 2026: done by an agent at the M0 exit preparation (it reads: "Every Stage 0 ADR stays Proposed until then: your decision D-6
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: ADR-0014's R4-01 and R4-02 closed in the guard, with R4-03 and R4-04 and the routes of the same kind, so row 7 (it reads: '- **Pull reque
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: 105. **R4-01 and R4-02 closed in the guard** (it reads: '93. **Not reviewed**: this record is agent-written; its chec
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-device-runbook.md:<line> at <HEAD> has: *(24 October 2026: done by an agent, reviewed next, (it reads: '| The pairing protocol, the `sylvia://` link risk and the Tails
+   + PROBLEM HON-EP-01: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: has the security sign-off accept the marmelroy/Zip advisory's residual risk only once R4-01 and R4-02 are clos (it reads: '**Your next ste
+   + PROBLEM HON-EP-02: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: the M0 exit preparation was made on branches of its own from `5aec2518` (it reads: 'Recorded on 26 October 2026, afte
+   + PROBLEM HON-EP-02: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: No workflow's agent changed it (item 46). (it reads: '92. **The drop-in run with the screen unlocked** (a run, not a review finding): on
+   + PROBLEM HON-EP-02: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: and commit the change on `m0-decisions` (it reads: "2. **Done on `m0-records-update`, which your merge brings: `CLAUDE.md`'s milestone par
+   + PROBLEM HON-EP-03: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: *(Done on 24 October 2026, at your request, by the orchestrating session: `5aec2518` (it reads: "2. **Done on `m0-records-update`, which y
+   + PROBLEM HON-EP-03: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: on 24 October 2026 you asked the orchestrating session to correct it (it reads: '92. **The drop-in run with the scree
+   + PROBLEM HON-EP-04: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: says that all M0 work is on `main` (it reads: '- The technical lead, which since 22 October 2026 is you (your instruction): before Sessio
+   + PROBLEM HON-EP-04: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: The paragraph now says that all M0 work is on `main` (it reads: '92. **The drop-in run with the screen unlocked** (a
+   + PROBLEM HON-EP-04: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: The correction itself is not yet on `main` (it reads: '- The technical lead, which since 22 October 2026 is you (your instruction): befor
+   + PROBLEM HON-EP-05: Docs/Stage0/M0-gate.md:<line> (the finding: :<line>) at <HEAD> has: nor has the M0 exit preparation of 24 October 2026 (sections 28-30) (it reads: '126. **Not reviewed**: this fix is ag
+   + PROBLEM  S: the sweep over 168 Markdown files: 186 texts in its phrasings, 31 in this fix's own account (items 127-130, integration log section 35, its README), 53 with a marker of this fix or a history clause in their context, 14 in the 15 of the 18 listed texts found, 88 unlisted (2 of 2 not as stated; first: no u
+   + PROBLEM HON-EP-06: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: The code is the same either way for now: `main` (`96bdc7e9`) and `m0-decisions` (`044ed3cf`) have the same tre (it reads: '- The technica
+   + PROBLEM HON-EP-06: Docs/Stage0/M0-device-runbook.md:<line> at <HEAD> has: says never to build on `m0-decisions`, which is behind `main` (it reads: '**0.2 Xcode account, and the Xcode build** (after 0.3
+   + PROBLEM HON-EP-06: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: nothing has been run on a phone (it reads: 'Every other item was decided as recommended (Sections 3 and 4), among them D-10 (i), which put
+   + PROBLEM HON-EP-06: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: No row is passed on a device: no device step has run. (it reads: '- **The review of that fix, and the second fix (22 and 23 October 2026)
+   + PROBLEM HON-EP-06: no Markdown record at <HEAD> names c72247a6 (it is named only in the gate checks' logs): Docs/ADRs/0002-repository-build-and-ci.md, Docs/Stage0/G05-Recovery.md, Docs/Stage0/M0-dev
+   + PROBLEM HON-EP-07: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: which the fix of that review closes, not reviewed (it reads: '- **Pull request #5** (merge commit `4c73da57`) merged the later M0 work, f
+   + PROBLEM HON-EP-07: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: which the fix of that review closes the same day, not reviewed (it reads: '- **You, the product owner, before `m0-exit-prep` reaches `mai
+   + PROBLEM HON-EP-07: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: so that both routes, R4-03 and R4-04 and the other routes of the same kind fail `12-dependency-lock` (it reads: "Recorded on 23 October 2
+   + PROBLEM HON-EP-08: Docs/Stage0/M0-gate.md:<line> at <HEAD> has: from `5aec2518` (`main` after pull request #6, with `CLAUDE.md`'s correction (it reads: "Every Stage 0 ADR stays Proposed until then: your
+
+== gate-checks-devicea.log
+   lines naming a problem or a result: 196 at the owner-readability fix, 198 now; 13 only then, 15 only now
+   - -- 1a. since caf75a84 (the third fix's last commit, which this fix starts from): 429 files; of them this fix's folder: 20; the documents:
+   - the checklists since caf75a84 (git diff --numstat): 1 1 Docs/Stage0/device-checklists/G01-EPUB.md;1 1 Docs/Stage0/device-checklists/G01-PDF.md;2 2 Docs/Stage0/device-checklists/G02-Transfer.md;1 1 Docs/Stage0/device-checklists/G03-Intake.md;3 3 Docs/Stage0/device-checklists/G04-Audio.md;3 3 Docs/Stage0/device-checklists/G05-AI.md;18 7 Docs/Stage0/device-checklists/G05-Recovery.md;2 2 Docs/Stage
+   - -- 1c. the evidence: git diff --name-status caf75a84 HEAD -- Docs/Stage0/evidence lists 381 files: 375 added under Docs/Stage0/evidence/M0-DeviceA/fix-1/owner/ and 6 modified, PROBLEM, also: A	Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+   - Spikes/G05-Recovery/DeviceTests/project.yml; CLAUDE.md, the session log and the license inventory PROBLEM, changed: CLAUDE.md
+   - == paths: 470 checked
+   - G05-AI.md: 9 steps, 73 markers: 57 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+   - G05-Recovery.md: 5 steps, 62 markers: 60 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+   - > recheck-own5	PROBLEM  OWN5-05: the opening (596 words), the State line (173; 769 together) and run 1 (179) without the review history and notes, each pointing to where they are (the State line lacks: (This line's history: Section 6.2, and Section 6.3, item 88.))
+   - > recheck-unl	PROBLEM  UNL-02: the State line (173 words) names the record of the drop-in run and its fix and the last two fixes as unreviewed; the Stage 0 README gives the review of the record and its fix; 25.2's row has its note (the State line lacks: the follow-up and its four fixes, the record of item 4's drop-in run and its fix, and this summary's own updates; the State line lacks: and the
+   - PROBLEM   sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of this update is a record of what happened (34 lines listed, each with its reason) (Docs/Stage0/M0-device-runbook.md: unlisted, with no mark of this update: 3. **Done:** pull request #6 merged `m0-decisions` into `main` on 23 October 2026 at 15:34 UTC (24 O; Docs/Stage0/M0-gate.md: unlisted, wit
+   - PROBLEM   sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of the update is a record of what happened (34 lines listed, each with its reason) (Docs/Stage0/M0-device-runbook.md: unlisted, with no mark of the update: 3. **Done:** pull request #6 merged `m0-decisions` into `main` on 23 October 2026 at 15:34 UTC (24 O; Docs/Stage0/M0-gate.md: unlisted, with
+   - PROBLEM   review: the review at 8082bdb6 and this fix, not reviewed, in the gate summary (the State line: 173 words), the runbook, the Stage 0 README, integration log 28 and 29, eight ADRs, the ADR index and the update's evidence READMEs (the State line lacks: nor has the update's fix (Section 6.2); the State line lacks: and the last two fixes, the follow-up's fourth and that record's second, h
+   - PROBLEM   review: this fix, not reviewed, in the gate summary (the State line: 173 words), the runbook, the Stage 0 README, integration log 30, ADR-0001's and ADR-0010's Status, and the evidence READMEs (the State line lacks: nor have the update's fixes (Section 6.2); the State line lacks: (This line's history: Section 6.2, and Section 6.3, item 88.); M0-gate.md lacks: The same review's six acc
+   + -- 1a. since caf75a84 (the third fix's last commit, which this fix starts from): 658 files; of them this fix's folder: 20; the documents:
+   + the checklists since caf75a84 (git diff --numstat): 1 1 Docs/Stage0/device-checklists/G01-EPUB.md;1 1 Docs/Stage0/device-checklists/G01-PDF.md;2 2 Docs/Stage0/device-checklists/G02-Transfer.md;1 1 Docs/Stage0/device-checklists/G03-Intake.md;3 3 Docs/Stage0/device-checklists/G04-Audio.md;5 5 Docs/Stage0/device-checklists/G05-AI.md;27 8 Docs/Stage0/device-checklists/G05-Recovery.md;2 2 Docs/Stage
+   + -- 1c. the evidence: git diff --name-status caf75a84 HEAD -- Docs/Stage0/evidence lists 597 files: 591 added under Docs/Stage0/evidence/M0-DeviceA/fix-1/owner/ and 6 modified, PROBLEM, also: A	Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log
+   + Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Support.swift; CLAUDE.md, the session log and the license inventory PROBLEM, changed: CLAUDE.md
+   + of them, outside Spikes/G05-Recovery/DeviceTests: PROBLEM: Spikes/G05-Recovery/Sources/SylviaRecovery/Backup/Container.swift
+   + -- the same with ':(exclude)Spikes/G05-Recovery/DeviceTests': PROBLEM, it prints:
+   + == paths: 486 checked
+   + G05-AI.md: 9 steps, 76 markers: 60 in the runbook, 16 in steps left to the checklist, 0 listed as not carried, 0 missing
+   + G05-Recovery.md: 5 steps, 64 markers: 62 in the runbook, 0 in steps left to the checklist, 2 listed as not carried, 0 missing
+   + > recheck-own5	PROBLEM  OWN5-05: the opening (596 words), the State line (190; 786 together) and run 1 (183) without the review history and notes, each pointing to where they are (the State line lacks: (This line's history: Section 6.2, and Section 6.3, item 88.); the runbook's run 1 lacks: (This run's history: `M0-gate.md` Section 6.3, items 74 and 88.))
+   + > recheck-unl	PROBLEM  UNL-02: the State line (190 words) names the record of the drop-in run and its fix and the last two fixes as unreviewed; the Stage 0 README gives the review of the record and its fix; 25.2's row has its note (the State line lacks: the follow-up and its four fixes, the record of item 4's drop-in run and its fix, and this summary's own updates; the State line lacks: and the
+   + PROBLEM   sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of this update is a record of what happened (34 lines listed, each with its reason) (Docs/Stage0/M0-device-runbook.md: unlisted, with no mark of this update: - **Your next steps, in order (27 October 2026).** (1) **Between sittings, merge `m0-records-update`; Docs/Stage0/M0-device-runbook.md: unl
+   + PROBLEM   sweep: every line that names the iPhone 11 Pro, iPhone12,3 or m0-decisions without a mark of the update is a record of what happened (34 lines listed, each with its reason) (Docs/Stage0/M0-device-runbook.md: unlisted, with no mark of the update: - **Your next steps, in order (27 October 2026).** (1) **Between sittings, merge `m0-records-update`; Docs/Stage0/M0-device-runbook.md: unlis
+   + PROBLEM   review: the review at 8082bdb6 and this fix, not reviewed, in the gate summary (the State line: 190 words), the runbook, the Stage 0 README, integration log 28 and 29, eight ADRs, the ADR index and the update's evidence READMEs (the State line lacks: nor has the update's fix (Section 6.2); the State line lacks: and the last two fixes, the follow-up's fourth and that record's second, h
+   + PROBLEM   review: this fix, not reviewed, in the gate summary (the State line: 190 words), the runbook, the Stage 0 README, integration log 30, ADR-0001's and ADR-0010's Status, and the evidence READMEs (the State line lacks: nor have the update's fixes (Section 6.2); the State line lacks: (This line's history: Section 6.2, and Section 6.3, item 88.); M0-gate.md lacks: The same review's six acc
+
+
+exit status: 0
+end: 2026-10-26T19:02:57Z; load:  8:02  up 23 days, 18:13, 4 users, load averages: 4.77 4.75 4.51

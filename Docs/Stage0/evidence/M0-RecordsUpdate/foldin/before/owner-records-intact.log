@@ -1,0 +1,113 @@
+command: Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/commands/owner-records-intact.py (its defaults; --owner-head m0-decisions --rev HEAD) and Docs/Stage0/evidence/M0-RecordsUpdate/commands/owner-records-intact.py
+commit: cbdb63bc265b98955cc4a297e92c689fb1a9d410; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T16:25:35Z; load:  5:25  up 23 days, 15:36, 4 users, load averages: 8.91 5.60 4.63
+
+== 4a. this fix's version, with its defaults (the owner's commits 044ed3cf..c72247a6, the working tree)
+owner's commits 044ed3cf..c72247a6: 8
+  c72247a6 Record setup checks and the audio device run in progress
+  1bbca07e Record device ATS and streaming interruption results
+  d5336111 Record the first hosted recovery device run and failures
+  ea01b412 Inventory the recovery device test lock
+  4be1a1a4 Host the recovery suite in an iOS test app
+  432acc13 Record the requested recovery device retry
+  38f9604e Record the recovery suite device-host blocker
+  8404f342 Record the first physical iPhone Keychain test result
+ok    Docs/Licenses/inventory.json: byte-identical to c72247a6
+ok    Docs/Stage0/G02-Transfer.md: 1 owner-added line(s) kept verbatim, 0 missing; 1 owner-removed line(s), 0 back
+ok    Docs/Stage0/G05-AI.md: 2 owner-added line(s) kept verbatim, 0 missing; 2 owner-removed line(s), 0 back
+ok    Docs/Stage0/G05-Recovery.md: 10 owner-added line(s) kept verbatim, 0 missing; 2 owner-removed line(s), 0 back
+ok    Docs/Stage0/M0-device-runbook.md: 7 owner-added line(s) kept verbatim, 0 missing; 6 owner-removed line(s), 0 back
+ok    Docs/Stage0/device-checklists/G05-Recovery.md: 14 owner-added line(s) kept verbatim, 0 missing; 4 owner-removed line(s), 0 back
+ok    Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-01-ats.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/M0-runbook/sessions.md: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/App/TestHost.swift: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/Package.resolved: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/project.yml: byte-identical to c72247a6
+owner records intact: yes (0 failure(s)); owner commits 044ed3cf..c72247a6, checked working tree
+exit: 0
+
+== 4b. this fix's version, given the commit m0-decisions is at (read only) and HEAD
+owner's commits 044ed3cf..c72247a6: 8
+  c72247a6 Record setup checks and the audio device run in progress
+  1bbca07e Record device ATS and streaming interruption results
+  d5336111 Record the first hosted recovery device run and failures
+  ea01b412 Inventory the recovery device test lock
+  4be1a1a4 Host the recovery suite in an iOS test app
+  432acc13 Record the requested recovery device retry
+  38f9604e Record the recovery suite device-host blocker
+  8404f342 Record the first physical iPhone Keychain test result
+ok    Docs/Licenses/inventory.json: byte-identical to c72247a6
+ok    Docs/Stage0/G02-Transfer.md: 1 owner-added line(s) kept verbatim, 0 missing; 1 owner-removed line(s), 0 back
+ok    Docs/Stage0/G05-AI.md: 2 owner-added line(s) kept verbatim, 0 missing; 2 owner-removed line(s), 0 back
+ok    Docs/Stage0/G05-Recovery.md: 10 owner-added line(s) kept verbatim, 0 missing; 2 owner-removed line(s), 0 back
+ok    Docs/Stage0/M0-device-runbook.md: 7 owner-added line(s) kept verbatim, 0 missing; 6 owner-removed line(s), 0 back
+ok    Docs/Stage0/device-checklists/G05-Recovery.md: 14 owner-added line(s) kept verbatim, 0 missing; 4 owner-removed line(s), 0 back
+ok    Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-01-ats.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/M0-runbook/sessions.md: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/App/TestHost.swift: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/Package.resolved: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/project.yml: byte-identical to c72247a6
+ok    the owner's head c72247a6 is in the history of HEAD (a fast-forward merge of it is possible)
+owner records intact: yes (0 failure(s)); owner commits 044ed3cf..c72247a6, checked HEAD
+exit: 0
+
+== 4c. m0-records-update's version, which this fix's replaces (the working tree)
+ok    Docs/Licenses/inventory.json: byte-identical to c72247a6
+ok    Docs/Stage0/G02-Transfer.md: 1 owner-added line(s) kept verbatim, 0 missing; 1 owner-removed line(s), 0 back
+ok    Docs/Stage0/G05-AI.md: 2 owner-added line(s) kept verbatim, 0 missing; 2 owner-removed line(s), 0 back
+ok    Docs/Stage0/G05-Recovery.md: 10 owner-added line(s) kept verbatim, 0 missing; 2 owner-removed line(s), 0 back
+ok    Docs/Stage0/M0-device-runbook.md: 7 owner-added line(s) kept verbatim, 0 missing; 6 owner-removed line(s), 0 back
+ok    Docs/Stage0/device-checklists/G05-Recovery.md: 14 owner-added line(s) kept verbatim, 0 missing; 4 owner-removed line(s), 0 back
+ok    Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G02-Transfer/device/01-keychain-class.md: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G04-Audio/device/step-01-status.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-01-ats.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/host-dependency-check.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-2-results.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-results.md: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-hosted-tests.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-retry-tests.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/M0-runbook/2026-10-26-setup.txt: byte-identical to c72247a6
+ok    Docs/Stage0/evidence/M0-runbook/sessions.md: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/App/TestHost.swift: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/Package.resolved: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/Support/Bundle+Module.swift: byte-identical to c72247a6
+ok    Spikes/G05-Recovery/DeviceTests/project.yml: byte-identical to c72247a6
+owner records intact: yes (0 failure(s)); owner commits 044ed3cf..c72247a6, checked working tree
+exit: 0
+
+exit status: 0
+end: 2026-10-26T16:25:37Z; load:  5:25  up 23 days, 15:36, 4 users, load averages: 8.91 5.60 4.63

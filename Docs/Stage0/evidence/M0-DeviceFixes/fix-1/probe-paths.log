@@ -1,0 +1,50 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/commands/run-probe.sh
+commit: 29afe7581c199d383af243e2a0def000016150f7 (m0-device-fixes)
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T10:47:54Z
+---- xcrun swift Docs/Stage0/evidence/M0-DeviceFixes/fix-1/commands/probe-paths.swift
+temporaryDirectory: /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T
+== F1: copyTree's inside check before fix-1 (standardizedFileURL of an existing source and a missing destination)
+folder named under /var:
+  source, standardized:      /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Template
+  destination, standardized: /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Template/Library/Copy
+  the check sees the destination inside the source: true
+  realpath(3) of the source: /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Template
+folder named through /private:
+  source, standardized:      /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Template
+  destination, standardized: /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Template/Library/Copy
+  the check sees the destination inside the source: false
+  realpath(3) of the source: /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Template
+== F3: the bundle walk before fix-1 (enumerator URLs and standardizedFileURL, with a dangling link)
+bundle named under /var; root, standardized: /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle
+  enumerated /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export
+    standardized /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export
+    under the root: true
+  enumerated /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown
+    standardized /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown
+    under the root: true
+  enumerated /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown/dangling.md
+    standardized /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown/dangling.md
+    under the root: false
+  enumerated /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown/a.md
+    standardized /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown/a.md
+    under the root: true
+bundle named through /private; root, standardized: /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle
+  enumerated /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export
+    standardized /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export
+    under the root: true
+  enumerated /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown
+    standardized /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown
+    under the root: true
+  enumerated /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown/dangling.md
+    standardized /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown/dangling.md
+    under the root: false
+  enumerated /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown/a.md
+    standardized /var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-fix1-probe-4CC2CC40/Bundle/export/markdown/a.md
+    under the root: true
+== Why fix-1's CanonicalPath.relative compares bytes: a name that begins with a combining mark
+characters in "/" followed by U+0301: 1
+String.hasPrefix("/a/b/") of "/a/b/" + U+0301 + "x": false
+UTF-8 bytes start with those of "/a/b/": true
+---- exit: 0
+end: 2026-10-26T10:47:54Z

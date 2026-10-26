@@ -1,0 +1,338 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/commands/run-host-tests.sh before-fix-host-tests ProtectedCopyTests|PrivatePathTests|RestoreTests
+commit: 346716edb12a0252f98417e69fab1b2b3c6cbe64 (m0-device-fixes)
+uncommitted changes in Spikes/G05-Recovery included in this run:
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T10:17:37Z; load: 23:17  up 23 days,  9:28, 3 users, load averages: 1.97 3.47 4.23
+---- xcrun swift test --force-resolved-versions --filter 'ProtectedCopyTests|PrivatePathTests|RestoreTests' (in Spikes/G05-Recovery)
+Building for debugging...
+[1 / 5]
+Build complete! (0.32 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Restore (plan 17.4, T35, T46, T47, J-06)" started.
+◇ Suite "Bundle paths under /private (device run of 26 October 2026)" started.
+◇ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" started.
+◇ Test "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" started.
+◇ Test "reconcile rolls back to the pre-restore copy if both libraries are missing" started.
+◇ Test "a restore intent that exists but cannot be read (stand-in for before first unlock) fails the open and changes nothing" started.
+◇ Test "an installation record that exists but cannot be read or decoded is an error, never a new device identity" started.
+◇ Test "J-06: originals that were on the source device are restored as at-source or unavailable records, never as on-device" started.
+◇ Test "restore drill after source deletion (J-06, T35)" started.
+◇ Test "insufficient space refuses a restore before anything is copied" started.
+◇ Test "restore replaces the active library only with confirmation and keeps a pre-restore copy" started.
+◇ Test "T47: SIGKILL during prepare or the swap leaves exactly the old or the restored library (short run; CI runs 300)" started.
+◇ Test "the containment check follows links whether or not the leaf exists, and resolve refuses unsafe paths itself" started.
+◇ Test "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" started.
+◇ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" started.
+◇ Test "a preparation abandoned by a crash is cleared at the next launch, and the library is untouched" started.
+◇ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" started.
+◇ Test "a backup from an older library schema (v1) is migrated in the temporary library before the swap" started.
+◇ Test "T46: corrupt, truncated, newer and malicious backups are rejected without touching the library" started.
+◇ Test "untrusted databases are opened in SQLite's defensive mode with trusted_schema off" started.
+◇ Test case passing 1 argument step → .intentWritten to "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" started.
+◇ Test case passing 1 argument step → .restoredMovedIn to "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" started.
+◇ Test case passing 1 argument kind → "garbage" to "an installation record that exists but cannot be read or decoded is an error, never a new device identity" started.
+◇ Test case passing 1 argument kind → "not json" to "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" started.
+◇ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" started.
+➜ Test "a tree copied with FileProtector.copyTree carries the protector's class C on every file and directory, whatever the source's" skipped: "class A/B keys are unavailable (host screen locked): a class-B source cannot be read now"
+◇ Test case passing 1 argument kind → "unreadable" to "an installation record that exists but cannot be read or decoded is an error, never a new device identity" started.
+◇ Test case passing 1 argument kind → "{"id":"x"}" to "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" started.
+◇ Test case passing 1 argument step → .activeMovedAside to "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" started.
+◇ Test "the reference schema equals a real library's schema for every migration prefix" started.
+➜ Test "a v1 library installed from a source of another class is created with the library's class C and opens" skipped: "class A/B keys are unavailable (host screen locked): a class-B source cannot be read now"
+◇ Test case passing 1 argument kind → "traversal" to "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] containment check (realpath of the deepest existing part): under /var, as the Mac names its temporary folder and through /private, as an iPhone's folders are named: a missing leaf is inside; a missing leaf below a link to outside the root is outside; resolve refuses links and the manifest's unsafe paths
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] installation record unreadable: open refused: installation.json exists but cannot be read: The file “installation.json” couldn’t be opened because you don’t have permission to view it.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] installation record garbage: open refused: installation.json exists but is not a valid installation record
+✘ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" recorded an issue at ProtectedCopyTests.swift:115:31: Issue recorded
+↳ under /var, as the Mac names its temporary folder: a destination inside the source, named through a link: expected a FileSystemError saying "is inside", got Error Domain=NSCocoaErrorDomain Code=514 "The item couldn’t be saved because the file name “Library” is invalid." UserInfo={NSFilePath=/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-1/link-to-base/Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSURL=file:///var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-1/link-to-base/Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSUnderlyingError=0x78d807690 {Error Domain=NSPOSIXErrorDomain Code=63 "File name too long"}}
+✘ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" recorded an issue at ProtectedCopyTests.swift:118:31: Expectation failed: text.contains(reason)
+↳ under /var, as the Mac names its temporary folder: a destination named with .. below a missing folder: expected a refusal saying "cannot be resolved", got copy Copy is inside Template: Invalid argument (errno 22)
+↳ text.contains(reason) → false
+↳   text → "copy Copy is inside Template: Invalid argument (errno 22)"
+↳   reason → "cannot be resolved"
+✘ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" recorded an issue at ProtectedCopyTests.swift:104:51: Issue recorded
+↳ through /private, as an iPhone's folders are named: a destination inside the source: expected a FileSystemError saying "is inside", got Error Domain=NSCocoaErrorDomain Code=514 "The item couldn’t be saved because the file name “Library” is invalid." UserInfo={NSFilePath=/private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-2/Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSURL=file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-2/Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSUnderlyingError=0x78d87c0c0 {Error Domain=NSPOSIXErrorDomain Code=63 "File name too long"}}
+✘ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" recorded an issue at ProtectedCopyTests.swift:115:31: Issue recorded
+↳ through /private, as an iPhone's folders are named: a destination inside the source, named through a link: expected a FileSystemError saying "is inside", got Error Domain=NSCocoaErrorDomain Code=514 "The item couldn’t be saved because the file name “Library” is invalid." UserInfo={NSFilePath=/private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-2/link-to-base/Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSURL=file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-2/link-to-base/Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSUnderlyingError=0x78d355dd0 {Error Domain=NSPOSIXErrorDomain Code=63 "File name too long"}}
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] missing listed file, bundle under /var, as the Mac names its temporary folder: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3; through /private, as an iPhone's folders are named: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] default GRDB connection: SQLITE_DBCONFIG_DEFENSIVE=1 trusted_schema=1; untrusted configuration sets 1 and 0
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] copy guard: 61 source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: 0
+✔ Test "the containment check follows links whether or not the leaf exists, and resolve refuses unsafe paths itself" passed after 2.230 seconds.
+✔ Test "an installation record that exists but cannot be read or decoded is an error, never a new device identity" with 2 test cases passed after 2.231 seconds.
+✔ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" passed after 2.231 seconds.
+✔ Test "untrusted databases are opened in SQLite's defensive mode with trusted_schema off" passed after 2.231 seconds.
+✔ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" passed after 2.231 seconds.
+✔ Test "insufficient space refuses a restore before anything is copied" passed after 2.231 seconds.
+✔ Suite "Bundle paths under /private (device run of 26 October 2026)" passed after 2.231 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] unreadable restore intent: open refused: restore intent exists but cannot be read; nothing was changed
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore intent "not json": open refused: restore intent is not valid; nothing was changed
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore intent "traversal": open refused: restore intent is not valid; nothing was changed
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] crash after intentWritten: reconcile -> keptExistingLibrary; library works ["Active library work"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] crash after restoredMovedIn: reconcile -> completedRestore; library works ["Meditations", "Walden; or, Life in the Woods", "Ødegård’s Field Notes — 東京 edition"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore intent "{\"id\":\"x\"}": open refused: restore intent is not valid; nothing was changed
+✔ Test "reconcile rolls back to the pre-restore copy if both libraries are missing" passed after 2.576 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore drill
+PASS corpus has every knowledge table populated
+PASS media removal leaves every knowledge row unchanged (T44)
+PASS no asset is on the device after removal — 0 on device
+PASS Media directory is empty after removal
+PASS export bundle validates
+PASS manifest lists every original as excluded media and does not claim completeness — 6 excluded, complete=false
+PASS manifest originating device is the source installation
+PASS bundle holds every canonical cover thumbnail after source deletion — 2 covers
+PASS secret canary absent from bundle — sk-SYLVIA-CA…
+PASS secret canary absent from bundle — pair-SYLVIA-…
+PASS no absolute installation path in bundle
+PASS fresh installation starts empty
+PASS restore without confirmation is refused
+PASS integrity_check ok after restore — ok
+PASS foreign_key_check clean after restore — 0 violations
+PASS count work — before 3, after 3
+PASS count contributor — before 4, after 4
+PASS count work_contributor — before 4, after 4
+PASS count edition — before 6, after 6
+PASS count asset — before 6, after 6
+PASS count edition_asset — before 6, after 6
+PASS count consumption_run — before 4, after 4
+PASS count rating — before 2, after 2
+PASS count recommendation_event — before 3, after 3
+PASS count capture — before 5, after 5
+PASS count capture_anchor — before 6, after 6
+PASS count conversation — before 1, after 1
+PASS count context_pack — before 1, after 1
+PASS count context_evidence — before 2, after 2
+PASS count message — before 3, after 3
+PASS count note — before 7, after 7
+PASS count note_revision — before 9, after 9
+PASS count retained_excerpt — before 1, after 1
+PASS count ledger_event — before 9, after 9
+PASS every knowledge row restored byte-for-byte (works, editions, anchors, notes and revisions, ledger, rating, recommendations, captures, excerpts, conversations, context evidence)
+PASS restored dump digest equals source — ded83772f4a53f4f35b84e2b598d87b342d1d0cc5fff91a244dad2e6c7446956
+PASS retained excerpt audio restored with its digest
+PASS canonical cover thumbnails restored with their digests and edition references (plan 17.3) — med-epub=jpg digest ok; walden-epub=png digest ok
+PASS missing originals resolve as unavailable records, not errors — med-audio-1=not on this device · from mac_source; med-audio-2=not on this device · from mac_source; med-epub=record only; med-pdf=record only; walden-audio=not on this device · from mac_source; walden-epub=record only
+PASS every anchor still binds to its asset digest
+PASS 64-bit asset size survives (5 GiB + 7) — 5368709127
+PASS Markdown export contains every quote exactly
+PASS Markdown export contains every current note — 6 notes
+PASS Markdown export contains every conversation message — 3 messages
+PASS Markdown export contains every context evidence text — 2 evidence items
+PASS portable JSON alone reproduces every knowledge row
+PASS restored installation keeps its own device identity
+PASS no retention leases carried over
+PASS restored database, WAL, SHM, excerpt and covers read back the library protection class — library.sqlite=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-wal=NSFileProtectionCompleteUntilFirstUserAuthentication library.sqlite-shm=NSFileProtectionCompleteUntilFirstUserAuthentication 7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3=NSFileProtectionCompleteUntilFirstUserAuthentication b4e50ad1784915f0625e46b6f8f63943879f93fb7878fd2342c94786b85d0ef2.jpg=NSFileProtectionCompleteUntilFirstUserAuthentication a533ac5b8b5700b1ba69957a3503cafd403f6d8437ee2a1a171b34b4d6abd13d.png=NSFileProtectionCompleteUntilFirstUserAuthentication
+✔ Test "a restore intent that exists but cannot be read (stand-in for before first unlock) fails the open and changes nothing" passed after 2.618 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore of a bundle exported with 5 originals on the device: 5 locations converted, availability [(key: "not on this device · from mac_source", value: 3), (key: "record only", value: 3)]
+✘ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" recorded an issue at ProtectedCopyTests.swift:118:31: Issue recorded
+↳ through /private, as an iPhone's folders are named: a destination named with .. below a missing folder: expected a FileSystemError saying "cannot be resolved", got Error Domain=NSCocoaErrorDomain Code=514 "The item couldn’t be saved because the file name “Library” is invalid." UserInfo={NSFilePath=/private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-2/Missing/../Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSURL=file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-2/Missing/../Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSUnderlyingError=0x78d4a1a40 {Error Domain=NSPOSIXErrorDomain Code=63 "File name too long"}}
+✘ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" recorded an issue at ProtectedCopyTests.swift:121:13: Expectation failed: !fm.fileExists(atPath: inside.path) && !fm.fileExists(atPath: base.appending(path: "Missing").path)
+↳ through /private, as an iPhone's folders are named: a refused copy left something behind
+↳ !fm.fileExists(atPath: inside.path) && !fm.fileExists(atPath: base.appending(path: "Missing").path) → false
+↳   !fm.fileExists(atPath: inside.path) → true
+↳   !fm.fileExists(atPath: base.appending(path: "Missing").path) → false
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] crash after activeMovedAside: reconcile -> completedRestore; library works ["Meditations", "Walden; or, Life in the Woods", "Ødegård’s Field Notes — 東京 edition"]
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] copyTree, a destination inside the source: under /var, as the Mac names its temporary folder: copy Copy is inside Template: Invalid argument (errno 22); through /private, as an iPhone's folders are named: Error Domain=NSCocoaErrorDomain Code=514 "The item couldn’t be saved because the file name “Library” is invalid." UserInfo={NSFilePath=/private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-2/Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSURL=file:///private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/copyTreeRefusals-45FDB521/form-2/Template/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library/Copy/Library, NSUnderlyingError=0x78d87c0c0 {Error Domain=NSPOSIXErrorDomain Code=63 "File name too long"}}
+✔ Test "restore drill after source deletion (J-06, T35)" passed after 2.642 seconds.
+✔ Test "restore replaces the active library only with confirmation and keeps a pre-restore copy" passed after 2.645 seconds.
+✘ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" failed after 2.647 seconds with 6 issues.
+↳ /// Each refusal is checked by its reason, not only by its type, and in every form of the test's folder
+↳ /// (`PrivatePathTests.forms`): on the Mac also through /private, as an iPhone names its folders. There the
+↳ /// inside check used to compare Foundation's `standardizedFileURL` of the existing source (/var/…) with that of
+↳ /// the destination, which did not exist yet and kept /private, so it missed it: the copy went on into itself
+↳ /// until a name was too long and failed with a Cocoa error (review of 26 October 2026, finding F1; fix-1).
+✘ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" failed after 2.647 seconds with 6 issues.
+↳ /// Files put where the recovery code expects the library's class are created with it (plan 18.1,
+↳ /// T50). The first app-hosted device run (26 October 2026, runbook step 1.2; G0.5 recovery checklist
+↳ /// step 1) failed every migration and put-back test because their v1 fixture was copied out of the
+↳ /// app bundle with `FileManager.copyItem`, which keeps the source file's class: the copy had no
+↳ /// protection class (the class, it follows, of the fixture in the app bundle), and the open refused it.
+↳ /// The host and the simulator did not show it: on the Mac the copy reads back class C, the platform
+↳ /// default (the suite passes there), and the simulator reports class C for every file.
+✔ Test "a backup from an older library schema (v1) is migrated in the temporary library before the swap" passed after 2.648 seconds.
+✔ Test "an invalid restore intent fails the open and changes nothing (no empty library, prepared restore kept)" with 3 test cases passed after 2.650 seconds.
+✔ Test "a preparation abandoned by a crash is cleared at the next launch, and the library is untouched" passed after 2.650 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected newer-manifest-version: backup manifest version 2 is not supported
+✔ Test "J-06: originals that were on the source device are restored as at-source or unavailable records, never as on-device" passed after 2.658 seconds.
+✔ Test "T47: a crash at any point of the swap leaves either the old or the restored library, never neither" with 3 test cases passed after 2.661 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected newer-library-schema-in-manifest: backup was written by a newer Sylvia (library schema 3, this build supports 2; unknown migrations: v3-future)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected newer-library-schema-in-database: backup was written by a newer Sylvia (library schema 2, this build supports 2; unknown migrations: v3-future)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected truncated-database: size mismatch for database/library.sqlite: manifest 352256, file 176128
+✔ Test "the reference schema equals a real library's schema for every migration prefix" passed after 2.750 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected bit-flip-in-database: SHA-256 mismatch for database/library.sqlite
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected corrupt-database-with-matching-digest: database snapshot failed checks: *** in database main ***
+Tree 4 page 4: free space corruption
+Tree 5 page 5 cell 254: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 253: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 252: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 251: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 250: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 249: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 248: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 247: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 246: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 245: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 244: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 243: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 242: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 241: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 240: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 239: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 238: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 237: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 236: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 235: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 234: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 233: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 232: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 231: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 230: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 229: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 228: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 227: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 226: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 225: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 224: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 223: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 222: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 221: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 220: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 219: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 218: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 217: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 216: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 215: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 214: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 213: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 212: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 211: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 210: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 209: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 208: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 207: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 206: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 205: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 204: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 203: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 202: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 201: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 200: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 199: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 198: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 197: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 196: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 195: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 194: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 193: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 192: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 191: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 190: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 189: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 188: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 187: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 186: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 185: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 184: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 183: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 182: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 181: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 180: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 179: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 178: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 177: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 176: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 175: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 174: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 173: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 172: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 171: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 170: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 169: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 168: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 167: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 166: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 165: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 164: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 163: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 162: Offset 255 out of range 3974..4092
+Tree 5 page 5 cell 161: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 160: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 159: Offset 65280 out of range 3974..4092
+Tree 5 page 5 cell 158: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 157: Offset 0 out of range 3974..4092
+Tree 5 page 5 cell 156: Offset 0 out of range 3974..4092
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected not-a-database: database snapshot failed checks: SQLite error 26: file is not a database - while executing `SELECT * FROM sqlite_master LIMIT 1`
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected foreign-key-violation-with-matching-digest: database snapshot has 1 foreign key violations
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected count-mismatch: row count for capture: manifest 4, database 5
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-traversal: unsafe path in manifest: ../outside.txt
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-absolute: unsafe path in manifest: /etc/passwd
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-nested-traversal: unsafe path in manifest: blobs/excerpts/../../../x
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-backslash: unsafe path in manifest: blobs\excerpts\x
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-hidden: unsafe path in manifest: .hidden/x
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected path-unicode: unsafe path in manifest: export/markdown/café.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected symlink-to-outside: symbolic link in bundle: export/markdown/link.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected symlinked-directory: symbolic link in bundle: export/markdown/degard-s-field-notes-edition-d41e2b74.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unlisted-file: file not listed in manifest: export/extra.txt
+✘ Test "T46: corrupt, truncated, newer and malicious backups are rejected without touching the library" recorded an issue at BackupTests.swift:248:9: Expectation failed: expected(error)
+↳ unlisted-dangling-link: unexpected error unsafe path in manifest: /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/makeFixture-6C27EA79/Variants/unlisted-dangling-link.sylviabackup/export/markdown/dangling.md
+↳ expected(error) → false
+↳   error → ()
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unlisted-dangling-link: unsafe path in manifest: /private/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/g05-tests/makeFixture-6C27EA79/Variants/unlisted-dangling-link.sylviabackup/export/markdown/dangling.md
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected missing-blob-file: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected blob-dropped-from-manifest: blob 7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f referenced by the snapshot is missing
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreferenced-blob: blob c38f4cf7cc9dcd7fe82d188289eb56e45ea62c0f9b89432e778544055e60bf97 is not referenced by the snapshot
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected duplicate-path: duplicate path in manifest: export/library.json
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected role-mismatch: path export/library.json is not allowed for role database_snapshot
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected missing-manifest: manifest.json is missing
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected garbage-manifest: manifest.json is unreadable: not a JSON object
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected oversized-manifest: manifest.json is too large (4194305 bytes)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected complete-claim-with-excluded-media: invalid manifest field: complete
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected complete-claim-hiding-excluded-media: excluded_media does not match the snapshot's assets: snapshot has 6 assets, manifest lists 0 (6 unlisted, 0 not in the snapshot, or details differ)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected excluded-media-wrong-digest: excluded_media does not match the snapshot's assets: snapshot has 6 assets, manifest lists 6 (0 unlisted, 0 not in the snapshot, or details differ)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected excluded-media-asset-missing: excluded_media does not match the snapshot's assets: snapshot has 6 assets, manifest lists 5 (1 unlisted, 0 not in the snapshot, or details differ)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected trigger-deleting-knowledge: database snapshot schema does not match this build's schema for its migrations: unexpected trigger evil
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected view: database snapshot schema does not match this build's schema for its migrations: unexpected view peek
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected extra-table: database snapshot schema does not match this build's schema for its migrations: unexpected table unexpected_table
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected rating-without-strict-or-check: database snapshot schema does not match this build's schema for its migrations: altered table rating
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected capture-anchor-cascade-from-asset: database snapshot schema does not match this build's schema for its migrations: altered table capture_anchor
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected dropped-index: database snapshot schema does not match this build's schema for its migrations: missing index capture_work
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-not-a-date: database snapshot has values this build rejects: consumption_run.started_date rowid 1: 'banana' is not a date of precision day; consumption_run.started_date rowid 2: 'banana' is not a date of precision day; consumption_run.started_date rowid 3: 'banana' is not a date of precision day; consumption_run.started_date rowid 4: 'banana' is not a date of precision day
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-not-its-precision: database snapshot has values this build rejects: ledger_event.effective_date rowid 1: '2019-02-30' is not a date of precision year; ledger_event.effective_date rowid 2: '2019-02-30' is not a date of precision year; ledger_event.effective_date rowid 3: '2019-02-30' is not a date of precision year; ledger_event.effective_date rowid 4: '2019-02-30' is not a date of precision year; ledger_event.effective_date rowid 5: '2019-02-30' is not a date of precision year
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-impossible-day: database snapshot has values this build rejects: edition.published_date rowid 1: '2019-02-30' is not a date of precision day; edition.published_date rowid 4: '2019-02-30' is not a date of precision day; edition.published_date rowid 6: '2019-02-30' is not a date of precision day
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected recommendation-date-not-a-date: database snapshot has values this build rejects: recommendation_event.event_date rowid 1: '2024-13' is not a date of precision month; recommendation_event.event_date rowid 2: '2024-13' is not a date of precision month; recommendation_event.event_date rowid 3: '2024-13' is not a date of precision month
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected journal-sequence-near-int64-max: database snapshot has values this build rejects: sqlite_sequence for change_journal is 9223372036854775787, the highest journal entry is 72
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected journal-sequence-extra-entry: database snapshot has values this build rejects: sqlite_sequence has an entry for 'work'
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-plus-sign-year: database snapshot has values this build rejects: ledger_event.effective_date rowid 1: '+019' is not a date of precision year; ledger_event.effective_date rowid 2: '+019' is not a date of precision year; ledger_event.effective_date rowid 3: '+019' is not a date of precision year; ledger_event.effective_date rowid 4: '+019' is not a date of precision year; ledger_event.effective_date rowid 5: '+019' is not a date of precision year
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected effective-date-plus-sign-day: database snapshot has values this build rejects: consumption_run.started_date rowid 1: '2019-+1-+5' is not a date of precision day; consumption_run.started_date rowid 2: '2019-+1-+5' is not a date of precision day; consumption_run.started_date rowid 3: '2019-+1-+5' is not a date of precision day; consumption_run.started_date rowid 4: '2019-+1-+5' is not a date of precision day
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected note-current-revision-stale: database snapshot has values this build rejects: note rowid 1: current_revision 1 but 3 revisions numbered 1...3; revisions must be exactly 1...current_revision
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected note-current-revision-int64-max: database snapshot has values this build rejects: note rowid 1: current_revision 9223372036854775807 but 3 revisions numbered 1...3; revisions must be exactly 1...current_revision; note.current_revision rowid 1: 9223372036854775807 is outside ±(2^53 - 1)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected note-current-revision-dangling: database snapshot has values this build rejects: note rowid 1: current_revision 77 but 3 revisions numbered 1...3; revisions must be exactly 1...current_revision
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected note-revisions-not-from-one: database snapshot has values this build rejects: note rowid 1: current_revision 3 but 2 revisions numbered 2...3; revisions must be exactly 1...current_revision
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected work-metadata-revision-2-pow-53: database snapshot has values this build rejects: work.metadata_revision rowid 1: 9007199254740992 is outside ±(2^53 - 1)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected edition-asset-timeline-revision-int64-max: database snapshot has values this build rejects: edition_asset.timeline_revision rowid 1: 9223372036854775807 is outside ±(2^53 - 1)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected work-created-at-int64-min: database snapshot has values this build rejects: work.created_at_ms rowid 1: -9223372036854775808 is outside ±(2^53 - 1)
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected text-with-nul: database snapshot has values this build rejects: note_revision.body rowid 1: text contains a NUL character
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected text-invalid-utf8: database snapshot has values this build rejects: capture.quoted_text rowid 4: text is not valid UTF-8
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreferenced-cover: blob fc3a494786859dfa3d96c098f36d4ba6f4c9880593f0f93e8606cda47fb64894 is not referenced by the snapshot
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected cover-dropped-from-manifest: blob a533ac5b8b5700b1ba69957a3503cafd403f6d8437ee2a1a171b34b4d6abd13d referenced by the snapshot is missing
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] rejected unreadable-directory-with-unlisted-file: not a .sylviabackup bundle: cannot read export/zz-unreadable
+✘ Test "T46: corrupt, truncated, newer and malicious backups are rejected without touching the library" failed after 4.026 seconds with 1 issue.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] restore crash drill (short)
+iterations: 30
+measured unkilled run: prepare 103.4 ms, commit (swap) 26.7 ms
+SIGKILLs by window: commit=15 prepare=15
+SIGKILLs by the last step the child reported: COMMIT=6, PREPARE=13, STEP activeMovedAside=3, STEP intentWritten=4, STEP restoredMovedIn=4
+children that finished before the kill: 0
+library after reopen: old library kept=19 restored library=11
+launch reconciliation: completedRestore=7 keptExistingLibrary=2 nothingToDo=21
+failures: 0
+✔ Test "T47: SIGKILL during prepare or the swap leaves exactly the old or the restored library (short run; CI runs 300)" passed after 5.639 seconds.
+✘ Suite "Restore (plan 17.4, T35, T46, T47, J-06)" failed after 5.639 seconds with 1 issue.
+✘ Test run with 21 tests in 3 suites failed after 5.639 seconds with 7 issues.
+Note: Some test targets reported failures:
+  - SylviaRecoveryTests (Swift Testing)
+---- swift test exit: 1
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T10:17:44Z; load: 23:17  up 23 days,  9:28, 3 users, load averages: 2.57 3.55 4.25

@@ -1,0 +1,7 @@
+Setup progress, 26 October 2026 NZDT (25 October UTC)
+Operator: Codex with Justin Evidon. Xcode 27.1 (27A9275), macOS 26.6.2 (25G83).
+Phone B: iPhone 17 Pro (iPhone18,1), iOS 27.0.1 (24A446), wired, paired, Developer Mode enabled. Owner confirmed automatic OS updates disabled, at least 15 GB free, Auto-Lock Never and Low Power Mode off. Exact free storage and current battery percentage not measured.
+Xcode account/team shown in owner's screenshots; signed device builds and installs succeeded. Agreement acceptance date and prior registration status not independently established.
+Fixture checks: fetch.sh verified the three downloaded audio sources; generate-g04-audio-fixtures.sh, generate-g04-audio-long-formats.sh, generate-g04-audio-probes.sh and generate-g04-audio-stereo.sh each reported current. generate-g03-intake-pack.sh verified large.sylviapack (SHA-256 982562b020ea7213721661fa0a6adf4d7a81c9bf68e5eda498bc417beebf0268); generate-g01-pdf-large.sh reported up to date; generate-g02-transfer-large.sh reported present and verified.
+Mac identity probe: build with both provisioning flags succeeded. The Keychain test itself has NOT run; this is not a pass for step 0.7. Developer portal registration was not inspected.
+iCloud upload, other devices and Mac source tools remain pending.

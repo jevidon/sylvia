@@ -1,0 +1,38 @@
+commit: 6cede84a6f6ac610976b233d875e26dd89419dbd (m0-sessions-instructions); uncommitted files before this run: 1
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-23T17:08:15Z; load:  6:08  up 20 days, 16:18, 3 users, load averages: 2.92 3.19 3.97
+
+== 1. Simulator device types (xcrun simctl list devicetypes -j)
+ok      iPhone 13 mini: identifier com.apple.CoreSimulator.SimDeviceType.iPhone-13-mini; modelIdentifier iPhone14,4 (expected iPhone14,4); profile /Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 13 mini.simdevicetype
+ok      iPhone 11 Pro: identifier com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro; modelIdentifier iPhone12,3 (expected iPhone12,3); profile /Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 11 Pro.simdevicetype
+ok      iPhone 11: identifier com.apple.CoreSimulator.SimDeviceType.iPhone-11; modelIdentifier iPhone12,1 (expected iPhone12,1); profile /Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 11.simdevicetype
+ok      iPhone 12 mini: identifier com.apple.CoreSimulator.SimDeviceType.iPhone-12-mini; modelIdentifier iPhone13,1 (expected iPhone13,1); profile /Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 12 mini.simdevicetype
+ok      iPhone SE (2nd generation): identifier com.apple.CoreSimulator.SimDeviceType.iPhone-SE--2nd-generation-; modelIdentifier iPhone12,8 (expected iPhone12,8); profile /Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone SE (2nd generation).simdevicetype
+ok      iPhone SE (3rd generation): identifier com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation; modelIdentifier iPhone14,6 (expected iPhone14,6); profile /Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone SE (3rd generation).simdevicetype
+
+== 2. Each profile's main display (Contents/Resources/capabilities.plist), and what follows from it
+iPhone 13 mini: displays[0] width 1080, height 2340, canvasWidth 1125, canvasHeight 2436, scale 3.0, hdpi 476.0, vdpi 476.0; ScreenDimensionsCapability main-screen-class 22, main-screen-height 2340, main-screen-orientation 0.0, main-screen-pitch 476, main-screen-scale 3.0, main-screen-width 1080
+   layout size (canvas / scale): 375 x 812 pt; pixels across the width: 1080, so 2.88 pixels per point (the native scale); the width's physical size: 1080 / 476.0 = 2.2689 in
+   ok: as expected
+iPhone 11 Pro: displays[0] width 1125, height 2436, canvasWidth None, canvasHeight None, scale 3.0, hdpi 458.0, vdpi 458.0; ScreenDimensionsCapability main-screen-class 15, main-screen-height 2436, main-screen-orientation 0.0, main-screen-pitch 458, main-screen-scale 3.0, main-screen-width 1125
+   layout size (canvas / scale): 375 x 812 pt; pixels across the width: 1125, so 3 pixels per point (the native scale); the width's physical size: 1125 / 458.0 = 2.4563 in
+   ok: as expected
+iPhone 11: displays[0] width 828, height 1792, canvasWidth None, canvasHeight None, scale 2.0, hdpi 326.0, vdpi 326.0; ScreenDimensionsCapability main-screen-class 19, main-screen-height 1792, main-screen-orientation 0.0, main-screen-pitch 326, main-screen-scale 2.0, main-screen-width 828
+   layout size (canvas / scale): 414 x 896 pt; pixels across the width: 828, so 2 pixels per point (the native scale); the width's physical size: 828 / 326.0 = 2.5399 in
+iPhone SE (2nd generation): displays[0] width 750, height 1334, canvasWidth None, canvasHeight None, scale 2.0, hdpi 326.0, vdpi 326.0; ScreenDimensionsCapability main-screen-class 8, main-screen-height 1334, main-screen-orientation 0.0, main-screen-pitch 326, main-screen-scale 2.0, main-screen-width 750
+   layout size (canvas / scale): 375 x 667 pt; pixels across the width: 750, so 2 pixels per point (the native scale); the width's physical size: 750 / 326.0 = 2.3006 in
+the 13 mini's 375-pt width against the 11 Pro's: 2.2689 / 2.4563 = 0.9237, so the 13 mini draws each point 7.6% smaller
+
+== 3. The layout size on the simulator: a probe app on an iPhone 13 mini and an iPhone 11 Pro (iOS 26.5)
+probe compiled (swiftc, arm64-apple-ios26.0-simulator, the iOS Simulator SDK of 27.1) and signed ad hoc
+-- Sylvia-M0-DeviceA-13mini (com.apple.CoreSimulator.SimDeviceType.iPhone-13-mini, com.apple.CoreSimulator.SimRuntime.iOS-26-5): A8900159-7800-4A3B-9272-CB87A1FDB042
+   SCREEN bounds_pt=375x812 scale=3.0 nativeScale=2.88 nativeBounds_px=1080x2340 system=iOS 26.5
+   ok: SCREEN bounds_pt=375x812 scale=3.0 nativeScale=2.88 nativeBounds_px=1080x2340
+   simulator Sylvia-M0-DeviceA-13mini deleted (this script created it)
+-- Sylvia-M0-DeviceA-11Pro (com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro, com.apple.CoreSimulator.SimRuntime.iOS-26-5): DB6B7A2F-27D8-4FD4-AF00-B4B3E51B5CEA
+   SCREEN bounds_pt=375x812 scale=3.0 nativeScale=3.0 nativeBounds_px=1125x2436 system=iOS 26.5
+   ok: SCREEN bounds_pt=375x812 scale=3.0 nativeScale=3.0 nativeBounds_px=1125x2436
+   simulator Sylvia-M0-DeviceA-11Pro deleted (this script created it)
+
+exit: 0
+end: 2026-10-23T17:09:07Z; load:  6:09  up 20 days, 16:19, 3 users, load averages: 64.78 19.70 10.02

@@ -1,0 +1,73 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/security/commands/run-scratch-guard.sh before-fix-guard-planted 31e460e643f12113e2f063d775672bdfb7b87ec7 base '<expected>'
+expected (stated before the run): the guard as reviewed misses all six planted calls: the test passes, 'calls that keep the source's class: 0' with 64 files read (61 and the 3 planted), and no planted call is reported
+working tree: a6c705e453b3a85be0ec8a82c9e4fc0a67e6d1cf (m0-device-fixes)
+scratch copy: .build/scratch/security-fix/s4-guard-31e460e6/Spikes/G05-Recovery, git archive of 31e460e643f12113e2f063d775672bdfb7b87ec7 (31e460e643f12113e2f063d775672bdfb7b87ec7)
+guard used: base: Tests/SylviaRecoveryTests/ProtectedCopyTests.swift with sha256 f3fa3c05397ca8bcf6da40daee19b91b08cc86ce06ba925d285e76f57559f6e7
+  (as committed in 31e460e6: sha256 f3fa3c05397ca8bcf6da40daee19b91b08cc86ce06ba925d285e76f57559f6e7;
+   in the working tree: sha256 6bf30d18ae08a5162239e340f1c9704671ee0c288d7112c4c4254dbd784bc2a7)
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T11:25:07Z; load: 2.31 2.31 2.59
+---- planted: LockHarness/Core/PlantedS4.swift
+     1	// Planted in a scratch copy by the security fix's guard check (review of 26 October 2026, finding S4); never in the
+     2	// repository's spike. Each function holds one call that keeps the source file's class.
+     3	import Foundation
+     4	
+     5	enum PlantedS4 {
+     6	    static func copyAfterAStringHoldingSlashes(_ a: URL, _ b: URL) throws {
+     7	        let scheme = "file://"; try FileManager.default.copyItem(at: a, to: b); _ = scheme
+     8	    }
+     9	
+    10	    static func hardLink(_ a: URL, _ b: URL) throws {
+    11	        try FileManager.default.linkItem(at: a, to: b)
+    12	    }
+    13	
+    14	    static func hardLinkThroughDarwin(_ a: String, _ b: String) -> Int32 {
+    15	        link(a, b)
+    16	    }
+    17	}
+---- planted: LockHarness/Core/PlantedS4.m
+     1	// Planted in a scratch copy by the security fix's guard check (review of 26 October 2026, finding S4); never in the
+     2	// repository's spike.
+     3	#import <Foundation/Foundation.h>
+     4	
+     5	BOOL PlantedS4CopyItem(NSURL *a, NSURL *b, NSError **error) {
+     6	    return [[NSFileManager defaultManager] copyItemAtURL:a toURL:b error:error];
+     7	}
+     8	
+     9	BOOL PlantedS4LinkItem(NSString *a, NSString *b, NSError **error) {
+    10	    return [[NSFileManager defaultManager] linkItemAtPath:a toPath:b error:error];
+    11	}
+---- planted: LockHarness/Core/PlantedS4.c
+     1	// Planted in a scratch copy by the security fix's guard check (review of 26 October 2026, finding S4); never in the
+     2	// repository's spike.
+     3	#include <copyfile.h>
+     4	
+     5	int planted_s4_copyfile_split(const char *a, const char *b) {
+     6	    return copyfile
+     7	        (a, b, NULL, COPYFILE_ALL);
+     8	}
+---- xcrun swift test --force-resolved-versions --filter noCopyKeepsTheSourceClass (in the scratch copy)
+Building for debugging...
+[1 / 5]
+[2 / 7] SylviaRecoveryTests-product
+[4 / 9] SylviaRecoveryTests-product
+[11 / 13] SylviaRecoveryTests-product
+Build complete! (1.05 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" started.
+◇ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" started.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] copy guard: 64 source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: 0
+✔ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" passed after 0.033 seconds.
+✔ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" passed after 0.033 seconds.
+✔ Test run with 1 test in 1 suite passed after 0.033 seconds.
+---- summary
+swift test exit: 0
+guard evidence line: copy guard: 64 source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: 0
+planted calls the guard reported: 0
+other calls the guard reported: 0
+pattern samples that failed: 0
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T11:25:09Z; load: 2.31 2.31 2.59

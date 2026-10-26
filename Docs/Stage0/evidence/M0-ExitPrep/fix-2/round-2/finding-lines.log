@@ -1,0 +1,86 @@
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/finding-lines.py
+commit: 314f216b7b0849619bb8729753e169d81c59c898; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T00:09:54Z; load: 13:09  up 22 days, 23:20, 3 users, load averages: 3.66 5.03 10.95
+
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-2/round-2/commands/finding-lines.py 941ac9a298730b7cf46a44faf1db1274166cb930
+reading the cited lines at 941ac9a298730b7cf46a44faf1db1274166cb930 (the review read 941ac9a2); HEAD is 314f216b7b0849619bb8729753e169d81c59c898
+
+== HON-EP-06: the two branches' trees, m0-decisions behind main, no device step run
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:476 at 941ac9a2 has: The code is the same either way for now: `main` (`96bdc7e9`) and `m0-decisions` (`044ed3cf`) have the same tre
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:476 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1687 at 941ac9a2 has: the code is the same either way, since `main` and `m0-decisions` have the same tree.
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1687 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1719 at 941ac9a2 has: `main` and `origin/main` at `96bdc7e9`, and `m0-decisions` with the same tree.
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1719 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: the third fix (415ae25b to fcbd6c89) changed line 476, Section 5.4's branch question, and left the same-tree sentence standing
+ok      HON-EP-06: Docs/Stage0/evidence/M0-ExitPrep/assembly/gate-checks.log:62 reads m0-decisions at 044ed3cf, its tree main's: yes, in a run started at 17:01 UTC on 25 October 2026
+ok      HON-EP-06: Docs/Stage0/evidence/M0-ExitPrep/fix-1/gate-checks.log:62 reads m0-decisions at c72247a6, its tree not main's
+ok      HON-EP-06: Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-2/gate-checks.log:62 reads m0-decisions at c72247a6, its tree not main's
+ok      HON-EP-06: Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/gate-checks.log:62 reads m0-decisions at c72247a6, its tree not main's
+ok      HON-EP-06: Docs/Stage0/evidence/M0-ExitPrep/fix-2/gate-checks.log:62 reads m0-decisions at c72247a6, its tree not main's (the fourth fix's, which the finding does not name)
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1769 at 941ac9a2 has: Passed: the assembly's parts 1a-1g
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1769 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1819 at 941ac9a2 has: Passed: the first fix's parts 1a-1g
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1819 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1873 at 941ac9a2 has: Passed: the second fix's parts 1a-1h
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1873 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/integration-log.md:1924 at 941ac9a2, 34.4, which the finding does not name, reports the third fix's parts 1a-1l as passing too
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:16 at 941ac9a2 has: never to build on `m0-decisions`, which is behind it
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:16 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/M0-device-runbook.md:163 at 941ac9a2 has: says never to build on `m0-decisions`, which is behind `main`
+ok      HON-EP-06: Docs/Stage0/M0-device-runbook.md:163 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: CLAUDE.md:5 at 941ac9a2 has: Never build on `m0-integrate` or `m0-decisions`: both are behind `main`.
+ok      HON-EP-06: CLAUDE.md:5 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:4 at 941ac9a2 has: no device result is recorded yet
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:4 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:10 at 941ac9a2 has: None of the gates' device or human steps has run
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:10 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:94 at 941ac9a2 has: nothing has been run on a phone
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:94 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:132 at 941ac9a2 has: No row is passed on a device: no device step has run.
+ok      HON-EP-06: Docs/Stage0/M0-gate.md:132 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: Docs/Stage0/README.md:5 at 941ac9a2 has: no device step has run, so every gate stays pending
+ok      HON-EP-06: Docs/Stage0/README.md:5 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-06: no Markdown record at 941ac9a2 names c72247a6 (it is named only in the gate checks' logs)
+ok      HON-EP-06: git rev-parse m0-decisions: c72247a6; git rev-list --count main..m0-decisions: 8; trees 6e46ef59 and main's 576168b6
+ok      HON-EP-06: the eight commits were made from 2026-10-25 17:12 to 2026-10-25 17:33 UTC
+
+== HON-EP-07: the first fix's route called closed; item 105; integration log 28 and 28.4
+ok      HON-EP-07: Docs/Stage0/M0-gate.md:64 at 941ac9a2, its second note, has: which the fix of that review closes, not reviewed
+ok      HON-EP-07: Docs/Stage0/M0-gate.md:128 at 941ac9a2 has: which the fix of that review closes, not reviewed
+ok      HON-EP-07: Docs/Stage0/M0-gate.md:128 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-07: Docs/Stage0/M0-gate.md:491 at 941ac9a2 has: which the fix of that review closes the same day, not reviewed
+ok      HON-EP-07: Docs/Stage0/M0-gate.md:491 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-07: Docs/ADRs/README.md:30 at 941ac9a2 has: an agent's fix of that review closes it in the guard, not reviewed
+ok      HON-EP-07: Docs/ADRs/README.md:30 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-07: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:248 at 941ac9a2 has: which an agent's fix closes, not reviewed
+ok      HON-EP-07: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:245 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-07: Docs/Stage0/README.md:5 at 941ac9a2 has: called R4-01 and R4-02 done and the route the first fix answered closed
+ok      HON-EP-07: Docs/Stage0/README.md:5 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-07: Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/recheck-hon.py:432-437 at 941ac9a2 hold the sweep's 21 phrasings, which match none of the three texts (the fix of that review closes, an agent's fix closes)
+ok      HON-EP-07: Docs/Stage0/M0-gate.md:710 at 941ac9a2 has: so that both routes, R4-03 and R4-04 and the other routes of the same kind fail `12-dependency-lock`
+ok      HON-EP-07: Docs/Stage0/M0-gate.md:709 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-07: item 105's dated notes at 941ac9a2 cover the counts and row 76 alone
+ok      HON-EP-07: items 111 and 125 at 941ac9a2 each give routes of the same kind that passed the change
+ok      HON-EP-07: Docs/Stage0/integration-log.md:1561 at 941ac9a2 has: Agent-written and agent-checked; not reviewed: an agent review reads it next.
+ok      HON-EP-07: Docs/Stage0/integration-log.md:1561 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-07: Docs/Stage0/integration-log.md:1598 at 941ac9a2 has: - **Review:** none yet; an agent review reads this change next.
+ok      HON-EP-07: Docs/Stage0/integration-log.md:1598 at fcbd6c89, the finding's number, has it too
+
+== HON-EP-08: 5aec2518 placed on main
+ok      HON-EP-08: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3 at 941ac9a2 has: on a branch of its own from `main` at `5aec2518` (`m0-exit-zipguard`)
+ok      HON-EP-08: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-08: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:261 at 941ac9a2 has: on a branch of its own from `main` at `5aec2518`, `m0-exit-zipguard`
+ok      HON-EP-08: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-08: Docs/Stage0/evidence/M0-ExitPrep/zipguard/README.md:5 at 941ac9a2 has: on branch `m0-exit-zipguard` from `main` at `5aec2518`, by an agent.
+ok      HON-EP-08: Docs/Stage0/evidence/M0-ExitPrep/zipguard/README.md:5 at fcbd6c89, the finding's number, has it too
+ok      HON-EP-08: git merge-base --is-ancestor 5aec2518 main exits 1
+ok      HON-EP-08: Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/correction-record.log at 941ac9a2: main holds 5aec2518: no
+ok      HON-EP-08: Docs/Stage0/M0-gate.md:64 at 941ac9a2 has: from `5aec2518` (`main` after pull request #6, with `CLAUDE.md`'s correction
+ok      HON-EP-08: Docs/Stage0/M0-gate.md:64 at fcbd6c89, the finding's number, has it too
+
+result: pass (0 citation(s) not as the findings give them)
+
+exit status: 0
+end: 2026-10-26T00:09:55Z; load: 13:09  up 22 days, 23:20, 3 users, load averages: 3.66 5.03 10.95

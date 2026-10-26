@@ -1,0 +1,236 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/honesty/commands/check-findings.sh after
+commit: ccc47d7bef3efb21053354b22ff43147d1d54ff1 (m0-device-fixes); uncommitted files, this log left out: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T12:22:41Z; load: 1.55 2.59 3.25
+
+==== HON-1: a passing test on the phone prints the unprotected class (7.3's expectation)
+-- the first hosted run on phone B: the mismatch test, its evidence lines and its pass
+G05-Recovery/device/step-1-hosted-tests.log:2363: ◇ Test "a file with the wrong class is detected, never silently accepted" started.
+G05-Recovery/device/step-1-hosted-tests.log:2364: [evidence] [device (Version 27.0.1 (Build 24A446))] file written with .noFileProtection into the test's temporary directory reports: NSFileProtectionNone
+G05-Recovery/device/step-1-hosted-tests.log:2365: [evidence] [device (Version 27.0.1 (Build 24A446))] changing an existing file's class with setAttributes: refused (protection: weak.bin has NSFileProtectionCompleteUnlessOpen, expected NSFileProtectionCompleteUntilFirstUserAuthentication); the class is fixed at creation here
+G05-Recovery/device/step-1-hosted-tests.log:2366: ✔ Test "a file with the wrong class is detected, never silently accepted" passed after 0.066 seconds.
+-- lines of that log naming NSFileProtectionNone: all, the library refusals, the issue details (↳), and the rest
+all: 81; 'protection: library.sqlite has NSFileProtectionNone': 66; detail lines starting with ↳: 40; others: 1
+G05-Recovery/device/step-1-hosted-tests.log:2364:[evidence] [device (Version 27.0.1 (Build 24A446))] file written with .noFileProtection into the test's temporary directory reports: NSFileProtectionNone
+-- the test that prints it (unchanged on this branch)
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift:244:     @Test("a file with the wrong class is detected, never silently accepted",
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift:245:           .enabled(if: FileProtector.platformReportsProtection, "the iOS Simulator protection readback is not faithful (files report class C in any directory), so no mismatch can be produced there"))
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift:246:     func mismatchDetected() throws {
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift:247:         let scratch = try Scratch()
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift:248:         let plain = scratch.url.appending(path: "plain.bin")
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift:249:         try Data("x".utf8).write(to: plain, options: .noFileProtection)
+Spikes/G05-Recovery/Tests/SylviaRecoveryTests/DataProtectionTests.swift:250:         evidence("file written with .noFileProtection into the test's temporary directory reports: \(try protection(plain))")
+-- wording
+ok      README.md, after: found 0 (expected none): No `NSFileProtectionNone` anywhere
+ok      README.md, after: found 1 (expected at least one): No `protection: library.sqlite has NSFileProtectionNone` anywhere
+ok      README.md, after: found 1 (expected at least one): file written with .noFileProtection into the test's temporary directory reports: NSFileProtectionNone
+ok      recovery/README.md, after: found 1 (expected at least one): No `protection: library.sqlite has NSFileProtectionNone` anywhere
+ok      recovery/README.md, after: found 1 (expected at least one): file written with .noFileProtection into the test's temporary directory reports: NSFileProtectionNone
+
+==== HON-2: the last line of runbook 0.8 when the quiet-tone test fails again
+-- runbook 0.8's command
+Docs/Stage0/M0-device-runbook.md:211: ```sh
+Docs/Stage0/M0-device-runbook.md:212: mkdir -p Docs/Stage0/evidence/G05-Recovery/row10-unlocked
+Docs/Stage0/M0-device-runbook.md:213: G05_LOG_DIR=Docs/Stage0/evidence/G05-Recovery/row10-unlocked G05_SIM_NAME=Sylvia-M0-owner-recovery \
+Docs/Stage0/M0-device-runbook.md:214:   caffeinate -d -i Scripts/ci.d/71-g05-recovery.sh 2>&1 | tee Docs/Stage0/evidence/G05-Recovery/row10-unlocked/console.log; \
+-- the drop-in: its shell options, step 11's trap and its removal, its call of the harness's script
+Scripts/ci.d/71-g05-recovery.sh:30: set -euo pipefail
+Scripts/ci.d/71-g05-recovery.sh:118: trap 'xcrun simctl shutdown "$UDID" >/dev/null 2>&1 || true' EXIT
+Scripts/ci.d/71-g05-recovery.sh:124: trap - EXIT
+Scripts/ci.d/71-g05-recovery.sh:136: G05_LOG_DIR="$LOGS" G05_SIM_NAME="$SIM_NAME" "$SPIKE/LockHarness/Scripts/harness-checks.sh"
+-- the harness's script: its shell options, its EXIT trap, its step-14 pipeline
+Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:28: set -euo pipefail
+Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:74: trap 'sylvia_sim_shutdown "$UDID"' EXIT
+Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:81: xcodebuild test -project "$PROJECT" -scheme G05LockHarness -destination "id=$UDID" -derivedDataPath "$DERIVED" \
+Spikes/G05-Recovery/LockHarness/Scripts/harness-checks.sh:82:   -disableAutomaticPackageResolution 2>&1 | tee -a "$LOGS/harness-simulator-tests.log"
+-- the shutdown its trap runs
+Scripts/lib/sim.sh:40: sylvia_sim_shutdown() {
+Scripts/lib/sim.sh:41:   local udid
+Scripts/lib/sim.sh:42:   for udid in "$@"; do
+Scripts/lib/sim.sh:43:     [[ -n "$udid" ]] || continue
+Scripts/lib/sim.sh:44:     xcrun simctl shutdown "$udid" >/dev/null 2>&1 || true
+Scripts/lib/sim.sh:45:   done
+Scripts/lib/sim.sh:46: }
+-- the four runs of the harness's script on 26 October 2026: the failing test and the script's exit status
+M0-DeviceFixes/recovery/dropin-run-1-steps-4-15/console.log:7079: Failing tests:
+M0-DeviceFixes/recovery/dropin-run-1-steps-4-15/console.log:7080: 	ToneTests.playsQuietly()
+M0-DeviceFixes/recovery/dropin-run-1-steps-4-15/console.log:7085: step 13-15: FAILED (exit 65)
+M0-DeviceFixes/recovery/harness-checks-repeat-1/console.log:372: Failing tests:
+M0-DeviceFixes/recovery/harness-checks-repeat-1/console.log:373: 	ToneTests.playsQuietly()
+M0-DeviceFixes/recovery/harness-checks-repeat-1/console.log:378: harness-checks.sh exit: 65
+M0-DeviceFixes/recovery/harness-checks-control-c72247a6/console.log:2613: Failing tests:
+M0-DeviceFixes/recovery/harness-checks-control-c72247a6/console.log:2614: 	ToneTests.playsQuietly()
+M0-DeviceFixes/recovery/harness-checks-control-c72247a6/console.log:2619: harness-checks.sh (control) exit: 65
+M0-DeviceFixes/assembly/dropin-steps-4-15/console.log:7081: Failing tests:
+M0-DeviceFixes/assembly/dropin-steps-4-15/console.log:7082: 	ToneTests.playsQuietly()
+M0-DeviceFixes/assembly/dropin-steps-4-15/console.log:7087: step 13-15: FAILED (exit 65)
+-- what calls the harness's script in the two hand runs (its own status is what they report)
+M0-DeviceFixes/assembly/commands/run-checks.sh:175:     G05_LOG_DIR="$LOGS" G05_SIM_NAME="$SIM_NAME" "$SPIKE/LockHarness/Scripts/harness-checks.sh"; check 13-15 $?
+-- caffeinate passes on the status of the command it runs (the runbook's own probe)
+M0-runbook/tool-help.txt:442: ## zsh: the exit status of a command run by caffeinate, through tee (runbook 0.8; commands/zsh-exit-status.zsh)
+M0-runbook/tool-help.txt:443: pipestatus after 'caffeinate -i sh -c exit-3 | tee': 3 0 (the first is the stand-in's status)
+M0-runbook/tool-help.txt:444: status of the same pipeline ($?): 0 (the status of tee)
+M0-runbook/tool-help.txt:445: status of the same pipeline with setopt pipefail: 3
+-- wording
+ok      README.md, after: found 0 (expected none): the last line reads `drop-in exit 1`
+ok      README.md, after: found 1 (expected at least one): the last line reads `drop-in exit 65`
+
+==== HON-3: whether 10.71.x.x was phone B's Wi-Fi address
+-- the probe's choice of address in the first run (ATSProbeTests.swift at c72247a6, lines 45-61)
+ATSProbeTests.swift@c72247a6:45:     /// This Mac's own private IPv4 address (the simulator shares the host's interfaces). A load to it on a port
+ATSProbeTests.swift@c72247a6:46:     /// with no listener is refused by the local kernel if ATS lets it through, so nothing leaves the machine.
+ATSProbeTests.swift@c72247a6:47:     static func hostPrivateIPv4() -> String? {
+ATSProbeTests.swift@c72247a6:48:         var head: UnsafeMutablePointer<ifaddrs>?
+ATSProbeTests.swift@c72247a6:49:         guard getifaddrs(&head) == 0, let first = head else { return nil }
+ATSProbeTests.swift@c72247a6:50:         defer { freeifaddrs(head) }
+ATSProbeTests.swift@c72247a6:51:         for pointer in sequence(first: first, next: { $0.pointee.ifa_next }) {
+ATSProbeTests.swift@c72247a6:52:             let entry = pointer.pointee
+ATSProbeTests.swift@c72247a6:53:             guard let address = entry.ifa_addr, address.pointee.sa_family == UInt8(AF_INET),
+ATSProbeTests.swift@c72247a6:54:                   (entry.ifa_flags & UInt32(IFF_UP)) != 0, (entry.ifa_flags & UInt32(IFF_LOOPBACK)) == 0 else { continue }
+ATSProbeTests.swift@c72247a6:55:             var buffer = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+ATSProbeTests.swift@c72247a6:56:             guard getnameinfo(address, socklen_t(address.pointee.sa_len), &buffer, socklen_t(buffer.count), nil, 0, NI_NUMERICHOST) == 0 else { continue }
+ATSProbeTests.swift@c72247a6:57:             let text = String(decoding: buffer.prefix { $0 != 0 }.map { UInt8(bitPattern: $0) }, as: UTF8.self)
+ATSProbeTests.swift@c72247a6:58:             if EndpointPolicy.isEligibleLocalAddress(text), !text.hasPrefix("127."), !text.hasPrefix("169.254.") { return text }
+ATSProbeTests.swift@c72247a6:59:         }
+ATSProbeTests.swift@c72247a6:60:         return nil
+ATSProbeTests.swift@c72247a6:61:     }
+-- every line of G05-AI/device/step-01-ats.log that names en0 (cut to its interface field)
+G05-AI/device/step-01-ats.log:394: … interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate) …
+G05-AI/device/step-01-ats.log:501: … interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate) …
+G05-AI/device/step-01-ats.log:600: … interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate) …
+lines naming en0: 3; of them holding an IPv4 address, whole or cut: 0
+addresses in the log (cut to two octets in the record), with their counts:
+   20 10.71.x.x
+   48 127.0.x.x
+   9 192.0.x.x
+whole IPv4 addresses in the log: 0
+-- every line of G05-AI/device/step-01-ats-initial.log that names en0 (cut to its interface field)
+G05-AI/device/step-01-ats-initial.log:2365: … interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate) …
+G05-AI/device/step-01-ats-initial.log:2472: … interface: en0[802.11], ipv4, dns, uses wifi, LQM: moderate) …
+G05-AI/device/step-01-ats-initial.log:2571: … interface: en0[802.11], ipv4, dns, uses wifi, fallback: {interface: pdp_ip0, agent: F3D0A889-20A1-4A4D-9AFC-B7BEF5170650, opportunistic, generation: 697}, LQM: moderate) …
+lines naming en0: 3; of them holding an IPv4 address, whole or cut: 0
+addresses in the log (cut to two octets in the record), with their counts:
+   20 10.71.x.x
+   48 127.0.x.x
+   9 192.0.x.x
+whole IPv4 addresses in the log: 0
+-- the relay's flow that names the cellular interface as its fallback
+G05-AI/device/step-01-ats-initial.log:2571: 2026-10-26 06:24:30.900444+1300 ProbeCIDRException[1040:38351] [connection] nw_endpoint_flow_failed_with_error [C3.1.1 mask.icloud.com:443 in_progress intermediate-flow (satisfied (Path is satisfied), interface: en0[802.11], ipv4, dns, uses wifi, fallback: {interface: pdp_ip0, agent: F3D0A889-20A1-4A4D-9AFC-B7BEF5170650, opportunistic, generation: 697}, LQM: moderate)] already failing, returning
+-- the owner's record of 1.3
+G05-AI/device/step-01-ats.txt:4: Result: failed. A Local Network prompt appeared and the owner allowed it; the whole scheme was repeated as instructed. Both attempts produced private-IP timeouts (-1001) in all three variants, instead of the expected ATS block/default and local refusal/exception variants. Public IP was ATS-blocked in all variants; localhost succeeded in all. The selected private address was 10.71.x.x; whether it is the intended Wi-Fi interface needs diagnosis. No claim about minimum iOS 26.0. No ATS exception or EndpointPolicy was changed.
+-- the session log's rows 3a-3d (M0-runbook/sessions.md lines 55-61): lines that name Wi-Fi: 0
+-- the Mac's own private addresses when the probe ran on its simulator on 26 October (the simulator shares them)
+M0-DeviceFixes/assembly/atsprobe-simulator-tests.log:2247:ATS-PROBE variant=default private-ipv4-interfaces=en0:192.168.x.x rule=simulator: the first of any interface
+M0-DeviceFixes/assembly/atsprobe-simulator-tests.log:2341:ATS-PROBE variant=local_networking private-ipv4-interfaces=en0:192.168.x.x rule=simulator: the first of any interface
+M0-DeviceFixes/assembly/atsprobe-simulator-tests.log:2435:ATS-PROBE variant=cidr_exception private-ipv4-interfaces=en0:192.168.x.x rule=simulator: the first of any interface
+M0-DeviceFixes/assembly/atsprobe-simulator-tests.log:2585:ATS-PROBE variant=default private-ipv4-interfaces=en0:192.168.x.x rule=simulator: the first of any interface
+M0-DeviceFixes/assembly/atsprobe-simulator-tests.log:2590:ATS-PROBE variant=local_networking private-ipv4-interfaces=en0:192.168.x.x rule=simulator: the first of any interface
+M0-DeviceFixes/assembly/atsprobe-simulator-tests.log:2595:ATS-PROBE variant=cidr_exception private-ipv4-interfaces=en0:192.168.x.x rule=simulator: the first of any interface
+-- wording
+ok      README.md, after: found 0 (expected none): Cause, confirmed from the code and the phone's own logs
+ok      README.md, after: found 0 (expected none): 10.71.x.x, which is not Wi-Fi's
+ok      README.md, after: found 0 (expected none): and 10.71.x.x was not:
+ok      README.md, after: found 0 (expected none): a non-Wi-Fi private address
+ok      README.md, after: found 0 (expected none): should name en0 and the interface that held 10.71.x.x
+ok      README.md, after: found 1 (expected at least one): Inferred, not shown: that 10.71.x.x was not phone B's Wi-Fi address
+ok      README.md, after: found 1 (expected at least one): If en0's own address is `10.71.x.x`
+ok      ats/README.md, after: found 0 (expected none): So 10.71.x.x was not phone B's Wi-Fi address
+ok      ats/README.md, after: found 0 (expected none): It should name en0 and the interface that held 10.71.x.x
+ok      ats/README.md, after: found 0 (expected none): it settles which interface the first run used
+ok      ats/README.md, after: found 0 (expected none): though with the wrong address
+ok      ats/README.md, after: found 1 (expected at least one): That is inferred, not shown
+ok      ats/README.md, after: found 1 (expected at least one): If en0's own address is 10.71.x.x
+ok      fix-1/security/README.md, after: found 0 (expected none): load to another private address
+ok      fix-1/security/README.md, after: found 2 (expected at least one): most likely not the Wi-Fi address; inferred
+
+==== HON-4: Mac readings that no committed log holds
+-- the host-facts probe's saved runs: every log of it on this branch, and what each did with sections 3 and 4
+Docs/Stage0/evidence/M0-DeviceFixes/fix-1/security/after-fix-probe-locked.log: == 3, 4. skipped: class B keys unavailable (screen locked)
+Docs/Stage0/evidence/M0-DeviceFixes/fix-1/security/before-fix-probe-locked.log: == 3, 4. skipped: class B keys unavailable (screen locked)
+Docs/Stage0/evidence/M0-DeviceFixes/recovery/probe-host-facts-locked.log: == 3, 4. skipped: class B keys unavailable (screen locked)
+-- logs on this branch under M0-DeviceFixes that hold a reading of the audio devices (system_profiler's
+   SPAudioDataType or its 'Default Output Device' field), this folder's own logs left out:
+   0 file(s)
+-- the screen now, so whether the probe's sections 3 and 4 could run here: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+-- wording
+ok      README.md, after: found 0 (expected none): seen on this Mac in an earlier probe run whose output was not saved
+ok      README.md, after: found 0 (expected none): the stale reading behind F-1, saved on the Mac
+ok      README.md, after: found 1 (expected at least one): F-1 on the Mac is pending
+ok      recovery/README.md, after: found 0 (expected none): section 4, shows it with the screen unlocked
+ok      recovery/README.md, after: found 0 (expected none): section 4 shows finding F-1 on the Mac
+ok      recovery/README.md, after: found 0 (expected none): (`system_profiler SPAudioDataType`, read only; nothing on the Mac's audio was changed)
+ok      recovery/README.md, after: found 1 (expected at least one): that reading's output was not saved
+
+==== HON-5: the quiet-tone test's name, and the runs cited for its earlier passes
+-- the test (Spikes/G05-Recovery/LockHarness/Tests/LogAndToneTests.swift): its suite, its type and its name
+Spikes/G05-Recovery/LockHarness/Tests/LogAndToneTests.swift:80: @Suite("Lock harness: the quiet tone")
+Spikes/G05-Recovery/LockHarness/Tests/LogAndToneTests.swift:81: struct ToneTests {
+Spikes/G05-Recovery/LockHarness/Tests/LogAndToneTests.swift:110:     @Test("the player plays the tone at the test volume 0.01, unmuted, in the playback category, and stops (simulator; plays through the Mac's output at 1 %)")
+Spikes/G05-Recovery/LockHarness/Tests/LogAndToneTests.swift:111:     @MainActor
+Spikes/G05-Recovery/LockHarness/Tests/LogAndToneTests.swift:112:     func playsQuietly() async throws {
+-- the lock harness's last change, and whether each cited run's commit holds it
+last commit to Spikes/G05-Recovery/LockHarness: 84e599b1 2026-10-23T00:06:55+13:00 WIP: Fix the lock harness's log sink and smoke check, and step 3's rules, for the second review
+84e599b1 is NOT in 9aee51b8
+84e599b1 is in 13d999fc
+84e599b1 is in 52215b13
+84e599b1 is in 9cdb0a02
+files changed in Spikes/G05-Recovery/LockHarness from 13d999fc to HEAD: 0
+-- the run of 22 October 2026, 08:09 UTC, that the READMEs cited for a pass with the screen locked
+M0-Decisions/assembly/harness-checks-clean/console.log:2: commit: 9aee51b8959dd1c2f55597d2012ec66d978d6e4c (m0-decisions); uncommitted files before the run: 1
+M0-Decisions/assembly/harness-checks-clean/console.log:5: screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+M0-Decisions/assembly/harness-checks-clean/console.log:6: start: 2026-10-22T08:09:01Z; load: 21:09  up 19 days,  7:19, 3 users, load averages: 4.31 2.50 2.21
+M0-Decisions/assembly/harness-checks-clean/harness-simulator-tests.log:2244: ✔ Test "the player plays the tone at the test volume 0.01, unmuted, and stops (simulator; plays through the Mac's output at 1 %)" passed after 0.464 seconds.
+-- the runs of the current version with the screen locked: 11:07 UTC, and the controls' baseline at 11:15 UTC
+M0-Decisions/fix-2/harness-checks-clean/console.log:2: commit: 13d999fc5742fe9a3ece1d3819d5befe3f7b889c (m0-decisions); uncommitted files before the run: 0
+M0-Decisions/fix-2/harness-checks-clean/console.log:5: screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+M0-Decisions/fix-2/harness-checks-clean/console.log:6: start: 2026-10-22T11:07:11Z; load:  0:07  up 19 days, 10:17, 3 users, load averages: 2.33 4.00 4.09
+M0-Decisions/fix-2/harness-checks-clean/harness-simulator-tests.log:2458: ✔ Test "the player plays the tone at the test volume 0.01, unmuted, in the playback category, and stops (simulator; plays through the Mac's output at 1 %)" passed after 0.448 seconds.
+M0-Decisions/fix-2/harness-controls/console.log:2: commit: 52215b13472f57c9d50f4200011bc314eb69ffa5 (m0-decisions); uncommitted files before the run: 0
+M0-Decisions/fix-2/harness-controls/console.log:5: screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+M0-Decisions/fix-2/harness-controls/console.log:6: start: 2026-10-22T11:15:21Z; load:  0:15  up 19 days, 10:25, 3 users, load averages: 3.29 6.51 6.01
+M0-Decisions/fix-2/harness-controls/console.log:9: -- baseline (the copy unchanged; every test must pass): tests that failed:
+M0-Decisions/fix-2/harness-controls/console.log:10:    (none)
+M0-Decisions/fix-2/harness-controls/console.log:11:    ✔ Test run with 49 tests in 4 suites passed after 1.125 seconds.
+M0-Decisions/fix-2/harness-controls/baseline.log:852: ✔ Test "the player plays the tone at the test volume 0.01, unmuted, in the playback category, and stops (simulator; plays through the Mac's output at 1 %)" passed after 0.437 seconds.
+M0-Decisions/fix-2/harness-controls/console.log:29: screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+M0-Decisions/fix-2/harness-controls/console.log:30: end: 2026-10-22T11:17:48Z; load:  0:17  up 19 days, 10:28, 3 users, load averages: 3.51 6.34 6.11
+-- the run with the screen unlocked, 22:36-22:44 UTC
+M0-Decisions/assembly/unlocked-run-1/console.log:2: commit: 9cdb0a02f43fd058cb6221aa2bdf2b2e4e0fa28e (m0-decisions); uncommitted files before the run: 0
+M0-Decisions/assembly/unlocked-run-1/console.log:6: screen lock (ioreg) at the start: unlocked IOConsoleLocked=False CGSSessionScreenIsLocked=False
+M0-Decisions/assembly/unlocked-run-1/console.log:7: start: 2026-10-22T22:36:32Z; load: 11:36  up 19 days, 21:47, 3 users, load averages: 2.96 2.42 2.77
+M0-Decisions/assembly/unlocked-run-1/logs/harness-simulator-tests.log:2460: ✔ Test "the player plays the tone at the test volume 0.01, unmuted, in the playback category, and stops (simulator; plays through the Mac's output at 1 %)" passed after 0.427 seconds.
+-- wording
+ok      README.md, after: found 0 (expected none): `LogAndToneTests.playsQuietly`
+ok      README.md, after: found 2 (expected at least one): `ToneTests.playsQuietly()`
+ok      README.md, after: found 1 (expected at least one): fix-2/harness-checks-clean/harness-simulator-tests.log` line 2458
+ok      recovery/README.md, after: found 0 (expected none): `LogAndToneTests.playsQuietly`
+ok      recovery/README.md, after: found 0 (expected none): on 22 and 23 October
+ok      recovery/README.md, after: found 1 (expected at least one): `ToneTests.playsQuietly()`
+ok      recovery/README.md, after: found 1 (expected at least one): fix-2/harness-checks-clean/harness-simulator-tests.log` line 2458
+
+==== HON-6: the part READMEs' re-run instructions and the logs a re-run as written would replace
+-- the log each of runbook 1.2's and 1.3's commands writes
+Docs/Stage0/M0-device-runbook.md:259:   | tee ../../Docs/Stage0/evidence/G05-Recovery/device/step-1-tests.log
+Docs/Stage0/M0-device-runbook.md:285:   2>&1 | tee ../../../Docs/Stage0/evidence/G05-AI/device/step-01-ats.log
+-- the owner's records those names hold
+G05-Recovery/device/step-1-2-results.txt:1: G0.5 recovery steps 1–2: BLOCKED, no device tests executed.
+G05-Recovery/device/step-1-2-results.txt:2: Attempt: 2026-10-25 17:14 UTC (26 October Pacific/Auckland).
+G05-Recovery/device/step-1-2-results.txt:10: Log: step-1-tests.log.
+G05-AI/device/step-01-ats.txt:1: Date: 2026-10-25 UTC (26 October NZDT). Tester: Codex with Justin Evidon.
+G05-AI/device/step-01-ats.txt:2: Device: iPhone 17 Pro (iPhone18,1), iOS 27.0.1 (24A446). Xcode 27.1 (27A9275).
+G05-AI/device/step-01-ats.txt:3: Build commit: d5336111b6ba76e4c248b7cf647e1c3fa9d2500b. Debug, wired, unlocked.
+G05-AI/device/step-01-ats.txt:4: Result: failed. A Local Network prompt appeared and the owner allowed it; the whole scheme was repeated as instructed. Both attempts produced private-IP timeouts (-1001) in all three variants, instead of the expected ATS block/default and local refusal/exception variants. Public IP was ATS-blocked in all variants; localhost succeeded in all. The selected private address was 10.71.x.x; whether it is the intended Wi-Fi interface needs diagnosis. No claim about minimum iOS 26.0. No ATS exception or EndpointPolicy was changed.
+-- wording
+ok      recovery/README.md, after: found 0 (expected none): with the commands of runbook 1.2
+ok      recovery/README.md, after: found 1 (expected at least one): step-1-hosted-run2-tests.log
+ok      ats/README.md, after: found 0 (expected none): Run runbook 1.3 as written
+ok      ats/README.md, after: found 1 (expected at least one): not as runbook 1.3 is written
+
+==== this record's links
+ok      README.md, after: found 10 (expected at least one): fix-1/honesty/README.md
+ok      recovery/README.md, after: found 2 (expected at least one): fix-1/honesty/README.md
+ok      ats/README.md, after: found 2 (expected at least one): fix-1/honesty/README.md
+
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T12:22:42Z; wording checks: 43; not as expected: 0

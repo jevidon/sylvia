@@ -1,0 +1,48 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/run-host-tests.sh after-fix-host-tests ProtectedCopyTests|PrivatePathTests
+commit: c778cd63e35d7149159c9fc30f12ef4f105ebe72 (m0-device-fixes-recovery)
+uncommitted changes in Spikes/G05-Recovery included in this run:
+host: macOS 26.6.2 (25G83), Apple M5 Max; Xcode 27.1 Build version 27A9275 
+screen lock (ioreg) at the start: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+start: 2026-10-26T07:33:58Z; load: 20:33  up 23 days,  6:44, 3 users, load averages: 1.71 3.69 4.02
+---- xcrun swift test --force-resolved-versions --filter 'ProtectedCopyTests|PrivatePathTests' (in Spikes/G05-Recovery)
+Building for debugging...
+[1 / 8] SylviaRecovery
+[2 / 11] SylviaRecovery
+[7 / 16] SylviaRecovery
+[19 / 28] SylviaRecovery
+[25 / 33] SylviaRecovery
+[26 / 34] SylviaRecovery
+[28 / 37] g05-recovery-tool
+[29 / 38] g05-recovery-tool
+[31 / 37] SylviaRecovery
+[34 / 41] g05-recovery-tool-product
+[36 / 42] g05-recovery-tool-product
+[39 / 45] g05-recovery-tool
+[41 / 44] SylviaRecoveryTests-product
+[55 / 58] SylviaRecoveryTests-product
+[62 / 64] SylviaRecoveryTests-product
+Build complete! (3.36 sec)
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64e-apple-macos14.0
+◇ Suite "Bundle paths under /private (device run of 26 October 2026)" started.
+◇ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" started.
+◇ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" started.
+◇ Test "the containment check follows links whether or not the leaf exists, and resolve refuses unsafe paths itself" started.
+◇ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" started.
+◇ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" started.
+➜ Test "a tree copied with FileProtector.copyTree carries the protector's class C on every file and directory, whatever the source's" skipped: "class A/B keys are unavailable (host screen locked): a class-B source cannot be read now"
+➜ Test "a v1 library installed from a source of another class is created with the library's class C and opens" skipped: "class A/B keys are unavailable (host screen locked): a class-B source cannot be read now"
+✔ Test "FileProtector.copyTree refuses a link, an existing destination, a destination inside the source and an unsupported class, and leaves no partial copy" passed after 0.003 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] containment check (realpath of the deepest existing part): under /var, as the Mac names its temporary folder and through /private, as an iPhone's folders are named: a missing leaf is inside; a missing leaf below a link to outside the root is outside; resolve refuses links and the manifest's unsafe paths
+✔ Test "the containment check follows links whether or not the leaf exists, and resolve refuses unsafe paths itself" passed after 0.004 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] copy guard: 61 source files in Sources, Tests, DeviceTests and LockHarness; calls that keep the source's class: 0
+✔ Test "no code in the recovery spike copies a file with FileManager.copyItem, clonefile or copyfile, which keep the source's class" passed after 0.032 seconds.
+✔ Suite "Copies into a library carry the library's class (device run of 26 October 2026)" passed after 0.032 seconds.
+[evidence] [host (macOS Version 26.6.2 (Build 25G83))] missing listed file, bundle under /var, as the Mac names its temporary folder: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3; through /private, as an iPhone's folders are named: missing file: blobs/excerpts/7cd1815453c15fb90551526bdc177afb73581a9c8fdc666cae8f05b7cd33710f.mp3
+✔ Test "a listed file missing from a bundle under /private/var is rejected as missing, not as an unsafe path" passed after 0.460 seconds.
+✔ Suite "Bundle paths under /private (device run of 26 October 2026)" passed after 0.460 seconds.
+✔ Test run with 6 tests in 2 suites passed after 0.460 seconds.
+---- swift test exit: 0
+screen lock (ioreg) at the end: locked IOConsoleLocked=True CGSSessionScreenIsLocked=True
+end: 2026-10-26T07:34:03Z; load: 20:34  up 23 days,  6:44, 3 users, load averages: 1.81 3.68 4.01

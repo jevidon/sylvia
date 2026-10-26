@@ -1,0 +1,13 @@
+command: Docs/Stage0/evidence/G02-Transfer/probe-fix/commands/list-login-keychain-items.sh
+commit: c72247a69a374ce361834550b92689b4abab95ee; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/G02-Transfer/probe-fix/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T16:05:06Z (2026-10-27T05:05:06+1300 on the build Mac's clock); load:  5:05  up 23 days, 15:15, 4 users, load averages: 3.05 3.94 3.84
+
+file-based keychains in the user's search list: /Users/jevidon/Library/Keychains/login.keychain-db, /Library/Keychains/System.keychain
+query: generic passwords, kSecMatchSearchList [/Users/jevidon/Library/Keychains/login.keychain-db], attributes only: status 0 (No error.)
+items whose service begins with com.jevidon.sylvia.spike.identityprobe.: 0
+of them, with the identity test's prefix com.jevidon.sylvia.spike.identityprobe.test.: 0
+
+exit status: 0
+end: 2026-10-26T16:05:07Z; load:  5:05  up 23 days, 15:15, 4 users, load averages: 3.05 3.94 3.84

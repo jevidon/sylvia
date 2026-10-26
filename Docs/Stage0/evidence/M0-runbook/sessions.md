@@ -4,7 +4,7 @@ One row per sitting of [the M0 device runbook](../../M0-device-runbook.md). The 
 gate's checklist says (runbook Section 2); this log only records what was run, when, on which device and from which
 commit, so the M0 gate summary can tell what is still pending.
 
-No device step has been run. One Mac-only step has had agents' runs: runbook step 0.8, the class-B run of G0.5
+Device testing began on 2026-10-25 UTC: Session 1.1 passed on phone B; see the appended row. Other device steps remain pending. One Mac-only step has had agents' runs: runbook step 0.8, the class-B run of G0.5
 recovery's drop-in. An agent ran it on 19 October 2026 at 15:14-15:20 UTC (20 October on the build Mac's clock), in the
 M0 final fix's second round, when the Mac's screen was found unlocked; and, after the drop-in gained steps 13-15, for
 the lock harness, on 22 October 2026, a waiter of the orchestrating session ran the whole drop-in from clean on
@@ -51,3 +51,11 @@ The rows are in the runbook's run order (its Section 3); session numbers are the
 | 10 | 5 Intake (iPhone 17 Pro and Mac) | | | | | | |
 | 11 | 9 iPad (you judge the design steps 9.1-9.4) | | | | | | |
 | 12 | 10 Sign-offs and the exit review (the security sign-off after runs 3-6 and 8-11, once R4-01 and R4-02 are closed and after `linkage.sh`'s run, with ADR-0014's items 4, 5 and 9 and the request to drop marmelroy/Zip; `linkage.sh` under Xcode 27.1, after `resolve-locks.sh`, before the reviews of ADR-0014; the technical lead's review of each record that names the technical lead, ADR-0014's lock and item 7, and D02's sign-off; QA's sign-off, with D05's codec list; D03's outcome; D17's persistence owner's sign-off; the release owner's ADR-0014 item 6; G0.5 AI step 9.2's wording review and its two decisions; the ADR approvals as runbook Section 6 lists them; the exit review once the final-review records are in or recorded as lost) | | | | not applicable | | |
+
+| 3a | 1 Automated suites, step 1.1 only | 2026-10-25 17:12 UTC | Codex with Justin Evidon | `96bdc7e996f99fcd2571ea983cc32a04076a5a07` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446) | 1.1 passed-device: 3 Keychain tests; G02-Transfer/device/01-keychain-class.md | 1.2 onward not run; Session 0 remains incomplete. Developer Mode verified; user confirmed updates off and at least 15 GB free. |
+
+| 3b | 1 Automated suites, step 1.2 | 2026-10-25 17:14 UTC | Codex with Justin Evidon | `8404f342` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446) | Attempt blocked before tests: Xcode requires a host app for SylviaRecoveryTests; G05-Recovery/device/step-1-tests.log and step-1-2-results.txt | No recovery tests or latency measurements; remaining Session 1 steps pending. |
+
+| 3c | 1 Automated suites, step 1.2 hosted | 2026-10-25 UTC | Codex with Justin Evidon | `432acc13` plus DeviceTests code committed unchanged as `4be1a1a4` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446) | Recovery suite failed: 68 tests, 4 expected skips, 108 issues; G05-Recovery/device/step-1-hosted-results.md | Remaining latency runs pending; host blocker resolved, migration protection and backup error failures need diagnosis. |
+
+| 3d | 1 Automated suites, step 1.3 | 2026-10-25 17:24–17:26 UTC | Codex with Justin Evidon | `d5336111` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446) | AI step 1 failed: private-address timeouts; step 4 passed-device: streaming interruption. Repeated after owner allowed Local Network prompt. G05-AI/device/step-01-ats.txt and step-04-suspension.txt | AI steps 2–3 and live provider/human checks not run. Audio started separately. |

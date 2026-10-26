@@ -1,0 +1,49 @@
+Read on 26 October 2026, 16:00 UTC (27 October, 05:00 NZDT). Each page's paragraphs are printed by
+commands/apple-doc-text.py from the page's documentation JSON; only the paragraphs the README cites are kept.
+
+== TN3137: On Mac keychain APIs and implementations
+   https://developer.apple.com/documentation/technotes/tn3137-on-mac-keychains
+   (data: https://developer.apple.com/tutorials/data/documentation/technotes/tn3137-on-mac-keychains.json)
+The Keychain and SecKeychain APIs always target the file-based keychain.  The SecItem API can target either implementation.  It defaults to targeting the file-based keychain.  To target the data protection keychain, set the kSecUseDataProtectionKeychain attribute or the kSecAttrSynchronizable attribute to true.
+The SecItem API is well aligned with the data protection keychain.  However, when you use it to target the file-based keychain it operates through a shim.  That shim has limitations.  Some of those limitations are inherent to the keychain implementation.  For example, the access control model of the file-based keychain is completely different than that of the data protection keychain, and the shim can’t make up for that.  However, some limitations are just bugs.  To avoid such problems, target the data protection keychain.  This is particularly important when you’re porting keychain code from iOS.
+File-based keychains are stored, as the name suggests, in files.  Every context has a keychain search list and a default keychain.  In a user context the search list includes a per-user login keychain and a single System keychain, with the former being the default.  In the system context the search list includes just the System keychain, which is also the default keychain.
+When using the SecItem API to target the file-based keychain:
+-   SecItemAdd(_:_:) adds the item to the default keychain.  Use kSecUseKeychain to override this.
+-   Queries, like those done using SecItemCopyMatching(_:_:), consult all keychains in the search list.   Use kSecMatchSearchList to override this.
+macOS builds the list of data protection keychain access groups available to your program from its code signing entitlements.  For the details, see Sharing access to keychain items among a collection of apps.  These entitlements must be authorized by a provisioning profile.  Your program needs an app-like bundle structure in which to embed that profile.  This is standard for app and app extensions but not for command-line tools.  For information on how to wrap a command-line tool in a dummy app-like structure, see Signing a daemon with a restricted entitlement.
+-   2026-09-24 Added the Backing up a file-based keychain section.
+-   2022-11-01 Republished as TN3137.  Made significant editorial changes.
+
+== kSecUseDataProtectionKeychain
+   https://developer.apple.com/documentation/security/ksecusedataprotectionkeychain
+   (data: https://developer.apple.com/tutorials/data/documentation/security/ksecusedataprotectionkeychain.json)
+abstract: A key whose value indicates whether to treat macOS keychain items like iOS keychain items.
+Set the value for this key to true in the query dictionary when accessing a macOS keychain item that behaves like an iOS keychain item. For example, use the data protection key when adding, searching for, or deleting an item to which the kSecAttrAccessible or kSecAttrAccessGroup attributes apply.
+The data protection key affects operations only in macOS. Other platforms automatically behave as if the key is set to true, and ignore the key in the query dictionary. You can safely use the key on all platforms.
+
+== kSecMatchSearchList
+   https://developer.apple.com/documentation/security/ksecmatchsearchlist
+   (data: https://developer.apple.com/tutorials/data/documentation/security/ksecmatchsearchlist.json)
+abstract: A key whose value indicates a list of items to search.
+The value is a CFArray of SecKeychain items. If provided, the search will be limited to the keychain items contained in this list.
+
+== SecItem.h, Xcode 27.1 (27A9275) macOS SDK, lines 85-89, 219-227 and 257-260
+   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecItem.h
+    kSecClassGenericPassword item attributes:
+        kSecAttrAccess (macOS only)
+        kSecAttrAccessControl
+        kSecAttrAccessGroup (iOS; also macOS if kSecAttrSynchronizable and/or kSecUseDataProtectionKeychain set)
+        kSecAttrAccessible (iOS; also macOS if kSecAttrSynchronizable and/or kSecUseDataProtectionKeychain set)
+     @constant kSecAttrSynchronizable Specifies a dictionary key whose value is
+     a CFBooleanRef indicating whether the item in question can be synchronized.
+     To add a new item which can be synced to other devices, or to obtain
+     synchronizable results from a query, supply this key with a value of
+     kCFBooleanTrue. If the key is not supplied, or has a value of
+     kCFBooleanFalse, then no synchronizable items will be added or returned.
+     A predefined value, kSecAttrSynchronizableAny, may be provided instead of
+     kCFBooleanTrue if both synchronizable and non-synchronizable results are
+     desired.
+    @constant kSecAttrSynchronizableAny Specifies that both synchronizable and
+        non-synchronizable results should be returned from this query. This may be
+        used as a value for the kSecAttrSynchronizable dictionary key in a call to
+        SecItemCopyMatching, SecItemUpdate, or SecItemDelete.

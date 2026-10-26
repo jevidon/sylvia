@@ -1,0 +1,76 @@
+command: python3 -I Docs/Stage0/evidence/M0-DeviceA/fix-1/accuracy/commands/finding-lines.py .
+commit: 059686cbd5db206fd0cb264ac644e626c6a54214; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T20:36:16Z; load:  9:36  up 22 days, 19:46, 3 users, load averages: 4.74 3.82 3.00
+
+commit read: 8082bdb6a3f4a8ee8edfef6a9a5d3489f445ce22
+holds ACC-01 Docs/Stage0/M0-device-runbook.md:163: Never build from `m0-integrate` or `m0-decisions`, both behind `main`
+holds ACC-01 Docs/Stage0/M0-device-runbook.md:163: The orchestrating session switches this checkout to it, from `main` at `96bdc7e9`
+holds ACC-01 Docs/Stage0/M0-device-runbook.md:163: if it still reads `main`, the switch is not made yet: ask for it, or run `git checkout m0-sessions` there your
+holds ACC-01 Docs/Stage0/M0-device-runbook.md:6: - **Nothing in this runbook has been run on a device.**
+holds ACC-01 Docs/Stage0/M0-device-runbook.md:8: and the sessions now build from `m0-sessions`
+holds ACC-01 Docs/Stage0/M0-gate.md:16: Never build from `m0-integrate` or `m0-decisions`, both behind `main`
+holds ACC-01 Docs/Stage0/M0-gate.md:16: The orchestrating session switches the checkout to it, from `main` at `96bdc7e9`
+holds ACC-01 Docs/Stage0/M0-gate.md:4: no device result is recorded yet
+holds ACC-01 Docs/Stage0/M0-gate.md:714: 115. **Seen at the assembly, and not in these records**
+holds ACC-01 Docs/Stage0/M0-gate.md:714: do not describe that checkout as it now is
+holds ACC-01 Docs/Stage0/integration-log.md:1682: #### 28.8.6 Seen at the assembly: the sessions' checkout on `m0-decisions`
+holds ACC-01 Docs/Stage0/integration-log.md:1682 (found on line 1684): do not describe that checkout as it now is
+holds ACC-01 Docs/Stage0/device-checklists/G04-Audio.md:11: `m0-integrate` and `m0-decisions` are behind `main`
+holds ACC-01 Docs/Stage0/device-checklists/G05-AI.md:7: `m0-integrate` and `m0-decisions` are behind `main`
+holds ACC-01 Docs/Stage0/device-checklists/G05-Recovery.md:11: `m0-integrate` and `m0-decisions` are behind `main`
+holds ACC-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log:5: == the sessions' checkout, as git worktree list shows it
+holds ACC-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log:6: worktree /Users/jevidon/Git/sylvia-sessions
+holds ACC-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log:7: HEAD c72247a69a374ce361834550b92689b4abab95ee
+holds ACC-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log:8: branch refs/heads/m0-decisions
+holds ACC-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log:19 (found on line 18): m0-decisions behind main (an ancestor of it): no
+holds ACC-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log:19: commits on m0-decisions that main lacks: 8
+holds ACC-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/gate-checks.log:103: m0-decisions: c72247a69a374ce361834550b92689b4abab95ee; behind main: NO
+holds ACC-02 Docs/Stage0/device-checklists/G02-Transfer.md:199: 5. Repeat once on the oldest supported iPhone if available
+holds ACC-02 Docs/Stage0/device-checklists/G02-Transfer.md:199: no A13 phone is at hand in M0
+holds ACC-02 Docs/Stage0/device-checklists/G01-EPUB.md:65: which no device in M0 has
+holds ACC-02 Docs/Stage0/M0-device-runbook.md:383: which no device of M0 has
+holds ACC-02 Docs/Stage0/device-checklists/G06-Design.md:48: whose A13 no device in M0 has
+holds ACC-02 Docs/Stage0/device-checklists/G05-AI.md:40: the phone on hand besides the iPhone 17 Pro is device A
+holds ACC-02 Docs/Stage0/M0-device-runbook.md:23: it can be phone D
+holds ACC-02 Docs/Stage0/M0-device-runbook.md:25: your iPhone 11 will do if it can place a call
+holds ACC-03 Docs/ADRs/0001-platform-baseline-and-toolchain.md:57: ADR-0013 (it does not apply to G0.6's steps on device A, which depend on the screen)
+holds ACC-03 Docs/Stage0/evidence/M0-DeviceA/README.md:63: ADR-0013 (it does not apply to G0.6's steps on A, which depend on the screen)
+holds ACC-03 Docs/ADRs/0013-design-language.md:290: steps 1-3, 5-9, 12 and 16-19 on device A
+holds ACC-03 Docs/Stage0/M0-device-runbook.md:952: depends on the phone's speed too, so on A it is the 13 mini's result
+holds ACC-04 Docs/Stage0/device-checklists/G03-Intake.md:7: the share extension's memory figures, memory limit and times on it (steps 14-16)
+holds ACC-04 Docs/Stage0/device-checklists/G03-Intake.md:7: repeat steps 6-32 on device A in M2
+holds ACC-04 Docs/Stage0/device-checklists/G03-Intake.md:21: Record also the time from "Received by Sylvia" to the harness's scan line with `accepted=1`
+holds ACC-04 Docs/Stage0/device-checklists/G03-Intake.md:48: Record the elapsed time and the free space before and after.
+holds ACC-04 Docs/Stage0/evidence/M0-DeviceA/README.md:62 (found on line 61): G0.3's repeats (steps 14-16)
+holds ACC-04 Docs/Stage0/M0-device-runbook.md:952: G0.3's share-extension memory, memory limit and times (steps 14-16)
+holds ACC-04 Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:139: the memory limit and peak measured on device A are the iPhone 13 mini's
+holds ACC-05 Docs/Stage0/M0-device-runbook.md:1127: | 1, 3, 15 and 17 on A |
+holds ACC-05 Docs/Stage0/M0-device-runbook.md:1127: (the checklist asked for them "when one is available", and since 24 October 2026 asks for them on device A)
+holds ACC-05 Docs/Stage0/device-checklists/G04-Audio.md:5: Repeat steps 1, 3, 8-13 and 15 on device A
+holds ACC-06 Docs/ADRs/README.md:17: whether 27A9275 is the non-beta release still awaits a check of Apple's release notes
+holds ACC-06 Docs/Sylvia_v1_iOS_Implementation_Plan.md:1159: Pending: the technical lead's sign-off, with the check of Apple's release notes for Xcode 27.1 (ADR-0001) |
+holds ACC-06 Docs/Stage0/M0-device-runbook.md:159: Apple's pages show that 27A9275 is Xcode 27.1's release build
+holds ACC-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log (named, no line cited; found on line 3): date: 2026-10-25T17:46:45Z
+holds ACC-02 Docs/Stage0/M0-gate.md (named, no line cited; found on line 405): your iPhone 11, whose state was not asked
+holds ACC-03 Docs/Stage0/evidence/M0-DeviceA/README.md (named, no line cited; found on line 61): in M3, G0.6 step 12, whose stated limit is a stall of the phone of more than 150 ms
+holds ACC-03 Docs/Stage0/device-checklists/G06-Design.md (named, no line cited; found on line 33): if the device stalls for more than 150 ms between a touch lift and the Button's action
+holds ACC-04 Docs/Stage0/device-checklists/G03-Intake.md (named, no line cited; found on line 24): Record which happened and how long the provider took.
+holds ACC-04 Docs/Stage0/device-checklists/G03-Intake.md (named, no line cited; found on line 41): Record the time from tapping the extension to "Received"
+holds ACC-04 Docs/Stage0/device-checklists/G03-Intake.md (named, no line cited; found on line 68): record how long, and whether a progress indicator shows
+holds ACC-06 Docs/ADRs/README.md (named, no line cited; found on line 15): | ADR | Title | Status (24 October 2026) | Owner during Stage 0 |
+holds ACC-06 Docs/Stage0/M0-gate.md (named, no line cited; found on line 22): 7. **As technical lead, confirm that Xcode 27.1 (27A9275) is the release build: one line**
+the session log on m0-decisions (c72247a6), rows 3a-3d, the first six cells only (run | session | date | who | commit | devices):
+   3a | 1 Automated suites, step 1.1 only | 2026-10-25 17:12 UTC | Codex with Justin Evidon | `96bdc7e996f99fcd2571ea983cc32a04076a5a07` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3b | 1 Automated suites, step 1.2 | 2026-10-25 17:14 UTC | Codex with Justin Evidon | `8404f342` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3c | 1 Automated suites, step 1.2 hosted | 2026-10-25 UTC | Codex with Justin Evidon | `432acc13` plus DeviceTests code committed unchanged as `4be1a1a4` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3d | 1 Automated suites, step 1.3 | 2026-10-25 17:24–17:26 UTC | Codex with Justin Evidon | `d5336111` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+holds ACC-01 claim: git rev-list --left-right --count main...m0-decisions gives '1 8' (main 96bdc7e9, m0-decisions c72247a6): 1 8, m0-decisions not behind main
+holds ACC-01 claim: 8404f342..c72247a6 are 8 commits after 044ed3cf, from 2026-10-26 06:12:41 +1300 to 2026-10-26 06:33:13 +1300 (NZDT, as the commits record it)
+holds ACC-01 claim: 38f9604e is 'Record the recovery suite device-host blocker' and 4be1a1a4 'Host the recovery suite in an iOS test app', and m0-decisions adds Spikes/G05-Recovery/DeviceTests
+holds ACC-01 claim: the session log on m0-decisions has rows 3a-3d, sittings on phone B (iPhone 17 Pro) from 2026-10-25 17:12 UTC (the steps run and their results, the last two cells, not read here)
+holds ACC-05 claim: at 6cede84a the G0.4 checklist's device line asks for steps 1, 3, 8-13 and 15 on the oldest supported iPhone, not 17
+result: every cited line, named text and claim holds (47 citations, 3 of them found within three lines of the line cited; 9 named texts; 5 claims)
+
+exit status: 0
+end: 2026-10-25T20:36:16Z; load:  9:36  up 22 days, 19:46, 3 users, load averages: 4.74 3.82 3.00

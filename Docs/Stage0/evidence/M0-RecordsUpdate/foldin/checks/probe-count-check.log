@@ -1,0 +1,55 @@
+command: Docs/Stage0/evidence/M0-RecordsUpdate/foldin/commands/probe-count-check.sh
+commit: 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/foldin/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T18:55:11Z; load:  7:55  up 23 days, 18:05, 4 users, load averages: 3.63 4.44 4.31
+
+probe-count-check: HEAD 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+date: 2026-10-26T18:55:11Z
+
+== the drop-in's lines (working tree)
+31:MIN_PROBE_TESTS=42  # 14 per variant since 907538f5 added a test of the probe's device address rule (13 before)
+minimum now: 42; at 6a510880, before the fold-in: 39
+the function, as the drop-in has it (13 lines):
+  | require_tests() {
+  |   local log="$1" minimum="$2" label="$3" total
+  |   total="$(grep -Eo 'Test run with [0-9]+ tests' "$log" | awk '{sum += $4} END {print sum + 0}')"
+  |   echo "$label: $total tests reported"
+  |   if (( total < minimum )); then
+  |     echo "FAIL: $label ran $total tests, expected at least $minimum" >&2
+  |     return 1
+  |   fi
+  |   if grep -Eq '✘ Test run|recorded an issue' "$log"; then
+  |     echo "FAIL: $label reported failures" >&2
+  |     return 1
+  |   fi
+  | }
+
+== a. the fixed probe's run in the drop-in (Docs/Stage0/evidence/M0-DeviceFixes/ats/ci-70-g05-ai-sim-probe-test.log)
+     3 Test run with 14 tests in 2 suites passed
+    simulator probe: 42 tests reported
+ok    a, minimum 42: exit 0, as expected
+    simulator probe: 42 tests reported
+ok    a, minimum 39: exit 0, as expected
+
+== b. the G0.5 gate's probe run, before 907538f5 (Docs/Stage0/evidence/G05-AI/simulator-ats-keychain-probe.log)
+     3 Test run with 13 tests in 2 suites passed
+    simulator probe: 39 tests reported
+    FAIL: simulator probe ran 39 tests, expected at least 42
+ok    b, minimum 42: exit 1, as expected
+    simulator probe: 39 tests reported
+ok    b, minimum 39: exit 0, as expected
+
+== c. (a) with one variant's run at 13 tests (a copy under .build/scratch)
+     1 Test run with 13 tests in 2 suites passed
+     2 Test run with 14 tests in 2 suites passed
+    simulator probe: 41 tests reported
+    FAIL: simulator probe ran 41 tests, expected at least 42
+ok    c, minimum 42: exit 1, as expected
+    simulator probe: 41 tests reported
+ok    c, minimum 39: exit 0, as expected
+
+result: pass: the minimum of 42 passes the fixed probe's 42 tests and fails 39 and 41, which 39 let through
+
+exit status: 0
+end: 2026-10-26T18:55:11Z; load:  7:55  up 23 days, 18:05, 4 users, load averages: 3.63 4.44 4.31

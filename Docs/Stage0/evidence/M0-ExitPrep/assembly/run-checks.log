@@ -1,0 +1,15 @@
+run-checks: HEAD 7c981bd11e9df1d09380565c6701b20f0c64c1cb, uncommitted paths: 0; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-3/.build/scratch/exit-asm-logs; start 2026-10-25T16:54:36Z; load:  5:54  up 22 days, 16:05, 4 users, load averages: 3.47 5.23 6.11
+ci-contracts.log: exit 0
+12-dependency-lock.log: exit 0
+13-hard-rules.log: exit 0
+runbook-content-check.log: exit 0
+check-amendments.log: exit 0
+check-item-reviews.log: exit 0
+render-check.log: exit 0
+audit-probe.log: exit 0
+check-xcode-reading.log: exit 0
+recheck-exit-prep.log: exit 0
+gate-checks-round-3.log: exit 1 (1 expected: the second fix's gate checks fail by design on this round; accounted for next)
+gate-checks-round-3-compare.log: exit 0
+tree after the checks: 0 uncommitted paths; end 2026-10-25T16:59:30Z; load:  5:59  up 22 days, 16:10, 4 users, load averages: 4.17 5.18 5.88
+result: pass

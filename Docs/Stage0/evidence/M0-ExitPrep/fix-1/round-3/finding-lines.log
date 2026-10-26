@@ -1,0 +1,79 @@
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/finding-lines.py
+commit: f95de709791a49293c61dbba291e22ec5c4dd431; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T20:59:50Z; load:  9:59  up 22 days, 20:10, 3 users, load averages: 4.17 4.17 3.90
+
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/fix-1/round-3/commands/finding-lines.py 415ae25b33f2b79f46e689b433392d261207c21f
+reading the cited lines at 415ae25b33f2b79f46e689b433392d261207c21f (the review read 415ae25b); HEAD is f95de709791a49293c61dbba291e22ec5c4dd431
+
+== HON-EP-01: R4-01 and R4-02 recorded as closed and done, and row 76 as passed-host, before a review
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:64 at 415ae25b has: row 76, an M0 deliverable, stays failed until they are closed
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:64 at 415ae25b has: Closing them is an agent's change to the guard, which `12-dependency-lock` runs, with an agent review of it
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:64 at 415ae25b has: once the review of the change accepts it, merge that branch
+ok      HON-EP-01: Docs/Stage0/M0-device-runbook.md:996 at 415ae25b has: the M0 deliverable row 76 stays failed until they are closed
+ok      HON-EP-01: Docs/Stage0/M0-device-runbook.md:996 at 415ae25b has: Closing them is an agent's change to ADR-0014's CI guard (its section 3, checked by `12-dependency-lock`) with
+ok      HON-EP-01: Docs/Stage0/integration-log.md:1724 at 415ae25b has: round 4's verdict on ADR-0014, reject, stays on the record until that review says whether R4-01 and R4-02 are 
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:250 at 415ae25b has: | 76 | Dependency lock: the CI guard that keeps marmelroy/Zip 2.1.2 (CVE-2023-39135) out of product code | pas
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:250 at 415ae25b has: *(Failed until 24 October 2026, on round 4's verdict, reject, with R4-01 and R4-02 open: Section 6.1.
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:273 at 415ae25b has: Since 24 October 2026 row 76 is passed-host (ADR-0014's R4-01 and R4-02 closed by an agent, reviewed next), so
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:495 (the finding: :494) at 415ae25b has: row 76 is closed by R4-01 and R4-02 above *(24 October 2026: so it is, by their fix, which an agent review rea
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:20 at 415ae25b has: *(24 October 2026: both done, by agents of the M0 exit preparation
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:20 at 415ae25b has: R4-01 and R4-02 closed, reviewed next
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:64 at 415ae25b has: *(24 October 2026: done by an agent at the M0 exit preparation
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:128 at 415ae25b has: ADR-0014's R4-01 and R4-02 closed in the guard, with R4-03 and R4-04 and the routes of the same kind, so row 7
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:708 (the finding: :705) at 415ae25b has: 105. **R4-01 and R4-02 closed in the guard**
+ok      HON-EP-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:258 (the finding: :257) at 415ae25b has: *(Done, 24 October 2026, by an agent; an agent review reads it next.
+ok      HON-EP-01: Docs/Stage0/M0-device-runbook.md:996 at 415ae25b has: *(24 October 2026: done by an agent, reviewed next,
+ok      HON-EP-01: Docs/Stage0/integration-log.md:1559 at 415ae25b has: ## 28. ADR-0014's R4-01 and R4-02 closed, and `linkage.sh` under Xcode 27.1
+ok      HON-EP-01: Docs/Stage0/README.md:5 at 415ae25b has: (on 24 October 2026 the first two done by an agent, reviewed next: integration log section 28
+ok      HON-EP-01: Docs/Stage0/README.md:36 at 415ae25b has: *(24 October 2026: both closed by an agent's change, reviewed next,
+ok      HON-EP-01: Docs/Stage0/evidence/M0-ExitPrep/zipguard/README.md:1 at 415ae25b has: # ADR-0014 review round 4: R4-01 and R4-02 closed in the Zip guard
+ok      HON-EP-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3 at 415ae25b has: R4-01 and R4-02 are closed in the guard**
+ok      HON-EP-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3 at 415ae25b has: That change answers the findings;
+ok      HON-EP-01: Docs/ADRs/0014-dependency-lock-and-license-inventory.md:3 at 415ae25b has: whether the findings are answered is the next review's to say.
+ok      HON-EP-01: Docs/Stage0/integration-log.md:1664 at 415ae25b has: | Zip guard | The gate summary's row 76: passed-host, its Source and its Evidence as worded | Applied as worde
+ok      HON-EP-01: Docs/Stage0/evidence/M0-Integration/commands/gate-refresh-check.py:152 at 415ae25b has: 76: ("passed-host", adr_says(14, "R4-01 and R4-02 are closed in the guard")
+ok      HON-EP-01: Docs/Stage0/M0-gate.md:49 at 415ae25b has: has the security sign-off accept the marmelroy/Zip advisory's residual risk only once R4-01 and R4-02 are clos
+ok      HON-EP-01: Scripts/check-dependency-lock.py at 6cd842d3: SHA-256 3427e76fb9dd1b949a892bd132593705e0a7e4321796af060ce3f13bb64d0f3f (the review's check, as relayed: 3427e76f...); at 415ae25b: 71514489291fe34ceda1731fb1d9874d0946977fdc74db97df75e3cb51f4a826 (the first fix's change, ad709059, since)
+ok      HON-EP-01: Docs/Stage0/evidence/M0-ExitPrep/zipguard/reproductions.log: 23 routes, each passing before the fix and failing after it (the review: all 23, line for line)
+ok      HON-EP-01: Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log:337 at 415ae25b has: self-test: 278 mutations
+ok      HON-EP-01: Docs/Stage0/evidence/M0-ExitPrep/zipguard/ci-2/12-dependency-lock.log:337 at 415ae25b has: 119 of the 119 failure branches reached
+
+== HON-EP-02: who made CLAUDE.md's correction, and at what request
+ok      HON-EP-02: Docs/Stage0/M0-gate.md:750 (the finding: :733) at 415ae25b has: the M0 exit preparation was made on branches of its own from `5aec2518`
+ok      HON-EP-02: Docs/Stage0/M0-gate.md:750 (the finding: :733) at 415ae25b has: Besides `CLAUDE.md`, it changed `Scripts/check-dependency-lock.py` and `Scripts/ci.d/12-dependency-lock.sh`
+ok      HON-EP-02: Docs/Stage0/M0-gate.md:707 at 415ae25b has: No workflow's agent changed it (item 46).
+ok      HON-EP-02: Docs/Stage0/integration-log.md:1647 at 415ae25b has: which held `5aec2518` and nothing more
+ok      HON-EP-02: Docs/Stage0/evidence/M0-ExitPrep/reviews/README.md:18 at 415ae25b has: and `5aec2518` is the `CLAUDE.md` correction the gate summary asks for (Section 1, item 1, step 2)
+ok      HON-EP-02: Docs/Stage0/evidence/M0-Integration/item-reviews/commands/compare-gate-checks.py:6 at 415ae25b has: hand-over starts from, 5aec2518, is the CLAUDE.md correction the gate summary asks for (Section 1, item 1, ste
+ok      HON-EP-02: Docs/Stage0/M0-gate.md:17 at 415ae25b has: and commit the change on `m0-decisions`
+ok      HON-EP-02: 5aec2518's parent is 96bdc7e9 (main after pull request #6) and it changes CLAUDE.md alone
+
+== HON-EP-03: the owner's request, stated with no record but the commit message
+ok      HON-EP-03: Docs/Stage0/M0-gate.md:17 at 415ae25b has: *(Done on 24 October 2026, at your request, by the orchestrating session: `5aec2518`
+ok      HON-EP-03: Docs/Stage0/M0-gate.md:707 (the finding: :704) at 415ae25b has: on 24 October 2026 you asked the orchestrating session to correct it
+ok      HON-EP-03: Docs/Stage0/integration-log.md:1647 at 415ae25b has: at the product owner's request on 24 October 2026
+ok      HON-EP-03: Docs/Stage0/README.md:5 at 415ae25b has: *(corrected at the product owner's request on 24 October 2026, `5aec2518`
+ok      HON-EP-03: 5aec2518's message says: The owner asked the orchestrating session to make it on 24 October 2026
+ok      HON-EP-03: Docs/Stage0/evidence/M0-ExitPrep/assembly/xcode-27.1-release.md is committed and names no 5aec2518
+ok      HON-EP-03: Docs/Stage0/evidence/M0-Decisions/followup/owner-answers-2026-10-23.md is committed and names no 5aec2518
+
+== HON-EP-04: CLAUDE.md's first statement, on main
+ok      HON-EP-04: CLAUDE.md:5 at 415ae25b has: All M0 work is on `main`.
+ok      HON-EP-04: Docs/Stage0/M0-gate.md:16 at 415ae25b has: says that all M0 work is on `main`
+ok      HON-EP-04: Docs/Stage0/M0-gate.md:476 at 415ae25b has: says that all M0 work is on `main`
+ok      HON-EP-04: Docs/Stage0/M0-gate.md:707 (the finding: :704) at 415ae25b has: The paragraph now says that all M0 work is on `main`
+ok      HON-EP-04: Docs/Stage0/M0-gate.md:476 at 415ae25b has: The correction itself is not yet on `main`
+ok      HON-EP-04: main is 96bdc7e9 and does not hold 5aec2518: so
+
+== HON-EP-05: status lines dated 24 October 2026 reporting work of 26 October
+ok      HON-EP-05: Docs/Stage0/README.md:5 at 415ae25b has: **Where M0 stands (24 October 2026).**
+ok      HON-EP-05: Docs/Stage0/M0-gate.md:768 (the finding: :749) at 415ae25b has: nor has the M0 exit preparation of 24 October 2026 (sections 28-30)
+ok      HON-EP-05: Docs/Stage0/M0-gate.md:4 at 415ae25b, the State line, does not name the M0 exit preparation of 24 October 2026 (it names the fix of the second review of the M0 exit preparation)
+ok      HON-EP-05: Docs/Stage0/M0-gate.md:4 at 609ed492 has: nor has the M0 exit preparation of 24 October 2026 (Sections 6.2 and 8).
+ok      HON-EP-05: the assembly's commits after the merges, 83ed5ff3 to 609ed492, all dated 26 October 2026 on the build Mac's clock: 609ed492 2026-10-26 06:05:20 +1300; d3385877 2026-10-26 06:00:56 +1300; 7c981bd1 2026-10-26 05:47:07 +1300; 83ed5ff3 2026-10-26 05:05:02 +1300
+
+result: pass (0 citation(s) not as the findings give them)
+
+exit status: 0
+end: 2026-10-25T20:59:50Z; load:  9:59  up 22 days, 20:10, 3 users, load averages: 4.17 4.17 3.90

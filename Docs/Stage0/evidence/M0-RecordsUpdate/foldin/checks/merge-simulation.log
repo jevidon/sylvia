@@ -1,0 +1,227 @@
+command: Docs/Stage0/evidence/M0-RecordsUpdate/foldin/commands/merge-simulation.sh
+commit: 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/foldin/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T18:55:07Z; load:  7:55  up 23 days, 18:05, 4 users, load averages: 3.33 4.40 4.29
+
+merge-simulation (fold-in): HEAD 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+date: 2026-10-26T18:55:07Z; load:  7:55  up 23 days, 18:05, 4 users, load averages: 3.33 4.40 4.29
+the real m0-decisions (read only): c72247a69a374ce361834550b92689b4abab95ee; the real m0-device-fixes: a60aa92274d209bff6e1727ed36c078cd94ed8b2
+the real git log --oneline m0-records-update..m0-decisions:
+(the end of that list)
+
+== A. m0-decisions at c72247a6, not moved: the README's commands
+$ git status --short
+ok    nothing uncommitted
+$ git branch --show-current
+m0-decisions
+$ git log --oneline m0-records-update..m0-decisions
+
+ok    the log line prints nothing
+$ git merge --ff-only m0-records-update
+ create mode 100644 Spikes/G05-Recovery/Tests/SylviaRecoveryTests/PrivatePathTests.swift
+ create mode 100644 Spikes/G05-Recovery/Tests/SylviaRecoveryTests/ProtectedCopyTests.swift
+ok    the merge fast-forwards (exit 0), m0-decisions now m0-records-update's head
+$ git rev-parse HEAD
+2095cbec6c9a10c007b70c1916c41f0bb89f6024
+ok    after the merge CLAUDE.md holds both texts, nothing put in by hand (line 5 the paragraph; the toolchain line's new words)
+
+-- After the merge: runbook 0.8's check
+$ git diff --stat 9cdb0a02 HEAD -- Scripts/ci.d/71-g05-recovery.sh Scripts/lib Scripts/tools Spikes/G05-Recovery Contracts/schemas/backup-manifest.v1.schema.json Contracts/fixtures/backup-manifest.v1 ':(exclude)Spikes/G05-Recovery/DeviceTests'
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +++-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 +++++++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++++++++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 11 files changed, 572 insertions(+), 23 deletions(-)
+ok    it lists exactly the eleven files of the recovery package that the device fixes changed: 0.8 runs again
+-- After the merge: runbook 0.3, step 7's check, against each commit of the session log's rows 3a-3d and the status file
+$ git diff --stat 96bdc7e9 HEAD -- Apps Packages Spikes Fixtures Scripts Contracts Docs/Stage0/device-checklists
+ Docs/Stage0/device-checklists/G01-EPUB.md          |   4 +-
+ Docs/Stage0/device-checklists/G01-PDF.md           |   4 +-
+ Docs/Stage0/device-checklists/G02-Transfer.md      |  12 +-
+ Docs/Stage0/device-checklists/G03-Intake.md        |   2 +-
+ Docs/Stage0/device-checklists/G04-Audio.md         |   6 +-
+ Docs/Stage0/device-checklists/G05-AI.md            |  12 +-
+ Docs/Stage0/device-checklists/G05-Recovery.md      |  35 +-
+ Docs/Stage0/device-checklists/G06-Design.md        |  14 +-
+ Scripts/check-dependency-lock.py                   | 687 +++++++++++++++++++--
+ Scripts/ci.d/12-dependency-lock.sh                 |   9 +-
+ Scripts/ci.d/70-g05-ai.sh                          |   2 +-
+ Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift   |  94 ++-
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift |  11 +
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   |  15 +
+ .../DeviceTests/Support/Bundle+Module.swift        |   8 +
+ Spikes/G05-Recovery/DeviceTests/project.yml        |  60 ++
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 ++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 27 files changed, 1432 insertions(+), 138 deletions(-)
+$ git diff --stat 8404f342 HEAD -- Apps Packages Spikes Fixtures Scripts Contracts Docs/Stage0/device-checklists
+ Docs/Stage0/device-checklists/G01-EPUB.md          |   4 +-
+ Docs/Stage0/device-checklists/G01-PDF.md           |   4 +-
+ Docs/Stage0/device-checklists/G02-Transfer.md      |  12 +-
+ Docs/Stage0/device-checklists/G03-Intake.md        |   2 +-
+ Docs/Stage0/device-checklists/G04-Audio.md         |   6 +-
+ Docs/Stage0/device-checklists/G05-AI.md            |  12 +-
+ Docs/Stage0/device-checklists/G05-Recovery.md      |  35 +-
+ Docs/Stage0/device-checklists/G06-Design.md        |  14 +-
+ Scripts/check-dependency-lock.py                   | 687 +++++++++++++++++++--
+ Scripts/ci.d/12-dependency-lock.sh                 |   9 +-
+ Scripts/ci.d/70-g05-ai.sh                          |   2 +-
+ Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift   |  94 ++-
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift |  11 +
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   |  15 +
+ .../DeviceTests/Support/Bundle+Module.swift        |   8 +
+ Spikes/G05-Recovery/DeviceTests/project.yml        |  60 ++
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 ++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 27 files changed, 1432 insertions(+), 138 deletions(-)
+$ git diff --stat 432acc13 HEAD -- Apps Packages Spikes Fixtures Scripts Contracts Docs/Stage0/device-checklists
+ Docs/Stage0/device-checklists/G01-EPUB.md          |   4 +-
+ Docs/Stage0/device-checklists/G01-PDF.md           |   4 +-
+ Docs/Stage0/device-checklists/G02-Transfer.md      |  12 +-
+ Docs/Stage0/device-checklists/G03-Intake.md        |   2 +-
+ Docs/Stage0/device-checklists/G04-Audio.md         |   6 +-
+ Docs/Stage0/device-checklists/G05-AI.md            |  12 +-
+ Docs/Stage0/device-checklists/G05-Recovery.md      |  35 +-
+ Docs/Stage0/device-checklists/G06-Design.md        |  14 +-
+ Scripts/check-dependency-lock.py                   | 687 +++++++++++++++++++--
+ Scripts/ci.d/12-dependency-lock.sh                 |   9 +-
+ Scripts/ci.d/70-g05-ai.sh                          |   2 +-
+ Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift   |  94 ++-
+ Spikes/G05-Recovery/DeviceTests/App/TestHost.swift |  11 +
+ Spikes/G05-Recovery/DeviceTests/Package.resolved   |  15 +
+ .../DeviceTests/Support/Bundle+Module.swift        |   8 +
+ Spikes/G05-Recovery/DeviceTests/project.yml        |  60 ++
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 ++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 27 files changed, 1432 insertions(+), 138 deletions(-)
+$ git diff --stat 4be1a1a4 HEAD -- Apps Packages Spikes Fixtures Scripts Contracts Docs/Stage0/device-checklists
+ Docs/Stage0/device-checklists/G01-EPUB.md          |   4 +-
+ Docs/Stage0/device-checklists/G01-PDF.md           |   4 +-
+ Docs/Stage0/device-checklists/G02-Transfer.md      |  12 +-
+ Docs/Stage0/device-checklists/G03-Intake.md        |   2 +-
+ Docs/Stage0/device-checklists/G04-Audio.md         |   6 +-
+ Docs/Stage0/device-checklists/G05-AI.md            |  12 +-
+ Docs/Stage0/device-checklists/G05-Recovery.md      |  17 +-
+ Docs/Stage0/device-checklists/G06-Design.md        |  14 +-
+ Scripts/check-dependency-lock.py                   | 687 +++++++++++++++++++--
+ Scripts/ci.d/12-dependency-lock.sh                 |   9 +-
+ Scripts/ci.d/70-g05-ai.sh                          |   2 +-
+ Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift   |  94 ++-
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 ++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 23 files changed, 1324 insertions(+), 134 deletions(-)
+$ git diff --stat d5336111 HEAD -- Apps Packages Spikes Fixtures Scripts Contracts Docs/Stage0/device-checklists
+ Docs/Stage0/device-checklists/G01-EPUB.md          |   4 +-
+ Docs/Stage0/device-checklists/G01-PDF.md           |   4 +-
+ Docs/Stage0/device-checklists/G02-Transfer.md      |  12 +-
+ Docs/Stage0/device-checklists/G03-Intake.md        |   2 +-
+ Docs/Stage0/device-checklists/G04-Audio.md         |   6 +-
+ Docs/Stage0/device-checklists/G05-AI.md            |  12 +-
+ Docs/Stage0/device-checklists/G05-Recovery.md      |  17 +-
+ Docs/Stage0/device-checklists/G06-Design.md        |  14 +-
+ Scripts/check-dependency-lock.py                   | 687 +++++++++++++++++++--
+ Scripts/ci.d/12-dependency-lock.sh                 |   9 +-
+ Scripts/ci.d/70-g05-ai.sh                          |   2 +-
+ Spikes/G05-AI/ATSProbe/Tests/ATSProbeTests.swift   |  94 ++-
+ .../Sources/SylviaRecovery/Backup/Container.swift  |  45 +-
+ .../Sources/SylviaRecovery/FileProtection.swift    |  69 ++-
+ .../Sources/SylviaRecovery/FileSystem.swift        |  44 ++
+ .../SylviaRecovery/MigrationCrashDrill.swift       |   3 +-
+ .../Sources/SylviaRecovery/RestoreCrashDrill.swift |   3 +-
+ .../Tests/SylviaRecoveryTests/BackupTests.swift    |   9 +
+ .../Tests/SylviaRecoveryTests/MigrationTests.swift |   9 +-
+ .../SylviaRecoveryTests/PrivatePathTests.swift     | 118 ++++
+ .../SylviaRecoveryTests/ProtectedCopyTests.swift   | 280 +++++++++
+ .../Tests/SylviaRecoveryTests/PutBackTests.swift   |   8 +-
+ .../Tests/SylviaRecoveryTests/Support.swift        |   7 +-
+ 23 files changed, 1324 insertions(+), 134 deletions(-)
+ok    against d5336111: the eight checklists, the eleven recovery files, and the Zip guard's two scripts, Scripts/ci.d/70-g05-ai.sh and the ATS probe's test file alone
+
+== B. m0-decisions moved on: a commit standing for the owner's next records
+$ git log --oneline m0-records-update..m0-decisions
+96ae2bb8 simulation: the owner's records of a later sitting
+ok    the log line prints the commit, and it alone
+$ git merge --ff-only m0-records-update
+hint: Disable this message with "git config set advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+ok    the merge refuses (exit 128, 128 expected), m0-decisions unchanged, nothing uncommitted
+ok    the agent's merge of m0-decisions into a branch at m0-records-update is clean here (exit 0)
+ok    the owner's head 96ae2bb8 is in the history of agent-merge (a fast-forward merge of it is possible)
+owner records intact: yes (0 failure(s)); owner commits 044ed3cf..96ae2bb8, checked agent-merge
+ok    the owner fix's owner-records-intact.py, given the owner's head, passes on the agent's merge (exit 0)
+$ git merge --ff-only agent-merge
+ create mode 100644 Spikes/G05-Recovery/Tests/SylviaRecoveryTests/ProtectedCopyTests.swift
+ok    the owner's merge now fast-forwards (exit 0)
+
+== C1. m0-device-fixes merged on its own first, on c72247a6, as a fast-forward
+ok    m0-device-fixes fast-forwards m0-decisions to a60aa922 (exit 0)
+ok    the log line then prints nothing
+ok    and the merge of m0-records-update fast-forwards (exit 0)
+
+== C2. m0-device-fixes merged on its own after an owner commit, with git merge --no-edit, as its 7.1 gave it
+ok    the merge of m0-device-fixes makes a merge commit (exit 0; 2 parents)
+  98a10a61 Merge branch 'm0-device-fixes' into m0-decisions
+  251ad54a simulation: the owner's records of a later sitting
+ok    the log line prints the owner's commit and that merge commit
+ok    the fast-forward refuses (exit 128), m0-decisions unchanged
+ok    the agent's merge takes it in, clean (exit 0)
+ok    and the owner's merge then fast-forwards (exit 0)
+
+== D. a conflict: an owner commit that changes a line this branch changes too
+ok    the owner's commit is made on c72247a6
+ok    git merge --ff-only refuses (exit 128), changing nothing
+$ git merge m0-records-update   (a plain merge, which the README never uses)
+  CONFLICT (content): Merge conflict in Docs/Stage0/M0-device-runbook.md
+  Automatic merge failed; fix conflicts and then commit the result.
+ok    the plain merge stops on the conflict (exit 1)
+$ git merge --abort
+ok    git merge --abort puts m0-decisions back as it was, with nothing uncommitted (exit 0)
+
+result: pass
+
+exit status: 0
+end: 2026-10-26T18:55:11Z; load:  7:55  up 23 days, 18:05, 4 users, load averages: 3.63 4.44 4.31

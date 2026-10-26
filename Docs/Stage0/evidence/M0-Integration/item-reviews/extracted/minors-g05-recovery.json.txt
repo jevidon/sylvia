@@ -1,0 +1,422 @@
+[
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 20,
+  "label": "minors-g05-recovery:author",
+  "result": {
+   "branch": "m0-int-minors-g05-recovery",
+   "commit": "ce535e0d29a4097cf173a6cb3cf6a06142e38e9b",
+   "summary": "All five round-3 findings on G0.5 recovery are closed. Each is backed by a clean run of Scripts/ci.d/71-g05-recovery.sh from commit cb344a9, which passed with the host screen unlocked from start to end (Docs/Stage0/evidence/G05-Recovery/ci-clean-run.log).\n\nThe branch already had three WIP commits from a stopped agent. I reviewed that work and kept it, with these fixes:\n- Recovery/ pruning now deletes only the two generated name forms (failed-<uuid>, pre-migration-<ms>-<8 hex>.sqlite).\n- The snapshot-reuse check compares the content digest before running the integrity check.\n- ADR-0003 wrongly said the 3 put-back steps were the only ones that can fail, and its evidence section described the round-2 run. Both are rewritten.\n\nNew work in this round:\n- Abandoned Staging/ files are removed at every launch, and before a pending put-back resumes. This is the same growth defect as R3-03: a crashed media import could leave an audiobook-sized copy that nothing ever removed.\n- Every fallible put-back operation (19 of them) now has a test hook. Each is failed in turn, both in the failing open and at the next open with the failed library's real -wal and -shm present. A failure of only the flush after the intent's removal is reported as a completed put-back.\n- Those tests showed -wal and -shm present even after a clean close. Two host probes, kept in evidence/G05-Recovery/sqlite-wal-probes/, traced this to the system SQLite 3.51.0 keeping the WAL by default. They also showed that SQLite applies a -wal to whatever database file is beside it.\n\nClean run results:\n- Host: 69 tests, 66 passed, 3 skipped.\n- Simulator (iOS 26.5, iPhone 17): 64 tests, 60 passed, 4 skipped.\n- 54 damaged backups rejected on both.\n- All SIGKILL drills had 0 failures.\n- The class-B readback came back on all 52 items, so row 10 is passed-host.\n- Contracts: 15 schemas, 188 fixtures.\n\nTimings were taken at load averages up to 167 and are indicative only.\n\nThe report, both ADRs, the device checklist, PROGRESS.md and FIXTURES.md now match the run. I also corrected stale counts: the contract count, row 14's free-space figure, and the device test expectation (now 64 tests).\n\nNothing outside the gate's paths was changed. After the final commit I detached HEAD, deleted DerivedData and the build products, and deleted my simulator.",
+   "criteria": [
+    {
+     "criterion": "R3-01: restore rejects a note.current_revision that breaks note editing; bound the app's counters",
+     "status": "passed-simulator",
+     "evidence": "RowCheck.noteRevisionProblems requires each note's revisions to be exactly 1...current_revision. RowCheck.integerRangeProblems bounds every INTEGER to within \u00b1(2^53-1). reviseNote refuses an out-of-range revision instead of trapping. RestoreTests.rejections rejects the stale (1, with 3 revisions), Int64.max, dangling (77) and not-from-1 cases, plus metadata_revision 2^53, timeline_revision Int64.max and created_at_ms Int64.min. SchemaTests.staleEditor covers the edit-time guard. Logs: host and simulator, 54 rejections each, in logs/host-tests.log and logs/simulator-tests.log. Named in report row 7, F8, and ADR-0012 restore step 5."
+    },
+    {
+     "criterion": "R3-02: EffectiveDate and RowCheck accept a leading '+' in date components",
+     "status": "passed-simulator",
+     "evidence": "EffectiveDate.isValid now requires each component to be ASCII digits (byte check) before Int(). SchemaTests.typing rejects +019, -019, 2019-+1, 2019-+1-+5, 2019-01-+5 and full-width and Arabic-Indic digits. RestoreTests.rejections rejects ledger_event '+019' (year) and consumption_run '2019-+1-+5' (day). Host and simulator logs."
+    },
+    {
+     "criterion": "R3-03: Recovery/ grows without bound on repeated failing migrations",
+     "status": "passed-simulator",
+     "evidence": "A retry from the same pre-state reuses its snapshot (matched by content digest). Recovery/ keeps one snapshot and one failed copy, and only generated names are ever removed. Pre-restore copies are kept until the user removes them. Abandoned Staging/ files are cleared at launch. PutBackTests.repeatedFailuresKeepRecoveryBounded: 4 failing launches of the 352,256-byte library leave Recovery/ at 770,248 / 774,344 / 774,344 / 774,344 bytes. Also: changedPreStateTakesNewSnapshot, pruneKeepsWhatAPreRestoreIntentNeeds, and abandonedStagingIsCleared (7 entries, 3,289,213 bytes removed). Host and simulator. The rule is in ADR-0003 'Retention of Recovery/ and Staging/' and ADR-0012 retention classes."
+    },
+    {
+     "criterion": "R3-04: row 10 host class-B data-protection evidence left pending",
+     "status": "passed-host",
+     "evidence": "The clean run at cb344a9 had the host screen unlocked at the start, after the drop-in and at the end (ci-clean-run.log header and footer), and the drop-in printed 'row 10 evidence present'. logs/host-tests.log shows 'class B (non-default) requested: read back on 52 files and directories: [NSFileProtectionCompleteUnlessOpen: 52]', and probe.sqlite, -wal and -shm are class B in a class-B directory. Report row 10 is passed-host; ADR-0012's evidence and open items are updated; open question 7 and the PROGRESS 'Next' item are removed."
+    },
+    {
+     "criterion": "R3-05: put-back I/O-error evidence overstated; reconcile failures not typed",
+     "status": "passed-simulator",
+     "evidence": "The wording now says injected ENOSPC, not a real full volume. Every one of the put-back's 19 fallible operations is failed in turn in two places: in the failing open, and at the next open with the failed library's real -wal (holding a committed frame) and -shm present (PutBackTests.ioErrorAtEveryOperation). In each case the next open finishes the put-back, and the old -wal and -shm end up in failed-<id>/ and never beside the snapshot. Reconcile failures surface as the typed StoreError.migrationPutBackPending(reason:), tested by putBackStillFailingAtNextOpen at 4 step hooks. Host and simulator logs; ADR-0003 steps 5-6 and evidence, report row 6."
+    },
+    {
+     "criterion": "R2-07 (left open by the last fixer): fixture provenance names the public-domain quotations",
+     "status": "partial",
+     "evidence": "Spikes/G05-Recovery/FIXTURES.md and the report name George Long's 1862 Meditations translation (IV.17, abridged V.6) and Thoreau (Walden 1854, Walking 1862). I confirmed the strings are in library-v1.sqlite, SHA-256 eae90f68...e592. M0 integration added a Fixtures/LICENSES.md row, but it says 'Generated text and digests only'. That file is outside this gate's paths, so the correction is in shared_changes_requested (report open question 7)."
+    },
+    {
+     "criterion": "Gate gap: row 10 host class-B readback",
+     "status": "passed-host",
+     "evidence": "Same as R3-04: ci-clean-run.log (screen unlocked) and logs/host-tests.log."
+    },
+    {
+     "criterion": "Gate gap: T50 (locked device, reboot before first unlock), device save latency, device test suite",
+     "status": "pending-device",
+     "evidence": "Needs the physical iPhone. Device checklist steps 1-4 are usable; step 1 now expects 64 tests with 4 skipped, matching the simulator count of this run. Report rows 9, 13 and 22."
+    },
+    {
+     "criterion": "Gate gap: single-file .sylviabackup container",
+     "status": "not-applicable",
+     "evidence": "Waits for the archive implementation that G0.3 chooses in ADR-0010. The BackupContainer protocol and DirectoryBundleContainer are in place (report row 19, F7)."
+    },
+    {
+     "criterion": "Gate gap: J-06 screens",
+     "status": "partial",
+     "evidence": "The data layer passes on host and simulator (rows 1 and 4). There is no UI in Stage 0, so how the screens show restored data is untested (row 11)."
+    },
+    {
+     "criterion": "Gate gap: power-loss and kernel-crash durability",
+     "status": "not-applicable",
+     "evidence": "A process-kill drill cannot prove this, and an unmodified iPhone cannot be power-cut. It is disclosed in F4 and in checklist step 5, which says not to record it as passed. The choice rests on SQLite's documented behaviour for WAL with synchronous=FULL and F_FULLFSYNC."
+    },
+    {
+     "criterion": "Gate gap: human security sign-off on class C and unencrypted backups",
+     "status": "pending-human",
+     "evidence": "Agent-reviewed; human sign-off pending (report row 23, ADR-0012 open items)."
+    }
+   ],
+   "ci": {
+    "script": ".build/scratch/clean-run.sh (my own wrapper): deletes Spikes/G05-Recovery/.build, .build/g05-recovery, .build/ci-logs and the old logs, then runs G05_SIM_NAME=Sylvia-M0-minors-g05-recovery G05_LOG_DIR=Docs/Stage0/evidence/G05-Recovery/logs Scripts/ci.d/71-g05-recovery.sh and then Scripts/ci.sh contracts, all from commit cb344a9 with 0 tracked-file changes.",
+    "result": "pass. Drop-in exit 0 ('G0.5 recovery: all steps passed', 'row 10 evidence present'); contracts exit 0 (15 schemas, 188 fixtures, 1 OpenAPI document, 1 instance). Host: 69 tests, 66 passed, 3 skipped. Simulator (iOS 26.5, iPhone 17): 64 tests, 60 passed, 4 skipped. Crash drill: 900 kills, 3,701 acknowledged captures, 0 failures. synchronous=OFF drill: 150 kills, 0 failures. Restore drill: 49/49 checks. Restore SIGKILL drill: 300 kills, 0 failures. Migration put-back SIGKILL drill: 240 iterations, 227 killed, 0 failures. Latency p95 1.51 ms (budget 200 ms). iOS build-for-testing succeeded, with no warnings in spike sources. Load averages were up to 167, so all timings are indicative only. Log: Docs/Stage0/evidence/G05-Recovery/ci-clean-run.log."
+   },
+   "plan_findings": [
+    "Apple's system SQLite 3.51.0 keeps the WAL by default (SQLITE_FCNTL_PERSIST_WAL reads 1), so -wal and -shm remain after the last connection closes. SQLite also applies a -wal to whatever database file is beside it (Docs/Stage0/evidence/G05-Recovery/sqlite-wal-probes/output.log). Any product operation that replaces library.sqlite must move -wal and -shm with it, which goes beyond plan 7.4's 'do not copy a live SQLite file while ignoring its WAL'.",
+    "Plan 17.1's 'visible cleanup policy for abandoned jobs' now has a concrete rule (ADR-0003). Every launch removes abandoned Staging/ files. Recovery/ keeps one pre-migration snapshot and one failed copy, and keeps pre-restore copies until the user removes them. This relies on one store per installation at a time. The product must show Recovery/ with sizes and a remove action (M1 recovery journal, M7 retention controls). An age-based expiry of the kept snapshot is an open product decision.",
+    "Restore's RowCheck now also bounds every INTEGER column to \u00b1(2^53-1) and checks note revisions against current_revision. Any future table invariant, or any increment of a stored counter, must be added there (ADR-0012 step 5).",
+    "Host latency runs under parallel load cannot rank synchronous=FULL+fullfsync against GRDB's default. This run measured p95 1.51 ms against 2.59 ms; review round 2 measured 1.71 ms against 1.33 ms. Only device measurements (checklist step 2) can settle the cost; both settings are far below the 200 ms budget."
+   ],
+   "shared_changes_requested": [
+    "Fixtures/LICENSES.md, section 'G0.5 Recovery': the library-v1.sqlite row says 'Generated text and digests only', but the fixture also holds short public-domain quotations. Replace that phrase with something like: 'Generated text and digests, plus short public-domain quotations: George Long's 1862 translation of Meditations (IV.17 and an abridged V.6) and Thoreau (\"Simplify, simplify.\" from Walden, 1854; \"sauntering\" from Walking, 1862), as listed in Spikes/G05-Recovery/FIXTURES.md.' The SHA-256 stays the same.",
+    "Docs/Stage0/README.md and Docs/Stage0/integration-log.md (owner: integration): the G0.5 recovery round-3 findings R3-01 to R3-05 are now fixed on m0-int-minors-g05-recovery at ce535e0. Update the 'open findings' and final-review notes when this branch is merged."
+   ],
+   "dependencies_added": [],
+   "committed_fixtures": [],
+   "open_questions": [
+    "Product owner: approve WAL + synchronous=FULL + fullfsync as the I-03 setting (ADR-0003).",
+    "Product owner: approve unencrypted v1 backups with a privacy warning (plan 17.3, ADR-0012).",
+    "Security reviewer: approve class C (completeUntilFirstUserAuthentication) and its locked-device trade-off (ADR-0012). This is agent-reviewed only.",
+    "G0.3 / ADR-0010: which archive implementation backs the single-file .sylviabackup container?",
+    "Device run: checklist steps 1-4. If step 3 (locked writes) is inconclusive because the XCTest runner is suspended, should Stage 0 add a background-audio harness app, or should T50 move to M1 with the app shell?",
+    "Product: should the kept pre-migration snapshot in Recovery/ expire by age or by successful opens, or stay until the next guarded migration replaces it, as now?",
+    "Owner of Fixtures/LICENSES.md: correct the G0.5 Recovery row to name the public-domain quotations (see shared_changes_requested)."
+   ]
+  }
+ },
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 31,
+  "label": "minors-g05-recovery:review-1",
+  "result": {
+   "verdict": "reject",
+   "commit_reviewed": "ce535e0d29a4097cf173a6cb3cf6a06142e38e9b",
+   "rerun": {
+    "command": "From the reviewer worktree at ce535e0 (detached; 0 tracked changes; host screen IOConsoleLocked = No at start and end), via .build/scratch/review-clean-run.sh: rm -rf Spikes/G05-Recovery/.build .build/g05-recovery .build/ci-logs; then G05_SIM_NAME=Sylvia-M0-review-minors-g05-recovery-1 G05_LOG_DIR=.build/scratch/review-logs Scripts/ci.d/71-g05-recovery.sh; then Scripts/ci.sh contracts. Also: the committed sqlite-wal-probes recompiled with xcrun swiftc -O and rerun (.build/scratch/rerun-probes.sh). Reviewer probes ran in a scratch copy of the spike (.build/scratch/g05copy/Tests/SylviaRecoveryTests/ReviewerProbes.swift; swift test --filter ReviewerProbes). The changed suites were run 3 more times (.build/scratch/repeat-tests.sh).",
+    "result": "PASS from clean, run 2026-10-12T22:00:09Z to 22:06:47Z. Load averages were 15.37/30.85/30.37 at the start and 69.88/48.45/36.85 at the end, so timings are indicative only. The drop-in exited 0 and printed 'row 10 evidence present'.\n- Host: 69 tests, 66 passed, 3 skipped.\n- Simulator (iOS 26.5, iPhone 17): 64 tests, 60 passed, 4 skipped.\n- 54 'rejected' restore cases on each.\n- Class B read back on 52 items.\n- Crash drill: 900 kills, 5,006 acknowledged, 0 failures.\n- synchronous=OFF drill: 150 kills, 0 failures.\n- Latency: p95 1.882 ms.\n- Restore drill: 49/49.\n- Restore SIGKILL drill: 300 kills, 0 failures.\n- Migration put-back drill: 240 iterations (218 killed), 0 failures.\n- Manifest contract: PASS. iOS build-for-testing succeeded. Contracts: 15 schemas, 188 fixtures.\n- WAL probes reproduce the committed output exactly.\n- Repeat runs of PutBackTests, RestoreTests, SchemaTests and MigrationTests (43 tests): 3/3 passed.\n- Reviewer probes: a real full APFS volume gives the typed migrationPutBackPending with the intent kept. The crash-every-time path stays bounded. A NUL digest collision is confirmed (R4-01's sibling R4-02). Staging intake state is deleted at open (R4-01).\n\nNothing was written outside the worktree. The reviewer simulator, Spikes/G05-Recovery/.build (DerivedData) and the scratch build products were deleted afterwards."
+   },
+   "findings": [
+    {
+     "id": "R4-01",
+     "severity": "major",
+     "title": "The new Staging/ cleanup rule deletes durable import state that ADR-0010 and plan 8.2 keep in the same directory; the conflict is not disclosed",
+     "location": "Docs/ADRs/0003-persistence.md:40 (step 6), :53 (Staging bullet), :88 (consequence 'nothing may rely on a Staging/ file outliving the process'); Docs/ADRs/0012-retention-backup-restore.md:14; Docs/Stage0/G05-Recovery.md:80 (F11); Spikes/G05-Recovery/Sources/SylviaRecovery/StagingCleanup.swift:1-45; MigrationPutBack.swift:180-196. Conflicts with Docs/ADRs/0010-intake-handoff-and-wired-bundles.md:35-39,79; Spikes/G03-Intake/IntakeKit/Sources/SylviaContainerLayout/StorageLayout.swift:9-11,40-42; plan 8.2 and 17.1",
+     "detail": "**What is wrong.** ADR-0003, ADR-0012, report F11, plan_findings and StagingCleanup.removeAbandoned now treat every Staging/ entry found at open as abandoned and delete it. ADR-0003 adds: 'so nothing may rely on a Staging/ file outliving the process that wrote it'. The brief asked only for a Recovery/ retention rule; this Staging extension was added on top.\n\n**Why it conflicts.**\n- ADR-0003 stores the database at Application Support/Sylvia/Library/library.sqlite, with Staging/ beside Library/, so the directory is Application Support/Sylvia/Staging.\n- ADR-0010 (line 79) and G0.3's StorageLayout.staging use that same directory for durable, journaled import state: journal.json; Staged/<id>, where 'a crash between any two steps is finished on the next scan'; Rejected/, kept 7 days; Abandoned/; and Extracting/, finished at launch by recoverInterruptedImports().\n- In ADR-0010 the share extension shows 'Received' once its handoff commits. The app's scan then renames, not copies, the handoff into Staging/Staged/<id>. The only copy of an acknowledged item therefore lives in Staging/.\n- Plan 8.2 requires a relaunch to scan staged manifests and unfinished commits and finish them.\n- Plan 17.1 keeps staging data, including import bundles and commit journals, 'for live operations', with cleanup only for abandoned jobs.\n\n**Impact.** If M1 implements ADR-0003 as written, every launch deletes staged imports and the import journal, including items the user was told were received. That breaks I-03 and I-10. Neither ADR, the report nor the author's result mentions the conflict.\n\n**Evidence.** Reviewer probe ReviewerProbes.stagingCleanupRemovesIntakeState plants ADR-0010-style entries and opens the store:\n`PROBE-STAGING before open: 8 entries [Rejected, Rejected/<id>/handoff.json, Staged, Staged/<id>/items/book.epub, journal.json, ...]; after open: 0 entries []`.\n\nThe spike's own behaviour is sound: everything it writes to Staging/ is temporary. The fault is the scope of the recorded rule.\n\n**Fix.**\n- Limit the cleanup to the persistence layer's own temporary files: either a subdirectory it owns (for example Staging/Library/), or exactly its generated name forms (<uuid>.tmp; <uuid>.sqlite with -wal, -shm and -journal; <uuid>.media; putback-<uuid>.sqlite and its .partial).\n- Reword ADR-0003 step 6, the Staging bullet and the consequence, ADR-0012's retention classes, F11 and the plan finding to match.\n- Record the interaction with ADR-0010 and plan 8.2/17.1 as an integration open item."
+    },
+    {
+     "id": "R4-02",
+     "severity": "minor",
+     "title": "Snapshot reuse rests on a content digest that is blind to TEXT after an embedded NUL, but the docs claim equal digests mean equal values",
+     "location": "Spikes/G05-Recovery/Sources/SylviaRecovery/Checks.swift:60-85 (contentDigest and its doc comment); RecoveryRetention.swift:10-12,53-68; Docs/ADRs/0003-persistence.md:36 (step 2). GRDB 7.11.1 GRDB/Core/DatabaseValue.swift:150,174",
+     "detail": "**Claim.** contentDigest's doc says 'Two databases with equal digests hold the same schema and values'. ADR-0003 step 2 reuses a snapshot when 'its whole logical content ... equals the live library's'.\n\n**Why it does not hold.** Rows are rendered from GRDB DatabaseValue, and GRDB decodes TEXT with String(cString: sqlite3_column_text(...)). That drops every byte after an embedded NUL and replaces invalid UTF-8.\n\n**Evidence.** Reviewer probe ReviewerProbes.digestIgnoresTextAfterNUL: two STRICT tables holding CAST(X'61006D696E65' AS TEXT) and CAST(X'61007468656972' AS TEXT) print `PROBE-DIGEST stored hex a=61006D696E65 b=61007468656972; contentDigest equal: true`.\n\n**Risk.** Low in practice: nothing writes the library between a failed attempt and its retry. But a false match would put back a snapshot that differs from the pre-state, and the documented guarantee is stated as absolute.\n\n**Fix.** Hash bytes rather than decoded strings: select quote(col) or hex(CAST(col AS BLOB)) for each column in SQL, or read TEXT with sqlite3_column_bytes. Otherwise, narrow the claim in Checks.swift, RecoveryRetention and ADR-0003."
+    },
+    {
+     "id": "R4-03",
+     "severity": "minor",
+     "title": "Fixture provenance (R2-07) still omits one quotation-like text in library-v1.sqlite, and the shared-change request would carry the gap into Fixtures/LICENSES.md",
+     "location": "Spikes/G05-Recovery/FIXTURES.md (contents and public-domain list); Docs/Stage0/G05-Recovery.md:94 and open question 7; the author's shared_changes_requested text; Spikes/G05-Recovery/Sources/SylviaRecovery/GoldenCorpus.swift:50",
+     "detail": "**Claim.** FIXTURES.md says the fixture contains 'generated text, generated stand-in media digests, and short public-domain quotations listed below'. The list names Long's IV.17, Long's V.6 abridged ('A horse when he has run, a dog when he has tracked the game\u2026'), 'Simplify, simplify.' and 'sauntering'.\n\n**What is missing.** A read-only copy of the committed fixture (SHA-256 eae90f68\u2026e592), searched with python3 -I .build/scratch/find_text.py, also holds GoldenCorpus.unicodeQuote, 'We ought to do good to others as simply as \"a horse runs\" \u2014 \u2026', in capture.quoted_text and context_evidence.text. This is a popular paraphrase of Meditations V.6, not Long's wording, and no source is recorded for it. The requested correction to Fixtures/LICENSES.md copies the same incomplete list.\n\n**Fix.** Either list it, for example as 'a short paraphrase of V.6 written for the corpus, with Unicode test characters', or replace it with Long's text. Update the shared-change request to match."
+    },
+    {
+     "id": "R4-04",
+     "severity": "minor",
+     "title": "The result's criteria use statuses outside the requested vocabulary and disagree with the report",
+     "location": "Author's result criteria (R2-07, 'Gate gap: J-06 screens', 'Gate gap: single-file .sylviabackup container'); Docs/Stage0/G05-Recovery.md rows 11 and 19",
+     "detail": "The brief asked for every finding id with status passed-host, passed-simulator, pending-device, pending-human or not-applicable, with a reason.\n- R2-07 and the J-06 gap are reported as 'partial'. R2-07 is really waiting on the owner of a shared file, which fits pending-human with that reason.\n- The single-file container gap is 'not-applicable' in the result but 'partial' in report row 19.\n\nNo evidence is wrong. The labels are inconsistent, and the M0 gate summary will read them.\n\n**Fix.** Use the requested vocabulary with reasons, and make the result agree with the report rows."
+    },
+    {
+     "id": "R4-05",
+     "severity": "minor",
+     "title": "'Every fallible put-back operation (19 of them) ... is failed in turn' overstates coverage: 20 operations have hooks and one is never reached",
+     "location": "Author's summary and PROGRESS.md history line; Spikes/G05-Recovery/Sources/SylviaRecovery/MigrationPutBack.swift:271-274 (hook 'remove an earlier partial copy') and :278-281 (incomplete-copy branch)",
+     "detail": "**What is wrong.** stage() has a 20th hooked operation, 'remove an earlier partial copy'. No test reaches it, because StagingCleanup deletes .partial files at the start of every open, before either put-back path runs. The size-mismatch branch ('staged copy ... is incomplete') is also not exercised.\n\n**What is accurate.** The evidence lines truthfully list the 19 operations the tests reach, and the ADR and report wording, '19 fallible file operations a put-back performs', is right in practice.\n\n**Fix.** Say '19 of the 20 hooked operations; the partial-copy removal is unreachable after the launch cleanup', or add a test that reaches it."
+    }
+   ],
+   "claims_verified": [
+    "The branch head ce535e0 is the reported commit. The evidence run was at cb344a9, and `git diff cb344a9..ce535e0` changes nothing under Spikes/, Scripts/ or Contracts/; the later commits are docs and evidence only. The header and footer of ci-clean-run.log record cb344a9, 0 tracked changes, the screen unlocked, and load averages 167.19 at the start and 97.90 after the drop-in.",
+    "All 14 committed logs under evidence/G05-Recovery/logs appear verbatim in the committed ci-clean-run.log, so none was edited by hand.",
+    "The report and ADR figures match the logs: host 69/66/3 and simulator 64/60/4; crash drill 3,701 acknowledged and 105 'already saved' retries; synchronous=OFF 1,903 acknowledged; latency p50 0.84, p95 1.51 and max 10.94 ms, with GRDB's default at p95 2.59 ms; migration drill 227 killed, 13 finished first, 167 put back, 73 migrated; restore drill 187 old and 113 restored, with 75 completed and 4 kept by reconciliation; real full volume 851,968 bytes reported free; suite p95 33.49 ms and simulator p95 21.34 ms; contracts 15 schemas and 188 fixtures; restore drill 49/49.",
+    "My clean rerun at ce535e0 reproduces every test count, the 54 rejections on host and simulator, and row 10's evidence (class B read back on 52 items; probe.sqlite, -wal and -shm are class B in a class-B directory).",
+    "R3-01: noteRevisionProblems is an exact 1...current_revision check, because note_revision has PRIMARY KEY(note_id, revision) and both columns are NOT NULL with CHECK >= 1. integerRangeProblems covers every integer column, all of which are declared INTEGER. reviseNote is the only Swift-side counter increment, and it now refuses instead of trapping. RestoreTests rejects the stale (1 with 3 revisions), Int64.max, dangling (77) and not-from-1 cases, metadata_revision 2^53, timeline_revision Int64.max and created_at_ms Int64.min; the log lines are checked on host and simulator.",
+    "R3-02: EffectiveDate.isValid checks each component's byte width and ASCII-digit bytes before Int(). SchemaTests covers +019, -019, 2019-+1, 2019-+1-+5, 2019-01-+5, and full-width and Arabic-Indic digits. Restore rejects '+019' as a year and '2019-+1-+5' as a day.",
+    "R3-03: Recovery/ stays bounded in the in-process failure path (770,248 / 774,344 / 774,344 / 774,344 bytes). My probe crashEveryTimeKeepsRecoveryBounded shows the same for the crash path: with the process dying after intentWritten, migrationFailed, staged or databaseMovedAside, 4 cycles each, Recovery/ holds 2 items of 753 to 774 KB and one reused snapshot. Prune removes only the two generated name forms. It protects intents inside pre-restore copies at Recovery/pre-restore-<id>/Library/migration-putback.json, which matches the layout BackupRestorer.commit creates.",
+    "R3-04: row 10 is passed-host with the committed host log's class-B lines. ADR-0012's evidence and open items, open question 7 and PROGRESS 'Next' are updated. The locked-host citation (`git show 2a37a00:...host-tests.log`) holds the passing lockedHostEnforcement line.",
+    "R3-05: the wording now says 'injected ENOSPC'. Both paths fail 19 operations in turn (evidence lines on host and simulator), and migrationPutBackPending is returned at the 4 step hooks. My probe realFullDiskAtNextOpen on a really full 64 MiB APFS volume (909,312 bytes reported free) also gets the typed migrationPutBackPending with the intent kept; after space is freed the next open reports migrationInterrupted, and the one after that migrates to schema 2.",
+    "The SQLite WAL probes reproduce on host: SQLite 3.51.0 reports SQLITE_FCNTL_PERSIST_WAL default=1, -wal and -shm remain after close, and b.sqlite reads 'only in a.sqlite-wal' when a.sqlite's -wal is placed beside it.",
+    "No flakiness: the changed suites (PutBackTests, RestoreTests, SchemaTests, MigrationTests; 43 tests) passed 3 of 3 repeat runs at load averages of 21 to 25.",
+    "Ownership and cleanliness: every changed path belongs to G0.5 recovery, and no shared file (Fixtures/LICENSES.md, Stage0 README, integration log, Scripts) was edited. No TODO, stub or try! was added, and no dependency (Package.resolved is unchanged). The author's simulator Sylvia-M0-minors-g05-recovery no longer exists. The spike plays no audio.",
+    "R2-07 stays partial as reported: Fixtures/LICENSES.md says 'Generated text and digests only', and the fixture's SHA-256 matches. Long IV.17, Long V.6 abridged, 'Simplify, simplify.' and 'sauntering' are present in the fixture (see R4-03 for the unlisted paraphrase)."
+   ],
+   "gate_gaps": [
+    "Done differently from the brief without saying so. R3-03 asked for a Recovery/ retention rule. The fix also empties all of Staging/ at every open and records that as a product rule in ADR-0003, ADR-0012 and F11. It contradicts ADR-0010, G0.3's StorageLayout and plan 8.2 and 17.1 for the same directory, and none of them is mentioned (R4-01).",
+    "Result status vocabulary: 'partial' is used for R2-07 and J-06, outside the requested statuses. The single-file container is 'not-applicable' in the result but 'partial' in report row 19 (R4-04).",
+    "R2-07 is still open on a shared file (Fixtures/LICENSES.md), and the requested correction text omits the unicodeQuote paraphrase (R4-03).",
+    "The evidence run is at cb344a9 rather than the final ce535e0. This is acceptable: no code, script or contract changed in between (verified), and my rerun at ce535e0 passes from clean.",
+    "Pending, legitimately and disclosed: T50 locked and rebooted device, device save latency and the device test suite (checklist steps 1-4); power-loss and kernel-crash durability (F4, checklist step 5); human security sign-off on class C and unencrypted backups; J-06 screens (no UI in Stage 0); the single-file .sylviabackup (waits for ADR-0010's archive choice)."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R3-01",
+     "resolved": true,
+     "note": "RowCheck now enforces note revisions exactly 1...current_revision and every INTEGER within \u00b1(2^53-1). reviseNote refuses an out-of-range revision instead of trapping. All of the reviewer's cases and the bound cases are rejected on host and simulator. The rule is named in row 7, F8 and ADR-0012 step 5."
+    },
+    {
+     "id": "R3-02",
+     "resolved": true,
+     "note": "Date components are checked as ASCII-digit bytes before Int(). The unit test covers sign, full-width and Arabic-Indic forms, and restore rejects '+019' (year) and '2019-+1-+5' (day)."
+    },
+    {
+     "id": "R3-03",
+     "resolved": true,
+     "note": "Recovery/ is bounded through snapshot reuse and pruning, verified in the in-process failure path and, by my probe, the crash-every-time path. The Staging/ extension added with this fix introduces R4-01."
+    },
+    {
+     "id": "R3-04",
+     "resolved": true,
+     "note": "The clean run with the screen unlocked carries the class-B readback on 52 items, my rerun reproduces it, and row 10 is passed-host."
+    },
+    {
+     "id": "R3-05",
+     "resolved": true,
+     "note": "Wording is corrected, every operation the tests reach is failed in turn, and reconcile failures surface as the typed migrationPutBackPending. That is confirmed on a really full APFS volume too. Coverage is slightly overstated in the summary (R4-05)."
+    },
+    {
+     "id": "R2-07",
+     "resolved": false,
+     "note": "Still partial. The shared Fixtures/LICENSES.md row says 'Generated text and digests only', and correcting it is requested of its owner. The provenance list also misses the corpus's V.6 paraphrase (R4-03)."
+    },
+    {
+     "id": "gate-gap-row-10",
+     "resolved": true,
+     "note": "Same evidence as R3-04: passed-host."
+    }
+   ]
+  }
+ },
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 47,
+  "label": "minors-g05-recovery:fix-1",
+  "result": {
+   "commit": "cd3e42b0345b3f1fb21e21a109deff0c4a2e26d6",
+   "fixed": [
+    {
+     "id": "R4-01",
+     "how": "passed-simulator. Cleanup now touches only this layer's own Staging/Persistence/. LibraryLayout gains sharedStagingDirectory (Staging/); stagingDirectory is Staging/Persistence/. StagingCleanup removes entries only there, and nothing else in Staging/ is read, written or removed. That leaves ADR-0010's journal.json and its Staged/, Rejected/, Abandoned/ and Extracting/ directories alone. Both directories are created with the protection class and excluded from backup. PutBackTests.abandonedStagingIsCleared plants intake's ADR-0010 layout: 18 entries, including top-level files named in this layer's own <uuid>.tmp and putback-*.partial forms. Seven abandoned persistence entries (3,289,213 bytes) sit beside it. After both opens and the migration, on host and simulator, the intake tree is unchanged byte for byte. Reworded to match: ADR-0003 step 6, the retention bullets and consequences, ADR-0012's retention classes, report row 6 and F11, and PROGRESS.md. The ADR-0010 conflict is recorded as an integration open item: ADR-0003 open items and report open question 8. Code: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-20/Spikes/G05-Recovery/Sources/SylviaRecovery/{Layout,StagingCleanup,LibraryStore,MigrationPutBack}.swift."
+    },
+    {
+     "id": "R4-02",
+     "how": "passed-simulator. LibraryChecks.contentDigest and canonicalDump now read every column through a new ExactRows helper (typeof(c) plus CAST(text AS BLOB)), so TEXT is rendered from its stored bytes. Valid UTF-8 renders as before, an embedded NUL is kept, and invalid UTF-8 renders as x:hex. The doc claim is now true. PutBackTests.contentDigestIsExact reproduces the reviewer's probe: GRDB decodes both values as \"a\", and the digests now differ. It also shows that invalid UTF-8 61FF vs 61FE and 42 vs '42' differ, and that row order does not matter. In PutBackTests.preStateDifferingAfterNULTakesNewSnapshot, a pre-state that differs only after an embedded NUL gets a new snapshot, and the library put back equals the changed pre-state. Updated: the Checks.swift doc and ADR-0003 step 2."
+    },
+    {
+     "id": "F12 (new, found while fixing R4-02)",
+     "how": "passed-simulator. GRDB 7.11.1 binds a String with sqlite3_bind_text(-1) and reads TEXT with String(cString:). Shown on host and simulator: \"before\\0after\" is stored as 6265666F7265, and stored bytes containing a NUL read back as \"before\". Fixes: LibraryStore.insert refuses text containing U+0000 before writing (ValidationError.textContainsNUL), and nothing is saved. RowCheck.textProblems refuses any TEXT value with a NUL or invalid UTF-8. Tests: SchemaTests.nulTextIsRefused, plus two new RestoreTests.rejections cases, text-with-nul and text-invalid-utf8 (56 cases in all). Recorded as report finding F12, ADR-0003 schema rules and consequences, and ADR-0012 restore step 5."
+    },
+    {
+     "id": "R4-03",
+     "how": "passed-host. GoldenCorpus.unicodeQuote now opens with George Long's V.6 text. A python3 -I check confirmed it is verbatim in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-20/Fixtures/epub/se-meditations.epub. library-v1.sqlite was regenerated with g05-recovery-tool make-v1-fixture: 352,256 bytes, SHA-256 b3a4df0a7d45675bc36ff4de862a9ebd984036c808e392cec9db64ac5ac11b5e. A read-only inventory compared every TEXT value in the old and new files. Only the quote, its context evidence, its locator and the random UUIDs differ, and the paraphrase is gone. /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-20/Spikes/G05-Recovery/FIXTURES.md now lists every quotation, the names, and how the inventory was checked. The shared-change request in report open question 7 is updated to match. The shared file itself is listed under not_fixed (R2-07)."
+    },
+    {
+     "id": "R4-04",
+     "how": "passed-host (documentation; checked on host by reading the table). Every report row now uses the requested statuses, and this result matches them. Row 11 becomes the J-06 data layer: passed-simulator. New row 24, J-06 screens: not-applicable. Row 19, the single-file container: pending-human. Rows 6 and 8 combine two allowed statuses."
+    },
+    {
+     "id": "R4-05",
+     "how": "passed-simulator. MigrationPutBack.reconcile now keeps a pending put-back's partial copy, so stage() removes it itself. PutBackTests.ioErrorAtEveryOperation adds a third path, with -wal, -shm and an earlier partial copy, which reaches all 20 hooked operations. 'Remove an earlier partial copy' comes first on that path. Host and simulator logs list 19, 19 and 20 operations, each failed in turn and finished by the next open. The size-check branch is documented as defensive and reached by no test. Wording updated in report row 6 and F10, ADR-0003 evidence, and the PutBackHooks doc."
+    },
+    {
+     "id": "R3-01",
+     "how": "passed-simulator. RowCheck now requires note revisions to run exactly 1 to current_revision, and every INTEGER to lie within \u00b1(2^53-1). reviseNote refuses an out-of-range revision as an error instead of trapping. The stale, Int64.max, dangling and not-from-one rejections pass on host and simulator in the round-4 clean run."
+    },
+    {
+     "id": "R3-02",
+     "how": "passed-simulator. Date components must be ASCII digits. '+019' and '2019-+1-+5' are rejected in RestoreTests.rejections and in SchemaTests.typing, on host and simulator."
+    },
+    {
+     "id": "R3-03",
+     "how": "passed-simulator. Four failing launches leave Recovery/ at 770,248, 774,344, 774,344 and 774,344 bytes: one reused snapshot and one failed copy. The migration that then succeeds removes the failed copy. Snapshot reuse now rests on the exact digest (R4-02). The staging part was narrowed to Staging/Persistence/ (R4-01). The retention rules are in ADR-0003 and ADR-0012."
+    },
+    {
+     "id": "R3-04 / gate gap row 10",
+     "how": "passed-host. In the round-4 clean run the drop-in printed 'row 10 evidence present' without G05_ALLOW_MISSING_CLASS_B. Readback: class B (non-default) requested on 53 files and directories, all NSFileProtectionCompleteUnlessOpen. Files SQLite created in a class-B directory were class B. The host screen was unlocked at the start, after the drop-in and at the end. Row 10, ADR-0012 and PROGRESS.md cite this run."
+    },
+    {
+     "id": "R3-05",
+     "how": "passed-simulator. The evidence wording now says 'an injected ENOSPC from a test hook, not a real full volume'. A failure that persists at the next open raises the typed migrationPutBackPending (PutBackTests.putBackStillFailingAtNextOpen, on host and simulator). Every hooked operation is failed in turn (see R4-05)."
+    }
+   ],
+   "not_fixed": [
+    {
+     "id": "R2-07 (shared part of R4-03)",
+     "reason": "pending-human: Fixtures/LICENSES.md is outside this workstream's paths. Its owner must replace the 'G0.5 Recovery' table row with this exact text: | `Spikes/G05-Recovery/Tests/SylviaRecoveryTests/Fixtures/library-v1.sqlite` (352,256 bytes) | Generated by `g05-recovery-tool make-v1-fixture --out <file>` (`Spikes/G05-Recovery`): a v1-schema Sylvia library holding the G0.5 golden corpus; deterministic content and clock, random entity UUIDs, so a rerun produces a different file. Contents: text written for the spike, generated digests, and short public-domain quotations: George Long's 1862 translation of *Meditations* as `epub/se-meditations.epub` (above) prints it (IV.17 verbatim; V.6 verbatim up to \"come and see\", followed by Unicode test characters written for the spike; V.6 abridged) and Henry David Thoreau (\"Simplify, simplify.\" from *Walden*, 1854; \"sauntering\" from *Walking*, 1862). Full list: `Spikes/G05-Recovery/FIXTURES.md`. | `b3a4df0a7d45675bc36ff4de862a9ebd984036c808e392cec9db64ac5ac11b5e` |. The current row has the pre-regeneration SHA eae90f68\u2026e592 and omits the quotations. Docs/Stage0/integration-log.md row 6 records the digest at integration time and needs no change. The same text is in report open question 7."
+    },
+    {
+     "id": "R4-01 integration item (layout with ADR-0010)",
+     "reason": "pending-human. The cleanup fix is done, but the M1 persistence and M2 intake owners, with ADR-0010's owner, must agree one on-disk layout. ADR-0003 keeps the database, blobs and media inside Library/, the unit a restore swaps. ADR-0010 and G0.3's StorageLayout use Database/library.sqlite, Knowledge/ and Media/ at the root. Each subdirectory of the shared Staging/ needs a single owner that cleans only its own: intake for journal.json, Staged/, Rejected/, Abandoned/ and Extracting/; persistence for Persistence/. Recorded in ADR-0003 open items, ADR-0012 open items and report open question 8."
+    },
+    {
+     "id": "gate gap: T50 (locked device, reboot before first unlock)",
+     "reason": "pending-device: needs the physical iPhone, so it is device checklist steps 3 and 4. App-level behaviour before first unlock also needs an app target (finding F5)."
+    },
+    {
+     "id": "gate gap: device save latency",
+     "reason": "pending-device: device checklist step 2, including a Low Power Mode run. Report row 13."
+    },
+    {
+     "id": "gate gap: device test suite",
+     "reason": "pending-device: device checklist step 1 expects 67 tests with 4 skipped (report row 22). The expected counts were updated to this run (53 readback items)."
+    },
+    {
+     "id": "gate gap: single-file .sylviabackup container (report row 19)",
+     "reason": "pending-human. Not built and not claimed. ADR-0010 (Proposed) chooses readium/ZIPFoundation 3.0.1 behind PackStructure for .sylviabackup, and its deciders must accept that. M1 then builds the container behind BackupContainer. Report F7 and open question 4."
+    },
+    {
+     "id": "gate gap: J-06 screens (report row 24)",
+     "reason": "not-applicable: Stage 0 has no app UI. J-06 is M7's exit demonstration (plan 21.2). Its data layer passes (row 11, passed-simulator)."
+    },
+    {
+     "id": "gate gap: power-loss and kernel-crash durability",
+     "reason": "not-applicable: a process-kill drill cannot show it, and an unmodified iPhone cannot be power-cut (finding F4, device checklist step 5). It rests on SQLite's documented FULL behaviour and F_FULLFSYNC."
+    },
+    {
+     "id": "gate gap: human security sign-off (class C, unencrypted backups)",
+     "reason": "pending-human. Agent-reviewed; human sign-off pending (report row 23 and open questions 2-3, ADR-0012 open items)."
+    }
+   ],
+   "rerun": {
+    "command": "Clean run via /Users/jevidon/Git/sylvia/.claude/worktrees/wf_5552ba19-d21-20/.build/scratch/clean-run.sh: first deletes Spikes/G05-Recovery/.build (including DerivedData), .build/g05-recovery, .build/ci-logs and the old logs, then runs G05_SIM_NAME=Sylvia-M0-minors-g05-recovery G05_LOG_DIR=Docs/Stage0/evidence/G05-Recovery/logs Scripts/ci.d/71-g05-recovery.sh, then Scripts/ci.sh contracts. Log: Docs/Stage0/evidence/G05-Recovery/ci-clean-run.log (overwritten).",
+    "result": "PASS at commit f0df970, 2026-10-13 00:44:20Z to 00:51:08Z; drop-in exit 0, contracts exit 0. The host screen was unlocked throughout; load averages 7.84 at the start and 135.51 after the drop-in, so timings are indicative. Host: 72 tests in 11 suites, 69 passed, 3 skipped with reasons. Simulator (iPhone 17, iOS 26.5): 67 tests, 63 passed, 4 skipped. Row 10 evidence present (class B 53 of 53). 900-kill drill: 6,962 acknowledged captures, 0 failures. synchronous=OFF drill: 150 kills, 0 failures. Save latency p95 3.25 ms (indicative). Restore drill 49 of 49. 300-kill restore drill: 0 failures. 240-iteration put-back drill: 0 failures. T46: 56 cases rejected on host and simulator. Manifest contract passes; 15 schemas and 188 fixtures. iOS device build succeeded with no spike warnings. The simulator was created by the run and deleted at its end. Later commits a377b17 and cd3e42b change only docs and logs."
+   }
+  }
+ },
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 56,
+  "label": "minors-g05-recovery:review-2",
+  "result": {
+   "verdict": "accept-with-minor",
+   "commit_reviewed": "cd3e42b0345b3f1fb21e21a109deff0c4a2e26d6 (m0-int-minors-g05-recovery, checked out detached). The author result supplied with this review is the round-3 result for ce535e0. I reviewed the branch head, which adds the round-4 fixes a377b17 and cd3e42b. The evidence run is from f0df970, and `git diff f0df970..HEAD -- Spikes Scripts Contracts Fixtures` is empty, so it applies to the head's code.",
+   "rerun": {
+    "command": ".build/scratch/clean-run.sh in my worktree, at cd3e42b with 0 tracked changes and the host screen not locked (load 19.79 at start, 59.27 after the drop-in). It deletes Spikes/G05-Recovery/.build (including DerivedData), .build/g05-recovery and .build/ci-logs, then runs `G05_SIM_NAME=Sylvia-M0-review-minors-g05-recovery-2 G05_LOG_DIR=.build/scratch/logs Scripts/ci.d/71-g05-recovery.sh` followed by `Scripts/ci.sh contracts`. Extra checks: `.build/scratch/probe-smoke.sh` runs the T50 persistence probe's write, verify and clean modes on my simulator, which was then deleted; I compiled and ran both sqlite-wal-probes; `g05-recovery-tool make-v1-fixture` regenerated the fixture, and `python3 -I .build/scratch/fixture_texts*.py` compared the old, new and regenerated fixtures read-only.",
+    "result": "PASS from clean. The drop-in exited 0 and printed 'row 10 evidence present'; contracts exited 0 (15 schemas, 188 fixtures, 1 OpenAPI, 1 instance).\n- Host: 'Test run with 72 tests in 11 suites passed', with 3 skips (lock probe, persistence probe, locked-host observation).\n- Simulator (iOS 26.5, iPhone 17): 67 tests passed, with 4 skips (lock probe, persistence probe, mismatch, class B).\n- 56 'rejected' lines on host and on simulator.\n- Class-B readback: 53 of 53 items NSFileProtectionCompleteUnlessOpen. The simulator's class-C readback reports 23 items 'none reported'.\n- Put-back: 19, 19 and 20 fallible operations on the three paths.\n- Recovery/ bytes 770248 / 774344 / 774344 / 774344, identical to the committed evidence.\n- Staging cleanup: 7 entries (3289213 bytes) removed; the 18 intake entries were unchanged.\n- Drills, all with 0 failures: crash drill 900 kills (5,299 acknowledged); synchronous=OFF 150 kills; restore drill 49 of 49 checks; restore crash drill 300 kills; put-back drill 240 iterations (223 killed, 17 finished first).\n- Latency p95 1.73 ms (indicative only).\n- iOS build-for-testing succeeded with no spike warnings.\n- Persistence probe write, verify and clean all passed at the head (not T50 evidence).\n- The WAL probes reproduce the committed output.log exactly.\n\nAfterwards I deleted my simulator and all build products and DerivedData I created. The working tree is clean and the branch is unchanged."
+   },
+   "findings": [
+    {
+     "id": "R5-01",
+     "severity": "minor",
+     "title": "Pre-restore copies are called possibly the only copy of the replaced library, yet they sit in Recovery/, which is excluded from device backup; the consequence plan 17.5 requires is not stated",
+     "location": "Docs/ADRs/0003-persistence.md:51; Docs/ADRs/0012-retention-backup-restore.md:14 and restore step 9 (line 47); Spikes/G05-Recovery/Sources/SylviaRecovery/Backup/Restore.swift:263-276; Layout.swift:77-79; LibraryStore.swift:146-151; plan 17.5 (Docs/Sylvia_v1_iOS_Implementation_Plan.md:819)",
+     "detail": "**What is wrong.** The retention rule added on this branch (commit 9c893db, kept through a377b17) contradicts the existing device-backup rule.\n- ADR-0003:51 says a pre-restore copy \"holds the library a confirmed restore replaced and may be its only copy, so [it is] never removed automatically\". ADR-0012:14 says such copies are \"kept until the user removes them\".\n- The same ADR-0012:14 sentence keeps \"Staging and recovery copies are local safety nets and are excluded from device backup (isExcludedFromBackup on ..., Recovery/, ...)\".\n- In code, BackupRestorer.commit (Restore.swift:263-276) renames the whole Library/ into Recovery/pre-restore-<id>/Library: the database, Blobs/ and the Media/ originals. LibraryStore.prepareDirectories (Layout.swift:77-79, LibraryStore.swift:146-151) marks Recovery/ excluded from backup. DataProtectionTests.backupExclusion asserts this and passed in my clean run at cd3e42b.\n\n**Why it matters.** The copy that the ADRs say may be unique user knowledge, together with its originals, never reaches iCloud or Finder device backups. Plan 17.5 says \"Keep unique user knowledge backup-eligible ... Do not exclude unique originals from system backup ... without explaining the recovery consequence.\" The \"local safety nets\" rationale assumes a redundant copy. Neither ADR, the report nor any open item states this consequence (losing the replaced library after an unwanted restore followed by a device replacement). It changes no Stage 0 result, but M1 and M7 would inherit an unexplained loss path.\n\n**Fix.** Choose one:\n- Keep pre-restore copies backup-eligible: exclude only pre-migration snapshots and failed-<id>/ (set the attribute per item, or keep pre-restore copies outside Recovery/).\n- Or state the consequence in ADR-0012's retention classes and restore step 9 and in the report, and add an ADR-0012 open item for the product owner. The restore confirmation would then say that the replaced library stays on this device only and is not in device backups."
+    },
+    {
+     "id": "R5-02",
+     "severity": "minor",
+     "title": "Three precision gaps in this round's text: the fixture difference list misses two changed digests, ADR-0012 overstates 'at most one' copy, and the staging cleanup is said to be 'reported' when its report is discarded",
+     "location": "Spikes/G05-Recovery/FIXTURES.md:49-52 (and Docs/Stage0/G05-Recovery.md:103); Docs/ADRs/0012-retention-backup-restore.md:14; Spikes/G05-Recovery/Sources/SylviaRecovery/StagingCleanup.swift:24-25 with call sites MigrationPutBack.swift:187, 201 and 264",
+     "detail": "**(a) Fixture differences.** FIXTURES.md:49-52 says the regenerated fixture differs from the previous one only in \"the V.6 capture's quoted text, its context evidence, its locator's end offset and highlight, and the entity UUIDs\". Its comparison masked digests, which hid two more differences that follow from the new text:\n- the locator's exact_text_sha256 changed from b3d7a82d\u20268608 to f7d3840f\u2026f99c;\n- context_evidence c1's text_sha256 changed in the same way.\n\nCommand: `python3 -I .build/scratch/fixture_texts_nohex.py <git show b354dc7:\u2026/library-v1.sqlite> <committed file>`. It prints exactly those two pairs besides the text, highlight and end offset.\n\nThe substance is otherwise verified:\n- no other value differs;\n- Long's V.6 matches Fixtures/epub/se-meditations.epub text/book-5.xhtml verbatim up to \"come and see\";\n- a fresh make-v1-fixture at cd3e42b matches the committed file's text.\n\n**(b) \"At most one\" copy.** ADR-0012:14 says Recovery/ holds \"at most one pre-migration snapshot ... and one failed-<id>/ copy\". RecoveryRetention.prune also keeps any snapshot and failed copy named by a put-back intent inside a pre-restore copy, and removes nothing while such an intent is unreadable. ADR-0003:52 and :56 state this exception and PutBackTests.pruneKeepsWhatAPreRestoreIntentNeeds tests it; ADR-0012's summary omits it.\n\n**(c) \"Reported\" cleanup.** StagingCleanup.swift:24-25 says an entry that cannot be removed \"is reported and left for the next launch\". Both call sites discard the returned Report (MigrationPutBack.swift:187 and 201), and the put-back path's prune result is discarded too (line 264). Only the success path's prune reaches OpenReport (LibraryStore.swift:307). Removals, including audiobook-sized media copies, and removal errors from these paths are therefore visible nowhere. Plan 17.1's \"visible cleanup policy\" and the M1 recovery journal will need them.\n\n**Fix.**\n- Name the two digests in FIXTURES.md, and say \"and its digests\" in report line 103.\n- Add the pre-restore-intent exception to ADR-0012's summary.\n- Either say the report is \"returned (discarded by the open in the spike)\", or put both reports in OpenReport."
+    }
+   ],
+   "claims_verified": [
+    "Clean run from cd3e42b passes, so evidence from f0df970 applies to the head: `git diff f0df970..HEAD -- Spikes Scripts Contracts Fixtures` is empty, and the commits after f0df970 change only the docs and the logs of that run.",
+    "Committed logs match every number in the report and ADRs:\n- crash drill: 900 kills, 6,962 acknowledged, 136 'already saved';\n- synchronous=OFF: 150 kills, 2,755 acknowledged;\n- latency: p50 1.24, p95 3.25, p99 7.57, max 57.75 ms; FULL without fullfsync 2.03 ms; GRDB default 1.53 ms;\n- restore crash drill: 187 old / 113 restored (73 completed, 6 kept);\n- put-back drill: 226 killed, 14 finished, 168 / 72;\n- restore drill 49 of 49;\n- host suite p95 38.19 / max 87.79 ms; simulator p95 33.11 / max 83.76 ms;\n- 913,408 bytes free on the full volume;\n- loads 7.84 and 135.51, and the screen state, in the header and footer of ci-clean-run.log.",
+    "The deterministic logs (toolchain, env-report, manifest-contract) are byte-identical to my run.",
+    "56 damaged bundles are rejected on host and simulator, and the 56 case names match ADR-0012's categories (3+4+15+5+4+8+6+9+2).",
+    "R3-01: RowCheck.noteRevisionProblems rejects the stale, Int64.max, dangling and not-from-1 cases; integerRangeProblems (\u00b1(2^53-1)) rejects metadata_revision 2^53, timeline_revision Int64.max and created_at_ms Int64.min; reviseNote's guard means next \u2264 2^53-1 (SchemaTests.staleEditor).",
+    "R3-02: EffectiveDate.isValid checks digits byte by byte; SchemaTests.typing rejects +019, -019, 2019-+1, 2019-+1-+5, 2019-01-+5 and full-width and Arabic-Indic digits; both rejection cases are present.",
+    "R3-03: a retry reuses the snapshot (content digest first, then integrity). Recovery/ holds 2 items after each failing launch, and the byte sizes reproduce exactly. Only generated names are pruned, and copies needed by a pre-restore intent are protected and tested.",
+    "R3-04: row 10 passes on host. The class-B readback is 53 of 53, inheritance is class B in a class-B directory, and the drop-in printed 'row 10 evidence present' both in the author's run and in mine. The locked-host observation is present in `git show 2a37a00:\u2026/host-tests.log`.",
+    "R3-05: all 20 put-back operations are hooked and each is failed in turn (19, 19 and 20 on the three paths). A failure of only the flush after the intent's removal is reported as complete. migrationPutBackPending is typed and tested at 4 step hooks. The size check is honestly described as unreached.",
+    "R4-01: StagingCleanup lists and removes only Staging/Persistence/. abandonedStagingIsCleared plants the ADR-0010 layout (18 entries, including two top-level files with this layer's temporary-file names) and checks it byte for byte. G0.3's IntakeKit (InboxScanner, DropAreaImporter) lists and removes only its own subdirectories, so intake never removes Staging/Persistence/.",
+    "R4-02: ExactRows casts TEXT to BLOB. GRDB 7.11.1 decodes TEXT with String(cString:) (DatabaseValue.swift:150,174), binds text with sqlite3_bind_text(...,-1,...) (StandardLibrary.swift:625,637) and returns Data() for an empty blob. The rendering escapes the separators, so it is injective. contentDigestIsExact and preStateDifferingAfterNULTakesNewSnapshot pass.",
+    "F12: the GRDB C-string behaviour reproduces on host and simulator. LibraryStore.insert refuses text containing U+0000, and every user-text write path in the spike goes through insert (the raw UPDATEs carry no user text).",
+    "R4-03: the fixture's SHA-256 is b3a4df0a\u202611b5e (352,256 bytes). V.6 and IV.17 are verbatim from Fixtures/epub/se-meditations.epub. The paraphrase appears nowhere in the repository except as history in FIXTURES.md.",
+    "R4-05: the third test path reaches 'remove an earlier partial copy' as the first operation; reconcile keeps the pending put-back's partial copy for stage() to remove.",
+    "The SQLite WAL probes reproduce: SQLITE_FCNTL_PERSIST_WAL is 1, and a -wal placed beside another database is applied to it.",
+    "The T50 persistence probe still works against the head's library code on the simulator (write, verify and clean pass). The committed smoke log dates from 1c6931b and is labelled not T50 evidence.",
+    "The device checklist's expectation of 67 tests with 4 skips matches the test code: ManifestContractTests is disabled when Contracts/ is unreadable, and the mismatch and class-B tests are skipped only in the simulator.",
+    "Every test name cited in the report and ADRs exists. Every cited commit exists, and 2a37a00 is an ancestor of the head.",
+    "Nothing outside the gate's paths changed. No test was weakened: the only removed test lines are renamed or extended. No TODO, try! or fatalError in the sources, and no audio playback."
+   ],
+   "gate_gaps": [
+    "The author result attached to this review is the round-3 result (ce535e0). The round-4 fixer's result, and so the R4-04 fix to the result's criteria statuses, was not available; only the report rows could be checked, and they now use the requested vocabulary.",
+    "Fixtures/LICENSES.md (outside this gate's paths) still gives SHA-256 eae90f68\u2026e592 and 'Generated text and digests only' for library-v1.sqlite. This branch regenerated the file (b3a4df0a\u202611b5e), so that shared record is wrong until its owner applies the replacement row in report open question 7. No CI step checks it, and R2-07 stays open for the same reason.",
+    "Docs/Stage0/README.md and integration-log.md still show G0.5 recovery at review 3 with R3-01 to R3-05 open. The integration owner must update them when merging.",
+    "ADR-0003's on-disk layout (Library/, Staging/Persistence/) and ADR-0010/G0.3's StorageLayout (Database/, Media/ and Staging/ at the root) still differ. This is deferred to M1 with ADR-0010's owner (report open question 8).",
+    "Still pending-device: T50 (locked device, and a reboot before the first unlock), save latency on the device, and the device test suite with its class-B readback (checklist steps 1-4).",
+    "Still pending-human: the security sign-off on class C and unencrypted backups, and the product owner's approval of the WAL + FULL + fullfsync setting.",
+    "The single-file .sylviabackup container is pending-human: it waits for ADR-0010's archive decision.",
+    "J-06 screens are not applicable in Stage 0 because there is no UI.",
+    "Power-loss and kernel-crash durability cannot be tested (F4, checklist step 5)."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R4-01",
+     "resolved": true,
+     "note": "Fixed. The launch cleanup now touches only Staging/Persistence/: StagingCleanup.swift, Layout.stagingDirectory, and the reconcile call sites at MigrationPutBack.swift:187 and 201. abandonedStagingIsCleared plants intake's ADR-0010 layout and checks it byte for byte across both opens and the migration; it passes on host and simulator in my run. ADR-0003 (step 6, the retention bullets, the consequence and the open items), ADR-0012's retention classes and open items, report F11 and open question 8 now state the scope and the ADR-0010 conflict. G0.3's code cleans only its own subdirectories."
+    },
+    {
+     "id": "R4-02",
+     "resolved": true,
+     "note": "Fixed. contentDigest and canonicalDump read TEXT as stored bytes (ExactRows, CAST to BLOB) with an injective typed rendering. contentDigestIsExact shows the review's NUL probe, two different invalid UTF-8 values and integer-versus-text all differ. preStateDifferingAfterNULTakesNewSnapshot shows reuse is refused for a pre-state that differs only after a NUL. The round also found and handled GRDB's C-string binding (F12)."
+    },
+    {
+     "id": "R4-03",
+     "resolved": true,
+     "note": "Fixed in the spike. The corpus now opens with Long's V.6 wording, which I checked verbatim against Fixtures/epub/se-meditations.epub (text/book-5.xhtml). The fixture was regenerated; a fresh make-v1-fixture at the head matches its text. FIXTURES.md and the report list every quotation, and the paraphrase is gone from the corpus and the fixture. Two derived digests are missing from FIXTURES.md's difference list (R5-02a). The shared Fixtures/LICENSES.md row is still the owner's action (open question 7)."
+    },
+    {
+     "id": "R4-04",
+     "resolved": true,
+     "note": "The report rows now use only the requested statuses: row 11 is the J-06 data layer (passed-simulator), new row 24 covers J-06 screens (not-applicable, with the reason), and row 19, the single-file container, is pending-human. The round-4 result's criteria were not supplied to this review (the attached result is the round-3 one), so the result's agreement with these rows could not be checked."
+    },
+    {
+     "id": "R4-05",
+     "resolved": true,
+     "note": "Fixed. reconcile keeps the pending put-back's partial copy, so a third sweep path reaches 'remove an earlier partial copy' as the first of 20 operations; the evidence lists all 20 on host and simulator. The incomplete-copy size check is documented in the code, the report and ADR-0003 as defensive and unreached."
+    },
+    {
+     "id": "R3-01",
+     "resolved": true,
+     "note": "RowCheck covers note revisions (exactly 1 to current_revision) and every INTEGER (\u00b1(2^53-1)). reviseNote refuses an out-of-range revision instead of trapping. Seven cases were added to rejections, and the rules are named in row 7, F8 and ADR-0012 step 5."
+    },
+    {
+     "id": "R3-02",
+     "resolved": true,
+     "note": "Date components must be ASCII digits, checked byte by byte, in both EffectiveDate and RowCheck. There are unit tests and two rejection cases."
+    },
+    {
+     "id": "R3-03",
+     "resolved": true,
+     "note": "Retries reuse the snapshot and prune keeps one snapshot and one failed copy, with the measured sizes bounded. The retention rule is in ADR-0003 and ADR-0012, and the product UI is listed as product work. The rule's statement that pre-restore copies may be the only copy conflicts with excluding Recovery/ from device backup (R5-01)."
+    },
+    {
+     "id": "R3-04",
+     "resolved": true,
+     "note": "Row 10 is passed-host: the clean run had the screen unlocked, the class-B readback covers 53 of 53 items, and 'row 10 evidence present' was printed. I reproduced it at the head."
+    },
+    {
+     "id": "R3-05",
+     "resolved": true,
+     "note": "The wording now says injected ENOSPC. Every one of the 20 hooked operations is failed in turn, and the typed migrationPutBackPending error is tested."
+    },
+    {
+     "id": "R2-07",
+     "resolved": false,
+     "note": "FIXTURES.md and the report name every public-domain quotation. The shared Fixtures/LICENSES.md row still has the old digest and says 'Generated text and digests only'; a replacement row is requested from its owner (report open question 7)."
+    }
+   ]
+  }
+ }
+]

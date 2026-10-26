@@ -1,0 +1,300 @@
+command: Scripts/ci.d/12-dependency-lock.sh
+commit: 31b09186b4b48d9f946c6491d63df9b01319fa50 (m0-device-fixes); uncommitted files before these checks: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T11:46:28Z; load: 4.11 2.68 3.27
+12-dependency-lock 2026-10-26T11:46:29Z at commit 31b09186b4b48d9f946c6491d63df9b01319fa50
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+load:  0:46  up 23 days, 10:57, 3 users, load averages: 4.11 2.68 3.27
+
+--- self-test: synthetic trees, one per failure the check claims to detect
+ok    the clean synthetic tree passes, toolchain checks included (committed Xcode projects or workspaces: 0; locks: 3 committed, 3 registered; manifests: 4 read, 4 remote requirements; symbolic links under the product roots: 0; module maps read as product code: 0; license texts: 5 checked; product sources: 3 Swift and 0 C-family files checked for imports of transitive-only modules; binaries: 0 declared by product manifests, 0 committed under the product roots, 0 inventoried; vendored assets: 2 listed; python tools: 2 pinned, 1 recorded as unpinned (pip at any version, with a warning below 26.2.0); the virtualenv holds exactly these (pip 26.2.1); workflow actions: 1 used; on a tag under a recorded exemption: actions/checkout@v4; toolchain: the Xcode pin 27.0 (27A266a) as stated in .github/workflows/ci.yml, CLAUDE.md, Docs/ADRs/0001-platform-baseline-and-toolchain.md; toolchain: xcodebuild -version -> Build version 27A266a (the pin, compared whole); toolchain: xcrun swift --version -> Swift version 9.9 (synthetic-9.9) (the pin, compared whole); toolchain: xcodegen --version -> Version: 9.9.9 (the pin, compared whole); acknowledgements draft: matches the inventory (549 characters))
+ok    a lock pins another version: pin-differs Packages/Good/Package.resolved: acme/A: lock 1.0.1 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, inventory 1.0.0 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ok    a lock pins another revision: pin-differs Apps/App/Package.resolved: acme/B: lock 2.0.0 ffffffffffffffffffffffffffffffffffffffff, inventory 2.0.0 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ok    a lock pin has another identity: pin-differs Packages/Good/Package.resolved: acme/A: identity 'a2', inventory 'a'
+ok    a lock pins one package twice: pin-differs Packages/Good/Package.resolved: pins acme/X twice
+ok    a lock pin is not a remote source-control pin: not-exact Spikes/S/Package.resolved: pin 's' is 'localSourceControl'; only remoteSourceControl pins are allowed
+ok    a lock drops a pin the inventory lists: pin-missing Apps/App/Package.resolved: does not pin acme/X, which the inventory says it does
+ok    a manifest gains an inventoried exact requirement, but its lock was not re-resolved: pin-missing Spikes/S/Package.resolved: does not pin https://example.com/acme/A.git, which Spikes/S/Package.swift requires: the lock is stale; re-reso
+ok    a lock and the inventory both drop a pin the manifest requires: pin-missing Packages/Good/Package.resolved: does not pin https://example.com/acme/A.git, which Packages/Good/Package.swift requires: the lock is stale; re
+ok    a lock and the inventory drop a pin that a local package requires: pin-missing Apps/App/Package.resolved: does not pin https://example.com/acme/T.git, which Apps/App/project.yml requires through its local package Pac
+ok    a lock pins a package missing from the inventory: unknown-package Spikes/S/Package.resolved: pins https://example.com/acme/Zed.git (9.0.0), which is not in the inventory
+ok    a lock pins a branch: not-exact Spikes/S/Package.resolved: acme/S: pinned to main, not a version
+ok    a manifest requires a package missing from the inventory: unknown-package Spikes/S/Package.swift: requires https://example.com/acme/Zed.git, which is not in the inventory
+ok    a Package.swift requirement uses from:: not-exact Spikes/S/Package.swift: https://example.com/acme/S.git: requirement range [{"lowerBound": "5.0.0", "upperBound": "6.0.0"}]; only exact
+ok    a Package.swift requirement uses branch:: not-exact Packages/Good/Package.swift: https://example.com/acme/A.git: requirement branch ["main"]; only exact versions are allowed
+ok    a Package.swift requirement uses revision:: not-exact Packages/Good/Package.swift: https://example.com/acme/A.git: requirement revision ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]; only exact 
+ok    a project.yml requirement uses from:: not-exact Apps/App/project.yml: https://example.com/acme/A.git: requirement from from: 1.0.0; only exact versions are allowed
+ok    a project.yml requirement adds a range to an exact version: not-exact Apps/App/project.yml: https://example.com/acme/A.git: requirement exactVersion+maxVersion exactVersion: 1.0.0, maxVersion: 2.0.0; on
+ok    a project.yml version YAML reads as a number: not-exact Apps/App/project.yml: https://example.com/acme/A.git: requirement unquoted 1.0; only exact versions are allowed
+ok    an exact requirement names another version: pin-differs Apps/App/project.yml: acme/A: requires exactly 1.0.2, inventory pins 1.0.0
+ok    a product manifest requires a spike-only package: spike-in-product Packages/Good/Package.swift: requires the spike-only package acme/S
+ok    a product lock pins a spike-only package: spike-in-product Apps/App/Package.resolved: pins the spike-only package acme/S
+ok    a product project depends on a local package under Spikes/: spike-in-product Apps/App/project.yml: depends on Spikes/S under Spikes, which is never shipped
+ok    a product project depends on a symbolic link to a package under Spikes/: spike-in-product Apps/App/project.yml: depends on Spikes/S under Spikes, which is never shipped
+ok    a product target compiles sources from Spikes/ (sources path): spike-in-product Apps/App/project.yml: names '../../Spikes/S/Sources/S', which resolves to Spikes/S/Sources/S under Spikes; Spikes code is never ship
+ok    a product target compiles sources from Spikes/ (sources as a string): spike-in-product Apps/App/project.yml: names '../../Spikes/S/Sources', which resolves to Spikes/S/Sources under Spikes; Spikes code is never shipped
+ok    a product target names Spikes/ with another capitalization: spike-in-product Apps/App/project.yml: names '../../spikes/S/Sources/S', which resolves to spikes/S/Sources/S under Spikes; Spikes code is never ship
+ok    a product target copies Spikes/ files as a resource folder: spike-in-product Apps/App/project.yml: names '../../Spikes/S/include', which resolves to Spikes/S/include under Spikes; Spikes code is never shipped
+ok    a product build setting searches Spikes/ through $(SRCROOT): spike-in-product Apps/App/project.yml: names '/var/folders/l6/0j2mv4qn701f7kv_qjwglkk40000gn/T/dependency-lock-self-test-ak_ie6cv/m027/Apps/App/../..
+ok    a product build script copies from Spikes/: spike-in-product Apps/App/project.yml: names '../../Spikes/S', which resolves to Spikes/S under Spikes; Spikes code is never shipped
+ok    a product Package.swift passes a flag into Spikes/: spike-in-product Packages/Good/Package.swift: names '../../Spikes/S/include', which resolves to Spikes/S/include under Spikes; Spikes code is never shipped
+ok    a symbolic link under Packages/ points into Spikes/: spike-in-product Packages/Good/Sources/Good/Linked.swift: is a symbolic link to Spikes/S/Sources/S/S.swift, under Spikes, which is never shipped
+ok    a product C file includes a header under Spikes/: spike-in-product Packages/Good/Sources/Good/shim.c:1: includes ../../../../Spikes/S/include/s.h, which resolves to Spikes/S/include/s.h under Spikes; Spikes code is
+ok    a product project depends on a local package outside the product roots: outside-product Apps/App/project.yml: depends on the local package Tools/T, outside Apps and Packages, where the product rules do not apply
+ok    a product manifest requires a transitive-only package: transitive-direct Packages/Good/Package.swift: requires acme/B directly; the inventory admits it only through another package
+ok    product code imports a transitive module with an attribute: transitive-direct Packages/Good/Sources/Good/Use.swift:2: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module: internal import: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module: public import: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module: package import: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module: fileprivate import: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module: private import: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module: attribute and access level: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module after another import on one line: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module after a statement on one line: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module with a line break before its name: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module with a comment between the tokens: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module after a comment on the line: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module in backticks: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports one declaration of a transitive module: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code re-exports a submodule of a transitive module: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    product code imports a transitive module in one #if branch: transitive-direct Packages/Good/Sources/Good/Use.swift:4: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    Objective-C imports a transitive module with @import: transitive-direct Packages/Good/Sources/Good/Use.m:2: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    Objective-C imports a transitive submodule with @import: transitive-direct Packages/Good/Sources/Good/Use.m:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    C includes a transitive module framework-style: transitive-direct Packages/Good/Sources/Good/use.c:1: imports BModule (a path into it: BModule/...), a module of acme/B, which product code may use only through the
+ok    Objective-C #imports a transitive module framework-style: transitive-direct Packages/Good/Sources/Good/Use.m:1: imports BModule (a path into it: BModule/...), a module of acme/B, which product code may use only through the
+ok    C includes a public header of a transitive module by name: transitive-direct Packages/Good/Sources/Good/use.c:1: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a C header includes a public header of a transitive module with spaces after #: transitive-direct Packages/Good/Sources/Good/use.h:1: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    Objective-C++ imports a transitive module with #pragma clang module import: transitive-direct Packages/Good/Sources/Good/Use.mm:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    a product target that is not a test uses a test-only package: test-in-product Packages/Good/Package.swift: target Good uses T from the test-only package acme/T
+ok    an app target uses a test-only package through project.yml: test-in-product Apps/App/project.yml: target App uses T from the test-only package acme/T
+ok    a target template makes an app use a test-only package: test-in-product Apps/App/project.yml: target Templated uses T from the test-only package acme/T
+ok    a product library target takes its sources from a Tests directory: test-layout Packages/Good/Package.swift: target Helpers is not a test target but takes its sources from Packages/Good/Tests/Helpers, a directory named 
+ok    a product app target takes its sources from a directory ending in Tests: test-layout Apps/App/project.yml: target App is not a test target but takes its sources from Apps/App/IntegrationTests, a directory named like t
+ok    a product package target uses a macOS-only package on every platform: platform Packages/Good/Package.swift: target Good can build A for ios, macos, but the inventory allows acme/A only on macOS
+ok    an iOS app target uses a macOS-only package: platform Apps/App/project.yml: target App can build A for ios, but the inventory allows acme/A only on macOS
+ok    a product package declares a binary target: binary Packages/Good/Package.swift: binary target Vendor is third-party binary code that the inventory does not list (binaries)
+ok    a product app target links a committed framework: binary Apps/App/project.yml: framework dependency Apps/App/Vendor/Foo.xcframework of target App is third-party binary code that the invento
+ok    a product app target embeds a Carthage framework: binary Apps/App/project.yml: Carthage dependency Foo of target App is third-party binary code that the inventory does not list (binaries)
+ok    a Mach-O file is committed under Apps/: binary Apps/App/Vendor/libfoo.bin: a committed Mach-O file under Apps or Packages that the inventory does not list (binaries)
+ok    a static library is committed under Packages/: binary Packages/Good/Vendor/data.bin: a committed static library under Apps or Packages that the inventory does not list (binaries)
+ok    the inventory lists a binary that nothing uses: binary Docs/Licenses/inventory.json: binaries entry file Apps/App/Vendor/gone.a is stale: nothing in a product manifest or under Apps or Packages m
+ok    a committed lock is not registered: lock-registry Packages/Other/Package.resolved: committed lock not registered in the inventory (locks)
+ok    a manifest reaches remote packages without a lock or exemption: unlocked Spikes/Probe2/project.yml: reaches remote packages but has no committed Package.resolved beside it and no exemption
+ok    a stale exemption for a manifest that now has a lock: unlocked Spikes/Probe/project.yml: stale exemption: it has a committed lock
+ok    a product manifest is exempted instead of locked: unlocked Apps/App/project.yml: a manifest outside Spikes cannot be exempted (exemptions are for spikes only); commit its lock
+ok    the inventory lists a requirement no manifest makes: lock-registry Docs/Licenses/inventory.json: acme/X lists Spikes/S/Package.swift in direct_in, but that manifest does not require it
+ok    the inventory's used_by_targets misses a target that uses the package: lock-registry Docs/Licenses/inventory.json: acme/A: used_by_targets is stale: the manifests also have [('Packages/Good/Package.swift', 'Good', 'A', False)
+ok    a Python requirement is a range: not-exact Scripts/tools/requirements.txt:2: 'alpha>=1.0' is not an exact name==version pin
+ok    a Python requirement version differs: python-tools Scripts/tools/requirements.txt: beta-pkg: requirements 2.0.2, inventory 2.0.1
+ok    a font under Packages/ is not in the inventory: vendored-asset Packages/Good/Sources/Good/Fonts/Other.otf: a font or license file under Apps/ or Packages/ that the inventory does not list
+ok    a license file under Apps/ is not in the inventory: vendored-asset Apps/App/Vendor/LICENSE.md: a font or license file under Apps/ or Packages/ that the inventory does not list
+ok    a listed font changed: vendored-asset Packages/Good/Sources/Good/Fonts/Face.ttf: digest 27d80fe8262b47c0d8c0743a66d973d7b5f3be07c70777731634d73fddbe32ea differs from the inventory's 6d3f9bcc6
+ok    a license text copy was edited: license-text Docs/Licenses/texts/a/LICENSE: acme/A: differs from LICENSE at the pinned revision (sha256 2316b7264721fdce00d4eeeb20ba31384b3e9f6e35a0433b9a
+ok    a package was moved to another revision without reading its license again: license-text Docs/Licenses/inventory.json: acme/A: license data were read at aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, but the package is pinned at 99999
+ok    a workflow uses an action missing from the inventory: ci-actions .github/workflows/ci.yml:6: actions/checkout@v5 is not in the inventory (ci_actions)
+ok    a workflow uses an action on a tag without an exemption: not-exact .github/workflows/ci.yml:7: actions/cache@v4 is on the movable reference 'v4', not a commit; pin it to a commit or record a reasoned exemp
+ok    the Xcode pin in env.sh differs: toolchain Scripts/lib/env.sh: SYLVIA_XCODE_BUILD_PINNED is '27A999z', inventory '27A266a'
+ok    the installed Xcode build differs (the failure names the installed build, review TC-02): toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Build version 27B100'
+ok    the installed Xcode build only extends the pin (review TC-02): toolchain xcodebuild -version: expected 'Build version 27A266a', got 'Build version 27A266ab'
+ok    xcodebuild states no build: toolchain xcodebuild -version: expected 'Build version 27A266a', got 'xcodebuild: error: no developer tools'
+ok    the installed Swift differs: toolchain xcrun swift --version: expected 'Swift version 9.9 (synthetic-9.9)', got 'Swift version 9.8 (synthetic-9.8)'
+ok    the installed Swift only extends the pinned version line: toolchain xcrun swift --version: expected 'Swift version 9.9 (synthetic-9.9)', got 'Swift version 9.9 (synthetic-9.9) with a suffix'
+ok    the installed XcodeGen differs: toolchain xcodegen --version: expected 'Version: 9.9.9', got 'Version: 9.9.8'
+ok    the installed XcodeGen only extends the pin: toolchain xcodegen --version: expected 'Version: 9.9.9', got 'Version: 9.9.91'
+ok    the workflow's Xcode guard looks for another build (review TC-08): toolchain .github/workflows/ci.yml: the guard looks for 'Build version 27A999z'; the inventory pins 'Build version 27A266a' (ADR-0001: every recor
+ok    the workflow's Xcode guard looks first for another Xcode: toolchain .github/workflows/ci.yml: a candidate Xcode is 'Xcode_27.9.app'; the inventory pins 'Xcode_27.0.app' (ADR-0001: every record of the pin 
+ok    the workflow's error names another Xcode: toolchain .github/workflows/ci.yml: the text names 'Xcode 27.9 (27Z1)'; the inventory pins 'Xcode 27.0 (27A266a)' (ADR-0001: every record of the p
+ok    the workflow has no Xcode guard: toolchain .github/workflows/ci.yml: has no Xcode guard line ("Build version <build>"), so its record of the Xcode pin cannot be compared with the 
+ok    CLAUDE.md's toolchain line names another Xcode: toolchain CLAUDE.md: the toolchain line names 'Xcode 27.9 (27Z1)'; the inventory pins 'Xcode 27.0 (27A266a)' (ADR-0001: every recor
+ok    CLAUDE.md has no toolchain line: toolchain CLAUDE.md: has no toolchain line ("- Xcode <version> (<build>)"), so its record of the Xcode pin cannot be compared with 
+ok    ADR-0001's toolchain table names another Xcode: toolchain Docs/ADRs/0001-platform-baseline-and-toolchain.md: the toolchain table names '27.0, build 27A999z'; the inventory pins '27.0, build 27A266a' (ADR-0001: every rec
+ok    XcodeGen is not installed: toolchain xcodegen --version: cannot run: xcodegen: not installed (self-test)
+ok    the virtualenv holds another version of a pinned package: toolchain virtualenv: virtualenv has alpha 1.1, inventory 1.0
+ok    the virtualenv lacks a pinned package: toolchain virtualenv: virtualenv has beta-pkg None, inventory 2.0.1
+ok    the check does not run in a virtualenv: toolchain /Users/jevidon/Library/Caches/SylviaTools/venv/bin/python: not running in a virtualenv: run the check with sylvia_python, so that the tools virtualenv is compared with t
+ok    the human-readable inventory lacks a package (a longer name is not a match): docs Docs/Licenses/third-party-inventory.md: no line names acme/B 2.0.0 bbbbbbbbbbbb
+ok    the human-readable inventory shows an old version: docs Docs/Licenses/third-party-inventory.md: no line names acme/B 2.0.0 bbbbbbbbbbbb
+ok    the ADR shows another version: docs Docs/ADRs/0014-dependency-lock-and-license-inventory.md: no line names acme/S 5.0.0
+ok    the acknowledgements draft was edited by hand: docs Docs/Licenses/acknowledgements-draft.md: acknowledgements draft is out of date: run Scripts/check-dependency-lock.py acknowledgements --write
+ok    a bundled component names a license text that is not committed: license-text Docs/Licenses/texts/a/MISSING: acme/A: the text for bundled 'x' is not committed
+ok    the inventory gives a package an unknown role: inventory Docs/Licenses/inventory.json packages[0] acme/A: role 'maybe' is not one of ('product', 'product-transitive', 'test', 'spike')
+ok    the inventory gives a package no platforms: inventory Docs/Licenses/inventory.json packages[0] acme/A: platforms [] must be a non-empty list drawn from ('iOS', 'macOS')
+ok    the inventory names no modules for a transitive-only package: inventory Docs/Licenses/inventory.json packages[1] acme/B: a product-transitive package needs its module names (modules), which the import check bans
+ok    the inventory is not valid JSON: inventory Docs/Licenses/inventory.json: cannot read: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+ok    the inventory has another schema version: inventory Docs/Licenses/inventory.json: schema_version is 2, expected 1
+ok    an inventory package lacks a field: inventory Docs/Licenses/inventory.json packages[3] acme/X: missing fields ['license']
+ok    an inventory list field is not a list: inventory Docs/Licenses/inventory.json packages[3] acme/X: direct_in must be a list
+ok    an inventory license is not an object: inventory Docs/Licenses/inventory.json packages[3] acme/X: license must be an object with an id and files
+ok    the inventory lists one package twice: inventory Docs/Licenses/inventory.json packages[5] acme/X2: duplicate package example.com/acme/x
+ok    the inventory gives a range as a version: inventory Docs/Licenses/inventory.json packages[3] acme/X: version '^4.0.0' is not an exact version
+ok    the inventory gives a short revision: inventory Docs/Licenses/inventory.json packages[3] acme/X: revision 'dddd' is not a 40-character commit
+ok    an inventory target use is incomplete: inventory Docs/Licenses/inventory.json packages[0] acme/A: used_by_targets entry {'manifest': 'x'} needs a manifest, a target, a products list and test
+ok    an inventory license has no identifier: inventory Docs/Licenses/inventory.json packages[3] acme/X: license needs an id and at least one file
+ok    an inventory license file has no digest: inventory Docs/Licenses/inventory.json packages[3] acme/X: license file 'LICENSE' needs a sha256 and a text path
+ok    an inventory module list is a string: inventory Docs/Licenses/inventory.json packages[1] acme/B: modules must be a list of names
+ok    an inventory binary has no kind: inventory Docs/Licenses/inventory.json binaries[0]: needs a kind from ('binaryTarget', 'framework', 'bundle', 'carthage', 'file', 'linked') and a license
+ok    an inventory linked binary names nothing: inventory Docs/Licenses/inventory.json binaries[0]: a linked entry needs the name it links and the manifest (or module map) that links it
+ok    the inventory registers a lock that is not committed: lock-registry Spikes/Gone/Package.resolved: registered in the inventory but not committed
+ok    a registered lock names a manifest in another directory: lock-registry Spikes/S/Package.resolved: its manifest 'Spikes/Probe/project.yml' is not a committed file in the same directory
+ok    a lock is not valid JSON: lock-registry Spikes/S/Package.resolved: not valid JSON: Expecting property name enclosed in double quotes: line 2 column 1 (char 2)
+ok    a lock has an unknown format version: lock-registry Spikes/S/Package.resolved: unsupported Package.resolved format version 1
+ok    the inventory's lock list for a package misses a lock that pins it: lock-registry Spikes/S/Package.resolved: pins acme/S, but the inventory's locks for it do not list this file
+ok    the inventory lists a lock that is not registered: lock-registry Docs/Licenses/inventory.json: acme/A lists Spikes/Gone/Package.resolved, which is not a registered lock
+ok    a project.yml is not a YAML mapping: inventory Spikes/Probe/project.yml: cannot read the manifest: not a YAML mapping
+ok    the inventory's direct_in misses a manifest that requires the package: lock-registry Spikes/S/Package.swift: requires acme/S, but the inventory's direct_in for it does not list this manifest
+ok    a local package that a project depends on cannot be read: inventory Spikes/Probe/project.yml: cannot follow its local packages: swift package dump-package failed: k_ie6cv/m134/Spikes/S/Package.swift:3:44:
+ok    an exemption names a manifest that is not committed: lock-registry Docs/Licenses/inventory.json: unlocked entry for 'Spikes/Gone/project.yml', which is not a committed manifest
+ok    an exemption gives no reason: inventory Docs/Licenses/inventory.json: unlocked entry for 'Spikes/Probe/project.yml' gives no reason
+ok    a product package aliases a transitive module (-module-alias in unsafeFlags): transitive-direct Packages/Good/Package.swift: aliases BModule (Alias=BModule), a module of acme/B, which product code may use only through the package that 
+ok    a product package renames a transitive module with SwiftPM module aliasing (moduleAliases:): transitive-direct Packages/Good/Package.swift: aliases BModule (Alias=BModule), a module of acme/B, which product code may use only through the package that 
+ok    a product project aliases a transitive module in OTHER_SWIFT_FLAGS: transitive-direct Apps/App/project.yml: aliases BModule (Alias=BModule), a module of acme/B, which product code may use only through the package that 
+ok    an xcconfig a product project uses searches Spikes/ for headers: spike-in-product Apps/App/Config/App.xcconfig (used by Apps/App/project.yml): names '$(SRCROOT)/../../Spikes/S/include', which resolves to Spikes/S/include under Spikes; Spikes code is nev
+ok    an xcconfig #included by a product xcconfig searches Spikes/: spike-in-product Apps/App/Config/Base.xcconfig (used by Apps/App/project.yml): names '../../Spikes/S/include', which resolves to Spikes/S/include under Spikes; Spikes code is never shipped
+ok    a product module map names a header under Spikes/: spike-in-product Packages/Good/Sources/Good/include/module.modulemap:2: names '../../../../../Spikes/S/include/s.h', which resolves to Spikes/S/include/s.h under Spikes; Spikes code 
+ok    a product module map names a public header of a transitive package: transitive-direct Packages/Good/Sources/Good/include/module.modulemap:2: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a product target compiles shared code from outside Apps/ and Packages/: outside-product Apps/App/project.yml: builds from 'Shared/Code', which resolves to Shared/Code, outside Apps and Packages, where the product rules d
+ok    a product project takes build settings from outside Apps/ and Packages/: outside-product Apps/App/project.yml: builds from '../../Shared/App.xcconfig', which resolves to Shared/App.xcconfig, outside Apps and Packages, whe
+ok    a product project references an Xcode project outside Apps/ and Packages/: outside-product Apps/App/project.yml: builds from '../../Shared/Lib.xcodeproj', which resolves to Shared/Lib.xcodeproj, outside Apps and Packages, w
+ok    a product project searches for headers outside Apps/ and Packages/: outside-product Apps/App/project.yml: takes headers or a module map from '$(SRCROOT)/../../Shared/include', which resolves to Shared/include, outsid
+ok    a product module map names a header outside Apps/ and Packages/: outside-product Packages/Good/Sources/Good/include/module.modulemap:2: takes headers or a module map from '../../../../../Shared/include/x.h', which resolves to Shared/include/x.h, 
+ok    a symbolic link under Packages/ points outside the product roots: outside-product Packages/Good/Sources/Good/Shared.swift: is a symbolic link to Shared/x.swift, outside Apps and Packages, so what it reaches is not checked as product 
+ok    a product target searches a host directory for libraries: binary Apps/App/project.yml: searches for libraries or frameworks in '/opt/homebrew/lib', which resolves to ../../../../../../../../opt/hom
+ok    a product package passes a library search path outside the tree: binary Packages/Good/Package.swift: searches for libraries or frameworks in '/opt/homebrew/lib', which resolves to ../../../../../../../../opt/hom
+ok    a product target force-loads a library from outside Apps/ and Packages/: binary Apps/App/project.yml: links '../../Shared/libvendor.a', which resolves to Shared/libvendor.a, outside Apps and Packages, where the p
+ok    a product package links a library no SDK provides: binary Packages/Good/Package.swift: links the library 'vendorfoo', which no SDK provides and the inventory does not list (binaries, kind linked): 
+ok    a product package links a framework no SDK provides: binary Packages/Good/Package.swift: links the framework 'VendorKit', which no SDK provides and the inventory does not list (binaries, kind linked)
+ok    a product target links a library by -l: binary Apps/App/project.yml: links the library 'vendorfoo', which no SDK provides and the inventory does not list (binaries, kind linked): 
+ok    a product target links a framework through -Wl,: binary Apps/App/project.yml: links the framework 'VendorKit', which no SDK provides and the inventory does not list (binaries, kind linked)
+ok    a product target names an SDK dependency that no SDK provides: binary Apps/App/project.yml: links the library 'vendorfoo', which no SDK provides and the inventory does not list (binaries, kind linked): 
+ok    a product module map links a library no SDK provides: binary Packages/Good/Sources/Good/include/module.modulemap:3: links the library 'vendorfoo', which no SDK provides and the inventory does not list (binaries, kind linked): 
+ok    the SDKs cannot be listed to judge what a product links: toolchain xcrun --show-sdk-path: cannot list the SDKs, so Packages/Good/Package.swift linking the library 'sqlite3' cannot be judged
+ok    a committed library whose digest differs from the inventory: binary Packages/Good/Vendor/data.bin: a committed static library whose digest differs from the inventory's (binaries)
+ok    a license text the inventory names is not committed: license-text Docs/Licenses/texts/x/GONE: acme/X: license text copy is not committed
+ok    the acknowledgements cannot be generated: docs Docs/Licenses/acknowledgements-draft.md: cannot generate the acknowledgements draft: 'preamble'
+ok    a listed vendored asset is not committed: vendored-asset Packages/Good/Sources/Good/Fonts/Gone.ttf: listed in the inventory but not committed
+ok    the requirements file is missing: python-tools Scripts/tools/requirements.txt: requirements file missing
+ok    an unpinned virtualenv entry gives no reason: inventory Docs/Licenses/inventory.json: python_tools.unpinned entry {'name': 'pip', 'version': '26.2.1', 'minimum': '26.2.0', 'minimum_why': 'an advis
+ok    an unpinned virtualenv entry gives no minimum version: inventory Docs/Licenses/inventory.json: python_tools.unpinned entry {'name': 'pip', 'version': '26.2.1', 'minimum_why': 'an advisory affects earlier v
+ok    an unpinned virtualenv entry gives a minimum that is not a version: inventory Docs/Licenses/inventory.json: python_tools.unpinned entry pip: minimum 'latest' is not a version
+ok    an unpinned virtualenv entry is also pinned: inventory Docs/Licenses/inventory.json: python_tools.unpinned lists alpha, which Scripts/tools/requirements.txt pins; move it to packages
+ok    the virtualenv holds a package the inventory does not record: toolchain virtualenv: virtualenv holds gamma 0.1, which the inventory does not record (python_tools)
+ok    the virtualenv lacks the unpinned installer: toolchain virtualenv: virtualenv lacks pip, which the inventory records as unpinned (python_tools.unpinned)
+ok    a manifest outside Apps/, Packages/ and Spikes/ is exempted instead of locked: unlocked Tools/T/project.yml: a manifest outside Spikes cannot be exempted (exemptions are for spikes only); commit its lock
+ok    product code in a test-named subfolder of a library target imports a transitive module: transitive-direct Packages/Good/Sources/Good/ABTests/Experiment.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    a library target builds a file from a test-named subfolder: test-layout Packages/Good/Sources/Good/ABTests/Experiment.swift: target Good (Packages/Good/Package.swift) is not a test target but builds this file, which sits in a directory
+ok    the only library target, with no directory of its own, takes all of Sources/ (SwiftPM 5.9 and later) and builds a file from a test-named subfolder: test-layout Packages/Solo/Sources/ABTests/Experiment.swift: target Solo (Packages/Solo/Package.swift) is not a test target but builds this file, which sits in a directory
+ok    product code in a test-named subfolder of an app target imports a transitive module: transitive-direct Apps/App/Sources/FeatureTests/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    a C file in a test-named subfolder of a library target includes a transitive public header: transitive-direct Packages/Good/Sources/Good/ABTests/use.c:1: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a module map in a test-named subfolder of a library target names a transitive public header: transitive-direct Packages/Good/Sources/Good/ABTests/module.modulemap:2: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a file that no target includes is product code even in a Tests directory: it imports a transitive module: transitive-direct Packages/Good/Tests/Shared/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    an import between two extended regex literals that hold /* and */: transitive-direct Packages/Good/Sources/Good/Use.swift:2: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    an import after a bare regex literal that holds a quote: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    an import between two multi-line extended regex literals that hold /* and */: transitive-direct Packages/Good/Sources/Good/Use.swift:4: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    an import between two raw identifiers that hold /* and */: transitive-direct Packages/Good/Sources/Good/Use.swift:2: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    an import after a raw identifier that holds a quote: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    an import named only in a comment is reported (the check reads the raw text): transitive-direct Packages/Good/Sources/Good/Use.swift:2: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    an import named only in a string literal is reported: transitive-direct Packages/Good/Sources/Good/Use.swift:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    an include after a C++ raw string that holds /*: transitive-direct Packages/Good/Sources/Good/use.cpp:3: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    an include after a comment that a line splice ends: transitive-direct Packages/Good/Sources/Good/use.c:3: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    an include written with the digraph %:: transitive-direct Packages/Good/Sources/Good/use.c:1: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    an include written with the trigraph ??=: transitive-direct Packages/Good/Sources/Good/use.c:1: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a computed include through a macro: transitive-direct Packages/Good/Sources/Good/use.c:1: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a module import through _Pragma: transitive-direct Packages/Good/Sources/Good/use.c:1: imports BModule, a module of acme/B, which product code may use only through the package that brings it (found
+ok    Objective-C imports the generated Swift header of a transitive module: transitive-direct Packages/Good/Sources/Good/Use.m:1: names BModule-Swift.h, a public header of acme/B, which product code may use only through the package that bri
+ok    a product C file includes a header under Spikes/ with the digraph %:: spike-in-product Packages/Good/Sources/Good/shim.c:1: includes ../../../../Spikes/S/include/s.h, which resolves to Spikes/S/include/s.h under Spikes; Spikes code is
+ok    a product C++ file includes a header under Spikes/ after a raw string that holds /*: spike-in-product Packages/Good/Sources/Good/shim.cpp:3: includes ../../../../Spikes/S/include/s.h, which resolves to Spikes/S/include/s.h under Spikes; Spikes code is
+ok    a product C file includes a header under Spikes/ after a comment that a line splice ends: spike-in-product Packages/Good/Sources/Good/shim.c:3: includes ../../../../Spikes/S/include/s.h, which resolves to Spikes/S/include/s.h under Spikes; Spikes code is
+ok    a workflow action pinned to a commit is not recorded as pinned: ci-actions Docs/Licenses/inventory.json: actions/checkout@0000000000000000000000000000000000000000 is pinned to a commit, but the inventory does not sa
+ok    the inventory lists an action no workflow uses: ci-actions Docs/Licenses/inventory.json: actions/cache@1111111111111111111111111111111111111111 is listed but no workflow uses it
+ok    Scripts/lib/env.sh is missing: toolchain Scripts/lib/env.sh: missing
+ok    the human-readable inventory is missing: docs Docs/Licenses/third-party-inventory.md: missing
+ok    a product package imports a transitive module into every file with -import-module: transitive-direct Packages/Good/Package.swift: imports BModule into every source file of the target (-import-module BModule, with no import in any file), a m
+ok    a product target imports a module into every file with -import-module: not a flag a product target may pass: flag Apps/App/project.yml: passes '-import-module', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, 
+ok    a product target force-includes a transitive public header with -include: transitive-direct Apps/App/project.yml: names bmodule.h, a public header of acme/B, in a value of the manifest ('-include bmodule.h'), which product c
+ok    a product package force-includes a transitive public header through -Xcc -include: transitive-direct Packages/Good/Package.swift: names bmodule.h, a public header of acme/B, in a value of the manifest ('bmodule.h'), which product code may r
+ok    a product target takes a bridging header from the package checkouts beside the build products: outside-product Apps/App/project.yml: names '$(BUILD_DIR)/../../SourcePackages/checkouts/B/include/b-bridge.h', which leaves the build-product, SDK 
+ok    a product target takes a prefix header named like a transitive public header from the package checkouts: transitive-direct Apps/App/project.yml: names bmodule.h, a public header of acme/B, in a value of the manifest ('$(BUILD_DIR)/../../SourcePackages/che
+ok    a product target searches the package checkouts for headers through $(BUILD_DIR)/..: outside-product Apps/App/project.yml: names '$(BUILD_DIR)/../../SourcePackages/checkouts/B/include', which leaves the build-product, SDK or toolchai
+ok    a product target searches a package checkout below a build variable without ..: outside-product Apps/App/project.yml: names '$(BUILD_ROOT)/SourcePackages/checkouts/B', which leaves the build-product, SDK or toolchain directory i
+ok    a product package searches a package checkout under its own .build for headers: outside-product Packages/Good/Package.swift: names '../../.build/checkouts/B/include', which resolves to Packages/Good/.build/checkouts/B/include (a build 
+ok    a product package target takes its sources from a package checkout under .build: outside-product Packages/Good/Package.swift: names 'Packages/Good/.build/checkouts/B/Sources/B', which resolves to Packages/Good/.build/checkouts/B/Sources
+ok    a product target searches an untracked directory under Apps/: outside-product Apps/App/project.yml: names '$(SRCROOT)/Generated', which resolves to Apps/App/Generated: nothing there is tracked by git, so it can
+ok    a product path uses a variable the check cannot evaluate: outside-product Apps/App/project.yml: names '$(MY_HEADERS)/include', which uses $(MY_HEADERS): a variable the check cannot evaluate. A path in a pro
+ok    a build-product path goes on with another variable: outside-product Apps/App/project.yml: names '$(BUILT_PRODUCTS_DIR)/$(VENDOR_SUBDIR)', which uses $(VENDOR_SUBDIR): a variable the check cannot evalu
+ok    a product target takes a prefix header from a build directory: outside-product Apps/App/project.yml: takes a header from '$(DERIVED_FILE_DIR)/Prefix.h', a build directory: what a product target compiles must be 
+ok    a product target takes a module map that is not tracked: outside-product Apps/App/project.yml: names '$(SRCROOT)/Support/Missing.modulemap', which resolves to Apps/App/Support/Missing.modulemap: that is no
+ok    a module map with an unusual file name, named by MODULEMAP_FILE, wraps a transitive public header: transitive-direct Apps/App/Support/Mini.txt:2: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a file with an unusual name, force-included with -include, includes a transitive public header: transitive-direct Apps/App/Support/Prefix.txt:1: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a header in a test target directory includes a transitive public header: headers are product code wherever they sit: transitive-direct Packages/Good/Tests/GoodTests/shim.h:1: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a module map in a test target directory wraps a transitive public header: module maps are product code wherever they sit: transitive-direct Packages/Good/Tests/GoodTests/module.modulemap:2: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a module map names an extern module map with an unusual file name that wraps a transitive public header: transitive-direct Packages/Good/Sources/Good/include/inner.map:2: names bmodule.h, a public header of acme/B, which product code may use only through the package that brings it
+ok    a preprocessor definition names a transitive public header, for a computed include: transitive-direct Apps/App/project.yml: names bmodule.h, a public header of acme/B, in a preprocessor definition ('HDR=<bmodule.h>'), which product co
+ok    a SwiftPM definition names a transitive module: transitive-direct Packages/Good/Package.swift: names BModule, a module of acme/B, in a preprocessor definition ('MOD=BModule'): a macro can carry a module's 
+ok    SWIFT_MODULE_ALIASES aliases a transitive module: transitive-direct Apps/App/project.yml: aliases BModule (Alias=BModule), a module of acme/B, which product code may use only through the package that 
+ok    per-file compilerFlags force-include a transitive public header: transitive-direct Apps/App/project.yml: names bmodule.h, a public header of acme/B, in a value of the manifest ('bmodule.h'), which product code may r
+ok    per-file compilerFlags load a compiler plugin: flag Apps/App/project.yml: passes '-fplugin=/tmp/plugin.dylib', which is not one of the flags a product target may pass (FLAGS_ALLOWED an
+ok    WARNING_CFLAGS passes a preprocessor option through -Wp,: flag Apps/App/project.yml: passes '-Wp,-include,bmodule.h', which is not one of the flags a product target may pass (FLAGS_ALLOWED and th
+ok    a product package passes a VFS overlay: flag Packages/Good/Package.swift: passes '-vfsoverlay', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, nam
+ok    a product target passes a source file among its flags: flag Apps/App/project.yml: passes '../../Shared/Extra.swift', which is not one of the flags a product target may pass (FLAGS_ALLOWED and 
+ok    a product target replaces the C compiler (CC): outside-product Apps/App/project.yml: sets CC = /opt/homebrew/opt/llvm/bin/clang: it replaces a compiler, linker, SDK or toolchain input, or takes f
+ok    a product target builds against an SDK at a path: outside-product Apps/App/project.yml: sets SDKROOT = /tmp/Custom.sdk: it replaces a compiler, linker, SDK or toolchain input, or takes flags from ou
+ok    a product target links with another linker: outside-product Apps/App/project.yml: sets CLANG_ALTERNATE_LINKER = /opt/homebrew/bin/ld64.lld: it replaces a compiler, linker, SDK or toolchain inp
+ok    a product target takes linker inputs from a file list: outside-product Apps/App/project.yml: sets CLANG__INPUT_FILE_LIST_PATH__ = $(SRCROOT)/inputs.LinkFileList: it replaces a compiler, linker, SDK or to
+ok    a product package takes compiler flags from pkg-config (a system library target): outside-product Packages/Good/Package.swift: sets pkgConfig 'zlib' (system library target CZip): it replaces a compiler, linker, SDK or toolchain input, or
+ok    a manifest script names a transitive public header: transitive-direct Apps/App/project.yml: names bmodule.h, a public header of acme/B, in a value of the manifest ('cp "$BUILD_DIR/../../SourcePackages/c
+ok    a build-settings file names a transitive public header: transitive-direct Apps/App/Config/App.xcconfig (used by Apps/App/project.yml): names bmodule.h, a public header of acme/B, in a build setting ('bmodule.h'), which product code may reach onl
+ok    a product target uses a build tool plugin from a test-only package: test-in-product Packages/Good/Package.swift: target Good uses TPlugin from the test-only package acme/T
+ok    a product project references an untracked Xcode project inside Apps/: outside-product Apps/App/project.yml: names 'Lib/Lib.xcodeproj', which resolves to Apps/App/Lib/Lib.xcodeproj: nothing there is tracked by git, so i
+ok    an Xcode project is committed under Apps/, with a package reference of its own on a branch: xcode-project Apps/App/App.xcodeproj: is a committed Xcode project (1 tracked file(s)): ADR-0002 commits only project.yml, and the package reference
+ok    a workspace is committed under Spikes/: xcode-project Spikes/S/S.xcworkspace: is a committed Xcode workspace (1 tracked file(s)): ADR-0002 commits only project.yml, and the package referen
+ok    a product test imports a module of a transitive-only package: no failure
+ok    a product test in C includes a public header of a transitive-only package: no failure
+ok    the only test target, with no directory of its own, takes all of Tests/ (SwiftPM 5.9 and later): a test there imports a transitive module: no failure
+ok    `import` as an argument label, a member name or a raw identifier, and imports of other modules, are not imports of a transitive module: no failure
+ok    C files that include system and own headers, and name the transitive module only as a word: no failure
+ok    the unpinned installer is newer than the version recorded (any version at or above the minimum): no failure
+ok    the unpinned installer is exactly its minimum, written without a trailing zero: no failure
+ok    the unpinned installer is below its minimum (a fresh virtualenv on Python 3.14.6 holds pip 26.1.2): a warning: no failure; warns toolchain virtualenv: pip 26.1.2 is below 26.2.0, the first release outside every advisory the inventory records for it (an advisory
+ok    the unpinned installer is a pre-release of its minimum: a warning: no failure; warns toolchain virtualenv: pip 26.2.0rc1 is below 26.2.0, the first release outside every advisory the inventory records for it (an advis
+ok    the unpinned installer has a version this check cannot compare: a warning: no failure; warns toolchain virtualenv: pip 26.2.1+local is not a version this check can compare with 26.2.0, the first release outside every advisory
+ok    a product package renames a module of a package that is not transitive-only (moduleAliases:): no failure
+ok    a file in a test target named like test code, and a shipping target whose own directory names are ordinary: no failure
+ok    a product source file named Notice.swift is not a license file: no failure
+ok    a lock spells a package URL without .git and in another case: no failure
+ok    a spike target may use a test-only package: no failure
+ok    a product target names paths inside the product roots (where tracked files are) and build-product, SDK and toolchain variables: no failure
+ok    a product target and package link SDK libraries and frameworks by name: no failure
+ok    a product project uses xcconfig files that stay inside the product roots: no failure
+ok    a product module map names its own header and links an SDK library: no failure
+ok    a product test target takes fixtures, outside headers and a transitive module alias (tests never ship): no failure
+ok    a product package links a library only on Linux, where no Apple SDK is involved: no failure
+ok    a product package links a library the inventory lists (binaries, kind linked): no failure
+ok    a macOS-only package used only under a macOS condition, by a macOS app target: no failure
+ok    an inventoried binary target with the same URL and checksum: no failure
+ok    a workflow action pinned to a commit and recorded as such: no failure
+ok    a symbolic link under Packages/ to another product file: no failure
+ok    a product target and package pass only flags product targets may pass: no failure
+ok    a tracked prefix header, bridging header and module map, definitions without transitive names, and SDKROOT set to an SDK: no failure
+ok    a test target passes any flag and setting (tests never ship): no failure
+ok    a referenced Xcode project generated from a project.yml tracked beside it: no failure
+self-test: 239 mutations (22 categories: binary, ci-actions, docs, flag, inventory, license-text, lock-registry, not-exact, outside-product, pin-differs, pin-missing, platform, python-tools, spike-in-product, test-in-product, test-layout, toolchain, transitive-direct, unknown-package, unlocked, vendored-asset, xcode-project) and 30 allowed changes; 111 of the 111 failure branches reached by the mutation written for them, 2 of the 2 warning branches by the allowed change written for them; 0 wrong
+
+--- check: this repository against Docs/Licenses/inventory.json, and the installed toolchain
+ok    committed Xcode projects or workspaces: 0
+ok    locks: 17 committed, 17 registered
+ok    manifests: 21 read, 16 remote requirements
+ok    symbolic links under the product roots: 0
+ok    module maps read as product code: 0
+ok    license texts: 53 checked
+ok    product sources: 59 Swift and 0 C-family files checked for imports of transitive-only modules
+ok    binaries: 0 declared by product manifests, 0 committed under the product roots, 0 inventoried
+ok    vendored assets: 3 listed
+ok    python tools: 20 pinned, 1 recorded as unpinned (pip at any version, with a warning below 26.2.0); the virtualenv holds exactly these (pip 26.2.1)
+ok    workflow actions: 2 used
+ok    toolchain: the Xcode pin 27.1 (27A9275) as stated in .github/workflows/ci.yml, CLAUDE.md, Docs/ADRs/0001-platform-baseline-and-toolchain.md
+ok    toolchain: xcodebuild -version -> Build version 27A9275 (the pin, compared whole)
+ok    toolchain: xcrun swift --version -> Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1) (the pin, compared whole)
+ok    toolchain: xcodegen --version -> Version: 2.46.0 (the pin, compared whole)
+ok    acknowledgements draft: matches the inventory (236499 characters)
+dependency lock check: 0 failure(s), 0 warning(s)
+12-dependency-lock exit: 0; end: 2026-10-26T11:47:02Z

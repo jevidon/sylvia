@@ -1,0 +1,60 @@
+# Physical-device host for the existing recovery suite. Stage 0 only.
+name: G05RecoveryDeviceTests
+options:
+  deploymentTarget:
+    iOS: "26.0"
+packages:
+  G05Recovery:
+    path: ..
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY: YES
+    DEVELOPMENT_TEAM: A4KBDX665Z
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_TESTABILITY: YES
+    TARGETED_DEVICE_FAMILY: "1,2"
+targets:
+  G05RecoveryTestHost:
+    type: application
+    platform: iOS
+    sources: [App]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.recoverytesthost
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: G05 Recovery Tests
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+  SylviaRecoveryTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ../Tests/SylviaRecoveryTests
+        excludes: [Fixtures]
+      - path: Support
+      - path: ../Tests/SylviaRecoveryTests/Fixtures
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - target: G05RecoveryTestHost
+      - package: G05Recovery
+        product: SylviaRecovery
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jevidon.sylvia.spike.recoverytesthost.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/G05RecoveryTestHost.app/G05RecoveryTestHost"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  G05RecoveryDeviceTests:
+    build:
+      targets:
+        G05RecoveryTestHost: all
+        SylviaRecoveryTests: [test]
+    test:
+      targets: [SylviaRecoveryTests]
+      gatherCoverageData: false

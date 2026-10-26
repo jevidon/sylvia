@@ -111,7 +111,8 @@ public struct MigrationCrashDrillParent {
         let root = workDirectory.appending(path: "Install", directoryHint: .isDirectory)
         func reset() throws {
             if fm.fileExists(atPath: root.path) { try fm.removeItem(at: root) }
-            try fm.copyItem(at: template, to: root)
+            // Created with the library's class, never `FileManager.copyItem`, which keeps the template's.
+            try FileProtector.library.copyTree(from: template, to: root)
         }
         // The clean migration of the same library gives the expected final state.
         try reset()

@@ -348,6 +348,15 @@ struct RestoreTests {
             try Data("extra".utf8).write(to: b.appending(path: "export/extra.txt"))
         }) { $0 == .unlistedFile("export/extra.txt") }
 
+        // An unlisted link whose target does not exist is a link in the bundle, whichever way the bundle's folder is
+        // named. The walk used to compare Foundation's `standardizedFileURL` paths, which drop /private only from a
+        // path that exists, while the enumerator names items /private/var/... even under a root named /var/...: this
+        // link was refused as an unsafe path, with its absolute path (review of 26 October 2026, finding F3; fix-1).
+        try expectRejected("unlisted-dangling-link", fixture, damage: { b in
+            try FileManager.default.createSymbolicLink(atPath: b.appending(path: "export/markdown/dangling.md").path,
+                                                       withDestinationPath: fixture.scratch.url.appending(path: "nowhere.md").path)
+        }) { $0 == .symlinkInBundle("export/markdown/dangling.md") }
+
         try expectRejected("missing-blob-file", fixture, damage: { b in
             let blobs = b.appending(path: "blobs/excerpts")
             for name in try FileManager.default.contentsOfDirectory(atPath: blobs.path) { try FileManager.default.removeItem(at: blobs.appending(path: name)) }

@@ -1,0 +1,180 @@
+[
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 33,
+  "label": "minors-g06-design:author",
+  "result": {
+   "branch": "m0-int-minors-g06-design",
+   "commit": "98125421e27490aa11c7c4151c8457ce36bd2c34",
+   "summary": "Both round 3 findings for G0.6 are fixed on m0-int-minors-g06-design, starting from b354dc7. The clean CI run from deleted build products passed: Docs/Stage0/evidence/G06-Design/ci-clean-run.log, commit d3b4bb2. After that commit only documents and evidence changed.\n\nThe branch already held work from a stopped agent (WIP fd8dee8 to de06987). That work had never been built or reviewed. De06987 had committed partial evidence from a clean run that stopped halfway, so the iPad and SE light reports and screenshots were missing. I reviewed all of it, kept the parts that were correct, replaced the rest, and regenerated all the evidence.\n\n**R3-01 (lint).** The reviewer's spellings are now rejected: palette names in gradient color lists, listItemTint, and values typed as a shape style. So are further spellings of the same classes:\n- the ListItemTint .fixed and .preferred factories;\n- SwiftUI's semantic system styles (.separator, .link, .placeholder, .selection, .windowBackground, .fill, .background);\n- ?? defaults and mix(with:);\n- conditional and concatenated list literals, and color arrays from computed properties or functions;\n- dictionaries with color values, and AnyShapeStyle .init(.red);\n- Canvas shading: .color(.red) and .color(red:...).\n\n`Styles.swift` now has 41 lint-expect samples, with near-misses in clean/. The round 2 lint flagged none of the reviewer's 4 probe lines and 2 of the 41 samples; the new lint flags all of them. Spellings ADR-0013 Section 8 still lists as not caught were probed and indeed produce nothing: materials, gradients built from tokens, Set<Color>, a dictionary keyed by colors, and a list passed to an unnamed parameter. Over the 343 Swift files of the package and the spikes, the new rules add no finding, so no false positives showed up there. The command that writes `lint-r3-probe-host.log` is committed.\n\n**R3-02 (lift activation).** A press now activates once whichever path runs first. The gate drops a Button action that arrives after the lift activation already ran for the same press. It assigns each Button action to the latest press whose touch lifted; the recognizer now reports touchesEnded. The stopped agent had assigned actions to the latest touch down. That let a late action run when a new touch began during a main-thread stall; mutation 1 reproduces it.\n\nA scratch instrumented timing probe found two things:\n- **The order the gate relies on holds.** In all 37 presses that produced a Button action, the action ran 0 to 1 ms after the touch lifted, even at load averages near 200.\n- **A real defect (new Finding 18).** The large content viewer takes a press over after about 0.15 s, but the lift recognizer only began at 0.25 s, so presses between about 0.15 and 0.25 s at AX sizes activated nothing. The recognizer now begins at 0.05 s, and the UI test also presses for 0.15 and 0.2 s.\n\nMutation checks show the tests fail without the lift attribution (unit tests), with the 0.25 s start, or without the lift report (UI test). The probe's instrumentation and table scripts and the raw probe lines are committed with the evidence. Two stated limits are documented in ADR-0013 Section 10, checklist step 12 and open question 14:\n- After a press the viewer took over, a keyboard or VoiceOver activation of the same control within about 1 s counts as that press's activation.\n- A main-thread stall while a second tap lifts can let a press activate twice.\n\n**Documents updated:** the report (header, Lint row, large content viewer row, Finding 18, Review round 3, open question 14), ADR-0013 Sections 8, 9, 10 and Evidence, checklist step 12, and PROGRESS.md.\n\nThe worktree is detached, DerivedData is deleted, and the simulators Sylvia-M0-minors-g06-design, -SE and -iPad are deleted. No audio is played.",
+   "criteria": [
+    {
+     "criterion": "R3-01: lint misses palette names in gradient color arrays, listItemTint and ShapeStyle-typed values",
+     "status": "passed-host",
+     "evidence": "Scripts/lint-design.py now has rules for these (and further spellings of the same classes); Packages/Design/LintFixtures/violating/Styles.swift has 41 lint-expect samples, with near-misses in clean/Clean.swift. Docs/Stage0/evidence/G06-Design/lint-r3-probe-host.log (command commands/r3_lint_probe.py, host macOS 26.6.2, Python 3.14.6). Reviewer's 4 probe lines: round 2 lint 0 findings, current lint 4. Styles.swift: round 2 lint 2, current lint 41. Documented gaps: 0 findings from both. False-positive check over 343 Swift files of Packages/Design and Spikes/: 0 findings only from the new rules. The clean run shows the self-test at 15 sample files with 0 failures, and 0 findings over the repository and over Apps/DesignCatalog (lint-self-test.log, lint-repository.log, lint-catalog.log). ADR-0013 Section 8 lists the new rules and the gaps that remain."
+    },
+    {
+     "criterion": "R3-02: lift activation's fixed 150 ms settle delay could let a late Button action activate a toggle twice",
+     "status": "passed-simulator",
+     "evidence": "LiftActivationGate drops a Button action that arrives after the lift activation ran for the same press (first such action, within 1 s), and assigns each action to the latest press whose touch lifted. Unit tests ComponentLogicTests.liftActivationEitherOrder and liftActivationLimits pass on host and on the iPhone 17 iOS 26.5 simulator (test-host.log, test-simulator.log in the clean run). UI test testLargeContentViewerActivatesControlsOnce passes at AX5 and default size, including a press followed at once by a tap (large-content-viewer-activation-simulator.md). Timing probe: large-content-viewer-timing-probe-simulator.md plus raw lines in large-content-viewer-timing-probe/. Mutations: large-content-viewer-mutations-simulator.md. The late order itself cannot be produced in a UI test. The feel on hardware is checklist step 12 (pending-device), and the two stated limits await accessibility review (pending-human)."
+    },
+    {
+     "criterion": "Finding 18 (found while fixing R3-02): presses of about 0.15-0.25 s at accessibility sizes activated nothing",
+     "status": "passed-simulator",
+     "evidence": "Timing probe on the iPhone 17 simulator at AX5: the viewer let presses up to 0.149 s through as taps and took a 0.161 s press over, while the recognizer began at 0.25 s, so the 0.15 s press did nothing. minimumPress is now 0.05 s, and the committed UI test presses 0.15, 0.2, 0.35 and 3 s at AX5 and default size, all toggling exactly once in the clean run. Mutation 2 (0.25 s) fails on the 0.15 s press. The viewer delay on a device is unmeasured (checklist step 12)."
+    },
+    {
+     "criterion": "Clean re-run of 10-contracts, 20-design and 21-design-catalog; ci-clean-run.log overwritten",
+     "status": "passed-simulator",
+     "evidence": "Docs/Stage0/evidence/G06-Design/ci-clean-run.log: started 2026-10-12T22:00:22Z from d3b4bb2 after deleting build products, DerivedData, package checkouts and the generated project. All 3 steps passed: 10-contracts 1 s (15 schemas, 188 fixtures), 20-design 185 s, 21-design-catalog 2652 s; load averages 13.9 at start and 16.4 at end. Host: 59 token tests and 51 platform and component-logic tests. Simulator: 59 + 60, plus 28 snapshot tests with 527 references in verify mode and the negative check. Catalog: 11 unit tests, 14 UI tests on iPhone 17, 3 on iPhone SE (3rd generation), 2 on iPad (A16); 196 screenshots (21,552 KiB), every report row 0 truncated and 0 outside. No warnings or skips."
+    },
+    {
+     "criterion": "Gate gap: G0.6 device checks (Color Filters grayscale, Increase Contrast, Bold Text, largest text on oldest iPhone, iPhone 17 Pro and iPad; large content viewer feel)",
+     "status": "pending-device",
+     "evidence": "These need hardware (the iPhone 12-class baseline and an iPad are not available; the physical iPhone was not used). They are listed as steps 1-31 in Docs/Stage0/device-checklists/G06-Design.md. Step 12 now includes a press just long enough to show the viewer, a tap right after a lift-activated press, and the stated limits."
+    },
+    {
+     "criterion": "Gate gap: T54 walk over every state machine's user-visible strings",
+     "status": "not-applicable",
+     "evidence": "The state machines do not exist until M1, so nothing can be walked yet; the report's T54 row stays partial and discloses the deferral. Phrases come only from the vocabulary, and the lint that T54 relies on is extended (R3-01)."
+    },
+    {
+     "criterion": "Gate gap: custom-symbol weight matching and design review of the ADR-0013 token adjustments",
+     "status": "pending-human",
+     "evidence": "This needs a designer: checklist steps 7, 21 and 31, ADR-0013 Open items. Agent-reviewed; human sign-off pending."
+    },
+    {
+     "criterion": "Accessibility acceptance of the lift activation's two stated limits",
+     "status": "pending-human",
+     "evidence": "ADR-0013 Section 10, report open question 14, checklist step 12. The limits are pinned down by ComponentLogicTests.liftActivationLimits."
+    }
+   ],
+   "ci": {
+    "script": "SYLVIA_G06_EVIDENCE_DIR=Docs/Stage0/evidence/G06-Design SYLVIA_G06_SIM=Sylvia-M0-minors-g06-design Scripts/ci.sh contracts design (after rm -rf Packages/Design/.build Apps/DesignCatalog/.build Apps/DesignCatalog/DesignCatalog.xcodeproj .build/ci-logs .build/DerivedData)",
+    "result": "pass: all 3 steps passed (10-contracts 1 s, 20-design 185 s, 21-design-catalog 2652 s), started 2026-10-12T22:00:22Z from commit d3b4bb2; log Docs/Stage0/evidence/G06-Design/ci-clean-run.log. A previous run from 23dc5e1 was stopped by hand during 20-design to add lint rules; its output was overwritten."
+   },
+   "plan_findings": [
+    "Finding 18 (report): SwiftUI's large content viewer took a press over after about 0.15 s on the iPhone 17 iOS 26.5 simulator at AX5. The round 2 lift recognizer began at 0.25 s, so presses between about 0.15 and 0.25 s activated nothing; the round 2 test only pressed for 0.35 and 3 s. Approach for M2-M8: test custom controls' touch handling at durations around the system's own thresholds, not only well inside them. The device delay is unmeasured (checklist step 12).",
+    "In the timing probe a SwiftUI Button's action ran 0 to 1 ms after a UIKit recognizer on the same view saw the touch lift, in every one of 37 presses, at load averages up to about 200. The lift activation gate relies on this order. A Button action arriving after the 150 ms settle delay was never observed, so that order is proven only by unit tests.",
+    "Section 4.4.2 forbids gradients and glassmorphism, but the design lint only rejects literal colors. Materials (.ultraThinMaterial, .bar) and gradients built from tokens are review rules, documented in ADR-0013 Section 8."
+   ],
+   "shared_changes_requested": [
+    "Docs/Stage0/integration-log.md section 2 (G0.6 row): open findings R3-01 and R3-02 are fixed on m0-int-minors-g06-design (final commit 98125421e27490aa11c7c4151c8457ce36bd2c34, clean run from d3b4bb2). Finding 18 was found and fixed in the same round. The review verdict in Docs/Stage0/README.md should change only after a re-review.",
+    "Informational for ADR-0002 (binary files): this branch adds one G0.6 evidence screenshot refresh to history (196 screenshots, 21,552 KiB; 198 evidence images in all, same count as at integration), as ADR-0002 anticipated. Snapshot references are unchanged (527 files, 37,900 KiB)."
+   ],
+   "dependencies_added": [],
+   "committed_fixtures": [
+    "Packages/Design/LintFixtures/violating/Styles.swift (hand-written lint samples, 41 lint-expect lines; no third-party content)",
+    "Packages/Design/LintFixtures/clean/Clean.swift (hand-written lint near-misses; extended)",
+    "Docs/Stage0/evidence/G06-Design/large-content-viewer-timing-probe/run1-run4 *.log (raw simulator log lines from the scratch timing probe; evidence, generated)",
+    "Docs/Stage0/evidence/G06-Design/screens/** (196 regenerated 1x screenshots from the clean run; public-domain fixture text only)"
+   ],
+   "open_questions": [
+    "Accessibility reviewer: accept the lift activation's two stated limits (ADR-0013 Section 10, report open question 14), or prefer never merging a keyboard or VoiceOver activation, which would let a late Button action run as a second activation instead?",
+    "Device: what is the large content viewer's takeover delay on hardware? The recognizer now begins at 0.05 s, well below the about 0.15 s seen on the simulator; checklist step 12 checks a press just long enough to show the viewer.",
+    "Design or product owner: should the lint also reject materials and gradients built from tokens, which Section 4.4.2 forbids but which are not literal colors? They are currently review rules."
+   ]
+  }
+ },
+ {
+  "run": "wf_5552ba19-d21",
+  "seq": 39,
+  "label": "minors-g06-design:review-1",
+  "result": {
+   "verdict": "accept-with-minor",
+   "commit_reviewed": "98125421e27490aa11c7c4151c8457ce36bd2c34",
+   "rerun": {
+    "command": "Fresh worktree, `git checkout --detach m0-int-minors-g06-design` (98125421e27490aa11c7c4151c8457ce36bd2c34). No .build, DerivedData, package checkouts or generated project existed; the wrapper also ran `rm -rf Packages/Design/.build Apps/DesignCatalog/.build Apps/DesignCatalog/DesignCatalog.xcodeproj .build/ci-logs .build/DerivedData`. Then `SYLVIA_G06_SIM=Sylvia-M0-review-minors-g06-design-1 SYLVIA_G06_EVIDENCE_DIR=.build/scratch/ci-evidence Scripts/ci.sh contracts design` (wrapper .build/scratch/run-ci-clean.sh, run in the background). The drop-in created the -SE and -iPad simulators from my name; all three were deleted afterwards. Additional reruns: (1) the author's lint probe `commands/r3_lint_probe.py`, from a scratch copy that writes to .build/scratch; (2) mutation 1 on the host (`xcodebuild test -scheme SylviaDesign-Package -destination platform=macOS -only-testing:SylviaDesignTests/ComponentLogicTests` on a scratch copy of Packages/Design); (3) mutations 2 and 3, plus the unmutated `AreaNavigationTests/testLargeContentViewerActivatesControlsOnce`, on my iPhone 17 iOS 26.5 simulator (temporary edit restored with git checkout; worktree clean afterwards); (4) three extra mutations of the R3-02 core on the host; (5) `commands/lift_probe_table.py` over the committed raw probe lines.",
+    "result": "PASS from clean: all 3 steps passed. 10-contracts took 0 s (15 schemas, 188 fixtures). 20-design took 212 s: lint self-test 15 sample files with 0 failures (Styles.swift 41 expected findings); repository lint 0 findings; host 59 + 51 tests; simulator 59 + 60 + 28 snapshot tests with 527 references in verify mode; the negative check exited 65 with 2 issues on the changed sample and 0 on others. 21-design-catalog took 2681 s: catalog lint 0 findings; 11 unit tests; 14 UI tests on iPhone 17, 3 on iPhone SE (3rd generation), 2 on iPad (A16); 196 screenshots (21,532 KiB); every report row 0 truncated and 0 outside; no warnings in Apps/DesignCatalog or Packages/Design. The run started 2026-10-12T23:36:14Z (load 17.47) and ended 2026-10-13T00:24:28Z (load 23.77; other agents pushed it to about 97-126 during the run), so durations are indicative only. The catalog plays no audio (no AV or audio APIs in G0.6 code, by grep). My regenerated evidence matches the committed files line for line, except simulator names, the press-then-tap gap (0.47 s vs 0.43 s at AX5) and two nondeterministic scroll-drag counts. The lint probe reproduces the committed lint-r3-probe-host.log byte for byte apart from the date. Mutation 1 fails liftActivationEitherOrder at ComponentLogicTests.swift:469, 472, 482 and 491, exactly as recorded. Mutation 2 fails on 'AX5: a 0.15 s press', and mutation 3 on 'AX5: a 0.2 s press', both as recorded. The unmutated UI test passes (86 s). Extra mutations: removing the late-action drop gives 11 failures; dropping regardless of press gives 7; dropping regardless of age gives 3. The probe tables regenerate from the raw lines; the only differences are my '3' vs '3.0' requested labels."
+   },
+   "findings": [
+    {
+     "id": "R4-01",
+     "severity": "minor",
+     "title": "Conditional palette names in single-expression computed or returned Color/shape-style values, and type-qualified semantic styles, pass the lint and are missing from ADR-0013 Section 8's not-caught list",
+     "location": "Scripts/lint-design.py:333 and 569-572 (TYPED_COLOR_ASSIGNMENT_RE needs '='); Scripts/lint-design.py:69 ('ADR-0013 Section 8 has the full list'); Docs/ADRs/0013-design-language.md:183 ('and conditional branches of such a value') and :189 (What the lint does not catch)",
+     "detail": "What is wrong: Section 8 says round 3 catches a value typed as a shape style 'like one typed as Color', listing `var s: some ShapeStyle { .purple }` and `-> some ShapeStyle { return .pink }`, 'and conditional branches of such a value'. The ternary and ?? scan for typed values runs only after '=' (TYPED_COLOR_ASSIGNMENT_RE at line 333, used at 569). Computed or returned bodies are never scanned.\n\nProbe 1 (Probe3.swift in a scratch Apps/ tree):\n- Command: `~/Library/Caches/SylviaTools/venv/bin/python Scripts/lint-design.py lint --root .build/scratch/review-probe2 --export Contracts/design/marginalia.v1.json`\n- Result: 2 findings out of 8 lines.\n- NOT flagged:\n  - `var a: some ShapeStyle { Bool.random() ? .red : .blue }`\n  - `func b(_ on: Bool) -> some ShapeStyle { on ? .red : .blue }`, and the same with `return`\n  - `var d: Color { Bool.random() ? .red : .blue }`\n  - `var g: AnyShapeStyle { Bool.random() ? .init(.red) : .init(ColorToken.ink.color) }`\n  - `var h: Color { custom ?? .red }`\n- `var f: some ShapeStyle { Bool.random() ? ColorToken.ink.color : .blue }` is flagged only by accident: the `color:` label rule matches `.color : .blue`.\n\nProbe 2 (ReviewProbe.swift, 33 probes):\n- Result: 20 findings with the HEAD lint, 8 with b354dc7's.\n- Also NOT flagged, the explicit-type spellings of the styles round 3 added as bare names:\n  - `.foregroundStyle(HierarchicalShapeStyle.secondary)`\n  - `.foregroundStyle(SeparatorShapeStyle())`\n  - `.background(BackgroundStyle())`\n  - `Rectangle().fill(FillShapeStyle())`\n\nAll of these are valid product code: `xcrun swiftc -typecheck -swift-version 6 -target arm64-apple-ios26.0-simulator -sdk $(xcrun --sdk iphonesimulator --show-sdk-path)` over them printed TYPECHECK-OK.\n\nScope:\n- None of these spellings is in Section 8's not-caught list. The 'multi-statement body' and 'unnamed parameter' clauses do not cover them.\n- The Color computed-ternary gap predates round 3: b354dc7's lint also misses `var d`.\n- The reviewer's four R3-01 spellings and all 41 Styles.swift samples are caught, so R3-01 itself is fixed. This is an undocumented sibling gap plus an imprecise sentence.\n\nFix, either:\n- Code: apply TERNARY_PALETTE_RE (with ??) to the single-expression body of a computed property or function typed as Color, a shape style or a platform color (the span TYPED_VALUE already recognizes for color arrays). Treat `HierarchicalShapeStyle.<member>` and the `*ShapeStyle()` / `BackgroundStyle()` initializers as named colors. Add lint-expect samples.\n- Docs: name these spellings in Section 8's not-caught list and limit 'conditional branches' to declarations with '='."
+    },
+    {
+     "id": "R4-02",
+     "severity": "minor",
+     "title": "'Presses of up to 0.149 s let through at AX5' uses the default-size launch's figure; the AX5 maximum in the raw probe lines is 0.148 s",
+     "location": "Packages/Design/Sources/SylviaDesign/Components/LargeContentViewer.swift:124; Docs/ADRs/0013-design-language.md:218 (Section 10, Recognizer start); Docs/Stage0/G06-Design.md:163 (Finding 18); Docs/Stage0/evidence/G06-Design/large-content-viewer-timing-probe-simulator.md:57-58; criteria evidence for Finding 18",
+     "detail": "What is wrong: the 0.149 s figure belongs to the default-size launch, not to AX5.\n\nThe committed raw lines:\n- AX5, longest press that ended as a tap: large-content-viewer-timing-probe/run4-min0.05-press0.1-3s.log, launch 1 (pid 94250) press 9. touchBegan 10:00:22.768, touchLifted 10:00:22.916 = 0.148 s; buttonAction ran; liftSettled skipped.\n- The only 0.149 s press: launch 2 (pid 97636) press 3, at the default size where the viewer is off ('not scheduled').\n- All AX5 presses that produced a Button action, across runs 1-4: 0.077, 0.073, 0.130, 0.112, 0.141, 0.122, 0.141, 0.148 and 0.070 s.\n\nThe statements 'the viewer let presses of up to 0.149 s through as taps' and '0.07 to 0.149 s at AX5' are therefore off by 1 ms. Conclusions are unaffected.\n\nFix: change 0.149 to 0.148 in the five places and in the criteria text."
+    },
+    {
+     "id": "R4-03",
+     "severity": "minor",
+     "title": "The UI test's doc comment and the generated evidence say the 0.15 s press is taken over by the viewer at AX5; the author's own probe shows it sometimes ends as a tap",
+     "location": "Apps/DesignCatalog/UITests/AreaNavigationTests.swift:149 ('At AX5 the viewer takes all of them over, so only the lift activation runs the action') and :211 (generated text: 'longer than the viewer's own delay at AX5'); Docs/ADRs/0013-design-language.md:202 (Section 9 item 4: 'presses of 0.15 and 0.2 s, which the viewer takes over'); Docs/Stage0/evidence/G06-Design/large-content-viewer-activation-simulator.md preamble",
+     "detail": "What is wrong: the 0.15 s press is at the viewer's threshold, not above it.\n\nIn large-content-viewer-timing-probe-simulator.md (run 4, launch 1, AX5), the requested 0.15 s press ran twice:\n- once it measured 0.161 s: the viewer took it over and the lift activation ran;\n- once it measured 0.148 s: it ended as a tap, the Button's action ran and the lift activation was skipped.\n\nSo from run to run a 0.15 s press at AX5 exercises either path.\n\nImpact:\n- The test's assertion (exactly one toggle) holds either way, and the 0.2 s press reliably exercises the taken-over path, so coverage is intact.\n- The stated mechanism in the test comment, the generated evidence text and ADR Section 9 is wrong for 0.15 s.\n- Mutation 2's recorded failure on the first, 0.15 s press depends on that press being taken over. I reproduced the failure ('AX5: a 0.15 s press did not toggle to Play exactly once'); a let-through 0.15 s press would pass, and the 0.2 s press would still catch the mutation.\n\nFix: describe 0.15 s as at the viewer's threshold (either path; both must toggle once) and 0.2 s as above it."
+    },
+    {
+     "id": "R4-04",
+     "severity": "minor",
+     "title": "Shared-change note says the branch adds one evidence screenshot refresh to history; it holds two (the stopped agent's partial refresh too)",
+     "location": "Author result, shared_changes_requested (ADR-0002 informational note); commits de06987 and a5427ff",
+     "detail": "What is wrong: the note says 'this branch adds one G0.6 evidence screenshot refresh to history (196 screenshots, 21,552 KiB)'.\n\nWhat the commits contain:\n- `git diff-tree -r --no-commit-id de06987` (stopped agent's partial clean run): 171 PNGs modified and 25 deleted, adding 159 new PNG blobs, 15,721 KiB per `git cat-file --batch-check`.\n- a5427ff: 25 PNGs added and 171 modified, adding 179 new blobs, 19,814 KiB.\n- No blob is shared between the two commits.\n\nUnless the branch is squash-merged (as the gate branches were at integration), about 35 MiB of PNG data enters history, not about 21 MB. That matters for ADR-0002's LFS cost accounting. The net diff b354dc7..HEAD is correctly 196 modified PNGs; snapshot references are unchanged (0 files), and the evidence count stays 198.\n\nFix: state both refreshes in the note and ask for a squash merge, or count both in the ADR-0002 accounting."
+    },
+    {
+     "id": "R4-05",
+     "severity": "minor",
+     "title": "Checklist step 12 never asks for ordinary taps on toggling controls at an accessibility size, although since round 3 every such tap goes through both paths and relies on a simulator-observed event order",
+     "location": "Docs/Stage0/device-checklists/G06-Design.md:29 (step 12); Packages/Design/Sources/SylviaDesign/Components/LargeContentViewer.swift:129 (minimumPress = 0.05)",
+     "detail": "Why it matters: with the recognizer beginning at 0.05 s, an ordinary tap of 0.05 to 0.15 s at an accessibility size begins the recognizer and schedules a lift activation. In the probe, XCUITest taps lasted 0.066 to 0.077 s and logged 'liftSettled skipped'. Such a tap activates once only because the Button's action arrives after the recognizer's touchesEnded report.\n- On the simulator that order held in 37 of 37 presses.\n- If a device delivered the action first, `run` would attribute it to the previous press, and `liftSettled` would run for the current one, so the tap would toggle twice.\n\nWhat step 12 covers: long presses, a just-long-enough press, one tap right after a long press, and Space after a wait. The single tap after a long press would reveal the problem on Play/Pause only. Nothing exercises ordinary taps on its own, or on the reader's bookmark (a toggling SylviaIconButton).\n\nFix: add to step 12 'at AX3+, tap Play/Pause and the reader bookmark normally several times; each tap toggles exactly once'. Name the order dependency (ADR-0013 Section 10) as the thing being checked."
+    }
+   ],
+   "claims_verified": [
+    "Clean CI (10-contracts, 20-design, 21-design-catalog) passes from a fresh worktree at the final commit 98125421 with no build products, DerivedData or generated project. Every count matches the report and criteria: host 59 + 51; simulator 59 + 60 + 28 (527 references in verify mode); negative check exit 65 with 2 issues on the changed sample and 0 on others; self-test 15 samples with 0 failures; Styles.swift 41; repository and catalog lint 0; catalog 11 unit and 14 + 3 + 2 UI tests; 196 screenshots; 0 truncated and 0 outside.",
+    "After d3b4bb2 (the commit the committed clean run started from) only files under Docs/ changed (`git diff --name-only d3b4bb2..HEAD`). The run started 3 s after that commit, 2026-10-12T22:00:22Z = 11:00:22 NZDT. The committed ci-clean-run.log durations (1 + 185 + 2652 s) fit its 2840 s wall time.",
+    "My regenerated evidence (34 report and log files) is identical to the committed files apart from simulator names, the press-then-tap gap and two drag counts, so the committed evidence came from this code.",
+    "lint-r3-probe-host.log reproduces byte for byte (apart from the date) from a scratch copy of commands/r3_lint_probe.py: reviewer's 4 probe lines 0 -> 4 findings; Styles.swift 2 -> 41; documented gaps 0 / 0; 343 files of package and spikes, 139 / 139 code findings, 0 new.",
+    "R3-01 reviewer spellings are flagged: LinearGradient(colors: [.red, .blue]), Gradient(colors:), listItemTint(.red), let q: some ShapeStyle = .red. Also flagged: gradient stops via color:, Gradient(colors:) nested in gradient:, [..].reversed(), wrapped colors: lists, listItemTint ternaries, .separator.opacity, AnyShapeStyle(.red) inside a ternary, [Color]? declarations, wrapped [Color] declarations, Canvas .color(.red.opacity).",
+    "Lint rules were only extended. No earlier fixture expectation changed, the self-test still passes on Bypasses.swift (39), Multiline.swift (44) and the others, and Clean.swift changed only by additions. No false positives today: the package has no color/fixed/preferred/mix APIs, only SylviaButtonRole .primary/.secondary, and the clean fixture covers that.",
+    "LiftActivationGate code matches ADR-0013 Section 10 and the report: recognizer at 0.05 s, 150 ms settle delay, late action dropped only if it is the first Button action after the lift activation, belongs to the same press and comes within 1 s (inclusive), attribution to the latest lifted press via touchesEnded. Both stated limits follow from the code as described.",
+    "All five controls with .accessibilityShowsLargeContentViewer use a lift modifier, and their Button actions go through the gate: SylviaIconButton, PlayPauseButton, nav back (backGate), reader settings (settingsGate), tab bar and sidebar (gate.run). The bars' Command-1/2/3 shortcuts are on AreaButton and so go through gate.run, consistent with limit (a).",
+    "Gate unit tests liftActivationGate, liftActivationEitherOrder, liftActivationLimits and liftItemAtPoint pass on host and on the iPhone 17 iOS 26.5 simulator in my run.",
+    "Mutation evidence reproduced. Mutation 1 (owner = press) fails at ComponentLogicTests.swift:469/472/482/491. Mutation 2 (minimumPress 0.25) fails on 'AX5: a 0.15 s press'. Mutation 3 (no onTouchUp) fails on 'AX5: a 0.2 s press'. The unmutated test passes. My extra mutations of the R3-02 core are caught too: no drop gives 11 failures, drop regardless of press 7, drop regardless of age 3.",
+    "UI test testLargeContentViewerActivatesControlsOnce passes from clean: all 0.15/0.2/0.35/3 s presses toggle once at AX5 and at the default size. In the press-then-tap case the tap began inside the 1 s window after the lift activation: in the run 4 raw log the tap touched down 173 ms after the lift activation, so the test does exercise attribution against a naive drop.",
+    "Timing probe: from the raw logs, 37 presses produced a Button action (7 + 9 + 1 in runs 1-3, 20 in run 4), every one 0-1 ms after touchLifted. Run 3 shows the 0.163 s AX5 press with no Button action and no lift scheduled (Finding 18). Tables regenerate from the raw lines with commands/lift_probe_table.py. The instrumented build and code are unchanged in logic since a339495 (only comments changed after), so probe and mutation evidence apply to HEAD.",
+    "Device, human and deferred items are labelled honestly (pending-device, pending-human, not-applicable for T54) and nothing device-only is claimed as passed. The report header says no device was used. Open question 14 and checklist step 12 carry the stated limits.",
+    "Ownership: every changed file is under G0.6 paths (Packages/Design, Apps/DesignCatalog, Scripts/lint-design.py, ADR-0013, G06 report, checklist, evidence). Shared files (integration-log, Stage0 README, CLAUDE.md, ADR-0002) were not edited, only requested. No test was weakened: UI durations are a superset of round 2.",
+    "The author's simulators Sylvia-M0-minors-g06-design, -SE and -iPad no longer exist (simctl list). Evidence PNG count is 198 at HEAD, the same as b354dc7. Snapshot references are unchanged (0 files in the diff)."
+   ],
+   "gate_gaps": [
+    "G0.6 device checks remain pending-device, correctly labelled: Color Filters grayscale, Increase Contrast, Bold Text and AX5 on the oldest supported iPhone, the iPhone 17 Pro and an iPad, and the large content viewer feel in step 12. They are checklist steps 1-31, and none is doable on host or simulator.",
+    "T54 walk over every state machine's strings: deferred to M1 because the state machines do not exist. Disclosed as not-applicable, and the report's T54 row stays partial.",
+    "Custom-symbol weight matching and design review of the ADR-0013 token adjustments: pending-human (designer). New pending-human item from this round: the accessibility reviewer must accept the lift activation's two stated limits (open question 14).",
+    "Checklist step 12 lacks ordinary taps on toggling controls at an accessibility size, the common path since minimumPress became 0.05 s (R4-05).",
+    "Informational, not a gap: the committed clean run started from d3b4bb2, not the final commit. Only documents changed afterwards (verified), and my rerun from 98125421 confirms the result."
+   ],
+   "previous_findings_status": [
+    {
+     "id": "R3-01",
+     "resolved": true,
+     "note": "All four reviewer probe lines are flagged (my rerun of r3_lint_probe: 0 findings before, 4 after). The 41 Styles.swift samples pass the self-test from clean, and the gaps the ADR lists still produce 0 findings. Sibling spellings that remain uncaught and undocumented (single-expression computed or returned ternary/?? Color or shape-style values, and type-qualified semantic styles) are reported as R4-01 (minor)."
+    },
+    {
+     "id": "R3-02",
+     "resolved": true,
+     "note": "The gate now drops a Button action that arrives after the lift activation of the same press (first action only, within 1 s). Actions are attributed to the latest press whose touch lifted. Unit tests cover both orders on host and simulator, and my mutations of the drop, its press check and its window are all caught. The UI test passes from clean at AX5 and the default size. The late order itself cannot be produced in a UI test (disclosed). The two stated limits are documented and pending-human."
+    },
+    {
+     "id": "Gate gap: G0.6 device checks",
+     "resolved": false,
+     "note": "Still pending-device, correctly labelled; needs the iPhone 12-class baseline, an iPad and the iPhone 17 Pro (checklist steps 1-31; step 12 extended for round 3)."
+    },
+    {
+     "id": "Gate gap: T54 walk over every state machine's strings",
+     "resolved": false,
+     "note": "Deferred to M1 because the state machines do not exist; disclosed as not-applicable for this round."
+    },
+    {
+     "id": "Gate gap: custom-symbol weight matching and design review of ADR-0013 token adjustments",
+     "resolved": false,
+     "note": "Pending-human (designer); checklist steps 7, 21 and 31; agent-reviewed, human sign-off pending."
+    }
+   ]
+  }
+ }
+]

@@ -1,0 +1,202 @@
+reproductions started 2026-10-25T22:05:29Z; reviewed commit fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc; working tree at 4d72eeca08582e6cd6ddc94d14d0d98a0a210bac with Scripts/check-dependency-lock.py as committed
+check before the fix: Scripts/check-dependency-lock.py at fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc, sha256 71514489291fe34ceda1731fb1d9874d0946977fdc74db97df75e3cb51f4a826
+check after the fix: Scripts/check-dependency-lock.py, sha256 18b7751cb61dbc12ab3d18ba5e3da28f051d93ac18b203d25c2e3c7647b1b3f0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 ; swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1); xcodegen Version: 2.46.0; git version 2.55.0
+the file system of the checkout: ignores letter case (a file named Case is found as cASE)
+load: 11:05  up 22 days, 21:16, 3 users, load averages: 6.53 4.63 3.59
+
+=== Part 1: each route in a copy of the tree at the reviewed commit, the check before and after the fix
+  the unplanted copy, check before the fix: exit 0 -> dependency lock check: 0 failure(s), 0 warning(s)
+  the unplanted copy, check after the fix: exit 0 -> dependency lock check: 0 failure(s), 0 warning(s)
+
+--- route 1, vsm-env: the review's route: Packages/Design/Package@swift-6.4.swift beside an unchanged Package.swift, the SylviaDesign target's path read from the environment variable SYLVIA_EXTRA (as fix-1's observation planted it)
+    ok (passed before the fix; fails after it, 1 finding(s), each at a planted file, in manifest-input)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Packages/Design/Package@swift-6.4.swift: Package@swift-6.4.swift is a version-specific manifest: SwiftPM evaluates a file whose name begins with Package@ and ends with .swift (Package@swift-6.4.swift, in any letter case) instead of the Package.swift beside it when the toolchain's Swift version allows, so a build may evaluate a manifest whose text this check's manifest-input rul
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 2, vsm-test-package: Packages/Design/Package@swift-6.swift: SylviaDesign, a shipping library, depends on the test-only SnapshotTesting when SYLVIA_EXTRA is set
+    ok (passed before the fix; fails after it, 1 finding(s), each at a planted file, in manifest-input)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Packages/Design/Package@swift-6.swift: Package@swift-6.swift is a version-specific manifest: SwiftPM evaluates a file whose name begins with Package@ and ends with .swift (Package@swift-6.4.swift, in any letter case) instead of the Package.swift beside it when the toolchain's Swift version allows, so a build may evaluate a manifest whose text this check's manifest-input rule, w
+      dependency lock check: 1 failure(s), 0 warning(s)
+    the check before the fix, with SYLVIA_EXTRA=1 set, as a build that sets it evaluates the manifest: it reports the test-only package in shipping code (1 test-in-product finding(s)), which it does not see without the variable
+      FAIL test-in-product Packages/Design/Package.swift: target SylviaDesign uses SnapshotTesting from the test-only package pointfreeco/swift-snapshot-testing
+      FAIL lock-registry Docs/Licenses/inventory.json: pointfreeco/swift-snapshot-testing: used_by_targets is stale: the manifests also have [('Packages/Design/Package.swift', 'SylviaDesign', 'SnapshotTesting', False)]; the inventory also has nothing (run `check-dependency-lock.py used-by-targets`)
+      dependency lock check: 2 failure(s), 0 warning(s)
+
+--- route 3, vsm-letter-case: the review's route named in capitals, Packages/Design/PACKAGE@SWIFT-6.4.SWIFT, which SwiftPM takes too
+    ok (passed before the fix; fails after it, 1 finding(s), each at a planted file, in manifest-input)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL manifest-input Packages/Design/PACKAGE@SWIFT-6.4.SWIFT: PACKAGE@SWIFT-6.4.SWIFT is a version-specific manifest: SwiftPM evaluates a file whose name begins with Package@ and ends with .swift (Package@swift-6.4.swift, in any letter case) instead of the Package.swift beside it when the toolchain's Swift version allows, so a build may evaluate a manifest whose text this check's manifest-input rul
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 4, manifest-letter-case: Packages/Shadow/package.swift, a product package whose target passes -import-module Zip, which the design catalog app uses through ../../Packages/Shadow
+    ok (passed before the fix; fails after it, 1 finding(s), each at a planted file, in letter-case)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL letter-case Packages/Shadow/package.swift: package.swift is Package.swift in another letter case: SwiftPM opens Package.swift by name, and the default macOS file system, which ignores case, gives it this file, but this check reads manifests by their exact names, so it would apply none of its rules to this one (found with the fix of SEC-ZIPGUARD-03). Rename it Package.swift
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 5, manifest-letter-case-control: (control) the same package with its manifest named Package.swift
+    ok (the control: fails before the fix and after it, the same way)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      FAIL transitive-direct Packages/Shadow/Package.swift: imports Zip into every source file of the target (-import-module Zip, with no import in any file), a module of marmelroy/Zip, which product code may use only through the package that brings it
+      FAIL flag Packages/Shadow/Package.swift: passes '-import-module', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judged. Remove it, or add it there with a rule for its argument and a self-test case (ADR-0014 section 6)
+      dependency lock check: 2 failure(s), 0 warning(s)
+    after the fix:
+      FAIL transitive-direct Packages/Shadow/Package.swift: imports Zip into every source file of the target (-import-module Zip, with no import in any file), a module of marmelroy/Zip, which product code may use only through the package that brings it
+      FAIL flag Packages/Shadow/Package.swift: passes '-import-module', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judged. Remove it, or add it there with a rule for its argument and a self-test case (ADR-0014 section 6)
+      dependency lock check: 2 failure(s), 0 warning(s)
+
+--- route 6, project-letter-case: Apps/Shadow/Project.yml, a product project whose app target passes -import-module Zip
+    ok (passed before the fix; fails after it, 1 finding(s), each at a planted file, in letter-case)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL letter-case Apps/Shadow/Project.yml: Project.yml is project.yml in another letter case: XcodeGen opens project.yml by name, and the default macOS file system, which ignores case, gives it this file, but this check reads manifests by their exact names, so it would apply none of its rules to this one (found with the fix of SEC-ZIPGUARD-03). Rename it project.yml
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 7, project-letter-case-control: (control) the same project named project.yml
+    ok (the control: fails before the fix and after it, the same way)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      FAIL transitive-direct Apps/Shadow/project.yml: imports Zip into every source file of the target (-import-module Zip, with no import in any file), a module of marmelroy/Zip, which product code may use only through the package that brings it
+      FAIL flag Apps/Shadow/project.yml: passes '-import-module', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judged. Remove it, or add it there with a rule for its argument and a self-test case (ADR-0014 section 6)
+      dependency lock check: 2 failure(s), 0 warning(s)
+    after the fix:
+      FAIL transitive-direct Apps/Shadow/project.yml: imports Zip into every source file of the target (-import-module Zip, with no import in any file), a module of marmelroy/Zip, which product code may use only through the package that brings it
+      FAIL flag Apps/Shadow/project.yml: passes '-import-module', which is not one of the flags a product target may pass (FLAGS_ALLOWED and the path, name and definition flags in Scripts/check-dependency-lock.py): what it brings into the build cannot be judged. Remove it, or add it there with a rule for its argument and a self-test case (ADR-0014 section 6)
+      dependency lock check: 2 failure(s), 0 warning(s)
+
+--- route 8, git-root-letter-case: in a git repository: Shadow.swift, which imports Zip, in SylviaDesign's source directory, tracked as packages/Design/Sources/SylviaDesign/Shadow.swift
+    the copy is a git repository: 3759 files tracked, the base committed as 1c9b866; core.ignorecase true
+    planted and committed; the paths git tracks for it: packages/Design/Sources/SylviaDesign/Shadow.swift 
+    on disk: Packages/Design/Sources/SylviaDesign/Shadow.swift 
+    git status --porcelain after the commit: 
+    ok (passed before the fix; fails after it, 1 finding(s), each at a planted file, in letter-case)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL letter-case packages/Design/Sources/SylviaDesign/Shadow.swift: its first directory 'packages' is Packages/ in another letter case: the default macOS file system, which ignores case, checks the file out into Packages/, where a build reads it, but this check judges a file by the root its path names, so it would read this one as neither product nor spike code (found with the fix of the fourth re
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 9, git-root-letter-case-control: (control) in a git repository: the same file tracked as Packages/Design/Sources/SylviaDesign/Shadow.swift
+    the copy is a git repository: 3759 files tracked, the base committed as 553759e; core.ignorecase true
+    planted and committed; the paths git tracks for it: Packages/Design/Sources/SylviaDesign/Shadow.swift 
+    on disk: Packages/Design/Sources/SylviaDesign/Shadow.swift 
+    git status --porcelain after the commit: 
+    ok (the control: fails before the fix and after it, the same way)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      FAIL transitive-direct Packages/Design/Sources/SylviaDesign/Shadow.swift:2: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names the import counts)
+      dependency lock check: 1 failure(s), 0 warning(s)
+    after the fix:
+      FAIL transitive-direct Packages/Design/Sources/SylviaDesign/Shadow.swift:2: imports Zip, a module of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment or string literal that names the import counts)
+      dependency lock check: 1 failure(s), 0 warning(s)
+
+--- route 10, git-root-letter-case-manifest: in a git repository: the planted package tracked as packages/Shadow/Package.swift and its source, which the design catalog app uses through ../../Packages/Shadow
+    the copy is a git repository: 3759 files tracked, the base committed as 716789e; core.ignorecase true
+    planted and committed; the paths git tracks for it: Apps/DesignCatalog/project.yml packages/Shadow/Package.swift packages/Shadow/Sources/Shadow/Shadow.swift 
+    on disk: Packages/Shadow/Package.swift Packages/Shadow/Sources/Shadow/Shadow.swift Apps/DesignCatalog/project.yml 
+    git status --porcelain after the commit: 
+    ok (passed before the fix; fails after it, 2 finding(s), each at a planted file, in letter-case)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL letter-case packages/Shadow/Package.swift: its first directory 'packages' is Packages/ in another letter case: the default macOS file system, which ignores case, checks the file out into Packages/, where a build reads it, but this check judges a file by the root its path names, so it would read this one as neither product nor spike code (found with the fix of the fourth review of the M0 exit 
+      FAIL letter-case packages/Shadow/Sources/Shadow/Shadow.swift: its first directory 'packages' is Packages/ in another letter case: the default macOS file system, which ignores case, checks the file out into Packages/, where a build reads it, but this check judges a file by the root its path names, so it would read this one as neither product nor spike code (found with the fix of the fourth review o
+      dependency lock check: 2 failure(s), 0 warning(s)
+
+--- route 11, modulemap-letter-case: Packages/Design/Sources/SylviaDesign/include/MODULE.MODULEMAP, which clang loads as module.modulemap, names Minizip's unzip.h
+    ok (passed before the fix; fails after it, 2 finding(s), each at a planted file, in outside-product or transitive-direct)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL transitive-direct Packages/Design/Sources/SylviaDesign/include/MODULE.MODULEMAP:2: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment that names it counts)
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/MODULE.MODULEMAP:2: names 'unzip.h', which resolves to Packages/Design/Sources/SylviaDesign/include/unzip.h: nothing there is tracked by git, so it can hold only build products, package checkouts or generated files, which the product rules cannot read
+      dependency lock check: 2 failure(s), 0 warning(s)
+
+--- route 12, modulemap-letter-case-control: (control) the same module map named module.modulemap
+    ok (the control: fails before the fix and after it, the same way)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      FAIL transitive-direct Packages/Design/Sources/SylviaDesign/include/module.modulemap:2: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment that names it counts)
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/module.modulemap:2: names 'unzip.h', which resolves to Packages/Design/Sources/SylviaDesign/include/unzip.h: nothing there is tracked by git, so it can hold only build products, package checkouts or generated files, which the product rules cannot read
+      dependency lock check: 2 failure(s), 0 warning(s)
+    after the fix:
+      FAIL transitive-direct Packages/Design/Sources/SylviaDesign/include/module.modulemap:2: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment that names it counts)
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/module.modulemap:2: names 'unzip.h', which resolves to Packages/Design/Sources/SylviaDesign/include/unzip.h: nothing there is tracked by git, so it can hold only build products, package checkouts or generated files, which the product rules cannot read
+      dependency lock check: 2 failure(s), 0 warning(s)
+
+--- route 13, modulemap-private: Packages/Design/Sources/SylviaDesign/include/module_private.map, which clang reads beside a module.map, names unzip.h; the module.map beside it names a header of its own
+    ok (passed before the fix; fails after it, 2 finding(s), each at a planted file, in outside-product or transitive-direct)
+    before the fix (fcbd6c89aead7f5e67f0d1cd14f9869d718d8ffc):
+      dependency lock check: 0 failure(s), 0 warning(s)
+    after the fix:
+      FAIL transitive-direct Packages/Design/Sources/SylviaDesign/include/module_private.map:2: names unzip.h, a public header of marmelroy/Zip, which product code may use only through the package that brings it (found in the raw text: a comment that names it counts)
+      FAIL outside-product Packages/Design/Sources/SylviaDesign/include/module_private.map:2: names 'unzip.h', which resolves to Packages/Design/Sources/SylviaDesign/include/unzip.h: nothing there is tracked by git, so it can hold only build products, package checkouts or generated files, which the product rules cannot read
+      dependency lock check: 2 failure(s), 0 warning(s)
+
+=== Part 2a: which file SwiftPM's dump-package (the call the check makes) evaluates beside a Package.swift
+Each case is a package of its own whose one target's path names the manifest that declares it: Sources/Regular in
+Package.swift, Sources/Specific in the other file; both declare tools version 6.2 unless the case says otherwise.
+  6.4                                exit 0; files: Package.swift Package@swift-6.4.swift -> evaluates the one declaring Sources/Specific
+  6                                  exit 0; files: Package.swift Package@swift-6.swift -> evaluates the one declaring Sources/Specific
+  6.4.0                              exit 0; files: Package.swift Package@swift-6.4.0.swift -> evaluates the one declaring Sources/Specific
+  6.4-tools-6.4                      exit 0; files: Package.swift Package@swift-6.4.swift -> evaluates the one declaring Sources/Specific
+  6-and-6.4                          exit 0; files: Package.swift Package@swift-6.4.swift Package@swift-6.swift -> evaluates the one declaring Sources/SixFour
+  lower-p                            exit 0; files: Package.swift package@swift-6.4.swift -> evaluates the one declaring Sources/Specific
+  capital-S                          exit 0; files: Package.swift Package@Swift-6.4.swift -> evaluates the one declaring Sources/Specific
+  capital-extension                  exit 0; files: Package.swift Package@swift-6.4.SWIFT -> evaluates the one declaring Sources/Specific
+  all-capitals                       exit 0; files: PACKAGE@SWIFT-6.4.SWIFT Package.swift -> evaluates the one declaring Sources/Specific
+  7                                  exit 0; files: Package.swift Package@swift-7.swift -> evaluates the one declaring Sources/Regular
+  5.9-tools-5.9                      exit 0; files: Package.swift Package@swift-5.9.swift -> evaluates the one declaring Sources/Regular
+  5.9-tools-6.2                      exit 0; files: Package.swift Package@swift-5.9.swift -> evaluates the one declaring Sources/Regular
+  6.3-tools-6.1                      exit 0; files: Package.swift Package@swift-6.3.swift -> evaluates the one declaring Sources/Regular
+  no-dash                            exit 0; files: Package.swift Package@swift6.4.swift -> evaluates the one declaring Sources/Regular
+  word-after-version                 exit 0; files: Package.swift Package@swift-6.4-x.swift -> evaluates the one declaring Sources/Regular
+  other-word                         exit 0; files: Package.swift Package@other-6.4.swift -> evaluates the one declaring Sources/Regular
+  no-dot-before-swift                exit 0; files: Package.swift Package@swift-6.4Xswift -> evaluates the one declaring Sources/Regular
+  backup-suffix                      exit 0; files: Package.swift Package@swift-6.4.swift.bak -> evaluates the one declaring Sources/Regular
+  no-Package.swift                   exit 1; files: Package@swift-6.4.swift -> evaluates the one declaring (no manifest read); stderr: error: Could not find Package.swift in this directory or any of its parent directories. 
+  lower-package.swift                exit 0; files: package.swift -> evaluates the one declaring Sources/Regular
+
+=== Part 2b: the review's route, SwiftPM's dump-package of the planted Packages/Design without and with SYLVIA_EXTRA
+  vsm-env, SYLVIA_EXTRA unset: exit 0; the SylviaDesign target: path Sources/SylviaDesign, dependencies [{"byName": ["SylviaDesignTokens", null]}]
+  vsm-env, SYLVIA_EXTRA Sources/Elsewhere: exit 0; the SylviaDesign target: path Sources/Elsewhere, dependencies [{"byName": ["SylviaDesignTokens", null]}]
+  vsm-test-package, SYLVIA_EXTRA unset: exit 0; the SylviaDesign target: path Sources/SylviaDesign, dependencies [{"byName": ["SylviaDesignTokens", null]}]
+  vsm-test-package, SYLVIA_EXTRA Sources/Elsewhere: exit 0; the SylviaDesign target: path Sources/SylviaDesign, dependencies [{"byName": ["SylviaDesignTokens", null]}, {"product": ["SnapshotTesting", "swift-snapshot-testing", null, null]}]
+
+=== Part 2c: SwiftPM and XcodeGen load a manifest named in another letter case; neither compiles a .SWIFT file
+  a package whose only manifest is package.swift: swift build exit 0; the tool prints: built from a manifest named package.swift
+  a directory whose only project file is Project.yml, `xcodegen generate` run in it as sylvia_generate runs it: exit 0; it wrote: Probe.xcodeproj
+  a target whose Extra.SWIFT declares what main.swift uses: swift build exit 1 (fails, as expected); SwiftPM's words on it: warning: 'swift-extension': found 1 file(s) which are unhandled; the compiler's: cannot find 'Extra' in scope
+  the same file in an XcodeGen project: generate exit 0; the build phase the project gives it: Extra.SWIFT in Resources (main.swift: main.swift in Sources )
+
+=== Part 2d: which module map names clang (Xcode 27.1's) reads, by an @import of the module a map defines
+  module.modulemap:                                  @import ProbeMod: exit 0 (read)
+  MODULE.MODULEMAP:                                  @import ProbeMod: exit 0 (read)
+  Module.ModuleMap:                                  @import ProbeMod: exit 0 (read)
+  module.map:                                        @import ProbeMod: exit 0 (read)
+  MODULE.MAP:                                        @import ProbeMod: exit 0 (read)
+  x.modulemap (named by no setting):                 @import ProbeMod: exit 1 (fatal error: module 'ProbeMod' not found)
+  module.private.modulemap beside module.modulemap:  @import OtherMod: exit 0 (read)
+  MODULE.PRIVATE.MODULEMAP beside module.modulemap:  @import OtherMod: exit 0 (read)
+  module_private.map beside module.modulemap:        @import OtherMod: exit 1 (fatal error: module 'OtherMod' not found)
+  module_private.map beside module.map:              @import OtherMod: exit 0 (read)
+  MODULE_PRIVATE.MAP beside module.map:              @import OtherMod: exit 0 (read)
+  module.private.modulemap alone:                    @import OtherMod: exit 1 (fatal error: module 'OtherMod' not found)
+
+=== Part 2e: git checks a path tracked under packages/ out into Packages/, and SwiftPM compiles it there
+  the commit's paths (git ls-tree): Packages/P/Package.swift Packages/P/Sources/P/main.swift packages/P/Sources/P/Shadow.swift 
+  a fresh clone's files on disk: Packages/P/Package.swift Packages/P/Sources/P/Shadow.swift Packages/P/Sources/P/main.swift 
+  the clone's git ls-files: Packages/P/Package.swift Packages/P/Sources/P/main.swift packages/P/Sources/P/Shadow.swift ; git status --porcelain: 0 line(s)
+  swift build of the clone's Packages/P: exit 0; the tool prints: Shadow.swift, tracked as packages/P/Sources/P/Shadow.swift, was compiled
+
+reproductions finished 2026-10-25T22:06:32Z; load: 11:06  up 22 days, 21:17, 3 users, load averages: 5.72 4.73 3.69
+result: every route as expected

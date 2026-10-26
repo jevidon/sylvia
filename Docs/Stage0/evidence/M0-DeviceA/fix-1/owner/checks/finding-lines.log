@@ -1,0 +1,107 @@
+commit read: 8082bdb6a3f4a8ee8edfef6a9a5d3489f445ce22
+holds OWN-DA-01 Docs/Stage0/M0-device-runbook.md:163: The orchestrating session switches this checkout to it, from `main` at `96bdc7e9`, once this update is reviewe
+holds OWN-DA-01 Docs/Stage0/M0-device-runbook.md:163: if it still reads `main`
+holds OWN-DA-01 Docs/Stage0/M0-device-runbook.md:163: ask for it, or run `git checkout m0-sessions` there yourself
+holds OWN-DA-01 Docs/Stage0/M0-device-runbook.md:163: Never build from `m0-integrate` or `m0-decisions`, both behind `main`
+holds OWN-DA-01 Docs/Stage0/M0-gate.md:16: The orchestrating session switches the checkout to it, from `main` at `96bdc7e9`, once this update is reviewed
+holds OWN-DA-01 Docs/Stage0/M0-gate.md:16: Never build from `m0-integrate` or `m0-decisions`, both behind `main`
+holds OWN-DA-01 Docs/Stage0/device-checklists/G04-Audio.md:11: `m0-integrate` and `m0-decisions` are behind `main`
+holds OWN-DA-01 Docs/Stage0/device-checklists/G05-Recovery.md:11: `m0-integrate` and `m0-decisions` are behind `main`
+holds OWN-DA-01 Docs/Stage0/device-checklists/G05-AI.md:7: `m0-integrate` and `m0-decisions` are behind `main`
+holds OWN-DA-01 CLAUDE.md:5: both are behind `main`
+holds OWN-DA-01 Docs/Stage0/M0-device-runbook.md:8: the sessions now build from `m0-sessions`
+holds OWN-DA-01 Docs/Stage0/M0-gate.md:128: the branch the sessions build from, which holds your session records
+holds OWN-DA-01 README.md:49: the device sessions use the branch `m0-sessions`
+holds OWN-DA-01 Docs/Stage0/M0-gate.md:714: The orchestrating session reconciles the two branches with you before the checkout moves
+holds OWN-DA-01 Docs/Stage0/M0-device-runbook.md:22: | **B. iPhone 17 Pro** (iPhone18,1), iOS 26.7 (23H24), Developer Mode on |
+holds OWN-DA-01 Docs/Stage0/M0-device-runbook.md:276: on phone B's iOS 26.7
+holds OWN-DA-01 Docs/Stage0/M0-device-runbook.md:946: than phone B's 26.7
+holds OWN-DA-01 Docs/ADRs/0001-platform-baseline-and-toolchain.md:62: iPhone 17 Pro (iPhone18,1), iOS 26.7 (23H24)
+holds OWN-DA-02 Docs/Stage0/M0-device-runbook.md:6: Nothing in this runbook has been run on a device.
+holds OWN-DA-02 Docs/Stage0/M0-gate.md:10: None of the gates' device or human steps has run
+holds OWN-DA-02 Docs/Stage0/M0-gate.md:718: not one device or human step has run
+holds OWN-DA-02 Docs/Stage0/M0-gate.md:128: Nothing ran on a device
+holds OWN-DA-02 Docs/Stage0/evidence/M0-runbook/sessions.md:7: No device step has been run.
+holds OWN-DA-02 Docs/Stage0/M0-gate.md:714: messages record device runs
+holds OWN-DA-03 Docs/Stage0/M0-device-runbook.md:257: xcodebuild test -scheme G05Recovery-Package -destination
+holds OWN-DA-03 Docs/Stage0/M0-device-runbook.md:267: xcodebuild test -scheme G05Recovery-Package -configuration Release
+holds OWN-DA-03 Docs/Stage0/M0-device-runbook.md:795: xcodebuild test -scheme G05Recovery-Package -destination
+holds OWN-DA-03 Docs/Stage0/M0-device-runbook.md:950: the commands of 1.2 with A's `DEVICE_ID`
+holds OWN-DA-03 Docs/Stage0/device-checklists/G05-Recovery.md:27: xcodebuild test -scheme G05Recovery-Package
+holds OWN-DA-03 Docs/Stage0/device-checklists/G05-Recovery.md:49: xcodebuild test -scheme G05Recovery-Package
+holds OWN-DA-03 Docs/Stage0/device-checklists/G05-Recovery.md:106: xcodebuild test -scheme G05Recovery-Package
+holds OWN-DA-03 Docs/Stage0/device-checklists/G05-Recovery.md:118: xcodebuild test -scheme G05Recovery-Package
+holds OWN-DA-03 Docs/Stage0/M0-device-runbook.md:76: Whether `xcodebuild test` signs it for the phone is only known when Session 1 runs it.
+holds OWN-DA-04 Docs/Stage0/M0-gate.md:22: one line**, which is recorded in ADR-0001 as your check
+holds OWN-DA-04 Docs/Stage0/M0-device-runbook.md:159: your confirmation of that reading, as technical lead, is still to be recorded: one line
+holds OWN-DA-04 Docs/Stage0/M0-device-runbook.md:1026: What is left is your confirmation as technical lead, one line (run 1, step 7).
+holds OWN-DA-04 Docs/Stage0/M0-device-runbook.md:1037: one line, recorded in ADR-0001 as your check
+holds OWN-DA-04 Docs/ADRs/0001-platform-baseline-and-toolchain.md:3: That 27A9275 is the non-beta release has not been checked against Apple's release notes
+holds OWN-DA-04 Docs/ADRs/0001-platform-baseline-and-toolchain.md:116: read Apple's release notes for Xcode 27.1
+holds OWN-DA-04 Docs/ADRs/0001-platform-baseline-and-toolchain.md:116: and record here whether 27A9275 is the release build
+holds OWN-DA-04 Docs/ADRs/0001-platform-baseline-and-toolchain.md:116: with the page and the date read
+holds OWN-DA-04 Docs/ADRs/0001-platform-baseline-and-toolchain.md:116: no agent has read them
+holds OWN-DA-04 Docs/Stage0/M0-device-runbook.md:167: leave those records to it until its branch is merged
+holds OWN-DA-04 Docs/Stage0/M0-gate.md:20: leave those records to it until its branch is merged
+holds OWN-DA-05 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (1) `m0-decisions` checked out
+holds OWN-DA-05 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (2) `CLAUDE.md`'s milestone paragraph corrected on `m0-decisions`
+holds OWN-DA-05 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (3) only if you build from `main`: `m0-decisions` merged into it
+holds OWN-DA-05 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (base `m0-decisions`
+holds OWN-DA-05 Docs/Stage0/evidence/M0-runbook/sessions.md:40: committed on `m0-decisions`
+holds OWN-DA-05 Docs/Stage0/evidence/M0-runbook/sessions.md:40: (7) Apple's release notes for Xcode 27.1 read as technical lead and recorded in ADR-0001
+holds OWN-DA-05 Docs/Stage0/evidence/M0-runbook/sessions.md:49: | 8 | 8 Device A, your iPhone 11 Pro (after Session 4) |
+holds OWN-DA-05 Docs/Stage0/evidence/M0-runbook/sessions.md:16: rows 1, 8 and 12 still had the tasks
+holds OWN-DA-05 Docs/Stage0/M0-device-runbook.md:105: add one row per sitting to [`evidence/M0-runbook/sessions.md`]
+holds OWN-DA-05 Docs/Stage0/M0-gate.md:705: 109. **Asked of other owners, not done here**: the session log's rows 1 and 8
+holds OWN-DA-05 Docs/Stage0/M0-gate.md:711: 112. **What each part asked of the other.**
+holds OWN-DA-06 Docs/Stage0/M0-gate.md:5: A run or an event (a CI run, Xcode's update) is dated by UTC, with its time where known, and with the build Ma
+holds OWN-DA-06 Docs/Stage0/M0-device-runbook.md:8: The same day pull request #6 merged `m0-decisions` into `main` (`96bdc7e9`)
+holds OWN-DA-06 Docs/Stage0/M0-device-runbook.md:163: It was made that day from `main` after pull request #6 (`96bdc7e9`)
+holds OWN-DA-06 Docs/Stage0/M0-device-runbook.md:165: pull request #6 merged `m0-decisions` into `main` on 24 October 2026 (`96bdc7e9`)
+holds OWN-DA-06 Docs/Stage0/M0-gate.md:10: On 24 October 2026 pull request #6 made that merge (`96bdc7e9`)
+holds OWN-DA-06 Docs/Stage0/M0-gate.md:18: by pull request #6 on 24 October 2026 (`96bdc7e9`)
+holds OWN-DA-06 Docs/Stage0/M0-gate.md:128: - **Pull request #6, `m0-sessions`, and your decision on device A (24 October 2026).**
+holds OWN-DA-06 Docs/Stage0/M0-gate.md:460: which pull request #6 made on 24 October 2026
+holds OWN-DA-06 Docs/Stage0/M0-gate.md:737: pull request #6 merged `m0-decisions` into `main` on 24 October 2026 (`96bdc7e9`)
+holds OWN-DA-06 README.md:49: which pull request #6 merged into main on 24 October 2026 (`96bdc7e9`)
+holds OWN-DA-06 Docs/Stage0/M0-device-runbook.md:159: read them again the same day
+holds OWN-DA-06 Docs/Stage0/M0-gate.md:22: read them again the same day
+holds OWN-DA-07 Docs/Stage0/M0-device-runbook.md:23: whether iOS 27 supports the iPhone 13 mini was not checked
+holds OWN-DA-07 Docs/Stage0/M0-device-runbook.md:23: on the iOS 26.x it has
+holds OWN-DA-08 Docs/Stage0/M0-device-runbook.md:167: (`git checkout m0-sessions`, then `git merge <its branch>`, by you or by an agent you ask)
+holds OWN-DA-08 Docs/Stage0/M0-gate.md:20: (by you, or by an agent you ask)
+holds OWN-DA-09 Docs/Stage0/M0-gate.md:303: device A, the baseline, is your iPhone 13 mini
+holds OWN-DA-09 Docs/Stage0/M0-gate.md:303: its owners change plan 19.1 and ADR-0001 with it
+holds OWN-DA-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log (named, no line cited; found on line 6): worktree /Users/jevidon/Git/sylvia-sessions
+holds OWN-DA-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log (named, no line cited; found on line 8): branch refs/heads/m0-decisions
+holds OWN-DA-01 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log (named, no line cited; found on line 18): m0-decisions behind main (an ancestor of it): no
+holds OWN-DA-01 Docs/Stage0/evidence/M0-DeviceA/assembly/README.md (named, no line cited; found on line 79): ## Seen at the assembly: the sessions' checkout on `m0-decisions`
+holds OWN-DA-01 Docs/Stage0/integration-log.md (named, no line cited; found on line 1641): ### 28.8 The assembly (26 October 2026)
+holds OWN-DA-03 Docs/Stage0/evidence/M0-DeviceA/assembly/checks/branch-state.log (named, no line cited; found on line 29): Record the recovery suite device-host blocker
+holds OWN-DA-04 Docs/Stage0/evidence/M0-DeviceA/instructions/checks/apple-pages.log (named, no line cited; found on line 2): read: 2026-10-23T17:49:55Z
+holds OWN-DA-04 Docs/Stage0/evidence/M0-DeviceA/assembly/README.md (named, no line cited; found on line 157): Its merge will conflict on ADR-0001's Status line
+holds OWN-DA-05 Docs/Stage0/evidence/M0-DeviceA/assembly/README.md (named, no line cited; found on line 22): **Not applied.** The session log is the owner's record
+holds OWN-DA-06 Docs/Stage0/README.md (named, no line cited; found on line 5): On 24 October 2026 pull request #6 merged `m0-decisions` into `main` (`96bdc7e9`)
+holds OWN-DA-06 Docs/ADRs/0002-repository-build-and-ci.md (named, no line cited; found on line 42): on 23 October 2026 at 15:34 UTC (24 October, 04:34, on the build Mac's clock
+holds OWN-DA-09 Docs/Stage0/evidence/M0-DeviceA/README.md (named, no line cited; found on line 21): plan D01's row: device A "the baseline for small-screen layout on a device", as 19.1 says (it said "the baseli
+the session log on m0-decisions (c72247a6), rows 3a-3d, the first six cells only (run | session | date | who | commit | devices):
+   3a | 1 Automated suites, step 1.1 only | 2026-10-25 17:12 UTC | Codex with Justin Evidon | `96bdc7e996f99fcd2571ea983cc32a04076a5a07` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3b | 1 Automated suites, step 1.2 | 2026-10-25 17:14 UTC | Codex with Justin Evidon | `8404f342` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3c | 1 Automated suites, step 1.2 hosted | 2026-10-25 UTC | Codex with Justin Evidon | `432acc13` plus DeviceTests code committed unchanged as `4be1a1a4` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+   3d | 1 Automated suites, step 1.3 | 2026-10-25 17:24–17:26 UTC | Codex with Justin Evidon | `d5336111` | iPhone 17 Pro, iPhone18,1, iOS 27.0.1 (24A446)
+holds OWN-DA-01 claim: git rev-parse m0-decisions = c72247a6
+holds OWN-DA-01 claim: git rev-list --count main..m0-decisions = 8; m0-decisions..main = 1 (96bdc7e9), the merge of pull request #6
+holds OWN-DA-01 claim: the 8 commits after 044ed3cf run from 2026-10-26 06:12:41 +1300 (Record the first physical iPhone Keychain test result) to 2026-10-26 06:33:13 +1300 (Record setup checks and the audio device run in progress)
+holds OWN-DA-01 claim: git ls-tree m0-decisions Spikes/G05-Recovery/ lists DeviceTests, which 8082bdb6 lacks
+holds OWN-DA-01 claim: those commits change the session log, the runbook, the G0.5 recovery checklist and three reports (G0.2, G0.5 AI, G0.5 recovery)
+holds OWN-DA-01 claim: both branches changed, since 044ed3cf, exactly these files: Docs/Stage0/G02-Transfer.md, Docs/Stage0/G05-Recovery.md, Docs/Stage0/M0-device-runbook.md, Docs/Stage0/device-checklists/G05-Recovery.md
+holds OWN-DA-01 claim: the session log on m0-decisions has rows 3a-3d, Session 1's 1.1, 1.2 and 1.3, the first built from 96bdc7e9
+holds OWN-DA-05 claim: m0-decisions changed the session log's opening line (line 7 there no longer reads 'No device step has been run.')
+holds OWN-DA-01 claim: the setup record on m0-decisions gives phone B as iOS 27.0.1 (24A446)
+holds OWN-DA-02 claim: the record of G0.2 step 1 on m0-decisions and its log exist (what they say is a sitting's result, not read here)
+holds OWN-DA-03 claim: step-1-tests.log on m0-decisions holds Xcode's message, which the runbook's 1.5 now quotes, after the package scheme's command
+holds OWN-DA-03 claim: step-1-2-results.txt on m0-decisions holds the three texts OWN-DA-03 quotes from it (the attempt's status, xcodebuild's exit status and the retry's commit)
+holds OWN-DA-03 claim: 4be1a1a4 (Host the recovery suite in an iOS test app) adds Spikes/G05-Recovery/DeviceTests
+holds OWN-DA-06 claim: git log -1 --format=%ad --date=iso 96bdc7e9 gives 2026-10-24 04:34:37 +1300, which is 2026-10-23 15:34 UTC
+holds OWN-DA-05 claim: the gate summary's Section 1 at the commit read names neither the session log's rows nor CLAUDE.md's toolchain line
+result: every cited line, named text and claim holds (73 citations, 0 of them found within three lines of the line cited; 12 named texts; 15 claims)

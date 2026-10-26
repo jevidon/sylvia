@@ -32,9 +32,9 @@ import Foundation
 /// created in a class-B directory (`DataProtectionTests.inheritance`). In a simulator build only, an
 /// item that reports no class is therefore accepted after the class was requested. A different
 /// reported class is still an error everywhere, and device builds always require the readback to
-/// match (device checklist, T50). On the macOS host, `setAttributes` cannot change the class of an
-/// existing file; the class is fixed when the file is created, so files are created inside
-/// protected directories.
+/// match (device checklist, T50). Files are created inside protected directories so that they have
+/// the class from the start; whether `setAttributes` can change an existing file's class is what
+/// `DataProtectionTests.mismatchDetected` records.
 public struct FileProtector: Sendable {
     public let protection: FileProtectionType
 
@@ -122,10 +122,13 @@ public struct FileProtector: Sendable {
     /// Copies the regular file at `source` into a new file at `destination` that is created with
     /// the protection class, then verifies the class. `FileManager.copyItem` must not be used for
     /// files Sylvia keeps: it clones the source and keeps the source's class (shown on the host:
-    /// a class-C file copied into a class-B directory stays class C), and the class of an existing
-    /// file cannot be changed afterwards on macOS. The source is opened without following links and
-    /// must be a regular file at the moment it is opened, so a bundle changed after validation
-    /// cannot substitute a link, FIFO or device. Fails if `destination` exists.
+    /// a class-C file copied into a class-B directory stays class C). The source is opened without following a link in
+    /// its last component (`O_NOFOLLOW`) and must be a regular file at the moment it is opened, so a
+    /// bundle changed after validation cannot substitute a link, FIFO or device for the file itself.
+    /// `O_NOFOLLOW` covers the last component only: a folder above the file that is swapped for a
+    /// link after the caller's checks is followed (security review of 26 October 2026, finding S5;
+    /// left as it was, a request to the technical lead). A restore still keeps only a copy with the
+    /// manifest's size and digest (`BackupRestorer.prepare`). Fails if `destination` exists.
     public func copyFile(from source: URL, to destination: URL) throws {
         let fd = open(source.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
         guard fd >= 0 else { throw FileSystemError.posix("open", source.lastPathComponent, errno) }
@@ -154,8 +157,71 @@ public struct FileProtector: Sendable {
         }
     }
 
+    /// Copies the directory tree at `source` into a new directory `destination`, which must not exist:
+    /// every directory is created with the protection class (`ensureDirectory`) and every regular file
+    /// by `copyFile`, so each item gets this protector's class whatever the source item's class was.
+    /// A symbolic link or any other kind of item fails the copy, and a failed copy is removed. For a
+    /// library tree copied from a template (the crash drills, the tests): `FileManager.copyItem` keeps
+    /// each source file's class (device run of 26 October 2026: a fixture copied out of the app bundle
+    /// had no class, and the open refused it). Extended attributes are not copied; the open sets the
+    /// backup exclusion of the directories that need it again.
+    ///
+    /// Whether the destination is inside the source is decided on both paths resolved by realpath(3)
+    /// (`CanonicalPath`), so links are followed and /private is kept however the folders are named; a
+    /// destination that cannot be placed that way is refused. Foundation's `standardizedFileURL` drops
+    /// /private only from a path that exists: under /private/var, as an iPhone names its folders, the
+    /// existing source and a destination inside it that did not exist yet differed in prefix, and the
+    /// copy went on into itself (review of 26 October 2026, finding F1).
+    public func copyTree(from source: URL, to destination: URL) throws {
+        try requireSupportedClass()
+        let fm = FileManager.default
+        guard let sourcePath = CanonicalPath.of(source), let destinationPath = CanonicalPath.of(destination) else {
+            throw FileSystemError.posix("copy", "\(destination.lastPathComponent): a path that cannot be resolved", EINVAL)
+        }
+        guard destinationPath != sourcePath, CanonicalPath.relative(destinationPath, to: sourcePath) == nil else {
+            throw FileSystemError.posix("copy", "\(destination.lastPathComponent) is inside \(source.lastPathComponent)", EINVAL)
+        }
+        var info = stat()
+        guard lstat(source.path, &info) == 0 else { throw FileSystemError.posix("lstat", source.lastPathComponent, errno) }
+        guard (info.st_mode & S_IFMT) == S_IFDIR else {
+            throw FileSystemError.posix("copy", "\(source.lastPathComponent) is not a directory", ENOTDIR)
+        }
+        guard lstat(destination.path, &info) != 0, errno == ENOENT else {
+            throw FileSystemError.posix("copy", "\(destination.lastPathComponent) already exists", EEXIST)
+        }
+        do {
+            try ensureDirectory(destination)
+            try copyContents(of: source, into: destination)
+        } catch {
+            try? fm.removeItem(at: destination)
+            throw error
+        }
+    }
+
+    private func copyContents(of directory: URL, into target: URL) throws {
+        for name in try FileManager.default.contentsOfDirectory(atPath: directory.path).sorted() {
+            let from = directory.appending(path: name, directoryHint: .notDirectory)
+            let to = target.appending(path: name, directoryHint: .notDirectory)
+            var info = stat()
+            guard lstat(from.path, &info) == 0 else { throw FileSystemError.posix("lstat", name, errno) }
+            switch info.st_mode & S_IFMT {
+            case S_IFDIR:
+                try ensureDirectory(to)
+                try copyContents(of: from, into: to)
+            case S_IFREG:
+                try copyFile(from: from, to: to)
+            default:
+                throw FileSystemError.posix("copy", "\(name) is not a regular file or a directory", EINVAL)
+            }
+        }
+    }
+
     public func protectionClass(of url: URL) throws -> FileProtectionType? {
-        let values = try url.resourceValues(forKeys: [.fileProtectionKey])
+        // A URL caches the resource values it has read, so a reading through the URL that read the class
+        // before `setAttributes` would return the old class (finding F-1). Drop the cached value first.
+        var fresh = url
+        fresh.removeCachedResourceValue(forKey: .fileProtectionKey)
+        let values = try fresh.resourceValues(forKeys: [.fileProtectionKey])
         guard let value = values.fileProtection else { return nil }
         // URLFileProtection and FileProtectionType are distinct string enums with different raw
         // values ("NSURLFileProtection…" vs "NSFileProtection…"); map them explicitly.

@@ -1,0 +1,79 @@
+command: python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/commands/finding-lines.py
+commit: 2095cbec6c9a10c007b70c1916c41f0bb89f6024; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/foldin/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T18:57:08Z; load:  7:57  up 23 days, 18:07, 4 users, load averages: 3.85 4.37 4.30
+
+reviewed commit: 832a36361b89b9574e29556d06cd676471fa0350
+m0-decisions now: c72247a69a374ce361834550b92689b4abab95ee (read-only)
+
+ok   OWN-RU-01 832a3636:Docs/Stage0/M0-device-runbook.md:210
+ok   OWN-RU-01 c72247a6:Docs/Stage0/M0-device-runbook.md:207
+ok   OWN-RU-01 the owner's setup record: 0.7's Keychain test not run
+ok   OWN-RU-01 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:28
+ok   OWN-RU-01 832a3636:Docs/Stage0/M0-device-runbook.md:221
+ok   OWN-RU-01 integration log 41.3 lists the runbook places it rewrote, and not 0.7
+ok   OWN-RU-01 the m0-sessions wording reached this branch with the merge 4c0fa815 (git log -S) (6a72ce8c)
+ok   OWN-RU-02 832a3636:Docs/Stage0/M0-gate.md:466
+ok   OWN-RU-02 c72247a6:Docs/Stage0/M0-gate.md:459
+ok   OWN-RU-02 c3adae68:Docs/Stage0/M0-gate.md:460
+ok   OWN-RU-02 832a3636:Docs/Stage0/M0-gate.md:839
+ok   OWN-RU-02 832a3636:Docs/Stage0/M0-gate.md:482
+ok   OWN-RU-03 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:53-54
+ok   OWN-RU-03 the owner's status file at c72247a6: RUNNING, full suite not complete
+ok   OWN-RU-03 m0-device-fixes-ats is cut from c72247a6 (git merge-base)
+ok   OWN-RU-03 m0-device-fixes-recovery is cut from c72247a6 (git merge-base)
+ok   OWN-RU-03 m0-device-fixes-ats holds 907538f5..0b0e1e65 (it has moved on since: listed) (907538f5 e5e1cede 0b0e1e65 e4586a83)
+ok   OWN-RU-03 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:66-71
+ok   OWN-RU-03 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:72-74
+ok   OWN-RU-03 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/commands/owner-records-intact.py:25 [cited as line 24, which holds BASE; OWNER_HEAD is on line 25]
+ok   OWN-RU-03 832a3636:Docs/Stage0/M0-gate.md:10
+ok   OWN-RU-03 832a3636:Docs/Stage0/M0-gate.md:47
+ok   OWN-RU-03 832a3636:Docs/Stage0/M0-device-runbook.md:6
+ok   OWN-RU-03 832a3636:Docs/Stage0/G04-Audio.md:6
+ok   OWN-RU-03 832a3636:Docs/Stage0/device-checklists/G04-Audio.md:3
+ok   OWN-RU-03 832a3636:Docs/Stage0/M0-device-runbook.md:212
+ok   OWN-RU-04 832a3636:CLAUDE.md:5
+ok   OWN-RU-04 git diff 6cede84a 832a3636 -- CLAUDE.md prints nothing
+ok   OWN-RU-04 c72247a6's CLAUDE.md names m0-integrate and gives no instruction against m0-decisions
+ok   OWN-RU-04 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:46-48
+ok   OWN-RU-04 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:66-68 [CLAUDE.md not named]
+ok   OWN-RU-04 the README's list of conflicts at 832a3636 does not name CLAUDE.md
+ok   OWN-RU-04 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:72
+ok   OWN-RU-04 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/claude-md-paragraph.md:7-10
+ok   OWN-RU-04 claude-md-paragraph.md at 832a3636 never says to apply the texts after the merge
+ok   OWN-RU-04 the paragraph left to paste by hand is a long one (the finding says 2,600 characters; the count follows) (2893 characters)
+ok   OWN-RU-05 832a3636:Docs/Stage0/M0-device-runbook.md:262
+ok   OWN-RU-05 832a3636:Docs/Stage0/M0-device-runbook.md:79
+ok   OWN-RU-05 832a3636:Docs/Stage0/M0-device-runbook.md:290
+ok   OWN-RU-05 832a3636:Docs/Stage0/M0-device-runbook.md:171
+ok   OWN-RU-05 0.3 step 7 and Section 2 at 832a3636 say nothing of a repeat's file names
+ok   OWN-RU-05 832a3636:Docs/Stage0/M0-gate.md:47
+ok   OWN-RU-05 1.2's command came from the owner's 4be1a1a4
+ok   OWN-RU-05 step-1-2-results.txt: Log: step-1-tests.log
+ok   OWN-RU-05 832a3636:Docs/Stage0/G05-Recovery.md:119
+ok   OWN-RU-05 832a3636:Docs/Stage0/G05-Recovery.md:117
+ok   OWN-RU-05 G0.5 AI's row D1 (failed) cites step-01-ats.log
+ok   OWN-RU-05 the owner's sittings named their extra runs apart (step-1-hosted-tests.log, step-01-ats-initial.log)
+ok   OWN-RU-06 832a3636:Docs/Stage0/M0-device-runbook.md:157
+ok   OWN-RU-06 832a3636:Docs/Stage0/M0-gate.md:23 [cited as line 24, which holds step 9; step 8 is on line 23]
+ok   OWN-RU-06 832a3636:Docs/Stage0/M0-device-runbook.md:24
+ok   OWN-RU-07 832a3636:Docs/Stage0/M0-device-runbook.md:171
+ok   OWN-RU-07 git diff --stat 96bdc7e9 832a3636: the four files of DeviceTests under Spikes (Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, .../DeviceTests/Support/Bundle+Module.swift, Spikes/G05-Recovery/DeviceTests/project.yml)
+ok   OWN-RU-07 git diff --stat 8404f342 832a3636: the four files of DeviceTests under Spikes (Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, .../DeviceTests/Support/Bundle+Module.swift, Spikes/G05-Recovery/DeviceTests/project.yml)
+ok   OWN-RU-07 git diff --stat 432acc13 832a3636: the four files of DeviceTests under Spikes (Spikes/G05-Recovery/DeviceTests/App/TestHost.swift, Spikes/G05-Recovery/DeviceTests/Package.resolved, .../DeviceTests/Support/Bundle+Module.swift, Spikes/G05-Recovery/DeviceTests/project.yml)
+ok   OWN-RU-07 git diff --stat d5336111 832a3636: nothing under Spikes (Docs/Stage0/device-checklists/G01-EPUB.md, Docs/Stage0/device-checklists/G01-PDF.md, Docs/Stage0/device-checklists/G02-Transfer.md, Docs/Stage0/device-checklists/G03-Intake.md, Docs/Stage0/device-checklists/G04-Audio.md, Docs/Stage0/device-checklists/G05-AI.md, Docs/Stage0/device-checklists/G05-Recovery.md, Docs/Stage0/device-checklists/G06-Design.md, Scripts/check-dependency-lock.py, Scripts/ci.d/12-dependency-lock.sh)
+ok   OWN-RU-07 832a3636:Docs/Stage0/M0-gate.md:30 [the gate summary's item 2 note]
+ok   OWN-RU-08 832a3636:Docs/Stage0/integration-log.md:3
+ok   OWN-RU-08 832a3636:Docs/Stage0/M0-gate.md:122
+ok   OWN-RU-08 832a3636:Docs/Stage0/M0-gate.md:471
+ok   OWN-RU-08 832a3636:Docs/Stage0/M0-gate.md:556
+ok   OWN-RU-08 832a3636:Docs/Stage0/M0-device-runbook.md:137
+ok   OWN-RU-08 832a3636:Docs/Stage0/M0-gate.md:855
+ok   OWN-RU-08 832a3636:Docs/Stage0/M0-gate.md:856
+ok   OWN-RU-08 832a3636:Docs/Stage0/M0-gate.md:857
+
+result: pass (65 of 65 hold)
+
+exit status: 0
+end: 2026-10-26T18:57:08Z; load:  7:57  up 23 days, 18:07, 4 users, load averages: 3.85 4.37 4.30

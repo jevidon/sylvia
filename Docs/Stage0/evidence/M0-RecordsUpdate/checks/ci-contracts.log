@@ -1,0 +1,18 @@
+command: Scripts/ci.sh contracts
+commit: 1b852c2d028f76a0521587aa2f958c5c4ce2068d; uncommitted paths: 3
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/checks/ci-contracts.log
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/checks/owner-records-intact.log
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/checks/step-0.8-paths.log
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T02:19:19Z; load: 15:19  up 23 days,  1:29, 3 users, load averages: 4.04 4.57 4.23
+
+==> 00-git-lfs
+    pass (6s)
+==> 10-contracts
+    pass (1s)
+==> 11-capture-anchor-contracts
+    pass (58s)
+all 3 steps passed
+
+exit status: 0
+end: 2026-10-26T02:20:24Z; load: 15:20  up 23 days,  1:30, 3 users, load averages: 6.54 5.17 4.48

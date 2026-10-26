@@ -1,0 +1,7 @@
+Date: 2026-10-25 UTC (26 October NZDT). Tester: Codex with Justin Evidon.
+Device: iPhone 17 Pro (iPhone18,1), iOS 27.0.1 (24A446). Xcode 27.1 (27A9275).
+Build commit: d5336111b6ba76e4c248b7cf647e1c3fa9d2500b. Debug, wired, unlocked.
+Result: passed-device. The UI test passed in both attempts: interrupted partial answer persisted, one request, one send, no automatic resend.
+
+SUSPENSION-PROBE before-home=20 after-return=50 status=interrupted · Interrupted · partial answer stored interrupted · Interrupted · partial answer · 50 characters requests 1 question sent 1 times
+Test Case '-[ProbeDefaultATSUITests.SuspensionUITests testLeavingTheForegroundMidStreamLeavesAnInterruptedPartialAnswer]' passed (13.223 seconds).

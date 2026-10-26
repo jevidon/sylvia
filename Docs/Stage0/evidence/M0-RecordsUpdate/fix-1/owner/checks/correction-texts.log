@@ -1,0 +1,25 @@
+command: Docs/Stage0/evidence/M0-RecordsUpdate/commands/correction-texts-compare.sh
+commit: 789c904911a0787d8d144f87ba755f6b374ece16; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T14:14:23Z; load:  3:14  up 23 days, 13:24, 3 users, load averages: 3.82 3.98 3.84
+
+correction-texts-compare: HEAD 789c904911a0787d8d144f87ba755f6b374ece16, uncommitted paths: 1; 2026-10-26T14:14:24Z
+c72247a6: exit 1; 77 texts checked, 68 missing
+c3adae68: exit 1; 77 texts checked, 68 missing
+1d5ac477: exit 1; 77 texts checked, 68 missing
+HEAD: exit 1; 77 texts checked, 68 missing
+
+== lines that differ from c72247a6 to HEAD
+   none
+
+== lines that differ from c3adae68 to HEAD
+   none
+
+== lines that differ from 1d5ac477 to HEAD
+   none
+
+result: every text found in all three merged trees is found at HEAD
+
+exit status: 0
+end: 2026-10-26T14:14:26Z; load:  3:14  up 23 days, 13:24, 3 users, load averages: 4.15 4.05 3.87

@@ -1,0 +1,36 @@
+command: Docs/Stage0/evidence/M0-DeviceFixes/fix-1/security/commands/check-redaction.sh
+commit: 87a2154a1063e83e9e19abcd4ad37c3c995b3d11 (m0-device-fixes); time: 2026-10-26T11:41:17Z
+redact (the runbook's command, M0-device-runbook.md line 542):
+  perl -pi -e 's/\b(\d{1,3}\.\d{1,3})\.\d{1,3}\.\d{1,3}\b/$1.x.x/g; s/\.[A-Za-z0-9-]+\.ts\.net\b/.[tailnet].ts.net/g' <file>
+  (the runbook's text: perl -pi -e 's/\b(\d{1,3}\.\d{1,3})\.\d{1,3}\.\d{1,3}\b/$1.x.x/g; s/\.[A-Za-z0-9-]+\.ts\.net\b/.[tailnet].ts.net/g')
+check: perl -ne 'print if /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/' <file>
+
+== 1. the check on the first run's records, Docs/Stage0/evidence/G05-AI/device/, as committed
+Docs/Stage0/evidence/G05-AI/device/step-01-ats-initial.log: lines with a whole IPv4 address: 0 (expected 0); lines with a cut one (a.b.x.x): 49
+Docs/Stage0/evidence/G05-AI/device/step-01-ats.log: lines with a whole IPv4 address: 0 (expected 0); lines with a cut one (a.b.x.x): 49
+Docs/Stage0/evidence/G05-AI/device/step-01-ats.txt: lines with a whole IPv4 address: 0 (expected 0); lines with a cut one (a.b.x.x): 7
+Docs/Stage0/evidence/G05-AI/device/step-04-suspension.txt: lines with a whole IPv4 address: 0 (expected 0); lines with a cut one (a.b.x.x): 0
+
+== 2. round trip on the first run's address lines (scratch copy)
+address lines taken: 49; whole addresses written into the scratch copy: 77; lines with one before redaction: 49
+after redact: lines with a whole IPv4 address: 0 (expected 0)
+after redact: identical to the first run's masked lines: yes
+
+== 3. sample lines, documentation addresses only (RFC 5737)
+-- before
+), NSLocalizedDescription=Could not connect to the server., NSErrorFailingURLStringKey=http://192.0.2.23:58688/v1/models, NSErrorFailingURLKey=http://192.0.2.23:58688/v1/models, _kCFStreamErrorDomainKey=1}
+[connection] nw_endpoint_flow_failed_with_error [C3.1.1 198.51.100.7:58688 in_progress socket-flow (satisfied (Path is satisfied), viable, interface: en0[802.11])] already failing, returning
+ATS-PROBE variant=default public-ip=192.0.2.1 result=URLError -1022 ats-blocked=true
+local: ::ffff:203.0.113.9.58688, remote: [::ffff:203.0.113.10]:443
+connecting to mac.example-tailnet.ts.net:47800
+[evidence] [device (Version 27.0.1 (Build 24A446))] iOS 27.0.1 stays as it is
+-- after redact
+), NSLocalizedDescription=Could not connect to the server., NSErrorFailingURLStringKey=http://192.0.x.x:58688/v1/models, NSErrorFailingURLKey=http://192.0.x.x:58688/v1/models, _kCFStreamErrorDomainKey=1}
+[connection] nw_endpoint_flow_failed_with_error [C3.1.1 198.51.x.x:58688 in_progress socket-flow (satisfied (Path is satisfied), viable, interface: en0[802.11])] already failing, returning
+ATS-PROBE variant=default public-ip=192.0.x.x result=URLError -1022 ats-blocked=true
+local: ::ffff:203.0.x.x.58688, remote: [::ffff:203.0.x.x]:443
+connecting to mac.[tailnet].ts.net:47800
+[evidence] [device (Version 27.0.1 (Build 24A446))] iOS 27.0.1 stays as it is
+-- check after redact (prints nothing when every address is cut):
+
+exit: 0

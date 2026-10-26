@@ -1,0 +1,47 @@
+command: Scripts/ci.d/13-hard-rules.sh
+commit: aa132139cb6ffbf8a7d2df0a262b1c91a63ddad3; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/completeness/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T12:12:18Z; load:  1:12  up 23 days, 11:22, 3 users, load averages: 3.55 3.81 3.78
+
+environment: host (macOS 26.6.2 25G83), Python 3.9.6
+commit: aa132139cb6ffbf8a7d2df0a262b1c91a63ddad3
+
+--- self-test (Scripts/audit-hard-rules.sh self-test)
+ok: git work tree: the audit fails when there are findings
+ok: git work tree: an allowlisted probe plist is reported as allowed, not as a finding
+ok: git work tree: the two canary keys are allowed as canaries under both credential rules (4 of 4)
+ok: git work tree: the binary file is skipped and the Spikes/, test-target and Markdown lookalikes are not findings
+ok: git work tree: no matched credential value is printed (only length and first four characters)
+ok: git work tree: ignored files are not listed
+ok: an allowlist entry that matches nothing is reported STALE and fails the audit
+ok: allowlisting a never-allowlistable rule is refused
+ok: an allowlist entry whose reason names no ADR is refused, and excuses nothing
+ok: a clean tree passes with no finding
+
+self-test: PASS (0 failure(s))
+
+--- repository audit (Scripts/audit-hard-rules.sh)
+root: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_f23c0c6d-d05-6
+file list: git (git ls-files --cached --others --exclude-standard)
+files scanned: 4054 (835 binary, skipped for text rules); not scanned (hold the patterns): Scripts/audit-hard-rules.sh, Scripts/ci.d/13-hard-rules.sh
+allowlist: 13 entries
+| Rule | Findings | Allowed |
+| --- | --- | --- |
+| ats-arbitrary-loads | 0 | 0 |
+| ats-exception | 0 | 14 |
+| trust-override | 0 | 2 |
+| weak-tls | 0 | 0 |
+| file-protection-none | 0 | 4 |
+| keychain-accessible-always | 0 | 0 |
+| key-like-string | 0 | 10 |
+| private-key-block | 0 | 0 |
+| generic-secret | 0 | 19 |
+| secret-file | 0 | 0 |
+| todo-in-product | 0 | 0 |
+
+result: PASS (0 finding(s), 49 allowed, 0 stale allowlist entries, 0 allowlist error(s))
+13-hard-rules: self-test and repository audit passed; logs in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_f23c0c6d-d05-6/.build/ci-logs/hard-rules
+
+exit status: 0
+end: 2026-10-26T12:12:27Z; load:  1:12  up 23 days, 11:23, 3 users, load averages: 3.54 3.80 3.77

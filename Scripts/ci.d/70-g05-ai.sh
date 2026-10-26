@@ -28,7 +28,7 @@ EXPORT="$WORK/contract-export"
 # Totals reported by Swift Testing (skipped live tests included); a drop means tests went missing.
 MIN_HOST_TESTS=250
 MIN_SIM_PACKAGE_TESTS=250
-MIN_PROBE_TESTS=39
+MIN_PROBE_TESTS=42  # 14 per variant since 907538f5 added a test of the probe's device address rule (13 before)
 
 sylvia_check_xcode || echo "continuing with the active Xcode"
 echo "toolchain: $(xcodebuild -version | tr '\n' ' ')"

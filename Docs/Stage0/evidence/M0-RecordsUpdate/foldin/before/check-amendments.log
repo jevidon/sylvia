@@ -1,0 +1,66 @@
+command: python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/commands/check-amendments.py /Users/jevidon/Git/sylvia/.claude/worktrees/wf_76283425-4db-1
+commit: cbdb63bc265b98955cc4a297e92c689fb1a9d410; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T16:27:46Z; load:  5:27  up 23 days, 15:38, 4 users, load averages: 7.15 7.15 5.48
+
+PASS cited paths exist (144 checked; the run's own log excluded)
+PASS G01-EPUB.md: 14 findings, each in Section 2 or 3
+PASS G01-PDF.md: 15 findings, each in Section 2 or 3
+PASS G02-Transfer.md: 22 findings, each in Section 2 or 3
+PASS G03-Intake.md: 19 findings, each in Section 2 or 3
+PASS G04-Audio.md: 9 findings, each in Section 2 or 3
+PASS G05-AI.md: 23 findings, each in Section 2 or 3
+PASS G05-Recovery.md: 12 findings, each in Section 2 or 3
+PASS G06-Design.md: 18 findings, each in Section 2 or 3
+PASS G06-Design.md: 13 Other-findings bullets, each in Section 3
+PASS G01-EPUB.md: 8 open questions, each referenced
+PASS G01-PDF.md: 8 open questions, each referenced
+PASS G02-Transfer.md: 12 open questions, each referenced
+PASS G03-Intake.md: 10 open questions, each referenced
+PASS G05-Recovery.md: 8 open questions, each referenced
+PASS G06-Design.md: 14 open questions, each referenced
+PASS G05-AI.md: 8 open questions, each referenced
+PASS G04-Audio.md: 7 open-question bullets (six questions and a warnings note), each matched to the entry that covers it
+PASS Section 3.2: ADR-0001 to ADR-0016, 122 consequences, each mapped to a tag or to no change
+PASS Appendix D has the draft 0.7 entry before draft 0.6, and the draft 0.5 entry before draft 0.4
+PASS Section 6 lists tags A01-A56 (56 rows)
+PASS Appendix D lists tags A01-A56 (56 bullets)
+PASS Appendix D gives A01-A53 their bullets in the draft 0.5 entry and A54-A56 in the draft 0.7 entry
+PASS the plan text carries every tag A01-A56 (56 tags)
+PASS each tag names the same plan sections in the text, Section 6 and Appendix D
+PASS every tag is well formed
+PASS A47 collects exactly the 14 tags plan Section 23.1 carries
+PASS Section 2: 139 rows, each with six cells, a class and a known tag
+PASS Section 1: the tags of 6 forced, 7 unforced and 2 considered-and-kept narrowings, none listed twice
+PASS every scope-narrowing row's tag (12 tags) is in Section 1.1 or 1.2
+PASS every Section 1 tag has a Section 2 row
+PASS every Section 1.2 tag has a Section 2 row classified scope narrowing
+PASS plan Appendix D's draft 0.5 entry names exactly the 15 Section 1 tags
+PASS Section 4 lists PO-01 to PO-44 in order (44 rows)
+PASS Section 4 rows have six cells and known tags
+PASS replaced phrases are absent (70 from the plan, 11 from this document)
+PASS new anchor phrases are present in the plan (41)
+PASS T54 names every section the 4.4.6 gaps table names (17 sections)
+PASS the milestone gating rule includes M1 in all 7 places that state it, and the earlier wording is gone
+PASS plan Sections 1-23: 104 quoted phrases, each in the design package, in the 4.4.6 gaps table or its introduction, or listed as not interface text (26)
+PASS plan: 294 table rows, none ragged
+PASS amendments: 338 table rows, none ragged
+PASS Section 2.2 is byte-identical to draft 0.4 (471b143)
+PASS Section 21.5 is byte-identical to draft 0.4 (471b143)
+PASS Section 24 is byte-identical to draft 0.6 (0ef8c39)
+PASS the 10 budget values of Section 19.2 equal draft 0.4
+PASS draft 0.8: no sentence before Appendix D says a product-owner decision or approval is pending (the dated Revised line excepted)
+PASS draft 0.8: Section 23.1 lists D01-D17, each recorded as approved by the product owner on 22 October 2026 (17 rows)
+PASS draft 0.8 as revised on 24 October 2026: the five decisions that are not the recommendation (D-1, decided again on 24 October 2026, PO-13, PO-23, PO-33, PO-39) are applied where the plan states them, and before Appendix D only Section 19.1 names iPhone 12-class hardware
+PASS draft 0.8: Section 23.3 records who signs, that no role is signed yet, that every review so far was an agent's, and the outside security review
+PASS draft 0.8: Appendix D opens with the draft 0.8 entry, which lists exactly the five decisions that are not the recommendation and says it is agent-written and not reviewed
+PASS draft 0.8 as revised on 23 October 2026: 15.5 records the product owner's decision on PO-12's sources file and import ledger, and no text before Appendix D leaves them open or says a decision kept them so
+PASS draft 0.8 as revised on 23 October 2026: D13's row records that the product owner took PO-42, with PO-41, PO-43 and PO-44, on for now, a lawyer's review before any public App Store release
+PASS draft 0.8 as revised on 23 October 2026: 19.1, 21.1 and the device-evidence risk row record the product owner's iPad, and no text before Appendix D says none is available or asks to acquire one
+PASS draft 0.8 as revised on 24 October 2026: Appendix D's draft 0.8 entry ends with the dated item that records the answers of 23 October 2026, the item that corrects it and the dated item of 24 October 2026
+PASS draft 0.8 as corrected on 23 October 2026: Appendix D's draft 0.8 entry points its items on PO-12 and PO-42 to the answers of 23 October 2026, and its review note names the fourth review
+PASS draft 0.8 as revised on 24 October 2026: the product owner's decision on device A (the iPhone 13 mini; the A13 floor left for M8) is recorded wherever the plan and this document state device A, and the statements it made stale are gone from the plan before Appendix D
+summary: 132 numbered findings in the eight reports; 56 amendment tags; 44 product-owner questions; 0 failed checks
+
+exit status: 0
+end: 2026-10-26T16:27:46Z; load:  5:27  up 23 days, 15:38, 4 users, load averages: 7.15 7.15 5.48

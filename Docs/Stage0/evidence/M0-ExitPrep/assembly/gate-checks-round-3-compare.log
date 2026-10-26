@@ -1,0 +1,64 @@
+command: python3 -I Docs/Stage0/evidence/M0-ExitPrep/assembly/commands/compare-round-3.py Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-at-5aec2518.log /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-3/.build/scratch/exit-asm-logs/gate-checks-round-3.log
+commit: 7c981bd11e9df1d09380565c6701b20f0c64c1cb; uncommitted paths: 0
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-25T16:59:30Z; load:  5:59  up 22 days, 16:10, 4 users, load averages: 4.17 5.18 5.88
+
+base: Docs/Stage0/evidence/M0-ExitPrep/reviews/gate-checks-at-5aec2518.log; head: /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-3/.build/scratch/exit-asm-logs/gate-checks-round-3.log
+lines reporting a problem, a failed control or a failed recheck: 56 in the base log, 72 in the head log; in both: 51
+ok      head only (1x): NOT as required (22, 42, 66, 71, 78, 92)
+          because: 3b: the negative control's copies lack the zip guard's log that row 76 now reads, so row 76 disagrees there too; this round's gate checks copy that log
+ok      head only (1x): NOT as required: exactly FID4-02 and FID4-06, on exactly the three anchors the second fix reworded
+          because: the follow-up's fix's recheck (recheck-review4.py), FID4-04 added by design: the second fix's gate checks require FID4-02 and FID4-06 alone
+ok      head only (1x): NOT as required: exactly OWN4-01, on run 12's old estimate alone
+          because: the third fix's recheck (recheck-own4.py), OWN4-07 added by design: the second fix's gate checks require OWN4-01 alone
+ok      head only (1x): NOT as required: exactly UNL-02 and the review status, on the State line, the Stage 0 README and the runbook's Who wrote it
+          because: the fix of the drop-in run's record's recheck (recheck-unl.py): the second fix's gate checks require its text with 200 words
+ok      head only (1x): PROBLEM  FID4-04: the iPad, D-6, PO-12, PO-42 and the license statuses the finding listed carry the answers or dated notes, and the ADR index's status
+          because: the follow-up's fix's recheck (recheck-review4.py): the ADR index's column, dated 24 October 2026 since this round's notes
+ok      head only (1x): PROBLEM  HON4-06: the README names the answers of 23 October 2026 on m0-decisions; the Stage 0 README says which lenses' findings were relayed; the AD
+          because: the second fix's recheck (recheck-hon4.py): the ADR index's column, dated 24 October 2026 since this round's notes
+ok      head only (1x): PROBLEM  OWN4-07: item 4, Section 7, the runbook's Session 10 and ADR-0014 give resolve-locks.sh first, a folder of its own for the logs and the updat
+          because: the third fix's recheck (recheck-own4.py), by design: the run under Xcode 27.1 is recorded
+ok      head only (1x): PROBLEM  UNL-02: the State line (197 words) names the record of the drop-in run and its fix and the last two fixes as unreviewed; the Stage 0 README g
+          because: the fix's recheck of the drop-in run's record: its text names the State line's word count, which this round's notes changed; the texts it reports are the same (checked below)
+ok      head only (1x): PROBLEM: also Scripts/check-dependency-lock.py
+          because: 1e: the zip guard's two scripts among the folders the repeat rule names; the records give them in a dated note
+ok      head only (1x): PROBLEM: missing path: evidence/M0-ExitPrep/assembly/12-dependency-lock.log
+          because: 3: the gate summary cites three logs this round writes after the documents commit these checks run on: the documents checks' logs come in the next commit, and the gate checks' log after them; this round's gate checks, run on that commit, find every path
+ok      head only (1x): PROBLEM: missing path: evidence/M0-ExitPrep/assembly/gate-checks-round-3-compare.log
+          because: 3: the gate summary cites three logs this round writes after the documents commit these checks run on: the documents checks' logs come in the next commit, and the gate checks' log after them; this round's gate checks, run on that commit, find every path
+ok      head only (1x): PROBLEM: missing path: evidence/M0-ExitPrep/assembly/gate-checks.log
+          because: 3: the gate summary cites three logs this round writes after the documents commit these checks run on: the documents checks' logs come in the next commit, and the gate checks' log after them; this round's gate checks, run on that commit, find every path
+ok      head only (1x): PROBLEM: the plan or the license inventory changed
+          because: 1b: the plan changed since 26530d49, in three dated notes on R4-01 and R4-02 (D02's row, the 23.2 risk row, A56), requested by the zip guard's branch; the license inventory and its draft did not
+ok      head only (1x): a run under Xcode 27.1 (Docs/Stage0/evidence/M0-dependencies/xcode-27.1/): PROBLEM, present: the records call it pending
+          because: 1f: the run under Xcode 27.1, made offline by the zip guard's agent; the records now call it made
+ok      head only (1x): code, scripts, contracts, fixtures and the workflow changed since 9cdb0a02: PROBLEM: Scripts/check-dependency-lock.py
+          because: 1d: the zip guard's two scripts (its second, Scripts/ci.d/12-dependency-lock.sh, on the next line), which the G0.5 recovery drop-in neither builds, copies nor runs: this round's gate checks, part 1d
+ok      head only (1x): exit: 1
+          because: the second fix's recheck (recheck-hon4.py), HON4-06 by design: its exit line (it passed on the base)
+ok      head only (1x): exit: 1; reported: FID4-02 FID4-04 FID4-06
+          because: the follow-up's fix's recheck (recheck-review4.py), FID4-04 added by design: its exit line
+ok      head only (1x): exit: 1; reported: OWN4-01 OWN4-07
+          because: the third fix's recheck (recheck-own4.py), OWN4-07 added by design: its exit line
+ok      head only (1x): result: FAIL (1 of the six not answered)
+          because: the second fix's recheck (recheck-hon4.py), HON4-06 by design: its result line (it passed on the base)
+ok      head only (1x): result: FAIL (2 of the nine not answered)
+          because: the third fix's recheck (recheck-own4.py), OWN4-07 added by design: OWN4-01 as before, and OWN4-07
+ok      head only (1x): result: FAIL (3 of the eight not answered)
+          because: the follow-up's fix's recheck (recheck-review4.py), FID4-04 added by design: FID4-02 and FID4-06 as before, and FID4-04
+ok      base only (1x): PROBLEM  UNL-02: the State line (200 words) names the record of the drop-in run and its fix and the last two fixes as unreviewed; the Stage 0 README g
+          because: replaced by the head log's line with its count
+ok      base only (1x): exit: 1; reported: FID4-02 FID4-06
+          because: replaced: FID4-04 added
+ok      base only (1x): exit: 1; reported: OWN4-01
+          because: replaced: OWN4-07 added
+ok      base only (1x): result: FAIL (1 of the nine not answered)
+          because: replaced: two of the nine
+ok      base only (1x): result: FAIL (2 of the eight not answered)
+          because: replaced: three of the eight
+ok      the UNL-02 line is the base log's but for the State line's word count
+result: pass (0 problem(s))
+
+exit status: 0
+end: 2026-10-25T16:59:30Z; load:  5:59  up 22 days, 16:10, 4 users, load averages: 4.17 5.18 5.88

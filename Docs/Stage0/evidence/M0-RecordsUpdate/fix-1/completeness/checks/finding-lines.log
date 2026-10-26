@@ -1,0 +1,71 @@
+command: python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/completeness/commands/finding-lines.py
+commit: aa132139cb6ffbf8a7d2df0a262b1c91a63ddad3; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/completeness/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T12:10:34Z; load:  1:10  up 23 days, 11:21, 3 users, load averages: 2.23 3.62 3.71
+
+reviewed commit: 832a36361b89b9574e29556d06cd676471fa0350
+
+ok   CMP-01 git diff 6cede84a 832a3636 -- CLAUDE.md prints nothing
+ok   CMP-01 832a3636:CLAUDE.md:5
+ok   CMP-01 832a3636:CLAUDE.md:16
+ok   CMP-01 832a3636:Docs/Stage0/M0-device-runbook.md:126
+ok   CMP-01 832a3636:Docs/Stage0/M0-device-runbook.md:166
+ok   CMP-01 832a3636:Docs/Stage0/M0-gate.md:17
+ok   CMP-01 832a3636:Docs/Stage0/M0-gate.md:846
+ok   CMP-01 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:46-52
+ok   CMP-01 c72247a6:CLAUDE.md has no such sentence
+ok   CMP-01 m0-decisions is at c72247a6 (read-only), so the merge would fast-forward
+ok   CMP-01 the message of merge 4c0fa815 says the next commit rewrites CLAUDE.md's paragraph
+ok   CMP-01 git diff 4c0fa815 d1fb3dd4 -- CLAUDE.md prints nothing (d1fb3dd4 left it as merged)
+ok   CMP-01 832a3636:Docs/Stage0/README.md:5
+ok   CMP-01 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:67
+ok   CMP-01 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:72
+ok   CMP-02 832a3636:Docs/Stage0/M0-device-runbook.md:210
+ok   CMP-02 c72247a6:Docs/Stage0/M0-device-runbook.md:207
+ok   CMP-02 6a72ce8c:Docs/Stage0/M0-device-runbook.md:208
+ok   CMP-02 the owner's setup record: 0.7's Keychain test not run
+ok   CMP-02 832a3636:Docs/Stage0/M0-gate.md:466
+ok   CMP-02 832a3636:Docs/Stage0/M0-gate.md:471
+ok   CMP-02 832a3636:Docs/Stage0/M0-gate.md:482
+ok   CMP-02 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:28
+ok   CMP-03 832a3636:Docs/Stage0/M0-gate.md:890
+ok   CMP-03 832a3636:Docs/Stage0/M0-gate.md:870
+ok   CMP-03 at 832a3636 items 104-110 are m0-exit-prep's and 131 begins m0-sessions's instructions (104: `CLAUDE.md`'s milestone paragraph, corrected at yo; 131: Run 1 and the branch you build from)
+ok   CMP-03 at 832a3636 item 146 is FID-DA-04's and 173 OWN-DA-06's (pull request #6's dates) (146: The update's dates; 173: Dates of pull request #6's merge and of the second reading o)
+ok   CMP-03 at 832a3636 integration log section 28 is R4-01 and R4-02, 36 the device-A change (28: ADR-0014's R4-01 and R4-02 answered in the guard, ; 36: Device A is the iPhone 13 mini, and the owner's in)
+ok   CMP-03 832a3636:Docs/Stage0/integration-log.md:2396
+ok   CMP-03 the renumbering's dry run at 4c0fa815: 206 lines, 6 dangling, 27 mixed, 852 and 871 among them
+ok   CMP-03 4c0fa815:Docs/Stage0/M0-gate.md:852
+ok   CMP-03 4c0fa815:Docs/Stage0/M0-gate.md:871
+ok   CMP-04 git diff --name-status c72247a6 832a3636 -- Docs/Stage0/evidence/ | grep -v '^A' lists one file (M	Docs/Stage0/evidence/M0-Integration/commands/gate-refresh-check.py)
+ok   CMP-04 m0-exit-prep rewrote it in 83ed5ff3, 944a6302, f95de709 and 9f5edab1 (9f5edab1 f95de709 944a6302 83ed5ff3)
+ok   CMP-04 its lines 144-174 hold the row 76 entry, with its comment on the earlier texts (# Row 76: failed on round 4's verdict, reject, with R4-01 and R4-02 op)
+ok   CMP-04 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:96
+ok   CMP-04 integration log 41.7 calls it the gate summary's old checker
+ok   CMP-05 832a3636:Docs/Stage0/M0-device-runbook.md:137
+ok   CMP-05 832a3636:Docs/Stage0/M0-gate.md:855
+ok   CMP-05 832a3636:Docs/Stage0/M0-gate.md:856
+ok   CMP-05 832a3636:Docs/Stage0/M0-gate.md:857
+ok   CMP-05 832a3636:Docs/Stage0/M0-device-runbook.md:1003
+ok   CMP-05 832a3636:Docs/Stage0/M0-gate.md:122
+ok   CMP-05 832a3636:Docs/Stage0/M0-gate.md:855 the note of 26 October 2026, then the one of 24 October 2026
+ok   CMP-05 832a3636:Docs/Stage0/M0-gate.md:463 the note of 26 October 2026, then the one of 24 October 2026, last
+ok   CMP-05 832a3636:Docs/Stage0/README.md:41
+ok   CMP-06 832a3636:Docs/Stage0/M0-device-runbook.md:171
+ok   CMP-06 git diff --stat 96bdc7e9 832a3636 -- <the step's paths>: the four DeviceTests files and 25 lines of the G0.5 recovery checklist (code paths: 4; recovery checklist: 25)
+ok   CMP-06 git diff --stat 8404f342 832a3636 -- <the step's paths>: the four DeviceTests files and 25 lines of the G0.5 recovery checklist (code paths: 4; recovery checklist: 25)
+ok   CMP-06 git diff --stat 432acc13 832a3636 -- <the step's paths>: the four DeviceTests files and 25 lines of the G0.5 recovery checklist (code paths: 4; recovery checklist: 25)
+ok   CMP-06 git diff --stat d5336111 832a3636 -- <the step's paths>: nothing under Apps, Packages, Spikes, Fixtures or Contracts; 7 lines of the recovery checklist (code paths: 0; recovery checklist: 7)
+ok   CMP-06 git diff --stat c72247a6 832a3636 -- <the step's paths>: nothing under Apps, Packages, Spikes, Fixtures or Contracts; 7 lines of the recovery checklist (code paths: 0; recovery checklist: 7)
+ok   CMP-06 the session log's rows 3a-3c name 96bdc7e9, 8404f342 and 432acc13, row 3d d5336111
+ok   CMP-07 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:79
+ok   CMP-07 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:80
+ok   CMP-07 nine of the branch's logs start with their results, with no header (owner-records-intact, check-records, check-records-devicea, check-amendments, check-amendments-accuracy, mutation-checks, runbook-coverage, gate-refresh-check, gate-refresh-check-old)
+ok   CMP-07 832a3636:Docs/Stage0/evidence/M0-RecordsUpdate/README.md:67-68
+ok   CMP-07 relative to c72247a6 the branch also changes CLAUDE.md, the READMEs, the plan, the amendments, the integration log, the inventory's Markdown, M0-contracts.md and the Zip guard's two scripts (CLAUDE.md, Docs/Licenses/third-party-inventory.md, Docs/Stage0/M0-contracts.md, Docs/Stage0/M0-plan-amendments.md, Docs/Stage0/README.md, Docs/Stage0/evidence/M0-Integration/commands/gate-refresh-check.py, Docs/Stage0/integration-log.md, Docs/Sylvia_v1_iOS_Implementation_Plan.md, README.md, Scripts/check-dependency-lock.py, Scripts/ci.d/12-dependency-lock.sh)
+
+summary: 58 citations and claims, 58 hold, 0 do not
+
+exit status: 0
+end: 2026-10-26T12:10:34Z; load:  1:10  up 23 days, 11:21, 3 users, load averages: 2.23 3.62 3.71

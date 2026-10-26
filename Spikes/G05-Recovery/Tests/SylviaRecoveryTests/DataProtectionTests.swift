@@ -261,7 +261,7 @@ struct DataProtectionTests {
             #expect(try protection(url) == expected.rawValue)
             evidence("changing an existing file's class with setAttributes: applied and verified")
         } catch let error as ProtectionError {
-            evidence("changing an existing file's class with setAttributes: refused (\(error)); the class is fixed at creation here")
+            evidence("changing an existing file's class with setAttributes: refused (\(error)); the class now reads \((try? protection(url)) ?? "unreadable")")
         }
     }
 

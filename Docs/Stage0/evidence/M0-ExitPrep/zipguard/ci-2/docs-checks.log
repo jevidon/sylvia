@@ -1,0 +1,206 @@
+docs-checks started 2026-10-23T17:19:58Z at commit 16bff438bc6e3ed483a7ce78b35dda5248910695; uncommitted files: 0
+
+-- the gate summary's checker (gate-refresh-check.py): exit 0; reported: pass; expected: pass
+   == paths: 313 checked
+   == gate report rows
+   row 1: passed-simulator | G01-EPUB.md G1: 'passed-simulator' -> agrees
+   row 2: pending-device | G01-EPUB.md G2: 'pending-device' -> agrees
+   row 3: passed-simulator | G01-EPUB.md G3: 'passed-simulator' -> agrees
+   row 4: pending-human | G01-EPUB.md G4: 'pending-human' -> agrees
+   row 5: passed-simulator | G01-EPUB.md G5: 'passed-simulator' -> agrees
+   row 6: passed-simulator | G01-EPUB.md G6: 'passed-simulator' -> agrees
+   row 7: passed-simulator | G01-EPUB.md G7: 'passed-simulator' -> agrees
+   row 8: passed-simulator | G01-PDF.md 1: 'passed-simulator' -> agrees
+   row 9: pending-device | G01-PDF.md 2: 'pending-device' -> agrees
+   row 10: failed | G01-PDF.md 10c: 'failed' -> agrees
+   row 11: passed-simulator | G01-EPUB.md G8: 'passed-simulator' -> agrees
+   row 12: pending-human | G01-EPUB.md G9: 'pending-human' -> agrees
+   row 13: passed-simulator | G01-EPUB.md G10: 'passed-simulator' -> agrees
+   row 14: passed-simulator | G02-Transfer.md User-mediated trust bootstrap from iOS: 'passed-simulator' -> agrees
+   row 15: pending-device | G02-Transfer.md User-mediated trust bootstrap on a physical iPho: 'pending-device' -> agrees
+   row 16: passed-simulator | G02-Transfer.md Certificate pinning on iOS: 'passed-simulator' -> agrees
+   row 17: partial | G02-Transfer.md Authorized ranged downloads with verified parts: 'partial' -> agrees
+   row 18: partial | G02-Transfer.md Recovery after suspension or force-quit: 'partial' -> agrees
+   row 19: passed-host | G02-Transfer.md Mac source mutation never yields a mixed-version: 'passed-host' -> agrees
+   row 20: passed-host | G02-Transfer.md Manual-address connectivity: IPv4 and IPv6 loopb: 'passed-host' -> agrees
+   row 21: passed-simulator | G02-Transfer.md Plan 15.2 Stage 0 gate, local address forms: 'passed-simulator' -> agrees
+   row 22: failed | G02-Transfer.md Plan 15.2 Stage 0 gate, Tailscale address forms: 'failed' -> agrees
+   row 22: failed | G02-Transfer.md T43 Tailscale address and MagicDNS name on iOS w: 'failed' -> agrees
+   row 23: pending-device | G02-Transfer.md Manual-address and Tailscale connectivity betwee: 'pending-device' -> agrees
+   row 24: pending-human | G02-Transfer.md Security reviewer approves the pairing protocol: 'pending-human' -> agrees
+   row 25: passed-host | G02-Transfer.md No trust-all path, no ATS exception in the harne: 'passed-host' -> agrees
+   row 26: passed-simulator | G03-Intake.md G1: 'passed-simulator' -> agrees
+   row 27: pending-device | G03-Intake.md G2: 'pending-device' -> agrees
+   row 28: pending-device | G03-Intake.md G6: 'pending-device' -> agrees
+   row 29: passed-host | G03-Intake.md G3: 'passed-host' -> agrees
+   row 30: passed-simulator | G03-Intake.md G4: 'passed-simulator' -> agrees
+   row 31: passed-host | G03-Intake.md G5: 'passed-host' -> agrees
+   row 32: passed-simulator | G03-Intake.md G7: 'passed-simulator' -> agrees
+   row 33: pending-device | G03-Intake.md G8: 'pending-device' -> agrees
+   row 34: partial | G03-Intake.md T42: 'partial' -> agrees
+   row 35: passed-host | G03-Intake.md G9: 'passed-host' -> agrees
+   row 36: pending-device | G03-Intake.md G10: 'pending-device' -> agrees
+   row 37: passed-simulator | G04-Audio.md 1: 'passed-simulator' -> agrees
+   row 38: pending-device | G04-Audio.md 2: 'pending-device' -> agrees
+   row 39: passed-simulator | G04-Audio.md 3: 'passed-simulator' -> agrees
+   row 39: passed-simulator | G04-Audio.md 11: 'passed-simulator' -> agrees
+   row 40: pending-device | G04-Audio.md 12: 'pending-device' -> agrees
+   row 41: passed-simulator | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+   row 42: failed | G04-Audio.md 21: 'passed-simulator (cold, every depth to 10 h) for every MPEG-4 forma...' -> agrees
+   row 42: failed | G04-Audio.md 33: 'passed-simulator (opening, positions, timing); start/resume budget ...' -> agrees
+   row 43: passed-simulator | G04-Audio.md 4: 'passed-simulator (with the container limits stated)' -> agrees
+   row 44: passed-simulator | G04-Audio.md 5: 'passed-simulator' -> agrees
+   row 45: passed-simulator | G04-Audio.md 6: 'passed-simulator' -> agrees
+   row 46: passed-simulator | G04-Audio.md 7: 'passed-simulator' -> agrees
+   row 47: partial | G04-Audio.md 8: 'partial' -> agrees
+   row 48: passed-simulator | G04-Audio.md 18: 'passed-simulator (control: both signings; App Shortcut and the cont...' -> agrees
+   row 49: pending-device | G04-Audio.md 19: 'pending-device' -> agrees
+   row 50: partial | G04-Audio.md 9: 'partial' -> agrees
+   row 51: partial | G05-AI.md G1: 'partial' -> agrees
+   row 52: partial | G05-AI.md G2: 'partial' -> agrees
+   row 53: passed-host | G05-AI.md G3: 'passed-host' -> agrees
+   row 54: partial | G05-AI.md G4: 'partial' -> agrees
+   row 55: passed-simulator | G05-Recovery.md 1: 'passed-simulator' -> agrees
+   row 56: pending-device | G05-Recovery.md 22: 'pending-device' -> agrees
+   row 57: passed-host | G05-Recovery.md 2: 'passed-host' -> agrees
+   row 58: partial | G05-AI.md G6: 'partial' -> agrees
+   row 59: pending-human | G05-Recovery.md 23: 'pending-human' -> agrees
+   row 60: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+   row 61: passed-simulator | G06-Design.md G0.6: every token pair's contrast verified: 'passed-simulator' -> agrees
+   row 62: pending-device | G06-Design.md G0.6: type roles under Dynamic Type: 'pending-device' -> agrees
+   row 63: failed | G06-Design.md Scaling through UIFontMetrics as Section 4.4.3 s: 'failed' -> agrees
+   row 64: pending-device | G06-Design.md G0.6: component set viewed on a device: 'pending-device' -> agrees
+   row 65: partial | G06-Design.md G0.6: token values adjusted where devices disagr: 'partial' -> agrees
+   row 72: passed-simulator | G06-Design.md CI drop-in `Scripts/ci.d/21-design-catalog.sh`: 'passed-simulator' -> agrees
+   row 73: pending-human | G06-Design.md Prototype matches the boards where they agree wi: 'pending-human' -> agrees
+   row 74: pending-device | G06-Design.md G0.6 device review of the component set and the : 'pending-device' -> agrees
+   row 79: passed-simulator | G06-Design.md G0.6: SylviaDesign package at v0.1 from Section : 'passed-simulator' -> agrees
+   row 80: pending-human | G06-Design.md Design review of the components and references: 'pending-human' -> agrees
+   row 91: passed-host | G06-Design.md Token export with schema, fixtures: 'passed-host' -> agrees
+   == ADR and deliverable rows
+   row 66: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+   row 71: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+   row 75: passed-host | expected passed-host; 17 of 17 facts hold -> agrees
+   row 76: failed | expected failed; 3 of 3 facts hold -> agrees
+   row 77: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+   row 78: pending-human | expected pending-human; 16 of 16 facts hold -> agrees
+   row 82: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+   row 83: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+   row 84: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+   row 85: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+   row 86: pending-human | expected pending-human; 2 of 2 facts hold -> agrees
+   row 87: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+   row 88: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+   row 89: pending-human | expected pending-human; 1 of 1 facts hold -> agrees
+   row 90: passed-host | expected passed-host; 8 of 8 facts hold -> agrees
+   row 92: pending-human | expected pending-human; 6 of 6 facts hold -> agrees
+   == rows not checked mechanically
+   row 67: partial | the Section 23 decisions are signed by people; nothing to read
+   row 68: pending-human | a judgement for the exit review
+   row 69: partial | a judgement on the amendments' text against the four gates with failed rows
+   row 70: partial | summarises rows 1-65
+   row 81: pending-human | an exit demonstration by people
+   == summary: 92 rows; failed 5, partial 13, passed-host 11, passed-simulator 27, pending-device 15, pending-human 21; 74 report rows and 80 ADR and log facts compared; 0 problem(s)
+   as expected
+
+-- the follow-up's recheck of the second review's findings (recheck-review2.py): exit 0; reported: pass; expected: pass
+   answered FID2-01: the 5 log lines that still asked for D-7's review or D-1 and D-6, and the 2 App Store items of 13.5 and 14.5, each carry the dated note of the decision
+   answered FID2-02: the four report findings and the amendments' rows carry their decisions, and ADR-0015's B6 cell no longer begins with the ATS key pending
+   answered FID2-03: the D14 row names the ordering of Phase A against the Docker hub and the Phase C feasibility bar, and keeps the old sequencing only in its dated note
+   answered FID2-04: 1.3 names Sessions 2, 7, 8 and 9
+   answered FID2-05: ADR-0005's Deciders say the role is assumed to be the owner's
+   changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+   answered HON-12: the gate summary, the plan, the amendments, the runbook, ADR-0001 and the ADR index say which agent reviews read the records
+   answered HON-13: (a) the 7a22201 pass has no committed record and the 96832c6 pass is in the history; (b) 18.4 says on which commit each check ran
+   answered HON-14: the checklist's step 3 and runbook 6.1 give the tone's effect as the design's intent, which the device run shows
+   answered R2-H-01: the checklist's item 9 and runbook 6.1 judge the verify line after the restart, never the lines before the first unlock
+   answered R2-H-02: the checklist's item 9 and runbook 6.1 put Failed first
+   answered R2-H-03: the check's label and the UI test's comments say what the simulator shows, and the start line records the audio session's category
+   answered R2-H-04: FileLogSink.append writes, flushes and on failure cuts the file back, with no class readback after the append
+   result: pass (0 of the twelve no longer answered)
+   as expected
+
+-- the follow-up's fix's recheck of FID4-01 to FID4-08 (recheck-review4.py): exit 1; reported: FID4-02 FID4-06; expected: FID4-02 FID4-06
+   answered FID4-01: item 4 names the notices PO-41's fonts lack; the inventory, the draft and ADR-0014 record the answer and what is missing, which is still missing (no Creative Commons link in the draft, no Bitstream text)
+   PROBLEM  FID4-02: the runbook's run 1 and 0.3, the gate summary's items 1 and 4 and Section 7, and ADR-0002 route agent work through m0-decisions (ADR-0002's Branches lacks: reaches `main` before the M0 exit only through `m0-decisions`)
+   answered FID4-03: ADR-0001, the G0.6 checklist and plan 21.1 state no iPadOS for the owner's iPad; run 1, 1.1 and item 1 check it before Session 0
+   answered FID4-04: the iPad, D-6, PO-12, PO-42 and the license statuses the finding listed carry the answers or dated notes, and the ADR index's status column is dated 23 October 2026
+   answered FID4-05: the gate summary, the plan, the amendments and ADR-0014 keep the gate of 22 October 2026 for the companion's notarized builds
+   PROBLEM  FID4-06: item 4, the runbook and ADR-0014 leave ADR-0014's approval to D-6, give the Zip request to the security sign-off, and give the requests' timing as the records' suggestion (M0-gate.md item 4 lacks: under D-6, ADR-0014 is approved once Session 10's review of it is recorded, with your security sign-off; the runbook's exit review lacks: so ADR-0014's approval, once Session 10's review of it and your security sign-off are recorded (D-6))
+   answered FID4-07: Section 7, item 4 builds PO-12's repairs with the transfer client in M6, as 5.4 and plan 15.5 do
+   answered FID4-08: the README records that the branch rule stays and that neither merge approves anything
+   changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+   result: FAIL (2 of the eight not answered)
+   as expected
+
+-- the second fix's recheck of HON4-01 to HON4-06 (recheck-hon4.py): exit 0; reported: pass; expected: pass
+   answered HON4-01: ADR-0002 keeps the rule with only pull requests #4 and #5 and the merge of m0-decisions excepted, and asks the owner whether bringing agent work to main before the exit is covered; the runbook, the gate summary and the session log route that work through m0-decisions and call that a further merge
+   answered HON4-02: the gate summary, the runbook and ADR-0014 say that Session 10's review can approve ADR-0014 without waiting for the lawyer's review, not that it does; item 4 sets the Zip request apart; the log's OWN3-02 row has its dated note
+   answered HON4-03: ADR-0001, the G0.6 checklist, the runbook (1.1, run 1, 0.4), item 1 and the session log say that the iPad's fitness for Session 9 is unverified until it is checked and recorded; plan 21.1 makes 'no device to acquire' depend on that check
+   answered HON4-04: Sections 1 and 7 say that no item of the decision page is open, not that M0 waits on no decision; Section 1 lists the decisions still the owner's; item 41 has its dated note
+   answered HON4-05: integration log 15.1, the amendments, the gate summary and ADR-0014 record PO-42 as the owner's for now, its question open; item 4, ADR-0014 and the third-party inventory quote the licenses' clause 3
+   answered HON4-06: the README names the answers of 23 October 2026 on m0-decisions; the Stage 0 README says which lenses' findings were relayed; the ADR index's column is dated 23 October 2026
+   changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+   result: pass (0 of the six not answered)
+   as expected
+
+-- the third fix's recheck of OWN4-01 to OWN4-09 (recheck-own4.py): exit 1; reported: OWN4-01 OWN4-07; expected: OWN4-01 OWN4-07
+   PROBLEM  OWN4-01: Session 10, item 3, run 12 and the session log list the technical lead's review of each of the 9 records whose deciders name one (0001, 0003, 0006, 0007, 0009, 0012, 0014, 0015, 0016), the release owner's item 6, linkage.sh and the request to drop marmelroy/Zip, and the reviews each record's approval waits for (the runbook's run 12 lacks: about 6-6.5 days of your time)
+   answered OWN4-02: item 2 and the runbook's 0.3 count what a step builds, copies or runs, and list every folder the manifests under Apps/ and Spikes/ reach
+   answered OWN4-03: ADR-0002 keeps the rule as the owner did and asks about a later merge; agent branches go into m0-decisions; an agent on the same records starts once the other's branch is merged
+   answered OWN4-04: ADR-0015 records the sign-off after runs 3-6 and 8-11, with every step the runbook's threat-model row reads (2.9, 2.12, 2.18, 5.3-5.6, 3.7-3.12, 8.9, 9.7), and R4-01 and R4-02 before it
+   answered OWN4-05: Session 10's EPUB row reads 2.9 and 2.12, whose headings name EPUB steps 13 and 11
+   answered OWN4-06: item 1, Section 7, run 1, 0.3 and the session log have CLAUDE.md corrected and committed on m0-decisions, before any merge into main
+   PROBLEM  OWN4-07: item 4, Section 7, the runbook's Session 10 and ADR-0014 give resolve-locks.sh first, a folder of its own for the logs and the update of ADR-0014; the committed log is still Xcode 27.0's and no 27.1 run exists (a run under Xcode 27.1 is now recorded: the records that call it pending need updating)
+   answered OWN4-08: item 3 lists G0.5 AI step 9.2's wording review with its two decisions and D03's outcome; the opening names D03's outcome
+   answered OWN4-09: item 1 (its longest step 349 words) and 0.3 are numbered checklists without their history notes, item 3 a list by role, run 1 and the bullet on main without theirs, and item 74 holds them
+   changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+   result: FAIL (2 of the nine not answered)
+   as expected
+
+-- the third fix's moved history notes (round-4 moved-notes.py): exit 0; reported: pass; expected: pass
+   the history notes at 11f41be5, looked for in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1
+   moved    item 1 (288 words): in item 74 word for word; gone from the text it came from
+   moved    item 2 (15 words): in item 74 word for word; gone from the text it came from
+   moved    item 3 (160 words): in item 74 word for word; gone from the text it came from
+   moved    run 1 (246 words): in item 74 word for word; gone from the text it came from
+   moved    0.3, first note (70 words): in item 74 word for word; gone from the text it came from
+   moved    0.3, second note (122 words): in item 74 word for word; gone from the text it came from
+   moved    the bullet on main (116 words): in item 74 word for word; gone from the text it came from
+   result: 7 of 7 notes moved whole
+   as expected
+
+-- the fourth fix's recheck of OWN5-01 to OWN5-06 and the answers (recheck-own5.py): exit 0; reported: pass; expected: pass
+   answered OWN5-01: Session 10 and item 3 give the sign-offs plan 23.1 still waits for (D01, D02, D03, D05, D07, D08, D10, D15, D16, D17), D02's with ADR-0014's lock, D05's after run 3, D03's outcome after runs 8 and 9 and D17's persistence owner assumed the owner's, each with what it reads, when and where it is recorded; QA has a reading list and a record
+   answered OWN5-02: item 1 and the runbook's 0.3 have the owner commit each session's records and evidence on m0-decisions before an agent works from them, with nothing on main before the exit but the covered merge; step 5's rule covers the owner's own edits; 0.7, 0.8, Section 2, the linkage.sh paragraph and the drop-in run name the branch
+   answered OWN5-03: the security sign-off's timing in item 3, the runbook's security part and run 12, and ADR-0015, adds linkage.sh's run, which the runbook puts before ADR-0014's items 4, 5 and 9; the opening names it; D17's cell and the class-C row read 8.10
+   answered OWN5-04: item 2 says that the code changed only in the lock harness and the drop-in and the checklists in all eight; item 76 has its dated note (the history itself: the gate checks, part 1d)
+   answered OWN5-05: the opening (522 words), the State line (200; 722 together) and run 1 (138) without the review history and notes, each pointing to where they are
+   answered OWN5-06: the technical lead's table has every report question the amendments' Section 5 and the reports give the technical lead (G02-Transfer.md 5, G02-Transfer.md 6, G02-Transfer.md 7, G02-Transfer.md 12, G04-Audio.md M2 and G01-EPUB.md 4); item 3 lists ADR-0002's amendments apart; the report to Readium is a possible fifth request
+   recorded answer 1, H-1
+   recorded answer 2, PO-12
+   recorded answer 3, PO-41 to PO-44
+   recorded answer 4, the iPad
+   recorded answer 5, the readings
+   changed  HON-11: CLAUDE.md's milestone paragraph no longer says the M0 work is combined on `m0-integrate`
+   result: pass (0 of the six findings and five answers not answered or not recorded; 5 of five answers recorded)
+   as expected
+
+-- the fourth fix's moved texts (round-5 moved-notes.py): exit 0; reported: pass; expected: pass
+   the history texts at 660c2b3a, looked for in /Users/jevidon/Git/sylvia/.claude/worktrees/wf_0a6096ab-52b-1
+   moved    the State line's review history (242 words): in Section 6.2 word for word; gone from the line it came from
+   moved    the State line's note (59 words): in Section 6.3, item 88 word for word; gone from the line it came from
+   moved    the opening's review history (292 words): in Section 6.2 word for word; gone from the line it came from
+   moved    the opening's notes (117 words): in Section 6.3, item 88 word for word; gone from the line it came from
+   result: 4 of 4 texts moved whole
+   as expected
+
+-- the record's second fix's recheck, every Markdown file under Docs/ included (recheck-unl2.py): exit 0; reported: pass; expected: pass
+   answered UNL2-01: the two rows each with its dated note; the eight statements of coverage each with its note; sweep 1 over 115 Markdown files: 28 texts in its phrasings, 28 with a dated note naming `9cdb0a02` after them; sweep 2: 31 sentences that name the drop-in, its run or step 0.8 with a word of status and no such note, 31 of them read and listed (7 account, 3 earlier, 6 history, 1 locked, 14 other), 0 not; of the 34 sentences listed, 3 not found on this tree
+   answered UNL2-02: 24.5's note and the fourth fix's README say what remains for the owner; of sweep 1's texts that give the run to the owner, 13 of 13 have a note that says it
+   answered UNL2-03: Section 2.10's two pointers name the bullet on G0.5 recovery with the lock harness, bullet 12 of 14, which records the passing run
+   answered review: the record's fix read by an agent review at 26530d49 and this second fix not reviewed, in the gate summary (the State line: 200 words), the runbook, the integration log, the fix's README and the Stage 0 README
+   result: pass (0 of 4 not as stated)
+   as expected
+
+docs-checks finished 2026-10-23T17:19:58Z; every check as expected

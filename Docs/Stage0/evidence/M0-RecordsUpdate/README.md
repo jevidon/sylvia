@@ -5,6 +5,11 @@ What this branch does, how the product owner merges it into `m0-decisions` betwe
 role sign-off, an ADR approval (decision D-6) or the M0 exit: no iPhone 13 mini has been registered or run, and no step
 of the device runbook was run for this branch.
 
+*(26 October 2026: an agent review read this branch at `832a3636`, and the workflow relayed its fidelity findings,
+FID-RU-01 to FID-RU-11, to a fix on the same branch; its record is [`fix-1/`](fix-1/README.md) and integration log
+section 42, and it has not been reviewed. The review's other lenses' findings go to fixes that follow, one at a time.
+The fix changed what items 2 and "Left for the owner" below say, each with a note.)*
+
 ## What it does
 
 `m0-decisions` is the product owner's session branch: since 25 October 2026 UTC the owner, with Codex running the
@@ -30,6 +35,12 @@ milestone paragraph; its code is that of `044ed3cf`, the commit of `m0-decisions
    `m0-decisions` between sittings, by the owner or by an agent the owner asks; `m0-sessions` is retired (its work arrives
    through this branch; nothing is built from it); nothing reaches `main` before the M0 exit unless the owner decides
    otherwise. Run 1 is given as it now stands (the gate summary's Section 1, item 1; the runbook's 0.3 and Section 3).
+   *(26 October 2026: not everywhere, as the review of this branch found: the runbook's 0.7 and the gate summary's
+   bullet on H-1 in Section 5.4 still had the owner commit session records on `m0-sessions`, and the bullet build from
+   it, and five notes of 24 and 26 October 2026, three in the gate summary and two in ADR-0002, gave its model with no
+   later note. The fix of its fidelity findings changed them, and its check
+   ([`fix-1/commands/retired-branch-texts.py`](fix-1/commands/retired-branch-texts.py)) fails on any live text that
+   names `m0-sessions` as a branch to build from, commit to or merge into: [`fix-1/`](fix-1/README.md).)*
 3. **The owner's first sittings:** the texts that said that no device step had run, or that `m0-decisions` held runs
    these records had not reconciled, now cite the owner's results as committed, with dated notes; no report status
    changed. Phone B is on iOS 27.0.1 (24A446), as the owner's setup record gives it, under the runbook's rule for a device
@@ -43,10 +54,16 @@ milestone paragraph; its code is that of `044ed3cf`, the commit of `m0-decisions
    its gate summary items 104-150 are 131-177 (`commands/renumber-sessions.py`; its dry run on the merge's records:
    `checks/renumber-sessions-dry-run.log`).
 
-**Left for the owner:** `CLAUDE.md`. The merge of `m0-sessions` brought the paragraph `6cede84a` wrote there, which names
-`m0-sessions` as the branch of the M0 work and the sessions; no agent changes `CLAUDE.md` on a workflow's request, so the
-text for the restated model is in [`claude-md-paragraph.md`](claude-md-paragraph.md), for the owner to apply on
-`m0-decisions`, or to have applied at the owner's request.
+**Left for the owner:** `CLAUDE.md`. On `m0-decisions` its milestone paragraph is still that of 22 October 2026, which
+says that the gate branches and the M0 items are combined on `m0-integrate`, and this branch leaves the file exactly as
+`m0-decisions` has it (`c72247a6`), so the merge changes nothing in it; no agent changes `CLAUDE.md` on a workflow's
+request, so the text for the restated model is in [`claude-md-paragraph.md`](claude-md-paragraph.md), for the owner to
+apply on `m0-decisions`, or to have applied at the owner's request, before asking an agent for anything. *(Until the
+fix of this branch's review, 26 October 2026, this branch held the paragraph `6cede84a` wrote, which the merge of
+`m0-sessions` had brought: it names `m0-sessions` as the branch of the M0 work and the sessions and says never to
+build on `m0-decisions`, and a merge into `m0-decisions` would have put it there, for every agent asked to work from
+that branch to read until the owner replaced it. The fix took `m0-decisions`'s file back, writing nothing in it: its
+finding FID-RU-03; [`fix-1/`](fix-1/README.md).)*
 
 ## Merging it into `m0-decisions`, between sittings
 
@@ -69,9 +86,12 @@ git -C ~/Git/sylvia-sessions rev-parse HEAD           # note it in the session l
   run `git -C ~/Git/sylvia-sessions merge --abort`, which leaves `m0-decisions` as it was, and ask an agent to merge
   `m0-decisions` into `m0-records-update` in a worktree of its own, keeping every line of yours exactly as you
   committed it, and to rerun this branch's checks; then merge again. Never resolve a conflict by dropping your own text.
-- **After the merge:** apply `CLAUDE.md`'s texts (above) and commit them on `m0-decisions`; nothing is to be repeated
-  for it: the checklists' changes are wording only and the Zip guard's two scripts run in `12-dependency-lock` alone, so
-  no step of your sittings repeats (runbook 0.3, step 7), and 0.8 needs nothing (runbook 0.8). Nothing goes to `main`.
+- **After the merge:** nothing is to be repeated for it: the checklists' changes are wording only and the Zip guard's
+  two scripts run in `12-dependency-lock` alone, so no step of your sittings repeats (runbook 0.3, step 7), and 0.8 needs
+  nothing (runbook 0.8). Nothing goes to `main`. `CLAUDE.md`'s texts (above) are yours to apply and commit on
+  `m0-decisions` before you ask an agent for anything, before the merge or after it: the merge changes nothing in that
+  file. *(Until the fix of this branch's review, 26 October 2026, this bullet had you apply them after the merge, which
+  then brought `6cede84a`'s paragraph to `m0-decisions`: its finding FID-RU-03.)*
 
 ## The checks
 
@@ -106,4 +126,6 @@ extraction is in the orchestrating session's folder, outside this worktree); any
 The device sessions that block the M0 exit, from where the owner's first sittings left them (the gate summary's Section 1,
 item 2); the owner's one-line confirmation of Xcode 27.1 as technical lead; the owner's security, design, QA,
 technical-lead, persistence-owner and release-owner sign-offs; the ADR approvals (D-6); the M0 exit review; `CLAUDE.md`'s
-two texts; and a review of this branch.
+two texts; and a review of this branch. *(26 October 2026: an agent review read it at `832a3636`; the fix of its
+fidelity findings, [`fix-1/`](fix-1/README.md), has not been reviewed, and the review's other lenses' findings go to the
+fixes that follow it.)*

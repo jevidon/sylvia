@@ -9,6 +9,14 @@ the texts here. Apply them on `m0-decisions` (in `~/Git/sylvia-sessions`, betwee
 your request, before you ask an agent for anything: until then an agent reads that the M0 work is on `m0-sessions`, so
 name `m0-decisions` as its base in your request.
 
+*(26 October 2026: since the fix of the review of `m0-records-update`, that branch no longer brings `6cede84a`'s
+paragraph to `m0-decisions`: it leaves `CLAUDE.md` exactly as `m0-decisions` has it (`c72247a6`), whose milestone
+paragraph, of 22 October 2026, says that the gate branches and the M0 items are combined on `m0-integrate`, and whose
+toolchain line is the one quoted below. Until the texts below are applied, an agent reads that paragraph, so name
+`m0-decisions` as its base in your request. They replace it and that line as they would have replaced `6cede84a`'s: its
+third paragraph also begins "Current milestone:". The paragraph above, as it read until then, is kept as the record of
+it: the review's finding FID-RU-03; [`fix-1/`](fix-1/README.md).)*
+
 Agent-written, not reviewed. Neither text changes the Xcode pin (27.1, 27A9275), which
 `Scripts/ci.d/12-dependency-lock.sh` compares with the inventory's: after a change, run that check again
 (`source Scripts/lib/env.sh; Scripts/ci.d/12-dependency-lock.sh`).

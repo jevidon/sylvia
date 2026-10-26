@@ -21,3 +21,10 @@ the class-B readback on 53 items and the SQLite class-B inheritance line.
 
 The phone's behaviour is shown by the owner's re-run of 1.2. Made by the orchestrating session in lean mode (the
 owner's choice of 27 October 2026); not independently reviewed.
+
+**Runbook 0.8 on the fixed code** ([`dropin-unlocked/`](dropin-unlocked/console.log), 27 October 2026, the orchestrating
+session, on `26f1d017`, screen unlocked, `Scripts/ci.d/71-g05-recovery.sh` with `G05_LOG_DIR` set to that folder):
+`drop-in exit 0`; `row 10 evidence present: class-B readback and inheritance lines found in host-tests.log`; 79 host
+tests and 73 simulator tests, each in 13 suites, passed; the lock harness passed 49 tests in 4 suites, its quiet-tone
+test included, and `G0.5 recovery lock harness: steps 13-15 passed`; then `G0.5 recovery: all steps passed`. This is
+row 10's class-B evidence on the recovery code as fixed; the owner runs 0.8 again only if that code changes.

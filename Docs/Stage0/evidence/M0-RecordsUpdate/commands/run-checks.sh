@@ -17,7 +17,8 @@
 #    must fail exactly its check 10k, by design (four of the texts it pins were renumbered or replaced here).
 # 6. The device-A records: this branch's check-records.py, which must pass, and the records part's, which must fail
 #    exactly its checks of the ADR index's date and of the integration log's section 28, by design.
-# 7. The correction texts (Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py), recorded as they read.
+# 7. The correction texts (Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py) on the trees of the three
+#    merged branches and of HEAD (correction-texts-compare.sh beside this file): HEAD's lines must equal theirs.
 # 8. The two branches' latest rechecks and gate checks, run unchanged and recorded as they report, by design: they pin
 #    the texts and the tree of the branch each was written on (m0-exit-prep at 941ac9a2..c3adae68, m0-sessions at
 #    caf75a84..c2fd9ece), and this branch changed those texts and merged both trees with the owner's commits.
@@ -78,8 +79,9 @@ run mutation-checks.log 1 python3 -I "$here/mutation-checks.py"
 python3 -I "$devicea/fix-1/accuracy/commands/check-amendments.py" "$root" > "$out/check-amendments-accuracy.log" 2>&1
 s=$?; got="$(fails "$out/check-amendments-accuracy.log")"
 echo "check-amendments-accuracy.log: exit $s (1 expected, failing exactly its check 10k, by design); fails: ${got:-none}"
-[[ $s == 1 && "$(grep -c '^FAIL ' "$out/check-amendments-accuracy.log")" == 1 \
-   && "$got" == "draft 0.8 as revised on 24 October 2026: the product owner's decision on device A (the iPhone 13 m" ]] || status=1
+[[ $s == 1 && "$(grep -c '^FAIL ' "$out/check-amendments-accuracy.log")" == 1 ]] \
+  && grep -q "^FAIL draft 0.8 as revised on 24 October 2026: the product owner's decision on device A" "$out/check-amendments-accuracy.log" \
+  || status=1
 
 # 6
 run check-records.log 1 python3 -I "$here/check-records.py" "$root"
@@ -90,8 +92,7 @@ echo "check-records-devicea.log: exit $s (1 expected, failing exactly its checks
   && grep -q '^FAIL the integration log: section 28 and its parts' "$out/check-records-devicea.log" || status=1
 
 # 7
-(cd "$root" && python3 -I Docs/Stage0/evidence/M0-runbook/commands/check-correction-texts.py) > "$out/correction-texts.log" 2>&1
-echo "correction-texts.log: exit $? (recorded as it reads)"
+run correction-texts.log 1 "$here/correction-texts-compare.sh"
 
 # 8
 run recheck-hon-ep.log 0 "$logged" python3 -I "$exitprep/fix-2/round-2/commands/recheck-hon-ep.py" "$root"

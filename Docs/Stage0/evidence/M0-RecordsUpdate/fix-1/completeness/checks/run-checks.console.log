@@ -1,0 +1,31 @@
+run-checks: HEAD aa132139cb6ffbf8a7d2df0a262b1c91a63ddad3, uncommitted paths: 0; logs in Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/completeness/checks; start 2026-10-26T12:10:34Z; load:  1:10  up 23 days, 11:21, 3 users, load averages: 2.23 3.62 3.71
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+finding-lines.log: exit 0 (0 required)
+renumbered-references.log: pass (this tree passes; 2b fails on the five; 2c on the four)
+renumbered-references-new.log: exit 0 (0 required)
+completeness-checks.log: exit 0 (0 required)
+completeness-sweep-control.log: exit 1 (1 expected, finding exactly the 16 open paragraphs this fix gave later notes)
+retired-branch-texts.log: exit 0 (0 required)
+owner-records-intact.log: exit 0 (0 required)
+step-0.8-paths.log: exit 0 (0 required)
+ci-contracts.log: exit 0 (0 required)
+12-dependency-lock.log: exit 0 (0 required)
+13-hard-rules.log: exit 0 (0 required)
+runbook-content-check.log: exit 0 (0 required)
+runbook-coverage.log: exit 0 (0 required)
+correction-texts.log: exit 0 (0 required)
+check-amendments.log: exit 0 (0 required)
+mutation-checks.log: exit 0 (0 required)
+check-amendments-records-update.log: exit 1 (1 expected, failing exactly 1 check(s), by design); FAIL lines: 1
+check-amendments-accuracy.log: exit 1 (1 expected, failing exactly 1 check(s), by design); FAIL lines: 1
+check-records.log: exit 0 (0 required)
+check-records-records-update.log: exit 1 (1 expected, failing exactly 1 check(s), by design); FAIL lines: 1
+check-records-devicea.log: exit 1 (1 expected, failing exactly its checks of the ADR index and of section 28, by design); FAIL lines: 2
+recheck-hon-ep.log: exit 1 (recorded as it reports)
+decisions-branch.log: exit 1 (recorded as it reports)
+recheck-own.log: exit 1 (recorded as it reports)
+gate-checks-exit-prep.log: exit 1 (recorded as it reports)
+gate-checks-devicea.log: exit 1 (recorded as it reports)
+gate-refresh-check.log: exit 0 (0 required)
+tree after the checks: 1 uncommitted paths (the logs); end 2026-10-26T12:17:42Z; load:  1:17  up 23 days, 11:28, 3 users, load averages: 3.44 3.88 3.83
+result: pass

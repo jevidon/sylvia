@@ -1,0 +1,38 @@
+command: Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/completeness/commands/completeness-checks.py --sweep, on the tree of 7f7eae88, the commit this fix started from
+commit: aa132139cb6ffbf8a7d2df0a262b1c91a63ddad3; uncommitted paths: 1
+  uncommitted: ?? Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/completeness/checks/
+host: macOS 26.6.2 (25G83); Xcode 27.1 Build version 27A9275 
+start: 2026-10-26T12:10:37Z; load:  1:10  up 23 days, 11:21, 3 users, load averages: 2.37 3.62 3.71
+
+the sweep of part 5 on tree-7f7eae88: 16 open paragraph(s)
+OPEN      Docs/ADRs/0004-epub-reader-adapter.md:32: ..."e (two routes around that rule are still open: ADR-0014, review round 4, R4-01 and R4-02) *(24 October 2026: answered by an agent's change, review pending"
+OPEN      Docs/ADRs/0014-dependency-lock-and-license-inventory.md:149: ..."es; and what the compiler takes from the environment. *(24 October 2026: since the fix of review round 4's R4-01 and R4-02, by an agent and reviewed next"
+OPEN      Docs/ADRs/0015-threat-model.md:3: ...'ent-written, not reviewed. Revised on 26 October 2026 by the fix of that review (integration log section 33): those notes now say answered, review pending'
+OPEN      Docs/ADRs/0015-threat-model.md:202: ..."ncy-lock`, which has two open routes around it (ADR-0014 review round 4, R4-01 and R4-02) *(24 October 2026: answered by an agent's change, review pending"
+OPEN      Docs/ADRs/0015-threat-model.md:302: ..."the security sign-off as a whole, only once ADR-0014's R4-01 and R4-02 are closed (below) *(24 October 2026: answered by an agent's change, review pending"
+OPEN      Docs/ADRs/README.md:31: ..." and R4-02 open (agent-written, not reviewed). On 26 October 2026 those notes were reworded: R4-01 and R4-02 answered by an agent's change, review pending"
+history   Docs/Stage0/M0-device-runbook.md:169: in a history clause: ...'(Until 24 October 2026 R4-01 and R4-02 were still to ask for; on `m0-exit-prep` they were '
+history   Docs/Stage0/M0-gate.md:20: in a history clause: ...'(Until 26 October 2026, on `m0-exit-prep`, this step gave R4-01 and R4-02 as answered by a'
+OPEN      Docs/Stage0/M0-gate.md:279: ...'d 4; since the third review of the M0 exit preparation (its finding HON-EP-01) it is failed again, R4-01 and R4-02 answered by that change, review pending'
+OPEN      Docs/Stage0/M0-gate.md:310: ...'e closed and `linkage.sh` has run (Section 1, item 3; runbook Session 10) *(the fix of R4-01 and R4-02 made by an agent on 24 October 2026, review pending'
+OPEN      Docs/Stage0/M0-gate.md:463: ..."review of the follow-up, its finding OWN4-07). *(24 October 2026: both findings answered by an agent's change, review pending, so this item stays open until a review"
+OPEN      Docs/Stage0/M0-gate.md:494: ..."lone: the review of the decisions round's fix, OWN2-01) *(24 October 2026: answered by an agent's change on `m0-exit-zipguard`, `6cd842d3`, review pending"
+OPEN      Docs/Stage0/M0-gate.md:501: ..."e for each gate's, row 10's since draft 0.7 (A54), and row 76 is closed by R4-01 and R4-02 above *(24 October 2026: their fix answers both, review pending"
+history   Docs/Stage0/M0-gate.md:723: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:734: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:738: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:746: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:768: a record of an earlier round ('review pending')
+OPEN      Docs/Stage0/M0-gate.md:871: ..."f their own, with ADR-0014's section 4 brought up to date from them by its owner (Section 1, item 4) *(done by an agent on 24 October 2026, reviewed next"
+OPEN      Docs/Stage0/M0-gate.md:872: ..."at names the technical lead among its deciders, ADR-0014's lock and item 7, after `linkage.sh`'s run *(done by an agent on 24 October 2026, reviewed next"
+OPEN      Docs/Stage0/M0-gate.md:873: ..."e security sign-off and the sign-offs of its items 6 and 7 and of its lock, after `linkage.sh`'s run *(done by an agent on 24 October 2026, reviewed next"
+history   Docs/Stage0/M0-gate.md:903: a record of an earlier round ('review pending')
+history   Docs/Stage0/M0-gate.md:905: a record of an earlier round ('review pending')
+OPEN      Docs/Stage0/README.md:5: ..."eview the same day fails it, with routes of the same kind found in names written in another letter case, by an agent's change to the guard, review pending"
+OPEN      Docs/Stage0/README.md:36: ..."ith two serious findings still open (R4-01, R4-02; ADR-0014 status). *(24 October 2026: both answered by an agent's change, review pending, so the verdict stands"
+
+open paragraphs found:    Docs/ADRs/0004-epub-reader-adapter.md:32 Docs/ADRs/0014-dependency-lock-and-license-inventory.md:149 Docs/ADRs/0015-threat-model.md:3 Docs/ADRs/0015-threat-model.md:202 Docs/ADRs/0015-threat-model.md:302 Docs/ADRs/README.md:31 Docs/Stage0/M0-gate.md:279 Docs/Stage0/M0-gate.md:310 Docs/Stage0/M0-gate.md:463 Docs/Stage0/M0-gate.md:494 Docs/Stage0/M0-gate.md:501 Docs/Stage0/M0-gate.md:871 Docs/Stage0/M0-gate.md:872 Docs/Stage0/M0-gate.md:873 Docs/Stage0/README.md:5 Docs/Stage0/README.md:36
+open paragraphs expected: Docs/ADRs/0004-epub-reader-adapter.md:32 Docs/ADRs/0014-dependency-lock-and-license-inventory.md:149 Docs/ADRs/0015-threat-model.md:3 Docs/ADRs/0015-threat-model.md:202 Docs/ADRs/0015-threat-model.md:302 Docs/ADRs/README.md:31 Docs/Stage0/M0-gate.md:279 Docs/Stage0/M0-gate.md:310 Docs/Stage0/M0-gate.md:463 Docs/Stage0/M0-gate.md:494 Docs/Stage0/M0-gate.md:501 Docs/Stage0/M0-gate.md:871 Docs/Stage0/M0-gate.md:872 Docs/Stage0/M0-gate.md:873 Docs/Stage0/README.md:5 Docs/Stage0/README.md:36
+
+exit status: 1
+end: 2026-10-26T12:10:37Z; load:  1:10  up 23 days, 11:21, 3 users, load averages: 2.37 3.62 3.71

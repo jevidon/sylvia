@@ -12,7 +12,13 @@ The fix changed what items 2 and "Left for the owner" below say, each with a not
 relayed the same review's completeness findings, CMP-01 to CMP-07, to a second fix on the same branch; its record is
 [`fix-1/completeness/`](fix-1/completeness/README.md) and integration log section 43, and it has not been reviewed. It
 changed what item 6, "Left for the owner", the merge commands and their bullets, the paragraph before the table and the
-table's last row say, each with a note.)*
+table's last row say, each with a note.)* *(27 October 2026: the workflow then relayed the same review's
+owner-readability findings, OWN-RU-01 to OWN-RU-08, to a third fix on the same branch; its record is
+[`fix-1/owner/`](fix-1/owner/README.md) and integration log section 44, and it has not been reviewed. It changed what
+items 1 and 5, "Left for the owner" and the merge section say, each with a note: your merge is a fast-forward or
+nothing, an agent first bringing this branch up to date if `m0-decisions` has moved on; a command, which the merge
+brings, puts `CLAUDE.md`'s two texts in; and after the merge you run the checks of runbook 0.8 and 0.3, step 7, which
+this README no longer answers for you.)*
 
 ## What it does
 
@@ -33,7 +39,11 @@ milestone paragraph; its code is that of `044ed3cf`, the commit of `m0-decisions
    `Docs/Stage0/evidence/`, `Spikes/` and `Docs/Licenses/inventory.json` is byte for byte as at `c72247a6`, and every
    line they added or removed in the records an agent also edits is kept (`commands/owner-records-intact.py`;
    `checks/owner-records-intact.log`). The one conflict of the first merge, the session log, was resolved by keeping the
-   owner's log; this branch adds nothing to it.
+   owner's log; this branch adds nothing to it. *(27 October 2026: that check reads the owner's commits up to
+   `c72247a6` alone, a commit it names in its text; its new version,
+   [`fix-1/owner/commands/owner-records-intact.py`](fix-1/owner/commands/owner-records-intact.py), takes the owner's
+   head as `--owner-head`, so that, after an agent's merge of a `m0-decisions` that has moved on, it checks the owner's
+   later commits too (the merge section; the review's finding OWN-RU-03).)*
 2. **The branch model, restated everywhere the records give it:** `m0-decisions` is the owner's session branch; agent
    work goes on a branch of its own made from `m0-decisions` and reaches the owner's build only when merged into
    `m0-decisions` between sittings, by the owner or by an agent the owner asks; `m0-sessions` is retired (its work arrives
@@ -53,7 +63,9 @@ milestone paragraph; its code is that of `044ed3cf`, the commit of `m0-decisions
    passed-host, ADR-0014 says why, and the owner's security sign-off is still pending.
 5. **Runbook 0.8 checked again** on this branch: nothing G0.5 recovery's drop-in builds, copies or runs changed since
    `9cdb0a02` but `Spikes/G05-Recovery/DeviceTests`, which it does not use, so report row 10's class-B evidence stands
-   and 0.8 needs nothing (`checks/step-0.8-paths.log`).
+   and 0.8 needs nothing (`checks/step-0.8-paths.log`). *(27 October 2026: on this branch; on `m0-decisions` after your
+   merge, 0.8's command, which the merge section has you run, says whether it still holds, since a branch merged there
+   before this one, such as a fix of the recovery suite, can change those paths: the review's finding OWN-RU-03.)*
 6. **What both branches numbered alike** was renumbered: `m0-sessions`'s integration log sections 28-32 are 36-40 and
    its gate summary items 104-150 are 131-177 (`commands/renumber-sessions.py`; its dry run on the merge's records:
    `checks/renumber-sessions-dry-run.log`). *(27 October 2026: not every reference was: four in two lines of the gate
@@ -77,50 +89,91 @@ the fix of the same review's completeness findings, 27 October 2026, this paragr
 owner's first request to an agent, apart from the merge, and named the paragraph alone: its finding CMP-01;
 [`fix-1/completeness/`](fix-1/completeness/README.md). The message of the merge of `m0-sessions`, `4c0fa815`, says that
 the next commit rewrites `CLAUDE.md`'s paragraph; no commit of this branch did, `d1fb3dd4` leaving it as merged until
-that fix took `m0-decisions`'s file back, and a commit message is not rewritten: integration log 41.2.)*
+that fix took `m0-decisions`'s file back, and a commit message is not rewritten: integration log 41.2.)* *(27 October
+2026: the order is now fixed, in one pause between sittings, before Codex or any agent works in the checkout again:
+your fast-forward merge of this branch; then
+[`fix-1/owner/commands/apply-claude-md-texts.py`](fix-1/owner/commands/apply-claude-md-texts.py), which the merge
+brings and you run, puts both texts in, changing nothing else in the file and refusing if either place is not found
+exactly once; then the lock check and your commit (the merge section). Applied before the merge, by hand, they would
+move `m0-decisions` on, and your merge would then wait for an agent's merge the other way. Until the fix of the
+owner-readability findings of this branch's review, the texts were to be put in by hand, a paragraph of 2,893
+characters, before or after the merge: its finding OWN-RU-04; [`fix-1/owner/`](fix-1/owner/README.md).)*
 
 ## Merging it into `m0-decisions`, between sittings
 
 Between two sittings, once the sitting in progress is done and its records are committed on `m0-decisions` (runbook 0.3,
-step 6):
+step 6). The merge is a fast-forward or nothing: `git merge --ff-only` moves `m0-decisions` to this branch's head only
+when that head already holds every commit of `m0-decisions`, and otherwise stops and changes nothing ("abort if
+fast-forward is not possible": `git merge -h`, git 2.55.0). So you never resolve a conflict, and none of these records
+reaches `m0-decisions` beside a later record of yours that it no longer agrees with. In a terminal:
 
 ```sh
-git -C ~/Git/sylvia-sessions status --short           # nothing uncommitted: commit the sitting's records first
-git -C ~/Git/sylvia-sessions branch --show-current    # m0-decisions
-git -C ~/Git/sylvia-sessions log --oneline c72247a6..m0-decisions   # commits added since this branch was made
-git -C ~/Git/sylvia-sessions merge m0-records-update
-# Run 1's step 2, in the same pause, if you have not made it already: in ~/Git/sylvia-sessions/CLAUDE.md, put the two
-# texts of Docs/Stage0/evidence/M0-RecordsUpdate/claude-md-paragraph.md, which the merge brings, in place of the
-# paragraph that begins "Current milestone:" and in the toolchain line, as that file says; then commit them and run the
-# lock check, which compares that line's pin:
-git -C ~/Git/sylvia-sessions commit -m "Point CLAUDE.md's milestone paragraph at m0-decisions" -- CLAUDE.md
-(cd ~/Git/sylvia-sessions && source Scripts/lib/env.sh && Scripts/ci.d/12-dependency-lock.sh)   # 0 failure(s)
-git -C ~/Git/sylvia-sessions rev-parse HEAD           # note it in the session log: the next sitting builds from it
+cd ~/Git/sylvia-sessions
+git status --short                                  # nothing uncommitted: commit the sitting's records first
+git branch --show-current                           # m0-decisions
+git log --oneline m0-records-update..m0-decisions   # must print nothing; if it prints a commit, stop here (below)
+git merge --ff-only m0-records-update               # "Fast-forward"; if it refuses, nothing has changed (below)
+# Run 1's step 2, in the same pause, before Codex or any agent works in this checkout again. The merge brought this
+# command, which puts the two texts of claude-md-paragraph.md into CLAUDE.md and changes nothing else in it:
+python3 -I Docs/Stage0/evidence/M0-RecordsUpdate/fix-1/owner/commands/apply-claude-md-texts.py
+git diff --stat                                     # CLAUDE.md | 4 ++-- : the paragraph and the toolchain line, no more
+(source Scripts/lib/env.sh && Scripts/ci.d/12-dependency-lock.sh)  # 0 failure(s): it compares that line's Xcode pin
+git commit -m "Point CLAUDE.md's milestone paragraph at m0-decisions" -- CLAUDE.md
+git rev-parse HEAD                                  # note it in the session log: the next sitting builds from it
 ```
 
-- **If `m0-decisions` has not moved since `c72247a6`** (the `log` line prints nothing), the merge fast-forwards
-  `m0-decisions` to this branch's head, and no conflict is possible.
-- **If it has moved on** (new session records, a fix with Codex), git makes a merge commit. Files this branch does not
-  change merge cleanly, among them the session log, `Spikes/`, `CLAUDE.md` and every evidence file you commit; under
-  `Docs/Stage0/evidence/` this branch adds files and changes one, `M0-Integration/commands/gate-refresh-check.py` (the
-  table below). A conflict can come only where both changed the same lines of a file this branch changes (`git diff
-  --name-status c72247a6 m0-records-update` lists them): the ADRs and their index, the gate reports, the checklists,
-  the runbook, the gate summary, the plan, the amendments, the integration log, the Stage 0 README, `M0-contracts.md`,
-  the repository `README.md`, `Docs/Licenses/third-party-inventory.md`, the Zip guard's two scripts and that one
-  evidence file. *(Until the fix of the completeness findings of this branch's review, 27 October 2026, this bullet
-  named only the gate reports, the checklists, the runbook, the gate summary and the ADRs, and called the evidence
-  folders untouched: its finding CMP-07; [`fix-1/completeness/`](fix-1/completeness/README.md).)* If one does,
-  run `git -C ~/Git/sylvia-sessions merge --abort`, which leaves `m0-decisions` as it was, and ask an agent to merge
-  `m0-decisions` into `m0-records-update` in a worktree of its own, keeping every line of yours exactly as you
-  committed it, and to rerun this branch's checks; then merge again. Never resolve a conflict by dropping your own text.
-- **After the merge:** nothing is to be repeated for it: the checklists' changes are wording only and the Zip guard's
-  two scripts run in `12-dependency-lock` alone, so no step of your sittings repeats (runbook 0.3, step 7), and 0.8 needs
-  nothing (runbook 0.8). Nothing goes to `main`. `CLAUDE.md`'s texts (above) are yours to apply and commit on
-  `m0-decisions` before you ask an agent for anything, before the merge or after it, and at the latest right after it,
-  in the same pause (the commands above): the merge changes nothing in that file. *(Until the fix of this branch's
-  review, 26 October 2026, this bullet had you apply them after the merge, which then brought `6cede84a`'s paragraph to
-  `m0-decisions`: its finding FID-RU-03.)* *(Until the fix of the same review's completeness findings, 27 October 2026,
-  it set no latest time: its finding CMP-01.)*
+- **If the `log` line printed a commit, or the merge refused** (`fatal: Not possible to fast-forward, aborting.`, with
+  `m0-decisions` left as it was): `m0-decisions` has commits this branch lacks, your records of a later sitting, a fix
+  made with Codex, or another agent branch you merged first. Do not merge another way. Ask an agent to bring this branch
+  up to date first, in a worktree of its own, never in `~/Git/sylvia-sessions`: to merge `m0-decisions` into
+  `m0-records-update`, keeping every file and line `m0-decisions` holds exactly as committed (a conflict can come only
+  where both changed the same lines of a file this branch changes, which `git diff --name-status c72247a6
+  m0-records-update` lists: the ADRs and their index, the gate reports, the checklists, the runbook, the gate summary,
+  the plan, the amendments, the integration log, the Stage 0 README, `M0-contracts.md`, the repository `README.md`,
+  `Docs/Licenses/third-party-inventory.md`, the Zip guard's two scripts and one evidence file,
+  `M0-Integration/commands/gate-refresh-check.py` (the table below), and it is resolved by keeping your text); to bring
+  the account of your sittings in these records up to date with your new commits, wherever a text of these records no
+  longer agrees with your records, these records changing, never yours (the texts that give it: the gate summary's
+  State line, Section 1's recommendation and item 2, Section 5.1 and Section 7's opening; the runbook's header; the
+  plan's Status line; the reports' and checklists' notes on the steps your sittings ran, G0.4's status lines among them;
+  the Stage 0 README; `grep -rln "first sittings" Docs README.md` lists more); to run
+  [`fix-1/owner/commands/owner-records-intact.py`](fix-1/owner/commands/owner-records-intact.py) with `--owner-head`
+  set to the commit `m0-decisions` is at, which checks every commit of `m0-decisions` since `044ed3cf`, and this
+  branch's other checks, recording what they report; and to commit. Then run the commands above again: the merge is
+  now a fast-forward.
+- **After the merge,** in the same pause, look at what it brought rather than take it from this README, which cannot
+  know what else will have reached `m0-decisions` by then (a branch merged before this one, such as a fix of the
+  recovery suite, changes both answers):
+
+  ```sh
+  git diff --stat 9cdb0a02 HEAD -- Scripts/ci.d/71-g05-recovery.sh Scripts/lib Scripts/tools Spikes/G05-Recovery \
+    Contracts/schemas/backup-manifest.v1.schema.json Contracts/fixtures/backup-manifest.v1 \
+    ':(exclude)Spikes/G05-Recovery/DeviceTests'                            # runbook 0.8
+  git diff --stat <the commit your last sitting built from> HEAD -- Apps Packages Spikes Fixtures Scripts Contracts \
+    Docs/Stage0/device-checklists                                           # runbook 0.3, step 7
+  ```
+
+  The first prints nothing when 0.8 still needs nothing; if it prints anything, 0.8 runs again before Session 6
+  (runbook 0.8). The second lists every change since your last sitting that can call for a repeat: judge each under
+  step 7's rule, which names the changes of this branch that need none (the checklists' wording, the Zip guard's two
+  scripts and, against a commit before `4be1a1a4`, your own `DeviceTests`), and ask an agent, before the next sitting,
+  what anything else it lists repeats; a repeat writes its logs under new names (runbook Section 2). At this fix's
+  documents commit, with `m0-decisions` at `c72247a6`, the first printed nothing and the second, against `d5336111`,
+  listed the eight checklists and the Zip guard's two scripts alone, in a simulation of these commands in a scratch
+  clone ([`fix-1/owner/checks/merge-simulation.log`](fix-1/owner/checks/merge-simulation.log)). Nothing goes to `main`.
+
+*(This section's history. Until the fix of the owner-readability findings of this branch's review, 27 October 2026, its
+commands merged with `git merge m0-records-update`, which makes a merge commit when `m0-decisions` has moved on, and
+had `CLAUDE.md`'s two texts put in by hand; its bullet on a moved-on `m0-decisions` had you merge all the same, said that
+the files this branch does not change merge cleanly and left an agent only a textual conflict to resolve, so a clean
+merge could leave these records saying what your later records contradict (the review's case: G0.4 step 1 not finished,
+beside your own result for it), and checked no commit of yours after `c72247a6`; and "After the merge" stated that
+nothing repeats and that 0.8 needs nothing, where it now runs the two checks: its findings OWN-RU-03 and OWN-RU-04;
+[`fix-1/owner/`](fix-1/owner/README.md). Until the fix of the same review's completeness findings, the same day, that
+bullet named only the gate reports, the checklists, the runbook, the gate summary and the ADRs as where a conflict could
+come, and called the evidence folders untouched (its finding CMP-07), and `CLAUDE.md`'s texts had no latest time
+(CMP-01); and until the fix of its fidelity findings, 26 October 2026, they were to be applied after the merge, which
+then brought `6cede84a`'s paragraph to `m0-decisions` (FID-RU-03).)*
 
 ## The checks
 
@@ -169,4 +222,8 @@ technical-lead, persistence-owner and release-owner sign-offs; the ADR approvals
 two texts; and a review of this branch. *(26 October 2026: an agent review read it at `832a3636`; the fix of its
 fidelity findings, [`fix-1/`](fix-1/README.md), has not been reviewed, and the review's other lenses' findings go to the
 fixes that follow it.)* *(27 October 2026: the fix of its completeness findings,
-[`fix-1/completeness/`](fix-1/completeness/README.md), has not been reviewed either.)*
+[`fix-1/completeness/`](fix-1/completeness/README.md), has not been reviewed either.)* *(27 October 2026: nor has the
+fix of its owner-readability findings, [`fix-1/owner/`](fix-1/owner/README.md); and your merge of this branch, a
+fast-forward, waits for an agent's merge of `m0-decisions` into it first if `m0-decisions` has moved on since
+`c72247a6`, as it will have once you commit the records of 1.4's audio run or merge another branch: the merge
+section.)*

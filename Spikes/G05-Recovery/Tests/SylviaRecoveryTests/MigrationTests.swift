@@ -27,10 +27,11 @@ struct MigrationTests {
         try LibraryChecks.canonicalDump(db, tables: unchangedTables) + "## edition (v1 columns)\n" + editionV1Dump(db)
     }
 
-    func installV1(_ scratch: Scratch, mutate: ((Database) throws -> Void)? = nil) throws -> LibraryLayout {
+    func installV1(_ scratch: Scratch, from source: URL = MigrationTests.fixture,
+                   mutate: ((Database) throws -> Void)? = nil) throws -> LibraryLayout {
         let layout = scratch.layout()
         try LibraryStore.prepareDirectories(layout, protector: .library)
-        try FileManager.default.copyItem(at: Self.fixture, to: layout.databaseURL)
+        try FileManager.default.copyItem(at: source, to: layout.databaseURL)
         if let mutate {
             let queue = try DatabaseQueue(path: layout.databaseURL.path)
             try queue.write(mutate)

@@ -20,6 +20,10 @@ fixes, then this record.
 failed under `/private/var`, so `copyTreeRefusals` would have failed in the re-run on the phone. It found the mismatch
 also in the bundle walk's naming of a dangling link. Both are fixed on `m0-device-fixes` in `546a8219`. The notes
 marked "fix-1" below correct what this record said; [`../fix-1/README.md`](../fix-1/README.md) has the whole account.
+The security review of the same commit led to `e022cea7`: the guard below was widened, the containment check's helper
+is tested on `..` below a missing folder, and `commands/probe-host-facts.swift` now removes its folder however it ends.
+The notes marked "security fix" below say what changed; [`../fix-1/security/README.md`](../fix-1/security/README.md) has
+the whole account.
 
 ## 1. What failed on the phone (the owner's records, unchanged)
 
@@ -181,7 +185,12 @@ before `setAttributes`, and `protect` reports a mismatch whether or not the chan
   Mac only (not for the simulator or the phone). Its first version used Swift's `Regex`, whose `\b` follows Unicode word
   boundaries, where `default.copyItem` is one word, and found nothing
   ([`before-fix-host-tests-first-guard.log`](before-fix-host-tests-first-guard.log)); the committed version uses
-  `NSRegularExpression` and found all five calls on the unchanged code.
+  `NSRegularExpression` and found all five calls on the unchanged code. (Security fix: "anywhere" was too strong. The
+  guard missed a call written after a string that holds `//`, the Objective-C `copyItemAtURL:` form and
+  `FileManager.linkItem`, whose hard link keeps the class too. Since `e022cea7` it strips `//` comments outside string
+  literals only, matches across line breaks, and also finds `linkItem`, link(2), linkat(2) and the Objective-C
+  selectors; it remains a text check, which a call made another way, such as through a selector built at run time,
+  escapes.)
 - **The behavioural tests:** `ProtectedCopyTests.v1LibraryFromAnotherClass` (the phone's failure, with a class-B source
   standing in for the app bundle's file) and `copyTreeGivesTheClass` (a class-B tree copied comes out class C on every
   file and directory, with the same bytes) need a faithful readback and class-B keys: they run on the phone and on an
@@ -201,6 +210,9 @@ followed by the components below it that do not exist, as they are. (fix-1 moved
 - `resolve` now refuses, itself, every path the manifest stage refuses (`BundlePath.isSafeRelativePath`), so the
   appended components can never be `..`, `.` or empty; the manifest stage's own traversal, absolute, backslash, hidden
   and Unicode rejections are unchanged, and both callers (`validate`, `Restore.copyVerified`) only pass paths it accepted.
+- (Security fix: as committed here, the helper itself, `isInside` called on its own, counted a `..` below a missing
+  folder as inside; `resolve` was never affected, since it refuses such components first. fix-1's `CanonicalPath.of`
+  places no such path, and since `e022cea7` `containmentFollowsLinks` checks it.)
 
 ## 4. Checks run
 
@@ -295,7 +307,8 @@ unchanged):
    NSFileProtectionCompleteUnlessOpen` (and the guard fails too). Since fix-1 the run also prints the `copyTree, a
    destination inside the source: …` line, under `/var` and through `/private` (the owner's README, Section 7.2).
 3. `xcrun swift Docs/Stage0/evidence/M0-DeviceFixes/recovery/commands/probe-host-facts.swift` with the screen unlocked:
-   section 4 shows finding F-1 on the Mac.
+   section 4 shows finding F-1 on the Mac. (Security fix: the probe now removes its temporary folder however it ends,
+   and its last line says so; before `e022cea7` a run with the screen locked left the folder behind.)
 
 ## 8. Requests for the records (also the job's open items)
 

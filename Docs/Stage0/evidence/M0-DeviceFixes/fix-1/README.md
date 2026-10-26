@@ -2,7 +2,8 @@
 
 For the product owner. The correctness review of branch `m0-device-fixes` at `fdce7cd5` (26 October 2026) reported
 four findings: F1 (blocker), F2 (major), F3 and F4 (minor). This folder records how each was checked before anything
-changed, what changed, and the checks.
+changed, what changed, and the checks. The security review of the same commit, answered after this record, has its own
+record in [`security/README.md`](security/README.md).
 
 All of it is an agent's work on the build Mac (macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275)) and its own
 simulator (Sylvia-M0-devfix-fix1, iPhone 17, iOS 26.5, made for this job and deleted once its checks ended) on 26

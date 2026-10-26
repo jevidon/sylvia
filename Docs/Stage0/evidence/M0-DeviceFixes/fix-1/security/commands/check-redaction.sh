@@ -4,8 +4,8 @@
 #   redact: the runbook's own one-liner (Docs/Stage0/M0-device-runbook.md, Session 4, "Addresses"), which cuts every
 #           IPv4 address to its first two octets and the tailnet part of a MagicDNS name;
 #   check:  a perl line that prints every line still holding a whole IPv4 address (nothing, once redacted).
-# 1. The first run's log, Docs/Stage0/evidence/G05-AI/device/step-01-ats.log (the owner's record, read only): the check
-#    prints nothing for it, as committed.
+# 1. The first run's records, every file in Docs/Stage0/evidence/G05-AI/device/ (the owner's records, read only): the
+#    check prints nothing for any of them, as committed.
 # 2. A round trip on that log's own address lines, in a scratch file under .build/scratch (never in the evidence
 #    folder): each masked address <a.b>.x.x is given two made-up last octets, the redact command is run over the
 #    scratch file, and the result is compared with the original lines. The made-up addresses are not written to the
@@ -33,10 +33,12 @@ status=0
   echo "  (the runbook's text: $(grep -o "perl -pi -e '[^']*'" Docs/Stage0/M0-device-runbook.md | head -1))"
   echo "check: perl -ne 'print if /\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b/' <file>"
   echo
-  echo "== 1. the check on the first run's log, $first_run, as committed"
-  found="$(check "$first_run" | wc -l | tr -d ' ')"
-  echo "lines with a whole IPv4 address: $found (expected 0)"
-  [[ "$found" == 0 ]] || status=1
+  echo "== 1. the check on the first run's records, Docs/Stage0/evidence/G05-AI/device/, as committed"
+  for record in Docs/Stage0/evidence/G05-AI/device/*; do
+    found="$(check "$record" | wc -l | tr -d ' ')"
+    echo "$record: lines with a whole IPv4 address: $found (expected 0); lines with a cut one (a.b.x.x): $(grep -cE '[0-9]{1,3}\.[0-9]{1,3}\.x\.x' "$record")"
+    [[ "$found" == 0 ]] || status=1
+  done
   echo
   echo "== 2. round trip on the first run's address lines (scratch copy)"
   grep -E '[0-9]{1,3}\.[0-9]{1,3}\.x\.x' "$first_run" > "$scratch/masked.txt"

@@ -72,7 +72,7 @@ An earlier run at `e5e1cede` reported step 2 as not as expected, although all it
 
 ## 5. What the owner's re-run of 1.3 should show
 
-Run runbook 1.3 as written, from a commit that holds `907538f5`.
+Run runbook 1.3 as written, from a commit that holds `907538f5`. (After the security review: run it as the owner's README gives it in [Section 7.4](../README.md#74-phone-b-step-13-again-the-ats-probe), which keeps the first run's log by naming the new one apart, and cuts every address in the new log to its first two octets before anything is copied from it or committed. The probe's own lines mask the address, but CFNetwork's lines and the default variant's expected failure print the phone's Wi-Fi address whole. [`../fix-1/security/README.md`](../fix-1/security/README.md), Section 6.)
 
 **Before the run:**
 

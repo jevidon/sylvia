@@ -191,11 +191,18 @@ names; and `m0-records-update`'s `step-08-paths.sh`, which expects nothing the d
   in its case B the three lines of the owner-records check that are meant to fail there, as at that fix.
 - **The rechecks and the gate checks**: [`checks/compare-earlier-checks.log`](checks/compare-earlier-checks.log), written
   by [`commands/compare-earlier-checks.py`](commands/compare-earlier-checks.py), lists every line naming a problem or a
-  result that differs from their logs at the owner-readability fix. The groups they report are those they reported then;
-  what differs is counts (files and paths changed since each branch's start, markers, Markdown files swept, the State
-  line's words), the device fixes' files under `Spikes/` among what changed since each branch's start and since
-  `9cdb0a02`, `CLAUDE.md` changed, and the fold-in's logs, which the gate summary cites and which are committed after the
-  run that writes them, reported missing by the checks that read the committed tree.
+  result that differs from their logs at the owner-readability fix, once what changes with every run is set aside (the
+  commit each run read, times, loads, and the line numbers cited beside a file name). They report the groups they
+  reported then (`recheck-own.py` exactly the same lines). What differs: counts (the files changed since each branch's
+  start, the paths the gate summary cites, the checklists' markers, the Markdown files the sweeps read and the texts two
+  sweeps find in their phrasings, the device fixes' README's and the fold-in's among them, the State line's words); what
+  changed in the repeat rule's folders, which now begins with `Scripts/ci.d/70-g05-ai.sh` and holds the device fixes'
+  files under `Spikes/`, and 0.8's paths, which the device-A gate check reads and which now hold them; `CLAUDE.md`,
+  changed; the device-A update's sweep, whose first unlisted line
+  naming `m0-decisions` is now the runbook's new bullet on your next steps; the text the earlier fixes' citation controls
+  read at the lines they cite, which moved with the lines added above them; and the fold-in's seven logs that the gate
+  summary cites, committed after the run that writes them, which the checks that read the committed tree report missing,
+  as they reported the owner-readability fix's five.
 
 ## 8. Not done here, and why
 

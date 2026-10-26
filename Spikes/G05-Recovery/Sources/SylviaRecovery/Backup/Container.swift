@@ -166,8 +166,12 @@ public enum BackupValidator {
     }
 
     /// Joins a validated relative path to `root` and checks no component is a symbolic link and the
-    /// result stays inside `root` after resolution.
+    /// result stays inside `root` after resolution. The path need not exist: a listed file that is
+    /// missing is reported by `requireRegularFile` as missing, not here as unsafe.
     static func resolve(_ path: String, in root: URL) throws -> URL {
+        // The manifest stage has already refused any other path; refused here too, so that the
+        // containment check below never meets a `..`, `.` or empty component.
+        guard BundlePath.isSafeRelativePath(path) else { throw BackupError.unsafePath(path) }
         var url = root
         for component in path.split(separator: "/") {
             url = url.appending(path: String(component), directoryHint: .notDirectory)
@@ -175,10 +179,41 @@ public enum BackupValidator {
                 throw BackupError.symlinkInBundle(path)
             }
         }
-        let resolvedRoot = root.resolvingSymlinksInPath().standardizedFileURL.path
-        let resolved = url.resolvingSymlinksInPath().standardizedFileURL.path
-        guard resolved.hasPrefix(resolvedRoot + "/") else { throw BackupError.unsafePath(path) }
+        guard isInside(url, root) else { throw BackupError.unsafePath(path) }
         return url
+    }
+
+    /// Whether `url` lies inside `root` once every symbolic link in either path is resolved, whether
+    /// or not `url` exists. Both paths are resolved by realpath(3) (`canonicalPath`), never by
+    /// Foundation's `resolvingSymlinksInPath`, which also drops a leading `/private`, but only from a
+    /// path that exists: under /private/var (an iPhone's temporary and container folders) an existing
+    /// root and a missing file inside it then had different prefixes, and the missing file was
+    /// reported as an unsafe path (device run of 26 October 2026, `PrivatePathTests`).
+    static func isInside(_ url: URL, _ root: URL) -> Bool {
+        guard let resolvedRoot = canonicalPath(root), let resolved = canonicalPath(url) else { return false }
+        return resolved.hasPrefix(resolvedRoot.hasSuffix("/") ? resolvedRoot : resolvedRoot + "/")
+    }
+
+    /// The absolute path of `url` with every symbolic link resolved: realpath(3) of the deepest part
+    /// of the path that exists, followed by the components below it that do not exist, as they are.
+    /// realpath(3) gives the same form of a path whichever way it is named (`/var/...` and
+    /// `/private/var/...` both become `/private/var/...`). nil only if no part of the path resolves.
+    static func canonicalPath(_ url: URL) -> String? {
+        var existing = url.path.split(separator: "/").map(String.init)
+        var missing: [String] = []
+        while true {
+            if let resolved = realPath("/" + existing.joined(separator: "/")) {
+                return missing.reversed().reduce(resolved) { ($0.hasSuffix("/") ? $0 : $0 + "/") + $1 }
+            }
+            guard let last = existing.popLast() else { return nil }
+            missing.append(last)
+        }
+    }
+
+    static func realPath(_ path: String) -> String? {
+        guard let resolved = realpath(path, nil) else { return nil }
+        defer { free(resolved) }
+        return String(cString: resolved)
     }
 
     static func requireRegularFile(_ url: URL, display: String, missing: BackupError) throws {

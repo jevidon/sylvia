@@ -64,4 +64,40 @@ struct PrivatePathTests {
         }
         evidence("missing listed file, bundle \(outcomes.joined(separator: "; "))")
     }
+
+    /// The containment check is no weaker than before: links in the path are resolved whether or not
+    /// the leaf exists (before the fix a missing leaf left the whole path unresolved, so a link above
+    /// it was not followed), and `resolve` refuses every path the manifest stage refuses, itself.
+    @Test("the containment check follows links whether or not the leaf exists, and resolve refuses unsafe paths itself")
+    func containmentFollowsLinks() throws {
+        let scratch = try Scratch()
+        let fm = FileManager.default
+        let root = scratch.dir("Bundle")
+        try fm.createDirectory(at: root.appending(path: "export/markdown", directoryHint: .isDirectory), withIntermediateDirectories: true)
+        try Data("x".utf8).write(to: root.appending(path: "export/markdown/a.md"))
+        let outside = scratch.dir("Outside")
+        try fm.createDirectory(at: outside, withIntermediateDirectories: true)
+        try Data("y".utf8).write(to: outside.appending(path: "b.md"))
+        try fm.createSymbolicLink(at: root.appending(path: "export/escape", directoryHint: .notDirectory), withDestinationURL: outside)
+
+        for form in Self.forms(root) {
+            let base = form.url
+            for (path, inside) in [("export/markdown/a.md", true), ("export/markdown/missing.md", true), ("blobs/missing/x.mp3", true),
+                                   ("export/escape/b.md", false), ("export/escape/missing.md", false)] {
+                #expect(BackupValidator.isInside(base.appending(path: path), base) == inside, "\(form.label): \(path)")
+            }
+            #expect(!BackupValidator.isInside(outside.appending(path: "b.md"), base), "\(form.label): a file outside")
+            #expect(BackupValidator.isInside(base, base) == false, "\(form.label): the root itself is not inside itself")
+            // A link in the path is refused before the containment check, as before.
+            #expect(throws: BackupError.symlinkInBundle("export/escape/missing.md")) { try BackupValidator.resolve("export/escape/missing.md", in: base) }
+            // The manifest stage's path rules, now also refused by resolve itself.
+            for path in ["../outside.txt", "/etc/passwd", "blobs/excerpts/../../../x", "blobs\\excerpts\\x", ".hidden/x",
+                         "export/markdown/caf\u{e9}.md", "export//x.md", "export/./x.md", ""] {
+                #expect(throws: BackupError.unsafePath(path), "\(form.label): \(path)") { try BackupValidator.resolve(path, in: base) }
+            }
+            // The same folder named both ways resolves to one form (realpath: /private/var/...).
+            #expect(BackupValidator.canonicalPath(base) == BackupValidator.canonicalPath(root), "\(form.label)")
+        }
+        evidence("containment check (realpath of the deepest existing part): \(Self.forms(root).map(\.label).joined(separator: " and ")): a missing leaf is inside; a missing leaf below a link to outside the root is outside; resolve refuses links and the manifest's unsafe paths")
+    }
 }

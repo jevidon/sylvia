@@ -27,11 +27,15 @@ struct MigrationTests {
         try LibraryChecks.canonicalDump(db, tables: unchangedTables) + "## edition (v1 columns)\n" + editionV1Dump(db)
     }
 
+    /// Installs the v1 library from `source` (the committed fixture by default). `library.sqlite` is
+    /// created with the library's class by `FileProtector.copyFile`, never `FileManager.copyItem`, which
+    /// keeps the source's class: on the phone the copy of the fixture in the app bundle had no
+    /// protection class, and the open refused it (device run of 26 October 2026; `ProtectedCopyTests`).
     func installV1(_ scratch: Scratch, from source: URL = MigrationTests.fixture,
                    mutate: ((Database) throws -> Void)? = nil) throws -> LibraryLayout {
         let layout = scratch.layout()
         try LibraryStore.prepareDirectories(layout, protector: .library)
-        try FileManager.default.copyItem(at: source, to: layout.databaseURL)
+        try FileProtector.library.copyFile(from: source, to: layout.databaseURL)
         if let mutate {
             let queue = try DatabaseQueue(path: layout.databaseURL.path)
             try queue.write(mutate)

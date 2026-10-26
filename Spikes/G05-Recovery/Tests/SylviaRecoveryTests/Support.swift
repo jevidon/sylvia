@@ -78,10 +78,13 @@ func refreshEntry(_ manifest: inout BackupManifest, bundle: URL, path: String) t
     manifest.files[index].byte_count = size
 }
 
-/// Copies a directory tree (to make variants of a good bundle).
+/// Copies a directory tree (to make variants of a good bundle). A restore copies a bundle's files with
+/// the library's class whatever theirs is, so the variants' class does not matter; they are made with
+/// `FileProtector.copyTree` all the same, so that no code in the spike copies with
+/// `FileManager.copyItem` (`ProtectedCopyTests`).
 func copyTree(_ from: URL, to: URL) throws {
     try? FileManager.default.removeItem(at: to)
-    try FileManager.default.copyItem(at: from, to: to)
+    try FileProtector.library.copyTree(from: from, to: to)
 }
 
 /// Locates the tool executable built next to the test bundle.

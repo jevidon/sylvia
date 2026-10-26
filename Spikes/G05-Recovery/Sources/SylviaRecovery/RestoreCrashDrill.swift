@@ -111,7 +111,8 @@ public struct RestoreCrashDrillParent {
 
         func reset() throws {
             if fm.fileExists(atPath: root.path) { try fm.removeItem(at: root) }
-            try fm.copyItem(at: template, to: root)
+            // Created with the library's class, never `FileManager.copyItem`, which keeps the template's.
+            try FileProtector.library.copyTree(from: template, to: root)
         }
 
         // Calibration: one unkilled run gives the restored state and the two windows' durations.

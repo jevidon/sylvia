@@ -46,7 +46,9 @@ first run on `e7a534e0`, the first documents commit, gave the same results, and 
 what integration log 44.8 had not given (the runbook's lines further down, read by the earlier controls, the commits
 the gate checks count, the missing logs reported within `m0-exit-prep`'s gate checks too) or had given wrong (the
 count of new references), so the next commit gives 44.8 as they report, and that run's logs were set aside, not
-committed (integration log 44.6). Host only:
+committed; a second run, on `9f7dc46d`, gave the same results, but read one more commit on HEAD that `main` lacks than
+44.8 then gave, a count each commit raises, so the commit after it gives that count no number, and that run's logs
+were set aside too (integration log 44.6). Host only:
 the build Mac, macOS 26.6.2 (25G83), Apple M5 Max, Xcode 27.1 (27A9275). No simulator was created or used, no device was
 contacted, nothing played audio and nothing was fetched from a remote or pushed; the simulation's local clone, under
 `.build/scratch`, was deleted after it. Other jobs may have shared the Mac (the load averages in the logs), so no timing

@@ -1,0 +1,42 @@
+environment: host macOS 26.6.2 (25G83), Xcode 27.1 Build version 27A9275 
+script> xcodebuild test -scheme G02MacIdentityProbe -destination platform=macOS -allowProvisioningUpdates (automatic signing, team A4KBDX665Z)
+--- code signature of the host app (codesign -d)
+Identifier=com.jevidon.sylvia.spike.identityprobe
+Signature size=4783
+Authority=Apple Development: JUSTIN EVIDON (8CRWY2K873)
+Authority=Apple Worldwide Developer Relations Certification Authority
+Authority=Apple Root CA
+TeamIdentifier=A4KBDX665Z
+--- entitlements of the host app
+{
+  "com.apple.application-identifier" => "A4KBDX665Z.com.jevidon.sylvia.spike.identityprobe"
+  "com.apple.developer.team-identifier" => "A4KBDX665Z"
+  "com.apple.security.get-task-allow" => true
+  "com.apple.security.temporary-exception.files.absolute-path.read-only" => [
+    0 => "/"
+  ]
+  "com.apple.security.temporary-exception.mach-lookup.global-name" => [
+    0 => "com.apple.testmanagerd"
+    1 => "com.apple.dt.testmanagerd.runner"
+    2 => "com.apple.coresymbolicationd"
+  ]
+  "keychain-access-groups" => [
+    0 => "A4KBDX665Z.com.jevidon.sylvia.spike.identityprobe"
+  ]
+}
+--- test output (xcodebuild exit 65)
+** TEST FAILED **
+G02-PROBE backend: data-protection keychain
+G02-PROBE items for the service in the login (file-based) keychain: 1
+G02-PROBE kSecAttrAccessGroup: A4KBDX665Z.com.jevidon.sylvia.spike.identityprobe
+G02-PROBE kSecAttrAccessible: cku (kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly is cku)
+G02-PROBE kSecAttrSynchronizable: false
+G02-PROBE reloaded the same identity (same SPKI pin and source ID): true
+↳ /// Lines starting with "G02-PROBE" are copied into the evidence by mac-identity-probe-run.sh.
+✔ Suite "Keychain queries by keychain implementation (diagnostic of the first signed run)" passed after 0.028 seconds.
+✔ Test whatEachQueryReturnsForTheStoresItemAndForAFileBasedItem() passed after 0.028 seconds.
+✘ Suite "Signed Mac identity store (ADR-0008, R1-11)" failed after 0.018 seconds with 1 issue.
+✘ Test identityKeyIsInTheDataProtectionKeychainAfterFirstUnlockThisDeviceOnly() failed after 0.017 seconds with 1 issue.
+✘ Test identityKeyIsInTheDataProtectionKeychainAfterFirstUnlockThisDeviceOnly() recorded an issue at DataProtectionKeychainTests.swift:36:9: Expectation failed: legacy.isEmpty
+✘ Test run with 2 tests in 2 suites failed after 0.046 seconds with 1 issue.
+RESULT: FAIL (full log: .build/scratch/g02-identity-probe/xcodebuild.log)

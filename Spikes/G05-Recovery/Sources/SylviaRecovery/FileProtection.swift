@@ -122,8 +122,7 @@ public struct FileProtector: Sendable {
     /// Copies the regular file at `source` into a new file at `destination` that is created with
     /// the protection class, then verifies the class. `FileManager.copyItem` must not be used for
     /// files Sylvia keeps: it clones the source and keeps the source's class (shown on the host:
-    /// a class-C file copied into a class-B directory stays class C), and the class of an existing
-    /// file cannot be changed afterwards on macOS. The source is opened without following a link in
+    /// a class-C file copied into a class-B directory stays class C). The source is opened without following a link in
     /// its last component (`O_NOFOLLOW`) and must be a regular file at the moment it is opened, so a
     /// bundle changed after validation cannot substitute a link, FIFO or device for the file itself.
     /// `O_NOFOLLOW` covers the last component only: a folder above the file that is swapped for a

@@ -11,8 +11,12 @@ and the refused-branch evidence line of `DataProtectionTests.mismatchDetected`, 
 **Result on the Mac** ([`host-tests.log`](host-tests.log), `xcrun swift test --force-resolved-versions` in
 `Spikes/G05-Recovery`, screen unlocked): 79 tests in 13 suites passed; 3 skipped (the two device probes, and the
 locked-screen observation, the screen being unlocked). The mismatch test now prints `changing an existing file's class
-with setAttributes: applied and verified`: on macOS 26.6.2 `setAttributes` does change an existing file's class, and
-the earlier "refused ... the class is fixed at creation here" lines rested on the cached reading.
+with setAttributes: applied and verified`: on macOS 26.6.2, with the screen unlocked, `setAttributes` does change an
+existing file's class. The earlier unlocked runs' "refused" lines (for example `G05-Recovery/ci-clean-run.log`) were the
+cached reading; the locked runs' "cannot apply class ... Operation not permitted" lines were real refusals, class-B keys
+being unavailable. A library file of the wrong class is now set to the class and verified where `setAttributes` works,
+instead of failing the open (`FileProtection.swift`: "sets and verifies"). An independent review (one round) accepted
+the fix with four minor findings, all applied.
 
 The same run is the first run of the two class-B tests of the device fixes' failure 1, which had never run (they need
 the screen unlocked): `v1 library installed from a class-B source: ... opened and migrated` and `class-B tree (4 files,

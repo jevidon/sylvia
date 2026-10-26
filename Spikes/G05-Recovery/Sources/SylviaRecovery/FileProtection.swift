@@ -162,12 +162,20 @@ public struct FileProtector: Sendable {
     /// each source file's class (device run of 26 October 2026: a fixture copied out of the app bundle
     /// had no class, and the open refused it). Extended attributes are not copied; the open sets the
     /// backup exclusion of the directories that need it again.
+    ///
+    /// Whether the destination is inside the source is decided on both paths resolved by realpath(3)
+    /// (`CanonicalPath`), so links are followed and /private is kept however the folders are named; a
+    /// destination that cannot be placed that way is refused. Foundation's `standardizedFileURL` drops
+    /// /private only from a path that exists: under /private/var, as an iPhone names its folders, the
+    /// existing source and a destination inside it that did not exist yet differed in prefix, and the
+    /// copy went on into itself (review of 26 October 2026, finding F1).
     public func copyTree(from source: URL, to destination: URL) throws {
         try requireSupportedClass()
         let fm = FileManager.default
-        let sourcePath = source.standardizedFileURL.path
-        let destinationPath = destination.standardizedFileURL.path
-        guard destinationPath != sourcePath, !destinationPath.hasPrefix(sourcePath + "/") else {
+        guard let sourcePath = CanonicalPath.of(source), let destinationPath = CanonicalPath.of(destination) else {
+            throw FileSystemError.posix("copy", "\(destination.lastPathComponent): a path that cannot be resolved", EINVAL)
+        }
+        guard destinationPath != sourcePath, CanonicalPath.relative(destinationPath, to: sourcePath) == nil else {
             throw FileSystemError.posix("copy", "\(destination.lastPathComponent) is inside \(source.lastPathComponent)", EINVAL)
         }
         var info = stat()

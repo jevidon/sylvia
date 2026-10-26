@@ -96,8 +96,14 @@ struct PrivatePathTests {
                 #expect(throws: BackupError.unsafePath(path), "\(form.label): \(path)") { try BackupValidator.resolve(path, in: base) }
             }
             // The same folder named both ways resolves to one form (realpath: /private/var/...).
-            #expect(BackupValidator.canonicalPath(base) == BackupValidator.canonicalPath(root), "\(form.label)")
+            #expect(CanonicalPath.of(base) == CanonicalPath.of(root), "\(form.label)")
+            // `.` or `..` below a folder that does not exist cannot be placed (review of 26 October 2026, fix-1).
+            #expect(CanonicalPath.of(base.appending(path: "missing/../export/markdown/a.md")) == nil, "\(form.label)")
         }
+        // Paths are compared byte by byte: a name that begins with a combining mark is still below its folder,
+        // though Swift's `String.hasPrefix` joins it to the `/` before it.
+        #expect(CanonicalPath.relative("/r/b/\u{301}x", to: "/r/b") == "\u{301}x")
+        #expect(CanonicalPath.relative("/r/b", to: "/r/b") == nil && CanonicalPath.relative("/r/bc/x", to: "/r/b") == nil)
         evidence("containment check (realpath of the deepest existing part): \(Self.forms(root).map(\.label).joined(separator: " and ")): a missing leaf is inside; a missing leaf below a link to outside the root is outside; resolve refuses links and the manifest's unsafe paths")
     }
 }

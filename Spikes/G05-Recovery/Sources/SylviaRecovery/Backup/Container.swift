@@ -184,36 +184,14 @@ public enum BackupValidator {
     }
 
     /// Whether `url` lies inside `root` once every symbolic link in either path is resolved, whether
-    /// or not `url` exists. Both paths are resolved by realpath(3) (`canonicalPath`), never by
+    /// or not `url` exists. Both paths are resolved by realpath(3) (`CanonicalPath`), never by
     /// Foundation's `resolvingSymlinksInPath`, which also drops a leading `/private`, but only from a
     /// path that exists: under /private/var (an iPhone's temporary and container folders) an existing
     /// root and a missing file inside it then had different prefixes, and the missing file was
     /// reported as an unsafe path (device run of 26 October 2026, `PrivatePathTests`).
     static func isInside(_ url: URL, _ root: URL) -> Bool {
-        guard let resolvedRoot = canonicalPath(root), let resolved = canonicalPath(url) else { return false }
-        return resolved.hasPrefix(resolvedRoot.hasSuffix("/") ? resolvedRoot : resolvedRoot + "/")
-    }
-
-    /// The absolute path of `url` with every symbolic link resolved: realpath(3) of the deepest part
-    /// of the path that exists, followed by the components below it that do not exist, as they are.
-    /// realpath(3) gives the same form of a path whichever way it is named (`/var/...` and
-    /// `/private/var/...` both become `/private/var/...`). nil only if no part of the path resolves.
-    static func canonicalPath(_ url: URL) -> String? {
-        var existing = url.path.split(separator: "/").map(String.init)
-        var missing: [String] = []
-        while true {
-            if let resolved = realPath("/" + existing.joined(separator: "/")) {
-                return missing.reversed().reduce(resolved) { ($0.hasSuffix("/") ? $0 : $0 + "/") + $1 }
-            }
-            guard let last = existing.popLast() else { return nil }
-            missing.append(last)
-        }
-    }
-
-    static func realPath(_ path: String) -> String? {
-        guard let resolved = realpath(path, nil) else { return nil }
-        defer { free(resolved) }
-        return String(cString: resolved)
+        guard let resolvedRoot = CanonicalPath.of(root), let resolved = CanonicalPath.of(url) else { return false }
+        return CanonicalPath.relative(resolved, to: resolvedRoot) != nil
     }
 
     static func requireRegularFile(_ url: URL, display: String, missing: BackupError) throws {
@@ -233,11 +211,19 @@ public enum BackupValidator {
             errorHandler: { url, _ in unreadable.append(url); return true }) else {
             throw BackupError.notABundle("cannot enumerate")
         }
-        let rootPath = root.standardizedFileURL.path
+        // Each item's path below the root: its folder resolved by realpath(3) (`CanonicalPath`; the folder exists, it
+        // is being walked) joined to the item's own name, which is never resolved, so that a link, dangling or not, is
+        // reported as a link below. Comparing Foundation's `standardizedFileURL` paths failed under /private/var: the
+        // enumerator names items /private/var/... whichever way the root is named, and /private is dropped only from
+        // a path that exists, so a dangling link kept it and the bundle was refused as an unsafe path, with the link's
+        // absolute path (review of 26 October 2026, finding F3).
+        guard let rootPath = CanonicalPath.of(root) else { throw BackupError.notABundle("cannot resolve its folder") }
+        func relativePath(_ url: URL) -> String? {
+            guard let folder = CanonicalPath.of(url.deletingLastPathComponent()) else { return nil }
+            return CanonicalPath.relative((folder.hasSuffix("/") ? folder : folder + "/") + url.lastPathComponent, to: rootPath)
+        }
         for case let url as URL in enumerator {
-            let full = url.standardizedFileURL.path
-            guard full.hasPrefix(rootPath + "/") else { throw BackupError.unsafePath(full) }
-            let relative = String(full.dropFirst(rootPath.count + 1))
+            guard let relative = relativePath(url) else { throw BackupError.unsafePath(url.lastPathComponent) }
             let values = try url.resourceValues(forKeys: [.isSymbolicLinkKey, .isRegularFileKey, .isDirectoryKey])
             if values.isSymbolicLink == true { throw BackupError.symlinkInBundle(relative) }
             if values.isDirectory == true { continue }
@@ -246,9 +232,7 @@ public enum BackupValidator {
             guard listed.contains(relative) else { throw BackupError.unlistedFile(relative) }
         }
         if let first = unreadable.urls.first {
-            let path = first.standardizedFileURL.path
-            let shown = path.hasPrefix(rootPath + "/") ? String(path.dropFirst(rootPath.count + 1)) : first.lastPathComponent
-            throw BackupError.notABundle("cannot read \(shown)")
+            throw BackupError.notABundle("cannot read \(relativePath(first) ?? first.lastPathComponent)")
         }
     }
 }

@@ -1,0 +1,22 @@
+# A capture of the preceding 30 s at 34200.0 s in each 10-hour file, on fresh copies (cold). export_s = the excerpt export (decode, AAC
+# encode, durable write) as the capture transaction runs it after the anchor write; preview_start_s = beginPreview() of the pending
+# source range (34192.0-34200.0 s) to its first buffer reaching the analysis tap. Errors against master-long by cross-correlation.
+# Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs); at the start: device load averages 2.15 2.33 4.86 (1, 5, 15 min)
+format	file	export_s	export_start_err_ms	export_end_err_ms	preview_start_s	preview_head_err_ms	load_1m
+flac	long-formats/long-flac-10h.flac	59.632	60.4	0.0	none	nan	1.7
+ogg-opus	long-formats/long-opus-10h.ogg	2.500	26.6	-1.0	2.339	26.6	1.5
+opus-ext	long-formats/long-opus-10h.opus	2.502	26.6	-1.0	2.382	26.6	3.1
+mp4-flac	long-formats/long-mp4-flac-10h.m4a	0.087	0.0	0.0	0.161	0.0	3.1
+mp4-opus	long-formats/long-mp4-opus-10h.m4a	0.130	0.0	-1.0	0.131	0.0	3.4
+caf-opus	long-formats/long-caf-opus-10h.caf	0.135	26.5	-1.0	0.133	26.5	3.1
+wav	long-formats/long-wav-10h.wav	3.636	0.0	0.0	0.138	0.0	2.6
+m4a-alac	long-formats/long-m4a-alac-10h.m4a	0.104	0.0	0.0	0.165	0.0	2.8
+m4a-he-aac-v1	long-formats/long-m4a-heaac-v1-10h.m4a	0.088	-47.9	-47.9	0.130	-47.9	2.6
+m4a-he-aac-v2	long-formats/long-m4a-heaac-v2-10h.m4a	0.100	-47.9	-47.9	0.165	-47.9	2.4
+m4a-aac-lc	long-aac-10h.m4b	0.085	0.0	0.0	0.165	0.0	2.4
+mp3-cbr	long-mp3-cbr-10h.mp3	0.951	21.2	-13.1	0.704	26.1	2.3
+mp3-vbr-xing	long-mp3-vbr-10h.mp3	0.951	21.2	-13.1	0.668	26.1	2.1
+mp3-vbr-noxing	long-formats/long-mp3-vbr-noxing-10h.mp3	0.609	21.2	-13.1	0.670	26.1	2.0
+export of a 30 s excerpt 9.5 h into a 10-hour file, cold: n=14 p50=0.372 p95=23.235 max=59.632 s
+pending preview start 9.5 h into a 10-hour file, cold: n=13 p50=0.165 p95=2.357 max=2.382 s
+# at the end: device load averages 1.95 2.20 4.27 (1, 5, 15 min)

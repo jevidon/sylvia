@@ -1,0 +1,10 @@
+# Seek across members and rate on AVQueuePlayer, with every member opened with precise timing and, second, as the import
+# opens them (estimated timing for these constant-bit-rate MP3 files; review R4-01). Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs)
+members opened: precise,precise,precise,precise
+member 3 at 20.25 s, 2.0x: media advance 1.822 s per wall s; rendered from 20.250 s for 9.20 s of source; content error 18.2 ms (peak 0.998)
+member 1 at 101.50 s, 0.5x: media advance 0.420 s per wall s; rendered from 101.500 s for 2.23 s of source; content error 27.3 ms (peak 0.998)
+member 4 at 7.00 s, 1.0x: media advance 0.886 s per wall s; rendered from 7.000 s for 4.55 s of source; content error 38.4 ms (peak 0.999)
+members opened: estimatedCBR,estimatedCBR,estimatedCBR,estimatedCBR
+member 3 at 20.25 s, 2.0x: media advance 1.829 s per wall s; rendered from 20.250 s for 9.20 s of source; content error 18.2 ms (peak 0.998)
+member 1 at 101.50 s, 0.5x: media advance 0.420 s per wall s; rendered from 101.500 s for 2.23 s of source; content error 27.3 ms (peak 0.998)
+member 4 at 7.00 s, 1.0x: media advance 0.885 s per wall s; rendered from 7.000 s for 4.55 s of source; content error 38.4 ms (peak 0.999)

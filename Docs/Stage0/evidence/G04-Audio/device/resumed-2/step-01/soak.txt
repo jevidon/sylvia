@@ -1,0 +1,53 @@
+# Soak: 120 min of media at 3.0x on AVQueuePlayer through the playback service. Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs)
+# edition: the last 2700 s of long-mp3-vbr-10h.mp3, then long-aac-10h.m4b (both master-long looped, so content is checked against master-long)
+# content_error_ms = true content position of the last 4 s the tap processed minus the source time the player reported for it (cross-correlation)
+# tap_lead_s = source time of the newest audio the tap processed minus the player's current time (decoding ahead of output)
+wall_s	member	player_s	global_ms	content_error_ms	peak	tap_lead_s	footprint_mb	checkpoints
+60	0	34224.001	34224001	29.7	0.996	0.859	96.5	42
+120	0	34404.305	34404305	29.7	0.996	0.835	66.2	84
+180	0	34584.830	34584830	29.7	0.867	0.868	69.8	128
+241	0	34765.302	34765302	29.7	0.998	0.861	63.6	172
+301	0	34945.517	34945517	29.7	0.996	0.833	63.5	216
+361	0	35125.804	35125804	29.7	0.996	0.826	63.5	259
+421	0	35306.029	35306029	29.7	0.998	0.788	63.5	301
+481	0	35486.374	35486374	29.7	0.995	0.815	63.5	344
+541	0	35666.804	35666804	29.7	0.998	0.851	63.5	387
+601	0	35796.533	35796533	29.7	0.999	0.782	63.5	418
+661	0	35796.533	35796533	-	-	-	63.5	418
+721	0	35796.533	35796533	-	-	-	63.4	418
+781	0	35796.533	35796533	-	-	-	63.5	418
+841	0	35796.533	35796533	-	-	-	63.5	418
+901	0	35796.533	35796533	-	-	-	63.5	418
+961	0	35796.533	35796533	-	-	-	63.5	418
+1021	0	35796.533	35796533	-	-	-	63.5	418
+1082	0	35796.533	35796533	-	-	-	63.5	418
+1142	0	35796.533	35796533	-	-	-	63.5	418
+1202	0	35796.533	35796533	-	-	-	63.5	418
+1262	0	35796.533	35796533	-	-	-	63.5	418
+1322	0	35796.533	35796533	-	-	-	63.5	418
+1382	0	35796.533	35796533	-	-	-	63.5	418
+1442	0	35796.533	35796533	-	-	-	63.5	418
+1502	0	35796.533	35796533	-	-	-	63.5	418
+1562	0	35796.533	35796533	-	-	-	63.5	418
+1622	0	35796.533	35796533	-	-	-	63.5	418
+1682	0	35796.533	35796533	-	-	-	63.5	418
+1742	0	35796.533	35796533	-	-	-	63.7	418
+1802	0	35796.533	35796533	-	-	-	63.7	418
+1862	0	35796.533	35796533	-	-	-	63.7	418
+1922	0	35796.533	35796533	-	-	-	63.7	418
+1982	0	35796.533	35796533	-	-	-	63.7	418
+2042	0	35796.533	35796533	-	-	-	63.9	418
+2102	0	35796.533	35796533	-	-	-	63.8	418
+2162	0	35796.533	35796533	-	-	-	63.8	418
+2222	0	35796.533	35796533	-	-	-	63.8	418
+2282	0	35796.533	35796533	-	-	-	63.8	418
+2342	0	35796.533	35796533	-	-	-	63.8	418
+2400	0	35796.533	35796533	-	-	-	63.8	418
+played: wall 2400.1 s, media 1751.9 s (0.7299 x wall), from 34044673 to 35796533 ms global
+content error |ms| (each minute): n=10 p50=29.728 p95=29.728 max=29.728 ms
+tap lead over the player clock: n=10 p50=0.834 p95=0.865 max=0.868 s
+play() to first audio (cold seek into the 10-hour MP3): 0.045 s
+checkpoints while playing: 417; wall gap max 2.363 s; media gap max 4503 ms; first 1.713 s after the first audio, 4328 ms of media after the start; item-change checkpoints naming member 2: 0
+final: last_ms=35796533 durable_last_ms=35796533 furthest_ms=35796533 durable_furthest_ms=35796533 listened_ms=583750 durable_listened_ms=583750 durable_reason=pause
+listening total: 583.8 s; wall time from play() 2400.1 s, from the first audio 2400.1 s (the stall before the first audio is not listening)
+memory footprint: first sample 96.5 MB, last 63.8 MB, max 96.5 MB, growth -32.7 MB

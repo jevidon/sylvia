@@ -1,0 +1,29 @@
+# Pending capture preview of the source range 221.37-229.37 s (preview AVQueuePlayer, forwardPlaybackEndTime) in each format; main paused. Environment: device iPhone18,1, iOS Version 27.0.1 (Build 24A446), Debug build, output at 1 % volume (quiet test runs)
+# head_err = true content position where the first rendered second starts minus the intended start (ms; analysis tap + cross-correlation with master-600s)
+# end_content_err = true content position of a 1.5 s probe within the last 2 s the tap rendered before the intended end, minus the position the player reported for it (ms)
+# audible_past_end = audio past the intended end louder than -40 dB of the range's peak (ms; 0 = only silence past the end)
+# end_err = where the audible content really ends minus the intended end (end_content_err + audible_past_end; ms)
+# player_end = the preview player's own time when it reached the end, minus the intended end (ms)
+# tap_end_overrun = source time the tap processed past the intended end (ms; an upper bound: the tap processes whole buffers, which past the end are silent)
+# post_end_rms_ratio = loudness of what the tap processed past the intended end, relative to the range (0 = silence)
+# session_released = the preview's audio session was deactivated (notifyOthersOnDeactivation) when it ended, main being paused (review R2-06)
+format	file	head_err_ms	head_peak	end_content_err_ms	end_peak	audible_past_end_ms	end_err_ms	player_end_ms	tap_end_overrun_ms	post_end_rms_ratio	rendered_s	intended_s	main_restored	session_released
+mp3-cbr	fmt-mp3-cbr.mp3	21.4	0.999	21.4	0.999	0.0	21.4	15.9	452.1	0.000	8.000	8.000	true	yes
+mp3-vbr-xing	fmt-mp3-vbr-xing.mp3	21.4	0.998	21.4	0.998	0.0	21.4	15.2	452.1	0.000	8.000	8.000	true	yes
+mp3-vbr-noxing	fmt-mp3-vbr-noxing.mp3	21.4	0.998	21.4	0.998	0.0	21.4	15.0	452.1	0.000	8.000	8.000	true	yes
+mp3-id3-chap	fmt-mp3-chap.mp3	21.4	0.999	21.4	0.999	0.0	21.4	15.1	452.1	0.000	8.000	8.000	true	yes
+mp3-librivox-22k	fmt-librivox-mp3-22k.mp3	34.5	1.000	34.5	1.000	0.0	34.5	15.8	775.3	0.000	8.000	8.000	true	yes
+m4a-aac-lc	fmt-m4a-aac-lc.m4a	0.0	0.999	0.0	0.999	0.0	0.0	14.4	452.1	0.000	8.000	8.000	true	yes
+m4a-he-aac-v1	fmt-m4a-heaac-v1.m4a	-47.9	0.993	-47.9	0.994	0.0	-47.9	16.4	452.1	0.000	8.000	8.000	true	yes
+m4a-he-aac-v2	fmt-m4a-heaac-v2.m4a	-47.9	0.993	-47.9	0.994	0.0	-47.9	14.3	452.1	0.000	8.000	8.000	true	yes
+m4a-alac	fmt-m4a-alac.m4a	0.0	1.000	0.0	1.000	0.0	0.0	16.0	452.1	0.000	8.000	8.000	true	yes
+flac	fmt-flac.flac	60.6	1.000	60.6	0.921	0.0	60.6	14.1	452.1	0.000	8.000	8.000	true	yes
+mp4-flac	fmt-mp4-flac.m4a	0.0	1.000	0.0	1.000	0.0	0.0	14.8	452.1	0.000	8.000	8.000	true	yes
+ogg-opus	fmt-opus.ogg	36.5	0.993	36.5	0.987	0.0	36.5	16.1	448.0	0.000	8.000	8.000	true	yes
+opus-ext	fmt-opus.opus	36.5	0.993	36.5	0.987	0.0	36.5	16.4	448.0	0.000	8.000	8.000	true	yes
+mp4-opus	fmt-mp4-opus.m4a	0.0	0.993	0.0	0.989	0.0	0.0	14.6	448.0	0.000	8.000	8.000	true	yes
+caf-opus	fmt-caf-opus.caf	36.7	0.909	36.5	0.845	0.0	36.5	16.4	448.0	0.000	8.000	8.000	true	yes
+wav	fmt-wav.wav	0.0	1.000	0.0	1.000	0.0	0.0	15.2	452.1	0.000	8.000	8.000	true	yes
+head |error|: n=16 p50=21.429 p95=51.071 max=60.612 ms
+end |error| (audible content end minus intended end): n=16 p50=21.429 p95=51.071 max=60.612 ms
+player end |error|: n=16 p50=15.203 p95=16.415 max=16.434 ms
